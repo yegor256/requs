@@ -15,22 +15,6 @@
  * @version $Id$
  */
 
-// This directive tells BISON to use C++ framework, instead of
-// standard C.
-//%language "C++"
-
-// This directives instructs BISON to put code to handle locations
-// inside the parser class.
-//%locations
-
-// The class will be created by BISON in "yy" namespace and will
-// have name "Parser". It will be accessible as "yy::Parser".
-// %defines directive tells BISON that our yy::Parser shall be used
-// instead of a default class.
-//%defines
-//%define namespace "yy"
-//%define parser_class_name "Parser"
-
 %union {
     char* name;
 };
@@ -41,39 +25,54 @@
 
 // Declaration of all known tokens
 %token <name> ENTITY
-
-// %{
-//     extern int yylex(
-//         yy::RqdqlParser::semantic_type *yylval,
-//         yy::RqdqlParser::location_type* yylloc
-//     );
-// %}
-
-// %initial-action {
-//     // Filename for locations here
-//     @$.begin.filename = @$.end.filename = new std::string("stdin");
-// }
+%token <name> ENTITY_FUR
+%token <name> ENTITY_ACTOR
+%token COLON
 
 %{
-    #include <scope.hh>
+    extern void yyerror(const char *error);
+    extern int yylex(void);
+%}
+
+%{
+    #include <iostream>
+        using namespace std;
+
+    #include "Scope.h"
     Scope scope;
 %}
 
 %%
 
-statement:
-    ENTITY { scope.add($1); }
+Statement:
+    FurStatement | EntityStatement;
+
+FurStatement:
+    ENTITY_FUR COLON { scope.add($1); cout << "FUR: " << $1; }
     ;
-
+    
+EntityStatement:
+    ENTITY COLON
+    ;
+    
 %%
-
-main()
-{
-    cout << "rqdql v0.1\n";
-    return yyparse();
-}
 
 void yyerror(const char *error)
 {
-    cout << error << endl;
+    cerr << error << endl;
 }
+    
+main()
+{
+    cout << "rqdql v0.1\n";
+    int result = yyparse();
+    
+    // error in parsing?
+    if (!result) {
+        cerr << "parsing error\n";
+        return result;
+    }
+    
+    return 0;
+}
+

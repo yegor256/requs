@@ -14,12 +14,21 @@
 # @copyright Copyright (c) rqdql.com, 2010
 # @version $Id$
 
-rqdql:  rqdql.l rqdql.y
-	bison -d rqdql.y
-	flex rqdql.l
-	cc -o rqdql $@ rqdql.tab.c lexx.yy.c -lfl
+CPP = c++
+BISON = bison
+FLEX = flex
+CPPFLAGS = -I./include 
+OBJS = src/Scope.o
+HEADERS = include/Scope.h
+
+rqdql: rqdql.l rqdql.y $(OBJS)
+	$(BISON) -d $@.y
+	$(FLEX) $@.l
+	$(CPP) $(CPPFLAGS) -o $@ $@.tab.c lex.yy.c $(OBJS) -lfl
     
+%.o: %.cpp $(HEADERS)
+	$(CPP) $(CPPFLAGS) -o $@ -c $<
+
 clean:
-	rm lex.yy.c
-	rm rqdql.tab.c
-	rm rqdql.tab.h
+	rm lex.yy.c rqdql.tab.c rqdql.tab.h
+	rm $(OBJS)
