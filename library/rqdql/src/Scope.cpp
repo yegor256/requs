@@ -1,4 +1,5 @@
 /**
+ *
  * FaZend.com, Fully Automated Zend Framework
  * RQDQL.com, Requirements Definition and Query Language
  *
@@ -12,29 +13,13 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: bootstrap.php 1190 2010-02-07 07:45:29Z yegor256@yahoo.com $
  */
 
-%option noyywrap nodefault yylineno
+#include "Scope.h"
 
-NSFX ([1-9]+(\.[1-9]+)?)
-CAMEL ([A-Z][a-z]+([A-Z][a-z]+)+)
+void Scope::add(char* statement)
+{
+    //...
+}
 
-%{
-    #include "rqdql.tab.h"
-%}
-
-%{
-    extern void yyerror(const char *error);
-    extern int yylex(void);
-%}
-
-%%
-
-":" { return COLON; }
-R{NSFX} { yylval.name = strdup(yytext); return ENTITY_FUR; }
-{CAMEL} { yylval.name = strdup(yytext); return ENTITY; }
-[\t\n\r ] { /* ignore spaces */ }
-. { yyerror("unknown symbol"); }
-
-%%
