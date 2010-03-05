@@ -1,0 +1,173 @@
+<?xml version="1.0" enconding="utf-8" ?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="EN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>RQDQL, Requirements Definition and Query Language</title>
+    <style type="text/css">
+        body {
+            font: 12pt Arial;
+            padding: 30px;
+        }
+        h1 {
+            margin-top: 2em;
+            color: #2276A4;
+            font-size: 1.5em;
+        }
+        h2 {
+            color: blue;
+            font-size: 1.2em;
+        }
+        tt,
+        .code {
+            font-size: 0.8em;
+            font-family: monospace;
+        }
+        p.code {
+            background: #BCBEC0;
+            margin-left: 3em;
+            padding: 5px;
+            width: 700px;
+        }
+        td {
+            vertical-align: top;
+        }
+        th {
+            text-align: left;
+            font-weight: normal;
+            color: #2276A4;
+            border-bottom: 1px solid #2276A4;
+        }
+    </style>
+</head>
+<body>
+    
+<h1>Requirements Definition and Query Language (RQDQL), draft</h1>
+
+    <p>IEEE 830 says: "SRS (<i>software requirements specification</i>) should be
+        correct, unambiguous, complete, consistent, ranked for importance and/or stability,
+        verifiable, modifiable, traceable. RQDQL is going to enable the creation 
+        of such documents in plain text format. If you're interested to join the group
+        developing RQDQL, email to <a href="team@rqdql.com">team@rqdql.com</a>.</p>
+
+<h1>Quick Start</h1>
+
+    <p>Entire scope definition document consists of <i>statements</i>,
+    related to actors, entities, use cases, functional requirements, or quality of service
+    requirements. Statement starts with entity name, than colon, than statement body
+    and a trailing dot. This example has three statements (spaces, new lines, and tabs are ignored):</p>
+    
+    <p class="code">
+        ActorVisitor: an originator of HTTP request.<br/>
+        R3.3: ActorUser can view and delete photo-s of himself.<br/>
+        ActorUser includes:<br/>
+        &nbsp;&nbsp;name: unique name of the file;<br/>
+        &nbsp;&nbsp;email: email address;<br/>
+        &nbsp;&nbsp;photo-s: binary files, in GIF, PNG or JPEG.
+    </p>
+    
+    <p>Functional requirements explain how actors can communicate with the system,
+    and are named like <tt>R3</tt>, <tt>R4.5</tt>, <tt>R1.2.8</tt>, etc.
+    The format is "somebody can do something with some objects", consider the
+    example:</p>
+    
+    <p class="code">
+        R3.4: ActorUser can upload photo of himself (if email of himself is confirmed).<br/>
+    </p>
+
+    <p>Sounds like a plain English text, but let's review the constituents of the
+        sentence above:</p>
+
+    <table>
+        <tr>
+            <th>Constituent</th>
+            <th>Semantic</th>
+        </tr>
+        <tr>
+            <td class="code">R3.4</td>
+            <td>The identifier of the functional requirement</td>
+        </tr>
+        <tr>
+            <td class="code">:</td>
+            <td>Separator between identifier and body of the statement</td>
+        </tr>
+        <tr>
+            <td class="code">ActorUser</td>
+            <td>An actor, who has an ability to use specified functionality</td>
+        </tr>
+        <tr>
+            <td class="code">can</td>
+            <td>Indicator of functional requirement</td>
+        </tr>
+        <tr>
+            <td class="code">upload</td>
+            <td><i>Behavior</i> identifier of the photo of the ActorUser,
+                i.e. <tt>ActorUser::photo::upload()</tt></td>
+        </tr>
+        <tr>
+            <td class="code">photo of himself</td>
+            <td><i>Property</i> identifier of the actor, i.e. <tt>ActorUser::photo</tt></td>
+        </tr>
+        <tr>
+            <td class="code">(if email is confirmed)</td>
+            <td><i>Modifier</i> for the actor, where <tt>::email</tt> is a property of ActorUser
+                and <tt>::confirmed()</tt> is a behavior of his email</td>
+        </tr>
+        </tr>
+    </table>
+    
+    <p>To make the SRS consistent we should explain what means
+        <tt>upload of photo of ActorUser</tt>, and <tt>confirmed of email of ActorUser</tt>.
+        All other behaviors and properties are clear from the texts above. This is how we can do it
+        (text descriptions are absolutely informal):</p>
+        
+    <p class="code">
+        Photo of ActorUser "to upload" means: select any file on a local computer<br/>
+        and upload it via HTTP PUT, if there is some error a message shall be<br/>
+        visible for the end user.<br/>
+        Email of ActorUser "confirmed" means: confirmation email was sent to the<br/>
+        user and he clicked the link in this email.
+    </p>
+    
+    <p>As you already mentioned, format is flexible, you can use either full form,
+        short form or a redundant form, for example:</p>
+
+    <table>
+        <tr>
+            <th width="500px">Full form</th>
+            <th>Possible short/redundant forms</th>
+        </tr>
+        <tr>
+            <td class="code">
+                R3.3: ActorUser can view photo-s of himself; ActorUser can delete photo-s of himself.
+            </td>
+            <td class="code">
+                R3.3: ActorUser can <b>view and delete</b> photo-s of himself.<br/>
+                R3.3: ActorUser can <b>view, delete</b> photo-s of himself.<br/>
+                R3.3: ActorUser can view, delete <b>photo-s</b>.<br/>
+                R3.3: ActorUser can view<b>,</b> and delete photo-s of himself.<br/>
+            </td>
+        </tr>
+        <tr>
+            <td class="code">
+                R3.3: ActorUser can upload photo of himself (if email of himself confirmed).
+            </td>
+            <td class="code">
+                R3.3: ActorUser can upload photo (if email confirmed).<br/>
+                R3.3: ActorUser can upload photo (if email <b>is</b> confirmed).<br/>
+            </td>
+        </tr>
+    </table>
+    
+    <p>Plural forms of any object can be expressed by a suffix:</p>
+
+    <ul>
+        <li>"<tt>ImageFile</tt>" means "<tt>exactly one ImageFile</tt>, which is "<tt>1</tt>" in UML</li>
+        <li>"<tt>ImageFile(s)</tt>" means "<tt>one, none or many ImageFiles</tt>": "<tt>0..*</tt>"</li>
+        <li>"<tt>ImageFile-s</tt>" means "<tt>one ImageFile or many</tt>": "<tt>1..*</tt>"</li>
+        <li>"<tt>ImageFile-?</tt>" means "<tt>one ImageFile or none</tt>": "<tt>0..1</tt>"</li>
+    </ul>
+
+</body>
+<html>
