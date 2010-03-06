@@ -18,17 +18,27 @@ CPP = c++
 BISON = bison
 FLEX = flex
 CPPFLAGS = -I./include 
-OBJS = src/Scope.o
-HEADERS = include/Scope.h
+OBJS = src/Scope.o src/global.o
+HEADERS = include/Scope.h \
+	include/rqdql.h
+EXEC = ./rqdql
+TESTS = test/ScopeTest.o
+EXAMPLES = examples/valid/ex-2.txt
 
-rqdql: rqdql.l rqdql.y $(OBJS)
-	$(BISON) -d $@.y
+rqdql: $(EXEC).l $(EXEC).y $(OBJS) Makefile $(EXAMPLES)
+	$(BISON) --no-lines --debug --graph --report=all -d $@.y
 	$(FLEX) $@.l
 	$(CPP) $(CPPFLAGS) -o $@ $@.tab.c lex.yy.c $(OBJS) -lfl
+	$(EXEC) "list" < examples/valid/ex-2.txt
     
 %.o: %.cpp $(HEADERS)
 	$(CPP) $(CPPFLAGS) -o $@ -c $<
 
 clean:
-	rm lex.yy.c rqdql.tab.c rqdql.tab.h
-	rm $(OBJS)
+	rm -f lex.yy.c $(EXEC).tab.c $(EXEC).tab.h
+	rm -f $(OBJS)
+	rm -f $(EXEC)
+
+test: test/rqdql-test.cpp $(TESTS)
+	$(EXEC) "list" < examples/valid/ex-2.txt
+	
