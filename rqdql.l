@@ -18,23 +18,52 @@
 %option noyywrap nodefault yylineno
 
 NSFX ([1-9]+(\.[1-9]+)?)
-CAMEL ([A-Z][a-z]+([A-Z][a-z]+)+)
+CAMEL ([A-Z][a-z]+)
+
+%s SINGULAR
 
 %{
-    #include "rqdql.tab.h"
+    #include "rqdql.h"
 %}
 
 %{
-    extern void yyerror(const char *error);
-    extern int yylex(void);
+    int yycolumn = 1;
+    #define YY_USER_ACTION \
+        yylloc.first_line = yylloc.last_line = yylineno; \
+        yylloc.first_column = yycolumn; \
+        yylloc.last_column = yycolumn + yyleng - 1; \
+        yycolumn += yyleng;
 %}
 
 %%
 
+#.* { /* ignore comments */ }
+
 ":" { return COLON; }
+";" { return SEMICOLON; }
+"." { return DOT; }
+"," { return COMMA; }
+"(" { return OPEN_BRACE; }
+")" { return CLOSE_BRACE; }
+"can" { return CAN; }
+"and" { return AND; }
+"of" { return OF; }
+"if"|"only" { return IF; }
+"using" { return USING; }
+"himself"|"them"|"it"|"itself" { return THIS; }
+
+[a-z]+ { yylval.name = strdup(yytext); return WORD; }
+
 R{NSFX} { yylval.name = strdup(yytext); return ENTITY_FUR; }
-{CAMEL} { yylval.name = strdup(yytext); return ENTITY; }
-[\t\n\r ] { /* ignore spaces */ }
-. { yyerror("unknown symbol"); }
+"SUD" { yylval.name = strdup(yytext); return ENTITY_ACTOR; }
+"Actor"{CAMEL} { yylval.name = strdup(yytext); BEGIN(SINGULAR); return ENTITY_ACTOR; }
+{CAMEL}{CAMEL} { yylval.name = strdup(yytext); BEGIN(SINGULAR); return ENTITY; }
+<SINGULAR>"-s" { BEGIN(INITIAL); return PLURAL_MANY; }
+<SINGULAR>"(s)" { BEGIN(INITIAL); return PLURAL_SOME; }
+<SINGULAR>"?" { BEGIN(INITIAL); return PLURAL_ANY; }
+
+[\t\r ] { /* ignore spaces */ }
+\n { yycolumn = 1; }
+. { yyerror("unknown symbol %c", yytext[0]); }
 
 %%

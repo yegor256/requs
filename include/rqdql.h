@@ -16,16 +16,21 @@
  * @version $Id: bootstrap.php 1190 2010-02-07 07:45:29Z yegor256@yahoo.com $
  */
 
-#include "rqdql.h"
+#include "../rqdql.tab.h"
 
-/**
- * Global holder and processor of all scope statements
- *
- * @see rqdql.y
- */
-class Scope
+#include <iostream>
+    using namespace std;
+
+extern int yyparse();
+void yyerror(const char *error, ...);
+void lyyerror(YYLTYPE t, const char *error, ...);
+extern int yylex(void);
+extern int yylineno;
+// extern int yyerrstatus;
+
+namespace rqdql
 {
-public:
-    void add(char* statement);
-};
-
+    char* sprintf(const char* mask, ...);
+    void error(char* message);
+    
+}
