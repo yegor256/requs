@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="EN">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>RQDQL, Requirements Definition and Query Language</title>
+    <title>RQDQL, Requirements Definition and Query Language, v$Revision$</title>
     <style type="text/css">
         body {
             font: 12pt Arial;
@@ -16,7 +16,7 @@
             font-size: 1.5em;
         }
         h2 {
-            color: blue;
+            color: black;
             font-size: 1.2em;
         }
         tt,
@@ -43,7 +43,9 @@
 </head>
 <body>
     
-<h1>Requirements Definition and Query Language (RQDQL), draft</h1>
+<h1>Requirements Definition and Query Language (RQDQL), draft v$Revision$</h1>
+
+    <p><tt>$LastChangedDate$</tt></p>
 
     <p>IEEE 830 says: "SRS (<i>software requirements specification</i>) should be
         correct, unambiguous, complete, consistent, ranked for importance and/or stability,
@@ -51,7 +53,7 @@
         of such documents in plain text format. If you're interested to join the group
         developing RQDQL, email to <a href="team@rqdql.com">team@rqdql.com</a>.</p>
 
-<h1>Quick Start</h1>
+<h1>1. Quick Start</h1>
 
     <p>Entire scope definition document consists of <i>statements</i>,
     related to actors, entities, use cases, functional requirements, or quality of service
@@ -168,6 +170,128 @@
         <li>"<tt>ImageFile-s</tt>" means "<tt>one ImageFile or many</tt>": "<tt>1..*</tt>"</li>
         <li>"<tt>ImageFile-?</tt>" means "<tt>one ImageFile or none</tt>": "<tt>0..1</tt>"</li>
     </ul>
+    
+<h1>2. Syntax and Semantic</h1>
+
+    <h2>2.1. Object</h2>
+    
+        <p><i>Object</i> is some data entity, or interface, or actor, or system under development (SUD). More
+            formally, object is a <i>class</i> in UML. Objects are specified by CamelCase notation, for example:</p>
+            
+        <p class="code">
+            ActorVisitor: an originator of HTTP request.<br/>
+            IfAmazon: XML interface between SUD and ActorAmazon.
+        </p>
+
+        <p>Objects may inherit each other, multiple inheritance is allowed, for example
+            (<tt>is a</tt> is a <i>statement modifier</i>):</p>
+        
+        <p class="code">
+            ActorUser <b>is a</b>: ActorVisitor.<br/>
+        </p>
+            
+        <p>An object can include other objects, which are <i>parts</i> of it
+            (<tt>includes</tt> is a <i>statement modifier</i>). Formally,
+            they have <i>aggregation</i> relations with the object. Parts may be named
+            with letters only and should not use CamelCase notation.</p>
+
+        <p class="code">
+            ActorUser <b>includes</b>: name; email; date of birth.<br/>
+            IfAmazon <b>includes</b>:<br/>
+            &nbsp;&nbsp;secret key: 32-letter/digit string;<br/>
+            &nbsp;&nbsp;account number: unique number of the Amazon account.<br/>
+            ActorAdmin <b>includes</b>:<br/>
+            &nbsp;&nbsp;access pair: open key; secret key;;<br/>
+            &nbsp;&nbsp;mobile phone.
+        </p>
+
+        <p>An object can include links to dynamically generated objects, which are <i>associations</i> of it
+            (<tt>produces</tt> is a <i>statement modifier</i>). Formally,
+            they have <i>association</i> relations with the object. Associations may be named
+            with letters only and should not use CamelCase notation.</p>
+
+        <p class="code">
+            ActorUser <b>produces</b>: account balance; IP address(s).<br/>
+            IfAmazon <b>produces</b>:<br/>
+            &nbsp;&nbsp;file-s: list of files stored in S3;<br/>
+            &nbsp;&nbsp;instance-s: list of EC2 instances.
+        </p>
+        
+        <p>The main difference between parts and associations is that parts have
+            no sense if the object is removed from the SRS. Associations
+            still have sense and may stay in SRS, even if the object is removed.</p>
+
+        <p>To reference an object its full name should be used. Any part of
+            an object can be referenced by <tt>of</tt> word, e.g.:</p>
+
+        <p class="code">
+            ... account balance <b>of</b> ActorUser ...<br/>
+            ... file-s <b>of</b> IfAmazon ...<br/>
+            ... email-s <b>of</b> ActorUser-s ...<br/>
+            ... secret key <b>of</b> access pair <b>of</b> ActorAdmin ...
+        </p>
+
+    <h2>2.2. Verb</h2>
+    
+        <p><i>Verb</i> is a defined behavior of an object. There is a number
+            of pre-defined behavior-s of every object, including:</p>
+        
+        <ul>
+            <li><tt>manage</tt> &mdash; means nothing, empty behavior;</li>
+            <li><tt>list</tt> &mdash; view the full list of objects;</li>
+            <li><tt>read</tt> &mdash; read values of parts of object (without sub-parts);</li>
+            <li><tt>create</tt> &mdash; create new object;</li>
+            <li><tt>update</tt> &mdash; make changes to values of parts (excluding sub-parts);</li>
+            <li><tt>delete</tt> &mdash; delete object from persistent storage;</li>
+            <li><tt>CRUDL, CRDL, etc.</tt> &mdash; abbreviated verbs.</li>
+        </ul>
+        
+        <p>Additional behavior can be added to an object with explicit
+            declaration:</p>
+
+        <p class="code">
+            ActorUser "to approve" (aka "+A") means: reviewing information about ActorUser<br/>
+            and accepting or rejecting its access to the SUD.<br/>
+            Photo of ActorUser "to convert" means: changing the format of the file.<br/>
+        </p>
+
+    <h2>2.3. NULL words</h2>
+    
+        <p>The following words you can use anywhere, they are ignored:
+            <tt>a</tt>,
+            <tt>the</tt>,
+            <tt>is</tt>,
+            <tt>are</tt>,
+            <tt>have</tt>.
+            </p>
+
+    <h2>2.4. Prohibited words</h2>
+
+        <p>The following words you can not use, they are reserved or prohibited:
+            <tt>not</tt>,
+            <tt>if</tt>,
+            <tt>whether</tt>.
+            </p>
+
+    <h2>2.5. Modifier</h2>
+    
+        <p>Modifier is a collection of <i>predicates</i>, which is attached to a verb or an object
+            (there are two predicates, separated by semicolon):</p>
+
+        <p class="code">
+            R3.4: ActorUser can upload photo of himself<br/>
+                (if email of himself is confirmed;<br/>
+                if he is approved).<br/>
+        </p>
+        
+        <p>Predicate starts with a <i>lambda-function</i> followed by object and verb.
+            Reserved word <tt>himself</tt> can be used here instead of an object. It
+            will mean that you're referencing the object from the main part of the sentence.
+            The word <tt>himself</tt> can be replaced by
+                <tt>him</tt>,
+                <tt>it</tt> or
+                <tt>this</tt>.</p>
+        
 
 </body>
 <html>
