@@ -1,24 +1,24 @@
-#ActorUser: a human being with identity.
+ActorUser: a human being with identity.
 
-#ActorVisitor: originator of HTTP request.
-#ActorUser is a: ActorVisitor.
-#ActorManager is a: ActorUser.
-#ActorUser includes: name; email: string as of RFC-s; password.
-#ActorVisitor produces: visits: HTTP requests; visits produce: IP address; time.
-#
-#
+ActorVisitor: originator of HTTP request.
+ActorUser is a: ActorVisitor.
+ActorManager is a: ActorUser.
+ActorUser includes: name; email: string as of RFCs; password.
+ActorVisitor produces: visits: HTTP requests; visits produce: IP address; time.
+
+
 R1: ActorUser can manage files of ContentPage.
-R4: ActorUser can print, list, and create ContentPage.
-    R1.1: ActorVisitor can list, read, print ContentPage
+R4: ActorUser can print, list, and create ContentPage-s.
+    R1.1: ActorVisitor can list, read, print ContentPage-s
         (only public properties of them;
         if visibility of them allow).
-    R1.2: ActorVisitor can create application of ActorUser;
-        ActorManager can create (using application of it) ActorUser;
+    R1.2: ActorVisitor can create application of ActorUser-s;
+        ActorManager can create (using application of it) ActorUser-s;
         ActorUser can reset password of himself;
         ActorManager can reset password of ActorUser.
     R1.3: ActorInvestor can RL+P InvestmentProject.
     R1.4: ActorManager can CRUL+P ContentPage.
-    R1.5: ActorManager can create, update FieldTrip.
-    R1.6: ActorManager can CRUL+P InvestmentProject.
-    R1.7: ActorManager can list, approve applications of ActorUser.
+    R1.5: ActorManager can create, update FieldTrip-s.
+    R1.6: ActorManager can CRUL+P InvestmentProject-s.
+    R1.7: ActorManager can list, approve applications of ActorUser-s.
     
