@@ -74,7 +74,10 @@
 
 SRS:
     /* it can be empty */ |
-    SRS Statement;
+    SRS DottedStatement;
+
+DottedStatement:
+    Statement DOT;
 
 Statement:
     FurStatement { cout << "FUR statement processed\n"; } |
@@ -82,10 +85,9 @@ Statement:
     error { lyyerror(@1, "statement expected but missed"); };
 
 FurStatement:
-    FUR COLON actions DOT |
+    FUR COLON actions |
     FUR error { lyyerror(@2, "colon expected after '%s'", $1); } |
-    FUR COLON error { lyyerror(@3, "actions expected after '%s:'", $1); } |
-    FUR COLON actions error { lyyerror(@4, "trailing dot missed after '%s: %s'", $1, $3); }
+    FUR COLON error { lyyerror(@3, "actions expected after '%s:'", $1); } 
     ;
     
 actions:
@@ -165,9 +167,9 @@ lambda:
     
 EntityStatement:
     lobject COLON INFORMAL |
-    lobject IS_A COLON object |
-    lobject INCLUDES COLON parts |
-    lobject PRODUCES COLON parts
+    lobject IS_A object |
+    lobject INCLUDES parts |
+    lobject PRODUCES parts
     ;
     
 lobject:
@@ -183,8 +185,7 @@ parts:
 part:
     attribute |
     attribute COLON INFORMAL |
-    attribute PRODUCES COLON parts |
-    attribute INCLUDES COLON parts 
+    attribute INCLUDES parts 
     ;
     
 %%
