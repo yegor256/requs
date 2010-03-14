@@ -26,9 +26,9 @@ TESTS = test/ScopeTest.o
 EXAMPLES = examples/valid/ex-2.txt
 
 rqdql: $(EXEC).l $(EXEC).y $(OBJS) Makefile $(EXAMPLES)
-	$(BISON) --no-lines --debug --graph --report=all -d $@.y
+	$(BISON) --no-lines --debug --graph --report=all --verbose -d $@.y
 	$(FLEX) $@.l
-	$(CPP) $(CPPFLAGS) -o $@ $@.tab.c lex.yy.c $(OBJS) -lfl
+	$(CPP) $(CPPFLAGS) -o $@ $@.tab.c lex.yy.c $(OBJS)
 	$(EXEC) "list" < examples/valid/ex-2.txt
     
 %.o: %.cpp $(HEADERS)
@@ -41,4 +41,7 @@ clean:
 
 test: test/rqdql-test.cpp $(TESTS)
 	$(EXEC) "list" < examples/valid/ex-2.txt
+	
+deploy:
+	ftp -u ftp://rqdql_deploy%40caybo.ru:uf8Klp7Y2Et4@rqdql.com/public/rqdql.html rqdql.com/rqdql.html
 	

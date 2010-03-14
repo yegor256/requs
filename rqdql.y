@@ -36,20 +36,33 @@
 %type <name> subject
 %type <name> object
 %type <name> attribute
-%type <name> lambda
 
 // Declaration of all known tokens
+%token <name> INFORMAL
 %token <name> ENTITY
-%token <name> ENTITY_FUR
-%token <name> ENTITY_ACTOR
-%token <name> COLON SEMICOLON DOT COMMA
-%token <name> AND CAN OF
-%token <name> IF
-%token <name> USING
-%token <name> THIS
+%token <name> FUR
+%token <name> ACTOR
 %token <name> WORD
-%token <name> PLURAL_MANY PLURAL_SOME PLURAL_ANY
-%token <name> OPEN_BRACE CLOSE_BRACE
+%token <name> ACRONYM 
+
+%token COLON SEMICOLON DOT COMMA
+%token AND OR
+%token CAN
+%token IF
+%token OF
+%token USING
+%token THIS
+%token PLURAL_MANY PLURAL_SOME PLURAL_ANY
+%token OPEN_BRACE CLOSE_BRACE
+%token IS_A INCLUDES PRODUCES
+
+%nonassoc COMMA
+%nonassoc AND
+%nonassoc SEMICOLON
+%right OF
+%right COLON
+%right INCLUDES
+%right PRODUCES
 
 %{
     #include "rqdql.h"
@@ -69,10 +82,10 @@ Statement:
     error { lyyerror(@1, "statement expected but missed"); };
 
 FurStatement:
-    ENTITY_FUR COLON actions DOT |
-    ENTITY_FUR error { lyyerror(@2, "colon expected after %s", $1); } |
-    ENTITY_FUR COLON error { lyyerror(@3, "actions expected after %s:", $1); } |
-    ENTITY_FUR COLON actions error { lyyerror(@4, "trailing dot missed after %s: %s", $1, $3); }
+    FUR COLON actions DOT |
+    FUR error { lyyerror(@2, "colon expected after '%s'", $1); } |
+    FUR COLON error { lyyerror(@3, "actions expected after '%s:'", $1); } |
+    FUR COLON actions error { lyyerror(@4, "trailing dot missed after '%s: %s'", $1, $3); }
     ;
     
 actions:
@@ -81,46 +94,46 @@ actions:
     ;
     
 action:
-    ENTITY_ACTOR CAN verbs subjects |
-    ENTITY_ACTOR error { lyyerror(@2, "'can' missed after '%s'", $1); } |
-    ENTITY_ACTOR CAN error { lyyerror(@3, "list of verbs not found after '%s %s'", $1, $2); } |
-    ENTITY_ACTOR CAN verbs error { lyyerror(@4, "list of subjects missed after '%s can %s'", $1, $3); }
+    ACTOR CAN verbs subjects |
+    ACTOR error { lyyerror(@2, "'can' missed after '%s'", $1); } |
+    ACTOR CAN error { lyyerror(@3, "list of verbs not found after '%s can'", $1); } |
+    ACTOR CAN verbs error { lyyerror(@4, "list of subjects missed after '%s can %s'", $1, $3); }
     ;
     
 verbs:
     verb |
-    verb COMMA verbs { $$ = rqdql::sprintf("%s%s %s", $1, $2, $3); } |
-    verb AND verbs { $$ = rqdql::sprintf("%s %s %s", $1, $2, $3); }  |
-    verb COMMA AND verbs { $$ = rqdql::sprintf("%s%s %s %s", $1, $2, $3, $4); } 
+    verbs COMMA verb { $$ = rqdql::sprintf("%s, %s", $1, $3); } |
+    verbs AND verb { $$ = rqdql::sprintf("%s and %s", $1, $3); }  |
+    verbs COMMA AND verb { $$ = rqdql::sprintf("%s, and %s", $1, $4); }
     ;
     
 verb:
+    ACRONYM |
     WORD |
     WORD modifier
     ;
     
 subjects:
     subject |
-    subject COMMA subjects |
-    subject AND subjects |
-    subject COMMA AND subjects
+    subjects COMMA subject |
+    subjects AND subject |
+    subjects COMMA AND subject
     ;
     
 subject:
     object |
-    object modifier { $$ = rqdql::sprintf("%s %s", $1, $2); } |
-    object error { lyyerror(@1, "invalid modifier after '%s'", $1); }
+    object modifier { $$ = rqdql::sprintf("%s %s", $1, $2); }
     ;
     
 object:
-    THIS |
-    ENTITY plural |
-    attribute OF object { $$ = rqdql::sprintf("%s %s %s", $1, $2, $3); }
+    THIS { $$ = rqdql::sprintf("this"); } |
+    ACTOR plural { $$ = rqdql::sprintf("%s", $1); } |
+    ENTITY plural { $$ = rqdql::sprintf("%s", $1); } |
+    attribute OF object { $$ = rqdql::sprintf("%s of %s", $1, $3); }
     ;
     
 attribute:
-    words |
-    words modifier { $$ = rqdql::sprintf("%s %s", $1, $2); }
+    words
     ;
     
 words:
@@ -132,7 +145,7 @@ plural:
     /* singular */ | PLURAL_MANY | PLURAL_SOME | PLURAL_ANY;
 
 modifier:
-    OPEN_BRACE predicates CLOSE_BRACE
+    OPEN_BRACE predicates CLOSE_BRACE { $$ = rqdql::sprintf("%s", $2); }
     ;
     
 predicates:
@@ -141,8 +154,8 @@ predicates:
     ;
     
 predicate:
-    lambda subjects { $$ = rqdql::sprintf("%s %s", $1, $2); } |
-    lambda subjects verbs { $$ = rqdql::sprintf("%s %s %s", $1, $2, $3); }
+    lambda subjects { $$ = rqdql::sprintf("L %s", $2); } |
+    lambda subjects verbs { $$ = rqdql::sprintf("L %s %s", $2, $3); }
     ;
     
 lambda:
@@ -151,7 +164,27 @@ lambda:
     ;
     
 EntityStatement:
-    ENTITY COLON
+    lobject COLON INFORMAL |
+    lobject IS_A COLON object |
+    lobject INCLUDES COLON parts |
+    lobject PRODUCES COLON parts
+    ;
+    
+lobject:
+    ENTITY |
+    ACTOR
+    ;
+
+parts:
+    part |
+    parts SEMICOLON part
+    ;
+
+part:
+    attribute |
+    attribute COLON INFORMAL |
+    attribute PRODUCES COLON parts |
+    attribute INCLUDES COLON parts 
     ;
     
 %%

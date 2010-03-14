@@ -15,15 +15,9 @@
  * @version $Id$
  */
 
-%option noyywrap nodefault yylineno
-
-NSFX ([1-9]+(\.[1-9]+)?)
-CAMEL ([A-Z][a-z]+)
-
-%s SINGULAR
-
 %{
     #include "rqdql.h"
+    int oldState;
 %}
 
 %{
@@ -33,34 +27,85 @@ CAMEL ([A-Z][a-z]+)
         yylloc.first_column = yycolumn; \
         yylloc.last_column = yycolumn + yyleng - 1; \
         yycolumn += yyleng;
+        
+    void logg(const char* str)
+    {
+        if (1) {
+            cout << str << endl;
+        }
+    }
 %}
+
+%option noyywrap yylineno
+%option nodefault
+
+NSFX ([1-9]+(\.[1-9]+)?)
+CAMEL_PART ([A-Z][a-z]+)
+CAMEL ({CAMEL_PART}({CAMEL_PART})+)
+ACTOR (Actor({CAMEL_PART})+|SUD)
+FUR (R{NSFX})
+ACRONYM ([A-Z]+(\+[A-Z]+)?)
+
+    /* singular after entity or actor */
+%x SINGULAR
+
+    /* who is on the left side of the statement? */
+    /* it's important to have in REGULAR state, not EXCLUSIVE */
+%s LHS_FUR LHS_ENTITY
+
+    /* what we should expect on the right side? */
+%s RHS_INHERITANCE RHS_PARTS RHS_ACTIONS RHS_INFORMAL
 
 %%
 
-#.* { /* ignore comments */ }
+<INITIAL>#.* { /* ignore comments */ }
 
-":" { return COLON; }
-";" { return SEMICOLON; }
-"." { return DOT; }
-"," { return COMMA; }
+    /* who is on the left side of the statement? */
+<INITIAL>{FUR} { BEGIN(LHS_FUR); logg("LHS_FUR"); REJECT; }
+<INITIAL>{CAMEL} { BEGIN(LHS_ENTITY); logg("LHS_ENTITY"); REJECT; }
+
+    /* LHS modifiers */
+<LHS_ENTITY>"is"\s+"a" { BEGIN(RHS_INHERITANCE); logg("RHS_INHERITANCE"); return IS_A; }
+<LHS_ENTITY>"include"s? { BEGIN(RHS_PARTS); logg("RHS_PARTS"); return INCLUDES; }
+<LHS_ENTITY>"produce"s? { BEGIN(RHS_PARTS); logg("RHS_PARTS"); return PRODUCES; }
+<LHS_FUR>":" { BEGIN(RHS_ACTIONS); logg("RHS_ACTIONS"); REJECT; }
+<LHS_ENTITY>":" { BEGIN(RHS_INFORMAL); logg("RHS_INFORMAL"); REJECT; }
+
+    /* informal text on the right part of entity */
+<RHS_INFORMAL>[^\.]+ { yylval.name = strdup(yytext); logg("INFORMAL"); return INFORMAL; }
+
+    /* get back to initial context */
+"." { BEGIN(INITIAL); return DOT; }
+
+    /* find entities */
+{FUR} { yylval.name = strdup(yytext); cout << "FUR: " << yytext << endl; return FUR; }
+{ACTOR} { yylval.name = strdup(yytext); cout << "ACTOR: " << yytext << endl; return ACTOR; }
+{CAMEL} { yylval.name = strdup(yytext); cout << "ENTITY: " << yytext << endl; return ENTITY; }
+    /*
+{ACTOR} { yylval.name = strdup(yytext); oldState = YY_START; BEGIN(SINGULAR); cout << "actor: " << oldState << endl; return ACTOR; }
+{CAMEL} { yylval.name = strdup(yytext); oldState = YY_START; BEGIN(SINGULAR); return ENTITY; }
+<SINGULAR>"-s" { BEGIN(oldState); return PLURAL_MANY; }
+<SINGULAR>"(s)" { BEGIN(oldState); return PLURAL_SOME; }
+<SINGULAR>"?" { BEGIN (oldState); return PLURAL_ANY; }
+<SINGULAR>. { BEGIN(oldState); cout << "stop SINGULAR with '" << yytext << "', state back to " << oldState << "\n"; REJECT; }
+    */
+
+"/" |
+"or" { logg("OR"); return OR; }
+":" { logg("COLON"); return COLON; }
+";" { logg("SEMICOLON"); return SEMICOLON; }
+"," { logg("COMMA"); return COMMA; }
 "(" { return OPEN_BRACE; }
 ")" { return CLOSE_BRACE; }
-"can" { return CAN; }
-"and" { return AND; }
-"of" { return OF; }
+"can" { logg("CAN"); return CAN; }
+"and" { logg("AND"); return AND; }
+"of" { logg("OF"); return OF; }
 "if"|"only" { return IF; }
 "using" { return USING; }
 "himself"|"them"|"it"|"itself" { return THIS; }
 
-[a-z]+ { yylval.name = strdup(yytext); return WORD; }
-
-R{NSFX} { yylval.name = strdup(yytext); return ENTITY_FUR; }
-"SUD" { yylval.name = strdup(yytext); return ENTITY_ACTOR; }
-"Actor"{CAMEL} { yylval.name = strdup(yytext); BEGIN(SINGULAR); return ENTITY_ACTOR; }
-{CAMEL}{CAMEL} { yylval.name = strdup(yytext); BEGIN(SINGULAR); return ENTITY; }
-<SINGULAR>"-s" { BEGIN(INITIAL); return PLURAL_MANY; }
-<SINGULAR>"(s)" { BEGIN(INITIAL); return PLURAL_SOME; }
-<SINGULAR>"?" { BEGIN(INITIAL); return PLURAL_ANY; }
+[a-z]+ { yylval.name = strdup(yytext); cout << "WORD: " << yytext << "\n"; return WORD; }
+{ACRONYM} { yylval.name = strdup(yytext); cout << "ACRONYM: " << yytext << "\n"; return ACRONYM; }
 
 [\t\r ] { /* ignore spaces */ }
 \n { yycolumn = 1; }
