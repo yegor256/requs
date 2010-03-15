@@ -16,6 +16,9 @@
  * @version $Id: bootstrap.php 1190 2010-02-07 07:45:29Z yegor256@yahoo.com $
  */
 
+#ifndef __INCLUDE_RQDQL_H
+#define __INCLUDE_RQDQL_H
+
 #include "rqdql.h"
 
 /**
@@ -29,3 +32,4 @@ public:
     void add(char* statement);
 };
 
+#endif

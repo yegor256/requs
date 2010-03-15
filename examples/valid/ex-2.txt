@@ -4,8 +4,7 @@ ActorVisitor: originator of HTTP request.
 ActorUser is a: ActorVisitor.
 ActorManager is a: ActorUser.
 ActorUser includes: name; email: string as of RFCs; password.
-ActorVisitor produces: visits: HTTP requests; visits produce: IP address; time.
-
+ActorVisitor produces: visits: HTTP requests; visits produces: IP address; time.
 
 R1: ActorUser can manage files of ContentPage.
 R4: ActorUser can print, list, and create ContentPage-s.
