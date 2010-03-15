@@ -17,27 +17,7 @@
  */
 
 #include "rqdql.h"
-
-/**
- * To make sprintf() work simply, as in PHP
- */
-char* rqdql::sprintf(const char* mask, ...)
-{
-    va_list args;
-    va_start(args, mask);
-
-    char s[500];
-    vsprintf(s, mask, args);
-    return strdup(s);
-}
-
-/**
- * Error logger
- */
-void rqdql::error(char* message)
-{
-    cerr << message << endl;
-}
+#include "rqdql.h"
 
 /**
  * Called when error is found in parser
@@ -64,7 +44,7 @@ void yyerror(const char *error, ...)
         );
         strcpy(s, s1);
     }
-    rqdql::error(s);
+    rqdql::log(rqdql::error, s);
 }
     
 void lyyerror(YYLTYPE t, const char *error, ...)
@@ -89,12 +69,12 @@ void lyyerror(YYLTYPE t, const char *error, ...)
         );
         strcpy(s, s1);
     }
-    rqdql::error(s);
+    rqdql::log(rqdql::error, s);
 }
     
 int main(int argc, char** argv)
 {
-    cout << "rqdql v0.1\n";
+    rqdql::log(rqdql::info, "rqdql v0.1");
     yyparse();
     return 0;
 }

@@ -66,8 +66,6 @@
 
 %{
     #include "rqdql.h"
-    #include "Scope.h"
-    Scope scope;
 %}
 
 %%

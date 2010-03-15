@@ -17,7 +17,6 @@
 
 %{
     #include "rqdql.h"
-    int oldState;
 %}
 
 %{
@@ -27,13 +26,6 @@
         yylloc.first_column = yycolumn; \
         yylloc.last_column = yycolumn + yyleng - 1; \
         yycolumn += yyleng;
-        
-    void logg(const char* str)
-    {
-        if (1) {
-            cout << str << endl;
-        }
-    }
 %}
 
 %option noyywrap yylineno
@@ -65,63 +57,64 @@ ACRONYM ([A-Z]+(\+[A-Z]+)?)
 <INITIAL>#.* { /* ignore comments */ }
 
     /* who is on the left side of the statement? */
-<INITIAL>{FUR} { BEGIN(LHS_FUR); logg("LHS_FUR"); REJECT; }
-<INITIAL>{CAMEL} { BEGIN(LHS_ENTITY); logg("LHS_ENTITY"); REJECT; }
+<INITIAL>{FUR} { BEGIN(LHS_FUR); rqdql::log(rqdql::debug, "LHS_FUR"); REJECT; }
+<INITIAL>{CAMEL} { BEGIN(LHS_ENTITY); rqdql::log(rqdql::debug, "LHS_ENTITY"); REJECT; }
 
     /* LHS modifiers */
-<LHS_ENTITY>is{SPACE}a: { BEGIN(RHS_INHERITANCE); logg("RHS_INHERITANCE"); return IS_A; }
-<LHS_ENTITY>includes?{SPACE}?: { BEGIN(RHS_PARTS); logg("INCLUDES, RHS_PARTS"); return INCLUDES; }
-<LHS_ENTITY>produces?{SPACE}?: { BEGIN(RHS_PARTS); logg("PRODUCES, RHS_PARTS"); return PRODUCES; }
-<LHS_FUR>":" { BEGIN(RHS_ACTIONS); logg("RHS_ACTIONS"); REJECT; }
-<LHS_ENTITY>":" { BEGIN(RHS_INFORMAL); logg("RHS_INFORMAL"); REJECT; }
+<LHS_ENTITY>is{SPACE}a: { BEGIN(RHS_INHERITANCE); rqdql::log(rqdql::debug, "RHS_INHERITANCE"); return IS_A; }
+<LHS_ENTITY>includes?{SPACE}?: { BEGIN(RHS_PARTS); rqdql::log(rqdql::debug, "INCLUDES, RHS_PARTS"); return INCLUDES; }
+<LHS_ENTITY>produces?{SPACE}?: { BEGIN(RHS_PARTS); rqdql::log(rqdql::debug, "PRODUCES, RHS_PARTS"); return PRODUCES; }
+<LHS_FUR>":" { BEGIN(RHS_ACTIONS); rqdql::log(rqdql::debug, "RHS_ACTIONS"); REJECT; }
+<LHS_ENTITY>":" { BEGIN(RHS_INFORMAL); rqdql::log(rqdql::debug, "RHS_INFORMAL"); REJECT; }
 
     /* informal text on the right part of entity */
-<RHS_INFORMAL>[^\.]+ { yylval.name = strdup(yytext); logg("INFORMAL"); return INFORMAL; }
+<RHS_INFORMAL>[^\.]+ { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "INFORMAL"); return INFORMAL; }
 
     /* parts */
-<RHS_PARTS>(include|produce)s?{SPACE}: { logg("PARTS INCLUDE"); return INCLUDES; }
-<RHS_PARTS>":" { BEGIN(PARTS_INFORMAL); logg("PARTS_INFORMAL"); REJECT; }
-<PARTS_INFORMAL>[^\.;]+ { yylval.name = strdup(yytext); cout << "PART INFORMAL: '" << yytext << "'\n"; BEGIN(RHS_PARTS); return INFORMAL; }
+<RHS_PARTS>(include|produce)s?{SPACE}: { rqdql::log(rqdql::debug, "PARTS INCLUDE"); return INCLUDES; }
+<RHS_PARTS>":" { BEGIN(PARTS_INFORMAL); rqdql::log(rqdql::debug, "PARTS_INFORMAL"); REJECT; }
+<PARTS_INFORMAL>[^\.;]+ {
+    yylval.name = strdup(yytext); 
+    rqdql::log(rqdql::debug, "PART INFORMAL: '%s'", yytext);
+    BEGIN(RHS_PARTS);
+    return INFORMAL;
+}
 
     /* get back to initial context */
-"." { BEGIN(INITIAL); logg("DOT, INITIAL"); return DOT; }
+"." { BEGIN(INITIAL); rqdql::log(rqdql::debug, "DOT, INITIAL"); return DOT; }
 
     /* find entities */
-{FUR} { yylval.name = strdup(yytext); cout << "FUR: " << yytext << endl; return FUR; }
-{ACTOR} { yylval.name = strdup(yytext); cout << "ACTOR: " << yytext << endl; return ACTOR; }
-{CAMEL} { yylval.name = strdup(yytext); cout << "ENTITY: " << yytext << endl; return ENTITY; }
+{FUR} { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "FUR: '%s'", yytext); return FUR; }
+{ACTOR} { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "ACTOR: '%s'", yytext); return ACTOR; }
+{CAMEL} { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "ENTITY: '%s'", yytext); return ENTITY; }
 
-    /*
-{ACTOR} { yylval.name = strdup(yytext); oldState = YY_START; BEGIN(SINGULAR); cout << "actor: " << oldState << endl; return ACTOR; }
-{CAMEL} { yylval.name = strdup(yytext); oldState = YY_START; BEGIN(SINGULAR); cout << "actor: " << oldState << endl; return ENTITY; }
-<SINGULAR>"-s" { BEGIN(oldState); return PLURAL_MANY; }
-<SINGULAR>"(s)" { BEGIN(oldState); return PLURAL_SOME; }
-<SINGULAR>"?" { BEGIN (oldState); return PLURAL_ANY; }
-<SINGULAR>. { BEGIN(oldState); cout << "stop SINGULAR with '" << yytext << "', state back to " << oldState << "\n"; REJECT; }
-    */
 <RHS_PARTS>"-s" |
-<RHS_ACTIONS>"-s" { logg("PLURAL_MANY"); return PLURAL_MANY; }
+<RHS_ACTIONS>"-s" { rqdql::log(rqdql::debug, "PLURAL_MANY"); return PLURAL_MANY; }
 <RHS_PARTS>"(s)" |
-<RHS_ACTIONS>"(s)" { logg("PLURAL_SOME"); return PLURAL_SOME; }
+<RHS_ACTIONS>"(s)" { rqdql::log(rqdql::debug, "PLURAL_SOME"); return PLURAL_SOME; }
 <RHS_ACTIONS>"?" |
-<RHS_PARTS>"?" { logg("PLURAL_ANY"); return PLURAL_ANY; }
+<RHS_PARTS>"?" { rqdql::log(rqdql::debug, "PLURAL_ANY"); return PLURAL_ANY; }
     
 "/" |
-"or" { logg("OR"); return OR; }
-":" { logg("COLON"); return COLON; }
-";" { logg("SEMICOLON"); return SEMICOLON; }
-"," { logg("COMMA"); return COMMA; }
+"or" { rqdql::log(rqdql::debug, "OR"); return OR; }
+":" { rqdql::log(rqdql::debug, "COLON"); return COLON; }
+";" { rqdql::log(rqdql::debug, "SEMICOLON"); return SEMICOLON; }
+"," { rqdql::log(rqdql::debug, "COMMA"); return COMMA; }
 "(" { return OPEN_BRACE; }
 ")" { return CLOSE_BRACE; }
-"can" { logg("CAN"); return CAN; }
-"and" { logg("AND"); return AND; }
-"of" { logg("OF"); return OF; }
-"if"|"only" { return IF; }
+"can" { rqdql::log(rqdql::debug, "CAN"); return CAN; }
+"and" { rqdql::log(rqdql::debug, "AND"); return AND; }
+"of" { rqdql::log(rqdql::debug, "OF"); return OF; }
+"if" | 
+"only" { return IF; }
 "using" { return USING; }
-"himself"|"them"|"it"|"itself" { return THIS; }
+"himself" | 
+"them" | 
+"it" | 
+"itself" { return THIS; }
 
-[a-z]+ { yylval.name = strdup(yytext); cout << "WORD: " << yytext << "\n"; return WORD; }
-{ACRONYM} { yylval.name = strdup(yytext); cout << "ACRONYM: " << yytext << "\n"; return ACRONYM; }
+[a-z]+ { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "WORD: '%s'", yytext); return WORD; }
+{ACRONYM} { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "ACRONYM: '%s'", yytext); return ACRONYM; }
 
 {SPACE} { /* ignore spaces */ }
 \n { yycolumn = 1; }
