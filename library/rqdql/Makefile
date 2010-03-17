@@ -25,12 +25,14 @@ EXEC = ./rqdql
 TESTS = test/ScopeTest.o
 EXAMPLES = examples/valid/ex-2.txt
 
-rqdql: $(EXEC).l $(EXEC).y $(OBJS) Makefile $(EXAMPLES)
-	$(BISON) --no-lines --debug --graph --report=all --verbose -d $@.y
-	$(FLEX) $@.l
+rqdql: $(EXEC).l $(EXEC).y bison $(OBJS) Makefile $(EXAMPLES)
 	$(CPP) $(CPPFLAGS) -o $@ $@.tab.c lex.yy.c $(OBJS)
 	$(EXEC) "list" < examples/valid/ex-2.txt
     
+bison:
+	$(BISON) --no-lines --debug --graph --report=all --verbose -d $@.y
+	$(FLEX) $@.l
+
 %.o: %.cpp $(HEADERS)
 	$(CPP) $(CPPFLAGS) -o $@ -c $<
 
