@@ -52,6 +52,11 @@ public:
     } LogLevel;
     
     /**
+     * Messages with this level we will log
+     */
+    static const int verboseLevel = error;
+    
+    /**
      * More convenient way to manage strings, mostly used inside YACC code
      *
      * @param Mask to be passed to C-func sprintf()

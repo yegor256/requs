@@ -78,7 +78,7 @@ DottedStatement:
     Statement DOT;
 
 Statement:
-    FurStatement { cout << "FUR statement processed\n"; } |
+    FurStatement { rqdql::log(rqdql::info, "FUR statement processed"); } |
     EntityStatement |
     error { lyyerror(@1, "statement expected but missed"); };
 
