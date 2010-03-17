@@ -17,6 +17,7 @@
  */
 
 #include "rqdql.h"
+#include <stdarg.h>
 
 /**
  * To make sprintf() work simply, as in PHP
