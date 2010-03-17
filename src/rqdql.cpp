@@ -55,10 +55,12 @@ void rqdql::log(LogLevel level, const char* mask, ...)
             label = "ERR";
             break;
     }
-    va_list args;
-    va_start(args, mask);
-    cout << '[' << label << "] ";
-    vprintf(mask, args);
-    cout << endl;
+    if (level >= rqdql::verboseLevel) {
+        va_list args;
+        va_start(args, mask);
+        cout << '[' << label << "] ";
+        vprintf(mask, args);
+        cout << endl;
+    }
 }
 
