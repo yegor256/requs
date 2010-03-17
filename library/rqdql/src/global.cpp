@@ -17,7 +17,7 @@
  */
 
 #include "rqdql.h"
-#include "rqdql.h"
+#include <stdarg.h>
 
 /**
  * Called when error is found in parser
