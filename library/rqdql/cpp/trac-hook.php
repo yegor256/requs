@@ -48,6 +48,7 @@ foreach ($pages as $page) {
         $stream[] = $lns;
     }
 }
+$thisPage = array_shift($pages);
 
 $proc = proc_open(
     $rqdql,
@@ -69,12 +70,13 @@ foreach ($errors as $error) {
     $matches = array();
     if (preg_match('/^\[(?:ERR|WARN)\]\s(\d+)\.(\d+)\s(.*)$/', $error, $matches)) {
         $lineNo = intval($matches[1]);
+        if ($lineNo > count($thisPage)) {
+            break;
+        }
         if (!isset($messages[$lineNo])) {
             $messages[$lineNo] = '';
         }
         $messages[$lineNo] .= ($messages[$lineNo] ? '; ' : false) . $matches[3];
-    } else {
-        echo $error;
     }
 }
 
