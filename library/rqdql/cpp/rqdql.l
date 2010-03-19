@@ -41,7 +41,7 @@ FUR (R{NSFX})
 ACRONYM ([A-Z]+(\+[A-Z]+)?)
 TBD (TBD\(.*?\))
 SEE (see|See)
-ATTRIBS (\[\w+(,\s*\w+)*\])
+ATTRIBS (\[[a-z0-9]+(,[ ]*[a-z0-9]+)*\])
 
     /* singular after entity or actor */
 %x SINGULAR
