@@ -30,6 +30,7 @@ foreach ($pages as $name=>&$lines) {
             '/^\s+\*(.*)$/' => '${1}', // skip spaces before LIST ITEMS
             '/^\s*(.*)\s*$/' => '${1}', // remove leading and trailing spaces
             '/^\s*=+\s+.*?\s+=+\s*$/' => '', // kill headers
+            '/\[\[.*?\]\]/' => '', // kill meta-includers of Trac
         );
         $line = preg_replace(
             array_keys($replacers),
