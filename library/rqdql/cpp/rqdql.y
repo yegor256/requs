@@ -42,6 +42,7 @@
 %token <name> ENTITY
 %token <name> FUR
 %token <name> ACTOR
+%token <name> UC
 %token <name> WORD
 %token <name> ACRONYM 
 %token <name> TBD
@@ -204,6 +205,7 @@ entities:
     
 entity: 
     FUR |
+    UC |
     subject 
     ;
 
