@@ -25,7 +25,10 @@ EXEC = ./rqdql
 TESTS = test/ScopeTest.o
 EXAMPLES = examples/valid/ex-2.txt
 
-all: rqdql hook
+all: up rqdql hook
+
+up:
+	svn up --username yegor256@yahoo.com --password aF41Atlz .
 
 rqdql: $(EXEC).l $(EXEC).y bison $(OBJS) Makefile $(EXAMPLES)
 	$(CPP) $(CPPFLAGS) -o $@ $@.tab.c lex.yy.c $(OBJS)

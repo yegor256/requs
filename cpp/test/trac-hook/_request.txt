@@ -28,6 +28,6 @@ ActorUser
 
 ActorUser: is a human being. 
 
-ActorUser includes !!!error!!!:
+ActorUser includes !!!error!!! :
 
     * email: string.
