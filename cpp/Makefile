@@ -38,6 +38,7 @@ bison:
 
 clean:
 	rm -f lex.yy.c $(EXEC).tab.c $(EXEC).tab.h
+	rm -f rqdql.output
 	rm -f $(OBJS)
 	rm -f $(EXEC)
 
