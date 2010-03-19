@@ -3,4 +3,4 @@
 # @version $Id$
 #
 
-php ./trac-hook.php < /dev/stdin
+/usr/local/bin/php ./trac-hook.php < /dev/stdin
