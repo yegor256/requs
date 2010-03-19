@@ -38,7 +38,8 @@ CAMEL ({CAMEL_PART}({CAMEL_PART})+)
 ACTOR (Actor({CAMEL_PART})+|SUD)
 FUR (R{NSFX})
 ACRONYM ([A-Z]+(\+[A-Z]+)?)
-TBD (TBD\s+for\+\#\d+)
+TBD (TBD\(.*?\))
+SEE (see|See)
 
     /* singular after entity or actor */
 %x SINGULAR
@@ -60,6 +61,7 @@ TBD (TBD\s+for\+\#\d+)
     /* who is on the left side of the statement? */
 <INITIAL>{FUR} { BEGIN(LHS_FUR); rqdql::log(rqdql::debug, "LHS_FUR"); REJECT; }
 <INITIAL>{CAMEL} { BEGIN(LHS_ENTITY); rqdql::log(rqdql::debug, "LHS_ENTITY"); REJECT; }
+<INITIAL>{SEE} { rqdql::log(rqdql::debug, "SEE"); return SEE; }
 
     /* LHS modifiers */
 <LHS_ENTITY>is{SPACE}a: { BEGIN(RHS_INHERITANCE); rqdql::log(rqdql::debug, "RHS_INHERITANCE"); return IS_A; }
