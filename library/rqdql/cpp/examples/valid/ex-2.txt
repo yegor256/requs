@@ -8,7 +8,7 @@ ActorUser includes: name; email: string as of RFCs; password.
 ActorVisitor produces: visits: HTTP requests; visits produces: IP address; time.
 
 R1: ActorUser can manage files of ContentPage.
-R4: ActorUser can print, list, and create ContentPage-s.
+R4[out]: ActorUser can print, list, and create ContentPage-s.
     R1.1: ActorVisitor can list, read, print ContentPage-s
         (only public properties of them;
         if visibility of them allow).

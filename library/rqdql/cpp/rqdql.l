@@ -41,6 +41,7 @@ FUR (R{NSFX})
 ACRONYM ([A-Z]+(\+[A-Z]+)?)
 TBD (TBD\(.*?\))
 SEE (see|See)
+ATTRIBS (\[\w+(,\s*\w+)*\])
 
     /* singular after entity or actor */
 %x SINGULAR
@@ -68,6 +69,7 @@ SEE (see|See)
 <LHS_ENTITY>is{SPACE}a: { BEGIN(RHS_INHERITANCE); rqdql::log(rqdql::debug, "RHS_INHERITANCE"); return IS_A; }
 <LHS_ENTITY>includes?{SPACE}?: { BEGIN(RHS_PARTS); rqdql::log(rqdql::debug, "INCLUDES, RHS_PARTS"); return INCLUDES; }
 <LHS_ENTITY>produces?{SPACE}?: { BEGIN(RHS_PARTS); rqdql::log(rqdql::debug, "PRODUCES, RHS_PARTS"); return PRODUCES; }
+<LHS_FUR>{ATTRIBS} { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "ATTRIBS: %s", yytext); return ATTRIBS; }
 <LHS_FUR>":" { BEGIN(RHS_ACTIONS); rqdql::log(rqdql::debug, "RHS_ACTIONS"); REJECT; }
 <LHS_ENTITY>":" { BEGIN(RHS_INFORMAL); rqdql::log(rqdql::debug, "RHS_INFORMAL"); REJECT; }
 
