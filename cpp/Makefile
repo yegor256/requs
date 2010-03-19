@@ -14,6 +14,7 @@
 # @copyright Copyright (c) rqdql.com, 2010
 # @version $Id$
 
+PATH := $(PATH):/usr/local/bin:/usr/bin
 CPP = c++
 BISON = bison
 FLEX = flex
@@ -53,6 +54,6 @@ test: test/rqdql-test.cpp $(TESTS)
 deploy:
 	ftp -u ftp://rqdql_deploy%40caybo.ru:uf8Klp7Y2Et4@rqdql.com/public/rqdql.html ../rqdql.com/rqdql.html
 	
-hook: rqdql test/trac-hook/TracHookTest.php trac-hook.php trac-hook.sh
+hook: rqdql trac-hook.php trac-hook.sh
 	./trac-hook.sh < test/trac-hook/_request.txt
 	
