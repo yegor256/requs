@@ -30,11 +30,11 @@ all: up rqdql hook
 up:
 	svn up --username yegor256@yahoo.com --password aF41Atlz .
 
-rqdql: $(EXEC).l $(EXEC).y bison $(OBJS) Makefile $(EXAMPLES)
+rqdql: bison $(OBJS) Makefile $(EXAMPLES)
 	$(CPP) $(CPPFLAGS) -o $@ $@.tab.c lex.yy.c $(OBJS)
 	$(EXEC) "list" < examples/valid/ex-2.txt
     
-bison:
+bison: lex.yy.c rqdql.tab.c rqdql.tab.h
 	$(BISON) --no-lines --report=all -d rqdql.y
 	$(FLEX) rqdql.l
 
@@ -53,6 +53,6 @@ test: test/rqdql-test.cpp $(TESTS)
 deploy:
 	ftp -u ftp://rqdql_deploy%40caybo.ru:uf8Klp7Y2Et4@rqdql.com/public/rqdql.html ../rqdql.com/rqdql.html
 	
-hook:
+hook: rqdql test/trac-hook/TracHookTest.php trac-hook.php trac-hook.sh
 	php test/trac-hook/TracHookTest.php
 	
