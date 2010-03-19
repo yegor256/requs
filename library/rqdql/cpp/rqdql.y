@@ -47,6 +47,7 @@
 %token <name> TBD
 
 %token COLON SEMICOLON DOT COMMA
+%token SEE
 %token AND OR
 %token CAN
 %token IF
@@ -80,7 +81,8 @@ DottedStatement:
 
 Statement:
     FurStatement { rqdql::log(rqdql::info, "FUR statement processed"); } |
-    EntityStatement { rqdql::log(rqdql::info, "entity statement processed"); } 
+    EntityStatement { rqdql::log(rqdql::info, "entity statement processed"); } | 
+    SeeStatement 
     ;
 
 FurStatement:
@@ -104,9 +106,7 @@ action:
     
 verbs:
     verb |
-    verbs COMMA verb { $$ = rqdql::sprintf("%s, %s", $1, $3); } |
-    verbs AND verb { $$ = rqdql::sprintf("%s and %s", $1, $3); }  |
-    verbs COMMA AND verb { $$ = rqdql::sprintf("%s, and %s", $1, $4); }
+    verbs separator verb { $$ = rqdql::sprintf("%s, %s", $1, $3); }
     ;
     
 verb:
@@ -117,9 +117,13 @@ verb:
     
 subjects:
     subject |
-    subjects COMMA subject |
-    subjects AND subject |
-    subjects COMMA AND subject
+    subjects separator subject
+    ;
+    
+separator:
+    COMMA |
+    AND |
+    COMMA AND
     ;
     
 subject:
@@ -188,6 +192,21 @@ part:
     attribute INCLUDES parts 
     ;
     
+/* See: R4.4, ActorUser, ... */
+SeeStatement:
+    SEE COLON entities
+    ;
+    
+entities:
+    entity |
+    entities separator entity
+    ;
+    
+entity: 
+    FUR |
+    subject 
+    ;
+
 %%
 
 // see global.cpp

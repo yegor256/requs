@@ -3,6 +3,7 @@ ActorUser: a human being with identity.
 ActorVisitor: originator of HTTP request.
 ActorUser is a: ActorVisitor.
 ActorManager is a: ActorUser.
+ActorAmazon: TBD(#45).
 ActorUser includes: name; email: string as of RFCs; password.
 ActorVisitor produces: visits: HTTP requests; visits produces: IP address; time.
 
@@ -21,3 +22,4 @@ R4: ActorUser can print, list, and create ContentPage-s.
     R1.6: ActorManager can CRUL+P InvestmentProject-s.
     R1.7: ActorManager can list, approve applications of ActorUser-s.
     
+See: R4.1, ActorUser, R3.3.
