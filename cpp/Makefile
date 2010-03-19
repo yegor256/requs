@@ -25,6 +25,8 @@ EXEC = ./rqdql
 TESTS = test/ScopeTest.o
 EXAMPLES = examples/valid/ex-2.txt
 
+all: rqdql hook
+
 rqdql: $(EXEC).l $(EXEC).y bison $(OBJS) Makefile $(EXAMPLES)
 	$(CPP) $(CPPFLAGS) -o $@ $@.tab.c lex.yy.c $(OBJS)
 	$(EXEC) "list" < examples/valid/ex-2.txt
@@ -47,4 +49,7 @@ test: test/rqdql-test.cpp $(TESTS)
 	
 deploy:
 	ftp -u ftp://rqdql_deploy%40caybo.ru:uf8Klp7Y2Et4@rqdql.com/public/rqdql.html ../rqdql.com/rqdql.html
+	
+hook:
+	php test/trac-hook/TracHookTest.php
 	
