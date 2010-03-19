@@ -3,4 +3,4 @@
 # @version $Id$
 #
 
-/usr/local/bin/php ./trac-hook.php < /dev/stdin
+/usr/local/bin/php /home/technoparkcorp/rqdql/trac-hook.php < /dev/stdin
