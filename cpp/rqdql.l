@@ -38,6 +38,7 @@ CAMEL ({CAMEL_PART}({CAMEL_PART})+)
 ACTOR (Actor({CAMEL_PART})+|SUD)
 UC (UC{NSFX})
 FUR (R{NSFX})
+QOS (QOS{NSFX})
 ACRONYM ([A-Z]+(\+[A-Z]+)?)
 TBD (TBD\(.*?\))
 SEE (see|See)
@@ -48,7 +49,7 @@ ATTRIBS (\[[a-z0-9]+(,[ ]*[a-z0-9]+)*\])
 
     /* who is on the left side of the statement? */
     /* it's important to have in REGULAR state, not EXCLUSIVE */
-%s LHS_FUR LHS_ENTITY
+%s LHS_FUR LHS_ENTITY LHS_QOS
 
     /* what we should expect on the right side? */
 %s RHS_INHERITANCE RHS_PARTS RHS_ACTIONS RHS_INFORMAL
@@ -62,6 +63,7 @@ ATTRIBS (\[[a-z0-9]+(,[ ]*[a-z0-9]+)*\])
 
     /* who is on the left side of the statement? */
 <INITIAL>{FUR} { BEGIN(LHS_FUR); rqdql::log(rqdql::debug, "LHS_FUR"); REJECT; }
+<INITIAL>{QOS} { BEGIN(LHS_QOS); rqdql::log(rqdql::debug, "LHS_QOS"); REJECT; }
 <INITIAL>{CAMEL} { BEGIN(LHS_ENTITY); rqdql::log(rqdql::debug, "LHS_ENTITY"); REJECT; }
 <INITIAL>{SEE} { rqdql::log(rqdql::debug, "SEE"); return SEE; }
 
@@ -72,6 +74,7 @@ ATTRIBS (\[[a-z0-9]+(,[ ]*[a-z0-9]+)*\])
 <LHS_FUR>{ATTRIBS} { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "ATTRIBS: %s", yytext); return ATTRIBS; }
 <LHS_FUR>":" { BEGIN(RHS_ACTIONS); rqdql::log(rqdql::debug, "RHS_ACTIONS"); REJECT; }
 <LHS_ENTITY>":" { BEGIN(RHS_INFORMAL); rqdql::log(rqdql::debug, "RHS_INFORMAL"); REJECT; }
+<LHS_QOS>":" { BEGIN(RHS_INFORMAL); rqdql::log(rqdql::debug, "RHS_INFORMAL"); REJECT; }
 
     /* informal text on the right part of entity */
 <RHS_INFORMAL>[^\.]+ { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "INFORMAL"); return INFORMAL; }
@@ -92,6 +95,7 @@ ATTRIBS (\[[a-z0-9]+(,[ ]*[a-z0-9]+)*\])
     /* find entities */
 {FUR} { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "FUR: '%s'", yytext); return FUR; }
 {ACTOR} { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "ACTOR: '%s'", yytext); return ACTOR; }
+{QOS} { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "QOS: '%s'", yytext); return QOS; }
 {UC} { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "UC: '%s'", yytext); return UC; }
 {CAMEL} { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "ENTITY: '%s'", yytext); return ENTITY; }
 

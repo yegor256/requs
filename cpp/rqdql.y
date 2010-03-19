@@ -41,6 +41,7 @@
 %token <name> INFORMAL
 %token <name> ENTITY
 %token <name> FUR
+%token <name> QOS
 %token <name> ACTOR
 %token <name> UC
 %token <name> WORD
@@ -84,6 +85,7 @@ DottedStatement:
 Statement:
     FurStatement { rqdql::log(rqdql::info, "FUR statement processed"); } |
     EntityStatement { rqdql::log(rqdql::info, "entity statement processed"); } | 
+    QosStatement { rqdql::log(rqdql::info, "QOS statement processed"); } | 
     SeeStatement 
     ;
 
@@ -199,7 +201,12 @@ part:
     attribute COLON INFORMAL |
     attribute INCLUDES parts 
     ;
-    
+
+/* QOS3.3: some text. */    
+QosStatement:
+    QOS COLON INFORMAL
+    ;
+
 /* See: R4.4, ActorUser, ... */
 SeeStatement:
     SEE COLON entities
