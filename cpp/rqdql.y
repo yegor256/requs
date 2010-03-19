@@ -46,6 +46,7 @@
 %token <name> WORD
 %token <name> ACRONYM 
 %token <name> TBD
+%token <name> ATTRIBS
 
 %token COLON SEMICOLON DOT COMMA
 %token SEE
@@ -87,10 +88,16 @@ Statement:
     ;
 
 FurStatement:
-    FUR COLON actions |
-    FUR COLON TBD |
-    FUR error { lyyerror(@2, "colon expected after '%s'", $1); } |
-    FUR COLON error { lyyerror(@3, "actions expected after '%s:'", $1); } 
+    lfur COLON actions |
+    lfur COLON TBD |
+    lfur error { lyyerror(@2, "colon expected after '%s'", $1); } |
+    lfur COLON error { lyyerror(@3, "actions expected after '%s:'", $1); } 
+    ;
+    
+/* left FUR */
+lfur:
+    FUR |
+    FUR ATTRIBS
     ;
     
 actions:
