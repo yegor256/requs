@@ -90,8 +90,8 @@ Statement:
 FurStatement:
     lfur COLON actions |
     lfur COLON TBD |
-    lfur error { lyyerror(@2, "colon expected after '%s'", $1); } |
-    lfur COLON error { lyyerror(@3, "actions expected after '%s:'", $1); } 
+    lfur error { lyyerror(@2, "colon expected after FUR"); } |
+    lfur COLON error { lyyerror(@3, "actions expected after 'FUR:'"); } 
     ;
     
 /* left FUR */
