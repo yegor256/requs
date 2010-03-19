@@ -36,6 +36,7 @@ NSFX ([1-9]+(\.[1-9]+)?)
 CAMEL_PART ([A-Z][a-z]+)
 CAMEL ({CAMEL_PART}({CAMEL_PART})+)
 ACTOR (Actor({CAMEL_PART})+|SUD)
+UC (UC{NSFX})
 FUR (R{NSFX})
 ACRONYM ([A-Z]+(\+[A-Z]+)?)
 TBD (TBD\(.*?\))
@@ -89,6 +90,7 @@ SEE (see|See)
     /* find entities */
 {FUR} { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "FUR: '%s'", yytext); return FUR; }
 {ACTOR} { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "ACTOR: '%s'", yytext); return ACTOR; }
+{UC} { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "UC: '%s'", yytext); return UC; }
 {CAMEL} { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "ENTITY: '%s'", yytext); return ENTITY; }
 
 <RHS_PARTS>"-s" |
