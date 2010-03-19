@@ -45,5 +45,5 @@ test: test/rqdql-test.cpp $(TESTS)
 	$(EXEC) "list" < examples/valid/ex-2.txt
 	
 deploy:
-	ftp -u ftp://rqdql_deploy%40caybo.ru:uf8Klp7Y2Et4@rqdql.com/public/rqdql.html rqdql.com/rqdql.html
+	ftp -u ftp://rqdql_deploy%40caybo.ru:uf8Klp7Y2Et4@rqdql.com/public/rqdql.html ../rqdql.com/rqdql.html
 	
