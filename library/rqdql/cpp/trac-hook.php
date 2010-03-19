@@ -20,6 +20,7 @@ for ($i=1; $i<count($lines); $i++) {
     $i += 2 + $linesNo;
 }
 
+$thisPage = false;
 foreach ($pages as $name=>&$lines) {
     $outOfScope = true;
     foreach ($lines as &$line) {
@@ -39,7 +40,14 @@ foreach ($pages as $name=>&$lines) {
         );
     }
     if ($outOfScope) {
+        if (!$thisPage) {
+            // this page is out of scope
+            exit(0);
+        }
         unset($pages[$name]);
+    }
+    if (!$thisPage) {
+        $thisPage = $pages[$name];
     }
 }
 
@@ -49,8 +57,8 @@ foreach ($pages as $page) {
         $stream[] = $lns;
     }
 }
-$thisPage = array_shift($pages);
 
+$pipes = array();
 $proc = proc_open(
     $rqdql,
     array(
