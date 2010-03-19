@@ -30,7 +30,7 @@ rqdql: $(EXEC).l $(EXEC).y bison $(OBJS) Makefile $(EXAMPLES)
 	$(EXEC) "list" < examples/valid/ex-2.txt
     
 bison:
-	$(BISON) --no-lines --debug --graph --report=all --verbose -d rqdql.y
+	$(BISON) --no-lines --report=all -d rqdql.y
 	$(FLEX) rqdql.l
 
 %.o: %.cpp $(HEADERS)
