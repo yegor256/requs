@@ -5,7 +5,7 @@ WikiStart
 
 R1: ActorUser can CRUDL account of himself.
 
-ActorUser is a: ActorVisitor !!this is error to be found!!.
+ActorUser is a: ActorVisitor.
 
 WikiNewPage
 12
