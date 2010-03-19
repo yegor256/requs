@@ -38,6 +38,7 @@ CAMEL ({CAMEL_PART}({CAMEL_PART})+)
 ACTOR (Actor({CAMEL_PART})+|SUD)
 FUR (R{NSFX})
 ACRONYM ([A-Z]+(\+[A-Z]+)?)
+TBD (TBD\s+for\+\#\d+)
 
     /* singular after entity or actor */
 %x SINGULAR
@@ -115,6 +116,7 @@ ACRONYM ([A-Z]+(\+[A-Z]+)?)
 
 [a-z]+ { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "WORD: '%s'", yytext); return WORD; }
 {ACRONYM} { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "ACRONYM: '%s'", yytext); return ACRONYM; }
+{TBD} { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "TBD: '%s'", yytext); return TBD; }
 
 {SPACE} { /* ignore spaces */ }
 \n { yycolumn = 1; }

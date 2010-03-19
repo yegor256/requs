@@ -44,6 +44,7 @@
 %token <name> ACTOR
 %token <name> WORD
 %token <name> ACRONYM 
+%token <name> TBD
 
 %token COLON SEMICOLON DOT COMMA
 %token AND OR
@@ -79,11 +80,12 @@ DottedStatement:
 
 Statement:
     FurStatement { rqdql::log(rqdql::info, "FUR statement processed"); } |
-    EntityStatement |
-    error { lyyerror(@1, "statement expected but missed"); };
+    EntityStatement { rqdql::log(rqdql::info, "entity statement processed"); } 
+    ;
 
 FurStatement:
     FUR COLON actions |
+    FUR COLON TBD |
     FUR error { lyyerror(@2, "colon expected after '%s'", $1); } |
     FUR COLON error { lyyerror(@3, "actions expected after '%s:'", $1); } 
     ;
