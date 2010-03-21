@@ -102,6 +102,7 @@ $result = proc_close($proc);
 file_put_contents(
     $dir . '/response.txt',
     "CLI: {$rqdql}\n" .
+    "STDIN: " . substr(implode(' ', $stream), 0, 200) . "...\n" .
     "RETURN: {$result}\n" .
     'OUT (' . strlen($out) . "):\n{$out}"
 );
