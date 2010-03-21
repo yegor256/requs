@@ -111,15 +111,15 @@ try {
     );
 
     // group all lines into one single stream
-    $stream = array();
+    $rqdqlStream = array();
     foreach ($scopePages as $page) {
         foreach ($page as $lns) {
-            $stream[] = $lns;
+            $rqdqlStream[] = $lns;
         }
     }
 
     logg(
-        'TO RQDQL: ' . nice(implode(' ', $stream)) . "\n"
+        'TO RQDQL: ' . nice(implode(' ', $rqdqlStream)) . "\n"
     );
 
     // execute RQDQL
@@ -136,15 +136,15 @@ try {
     if (!is_resource($proc)) {
         throw new Exception('failed to start RQDQL');
     }
-    fwrite($pipes[0], implode("\n", $stream));
+    fwrite($pipes[0], implode("\n", $rqdqlStream));
     fclose($pipes[0]);
     $out = stream_get_contents($pipes[1]);
     fclose($pipes[1]);
     $result = proc_close($proc);
 
     logg(
-        'STREAM: ' . nice(implode(' ', $stream)) . "\n" .
-        'STREAM LINES: ' . count($stream) . "\n" . 
+        'STREAM: ' . nice(implode(' ', $rqdqlStream)) . "\n" .
+        'STREAM LINES: ' . count($rqdqlStream) . "\n" . 
         "RETURN: {$result}\n" .
         'RQDQL OUT: '  . nice($out) . "\n"
     );
@@ -176,7 +176,7 @@ try {
         echo sprintf(
             "line %d: (%s) %s\n",
             $lineNo,
-            $stream[$lineNo-1],
+            $rqdqlStream[$lineNo-1],
             $message
         );
     }
