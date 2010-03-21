@@ -15,13 +15,35 @@ $content = file_get_contents('php://stdin');
 // just to log it
 file_put_contents($dir . '/request.txt', $content);
 
+// log there all our operations
+global $log;
+$log = fopen($dir . '/response.txt', 'w');
+
+function logg($message)
+{
+    global $log;
+    fprintf($log, $message);
+}
+
+logg(
+    "REVISION: {$revision}\n" .
+    "TIME: " . date('d/m/y h:i:s') . "\n" .
+    "CLI: {$rqdql}\n"
+);
+
 // start collecting all error messages
 ob_start();
 
 try {
     $lines = explode("\n", $content);
     $comment = $lines[0];
-
+    
+    logg(
+        "CONTENT: " . strlen($content) . " bytes): '" . 
+        wordwrap(substr($content, 0, 400), 100, "\n\t") . "...'\n" .
+        "COMMENT: {$comment}\n"
+    );
+        
     // empty comment shall be disallowed. every comment
     // shall contain a link to the ticket, which motivated the change
     // we don't EXIT here, since the output sent will notify
@@ -77,6 +99,12 @@ try {
         }
     }
 
+    logg(
+        "THIS PAGE NAME: {$thisPage}\n" .
+        "PAGES TOTAL: " . count($pages) . "\n" .
+        "SCOPE PAGES TOTAL: " . count($scopePages) . "\n"
+    );
+
     // group all lines into one single stream
     $stream = array();
     foreach ($scopePages as $page) {
@@ -104,6 +132,13 @@ try {
     $out = stream_get_contents($pipes[1]);
     fclose($pipes[1]);
     $result = proc_close($proc);
+
+    logg(
+        "STDIN (" . strlen(implode(' ', $stream)) . ' bytes, ' . count($stream) . " lines): '" . 
+        wordwrap(substr(implode(' ', $stream), 0, 400), 100, "\n\t") . "...'\n" .
+        "RETURN: {$result}\n" .
+        'RQDQL OUT (' . strlen($out) . " bytes): \n{$out}\n"
+    );
 
     // convert all errors found in RQDQL into defects for Trac
     $errors = explode("\n", $out);
@@ -141,23 +176,11 @@ try {
 // get all lines outputed above
 $output = ob_get_clean();
 
-// just to log it
-file_put_contents(
-    $dir . '/response.txt',
-    "REVISION: {$revision}\n" .
-    "TIME: " . date('d/m/y h:i:s') . "\n" .
-    "CLI: {$rqdql}\n" .
-    "THIS PAGE NAME: {$thisPage}\n" .
-    "PAGES TOTAL: " . count($pages) . "\n" .
-    "SCOPE PAGES TOTAL: " . count($scopePages) . "\n" .
-    "CONTENT: " . strlen($content) . " bytes): '" . 
-    wordwrap(substr($content, 0, 400), 100, "\n\t") . "...'\n" .
-    "STDIN (" . strlen(implode(' ', $stream)) . ' bytes, ' . count($stream) . " lines): '" . 
-    wordwrap(substr(implode(' ', $stream), 0, 400), 100, "\n\t") . "...'\n" .
-    "RETURN: {$result}\n" .
-    'RQDQL OUT (' . strlen($out) . " bytes): \n{$out}\n" .
+logg(
     'MESSAGE TO TRAC (' . strlen($output) . ") bytes: '" . substr($output, 0, 300) . "'"
 );
+
+fclose($log);
 
 if ($output) {
     echo "RqdqlPlugin: rev{$revision}\n";
