@@ -62,7 +62,11 @@ try {
     for ($i=1; $i<count($lines); $i++) {
         $name = $lines[$i];
         $linesNo = intval($lines[$i+1]);
-        $pages[$lines[$i]] = array_slice($lines, $i+2, $linesNo);
+        
+        // to avoid duplication of content
+        if (!isset($pages[$name])) {
+            $pages[$name] = array_slice($lines, $i+2, $linesNo);
+        }
         $i += 2 + $linesNo;
     }
 
