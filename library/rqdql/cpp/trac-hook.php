@@ -3,6 +3,9 @@
  * @version $Id$
  */
 
+// the content of this string is changed by SVN because
+// of svn:keywords properties. don't try to change it manually
+// it is changed with every SVN UP command.
 $revision = intval(substr('$Rev$', 6));
 
 $dir = dirname(__FILE__);
