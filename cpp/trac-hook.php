@@ -139,9 +139,9 @@ try {
     $result = proc_close($proc);
 
     logg(
-        'STREAM: ' . nice(implode(' ', $stream)) . "\n " .
+        'STREAM: ' . nice(implode(' ', $stream)) . "\n" .
         'STREAM LINES: ' . count($stream) . "\n" . 
-        'RETURN: ' . nice($result) . "\n" .
+        "RETURN: {$result}\n" .
         'RQDQL OUT: '  . nice($out) . "\n"
     );
 
