@@ -107,7 +107,7 @@ if ($thisPage) {
         "THIS PAGE NAME: {$thisPage}\n" .
         "PAGES TOTAL: " . count($pages) . "\n" .
         "SCOPE PAGES TOTAL: " . count($scopePages) . "\n" .
-        "STDIN: " . substr(implode(' ', $stream), 0, 200) . "...\n" .
+        "STDIN: '" . wordwrap(substr(implode(' ', $stream), 0, 200)) . "...'\n" .
         "RETURN: {$result}\n" .
         'OUT (' . strlen($out) . "):\n{$out}"
     );
