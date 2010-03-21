@@ -118,6 +118,10 @@ try {
         }
     }
 
+    logg(
+        'TO RQDQL: ' . nice(implode(' ', $stream)) . "\n"
+    );
+
     // execute RQDQL
     $pipes = array();
     $proc = proc_open(
