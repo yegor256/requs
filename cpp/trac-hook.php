@@ -43,7 +43,7 @@ $thisPage = false;
 foreach ($pages as $name=>&$lines) {
     $outOfScope = true;
     foreach ($lines as &$line) {
-        if (preg_match('/^\s*=\s+SRS:.*?\s+=\s*$/', $line)) {
+        if (preg_match('/^\s*=\s+SRS:.*?\s+=\s*$/s', $line)) {
             $outOfScope = false;
         }
         $replacers = array(
