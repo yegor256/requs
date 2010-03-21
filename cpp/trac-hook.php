@@ -91,7 +91,12 @@ fclose($pipes[0]);
 $out = stream_get_contents($pipes[1]);
 $result = proc_close($proc);
 // just to log it
-file_put_contents($dir . '/response.txt', $out);
+file_put_contents(
+    $dir . '/response.txt',
+    "CLI: {$rqdql}\n" .
+    "RETURN: {$result}\n" .
+    'OUT (' . strlen($out) . "):\n{$out}"
+);
 
 $errors = explode("\n", $out);
 $messages = array();
