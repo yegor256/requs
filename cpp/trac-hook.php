@@ -25,7 +25,7 @@ $comment = $lines[0];
 // shall contain a link to the ticket, which motivated the change
 // we don't EXIT here, since the output sent will notify
 // Trac that there are some errors and the page won't be saved
-if (preg_match('/\#\d+/', $comment)) {
+if (!preg_match('/\#\d+/', $comment)) {
     echo "comment: your comment shall contain a link to a motivating ticket\n";
 }
 
