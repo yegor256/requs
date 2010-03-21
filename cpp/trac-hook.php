@@ -10,6 +10,9 @@ $content = file_get_contents('php://stdin');
 // just to log it
 file_put_contents($dir . '/request.txt', $content);
 
+// start collecting all error messages
+ob_start();
+
 $lines = explode("\n", $content);
 $comment = $lines[0];
 
@@ -18,7 +21,7 @@ $comment = $lines[0];
 // we don't EXIT here, since the output sent will notify
 // Trac that there are some errors and the page won't be saved
 if (preg_match('/\#\d+/', $comment)) {
-    echo "comment: your comment shall contain a link to a motivating ticket";
+    echo "comment: your comment shall contain a link to a motivating ticket\n";
 }
 
 $pages = array();
@@ -107,4 +110,12 @@ foreach ($messages as $lineNo=>$message) {
         $message
     );
 }
-exit(-1);
+
+$output = ob_get_clean();
+if ($output) {
+    echo 'RqdqlPlugin: $Rev$' . "\n";
+    echo $output;
+} else {
+    // everything is OK!
+    exit(0);
+}
