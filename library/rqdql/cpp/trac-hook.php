@@ -93,7 +93,7 @@ foreach ($errors as $error) {
 
 foreach ($messages as $lineNo=>$message) {
     echo sprintf(
-        "line %d (%s): %s\n",
+        "line %d: (%s) %s\n",
         $lineNo,
         $stream[$lineNo-1],
         $message
