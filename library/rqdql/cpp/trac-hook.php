@@ -47,10 +47,15 @@ foreach ($pages as $name=>&$lines) {
             $outOfScope = false;
         }
         $replacers = array(
-            '/^\s+\*(.*)$/' => '${1}', // skip spaces before LIST ITEMS
-            '/^\s*(.*)\s*$/' => '${1}', // remove leading and trailing spaces
+            '/^\s+\*(.*)$/'         => '${1}', // skip spaces before LIST ITEMS
+            '/^\s+\d+\.(.*)$/'      => '${1}', // skip spaces before ENUMERATE ITEMS
+            '/^\s*(.*)\s*$/'        => '${1}', // remove leading and trailing spaces
             '/^\s*=+\s+.*?\s+=+\s*$/' => '', // kill headers
-            '/\[\[.*?\]\]/' => '', // kill meta-includers of Trac
+            '/\[\[.*?\]\]/'         => '', // kill meta-includers of Trac
+            '/\[wiki:(.*?)\]/'      => '${1}', // convert wiki names to string
+            '/\[.*?\s(.*?)\]/'      => '${1}', // convert wiki links to strings
+            '/\[(.*?)\]/'           => '${1}', // convert wiki links to strings
+            '/\'{2,3}(.*?)\'{2,3}/' => '${1}', // convert bold and italic to normal text
         );
         $line = preg_replace(
             array_keys($replacers),
