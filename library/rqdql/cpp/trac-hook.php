@@ -99,6 +99,7 @@ if ($thisPage) {
     fwrite($pipes[0], implode("\n", $stream));
     fclose($pipes[0]);
     $out = stream_get_contents($pipes[1]);
+    fclose($pipes[1]);
     $result = proc_close($proc);
     // just to log it
     file_put_contents(
