@@ -8,7 +8,7 @@ $rqdql = $dir . '/rqdql';
 
 $content = file_get_contents('php://stdin');
 // just to log it
-file_put_contents('request.txt', $content);
+file_put_contents($dir . '/request.txt', $content);
 
 $lines = explode("\n", $content);
 $comment = $lines[0];
