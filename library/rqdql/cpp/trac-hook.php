@@ -86,8 +86,8 @@ try {
                 '/^\s*=+\s+.*?\s+=+\s*$/' => '', // kill headers
                 '/\[\[.*?\]\]/'         => '', // kill meta-includers of Trac
                 '/\[wiki:(.*?)\]/'      => '${1}', // convert wiki names to string
-                '/\[.*?\s(.*?)\]/'      => '${1}', // convert wiki links to strings
-                '/\[(.*?)\]/'           => '${1}', // convert wiki links to strings
+                '/\[http:\/\/.*?\s(.*?)\]/'      => '${1}', // convert wiki links to strings
+                '/\[(http:\/\/.*?)\]/'           => '${1}', // convert wiki links to strings
                 '/\'{2,3}(.*?)\'{2,3}/' => '${1}', // convert bold and italic to normal text
             );
             $line = preg_replace(
