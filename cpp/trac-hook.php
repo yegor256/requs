@@ -118,7 +118,7 @@ foreach ($messages as $lineNo=>$message) {
 
 $output = ob_get_clean();
 if ($output) {
-    echo "RqdqlPlugin: rev$revision\n";
+    echo "RqdqlPlugin: rev{$revision}\n";
     echo $output;
 } else {
     // everything is OK!
