@@ -29,8 +29,8 @@ if (!preg_match('/#\d+/', $comment)) {
     echo "comment: your comment shall contain a link to a motivating ticket\n";
 }
 
+// split input buffer into pages and lines
 $pages = array();
-
 for ($i=1; $i<count($lines); $i++) {
     $name = $lines[$i];
     $linesNo = intval($lines[$i+1]);
@@ -38,11 +38,12 @@ for ($i=1; $i<count($lines); $i++) {
     $i += 2 + $linesNo;
 }
 
+// filter-out lines/pages which are not related to scope
 $thisPage = false;
 foreach ($pages as $name=>&$lines) {
     $outOfScope = true;
     foreach ($lines as &$line) {
-        if (preg_match('/^\s*=\s+SRS:.*?=$\s*/', $line)) {
+        if (preg_match('/^\s*=\s+SRS:.*?\s+=\s*$/', $line)) {
             $outOfScope = false;
         }
         $replacers = array(
@@ -69,6 +70,7 @@ foreach ($pages as $name=>&$lines) {
     }
 }
 
+// group all lines into one single stream
 $stream = array();
 foreach ($pages as $page) {
     foreach ($page as $lns) {
@@ -76,6 +78,7 @@ foreach ($pages as $page) {
     }
 }
 
+// execute RQDQL
 $pipes = array();
 $proc = proc_open(
     $rqdql,
@@ -98,6 +101,7 @@ file_put_contents(
     'OUT (' . strlen($out) . "):\n{$out}"
 );
 
+// convert all errors found in RQDQL into defects for Trac
 $errors = explode("\n", $out);
 $messages = array();
 foreach ($errors as $error) {
@@ -114,6 +118,8 @@ foreach ($errors as $error) {
     }
 }
 
+// convert all found messages into Trac-friendly 
+// notifications (FIELD:MESSAGE)
 foreach ($messages as $lineNo=>$message) {
     echo sprintf(
         "line %d: (%s) %s\n",
