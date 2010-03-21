@@ -122,6 +122,7 @@ ATTRIBS (\[[a-z0-9]+(,[ ]*[a-z0-9]+)*\])
 "himself" | 
 "them" | 
 "it" | 
+"he" |
 "itself" { return THIS; }
 
 [a-z]+ { yylval.name = strdup(yytext); rqdql::log(rqdql::debug, "WORD: '%s'", yytext); return WORD; }

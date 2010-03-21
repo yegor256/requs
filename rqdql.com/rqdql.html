@@ -65,11 +65,11 @@
     
     <p class="code">
         ActorVisitor: an originator of HTTP request.<br/>
-        R3.3: ActorUser can view and delete photo-s of himself.<br/>
+        R3.3: ActorUser can view and delete photos of himself.<br/>
         ActorUser includes:<br/>
         &nbsp;&nbsp;name: unique name of the file;<br/>
         &nbsp;&nbsp;email: email address;<br/>
-        &nbsp;&nbsp;photo-s: binary files, in GIF, PNG or JPEG.
+        &nbsp;&nbsp;photos: binary files, in GIF, PNG or JPEG.
     </p>
     
     <p>Functional requirements explain how actors can communicate with the system,
@@ -145,13 +145,12 @@
         </tr>
         <tr>
             <td class="code">
-                R3.3: ActorUser can view photo-s of himself; ActorUser can delete photo-s of himself.
+                R3.3: ActorUser can view photos of himself; ActorUser can delete photos of himself.
             </td>
             <td class="code">
-                R3.3: ActorUser can <b>view and delete</b> photo-s of himself.<br/>
-                R3.3: ActorUser can <b>view, delete</b> photo-s of himself.<br/>
-                R3.3: ActorUser can view, delete <b>photo-s</b>.<br/>
-                R3.3: ActorUser can view<b>,</b> and delete photo-s of himself.<br/>
+                R3.3: ActorUser can <b>view and delete</b> photos of himself.<br/>
+                R3.3: ActorUser can <b>view, delete</b> photos of himself.<br/>
+                R3.3: ActorUser can view<b>,</b> and delete photos of himself.<br/>
             </td>
         </tr>
         <tr>
@@ -214,10 +213,10 @@
             with letters only and should not use CamelCase notation.</p>
 
         <p class="code">
-            ActorUser <b>produces</b>: account balance; IP address(s).<br/>
+            ActorUser <b>produces</b>: account balance; ip addresses.<br/>
             IfAmazon <b>produces</b>:<br/>
-            &nbsp;&nbsp;file-s: list of files stored in S3;<br/>
-            &nbsp;&nbsp;instance-s: list of EC2 instances.
+            &nbsp;&nbsp;files: list of files stored in S3;<br/>
+            &nbsp;&nbsp;instances: list of EC2 instances.
         </p>
         
         <p>The main difference between parts and associations is that parts have
