@@ -39,7 +39,7 @@ try {
     $comment = $lines[0];
     
     logg(
-        "CONTENT: " . strlen($content) . " bytes): '" . 
+        "CONTENT (" . strlen($content) . " bytes): '" . 
         wordwrap(substr($content, 0, 400), 100, "\n\t") . "...'\n" .
         "COMMENT: {$comment}\n"
     );
