@@ -107,6 +107,8 @@ try {
     // just to log it
     file_put_contents(
         $dir . '/response.txt',
+        "REVISION: {$revision}\n" .
+        "TIME: " . date('d/m/y h:i:s') . "\n" .
         "CLI: {$rqdql}\n" .
         "THIS PAGE NAME: {$thisPage}\n" .
         "PAGES TOTAL: " . count($pages) . "\n" .
