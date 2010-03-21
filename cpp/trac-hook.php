@@ -13,6 +13,11 @@ file_put_contents('request.txt', $content);
 $lines = explode("\n", $content);
 $comment = $lines[0];
 
+if (preg_match('/\#\d+/', $comment)) {
+    echo "comment: your comment shall contain a link to a motivating ticket";
+    exit(-1);
+}
+
 $pages = array();
 
 for ($i=1; $i<count($lines); $i++) {
