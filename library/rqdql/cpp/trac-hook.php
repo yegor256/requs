@@ -3,6 +3,8 @@
  * @version $Id$
  */
 
+$revision = intval(substr('$Rev$', 6));
+
 $dir = dirname(__FILE__);
 $rqdql = $dir . '/rqdql';
 
@@ -113,7 +115,7 @@ foreach ($messages as $lineNo=>$message) {
 
 $output = ob_get_clean();
 if ($output) {
-    echo 'RqdqlPlugin: $Rev$' . "\n";
+    echo "RqdqlPlugin: rev$revision\n";
     echo $output;
 } else {
     // everything is OK!
