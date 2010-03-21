@@ -97,7 +97,11 @@ try {
                 throw new Exception();
             }
         } else {
-            $scopePages[$name] = $lines;
+            // to avoid re-writing of the current page. since this page
+            // is ALSO in the list of all pages
+            if (!isset($scopePages[$name])) {
+                $scopePages[$name] = $lines;
+            }
             if (is_null($thisPage)) {
                 $thisPage = $name;
             }
