@@ -104,6 +104,7 @@ if ($thisPage) {
     file_put_contents(
         $dir . '/response.txt',
         "CLI: {$rqdql}\n" .
+        "THIS PAGE NAME: {$thisPage}\n" .
         "PAGES TOTAL: " . count($pages) . "\n" .
         "SCOPE PAGES TOTAL: " . count($scopePages) . "\n" .
         "STDIN: " . substr(implode(' ', $stream), 0, 200) . "...\n" .
