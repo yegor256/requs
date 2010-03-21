@@ -101,9 +101,9 @@ try {
             // is ALSO in the list of all pages
             if (!isset($scopePages[$name])) {
                 $scopePages[$name] = $lines;
-            }
-            if (is_null($thisPage)) {
-                $thisPage = $name;
+                if (is_null($thisPage)) {
+                    $thisPage = $name;
+                }
             }
         }
     }
