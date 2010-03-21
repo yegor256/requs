@@ -19,6 +19,12 @@ file_put_contents($dir . '/request.txt', $content);
 global $log;
 $log = fopen($dir . '/response.txt', 'w');
 
+function nice($str)
+{
+    return "'" . wordwrap(substr(str_replace("\n", '\\n', $str), 0, 400), 100, "\n\t") . "...' (" .
+    strlen($str) . ' bytes)';
+}
+
 function logg($message)
 {
     global $log;
@@ -26,7 +32,7 @@ function logg($message)
 }
 
 logg(
-    "REVISION: {$revision}\n" .
+    "HOOK REVISION: {$revision}\n" .
     "TIME: " . date('d/m/y h:i:s') . "\n" .
     "CLI: {$rqdql}\n"
 );
@@ -39,9 +45,8 @@ try {
     $comment = $lines[0];
     
     logg(
-        "CONTENT (" . strlen($content) . " bytes): '" . 
-        wordwrap(substr(str_replace("\n", '\\n', $content), 0, 400), 100, "\n\t") . "...'\n" .
-        "COMMENT: {$comment}\n"
+        "CONTENT:" . nice($content) . "\n" .
+        "COMMENT: " . nice($comment) . "\n"
     );
         
     // empty comment shall be disallowed. every comment
@@ -134,10 +139,10 @@ try {
     $result = proc_close($proc);
 
     logg(
-        "STDIN (" . strlen(implode(' ', $stream)) . ' bytes, ' . count($stream) . " lines): '" . 
-        wordwrap(substr(implode(' ', $stream), 0, 400), 100, "\n\t") . "...'\n" .
-        "RETURN: {$result}\n" .
-        'RQDQL OUT (' . strlen($out) . " bytes): \n{$out}\n"
+        'STREAM: ' . nice(implode(' ', $stream)) . "\n " .
+        'STREAM LINES: ' . count($stream) . "\n" . 
+        'RETURN: ' . nice($result) . "\n" .
+        'RQDQL OUT: '  . nice($out) . "\n"
     );
 
     // convert all errors found in RQDQL into defects for Trac
@@ -181,7 +186,7 @@ try {
 $output = ob_get_clean();
 
 logg(
-    'MESSAGE TO TRAC (' . strlen($output) . ") bytes: '" . substr($output, 0, 300) . "'"
+    'MESSAGE TO TRAC: ' . nice($output)
 );
 
 fclose($log);
