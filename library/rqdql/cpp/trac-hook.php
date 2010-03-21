@@ -28,7 +28,7 @@ function nice($str)
 function logg($message)
 {
     global $log;
-    fprintf($log, $message);
+    fprintf($log, '%s', $message);
 }
 
 logg(
