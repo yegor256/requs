@@ -39,8 +39,9 @@ for ($i=1; $i<count($lines); $i++) {
 }
 
 // filter-out lines/pages which are not related to scope
-$thisPage = false;
-foreach ($pages as $name=>&$lines) {
+$scopePages = array();
+$thisPage = null;
+foreach ($pages as $name=>$lines) {
     $outOfScope = true;
     foreach ($lines as &$line) {
         if (preg_match('/^\s*=\s+SRS:.*?\s+=\s*$/s', $line)) {
@@ -64,75 +65,79 @@ foreach ($pages as $name=>&$lines) {
         );
     }
     if ($outOfScope) {
-        if (!$thisPage) {
-            // this page is out of scope
-            exit(0);
+        if (is_null($thisPage)) {
+            $thisPage = false;
         }
-        unset($pages[$name]);
-    }
-    if (!$thisPage) {
-        $thisPage = $pages[$name];
+    } else {
+        $scopePages[$name] = $lines;
+        if (is_null($thisPage)) {
+            $thisPage = $name;
+        }
     }
 }
 
-// group all lines into one single stream
-$stream = array();
-foreach ($pages as $page) {
-    foreach ($page as $lns) {
-        $stream[] = $lns;
-    }
-}
-
-// execute RQDQL
-$pipes = array();
-$proc = proc_open(
-    $rqdql,
-    array(
-        0 => array('pipe', 'r'),
-        1 => array('pipe', 'w'),
-        2 => array('pipe', 'w'),
-    ),
-    $pipes
-);
-fwrite($pipes[0], implode("\n", $stream));
-fclose($pipes[0]);
-$out = stream_get_contents($pipes[1]);
-$result = proc_close($proc);
-// just to log it
-file_put_contents(
-    $dir . '/response.txt',
-    "CLI: {$rqdql}\n" .
-    "STDIN: " . substr(implode(' ', $stream), 0, 200) . "...\n" .
-    "RETURN: {$result}\n" .
-    'OUT (' . strlen($out) . "):\n{$out}"
-);
-
-// convert all errors found in RQDQL into defects for Trac
-$errors = explode("\n", $out);
-$messages = array();
-foreach ($errors as $error) {
-    $matches = array();
-    if (preg_match('/^\[(?:ERR|WARN)\]\s(\d+)\.(\d+)\s(.*)$/', $error, $matches)) {
-        $lineNo = intval($matches[1]);
-        if ($lineNo > count($thisPage)) {
-            break;
+if ($thisPage) {
+    // group all lines into one single stream
+    $stream = array();
+    foreach ($scopePages as $page) {
+        foreach ($page as $lns) {
+            $stream[] = $lns;
         }
-        if (!isset($messages[$lineNo])) {
-            $messages[$lineNo] = '';
-        }
-        $messages[$lineNo] .= ($messages[$lineNo] ? '; ' : false) . $matches[3];
     }
-}
 
-// convert all found messages into Trac-friendly 
-// notifications (FIELD:MESSAGE)
-foreach ($messages as $lineNo=>$message) {
-    echo sprintf(
-        "line %d: (%s) %s\n",
-        $lineNo,
-        $stream[$lineNo-1],
-        $message
+    // execute RQDQL
+    $pipes = array();
+    $proc = proc_open(
+        $rqdql,
+        array(
+            0 => array('pipe', 'r'),
+            1 => array('pipe', 'w'),
+            2 => array('pipe', 'w'),
+        ),
+        $pipes
     );
+    fwrite($pipes[0], implode("\n", $stream));
+    fclose($pipes[0]);
+    $out = stream_get_contents($pipes[1]);
+    $result = proc_close($proc);
+    // just to log it
+    file_put_contents(
+        $dir . '/response.txt',
+        "CLI: {$rqdql}\n" .
+        "PAGES TOTAL: " . count($pages) . "\n" .
+        "SCOPE PAGES TOTAL: " . count($scopePages) . "\n" .
+        "STDIN: " . substr(implode(' ', $stream), 0, 200) . "...\n" .
+        "RETURN: {$result}\n" .
+        'OUT (' . strlen($out) . "):\n{$out}"
+    );
+
+    // convert all errors found in RQDQL into defects for Trac
+    $errors = explode("\n", $out);
+    $messages = array();
+    foreach ($errors as $error) {
+        $matches = array();
+        if (preg_match('/^\[(?:ERR|WARN)\]\s(\d+)\.(\d+)\s(.*)$/', $error, $matches)) {
+            $lineNo = intval($matches[1]);
+            if ($lineNo > count($scopePages[$thisPage])) {
+                break;
+            }
+            if (!isset($messages[$lineNo])) {
+                $messages[$lineNo] = '';
+            }
+            $messages[$lineNo] .= ($messages[$lineNo] ? '; ' : false) . $matches[3];
+        }
+    }
+
+    // convert all found messages into Trac-friendly 
+    // notifications (FIELD:MESSAGE)
+    foreach ($messages as $lineNo=>$message) {
+        echo sprintf(
+            "line %d: (%s) %s\n",
+            $lineNo,
+            $stream[$lineNo-1],
+            $message
+        );
+    }
 }
 
 // get all lines outputed above
