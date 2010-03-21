@@ -111,7 +111,7 @@ try {
         "THIS PAGE NAME: {$thisPage}\n" .
         "PAGES TOTAL: " . count($pages) . "\n" .
         "SCOPE PAGES TOTAL: " . count($scopePages) . "\n" .
-        "STDIN (" . strlen(implode(' ', $stream)) . " bytes): '" . 
+        "STDIN (" . strlen(implode(' ', $stream)) . ' bytes, ' . count($stream) . " lines): '" . 
         wordwrap(substr(implode(' ', $stream), 0, 400), 100, "\n\t") . "...'\n" .
         "RETURN: {$result}\n" .
         'OUT (' . strlen($out) . "):\n{$out}"
