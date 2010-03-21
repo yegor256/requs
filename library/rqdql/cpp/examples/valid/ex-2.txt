@@ -7,6 +7,7 @@ ActorAmazon: TBD(#45).
 ActorUser includes: name; email: string as of RFCs; password.
 ActorVisitor produces: visits: HTTP requests; visits produces: IP address; time.
 
+R6.6: TBD(#45 "ActorUser can manager ActorUser-s" Is it correct or what?).
 R1: ActorUser can manage files of ContentPage.
 R4[out]: ActorUser can print, list, and create ContentPage-s.
     R1.1: ActorVisitor can list, read, print ContentPage-s
