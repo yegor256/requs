@@ -13,9 +13,12 @@ file_put_contents('request.txt', $content);
 $lines = explode("\n", $content);
 $comment = $lines[0];
 
+// empty comment shall be disallowed. every comment
+// shall contain a link to the ticket, which motivated the change
+// we don't EXIT here, since the output sent will notify
+// Trac that there are some errors and the page won't be saved
 if (preg_match('/\#\d+/', $comment)) {
     echo "comment: your comment shall contain a link to a motivating ticket";
-    exit(-1);
 }
 
 $pages = array();
