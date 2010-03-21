@@ -90,6 +90,8 @@ fwrite($pipes[0], implode("\n", $stream));
 fclose($pipes[0]);
 $out = stream_get_contents($pipes[1]);
 $result = proc_close($proc);
+// just to log it
+file_put_contents($dir . '/response.txt', $out);
 
 $errors = explode("\n", $out);
 $messages = array();
@@ -116,6 +118,7 @@ foreach ($messages as $lineNo=>$message) {
     );
 }
 
+// get all lines outputed above
 $output = ob_get_clean();
 if ($output) {
     echo "RqdqlPlugin: rev{$revision}\n";
