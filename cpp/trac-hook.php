@@ -40,7 +40,7 @@ try {
     
     logg(
         "CONTENT (" . strlen($content) . " bytes): '" . 
-        wordwrap(substr($content, 0, 400), 100, "\n\t") . "...'\n" .
+        wordwrap(substr(str_replace("\n", '\\n', $content), 0, 400), 100, "\n\t") . "...'\n" .
         "COMMENT: {$comment}\n"
     );
         
@@ -100,7 +100,7 @@ try {
     }
 
     logg(
-        "THIS PAGE NAME: {$thisPage}\n" .
+        "THIS PAGE NAME: {$thisPage} (" . count($scopePages[$thisPage]) . " lines)\n" .
         "PAGES TOTAL: " . count($pages) . "\n" .
         "SCOPE PAGES TOTAL: " . count($scopePages) . "\n"
     );
@@ -156,6 +156,10 @@ try {
             $messages[$lineNo] .= ($messages[$lineNo] ? '; ' : false) . $matches[3];
         }
     }
+    
+    logg(
+        "DEFECTIVE LINES: " . implode(', ', array_keys($messages)) . "\n"
+    );
 
     // convert all found messages into Trac-friendly 
     // notifications (FIELD:MESSAGE)

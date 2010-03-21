@@ -26,7 +26,7 @@ EXEC = ./rqdql
 TESTS = test/ScopeTest.o
 EXAMPLES = examples/valid/ex-2.txt
 
-all: up rqdql hook
+all: up rqdql
 
 up:
 	svn up --username yegor256@yahoo.com --password aF41Atlz .
@@ -48,12 +48,12 @@ clean:
 	rm -f $(OBJS)
 	rm -f $(EXEC)
 
-test: test/rqdql-test.cpp $(TESTS)
+test: hook-test test/rqdql-test.cpp $(TESTS)
 	$(EXEC) "list" < examples/valid/ex-2.txt
 	
 deploy:
 	ftp -u ftp://rqdql_deploy%40caybo.ru:uf8Klp7Y2Et4@rqdql.com/public/rqdql.html ../rqdql.com/rqdql.html
 	
-hook: rqdql trac-hook.php trac-hook.sh
+hook-test: rqdql trac-hook.php trac-hook.sh
 	./trac-hook.sh < test/trac-hook/_request.txt
 	
