@@ -195,15 +195,17 @@ lobject:
     ACTOR
     ;
 
-parts:
+/* e.g. "email; password; files" */
+parts: 
     part |
     parts SEMICOLON part
     ;
 
+/* e.g. "email: string text" */
 part:
     attribute |
     attribute COLON INFORMAL |
-    attribute INCLUDES parts 
+    attribute INCLUDES parts SEMICOLON
     ;
 
 /* QOS3.3: some text. */    

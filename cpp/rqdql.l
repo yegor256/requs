@@ -76,8 +76,8 @@ ATTRIBS (\[[a-z0-9]+(,[ ]*[a-z0-9]+)*\])
 
     /* LHS modifiers */
 <LHS_ENTITY>is{SPACE}a: { BEGIN(RHS_INHERITANCE); rq.log(rqdql::debug, "RHS_INHERITANCE"); return IS_A; }
-<LHS_ENTITY>includes?{SPACE}?: { BEGIN(RHS_PARTS); rq.log(rqdql::debug, "INCLUDES, RHS_PARTS"); return INCLUDES; }
-<LHS_ENTITY>produces?{SPACE}?: { BEGIN(RHS_PARTS); rq.log(rqdql::debug, "PRODUCES, RHS_PARTS"); return PRODUCES; }
+<LHS_ENTITY>includes?{SPACE}?":" { BEGIN(RHS_PARTS); rq.log(rqdql::debug, "INCLUDES, RHS_PARTS"); return INCLUDES; }
+<LHS_ENTITY>produces?{SPACE}?":" { BEGIN(RHS_PARTS); rq.log(rqdql::debug, "PRODUCES, RHS_PARTS"); return PRODUCES; }
 <LHS_FUR>{ATTRIBS} { yylval.name = strdup(yytext); rq.log(rqdql::debug, "ATTRIBS: %s", yytext); return ATTRIBS; }
 <LHS_FUR>":" { BEGIN(RHS_ACTIONS); rq.log(rqdql::debug, "RHS_ACTIONS"); REJECT; }
 <LHS_ENTITY>":" { BEGIN(RHS_INFORMAL); rq.log(rqdql::debug, "RHS_INFORMAL"); REJECT; }
@@ -92,12 +92,13 @@ ATTRIBS (\[[a-z0-9]+(,[ ]*[a-z0-9]+)*\])
 <RHS_INFORMAL>[^\.]+ { yylval.name = strdup(yytext); rq.log(rqdql::debug, "INFORMAL"); return INFORMAL; }
 
     /* parts */
-<RHS_PARTS>(include|produce)s?{SPACE}: { rq.log(rqdql::debug, "PARTS INCLUDE"); return INCLUDES; }
+<RHS_PARTS>(include|produce)s?{SPACE}?":" { rq.log(rqdql::debug, "PARTS INCLUDE"); return INCLUDES; }
 <RHS_PARTS>":" { BEGIN(PARTS_INFORMAL); rq.log(rqdql::debug, "PARTS_INFORMAL"); REJECT; }
 <PARTS_INFORMAL>[^\.;]+ {
     yylval.name = strdup(yytext); 
     rq.log(rqdql::debug, "PART INFORMAL: '%s'", yytext);
     BEGIN(RHS_PARTS);
+    rq.log(rqdql::debug, "RHS_PARTS");
     return INFORMAL;
 }
 
@@ -141,8 +142,8 @@ ATTRIBS (\[[a-z0-9]+(,[ ]*[a-z0-9]+)*\])
 {ACRONYM} { yylval.name = strdup(yytext); rq.log(rqdql::debug, "ACRONYM: '%s'", yytext); return ACRONYM; }
 {TBD} { yylval.name = strdup(yytext); rq.log(rqdql::debug, "TBD: '%s'", yytext); return TBD; }
 
-{SPACE} { /* ignore spaces */ }
 \n { yycolumn = 1; }
+[ \t\r] { /* ignore spaces */ }
 . { yyerror("unknown symbol %c", yytext[0]); }
 
 %%
