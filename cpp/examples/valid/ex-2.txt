@@ -21,7 +21,7 @@ R4[out]: ActorUser can print, list, and create ContentPage-s.
     R1.2[p2, i8]: ActorVisitor can create application of ActorUser-s;
         ActorManager can create (using application of it) ActorUser-s;
         ActorUser can reset password of himself;
-        ActorManager can reset password of ActorUser.
+        ActorManager can reset password of an ActorUser.
     R1.3: ActorInvestor can RL+P InvestmentProject.
     R1.4: ActorManager can CRUL+P ContentPage.
     R1.5: ActorManager can create, update FieldTrip-s.
