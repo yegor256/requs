@@ -80,6 +80,7 @@ try {
                 $outOfScope = false;
             }
             $replacers = array(
+                '/\n\{{3}\n#!comment\n.*\}{3}\n/s' => '', // skip trac comments
                 '/^\s+\*(.*)$/'         => '${1}', // skip spaces before LIST ITEMS
                 '/^\s+\d+\.(.*)$/'      => '${1}', // skip spaces before ENUMERATE ITEMS
                 '/^\s*(.*)\s*$/'        => '${1}', // remove leading and trailing spaces
