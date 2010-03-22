@@ -26,3 +26,6 @@ R4[out]: ActorUser can print, list, and create ContentPage-s.
 See: R4.1, ActorUser, R3.3, UC5.4.
 
 QOS3: just some informal text.
+
+"to approve" email of ActorUser means: we are just waiting for confirmation click from him.
+"to print" ActorUser (aka "+P") means: send to printer.

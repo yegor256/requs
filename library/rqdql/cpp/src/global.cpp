@@ -44,7 +44,7 @@ void yyerror(const char *error, ...)
         );
         strcpy(s, s1);
     }
-    rqdql::log(rqdql::error, s);
+    rq.log(rqdql::error, s);
 }
     
 void lyyerror(YYLTYPE t, const char *error, ...)
@@ -69,12 +69,17 @@ void lyyerror(YYLTYPE t, const char *error, ...)
         );
         strcpy(s, s1);
     }
-    rqdql::log(rqdql::error, s);
+    rq.log(rqdql::error, s);
 }
     
 int main(int argc, char** argv)
 {
-    rqdql::log(rqdql::info, "rqdql v0.1");
+    rq.log(rqdql::info, "rqdql v0.1");
+    
+    #ifdef RQDQL_DEBUG
+        rq.setVerboseLevel(rqdql::debug);
+    #endif
+    
     yyparse();
     return 0;
 }

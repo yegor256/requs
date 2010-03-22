@@ -19,6 +19,17 @@
 #include "rqdql.h"
 #include <stdarg.h>
 
+// global object
+rqdql rq(rqdql::error);
+
+/**
+ * to set verbose level
+ */
+void rqdql::setVerboseLevel(LogLevel level)
+{
+    verboseLevel = level;
+}
+
 /**
  * To make sprintf() work simply, as in PHP
  */

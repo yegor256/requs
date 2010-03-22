@@ -51,10 +51,19 @@ public:
         error = 5
     } LogLevel;
     
+    rqdql(LogLevel level) : verboseLevel(level)
+    {
+        // ..
+    };
+    
     /**
-     * Messages with this level we will log
+     * Set log level to use
+     *
+     * @param Level of messaging to use, see LogLevel type
+     * @see LogLevel
+     * @see rqdql.l
      */
-    static const int verboseLevel = error;
+    void setVerboseLevel(LogLevel level);
     
     /**
      * More convenient way to manage strings, mostly used inside YACC code
@@ -64,7 +73,7 @@ public:
      * @return New string, in heap
      * @see rqdql.y
      */
-    static char* sprintf(const char* mask, ...);
+    char* sprintf(const char*, ...);
     
     /**
      * Simple logger, that filters messages by their types
@@ -75,13 +84,22 @@ public:
      * @see LogLevel
      * @see rqdql.l
      */
-    static void log(LogLevel level, const char* mask, ...);
+    void log(LogLevel, const char*, ...);
     
     /**
      * Get the general scope object
      */
     // static const Scope& scope();
+
+private:
+
+    /**
+     * Messages with this level we will log
+     */
+    int verboseLevel;    
     
 };
+
+extern rqdql rq;
 
 #endif

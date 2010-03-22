@@ -18,18 +18,13 @@ PATH := $(PATH):/usr/local/bin:/usr/bin
 CPP = c++
 BISON = bison
 FLEX = flex
-CPPFLAGS = -I./include 
+CPPFLAGS = -I./include -DRQDQL_DEBUG=true
 OBJS = src/Scope.o src/global.o src/rqdql.o
 HEADERS = include/Scope.h \
 	include/rqdql.h
 EXEC = ./rqdql
 TESTS = test/ScopeTest.o
 EXAMPLES = examples/valid/ex-2.txt
-
-all: up rqdql
-
-up:
-	svn up --username yegor256@yahoo.com --password aF41Atlz .
 
 rqdql: bison $(OBJS) Makefile $(EXAMPLES)
 	$(CPP) $(CPPFLAGS) -o $@ $@.tab.c lex.yy.c $(OBJS)
@@ -57,3 +52,6 @@ deploy:
 hook-test: rqdql trac-hook.php trac-hook.sh
 	./trac-hook.sh < test/trac-hook/_request.txt
 	
+up:
+	svn up --username yegor256@yahoo.com --password aF41Atlz .
+

@@ -48,8 +48,11 @@
 %token <name> ACRONYM 
 %token <name> TBD
 %token <name> ATTRIBS
+%token <name> INFINITIVE
+%token <name> AKA
 
 %token COLON SEMICOLON DOT COMMA
+%token MEANS
 %token SEE
 %token AND OR
 %token CAN
@@ -83,9 +86,10 @@ DottedStatement:
     Statement DOT;
 
 Statement:
-    FurStatement { rqdql::log(rqdql::info, "FUR statement processed"); } |
-    EntityStatement { rqdql::log(rqdql::info, "entity statement processed"); } | 
-    QosStatement { rqdql::log(rqdql::info, "QOS statement processed"); } | 
+    FurStatement { rq.log(rqdql::info, "FUR statement processed"); } |
+    EntityStatement { rq.log(rqdql::info, "Entity statement processed"); } | 
+    QosStatement { rq.log(rqdql::info, "QOS statement processed"); } | 
+    VerbStatement { rq.log(rqdql::info, "Verb statement processed"); } | 
     SeeStatement 
     ;
 
@@ -116,7 +120,7 @@ action:
     
 verbs:
     verb |
-    verbs separator verb { $$ = rqdql::sprintf("%s, %s", $1, $3); }
+    verbs separator verb { $$ = rq.sprintf("%s, %s", $1, $3); }
     ;
     
 verb:
@@ -138,14 +142,14 @@ separator:
     
 subject:
     object |
-    object modifier { $$ = rqdql::sprintf("%s %s", $1, $2); }
+    object modifier { $$ = rq.sprintf("%s %s", $1, $2); }
     ;
     
 object:
-    THIS { $$ = rqdql::sprintf("this"); } |
-    ACTOR plural { $$ = rqdql::sprintf("%s", $1); } |
-    ENTITY plural { $$ = rqdql::sprintf("%s", $1); } |
-    attribute OF object { $$ = rqdql::sprintf("%s of %s", $1, $3); }
+    THIS { $$ = rq.sprintf("this"); } |
+    ACTOR plural { $$ = rq.sprintf("%s", $1); } |
+    ENTITY plural { $$ = rq.sprintf("%s", $1); } |
+    attribute OF object { $$ = rq.sprintf("%s of %s", $1, $3); }
     ;
     
 attribute:
@@ -154,14 +158,14 @@ attribute:
     
 words:
     WORD |
-    words WORD { $$ = rqdql::sprintf("%s %s", $1, $2); }
+    words WORD { $$ = rq.sprintf("%s %s", $1, $2); }
     ;
     
 plural:
     /* singular */ | PLURAL_MANY | PLURAL_SOME | PLURAL_ANY;
 
 modifier:
-    OPEN_BRACE predicates CLOSE_BRACE { $$ = rqdql::sprintf("%s", $2); }
+    OPEN_BRACE predicates CLOSE_BRACE { $$ = rq.sprintf("%s", $2); }
     ;
     
 predicates:
@@ -170,8 +174,8 @@ predicates:
     ;
     
 predicate:
-    lambda subjects { $$ = rqdql::sprintf("L %s", $2); } |
-    lambda subjects verbs { $$ = rqdql::sprintf("L %s %s", $2, $3); }
+    lambda subjects { $$ = rq.sprintf("L %s", $2); } |
+    lambda subjects verbs { $$ = rq.sprintf("L %s %s", $2, $3); }
     ;
     
 lambda:
@@ -207,6 +211,12 @@ QosStatement:
     QOS COLON INFORMAL
     ;
 
+/* email of ActorUser "to approve" means: some text... */
+VerbStatement:
+    INFINITIVE object MEANS COLON INFORMAL |
+    INFINITIVE object AKA MEANS COLON INFORMAL 
+    ;
+    
 /* See: R4.4, ActorUser, ... */
 SeeStatement:
     SEE COLON entities
