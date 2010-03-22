@@ -41,7 +41,22 @@ logg(
 ob_start();
 
 try {
-    $lines = explode("\n", $content);
+    $cleanContent = $content;
+    $wipers = array(
+        '/\{{3}\n#!comment\n.*\n\}{3}/s'
+    );
+    foreach ($wipers as $regex) {
+        if (preg_match_all($regex, $cleanContent, $matches)) {
+            foreach ($matches[0] as $match) {
+                $cleanContent = str_replace(
+                    $match, 
+                    preg_replace('/[^\n]/', ' ', $match), 
+                    $cleanContent
+                );
+            }
+        }
+    }
+    $lines = explode("\n", $cleanContent);
     $comment = $lines[0];
     
     logg(
@@ -80,7 +95,6 @@ try {
                 $outOfScope = false;
             }
             $replacers = array(
-                '/\n\{{3}\n#!comment\n.*\n\}{3}/s' => '', // skip trac comments
                 '/^\s+\*(.*)$/'         => '${1}', // skip spaces before LIST ITEMS
                 '/^\s+\d+\.(.*)$/'      => '${1}', // skip spaces before ENUMERATE ITEMS
                 '/^\s*(.*)\s*$/'        => '${1}', // remove leading and trailing spaces
