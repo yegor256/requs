@@ -27,7 +27,7 @@ rqdql rq(rqdql::error);
  */
 void rqdql::setVerboseLevel(LogLevel level)
 {
-    verboseLevel = level;
+    _verboseLevel = level;
 }
 
 /**
@@ -66,7 +66,7 @@ void rqdql::log(LogLevel level, const char* mask, ...)
             label = "ERR";
             break;
     }
-    if (level >= rqdql::verboseLevel) {
+    if (level >= _verboseLevel) {
         va_list args;
         va_start(args, mask);
         cout << '[' << label << "] ";

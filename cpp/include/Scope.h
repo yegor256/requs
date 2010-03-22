@@ -16,10 +16,8 @@
  * @version $Id: bootstrap.php 1190 2010-02-07 07:45:29Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_RQDQL_H
-#define __INCLUDE_RQDQL_H
-
-#include "rqdql.h"
+#ifndef __INCLUDE_SCOPE_H
+#define __INCLUDE_SCOPE_H
 
 /**
  * Global holder and processor of all scope statements
@@ -29,7 +27,7 @@
 class Scope
 {
 public:
-    void add(char* statement);
+//    void add(Statement);
 };
 
 #endif
