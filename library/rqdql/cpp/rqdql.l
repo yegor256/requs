@@ -138,6 +138,11 @@ ATTRIBS (\[[a-z0-9]+(,[ ]*[a-z0-9]+)*\])
 "he" |
 "itself" { rq.log(rqdql::debug, "THIS"); return THIS; }
 
+	/* NULL words */
+"a" |
+"the"
+"an" { /* ignore them */ }
+
 [a-z]+ { yylval.name = strdup(yytext); rq.log(rqdql::debug, "WORD: '%s'", yytext); return WORD; }
 {ACRONYM} { yylval.name = strdup(yytext); rq.log(rqdql::debug, "ACRONYM: '%s'", yytext); return ACRONYM; }
 {TBD} { yylval.name = strdup(yytext); rq.log(rqdql::debug, "TBD: '%s'", yytext); return TBD; }
