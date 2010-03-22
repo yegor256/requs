@@ -20,8 +20,8 @@ BISON = bison
 FLEX = flex
 CPPFLAGS = -I./include -DRQDQL_DEBUG=true
 OBJS = src/global.o src/rqdql.o
-HEADERS = include/Scope.h \
-	include/rqdql.h
+HEADERS = include/Scope.hpp \
+	include/rqdql.hpp
 EXEC = ./rqdql
 TESTS = test/ScopeTest.o
 EXAMPLES = examples/valid/ex-2.txt

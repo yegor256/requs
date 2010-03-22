@@ -20,7 +20,7 @@
 #define __INCLUDE_RQDQL_H
 
 #include "../rqdql.tab.h"
-#include "Scope.h"
+#include "Scope.hpp"
 
 #include <iostream>
     using namespace std;
@@ -36,7 +36,7 @@ extern int yylineno;
  *
  * @package
  */
-class rqdql
+class Rqdql
 {
 public:
     
@@ -54,7 +54,7 @@ public:
     /**
      * Constructor
      */
-    rqdql(LogLevel level) : _verboseLevel(level)
+    Rqdql(LogLevel level) : _verboseLevel(level)
     {
         // ..
     };
@@ -109,6 +109,6 @@ private:
     
 };
 
-extern rqdql rq;
+extern Rqdql rq;
 
 #endif
