@@ -1,10 +1,14 @@
 #123: just to test
 WikiStart
-5
+9
 = SRS: Start page =
 
 R1: ActorUser can CRUDL account of himself.
 
+{{{
+#!comment
+this is a comment
+}}}
 ActorUser is a: ActorVisitor.
 
 WikiNewPage
