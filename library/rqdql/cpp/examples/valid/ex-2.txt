@@ -26,7 +26,7 @@ R4[out]: ActorUser can print, list, and create ContentPage-s.
     R1.4: ActorManager can CRUL+P ContentPage.
     R1.5: ActorManager can create, update FieldTrip-s.
     R1.6: ActorManager can CRUL+P InvestmentProject-s.
-    R1.7: ActorManager can list, approve applications of ActorUser-s.
+    R1.7: ActorManager can list, approve applications and balance of ActorUser-s.
     
 See: R4.1, ActorUser, R3.3, UC5.4.
 

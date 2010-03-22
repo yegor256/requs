@@ -36,6 +36,7 @@
 %type <name> subject
 %type <name> object
 %type <name> attribute
+%type <name> attributes
 
 // Declaration of all known tokens
 %token <name> INFORMAL
@@ -149,7 +150,12 @@ object:
     THIS { $$ = rq.sprintf("this"); } |
     ACTOR plural { $$ = rq.sprintf("%s", $1); } |
     ENTITY plural { $$ = rq.sprintf("%s", $1); } |
-    attribute OF object { $$ = rq.sprintf("%s of %s", $1, $3); }
+    attributes OF object { $$ = rq.sprintf("%s of %s", $1, $3); }
+    ;
+    
+attributes:
+    attribute |
+    attributes separator attribute { $$ = rq.sprintf("%s, %s", $1, $3); }
     ;
     
 attribute:
