@@ -13,23 +13,15 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: bootstrap.php 1190 2010-02-07 07:45:29Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
-#ifndef __INCLUDE_SCOPE_H
-#define __INCLUDE_SCOPE_H
+#ifndef __INCLUDE_SCOPE_STATEMENT_H
+#define __INCLUDE_SCOPE_STATEMENT_H
 
-#include "Scope/Statement.hpp"
-
-/**
- * Global holder and processor of all scope statements
- *
- * @see rqdql.y
- */
-class Scope
+class Statement
 {
 public:
-    void add(Statement);
 };
 
 #endif
