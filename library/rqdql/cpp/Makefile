@@ -26,9 +26,8 @@ EXEC = ./rqdql
 TESTS = test/ScopeTest.o
 EXAMPLES = examples/valid/ex-2.txt
 
-rqdql: bison $(OBJS) Makefile $(EXAMPLES)
+rqdql: bison $(OBJS) Makefile $(EXAMPLES) test
 	$(CPP) $(CPPFLAGS) -o $@ $@.tab.c lex.yy.c $(OBJS)
-	$(EXEC) "list" < examples/valid/ex-2.txt
     
 bison: lex.yy.c rqdql.tab.c rqdql.tab.h
 	$(BISON) --no-lines --report=all -d rqdql.y
@@ -43,9 +42,16 @@ clean:
 	rm -f $(OBJS)
 	rm -f $(EXEC)
 
-test: hook-test test/rqdql-test.cpp $(TESTS)
+# compilation of unit tests
+test/%.o: test/%.cpp
+	$(CPP) $(CPPFLAGS) -o $@ $<
+
+test: $(TESTS) test-all
+	test/ScopeTest.o
+
+test-all:	
 	$(EXEC) "list" < examples/valid/ex-2.txt
-	
+
 deploy:
 	ftp -u ftp://rqdql_deploy%40caybo.ru:uf8Klp7Y2Et4@rqdql.com/public/rqdql.html ../rqdql.com/rqdql.html
 	
