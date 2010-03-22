@@ -19,7 +19,7 @@ CPP = c++
 BISON = bison
 FLEX = flex
 CPPFLAGS = -I./include -DRQDQL_DEBUG=true
-OBJS = src/Scope.o src/global.o src/rqdql.o
+OBJS = src/global.o src/rqdql.o
 HEADERS = include/Scope.h \
 	include/rqdql.h
 EXEC = ./rqdql

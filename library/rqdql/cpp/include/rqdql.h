@@ -51,7 +51,10 @@ public:
         error = 5
     } LogLevel;
     
-    rqdql(LogLevel level) : verboseLevel(level)
+    /**
+     * Constructor
+     */
+    rqdql(LogLevel level) : _verboseLevel(level)
     {
         // ..
     };
@@ -89,14 +92,20 @@ public:
     /**
      * Get the general scope object
      */
-    // static const Scope& scope();
+    Scope& scope()
+    {
+        return _scope;
+    };
 
 private:
 
     /**
      * Messages with this level we will log
      */
-    int verboseLevel;    
+    int _verboseLevel;    
+    
+    // Scope instance
+    Scope _scope;
     
 };
 
