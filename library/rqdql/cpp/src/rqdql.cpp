@@ -16,16 +16,16 @@
  * @version $Id: bootstrap.php 1190 2010-02-07 07:45:29Z yegor256@yahoo.com $
  */
 
-#include "rqdql.h"
+#include "Rqdql.hpp"
 #include <stdarg.h>
 
 // global object
-rqdql rq(rqdql::error);
+Rqdql rq(Rqdql::error);
 
 /**
  * to set verbose level
  */
-void rqdql::setVerboseLevel(LogLevel level)
+void Rqdql::setVerboseLevel(LogLevel level)
 {
     _verboseLevel = level;
 }
@@ -33,7 +33,7 @@ void rqdql::setVerboseLevel(LogLevel level)
 /**
  * To make sprintf() work simply, as in PHP
  */
-char* rqdql::sprintf(const char* mask, ...)
+char* Rqdql::sprintf(const char* mask, ...)
 {
     va_list args;
     va_start(args, mask);
@@ -46,7 +46,7 @@ char* rqdql::sprintf(const char* mask, ...)
 /**
  * To log a line
  */
-void rqdql::log(LogLevel level, const char* mask, ...)
+void Rqdql::log(LogLevel level, const char* mask, ...)
 {   
     string label;
     switch (level) {

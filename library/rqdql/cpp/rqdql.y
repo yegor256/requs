@@ -74,7 +74,7 @@
 %right PRODUCES
 
 %{
-    #include "rqdql.h"
+    #include "Rqdql.hpp"
 %}
 
 %%
@@ -87,10 +87,10 @@ DottedStatement:
     Statement DOT;
 
 Statement:
-    FurStatement { rq.log(rqdql::info, "FUR statement processed"); } |
-    EntityStatement { rq.log(rqdql::info, "Entity statement processed"); } | 
-    QosStatement { rq.log(rqdql::info, "QOS statement processed"); } | 
-    VerbStatement { rq.log(rqdql::info, "Verb statement processed"); } | 
+    FurStatement { rq.log(Rqdql::info, "FUR statement processed"); } |
+    EntityStatement { rq.log(Rqdql::info, "Entity statement processed"); } | 
+    QosStatement { rq.log(Rqdql::info, "QOS statement processed"); } | 
+    VerbStatement { rq.log(Rqdql::info, "Verb statement processed"); } | 
     SeeStatement 
     ;
 

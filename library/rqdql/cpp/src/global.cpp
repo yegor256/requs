@@ -16,7 +16,7 @@
  * @version $Id: bootstrap.php 1190 2010-02-07 07:45:29Z yegor256@yahoo.com $
  */
 
-#include "rqdql.h"
+#include "Rqdql.hpp"
 #include <stdarg.h>
 
 /**
@@ -44,7 +44,7 @@ void yyerror(const char *error, ...)
         );
         strcpy(s, s1);
     }
-    rq.log(rqdql::error, s);
+    rq.log(Rqdql::error, s);
 }
     
 void lyyerror(YYLTYPE t, const char *error, ...)
@@ -69,15 +69,15 @@ void lyyerror(YYLTYPE t, const char *error, ...)
         );
         strcpy(s, s1);
     }
-    rq.log(rqdql::error, s);
+    rq.log(Rqdql::error, s);
 }
     
 int main(int argc, char** argv)
 {
-    rq.log(rqdql::info, "rqdql v0.1");
+    rq.log(Rqdql::info, "rqdql v0.1");
     
     #ifdef RQDQL_DEBUG
-        rq.setVerboseLevel(rqdql::debug);
+        rq.setVerboseLevel(Rqdql::debug);
     #endif
     
     yyparse();
