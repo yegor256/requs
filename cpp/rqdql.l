@@ -138,6 +138,7 @@ PRODUCES ((","{SPACE}*)?(producing|produces?|relates?{SPACE}+to|is{SPACE}+relate
 "them" | 
 "it" | 
 "he" |
+"him" |
 "itself" { rq.log(Rqdql::debug, "THIS"); return THIS; }
 
 	/* NULL words */
