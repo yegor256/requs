@@ -102,7 +102,7 @@ try {
                 '/\[\[.*?\]\]/'         => '', // kill meta-includers of Trac
                 '/\[wiki:(.*?)\]/'      => '${1}', // convert wiki names to string
                 '/\[http:\/\/.*?\s(.*?)\]/'      => '${1}', // convert wiki links to strings
-                '/\[(http:\/\/.*?)\]/'           => '${1}', // convert wiki links to strings
+                '/\[http:\/\/.*?\]/'           => 'http', // convert wiki links to strings
                 '/\'{2,3}(.*?)\'{2,3}/' => '${1}', // convert bold and italic to normal text
             );
             $line = preg_replace(
