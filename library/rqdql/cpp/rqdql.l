@@ -45,8 +45,8 @@ SEE (see|See)
 INFINITIVE (\"to{SPACE}+[a-z]+\")
 AKA (\(aka{SPACE}+\"\+[A-Z]\"\))
 ATTRIBS (\[[a-z0-9]+(,[ ]*[a-z0-9]+)*\])
-INCLUDES ((includes?|has|contains?){SPACE}*":")
-PRODUCES ((produces?|relates?{SPACE}+to|is{SPACE}+related{SPACE}+to){SPACE}*":")
+INCLUDES ((","{SPACE}*)?(including|includes?|has|contains?){SPACE}*":")
+PRODUCES ((","{SPACE}*)?(producing|produces?|relates?{SPACE}+to|is{SPACE}+related{SPACE}+to){SPACE}*":")
 
     /* singular after entity or actor */
 %x SINGULAR
