@@ -142,7 +142,11 @@ PRODUCES ((","{SPACE}*)?(producing|produces?|relates?{SPACE}+to|is{SPACE}+relate
 
 	/* NULL words */
 "a" |
-"the"
+"the" |
+"is" |
+"are |
+"have" |
+"has" |
 "an" { /* ignore them */ }
 
 [a-z]+ { yylval.name = strdup(yytext); rq.log(Rqdql::debug, "WORD: '%s'", yytext); return WORD; }
