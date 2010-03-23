@@ -42,9 +42,11 @@ QOS (QOS{NSFX})
 ACRONYM ([A-Z]+(\+[A-Z]+)?)
 TBD (TBD\(.*?\))
 SEE (see|See)
-INFINITIVE (\"to[ \t\r\n]+[a-z]+\")
-AKA (\(aka[ \t\r\n]+\"\+[A-Z]\"\))
+INFINITIVE (\"to{SPACE}+[a-z]+\")
+AKA (\(aka{SPACE}+\"\+[A-Z]\"\))
 ATTRIBS (\[[a-z0-9]+(,[ ]*[a-z0-9]+)*\])
+INCLUDES ((includes?|has|contains?){SPACE}*":")
+PRODUCES ((produces?|relates?{SPACE}+to|is{SPACE}+related{SPACE}+to){SPACE}*":")
 
     /* singular after entity or actor */
 %x SINGULAR
@@ -76,8 +78,8 @@ ATTRIBS (\[[a-z0-9]+(,[ ]*[a-z0-9]+)*\])
 
     /* LHS modifiers */
 <LHS_ENTITY>is{SPACE}a: { BEGIN(RHS_INHERITANCE); rq.log(Rqdql::debug, "RHS_INHERITANCE"); return IS_A; }
-<LHS_ENTITY>includes?{SPACE}?":" { BEGIN(RHS_PARTS); rq.log(Rqdql::debug, "INCLUDES, RHS_PARTS"); return INCLUDES; }
-<LHS_ENTITY>produces?{SPACE}?":" { BEGIN(RHS_PARTS); rq.log(Rqdql::debug, "PRODUCES, RHS_PARTS"); return PRODUCES; }
+<LHS_ENTITY>{INCLUDES} { BEGIN(RHS_PARTS); rq.log(Rqdql::debug, "INCLUDES, RHS_PARTS"); return INCLUDES; }
+<LHS_ENTITY>{PRODUCES} { BEGIN(RHS_PARTS); rq.log(Rqdql::debug, "PRODUCES, RHS_PARTS"); return PRODUCES; }
 <LHS_FUR>{ATTRIBS} { yylval.name = strdup(yytext); rq.log(Rqdql::debug, "ATTRIBS: %s", yytext); return ATTRIBS; }
 <LHS_FUR>":" { BEGIN(RHS_ACTIONS); rq.log(Rqdql::debug, "RHS_ACTIONS"); REJECT; }
 <LHS_ENTITY>":" { BEGIN(RHS_INFORMAL); rq.log(Rqdql::debug, "RHS_INFORMAL"); REJECT; }
@@ -92,7 +94,7 @@ ATTRIBS (\[[a-z0-9]+(,[ ]*[a-z0-9]+)*\])
 <RHS_INFORMAL>[^\.]+ { yylval.name = strdup(yytext); rq.log(Rqdql::debug, "INFORMAL"); return INFORMAL; }
 
     /* parts */
-<RHS_PARTS>(include|produce)s?{SPACE}?":" { rq.log(Rqdql::debug, "PARTS INCLUDE"); return INCLUDES; }
+<RHS_PARTS>({INCLUDES}|{PRODUCES}) { rq.log(Rqdql::debug, "PARTS INCLUDE"); return INCLUDES; }
 <RHS_PARTS>":" { BEGIN(PARTS_INFORMAL); rq.log(Rqdql::debug, "PARTS_INFORMAL"); REJECT; }
 <PARTS_INFORMAL>[^\.;]+ {
     yylval.name = strdup(yytext); 
