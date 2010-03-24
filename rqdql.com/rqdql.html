@@ -195,7 +195,13 @@
         <p>An object can include other objects, which are <i>parts</i> of it
             (<tt>includes</tt> is a <i>statement modifier</i>). Formally,
             they have <i>aggregation</i> relations with the object. Parts may be named
-            with letters only and should not use CamelCase notation.</p>
+            with small letters only and should not use CamelCase notation.
+            Synonyms of <tt>includes</tt> are:
+                <tt>include</tt>,
+                <tt>has</tt>, 
+                <tt>contain</tt>.
+                <tt>contains</tt>.
+            </p>
 
         <p class="code">
             ActorUser <b>includes</b>: name; email; date of birth.<br/>
@@ -210,7 +216,13 @@
         <p>An object can include links to dynamically generated objects, which are <i>associations</i> of it
             (<tt>produces</tt> is a <i>statement modifier</i>). Formally,
             they have <i>association</i> relations with the object. Associations may be named
-            with letters only and should not use CamelCase notation.</p>
+            with small letters only and should not use CamelCase notation.
+            Synonyms of <tt>produces</tt> are:
+                <tt>produce</tt>,
+                <tt>relates to</tt>, 
+                <tt>relate to</tt>, 
+                <tt>is related to</tt>.
+            </p>
 
         <p class="code">
             ActorUser <b>produces</b>: account balance; ip addresses.<br/>
