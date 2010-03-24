@@ -32,7 +32,7 @@
 %option nodefault
 
 SPACE ([ \t\r\n]+)
-NSFX ([1-9](\.[1-9])?)
+NSFX ([1-8](\.[1-8])?)
 CAMEL_PART ([A-Z][a-z]+)
 CAMEL ({CAMEL_PART}({CAMEL_PART})+)
 ACTOR (Actor({CAMEL_PART})+|SUD)
