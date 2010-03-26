@@ -18,14 +18,22 @@
 // we should track locations of errors, in YYLTYPE, see lyyerror()
 %locations
 
+%{
+    #include "../rqdql.tab.h"
+    #include "rqdql.h"
+    #include "Scope.hpp"
+%}
+
 %union {
     char* name;
+    Scope::Actions actions();
+    Scope::Action action();
 };
 
 // Here we should say that the type of non-terminal
 // terms are mapped to %union.name, and are strings because of that
-%type <name> actions
-%type <name> action
+%type <actions> actions
+%type <action> action
 %type <name> verbs
 %type <name> verb
 %type <name> predicates
@@ -73,10 +81,6 @@
 %right INCLUDES
 %right PRODUCES
 
-%{
-    #include "Rqdql.hpp"
-%}
-
 %%
 
 SRS:
@@ -87,10 +91,10 @@ DottedStatement:
     Statement DOT;
 
 Statement:
-    FurStatement { rq.log(Rqdql::info, "FUR statement processed"); } |
-    EntityStatement { rq.log(Rqdql::info, "Entity statement processed"); } | 
-    QosStatement { rq.log(Rqdql::info, "QOS statement processed"); } | 
-    VerbStatement { rq.log(Rqdql::info, "Verb statement processed"); } | 
+    FurStatement { rq.log("FUR statement processed"); } |
+    EntityStatement { rq.log("Entity statement processed"); } | 
+    QosStatement { rq.log("QOS statement processed"); } | 
+    VerbStatement { rq.log("Verb statement processed"); } | 
     SeeStatement 
     ;
 
@@ -108,12 +112,12 @@ lfur:
     ;
     
 actions:
-    action |
-    actions SEMICOLON action
+    action { $$ = new Scope::Actions((Scope::Action)$1); } |
+    actions SEMICOLON action { $$ = $1 + $3; } 
     ;
     
 action:
-    ACTOR CAN verbs subjects |
+    ACTOR CAN verbs subjects { $$ = new Scope::Action(); } |
     ACTOR error { lyyerror(@2, "'can' missed after '%s'", $1); } |
     ACTOR CAN error { lyyerror(@3, "list of verbs not found after '%s can'", $1); } |
     ACTOR CAN verbs error { lyyerror(@4, "list of subjects missed after '%s can %s'", $1, $3); }
@@ -186,7 +190,7 @@ predicate:
     
 lambda:
     IF |
-    USING
+    USING 
     ;
     
 EntityStatement:

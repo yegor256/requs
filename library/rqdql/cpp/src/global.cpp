@@ -16,14 +16,14 @@
  * @version $Id: bootstrap.php 1190 2010-02-07 07:45:29Z yegor256@yahoo.com $
  */
 
-#include "Rqdql.hpp"
+#include "rqdql.h"
+#include <string>
 #include <stdarg.h>
 
 /**
  * Called when error is found in parser
  */
-void yyerror(const char *error, ...)
-{
+void yyerror(const char *error, ...) {
     // if (YYRECOVERING()) {
     //     return;
     // }
@@ -38,20 +38,15 @@ void yyerror(const char *error, ...)
             "%d.%d error: %s",
             yylloc.first_line,
             yylloc.first_column,
-            // yylloc.last_line,
-            // yylloc.last_column,
             s
         );
         strcpy(s, s1);
     }
-    rq.log(Rqdql::error, s);
+    std::string line = s;
+    rqdql::log(rqdql::L_ERROR, line);
 }
     
-void lyyerror(YYLTYPE t, const char *error, ...)
-{
-    // if (YYRECOVERING()) {
-    //     return;
-    // }
+void lyyerror(YYLTYPE t, const char *error, ...) {
     va_list args;
     va_start(args, error);
     char s[500];
@@ -61,23 +56,21 @@ void lyyerror(YYLTYPE t, const char *error, ...)
         sprintf(
             s1, 
             "%d.%d error: %s",
-            // t.first_line,
-            // t.first_column,
-            t.last_line,
-            t.last_column,
+            t.first_line,
+            t.first_column,
             s
         );
         strcpy(s, s1);
     }
-    rq.log(Rqdql::error, s);
+    std::string line = s;
+    rqdql::log(rqdql::L_ERROR, line);
 }
     
-int main(int argc, char** argv)
-{
-    rq.log(Rqdql::info, "rqdql v0.1");
+int main(int argc, char** argv) {
+    rqdql::log(rqdql::L_INFO, "rqdql v0.1");
     
     #ifdef RQDQL_DEBUG
-        rq.setVerboseLevel(Rqdql::debug);
+        rqdql::level = rqdql::L_DEBUG;
     #endif
     
     yyparse();

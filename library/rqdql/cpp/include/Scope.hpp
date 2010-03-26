@@ -19,17 +19,54 @@
 #ifndef __INCLUDE_SCOPE_H
 #define __INCLUDE_SCOPE_H
 
+#include <vector>
+#include <string>
 #include "Scope/Statement.hpp"
+
+using namespace std;
+
+namespace yy {
+    class item {
+    public:    
+        virtual item& operator=(item* i) {
+            operator=(*i);
+            delete i;
+            return *this;
+        }
+    };
+
+    template <typename T> class collection : public item {
+    public:    
+        collection() : _items() {
+        }
+        collection(T item) : _items() {
+            *this + item;
+        }
+        collection& operator+(T item) {
+            this->_items.push_back(item);
+            return *this;
+        }
+    private:
+        std::vector<T> _items;
+    };
+};
 
 /**
  * Global holder and processor of all scope statements
  *
  * @see rqdql.y
  */
-class Scope
-{
+class Scope : yy::collection<Statement> {
 public:
-    void add(Statement);
+    
+    class Action; // see Scope/Action.hpp
+    class Verb; // see Scope/Verb.hpp
+
+    class Actions : public yy::collection<Scope::Action> {};
+    class Verbs : public yy::collection<Scope::Verb> {};
 };
+
+#include "Scope/Action.hpp"
+#include "Scope/Verb.hpp"
 
 #endif

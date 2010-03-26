@@ -19,13 +19,9 @@
 #ifndef __INCLUDE_SCOPE_STATEMENT_FUR_H
 #define __INCLUDE_SCOPE_STATEMENT_FUR_H
 
-#include "Scope/Statement.hpp"
-
-namespace Statement {
-class Fur: public Statement
-{
+class Scope::FurStatement : public Scope::Statement {
 public:
-};
+    
 };
 
 #endif
