@@ -22,7 +22,7 @@
 #include <iostream>
 #include "../rqdql.tab.h"
 
-#include "scope/Statement.h"
+#include "scope.h"
 
 extern int yyparse();
 extern void yyerror(const char *error, ...);
@@ -50,8 +50,7 @@ namespace rqdql {
      * @see rqdql.l
      */
     void log(LogLevel, std::string);
-    void log(std::string line)
-    {
+    void log(std::string line) {
         return log(L_DEBUG, line);
     }
     

@@ -19,22 +19,26 @@
 #ifndef __INCLUDE_SCOPE_STATEMENT_H
 #define __INCLUDE_SCOPE_STATEMENT_H
 
-class Statement {
-public:
+namespace rqdql {
+    
+    namespace scope {
+        
+        class Statement {
+        public:
+            void setStartLineNo(int lineNo) {
+                this->startLineNo = lineNo;
+            }
+            void setEndLineNo(int lineNo) {
+                this->endLineNo = lineNo;
+            }
+    
+        private:
+            int startLineNo;
+            int endLineNo;
+        };
 
-    void setStartLineNo(int lineNo) {
-        this->startLineNo = lineNo;
     }
-    
-    void setEndLineNo(int lineNo) {
-        this->endLineNo = lineNo;
-    }
-    
-private:
 
-    int startLineNo;
-    int endLineNo;
-    
-};
+}
 
 #endif
