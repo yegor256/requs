@@ -20,9 +20,8 @@
 #define __INCLUDE_RQDQL_H
 
 #include <iostream>
-#include "../rqdql.tab.h"
-
 #include "scope.h"
+#include "../rqdql.tab.h"
 
 extern int yyparse();
 extern void yyerror(const char *error, ...);

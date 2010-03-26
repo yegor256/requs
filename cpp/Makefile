@@ -19,24 +19,26 @@ CPP = c++
 BISON = bison
 FLEX = flex
 CPPFLAGS = -I./include -DRQDQL_DEBUG=true
-OBJS = src/global.o src/rqdql.o
-HEADERS = include/Scope.hpp \
-	include/rqdql.hpp
 EXEC = ./rqdql
-TESTS = test/ScopeTest.test
-EXAMPLES = examples/valid/ex-2.txt
+
+SOURCES := $(shell find src -name "*.cpp")
+OBJS := $(SOURCES:.cpp=.o)
+HEADERS := $(shell find include -name "*.h")
+TEST_SOURCES := $(shell find test -name "*.cpp")
+TESTS := $(TEST_SOURCES:.cpp=.o)
+VALID_EXAMPLES = $(shell find examples/valid -name "*.txt")
 
 all: rqdql test
 
-rqdql: lex.yy.c rqdql.tab.h rqdql.tab.c $(OBJS) Makefile $(EXAMPLES)
+rqdql: lex.yy.c rqdql.tab.h rqdql.tab.c $(OBJS) Makefile
 	$(CPP) $(CPPFLAGS) -o $@ rqdql.tab.c lex.yy.c $(OBJS)
     
-lex.yy.c: rqdql.l include/rqdql.h
+lex.yy.c: rqdql.l $(HEADERS)
 	$(FLEX) rqdql.l
 	
 rqdql.tab.h: rqdql.tab.c
 
-rqdql.tab.c: rqdql.y include/rqdql.h
+rqdql.tab.c: rqdql.y $(HEADERS)
 	$(BISON) --no-lines --report=all -d rqdql.y
 
 %.o: %.cpp $(HEADERS)
@@ -44,22 +46,26 @@ rqdql.tab.c: rqdql.y include/rqdql.h
 
 # clean everything!
 clean:
-	rm -f lex.yy.c $(EXEC).tab.c $(EXEC).tab.h
+	rm -f lex.yy.c rqdql.tab.c rqdql.tab.h
 	rm -f rqdql.output
 	rm -f $(OBJS)
 	rm -f $(EXEC)
 	rm -f $(TESTS)
 
+test: rqdql $(TESTS) test-all $(HEADERS)
+	for i in $(TESTS); do \
+		$$i; \
+	done
+
 # compilation of unit tests
 %.test: %.cpp
 	$(CPP) $(CPPFLAGS) -o $@ $< src/rqdql.o
 
-test: rqdql $(TESTS) test-all $(HEADERS)
-	test/ScopeTest.test
-
-# test the entire mechanism with a test file
-test-all: $(EXEC)
-	$(EXEC) "list" < examples/valid/ex-2.txt
+# test the entire mechanism with all test files
+test-all: $(EXEC) $(VALID_EXAMPLES)
+	for i in $(VALID_EXAMPLES); do \
+		$(EXEC) "list" < $$i; \
+	done
 
 # deploy the HTML to the target hosting platform
 deploy:
