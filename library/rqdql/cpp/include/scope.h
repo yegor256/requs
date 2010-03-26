@@ -21,8 +21,8 @@
 
 #include <vector>
 #include <string>
-#include "scope/Statement.hpp"
-#include "scope/Action.hpp"
+#include "scope/Statement.h"
+#include "scope/Action.h"
 
 using namespace std;
 

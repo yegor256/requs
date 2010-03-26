@@ -19,15 +19,21 @@
 %locations
 
 %{
+    #include <vector>
     #include "../rqdql.tab.h"
     #include "rqdql.h"
-    #include "Scope.hpp"
+    
+    using rqdql::log;
+    using namespace rqdql::scope;
+    using std::vector;
 %}
 
 %union {
     char* name;
-    Scope::Actions actions();
-    Scope::Action action();
+    vector<Statement> statements();
+    Statement statement();
+    vector<Action> actions();
+    Action action();
 };
 
 // Here we should say that the type of non-terminal
@@ -91,10 +97,10 @@ DottedStatement:
     Statement DOT;
 
 Statement:
-    FurStatement { rq.log("FUR statement processed"); } |
-    EntityStatement { rq.log("Entity statement processed"); } | 
-    QosStatement { rq.log("QOS statement processed"); } | 
-    VerbStatement { rq.log("Verb statement processed"); } | 
+    FurStatement { log("FUR statement processed"); } |
+    EntityStatement { log("Entity statement processed"); } | 
+    QosStatement { log("QOS statement processed"); } | 
+    VerbStatement { log("Verb statement processed"); } | 
     SeeStatement 
     ;
 
@@ -112,8 +118,8 @@ lfur:
     ;
     
 actions:
-    action { $$ = new Scope::Actions((Scope::Action)$1); } |
-    actions SEMICOLON action { $$ = $1 + $3; } 
+    action { $$.erase(); $$.push_back($1); } |
+    actions SEMICOLON action { $$.push_back($3); } 
     ;
     
 action:
