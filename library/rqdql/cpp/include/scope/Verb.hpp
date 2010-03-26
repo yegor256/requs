@@ -19,12 +19,19 @@
 #ifndef __INCLUDE_SCOPE_ACTION_H
 #define __INCLUDE_SCOPE_ACTION_H
 
-class Scope::Verb
-{
-public:    
-
-private:
+namespace rqdql {
     
-};
+    namespace scope {
+        
+        class Verb {
+        public:    
+
+        private:
+    
+        };
+        
+    }
+
+}
 
 #endif
