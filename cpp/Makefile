@@ -23,41 +23,53 @@ OBJS = src/global.o src/rqdql.o
 HEADERS = include/Scope.hpp \
 	include/rqdql.hpp
 EXEC = ./rqdql
-TESTS = test/ScopeTest.o
+TESTS = test/ScopeTest.test
 EXAMPLES = examples/valid/ex-2.txt
 
-rqdql: bison $(OBJS) Makefile $(EXAMPLES) test
-	$(CPP) $(CPPFLAGS) -o $@ $@.tab.c lex.yy.c $(OBJS)
+all: rqdql test
+
+rqdql: lex.yy.c rqdql.tab.h rqdql.tab.c $(OBJS) Makefile $(EXAMPLES)
+	$(CPP) $(CPPFLAGS) -o $@ rqdql.tab.c lex.yy.c $(OBJS)
     
-bison: lex.yy.c rqdql.tab.c rqdql.tab.h
-	$(BISON) --no-lines --report=all -d rqdql.y
+lex.yy.c: rqdql.l include/rqdql.h
 	$(FLEX) rqdql.l
+	
+rqdql.tab.h: rqdql.tab.c
+
+rqdql.tab.c: rqdql.y include/rqdql.h
+	$(BISON) --no-lines --report=all -d rqdql.y
 
 %.o: %.cpp $(HEADERS)
 	$(CPP) $(CPPFLAGS) -o $@ -c $<
 
+# clean everything!
 clean:
 	rm -f lex.yy.c $(EXEC).tab.c $(EXEC).tab.h
 	rm -f rqdql.output
 	rm -f $(OBJS)
 	rm -f $(EXEC)
+	rm -f $(TESTS)
 
 # compilation of unit tests
-test/%.o: test/%.cpp
-	$(CPP) $(CPPFLAGS) -o $@ $<
+%.test: %.cpp
+	$(CPP) $(CPPFLAGS) -o $@ $< src/rqdql.o
 
-test: $(TESTS) test-all
-	test/ScopeTest.o
+test: rqdql $(TESTS) test-all $(HEADERS)
+	test/ScopeTest.test
 
-test-all:	
+# test the entire mechanism with a test file
+test-all: $(EXEC)
 	$(EXEC) "list" < examples/valid/ex-2.txt
 
+# deploy the HTML to the target hosting platform
 deploy:
 	ftp -u ftp://rqdql_deploy%40caybo.ru:uf8Klp7Y2Et4@rqdql.com/public/rqdql.html ../rqdql.com/rqdql.html
 	
+# test PHP Trac hook
 hook-test: rqdql trac-hook.php trac-hook.sh
 	./trac-hook.sh < test/trac-hook/_request.txt
-	
+
+# update the code from SVN	
 up:
 	svn up --username yegor256@yahoo.com --password aF41Atlz .
 

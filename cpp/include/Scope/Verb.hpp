@@ -13,21 +13,18 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: Statement.hpp 1414 2010-03-22 14:06:31Z yegor256@yahoo.com $
  */
 
-#include <boost/test/minimal.hpp>
-#include "Rqdql.hpp"
-#include "Scope.hpp"
-#include "Scope/Statement.hpp"
+#ifndef __INCLUDE_SCOPE_ACTION_H
+#define __INCLUDE_SCOPE_ACTION_H
 
-int test_main(int, char *[]) {
-    // BOOST_CHECK(true);
-    // BOOST_REQUIRE(true);
+class Scope::Verb
+{
+public:    
+
+private:
     
-    Scope scope = rq.scope();
-    Scope::Statement statement;
-    scope.append(statement);
-    
-    return 0;
-}
+};
+
+#endif

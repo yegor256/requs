@@ -16,62 +16,35 @@
  * @version $Id: bootstrap.php 1190 2010-02-07 07:45:29Z yegor256@yahoo.com $
  */
 
-#include "Rqdql.hpp"
+#include "rqdql.h"
 #include <stdarg.h>
 
-// global object
-Rqdql rq(Rqdql::error);
-
-/**
- * to set verbose level
- */
-void Rqdql::setVerboseLevel(LogLevel level)
-{
-    _verboseLevel = level;
-}
-
-/**
- * To make sprintf() work simply, as in PHP
- */
-char* Rqdql::sprintf(const char* mask, ...)
-{
-    va_list args;
-    va_start(args, mask);
-
-    char s[500];
-    vsprintf(s, mask, args);
-    return strdup(s);
-}
+rqdql::LogLevel level = L_DEBUG;
 
 /**
  * To log a line
  */
-void Rqdql::log(LogLevel level, const char* mask, ...)
-{   
+void rqdql::log(LogLevel lvl, std::string line) {   
     string label;
-    switch (level) {
-        case debug:
+    switch (lvl) {
+        case L_DEBUG:
             label = "DEBUG";
             break;
-        case verbose:
+        case L_VERBOSE:
             label = "VERB";
             break;
-        case info:
+        case L_INFO:
             label = "INFO";
             break;
-        case warning:
+        case L_WARNING:
             label = "WARN";
             break;
-        case error:
+        case L_ERROR:
             label = "ERR";
             break;
     }
-    if (level >= _verboseLevel) {
-        va_list args;
-        va_start(args, mask);
-        cout << '[' << label << "] ";
-        vprintf(mask, args);
-        cout << endl;
+    if (lvl >= rqdql::level) {
+        cout << '[' << label << "] " << line << endl;
     }
 }
 

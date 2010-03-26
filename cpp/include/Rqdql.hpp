@@ -19,8 +19,8 @@
 #ifndef __INCLUDE_RQDQL_H
 #define __INCLUDE_RQDQL_H
 
-#include "../rqdql.tab.h"
 #include "Scope.hpp"
+#include "../rqdql.tab.h"
 
 #include <iostream>
     using namespace std;
@@ -36,8 +36,7 @@ extern int yylineno;
  *
  * @package
  */
-class Rqdql
-{
+class Rqdql {
 public:
     
     /**
@@ -54,8 +53,7 @@ public:
     /**
      * Constructor
      */
-    Rqdql(LogLevel level) : _verboseLevel(level)
-    {
+    Rqdql(LogLevel level) : _verboseLevel(level) {
         // ..
     };
     
@@ -88,12 +86,13 @@ public:
      * @see rqdql.l
      */
     void log(LogLevel, const char*, ...);
+    // the same, but shorter
+    void log(const char*, ...);
     
     /**
      * Get the general scope object
      */
-    Scope& scope()
-    {
+    Scope& scope() {
         return _scope;
     };
 
