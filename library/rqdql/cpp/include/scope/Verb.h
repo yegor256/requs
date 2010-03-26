@@ -23,7 +23,7 @@ namespace rqdql {
     
     namespace scope {
         
-        class Verb {
+        class Verb : public item {
         public:    
 
         private:

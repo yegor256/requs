@@ -23,7 +23,7 @@ namespace rqdql {
     
     namespace scope {
         
-        class Statement {
+        class Statement : public item {
         public:
             void setStartLineNo(int lineNo) {
                 this->startLineNo = lineNo;

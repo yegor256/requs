@@ -23,7 +23,7 @@ namespace rqdql {
     
     namespace scope {
         
-        class Action {
+        class Action : public item {
         public:    
 
         private:

@@ -20,16 +20,15 @@
 
 %{
     #include <vector>
-    #include "../rqdql.tab.h"
     #include "rqdql.h"
-    
+    #include "../rqdql.tab.h"
+	#include "boost/format.hpp"
+	using boost::format;    
     using rqdql::log;
-    using namespace rqdql::scope;
-    using std::vector;
 %}
 
 %union {
-    char* name;
+    std::string name();
     vector<Statement> statements();
     Statement statement();
     vector<Action> actions();
@@ -123,7 +122,7 @@ actions:
     ;
     
 action:
-    ACTOR CAN verbs subjects { $$ = new Scope::Action(); } |
+    ACTOR CAN verbs subjects { /* set Action */ } |
     ACTOR error { lyyerror(@2, "'can' missed after '%s'", $1); } |
     ACTOR CAN error { lyyerror(@3, "list of verbs not found after '%s can'", $1); } |
     ACTOR CAN verbs error { lyyerror(@4, "list of subjects missed after '%s can %s'", $1, $3); }
@@ -131,7 +130,7 @@ action:
     
 verbs:
     verb |
-    verbs separator verb { $$ = rq.sprintf("%s, %s", $1, $3); }
+    verbs separator verb { $$ = format("%s, %s") % $1 % $3; }
     ;
     
 verb:
@@ -153,19 +152,19 @@ separator:
     
 subject:
     object |
-    object modifier { $$ = rq.sprintf("%s %s", $1, $2); }
+    object modifier { $$ = format("%s %s") % $1 % $2; }
     ;
     
 object:
-    THIS { $$ = rq.sprintf("this"); } |
-    ACTOR plural { $$ = rq.sprintf("%s", $1); } |
-    ENTITY plural { $$ = rq.sprintf("%s", $1); } |
-    attributes OF object { $$ = rq.sprintf("%s of %s", $1, $3); }
+    THIS { $$ = format("this"); } |
+    ACTOR plural { $$ = format("%s") % $1; } |
+    ENTITY plural { $$ = format("%s") % $1; } |
+    attributes OF object { $$ = format("%s of %s") % $1 % $3; }
     ;
     
 attributes:
     attribute |
-    attributes separator attribute { $$ = rq.sprintf("%s, %s", $1, $3); }
+    attributes separator attribute { $$ = format("%s, %s") % $1 % $3; }
     ;
     
 attribute:
@@ -174,14 +173,14 @@ attribute:
     
 words:
     WORD |
-    words WORD { $$ = rq.sprintf("%s %s", $1, $2); }
+    words WORD { $$ = format("%s %s") % $1 % $2; }
     ;
     
 plural:
     /* singular */ | PLURAL_MANY | PLURAL_SOME | PLURAL_ANY;
 
 modifier:
-    OPEN_BRACE predicates CLOSE_BRACE { $$ = rq.sprintf("%s", $2); }
+    OPEN_BRACE predicates CLOSE_BRACE { $$ = format("%s") % $2; }
     ;
     
 predicates:
@@ -190,8 +189,8 @@ predicates:
     ;
     
 predicate:
-    lambda subjects { $$ = rq.sprintf("L %s", $2); } |
-    lambda subjects verbs { $$ = rq.sprintf("L %s %s", $2, $3); }
+    lambda subjects { $$ = format("L %s") % $2; } |
+    lambda subjects verbs { $$ = format("L %s %s") % $2 % $3; }
     ;
     
 lambda:

@@ -21,6 +21,11 @@
 
 #include <iostream>
 #include "scope.h"
+
+// for rqdql.tab.h, see below
+#include <vector>
+using std::vector;
+using namespace rqdql::scope;
 #include "../rqdql.tab.h"
 
 extern int yyparse();
