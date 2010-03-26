@@ -145,7 +145,7 @@ PRODUCES ((","{SPACE}*)?(producing|produces?|relates?{SPACE}+to|is{SPACE}+relate
 "a" |
 "the" |
 "is" |
-"are |
+"are" |
 "have" |
 "has" |
 "an" { /* ignore them */ }
