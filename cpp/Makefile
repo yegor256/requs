@@ -18,7 +18,7 @@ PATH := $(PATH):/usr/local/bin:/usr/bin
 CPP = c++
 BISON = bison
 FLEX = flex
-CPPFLAGS = -I./include -DRQDQL_DEBUG=true
+CPPFLAGS = -I./include -I./library -DRQDQL_DEBUG=true
 EXEC = ./rqdql
 
 SOURCES := $(shell find src -name "*.cpp")

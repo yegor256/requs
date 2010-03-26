@@ -19,27 +19,18 @@
 #ifndef __INCLUDE_SCOPE_H
 #define __INCLUDE_SCOPE_H
 
-#include <vector>
-#include <string>
-#include "scope/Statement.h"
-#include "scope/Action.h"
-
-using namespace std;
-
 namespace rqdql {
     
     namespace scope {
 
         class item {
         public:    
-            virtual item& operator=(item* i) {
-                operator=(*i);
-                delete i;
-                return *this;
-            }
         };
 
     }
 };
+
+#include "scope/Statement.h"
+#include "scope/Action.h"
 
 #endif

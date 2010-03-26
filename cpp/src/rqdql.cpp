@@ -18,6 +18,10 @@
 
 #include "rqdql.h"
 #include <stdarg.h>
+#include <iostream>
+
+using namespace std;
+using namespace rqdql;
 
 rqdql::LogLevel level = L_DEBUG;
 
@@ -25,7 +29,7 @@ rqdql::LogLevel level = L_DEBUG;
  * To log a line
  */
 void rqdql::log(LogLevel lvl, std::string line) {   
-    string label;
+    std::string label;
     switch (lvl) {
         case L_DEBUG:
             label = "DEBUG";

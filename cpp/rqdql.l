@@ -17,8 +17,10 @@
 
 %{
 	#include "../rqdql.tab.h"
-    #include "rqdql.h" using rqdql::log;
-	#include "boost/format.hpp" using boost::format;
+    #include "rqdql.h"
+	using namespace rqdql;
+	#include "boost/format.hpp"
+	using boost::format;
 %}
 
 %{
