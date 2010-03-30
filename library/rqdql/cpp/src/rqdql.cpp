@@ -13,7 +13,7 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: bootstrap.php 1190 2010-02-07 07:45:29Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
 #include "rqdql.h"
@@ -23,12 +23,57 @@
 using namespace std;
 using namespace rqdql;
 
-rqdql::LogLevel level = L_DEBUG;
+rqdql::LogLevel rqdql::level = L_DEBUG;
+
+// explicit instantiation, see Stroustrup C.13.10
+template void yyAdd<vector<Action>, Action>(vector<Action>*&, Action*&);
+template void yySet<vector<Action>, Action>(vector<Action>*&, Action*&);
+
+template <class T, class D> void yyAdd(T*& array, D*& item)
+{
+    array->push_back(*item);
+}
+
+template <class T, class D> void yySet(T*& array, D*& item)
+{
+    if (array) {
+        array->clear();
+    } else {
+        array = new T;
+    }
+    array->push_back(*item);
+}
+
+template <class T> void yySet(T*& lhs, T*& rhs)
+{
+    if (lhs) {
+        delete lhs;
+    }
+    lhs = rhs;
+}
+
+void yySet(string*& lhs, boost::format rhs)
+{
+    *lhs = rhs.str();
+}
+
+void yySet(string*& lhs, char*& rhs)
+{
+    *lhs = rhs;
+}
+
+void rqdql::log(const std::string& line) {
+    return log(L_DEBUG, line);
+}
+
+void rqdql::log(const boost::format& line) {
+    return log(L_DEBUG, line.str());
+}
 
 /**
  * To log a line
  */
-void rqdql::log(LogLevel lvl, std::string line) {   
+void rqdql::log(const LogLevel lvl, const std::string& line) {   
     std::string label;
     switch (lvl) {
         case L_DEBUG:

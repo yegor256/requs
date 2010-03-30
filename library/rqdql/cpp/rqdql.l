@@ -16,10 +16,8 @@
  */
 
 %{
-	#include "../rqdql.tab.h"
     #include "rqdql.h"
 	using namespace rqdql;
-	#include "boost/format.hpp"
 	using boost::format;
 %}
 
@@ -74,8 +72,9 @@ PRODUCES ((","{SPACE}*)?(producing|produces?|relates?{SPACE}+to|is{SPACE}+relate
 <INITIAL>{QOS} { BEGIN(LHS_QOS); log("LHS_QOS"); REJECT; }
 <INITIAL>{CAMEL} { BEGIN(LHS_ENTITY); log("LHS_ENTITY"); REJECT; }
 <INITIAL>{SEE} { log("SEE"); return SEE; }
-<INITIAL>{INFINITIVE} { yylval.name = strdup(yytext); 
-	log("INFINITIVE: %s", yytext); 
+<INITIAL>{INFINITIVE} { 
+	yySet(yylval.name, yytext); 
+	log(format("INFINITIVE: %s") % yytext); 
 	BEGIN(LHS_INFINITIVE); log("LHS_INFINITIVE"); 
 	return INFINITIVE; 
 }
@@ -84,24 +83,24 @@ PRODUCES ((","{SPACE}*)?(producing|produces?|relates?{SPACE}+to|is{SPACE}+relate
 <LHS_ENTITY>is{SPACE}a: { BEGIN(RHS_INHERITANCE); log("RHS_INHERITANCE"); return IS_A; }
 <LHS_ENTITY>{INCLUDES} { BEGIN(RHS_PARTS); log("INCLUDES, RHS_PARTS"); return INCLUDES; }
 <LHS_ENTITY>{PRODUCES} { BEGIN(RHS_PARTS); log("PRODUCES, RHS_PARTS"); return PRODUCES; }
-<LHS_FUR>{ATTRIBS} { yylval.name = strdup(yytext); log(format("ATTRIBS: %s") % yytext); return ATTRIBS; }
+<LHS_FUR>{ATTRIBS} { yySet(yylval.name, yytext); log(format("ATTRIBS: %s") % yytext); return ATTRIBS; }
 <LHS_FUR>":" { BEGIN(RHS_ACTIONS); log("RHS_ACTIONS"); REJECT; }
 <LHS_ENTITY>":" { BEGIN(RHS_INFORMAL); log("RHS_INFORMAL"); REJECT; }
 <LHS_QOS>":" { BEGIN(RHS_INFORMAL); log("RHS_INFORMAL"); REJECT; }
 
 	/* LHS infinitive */
-<LHS_INFINITIVE>{AKA} { yylval.name = strdup(yytext); log(format("AKA: %s") % yytext); return AKA; }
+<LHS_INFINITIVE>{AKA} { yySet(yylval.name, yytext); log(format("AKA: %s") % yytext); return AKA; }
 <LHS_INFINITIVE>"means" { log("MEANS"); return MEANS; }
 <LHS_INFINITIVE>":" { BEGIN(RHS_INFORMAL); log("RHS_INFORMAL"); REJECT; }
 
     /* informal text on the right part of entity */
-<RHS_INFORMAL>[^\.]+ { yylval.name = strdup(yytext); log("INFORMAL"); return INFORMAL; }
+<RHS_INFORMAL>[^\.]+ { yySet(yylval.name, yytext); log("INFORMAL"); return INFORMAL; }
 
     /* parts */
 <RHS_PARTS>({INCLUDES}|{PRODUCES}) { log("PARTS INCLUDE"); return INCLUDES; }
 <RHS_PARTS>":" { BEGIN(PARTS_INFORMAL); log("PARTS_INFORMAL"); REJECT; }
 <PARTS_INFORMAL>[^\.;]+ {
-    yylval.name = strdup(yytext); 
+    yySet(yylval.name, yytext); 
     log(format("PART INFORMAL: '%s'") % yytext);
     BEGIN(RHS_PARTS);
     log("RHS_PARTS");
@@ -112,11 +111,11 @@ PRODUCES ((","{SPACE}*)?(producing|produces?|relates?{SPACE}+to|is{SPACE}+relate
 "." { BEGIN(INITIAL); log("DOT, INITIAL"); return DOT; }
 
     /* find entities */
-{FUR} { yylval.name = strdup(yytext); log(format("FUR: '%s'") % yytext); return FUR; }
-{ACTOR} { yylval.name = strdup(yytext); log(format("ACTOR: '%s'") % yytext); return ACTOR; }
-{QOS} { yylval.name = strdup(yytext); log(format("QOS: '%s'") % yytext); return QOS; }
-{UC} { yylval.name = strdup(yytext); log(format("UC: '%s'") % yytext); return UC; }
-{CAMEL} { yylval.name = strdup(yytext); log(format("ENTITY: '%s'") % yytext); return ENTITY; }
+{FUR} { yySet(yylval.name, yytext); log(format("FUR: '%s'") % yytext); return FUR; }
+{ACTOR} { yySet(yylval.name, yytext); log(format("ACTOR: '%s'") % yytext); return ACTOR; }
+{QOS} { yySet(yylval.name, yytext); log(format("QOS: '%s'") % yytext); return QOS; }
+{UC} { yySet(yylval.name, yytext); log(format("UC: '%s'") % yytext); return UC; }
+{CAMEL} { yySet(yylval.name, yytext); log(format("ENTITY: '%s'") % yytext); return ENTITY; }
 
 <RHS_PARTS>"-s" |
 <RHS_ACTIONS>"-s" { log("PLURAL_MANY"); return PLURAL_MANY; }
@@ -154,9 +153,9 @@ PRODUCES ((","{SPACE}*)?(producing|produces?|relates?{SPACE}+to|is{SPACE}+relate
 "has" |
 "an" { /* ignore them */ }
 
-[a-z]+ { yylval.name = strdup(yytext); log(format("WORD: '%s'") % yytext); return WORD; }
-{ACRONYM} { yylval.name = strdup(yytext); log(format("ACRONYM: '%s'") % yytext); return ACRONYM; }
-{TBD} { yylval.name = strdup(yytext); log(format("TBD: '%s'") % yytext); return TBD; }
+[a-z]+ { yySet(yylval.name, yytext); log(format("WORD: '%s'") % yytext); return WORD; }
+{ACRONYM} { yySet(yylval.name, yytext); log(format("ACRONYM: '%s'") % yytext); return ACRONYM; }
+{TBD} { yySet(yylval.name, yytext); log(format("TBD: '%s'") % yytext); return TBD; }
 
 \n { yycolumn = 1; }
 [ \t\r] { /* ignore spaces */ }

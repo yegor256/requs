@@ -67,10 +67,6 @@ test-all: $(EXEC) $(VALID_EXAMPLES)
 		$(EXEC) "list" < $$i; \
 	done
 
-# deploy the HTML to the target hosting platform
-deploy:
-	ftp -u ftp://rqdql_deploy%40caybo.ru:uf8Klp7Y2Et4@rqdql.com/public/rqdql.html ../rqdql.com/rqdql.html
-	
 # test PHP Trac hook
 hook-test: rqdql trac-hook.php trac-hook.sh
 	./trac-hook.sh < test/trac-hook/_request.txt

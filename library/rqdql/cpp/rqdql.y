@@ -19,21 +19,10 @@
 %locations
 
 %{
-    #include <vector>
     #include "rqdql.h"
-    #include "../rqdql.tab.h"
-	#include "boost/format.hpp"
 	using boost::format;    
     using rqdql::log;
 %}
-
-%union {
-    std::string name();
-    vector<Statement> statements();
-    Statement statement();
-    vector<Action> actions();
-    Action action();
-};
 
 // Here we should say that the type of non-terminal
 // terms are mapped to %union.name, and are strings because of that
@@ -117,8 +106,8 @@ lfur:
     ;
     
 actions:
-    action { $$.erase(); $$.push_back($1); } |
-    actions SEMICOLON action { $$.push_back($3); } 
+    action { yySet($$, $1); } |
+    actions SEMICOLON action { yyAdd($$, $3); } 
     ;
     
 action:
@@ -130,7 +119,7 @@ action:
     
 verbs:
     verb |
-    verbs separator verb { $$ = format("%s, %s") % $1 % $3; }
+    verbs separator verb { yySet($$, format("%s, %s") % $1 % $3); }
     ;
     
 verb:
@@ -152,19 +141,19 @@ separator:
     
 subject:
     object |
-    object modifier { $$ = format("%s %s") % $1 % $2; }
+    object modifier { yySet($$, format("%s %s") % $1 % $2); }
     ;
     
 object:
-    THIS { $$ = format("this"); } |
-    ACTOR plural { $$ = format("%s") % $1; } |
-    ENTITY plural { $$ = format("%s") % $1; } |
-    attributes OF object { $$ = format("%s of %s") % $1 % $3; }
+    THIS { yySet($$, format("this")); } |
+    ACTOR plural { yySet($$, format("%s") % $1); } |
+    ENTITY plural { yySet($$, format("%s") % $1); } |
+    attributes OF object { yySet($$, format("%s of %s") % $1 % $3); }
     ;
     
 attributes:
     attribute |
-    attributes separator attribute { $$ = format("%s, %s") % $1 % $3; }
+    attributes separator attribute { yySet($$, format("%s, %s") % $1 % $3); }
     ;
     
 attribute:
@@ -173,14 +162,14 @@ attribute:
     
 words:
     WORD |
-    words WORD { $$ = format("%s %s") % $1 % $2; }
+    words WORD { yySet($$, format("%s %s") % $1 % $2); }
     ;
     
 plural:
     /* singular */ | PLURAL_MANY | PLURAL_SOME | PLURAL_ANY;
 
 modifier:
-    OPEN_BRACE predicates CLOSE_BRACE { $$ = format("%s") % $2; }
+    OPEN_BRACE predicates CLOSE_BRACE { yySet($$, format("%s") % $2); }
     ;
     
 predicates:
@@ -189,8 +178,8 @@ predicates:
     ;
     
 predicate:
-    lambda subjects { $$ = format("L %s") % $2; } |
-    lambda subjects verbs { $$ = format("L %s %s") % $2 % $3; }
+    lambda subjects { yySet($$, format("L %s") % $2); } |
+    lambda subjects verbs { yySet($$, format("L %s %s") % $2 % $3); }
     ;
     
 lambda:

@@ -13,7 +13,7 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Statement.hpp 1414 2010-03-22 14:06:31Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
 #ifndef __INCLUDE_SCOPE_ACTION_H

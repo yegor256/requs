@@ -17,17 +17,15 @@
  */
 
 #include <boost/test/minimal.hpp>
-#include "Rqdql.hpp"
-#include "Scope.hpp"
-#include "Scope/Statement.hpp"
+#include "rqdql.h"
 
 int test_main(int, char *[]) {
     // BOOST_CHECK(true);
     // BOOST_REQUIRE(true);
     
-    Scope scope = rq.scope();
-    Scope::Statement statement;
-    scope.append(statement);
+    // Scope scope = rq.scope();
+    // Scope::Statement statement;
+    // scope.append(statement);
     
     return 0;
 }
