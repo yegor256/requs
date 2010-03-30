@@ -1,7 +1,7 @@
-<?xml version="1.0" enconding="utf-8" ?>
 <!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="EN">
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>RQDQL, Requirements Definition and Query Language</title>
@@ -24,6 +24,7 @@
             font-size: 0.8em;
             font-family: monospace;
         }
+        pre.code,
         p.code {
             background: #BCBEC0;
             margin-left: 3em;
@@ -46,9 +47,9 @@
 <h1>Requirements Definition and Query Language (RQDQL)</h1>
 
     <p><tt>
-        $Revision$<br/>
-        $LastChangedDate$</tt>
-    </p>
+        $Revision: 1426 $<br/>
+        $LastChangedDate: 2010-03-24 08:24:42 +0100 (Wed, 24 Mar 2010) $
+    </tt></p>
 
     <p>IEEE 830 says: "SRS (<i>software requirements specification</i>) should be
         correct, unambiguous, complete, consistent, ranked for importance and/or stability,
@@ -119,7 +120,6 @@
             <td><i>Modifier</i> for the actor, where <tt>::email</tt> is a property of ActorUser
                 and <tt>::confirmed()</tt> is a behavior of his email</td>
         </tr>
-        </tr>
     </table>
     
     <p>To make the SRS consistent we should explain what means
@@ -140,7 +140,7 @@
 
     <table>
         <tr>
-            <th width="500px">Full form</th>
+            <th style="width:500px">Full form</th>
             <th>Possible short/redundant forms</th>
         </tr>
         <tr>
@@ -336,5 +336,12 @@
             See: R3.4, ActorUser.
         </p>
 
+<h1>3. Object Model</h1>
+
+    <p>Everything that is defined in text RQDQL parser transforms to an object model,
+        which you can query with XPath (or any other method):</p>
+        
+    <pre class="code"><?=htmlspecialchars(file_get_contents('model.xml'))?></pre>
+
 </body>
-<html>
+</html>

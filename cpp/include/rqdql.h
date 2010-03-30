@@ -13,19 +13,43 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: bootstrap.php 1190 2010-02-07 07:45:29Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
 #ifndef __INCLUDE_RQDQL_H
 #define __INCLUDE_RQDQL_H
 
+// system libraries
 #include <iostream>
+#include <vector>
+
+// boost libraries
+#include "boost/format.hpp"
+
+// project files
 #include "scope.h"
 
-// for rqdql.tab.h, see below
-#include <vector>
-using std::vector;
+using namespace std;
 using namespace rqdql::scope;
+
+typedef union {
+    string* name;
+    vector<Statement>* statements;
+    Statement* statement;
+    vector<Action>* actions;
+    Action* action;
+} YYSTYPE;
+# define YYSTYPE_IS_DECLARED 1
+# define YYSTYPE_IS_TRIVIAL 1
+
+template <class T, class D> void yyAdd(T*&, D*&);
+template <class T, class D> void yySet(T*&, D*&);
+template <class T> void yySet(T*&, T*&);
+void yySet(string*&, boost::format);
+void yySet(string*&, char*&);
+
+// bison/flex file
+// this INCLUDE shall go AFTER our declaration of YYSTYPE
 #include "../rqdql.tab.h"
 
 extern int yyparse();
@@ -46,17 +70,16 @@ namespace rqdql {
         L_WARNING = 4,
         L_ERROR   = 5
     };
-    LogLevel level;
+    extern LogLevel level;
     
     /**
      * Simple logger, that filters messages by their types
      * @see LogLevel
      * @see rqdql.l
      */
-    void log(LogLevel, std::string);
-    void log(std::string line) {
-        return log(L_DEBUG, line);
-    }
+    void log(LogLevel, const std::string&);
+    void log(const std::string&);
+    void log(const boost::format&);
     
 }
 

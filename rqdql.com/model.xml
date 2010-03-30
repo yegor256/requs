@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf8"?>
+<scope>
+    <raw>raw text, before processing</raw>
+    <entities>
+        <object id="ActorUser" type="actor">
+            <description>registered user of the system</description>
+            <parent>ActorVisitor</parent>
+            <tbd ticket="#123">we need more information here...</tbd>
+            <part id="photo" type="association">
+                <description>image file in GIF or JPEG format</description>
+                <part id="file">
+                    <infinitive id="list">
+                        <meaning>to view in a sorted and grouped table</meaning>
+                    </infinitive>
+                    <infinitive id="compressed" passive="true">
+                        <meaning>file is using GZIP compression</meaning>
+                    </infinitive>
+                </part>
+            </part>
+        </object>
+        <fur id="R5.6">
+            <actor link="//actor[@id='ActorUser']"/>
+            <action>
+                <subject link="part[@id='photo']/part[@id='file']">
+                    <predicate lambda="if">
+                        <verb link="infinitive[@id='compressed']" />
+                    </predicate>
+                </subject>
+                <verb link="infinitive[@id='list']" />
+            </action>
+            <explanation>
+                textual explanation of this FUR
+            </explanation>
+        </fur>
+        <qos id="QOS4">
+            <description>the system shall be maintainable...</description>
+        </qos>
+    </entities>
+</scope>
