@@ -16,15 +16,15 @@
  * @version $Id$
  */
 
-#ifndef __INCLUDE_SCOPE_ACTION_H
-#define __INCLUDE_SCOPE_ACTION_H
+#ifndef __INCLUDE_OM_H
+#define __INCLUDE_OM_H
 
-using namespace rqdql::scope;
-class Verb : public item {
-public:    
-
-private:
-
+namespace rqdql {
+    namespace om {
+        class Model; // see om/Model.h
+    }
 };
-        
+
+#include "om/Model.h"
+
 #endif

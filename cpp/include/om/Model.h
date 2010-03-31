@@ -16,15 +16,19 @@
  * @version $Id$
  */
 
-#ifndef __INCLUDE_SCOPE_ACTION_H
-#define __INCLUDE_SCOPE_ACTION_H
+#ifndef __INCLUDE_OM_MODEL_H
+#define __INCLUDE_OM_MODEL_H
 
-using namespace rqdql::scope;
-class Verb : public item {
-public:    
+#include <vector>
+#include <string>
+#include "om.h"
+#include "scope.h"
 
-private:
-
+class rqdql::om::Model {
+    std::vector<rqdql::scope::Statement> scope;
+public:
+    void setScope(const std::vector<rqdql::scope::Statement>&);
+    std::string query(const std::string&);
 };
-        
+
 #endif

@@ -107,11 +107,11 @@ lfur:
     
 actions:
     action { yySet($$, $1); } |
-    actions SEMICOLON action { yyAdd($$, $3); } 
+    actions SEMICOLON action { yyAdd($$, $1, $3); } 
     ;
     
 action:
-    ACTOR CAN verbs subjects { /* set Action */ } |
+    ACTOR CAN verbs subjects {  } |
     ACTOR error { lyyerror(@2, "'can' missed after '%s'", $1); } |
     ACTOR CAN error { lyyerror(@3, "list of verbs not found after '%s can'", $1); } |
     ACTOR CAN verbs error { lyyerror(@4, "list of subjects missed after '%s can %s'", $1, $3); }

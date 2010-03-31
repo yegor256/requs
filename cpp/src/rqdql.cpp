@@ -23,43 +23,32 @@
 using namespace std;
 using namespace rqdql;
 
-rqdql::LogLevel rqdql::level = L_DEBUG;
+rqdql::LogLevel rqdql::level = L_ERROR;
 
 // explicit instantiation, see Stroustrup C.13.10
-template void yyAdd<vector<Action>, Action>(vector<Action>*&, Action*&);
+template void yyAdd<vector<Action>, Action>(vector<Action>*&, vector<Action>*&, Action*&);
 template void yySet<vector<Action>, Action>(vector<Action>*&, Action*&);
 
-template <class T, class D> void yyAdd(T*& array, D*& item)
-{
+template <class T, class D> void yyAdd(T*& array, T*& current, D*& item) {
+    array = new T(*current);
     array->push_back(*item);
 }
 
-template <class T, class D> void yySet(T*& array, D*& item)
-{
-    if (array) {
-        array->clear();
-    } else {
-        array = new T;
-    }
+template <class T, class D> void yySet(T*& array, D*& item) {
+    array = new T;
     array->push_back(*item);
 }
 
-template <class T> void yySet(T*& lhs, T*& rhs)
-{
-    if (lhs) {
-        delete lhs;
-    }
-    lhs = rhs;
+template <class T> void yySet(T*& lhs, T*& rhs) {
+    lhs = new T(*rhs);
 }
 
-void yySet(string*& lhs, boost::format rhs)
-{
-    *lhs = rhs.str();
+void yySet(string*& lhs, boost::format rhs) {
+    lhs = new string(rhs.str());
 }
 
-void yySet(string*& lhs, char*& rhs)
-{
-    *lhs = rhs;
+void yySet(string*& lhs, char*& rhs) {
+    lhs = new string(rhs);
 }
 
 void rqdql::log(const std::string& line) {

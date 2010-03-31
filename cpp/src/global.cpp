@@ -67,13 +67,24 @@ void lyyerror(YYLTYPE t, const char *error, ...) {
 }
     
 int main(int argc, char** argv) {
-    rqdql::log(rqdql::L_INFO, "rqdql v0.1");
-    
+    // this option is set in Makefile, when building a project for tests
     #ifdef RQDQL_DEBUG
         rqdql::level = rqdql::L_DEBUG;
     #endif
-    
+
+    // entry log message
+    rqdql::log(rqdql::L_INFO, "rqdql v0.1");
+
+    // convert input stream into rqdql::om::Model class instance
     yyparse();
+    
+    rqdql::om::Model model;
+    model.setScope(rqdql::scope::scope);
+    cout << model.query("") << endl;
+    
+    // bye-bye log message
+    rqdql::log(rqdql::L_INFO, "end.");
+    
     return 0;
 }
 
