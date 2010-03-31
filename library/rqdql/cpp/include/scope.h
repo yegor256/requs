@@ -19,18 +19,23 @@
 #ifndef __INCLUDE_SCOPE_H
 #define __INCLUDE_SCOPE_H
 
+#include <vector>
+
 namespace rqdql {
-    
     namespace scope {
-
-        class item {
-        public:    
-        };
-
+        class item {};
+        class Statement;
+        class Action;
     }
 };
 
 #include "scope/Statement.h"
 #include "scope/Action.h"
+
+namespace rqdql {
+    namespace scope {
+        extern std::vector<rqdql::scope::Statement> scope;
+    }
+};
 
 #endif

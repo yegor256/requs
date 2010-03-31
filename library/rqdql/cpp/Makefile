@@ -25,7 +25,7 @@ SOURCES := $(shell find src -name "*.cpp")
 OBJS := $(SOURCES:.cpp=.o)
 HEADERS := $(shell find include -name "*.h")
 TEST_SOURCES := $(shell find test -name "*.cpp")
-TESTS := $(TEST_SOURCES:.cpp=.o)
+TESTS := $(TEST_SOURCES:.cpp=.test)
 VALID_EXAMPLES = $(shell find examples/valid -name "*.txt")
 
 all: rqdql test

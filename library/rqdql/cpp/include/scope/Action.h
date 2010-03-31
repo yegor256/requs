@@ -19,19 +19,11 @@
 #ifndef __INCLUDE_SCOPE_ACTION_H
 #define __INCLUDE_SCOPE_ACTION_H
 
-namespace rqdql {
-    
-    namespace scope {
-        
-        class Action : public item {
-        public:    
+class rqdql::scope::Action : public item {
+public:    
 
-        private:
-    
-        };
-        
-    }
+private:
 
-}
+};
 
 #endif

@@ -13,18 +13,10 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: bootstrap.php 1190 2010-02-07 07:45:29Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SCOPE_ACTION_H
-#define __INCLUDE_SCOPE_ACTION_H
+#include "rqdql.h"
 
-using namespace rqdql::scope;
-class Verb : public item {
-public:    
-
-private:
-
-};
-        
-#endif
+// see scope.h
+vector<rqdql::scope::Statement> rqdql::scope::scope;

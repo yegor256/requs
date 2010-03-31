@@ -19,7 +19,8 @@
 #ifndef __INCLUDE_SCOPE_STATEMENT_FUR_H
 #define __INCLUDE_SCOPE_STATEMENT_FUR_H
 
-class Scope::FurStatement : public Scope::Statement {
+using namespace rqdql::scope;
+class Fur : public Statement {
 public:
     
 };

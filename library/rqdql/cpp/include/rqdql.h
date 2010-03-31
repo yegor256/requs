@@ -28,6 +28,7 @@
 
 // project files
 #include "scope.h"
+#include "om.h"
 
 using namespace std;
 using namespace rqdql::scope;
@@ -42,7 +43,7 @@ typedef union {
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
 
-template <class T, class D> void yyAdd(T*&, D*&);
+template <class T, class D> void yyAdd(T*&, T*&, D*&);
 template <class T, class D> void yySet(T*&, D*&);
 template <class T> void yySet(T*&, T*&);
 void yySet(string*&, boost::format);
