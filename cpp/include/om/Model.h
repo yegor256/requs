@@ -21,11 +21,18 @@
 
 #include <vector>
 #include <string>
+#include "pugixml/pugixml.hpp"
 #include "om.h"
 #include "scope.h"
 
 class rqdql::om::Model {
+private:
     std::vector<rqdql::scope::Statement> scope;
+    pugi::xml_document xml;
+    
+    void _buildXml();
+    void _validateXPointer();
+    
 public:
     void setScope(const std::vector<rqdql::scope::Statement>&);
     std::string query(const std::string&);

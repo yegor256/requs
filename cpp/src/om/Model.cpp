@@ -18,12 +18,40 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
+#include <sstream>
 #include "om/Model.h"
 
 void rqdql::om::Model::setScope(const std::vector<rqdql::scope::Statement>& items) {
     this->scope = items;
+
+    // convert ::scope into XML
+    this->_buildXml();
+    
+    // validate that all XPointer links are valid
+    this->_validateXPointer();
 }
 
 std::string rqdql::om::Model::query(const std::string& q) {
-    return std::string("test");
+    // convert existing XML into string and return it
+    std::stringstream stringXml(std::stringstream::out);
+    pugi::xml_writer_stream writer(stringXml);
+    this->xml.save(writer);
+    return stringXml.str();
+}
+
+/**
+ * To build XML from the presented list of statements, in this->scope
+ */
+void rqdql::om::Model::_buildXml() {
+    this->xml.append_child().set_name("scope");
+    // for (this->scope::iterator)
+}
+
+/**
+ * To validate XPointer links inside XML and remove
+ * elements that have invalid links, adding log messages
+ * about this into XML
+ */
+void rqdql::om::Model::_validateXPointer() {
 }
