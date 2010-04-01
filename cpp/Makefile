@@ -14,6 +14,9 @@
 # @copyright Copyright (c) rqdql.com, 2010
 # @version $Id$
 
+SVN_LOGIN = yegor256@yahoo.com
+SVN_PASSWORD = aF41Atlz
+
 PATH := $(PATH):/usr/local/bin:/usr/bin
 CPP = c++
 BISON = bison
@@ -28,31 +31,26 @@ TEST_SOURCES := $(shell find test -name "*.cpp")
 TESTS := $(TEST_SOURCES:.cpp=.test)
 VALID_EXAMPLES = $(shell find examples/valid -name "*.txt")
 
+# compile the product and run all tests
 all: rqdql test
 
-rqdql: lex.yy.c rqdql.tab.h rqdql.tab.c $(OBJS) Makefile
-	$(CPP) $(CPPFLAGS) -o $@ rqdql.tab.c lex.yy.c $(OBJS)
+# compile/build the product
+rqdql: lex.yy.c $(EXEC).tab.h $(EXEC).tab.c $(OBJS) Makefile
+	$(CPP) $(CPPFLAGS) -o $@ $(EXEC).tab.c lex.yy.c $(OBJS)
     
-lex.yy.c: rqdql.l $(HEADERS)
-	$(FLEX) rqdql.l
+lex.yy.c: $(EXEC).l $(HEADERS)
+	$(FLEX) $(EXEC).l
 	
-rqdql.tab.h: rqdql.tab.c
+$(EXEC).tab.h: $(EXEC).tab.c
 
-rqdql.tab.c: rqdql.y $(HEADERS)
-	$(BISON) --no-lines --report=all -d rqdql.y
+$(EXEC).tab.c: $(EXEC).y $(HEADERS)
+	$(BISON) --no-lines --report=all -d $(EXEC).y
 
 %.o: %.cpp $(HEADERS)
 	$(CPP) $(CPPFLAGS) -o $@ -c $<
 
-# clean everything!
-clean:
-	rm -f lex.yy.c rqdql.tab.c rqdql.tab.h
-	rm -f rqdql.output
-	rm -f $(OBJS)
-	rm -f $(EXEC)
-	rm -f $(TESTS)
-
-test: rqdql $(TESTS) test-all $(HEADERS)
+# test everything
+test: $(TESTS) test-examples test-hook
 	for i in $(TESTS); do \
 		$$i; \
 	done
@@ -62,16 +60,24 @@ test: rqdql $(TESTS) test-all $(HEADERS)
 	$(CPP) $(CPPFLAGS) -o $@ $< src/rqdql.o
 
 # test the entire mechanism with all test files
-test-all: $(EXEC) $(VALID_EXAMPLES)
+test-examples: $(EXEC) $(VALID_EXAMPLES)
 	for i in $(VALID_EXAMPLES); do \
-		$(EXEC) "list" < $$i; \
+		$(EXEC) "//*" < $$i; \
 	done
 
 # test PHP Trac hook
-hook-test: rqdql trac-hook.php trac-hook.sh
-	./trac-hook.sh < test/trac-hook/_request.txt
+test-hook: $(EXEC) hook/trac-hook.php hook/trac-hook.sh
+	./hook/trac-hook.sh < test/hook/_request.txt
 
 # update the code from SVN	
 up:
-	svn up --username yegor256@yahoo.com --password aF41Atlz .
+	svn up --username $(SVN_LOGIN) --password $(SVN_PASSWORD) .
+
+# clean everything!
+clean:
+	rm -f lex.yy.c $(EXEC).tab.c $(EXEC).tab.h
+	rm -f $(EXEC).output
+	rm -f $(OBJS)
+	rm -f $(EXEC)
+	rm -f $(TESTS)
 
