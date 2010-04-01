@@ -22,7 +22,8 @@ CPPFLAGS = -I./include -I./library
 EXEC = ./rqdql
 
 SOURCES := $(shell find src -name "*.cpp")
-OBJS := $(SOURCES:.cpp=.o)
+LIBS = $(shell find library/pugixml -name "*.cpp")
+OBJS := $(SOURCES:.cpp=.o) $(LIBS:.cpp=.o)
 HEADERS := $(shell find include -name "*.h")
 TEST_SOURCES := $(shell find test -name "*.cpp")
 TESTS := $(TEST_SOURCES:.cpp=.test)
@@ -48,7 +49,8 @@ $(EXEC).tab.c: $(EXEC).y $(HEADERS)
 
 # test everything
 test: $(TESTS) test-examples test-hook
-	for i in $(TESTS); do \
+	@for i in $(TESTS); do \
+		echo "testing with '$$i':"; \
 		$$i; \
 	done
 
@@ -58,13 +60,16 @@ test: $(TESTS) test-examples test-hook
 
 # test the entire mechanism with all test files
 test-examples: $(EXEC) $(VALID_EXAMPLES)
-	for i in $(VALID_EXAMPLES); do \
+	@for i in $(VALID_EXAMPLES); do \
+		echo "testing with valid example '$$i':"; \
 		$(EXEC) "//*" < $$i; \
 	done
 
 # test PHP Trac hook
 test-hook: $(EXEC) hook/trac/pre-commit.php hook/trac/pre-commit.sh
-	./hook/trac/pre-commit.sh --silent < test/hook/_request.txt
+	@echo "testing pre-commit Trac hook:"
+	@./hook/trac/pre-commit.sh --silent < test/hook/_request.txt
+	@echo "works fine!"
 
 # update the code from SVN	
 up:
