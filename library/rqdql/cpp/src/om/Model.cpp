@@ -25,6 +25,5 @@ void rqdql::om::Model::setScope(const std::vector<rqdql::scope::Statement>& item
 }
 
 std::string rqdql::om::Model::query(const std::string& q) {
-    std::string str = "test";
-    return str;
+    return std::string("test");
 }
