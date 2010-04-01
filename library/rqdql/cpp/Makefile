@@ -14,9 +14,6 @@
 # @copyright Copyright (c) rqdql.com, 2010
 # @version $Id$
 
-SVN_LOGIN = yegor256@yahoo.com
-SVN_PASSWORD = aF41Atlz
-
 PATH := $(PATH):/usr/local/bin:/usr/bin
 CPP = c++
 BISON = bison
@@ -71,7 +68,7 @@ test-hook: $(EXEC) hook/trac-hook.php hook/trac-hook.sh
 
 # update the code from SVN	
 up:
-	svn up --username $(SVN_LOGIN) --password $(SVN_PASSWORD) .
+	svn up .
 
 # clean everything!
 clean:
