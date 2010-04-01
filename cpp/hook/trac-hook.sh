@@ -13,6 +13,6 @@ fi
 
 DIR=`dirname "$0"`
 
-$PHP $DIR/trac-hook.php < /dev/stdin
+$PHP $DIR/trac-hook.php $* < /dev/stdin
 exit 0
 

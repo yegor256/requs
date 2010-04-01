@@ -3,38 +3,52 @@
  * @version $Id$
  */
 
+/**
+ * @see logg()
+ */
+global $log;
+$log = null;
+
 // the content of this string is changed by SVN because
 // of svn:keywords properties. don't try to change it manually
 // it is changed with every SVN UP command.
 $revision = intval(substr('$Rev: 1419 $', 6));
 
-$dir = dirname(__FILE__);
-$rqdql = $dir . '/rqdql';
-
+// read from INPUT stream
+global $content;
 $content = file_get_contents('php://stdin');
-// just to log it
-file_put_contents($dir . '/request.txt', $content);
 
-// log there all our operations
-global $log;
-$log = fopen($dir . '/response.txt', 'w');
-
+// convert line to the nice form for logging
 function nice($str)
 {
     return "'" . wordwrap(substr(str_replace("\n", '\\n', $str), 0, 400), 100, "\n\t") . "...' (" .
     strlen($str) . ' bytes)';
 }
 
-function logg($message)
+// log one message
+function logg($message, $closeLog = false)
 {
+    global $argc, $argv;
+    if (($argc > 0) && array_search('--silent', $argv)) {
+        return;
+    }
     global $log;
+    if (is_null($log)) {
+        $dir = dirname(__FILE__);
+        global $content;
+        file_put_contents($dir . '/request.txt', $content);
+        $log = fopen($dir . '/response.txt', 'w');
+    }
     fprintf($log, '%s', $message);
+    if ($closeLog) {
+        fclose($log);
+    }
 }
 
 logg(
     "HOOK REVISION: {$revision}\n" .
     "TIME: " . date('d/m/y h:i:s') . "\n" .
-    "CLI: {$rqdql}\n"
+    "SCRIPT: " . __FILE__ . "\n"
 );
 
 // start collecting all error messages
@@ -148,7 +162,7 @@ try {
     // execute RQDQL
     $pipes = array();
     $proc = proc_open(
-        $rqdql,
+        dirname(__FILE__) . '/../rqdql',
         array(
             0 => array('pipe', 'r'),
             1 => array('pipe', 'w'),
@@ -213,10 +227,9 @@ try {
 $output = ob_get_clean();
 
 logg(
-    'MESSAGE TO TRAC: ' . nice($output)
+    'MESSAGE TO TRAC: ' . nice($output),
+    true
 );
-
-fclose($log);
 
 if ($output) {
     echo "RqdqlPlugin: rev{$revision}\n";

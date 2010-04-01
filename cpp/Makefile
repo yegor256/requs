@@ -67,7 +67,7 @@ test-examples: $(EXEC) $(VALID_EXAMPLES)
 
 # test PHP Trac hook
 test-hook: $(EXEC) hook/trac-hook.php hook/trac-hook.sh
-	./hook/trac-hook.sh < test/hook/_request.txt
+	./hook/trac-hook.sh --silent < test/hook/_request.txt
 
 # update the code from SVN	
 up:
