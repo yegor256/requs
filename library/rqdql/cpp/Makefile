@@ -18,7 +18,7 @@ PATH := $(PATH):/usr/local/bin:/usr/bin
 CPP = c++
 BISON = bison
 FLEX = flex
-CPPFLAGS = -I./include -I./library -DRQDQL_DEBUG=true
+CPPFLAGS = -I./include -I./library
 EXEC = ./rqdql
 
 SOURCES := $(shell find src -name "*.cpp")
@@ -54,7 +54,7 @@ test: $(TESTS) test-examples test-hook
 
 # compilation of unit tests
 %.test: %.cpp
-	$(CPP) $(CPPFLAGS) -o $@ $< src/rqdql.o
+	$(CPP) $(CPPFLAGS) -DRQDQL_DEBUG=true -o $@ $< src/rqdql.cpp
 
 # test the entire mechanism with all test files
 test-examples: $(EXEC) $(VALID_EXAMPLES)
@@ -63,8 +63,8 @@ test-examples: $(EXEC) $(VALID_EXAMPLES)
 	done
 
 # test PHP Trac hook
-test-hook: $(EXEC) hook/trac-hook.php hook/trac-hook.sh
-	./hook/trac-hook.sh --silent < test/hook/_request.txt
+test-hook: $(EXEC) hook/trac/pre-commit.php hook/trac/pre-commit.sh
+	./hook/trac/pre-commit.sh --silent < test/hook/_request.txt
 
 # update the code from SVN	
 up:
