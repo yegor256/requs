@@ -19,10 +19,13 @@
 #ifndef __INCLUDE_SCOPE_STATEMENT_FUR_H
 #define __INCLUDE_SCOPE_STATEMENT_FUR_H
 
-using namespace rqdql::scope;
-class Fur : public Statement {
+#include "pugixml/pugixml.hpp"
+#include "scope/Statement.h"
+
+class rqdql::scope::FurStatement : public rqdql::scope::Statement {
 public:
     
+    pugi::xml_node getXmlNode();
 };
 
 #endif

@@ -19,6 +19,7 @@
 #include "rqdql.h"
 #include <stdarg.h>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 using namespace rqdql;
@@ -26,20 +27,32 @@ using namespace rqdql;
 rqdql::LogLevel rqdql::level = L_ERROR;
 
 // explicit instantiation, see Stroustrup C.13.10
-template void yyAdd<vector<Action>, Action>(vector<Action>*&, vector<Action>*&, Action*&);
-template void yySet<vector<Action>, Action>(vector<Action>*&, Action*&);
+using rqdql::scope::Action;
+template void yyConcat<Action>(vector<Action>*&, vector<Action>*&, Action*);
+template void yyAppend<Action>(vector<Action>*&, Action*);
+template void yySave<Action>(Action*&, Action*);
 
-template <class T, class D> void yyAdd(T*& array, T*& current, D*& item) {
-    array = new T(*current);
+// explicit instantiation, see Stroustrup C.13.10
+using rqdql::scope::Statement;
+template void yyConcat<Statement>(vector<Statement>*&, vector<Statement>*&, Statement*);
+template void yyAppend<Statement>(vector<Statement>*&, Statement*);
+template void yySave<Statement>(Statement*&, Statement*);
+
+template <class T> void yyConcat(vector<T>*& array, vector<T>*& current, T* item) {
+    if (current) {
+        array = new vector<T>(*current);
+    } else {
+        array = new vector<T>;
+    }
     array->push_back(*item);
 }
 
-template <class T, class D> void yySet(T*& array, D*& item) {
-    array = new T;
+template <class T> void yyAppend(vector<T>*& array, T* item) {
+    array = new vector<T>;
     array->push_back(*item);
 }
 
-template <class T> void yySet(T*& lhs, T*& rhs) {
+template <class T> void yySave(T*& lhs, T* rhs) {
     lhs = new T(*rhs);
 }
 
@@ -59,10 +72,14 @@ void rqdql::log(const boost::format& line) {
     return log(L_DEBUG, line.str());
 }
 
+void rqdql::log(const rqdql::LogLevel lvl, const boost::format& line) {
+    return log(lvl, line.str());
+}
+
 /**
  * To log a line
  */
-void rqdql::log(const LogLevel lvl, const std::string& line) {   
+void rqdql::log(const rqdql::LogLevel lvl, const std::string& line) {   
     std::string label;
     switch (lvl) {
         case L_DEBUG:

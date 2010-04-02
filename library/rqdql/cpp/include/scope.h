@@ -19,8 +19,6 @@
 #ifndef __INCLUDE_SCOPE_H
 #define __INCLUDE_SCOPE_H
 
-#include <vector>
-
 namespace rqdql {
     namespace scope {
         class item {};
@@ -29,8 +27,8 @@ namespace rqdql {
     }
 };
 
+#include <vector>
 #include "scope/Statement.h"
-#include "scope/Action.h"
 
 namespace rqdql {
     namespace scope {

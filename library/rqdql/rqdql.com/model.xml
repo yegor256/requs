@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf8"?>
+<!-- 
+ * @version $Id$
+ -->
 <scope>
     <raw>raw text, before processing</raw>
     <entities>
@@ -6,6 +9,7 @@
             <description>registered user of the system</description>
             <parent>ActorVisitor</parent>
             <tbd ticket="#123">we need more information here...</tbd>
+            <attr id="out"/>
             <part id="photo" type="association">
                 <description>image file in GIF or JPEG format</description>
                 <part id="file">
@@ -20,6 +24,7 @@
         </object>
         <fur id="R5.6">
             <actor link="//actor[@id='ActorUser']"/>
+            <attr id="p7"/>
             <action>
                 <subject link="part[@id='photo']/part[@id='file']">
                     <predicate lambda="if">
