@@ -13,32 +13,11 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: Model.cpp 1490 2010-04-01 11:28:30Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SCOPE_STATEMENT_H
-#define __INCLUDE_SCOPE_STATEMENT_H
+#include <vector>
+#include "rqdql.h"
+#include "scope/Action.h"
 
-namespace rqdql {
-    namespace scope {
-        class FurStatement;
-        class EntityStatement;
-    }
-};
 
-#include "scope.h"
-#include "pugixml/pugixml.hpp"
-
-class rqdql::scope::Statement : public rqdql::scope::item {
-public:
-    void setStartLineNo(int lineNo);
-    void setEndLineNo(int lineNo);
-    
-    virtual pugi::xml_node getXmlNode();
-
-private:
-    int startLineNo;
-    int endLineNo;
-};
-
-#endif

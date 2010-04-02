@@ -20,12 +20,23 @@
 
 %{
     #include "rqdql.h"
+    #include "scope.h"
+    #include "scope/Statement.h"
+    #include "scope/Statement/Fur.h"
 	using boost::format;    
     using rqdql::log;
 %}
 
 // Here we should say that the type of non-terminal
 // terms are mapped to %union.name, and are strings because of that
+%type <statements> SRS
+%type <statement> DottedStatement
+%type <statement> Statement
+%type <statement> FurStatement
+%type <statement> EntityStatement
+%type <statement> QosStatement
+%type <statement> SeeStatement
+%type <statement> VerbStatement
 %type <actions> actions
 %type <action> action
 %type <name> verbs
@@ -79,22 +90,22 @@
 
 SRS:
     /* it can be empty */ |
-    SRS DottedStatement;
+    SRS DottedStatement { rqdql::scope::scope.push_back(*$2); };
 
 DottedStatement:
     Statement DOT;
 
 Statement:
-    FurStatement { log("FUR statement processed"); } |
-    EntityStatement { log("Entity statement processed"); } | 
-    QosStatement { log("QOS statement processed"); } | 
-    VerbStatement { log("Verb statement processed"); } | 
-    SeeStatement 
+    FurStatement |
+    EntityStatement | 
+    QosStatement | 
+    VerbStatement | 
+    SeeStatement
     ;
 
 FurStatement:
-    lfur COLON actions |
-    lfur COLON TBD |
+    lfur COLON actions { yySave<Statement>($$, new FurStatement(/* todo! */)); } |
+    lfur COLON TBD { yySave<Statement>($$, new FurStatement(/* todo! */)); } |
     lfur error { lyyerror(@2, "colon expected after FUR"); } |
     lfur COLON error { lyyerror(@3, "actions expected after 'FUR:'"); } 
     ;
@@ -106,8 +117,8 @@ lfur:
     ;
     
 actions:
-    action { yySet($$, $1); } |
-    actions SEMICOLON action { yyAdd($$, $1, $3); } 
+    action { yyAppend($$, $1); } |
+    actions SEMICOLON action { yyConcat($$, $1, $3); } 
     ;
     
 action:

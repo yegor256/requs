@@ -14,11 +14,12 @@
 # @copyright Copyright (c) rqdql.com, 2010
 # @version $Id$
 
+DEBUG_FLAG = -DRQDQL_DEBUG=true
 PATH := $(PATH):/usr/local/bin:/usr/bin
 CPP = c++
 BISON = bison
 FLEX = flex
-CPPFLAGS = -I./include -I./library
+CPPFLAGS = -I./include -I./library $(DEBUG_FLAG)
 EXEC = ./rqdql
 
 SOURCES := $(shell find src -name "*.cpp")
@@ -56,7 +57,7 @@ test: $(TESTS) test-examples test-hook
 
 # compilation of unit tests
 %.test: %.cpp
-	$(CPP) $(CPPFLAGS) -DRQDQL_DEBUG=true -o $@ $< src/rqdql.cpp
+	$(CPP) $(CPPFLAGS) $(DEBUG_FLAG) -o $@ $< $(subst src/global.o, "", $(OBJS))
 
 # test the entire mechanism with all test files
 test-examples: $(EXEC) $(VALID_EXAMPLES)

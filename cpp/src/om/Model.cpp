@@ -20,6 +20,8 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include "pugixml/pugixml.hpp"
+#include "rqdql.h"
 #include "om/Model.h"
 
 void rqdql::om::Model::setScope(const std::vector<rqdql::scope::Statement>& items) {
@@ -30,6 +32,9 @@ void rqdql::om::Model::setScope(const std::vector<rqdql::scope::Statement>& item
     
     // validate that all XPointer links are valid
     this->_validateXPointer();
+
+    // inject extra data to certain elements of the model
+    this->_injectExtras();
 }
 
 std::string rqdql::om::Model::query(const std::string& q) {
@@ -44,8 +49,16 @@ std::string rqdql::om::Model::query(const std::string& q) {
  * To build XML from the presented list of statements, in this->scope
  */
 void rqdql::om::Model::_buildXml() {
-    this->xml.append_child().set_name("scope");
-    // for (this->scope::iterator)
+    pugi::xml_node node = this->xml.append_child();
+    node.set_name("scope");
+    for (
+        std::vector<rqdql::scope::Statement>::iterator statement = this->scope.begin();
+        statement != this->scope.end();
+        ++statement
+    ) {
+        node.append_copy(statement->getXmlNode());
+        rqdql::log("new node");
+    }
 }
 
 /**
@@ -54,4 +67,10 @@ void rqdql::om::Model::_buildXml() {
  * about this into XML
  */
 void rqdql::om::Model::_validateXPointer() {
+}
+
+/**
+ * To inject some data into certain elements, if necessary
+ */
+void rqdql::om::Model::_injectExtras() {
 }

@@ -19,7 +19,9 @@
 #ifndef __INCLUDE_SCOPE_ACTION_H
 #define __INCLUDE_SCOPE_ACTION_H
 
-class rqdql::scope::Action : public item {
+#include "scope.h"
+
+class rqdql::scope::Action : public rqdql::scope::item {
 public:    
 
 private:

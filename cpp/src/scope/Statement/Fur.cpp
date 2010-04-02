@@ -16,29 +16,15 @@
  * @version $Id$
  */
 
-#ifndef __INCLUDE_SCOPE_STATEMENT_H
-#define __INCLUDE_SCOPE_STATEMENT_H
-
-namespace rqdql {
-    namespace scope {
-        class FurStatement;
-        class EntityStatement;
-    }
-};
-
-#include "scope.h"
+#include <vector>
+#include <string>
 #include "pugixml/pugixml.hpp"
+#include "rqdql.h"
+#include "scope/Statement/Fur.h"
 
-class rqdql::scope::Statement : public rqdql::scope::item {
-public:
-    void setStartLineNo(int lineNo);
-    void setEndLineNo(int lineNo);
-    
-    virtual pugi::xml_node getXmlNode();
-
-private:
-    int startLineNo;
-    int endLineNo;
-};
-
-#endif
+pugi::xml_node rqdql::scope::FurStatement::getXmlNode() {
+    pugi::xml_node xml;
+    xml.set_name("fur");
+    rqdql::log("FUR.....");
+    return xml;
+}

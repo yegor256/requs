@@ -16,9 +16,11 @@
  * @version $Id$
  */
 
-#include "rqdql.h"
 #include <string>
 #include <stdarg.h>
+#include "rqdql.h"
+#include "scope.h"
+#include "om/Model.h"
 
 /**
  * Called when error is found in parser
@@ -79,6 +81,7 @@ int main(int argc, char** argv) {
     yyparse();
     
     rqdql::om::Model model;
+    rqdql::log(boost::format("%d statements found") % rqdql::scope::scope.size());
     model.setScope(rqdql::scope::scope);
     cout << model.query("") << endl;
     

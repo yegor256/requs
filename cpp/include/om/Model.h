@@ -22,6 +22,7 @@
 #include <vector>
 #include <string>
 #include "pugixml/pugixml.hpp"
+
 #include "om.h"
 #include "scope.h"
 
@@ -32,6 +33,7 @@ private:
     
     void _buildXml();
     void _validateXPointer();
+    void _injectExtras();
     
 public:
     void setScope(const std::vector<rqdql::scope::Statement>&);

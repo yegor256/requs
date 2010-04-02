@@ -22,13 +22,21 @@
 // system libraries
 #include <iostream>
 #include <vector>
+#include <string>
 
 // boost libraries
 #include "boost/format.hpp"
 
+template <class T> void yyConcat(std::vector<T>*&, std::vector<T>*&, T*);
+template <class T> void yyAppend(std::vector<T>*&, T*);
+template <class T> void yySave(T*&, T*);
+void yySet(std::string*&, boost::format);
+void yySet(std::string*&, char*&);
+
 // project files
 #include "scope.h"
-#include "om.h"
+#include "scope/Statement.h"
+#include "scope/Action.h"
 
 using namespace std;
 using namespace rqdql::scope;
@@ -42,12 +50,6 @@ typedef union {
 } YYSTYPE;
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
-
-template <class T, class D> void yyAdd(T*&, T*&, D*&);
-template <class T, class D> void yySet(T*&, D*&);
-template <class T> void yySet(T*&, T*&);
-void yySet(string*&, boost::format);
-void yySet(string*&, char*&);
 
 // bison/flex file
 // this INCLUDE shall go AFTER our declaration of YYSTYPE
@@ -79,6 +81,7 @@ namespace rqdql {
      * @see rqdql.l
      */
     void log(LogLevel, const std::string&);
+    void log(LogLevel, const boost::format&);
     void log(const std::string&);
     void log(const boost::format&);
     
