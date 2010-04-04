@@ -13,31 +13,15 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Fur.h 1491 2010-04-02 16:48:51Z yegor256@yahoo.com $
+ * @version $Id: Fur.cpp 1497 2010-04-04 13:47:20Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SCOPE_STATEMENT_ENTITY_H
-#define __INCLUDE_SCOPE_STATEMENT_ENTITY_H
-
+#include <vector>
 #include <string>
 #include "pugixml/pugixml.hpp"
-#include "funcs.h"
-#include "scope/Statement.h"
+#include "rqdql.h"
+#include "scope/Statement/Verb.h"
 
-namespace rqdql {
-    namespace scope {
-        class EntityDeclarationStatement;
-        class EntityInheritanceStatement;
-    }
-};
-
-class rqdql::scope::EntityStatement : public rqdql::scope::Statement {
-protected:
-    LeftName _name; // name of the FUR, like R6.7, R5 or R9.3.6, with attribs
-
-public:
-    EntityStatement(const LeftName& name) : Statement(), _name(name) { /* nothing more */ }
-    virtual void derive(pugi::xml_node&);
-};
-
-#endif
+void rqdql::scope::VerbStatement::derive(pugi::xml_node& root) {
+    /* intentionally blank */
+}

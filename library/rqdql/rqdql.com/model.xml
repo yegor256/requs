@@ -23,15 +23,15 @@
             </part>
         </object>
         <fur id="R5.6">
-            <actor link="//actor[@id='ActorUser']"/>
+            <actor link="#xpointer(//actor[@id='ActorUser'])"/>
             <attr id="p7"/>
             <action>
-                <subject link="part[@id='photo']/part[@id='file']">
+                <subject link="#xpointer(part[@id='photo']/part[@id='file'])">
                     <predicate lambda="if">
-                        <verb link="infinitive[@id='compressed']" />
+                        <verb link="#xpointer(infinitive[@id='compressed'])" />
                     </predicate>
                 </subject>
-                <verb link="infinitive[@id='list']" />
+                <verb link="#xpointer(infinitive[@id='list'])" />
             </action>
             <explanation>
                 textual explanation of this FUR

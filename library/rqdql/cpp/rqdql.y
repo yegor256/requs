@@ -26,7 +26,10 @@
     #include "scope/Statement/Qos.h"
     #include "scope/Statement/Empty.h"
     #include "scope/Statement/Entity.h"
+    #include "scope/Statement/Entity/Declaration.h"
+    #include "scope/Statement/Entity/Inheritance.h"
     #include "scope/Statement/Verb.h"
+    #include "scope/Object.h"
 	using boost::format;    
     using rqdql::log;
 %}
@@ -42,19 +45,21 @@
 %type <statement> SeeStatement
 %type <statement> VerbStatement
 %type <leftName> lfur
+%type <leftName> lobject
 %type <actions> actions
 %type <action> action
+%type <plurality> plural
 %type <name> verbs
 %type <name> verb
 %type <name> predicates
 %type <name> predicate
 %type <name> words
 %type <name> modifier
-%type <name> subjects
-%type <name> subject
-%type <name> object
-%type <name> attribute
-%type <name> attributes
+%type <objects> subjects
+%type <objects> subject
+%type <objects> object
+%type <object> attribute
+%type <objects> attributes
 
 // Declaration of all known tokens
 %token <name> INFORMAL
@@ -147,7 +152,7 @@ verb:
     
 subjects:
     subject |
-    subjects separator subject
+    subjects separator subject { /*yyConcat($$, $1, $3);*/ }
     ;
     
 separator:
@@ -158,23 +163,43 @@ separator:
     
 subject:
     object |
-    object modifier { yySet($$, format("%s %s") % $1 % $2); }
+    object modifier { /* to add modifier to the object */ }
     ;
     
 object:
-    THIS { yySet($$, format("this")); } |
-    ACTOR plural { yySet($$, format("%s") % $1); } |
-    ENTITY plural { yySet($$, format("%s") % $1); } |
-    attributes OF object { yySet($$, format("%s of %s") % $1 % $3); }
+    THIS
+        {
+            yyAppend($$, new Object());
+        } |
+    ACTOR plural
+        { 
+            Object* obj = new Object((format("%s") % $1).str());
+            obj->setPlurality($2);
+            obj->addTag("actor");
+            yyAppend($$, obj);
+        } |
+    ENTITY plural
+        {
+            Object* obj = new Object((format("%s") % $1).str());
+            obj->setPlurality($2);
+            yyAppend($$, obj);
+        } |
+    attributes OF object
+        { 
+            // set parent for every object
+            //$$->setParent($3); 
+            // add them all to collection
+            $$ = $1; 
+        }
     ;
     
 attributes:
-    attribute |
-    attributes separator attribute { yySet($$, format("%s, %s") % $1 % $3); }
+    attribute { yyAppend($$, $1); } |
+    attributes separator attribute { yyConcat($$, $1, $3); }
     ;
     
 attribute:
-    words
+    words { yySave($$, new Object(*$1)); }
     ;
     
 words:
@@ -183,7 +208,11 @@ words:
     ;
     
 plural:
-    /* singular */ | PLURAL_MANY | PLURAL_SOME | PLURAL_ANY;
+    /* singular */ { $$ = Object::SINGULAR; } |
+    PLURAL_MANY { $$ = Object::MANY; } | 
+    PLURAL_SOME { $$ = Object::SOME; } |
+    PLURAL_ANY { $$ = Object::ANY; } 
+    ;
 
 modifier:
     OPEN_BRACE predicates CLOSE_BRACE { yySet($$, format("%s") % $2); }
@@ -205,15 +234,15 @@ lambda:
     ;
     
 EntityStatement:
-    lobject COLON INFORMAL { yySave<Statement>($$, new EntityStatement(/* todo! */)); } |
-    lobject IS_A object { yySave<Statement>($$, new EntityStatement(/* todo! */)); }  |
-    lobject INCLUDES parts { yySave<Statement>($$, new EntityStatement(/* todo! */)); }  |
-    lobject PRODUCES parts { yySave<Statement>($$, new EntityStatement(/* todo! */)); } 
+    lobject COLON INFORMAL { yySave<Statement>($$, new EntityDeclarationStatement(*$1, *$3)); } |
+    lobject IS_A object { yySave<Statement>($$, new EntityInheritanceStatement(*$1, *$3)); }  |
+    lobject INCLUDES parts { yySave<Statement>($$, new EntityStatement(*$1 /* todo! */)); }  |
+    lobject PRODUCES parts { yySave<Statement>($$, new EntityStatement(*$1 /* todo! */)); } 
     ;
     
 lobject:
-    ENTITY |
-    ACTOR
+    ENTITY { yySave($$, new Statement::LeftName(*$1, "")); } |
+    ACTOR { yySave($$, new Statement::LeftName(*$1, "")); $$->addTag("actor"); } 
     ;
 
 /* e.g. "email; password; files" */
@@ -231,7 +260,7 @@ part:
 
 /* QOS3.3: some text. */    
 QosStatement:
-    QOS COLON INFORMAL { yySave<Statement>($$, new QosStatement(/* todo! */)); } 
+    QOS COLON INFORMAL { yySave<Statement>($$, new QosStatement(Statement::LeftName(*$1, "")/* todo! */)); } 
     ;
 
 /* email of ActorUser "to approve" means: some text... */

@@ -19,11 +19,10 @@
 #ifndef __INCLUDE_SCOPE_ACTION_H
 #define __INCLUDE_SCOPE_ACTION_H
 
-using namespace rqdql::scope;
-class Verb : public item {
-public:    
+#include "scope.h"
 
-private:
+class rqdql::scope::Verb : public item {
+public:    
 
 };
         

@@ -13,31 +13,28 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Fur.h 1491 2010-04-02 16:48:51Z yegor256@yahoo.com $
+ * @version $Id: Action.h 1491 2010-04-02 16:48:51Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SCOPE_STATEMENT_ENTITY_H
-#define __INCLUDE_SCOPE_STATEMENT_ENTITY_H
+#ifndef __INCLUDE_SCOPE_OBJECT_H
+#define __INCLUDE_SCOPE_OBJECT_H
 
 #include <string>
-#include "pugixml/pugixml.hpp"
-#include "funcs.h"
-#include "scope/Statement.h"
+#include "scope.h"
 
-namespace rqdql {
-    namespace scope {
-        class EntityDeclarationStatement;
-        class EntityInheritanceStatement;
-    }
-};
+class rqdql::scope::Object : public rqdql::scope::item, public rqdql::scope::Statement::LeftName {
+public:    
+    enum Plurality { SINGULAR, MANY, SOME, ANY };
 
-class rqdql::scope::EntityStatement : public rqdql::scope::Statement {
-protected:
-    LeftName _name; // name of the FUR, like R6.7, R5 or R9.3.6, with attribs
+    Object() : _self(true) { /* that's it */ };
+    Object(const std::string& name) : LeftName(name), _self(false) { /* that's it */ };
+    
+    Object& setPlurality(Plurality plurality) { this->_plurality = plurality; return *this; }
 
-public:
-    EntityStatement(const LeftName& name) : Statement(), _name(name) { /* nothing more */ }
-    virtual void derive(pugi::xml_node&);
+private:
+    bool _self;
+    Object* _parent;
+    Plurality _plurality;
 };
 
 #endif
