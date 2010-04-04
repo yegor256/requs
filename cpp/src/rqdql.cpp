@@ -41,6 +41,12 @@ template void yySave<Statement>(Statement*&, Statement*);
 // explicit instantiation, see Stroustrup C.13.10
 template void yySave<Statement::LeftName>(Statement::LeftName*&, Statement::LeftName*);
 
+// explicit instantiation, see Stroustrup C.13.10
+using rqdql::scope::Object;
+template void yyConcat<Object>(vector<Object*>*&, vector<Object*>*&, Object*);
+template void yyAppend<Object>(vector<Object*>*&, Object*);
+template void yySave<Object>(Object*&, Object*);
+
 template <class T> void yyConcat(vector<T*>*& array, vector<T*>*& current, T* item) {
     if (current) {
         array = new vector<T*>(*current);

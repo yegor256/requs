@@ -37,22 +37,29 @@ void yySet(std::string*&, char*&);
 #include "scope.h"
 #include "scope/Statement.h"
 #include "scope/Action.h"
+#include "scope/Object.h"
 
 using namespace std;
 using namespace rqdql::scope;
 
 typedef union {
+    Object::Plurality plurality;
     string* name;
+
     Statement* statement;
     Statement::LeftName* leftName;
+
     vector<Action*>* actions;
     Action* action;
+
+    vector<Object*>* objects;
+    Object* object;
 } YYSTYPE;
-# define YYSTYPE_IS_DECLARED 1
-# define YYSTYPE_IS_TRIVIAL 1
 
 // bison/flex file
-// this INCLUDE shall go AFTER our declaration of YYSTYPE
+// this define will protect us against BISON default YYSTYPE
+#define YYSTYPE_IS_DECLARED 1
+#define YYSTYPE_IS_TRIVIAL 1
 #include "../rqdql.tab.h"
 
 extern int yyparse();

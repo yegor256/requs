@@ -30,7 +30,7 @@ public:
     FurStatement(const LeftName& name) : Statement(), _name(name) {
         /* that's it */
     };
-    void appendXmlNode(pugi::xml_node&);
+    void derive(pugi::xml_node&);
 };
 
 #endif

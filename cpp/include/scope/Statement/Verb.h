@@ -25,7 +25,7 @@
 class rqdql::scope::VerbStatement : public rqdql::scope::Statement {
 public:
     
-    void appendXmlNode(pugi::xml_node&) {};
+    void derive(pugi::xml_node&);
 };
 
 #endif

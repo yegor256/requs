@@ -30,36 +30,37 @@ namespace rqdql {
 };
 
 #include <string>
+#include <vector>
+#include <set>
 #include "scope.h"
 #include "pugixml/pugixml.hpp"
 
 class rqdql::scope::Statement : public rqdql::scope::item {
+protected:
+    int _startLineNo;
+    int _endLineNo;
+
 public:
     class LeftName {
     private:
         std::string _name;
-        std::string _attribs;
+        std::vector<std::string> _attribs;
+        std::set<std::string> _tags;
+        
     public:
-        LeftName(const std::string& name, const std::string& attribs) :
-            _name(name), _attribs(attribs) {
-            /* nothing more */
-        }
-        const std::string& getName() {
-            return this->_name;
-        }
-        const std::string& getAttribs() {
-            return this->_attribs;
-        }
+        LeftName(const std::string& = "", const std::string& = "");
+        const std::string& getName() { return this->_name; }
+        const std::vector<std::string>& getAttribs() { return this->_attribs; }
+        const std::set<std::string>& getTags() { return this->_tags; }
+        LeftName& addTag(const std::string& tag) { this->_tags.insert(tag); return *this; }
     };
     
     void setStartLineNo(int lineNo);
     void setEndLineNo(int lineNo);
-    
-    virtual void appendXmlNode(pugi::xml_node&) = 0;
 
-private:
-    int startLineNo;
-    int endLineNo;
+    pugi::xml_node findById(const pugi::xml_node&, const std::string&);
+    
+    virtual void derive(pugi::xml_node&) = 0;
 };
 
 #endif

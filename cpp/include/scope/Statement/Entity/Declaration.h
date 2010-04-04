@@ -13,31 +13,27 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Fur.h 1491 2010-04-02 16:48:51Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
-#ifndef __INCLUDE_SCOPE_STATEMENT_ENTITY_H
-#define __INCLUDE_SCOPE_STATEMENT_ENTITY_H
+#ifndef __INCLUDE_SCOPE_STATEMENT_ENTITY_DECLARATION_H
+#define __INCLUDE_SCOPE_STATEMENT_ENTITY_DECLARATION_H
 
 #include <string>
 #include "pugixml/pugixml.hpp"
 #include "funcs.h"
-#include "scope/Statement.h"
+#include "scope/Statement/Entity.h"
 
-namespace rqdql {
-    namespace scope {
-        class EntityDeclarationStatement;
-        class EntityInheritanceStatement;
-    }
-};
-
-class rqdql::scope::EntityStatement : public rqdql::scope::Statement {
-protected:
-    LeftName _name; // name of the FUR, like R6.7, R5 or R9.3.6, with attribs
+class rqdql::scope::EntityDeclarationStatement : public rqdql::scope::EntityStatement {
+private:
+    std::string _declaration; // informal description of the name
 
 public:
-    EntityStatement(const LeftName& name) : Statement(), _name(name) { /* nothing more */ }
-    virtual void derive(pugi::xml_node&);
+    EntityDeclarationStatement(const LeftName& name, const std::string& declaration) :
+        EntityStatement(name), _declaration(declaration) {
+        trim(this->_declaration);
+    };
+    void derive(pugi::xml_node&);
 };
 
 #endif

@@ -13,29 +13,16 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: global.cpp 1491 2010-04-02 16:48:51Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SCOPE_H
-#define __INCLUDE_SCOPE_H
-
-namespace rqdql {
-    namespace scope {
-        class item {};
-        class Statement;
-        class Action;
-        class Verb;
-        class Object;
-    }
-};
-
+#include <string>
 #include <vector>
-#include "scope/Statement.h"
+using namespace std;
 
-namespace rqdql {
-    namespace scope {
-        extern std::vector<rqdql::scope::Statement*> scope;
-    }
-};
+/**
+ * see funcs.cpp for comments!
+ */
 
-#endif
+void explode(const string&, const string&, vector<string>&);
+string& trim(string&);

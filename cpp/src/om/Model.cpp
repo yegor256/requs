@@ -56,7 +56,7 @@ void rqdql::om::Model::_buildXml() {
         statement != this->scope.end();
         ++statement
     ) {
-        (*statement)->appendXmlNode(node);
+        (*statement)->derive(node);
     }
 }
 

@@ -22,8 +22,15 @@
 #include "rqdql.h"
 #include "scope/Statement/Fur.h"
 
-void rqdql::scope::FurStatement::appendXmlNode(pugi::xml_node& root) {
+void rqdql::scope::FurStatement::derive(pugi::xml_node& root) {
     pugi::xml_node stmt = root.append_child();
     stmt.set_name("fur");
     stmt.append_attribute("id") = this->_name.getName().c_str();
+
+    for (std::vector<std::string>::const_iterator i = this->_name.getAttribs().begin(); 
+        i != this->_name.getAttribs().end(); ++i) {
+        pugi::xml_node attr = stmt.append_child();
+        attr.set_name("attr");
+        attr.append_attribute("id") = i->c_str();
+    }
 }

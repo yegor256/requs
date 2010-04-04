@@ -23,9 +23,14 @@ CPPFLAGS = -I./include -I./library $(DEBUG_FLAG)
 EXEC = ./rqdql
 
 SOURCES := $(shell find src -name "*.cpp")
-LIBS = $(shell find library/pugixml -name "*.cpp")
 OBJS := $(SOURCES:.cpp=.o) $(LIBS:.cpp=.o)
+
+LIB_DIRS = library/pugixml library/boost-libs
+LIB_SOURCES = $(shell find $(LIB_DIRS) -name "*.cpp")
+LIB_OBJS := $(LIB_SOURCES:.cpp=.obj)
+
 HEADERS := $(shell find include -name "*.h")
+
 TEST_SOURCES := $(shell find test -name "*.cpp")
 TESTS := $(TEST_SOURCES:.cpp=.test)
 VALID_EXAMPLES = $(shell find examples/valid -name "*.txt")
@@ -34,8 +39,8 @@ VALID_EXAMPLES = $(shell find examples/valid -name "*.txt")
 all: rqdql test
 
 # compile/build the product
-rqdql: lex.yy.c $(EXEC).tab.h $(EXEC).tab.c $(OBJS) Makefile
-	$(CPP) $(CPPFLAGS) -o $@ $(EXEC).tab.c lex.yy.c $(OBJS)
+rqdql: lex.yy.c $(EXEC).tab.h $(EXEC).tab.c $(OBJS) $(LIB_OBJS) Makefile
+	$(CPP) $(CPPFLAGS) -o $@ $(EXEC).tab.c lex.yy.c $(OBJS) $(LIB_OBJS)
     
 lex.yy.c: $(EXEC).l $(HEADERS)
 	$(FLEX) $(EXEC).l
@@ -48,6 +53,10 @@ $(EXEC).tab.c: $(EXEC).y $(HEADERS)
 %.o: %.cpp $(HEADERS)
 	$(CPP) $(CPPFLAGS) -o $@ -c $<
 
+# library objects
+%.obj: %.cpp
+	$(CPP) $(CPPFLAGS) -o $@ -c $<
+
 # test everything
 test: $(TESTS) test-examples test-hook
 	@for i in $(TESTS); do \
@@ -57,7 +66,7 @@ test: $(TESTS) test-examples test-hook
 
 # compilation of unit tests
 %.test: %.cpp
-	$(CPP) $(CPPFLAGS) $(DEBUG_FLAG) -o $@ $< $(subst src/global.o, "", $(OBJS))
+	$(CPP) $(CPPFLAGS) $(DEBUG_FLAG) -o $@ $< $(subst src/global.o, "", $(OBJS)) $(LIB_OBJS)
 
 # test the entire mechanism with all test files
 test-examples: $(EXEC) $(VALID_EXAMPLES)
@@ -81,6 +90,7 @@ clean:
 	rm -f lex.yy.c $(EXEC).tab.c $(EXEC).tab.h
 	rm -f $(EXEC).output
 	rm -f $(OBJS)
+	rm -f $(LIB_OBJS)
 	rm -f $(EXEC)
 	rm -f $(TESTS)
 

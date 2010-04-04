@@ -23,9 +23,14 @@
 #include "scope/Statement.h"
 
 class rqdql::scope::QosStatement : public rqdql::scope::Statement {
+private:
+    LeftName _name; // name of the QOS, like QOS6.7 or QOS5
+
 public:
-    
-    void appendXmlNode(pugi::xml_node&) {};
+    QosStatement(const LeftName& name) : Statement(), _name(name) {
+        /* that's it */
+    };
+    void derive(pugi::xml_node&);
 };
 
 #endif
