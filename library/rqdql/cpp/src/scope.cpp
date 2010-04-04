@@ -19,4 +19,4 @@
 #include "rqdql.h"
 
 // see scope.h
-vector<rqdql::scope::Statement> rqdql::scope::scope;
+vector<rqdql::scope::Statement*> rqdql::scope::scope;

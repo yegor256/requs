@@ -28,7 +28,7 @@
 
 class rqdql::om::Model {
 private:
-    std::vector<rqdql::scope::Statement> scope;
+    std::vector<rqdql::scope::Statement*> scope;
     pugi::xml_document xml;
     
     void _buildXml();
@@ -36,7 +36,7 @@ private:
     void _injectExtras();
     
 public:
-    void setScope(const std::vector<rqdql::scope::Statement>&);
+    void setScope(const std::vector<rqdql::scope::Statement*>&);
     std::string query(const std::string&);
 };
 

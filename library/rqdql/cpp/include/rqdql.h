@@ -27,8 +27,8 @@
 // boost libraries
 #include "boost/format.hpp"
 
-template <class T> void yyConcat(std::vector<T>*&, std::vector<T>*&, T*);
-template <class T> void yyAppend(std::vector<T>*&, T*);
+template <class T> void yyConcat(std::vector<T*>*&, std::vector<T*>*&, T*);
+template <class T> void yyAppend(std::vector<T*>*&, T*);
 template <class T> void yySave(T*&, T*);
 void yySet(std::string*&, boost::format);
 void yySet(std::string*&, char*&);
@@ -43,9 +43,9 @@ using namespace rqdql::scope;
 
 typedef union {
     string* name;
-    vector<Statement>* statements;
     Statement* statement;
-    vector<Action>* actions;
+    Statement::LeftName* leftName;
+    vector<Action*>* actions;
     Action* action;
 } YYSTYPE;
 # define YYSTYPE_IS_DECLARED 1

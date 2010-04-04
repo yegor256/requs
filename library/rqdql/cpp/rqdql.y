@@ -23,13 +23,17 @@
     #include "scope.h"
     #include "scope/Statement.h"
     #include "scope/Statement/Fur.h"
+    #include "scope/Statement/Qos.h"
+    #include "scope/Statement/Empty.h"
+    #include "scope/Statement/Entity.h"
+    #include "scope/Statement/Verb.h"
 	using boost::format;    
     using rqdql::log;
 %}
 
 // Here we should say that the type of non-terminal
 // terms are mapped to %union.name, and are strings because of that
-%type <statements> SRS
+// %type <statements> SRS
 %type <statement> DottedStatement
 %type <statement> Statement
 %type <statement> FurStatement
@@ -37,6 +41,7 @@
 %type <statement> QosStatement
 %type <statement> SeeStatement
 %type <statement> VerbStatement
+%type <leftName> lfur
 %type <actions> actions
 %type <action> action
 %type <name> verbs
@@ -90,7 +95,8 @@
 
 SRS:
     /* it can be empty */ |
-    SRS DottedStatement { rqdql::scope::scope.push_back(*$2); };
+    SRS DottedStatement { rqdql::scope::scope.push_back($2); } |
+    SRS error { lyyerror(@2, "statement ignored"); };
 
 DottedStatement:
     Statement DOT;
@@ -104,16 +110,16 @@ Statement:
     ;
 
 FurStatement:
-    lfur COLON actions { yySave<Statement>($$, new FurStatement(/* todo! */)); } |
-    lfur COLON TBD { yySave<Statement>($$, new FurStatement(/* todo! */)); } |
+    lfur COLON actions { yySave<Statement>($$, new FurStatement(*$1 /* todo! */)); } |
+    lfur COLON TBD { yySave<Statement>($$, new FurStatement(*$1 /* todo! */)); } |
     lfur error { lyyerror(@2, "colon expected after FUR"); } |
     lfur COLON error { lyyerror(@3, "actions expected after 'FUR:'"); } 
     ;
     
 /* left FUR */
 lfur:
-    FUR |
-    FUR ATTRIBS
+    FUR { yySave($$, new Statement::LeftName(*$1, "")); } |
+    FUR ATTRIBS { yySave($$, new Statement::LeftName(*$1, *$2)); }
     ;
     
 actions:
@@ -199,10 +205,10 @@ lambda:
     ;
     
 EntityStatement:
-    lobject COLON INFORMAL |
-    lobject IS_A object |
-    lobject INCLUDES parts |
-    lobject PRODUCES parts
+    lobject COLON INFORMAL { yySave<Statement>($$, new EntityStatement(/* todo! */)); } |
+    lobject IS_A object { yySave<Statement>($$, new EntityStatement(/* todo! */)); }  |
+    lobject INCLUDES parts { yySave<Statement>($$, new EntityStatement(/* todo! */)); }  |
+    lobject PRODUCES parts { yySave<Statement>($$, new EntityStatement(/* todo! */)); } 
     ;
     
 lobject:
@@ -225,18 +231,18 @@ part:
 
 /* QOS3.3: some text. */    
 QosStatement:
-    QOS COLON INFORMAL
+    QOS COLON INFORMAL { yySave<Statement>($$, new QosStatement(/* todo! */)); } 
     ;
 
 /* email of ActorUser "to approve" means: some text... */
 VerbStatement:
-    INFINITIVE object MEANS COLON INFORMAL |
-    INFINITIVE object AKA MEANS COLON INFORMAL 
+    INFINITIVE object MEANS COLON INFORMAL { yySave<Statement>($$, new VerbStatement(/* todo! */)); }  |
+    INFINITIVE object AKA MEANS COLON INFORMAL { yySave<Statement>($$, new VerbStatement(/* todo! */)); }  
     ;
     
 /* See: R4.4, ActorUser, ... */
 SeeStatement:
-    SEE COLON entities
+    SEE COLON entities { yySave<Statement>($$, new EmptyStatement()); } 
     ;
     
 entities:

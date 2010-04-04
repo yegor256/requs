@@ -13,27 +13,19 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: Fur.h 1491 2010-04-02 16:48:51Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SCOPE_H
-#define __INCLUDE_SCOPE_H
+#ifndef __INCLUDE_SCOPE_STATEMENT_ENTITY_H
+#define __INCLUDE_SCOPE_STATEMENT_ENTITY_H
 
-namespace rqdql {
-    namespace scope {
-        class item {};
-        class Statement;
-        class Action;
-    }
-};
-
-#include <vector>
+#include "pugixml/pugixml.hpp"
 #include "scope/Statement.h"
 
-namespace rqdql {
-    namespace scope {
-        extern std::vector<rqdql::scope::Statement*> scope;
-    }
+class rqdql::scope::EntityStatement : public rqdql::scope::Statement {
+public:
+    
+    void appendXmlNode(pugi::xml_node&) {};
 };
 
 #endif
