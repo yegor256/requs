@@ -22,9 +22,8 @@
 #include "rqdql.h"
 #include "scope/Statement/Fur.h"
 
-pugi::xml_node rqdql::scope::FurStatement::getXmlNode() {
-    pugi::xml_node xml;
-    xml.set_name("fur");
-    rqdql::log("FUR.....");
-    return xml;
+void rqdql::scope::FurStatement::appendXmlNode(pugi::xml_node& root) {
+    pugi::xml_node stmt = root.append_child();
+    stmt.set_name("fur");
+    stmt.append_attribute("id") = this->_name.getName().c_str();
 }

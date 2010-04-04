@@ -23,18 +23,39 @@ namespace rqdql {
     namespace scope {
         class FurStatement;
         class EntityStatement;
+        class QosStatement;
+        class EmptyStatement;
+        class VerbStatement;
     }
 };
 
+#include <string>
 #include "scope.h"
 #include "pugixml/pugixml.hpp"
 
 class rqdql::scope::Statement : public rqdql::scope::item {
 public:
+    class LeftName {
+    private:
+        std::string _name;
+        std::string _attribs;
+    public:
+        LeftName(const std::string& name, const std::string& attribs) :
+            _name(name), _attribs(attribs) {
+            /* nothing more */
+        }
+        const std::string& getName() {
+            return this->_name;
+        }
+        const std::string& getAttribs() {
+            return this->_attribs;
+        }
+    };
+    
     void setStartLineNo(int lineNo);
     void setEndLineNo(int lineNo);
     
-    virtual pugi::xml_node getXmlNode();
+    virtual void appendXmlNode(pugi::xml_node&) = 0;
 
 private:
     int startLineNo;

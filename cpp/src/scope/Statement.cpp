@@ -22,13 +22,6 @@
 #include "rqdql.h"
 #include "scope/Statement.h"
 
-pugi::xml_node rqdql::scope::Statement::getXmlNode() {
-    pugi::xml_node xml;
-    xml.set_name("virtual_statement");
-    rqdql::log("STMT.....");
-    return xml;
-}
-
 void rqdql::scope::Statement::setStartLineNo(int lineNo) {
     this->startLineNo = lineNo;
 }

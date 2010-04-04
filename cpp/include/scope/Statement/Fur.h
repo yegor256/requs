@@ -23,9 +23,14 @@
 #include "scope/Statement.h"
 
 class rqdql::scope::FurStatement : public rqdql::scope::Statement {
-public:
+private:
+    LeftName _name; // name of the FUR, like R6.7, R5 or R9.3.6, with attribs
     
-    pugi::xml_node getXmlNode();
+public:
+    FurStatement(const LeftName& name) : Statement(), _name(name) {
+        /* that's it */
+    };
+    void appendXmlNode(pugi::xml_node&);
 };
 
 #endif

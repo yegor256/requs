@@ -24,7 +24,7 @@
 #include "rqdql.h"
 #include "om/Model.h"
 
-void rqdql::om::Model::setScope(const std::vector<rqdql::scope::Statement>& items) {
+void rqdql::om::Model::setScope(const std::vector<rqdql::scope::Statement*>& items) {
     this->scope = items;
 
     // convert ::scope into XML
@@ -52,12 +52,11 @@ void rqdql::om::Model::_buildXml() {
     pugi::xml_node node = this->xml.append_child();
     node.set_name("scope");
     for (
-        std::vector<rqdql::scope::Statement>::iterator statement = this->scope.begin();
+        std::vector<rqdql::scope::Statement*>::iterator statement = this->scope.begin();
         statement != this->scope.end();
         ++statement
     ) {
-        node.append_copy(statement->getXmlNode());
-        rqdql::log("new node");
+        (*statement)->appendXmlNode(node);
     }
 }
 
