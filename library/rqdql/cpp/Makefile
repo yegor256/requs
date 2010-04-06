@@ -58,7 +58,7 @@ $(EXEC).tab.c: $(EXEC).y $(HEADERS)
 	$(CPP) $(CPPFLAGS) -o $@ -c $<
 
 # test everything
-test: $(TESTS) test-examples test-hook
+test: $(TESTS) test-examples
 	@for i in $(TESTS); do \
 		echo "testing with '$$i':"; \
 		$$i; \
@@ -74,12 +74,6 @@ test-examples: $(EXEC) $(VALID_EXAMPLES)
 		echo "testing with valid example '$$i':"; \
 		$(EXEC) "//*" < $$i; \
 	done
-
-# test PHP Trac hook
-test-hook: $(EXEC) hook/trac/pre-commit.php hook/trac/pre-commit.sh
-	@echo "testing pre-commit Trac hook:"
-	@./hook/trac/pre-commit.sh --silent < test/hook/_request.txt
-	@echo "works fine!"
 
 # update the code from SVN	
 up:
