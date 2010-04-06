@@ -75,10 +75,6 @@ test-examples: $(EXEC) $(VALID_EXAMPLES)
 		$(EXEC) "//*" < $$i; \
 	done
 
-# update the code from SVN	
-up:
-	svn up .
-
 # clean everything!
 clean:
 	rm -f lex.yy.c $(EXEC).tab.c $(EXEC).tab.h
