@@ -60,141 +60,57 @@
 <h1>1. Quick Start</h1>
 
     <p>Entire scope definition document consists of <i>statements</i>,
-    related to actors, entities, use cases, functional requirements, or quality of service
-    requirements. Statement starts with entity name, than colon, than statement body
-    and a trailing dot. This example has three statements (spaces, new lines, and tabs are ignored):</p>
+    related to <b>entities</b> and and <b>use cases</b>.
+    Statement always has a trailing dot.
+    This example has three statements (spaces, new lines, and tabs are ignored):</p>
     
     <p class="code">
-        ActorVisitor: an originator of HTTP request.<br/>
-        R3.3: ActorUser can view and delete photos of himself.<br/>
+        ActorVisitor: "an originator of HTTP request".<br/>
+        UC3 where ActorUser (the user) deletes photos: "we will define it later...".<br/>
+        ActorUser includes: name; password; email.
+    </p>
+    
+    <p>Example of a fully-specified <b>entity</b>:</p>
+    
+    <p class="code">
         ActorUser includes:<br/>
-        &nbsp;&nbsp;name: unique name of the file;<br/>
+        &nbsp;&nbsp;name: "unique name of the file";<br/>
         &nbsp;&nbsp;email: email address;<br/>
-        &nbsp;&nbsp;photos: binary files, in GIF, PNG or JPEG.
+        &nbsp;&nbsp;photos: "binary files, in GIF, PNG or JPEG".
     </p>
-    
-    <p>Functional requirements explain how actors can communicate with the system,
-    and are named like <tt>R3</tt>, <tt>R4.5</tt>, <tt>R1.2.8</tt>, etc.
-    The format is "somebody can do something with some objects", consider the
-    example:</p>
+
+    <p>Example of a fully-specified <b>use case</b>:</p>
     
     <p class="code">
-        R3.4: ActorUser can upload photo of himself (if email of himself is confirmed).<br/>
+        UC8.1 where ActorAdmin (the admin) synchronizes database with OnlineBackup:<br/>
+        &nbsp;&nbsp;1. The admin reads status of OnlineBackup.<br/>
+        &nbsp;&nbsp;2. The admin "selects files for new backup" - the files.<br/>
+        &nbsp;&nbsp;3. We validate the files.<br/>
+        &nbsp;&nbsp;4. "Admin confirms that he/she agrees with terms of use".<br/>
+        &nbsp;&nbsp;5. We encrypt the files "using one of the encryption methods pre-defined".<br/>
+        &nbsp;&nbsp;6. We upload files to ActorAmazon.
     </p>
 
-    <p>Sounds like a plain English text, but let's review the constituents of the
-        sentence above:</p>
-
-    <table>
-        <tr>
-            <th>Constituent</th>
-            <th>Semantic</th>
-        </tr>
-        <tr>
-            <td class="code">R3.4</td>
-            <td>The identifier of the functional requirement</td>
-        </tr>
-        <tr>
-            <td class="code">:</td>
-            <td>Separator between identifier and body of the statement</td>
-        </tr>
-        <tr>
-            <td class="code">ActorUser</td>
-            <td>An actor, who has an ability to use specified functionality</td>
-        </tr>
-        <tr>
-            <td class="code">can</td>
-            <td>Indicator of functional requirement</td>
-        </tr>
-        <tr>
-            <td class="code">upload</td>
-            <td><i>Behavior</i> identifier of the photo of the ActorUser,
-                i.e. <tt>ActorUser::photo::upload()</tt></td>
-        </tr>
-        <tr>
-            <td class="code">photo of himself</td>
-            <td><i>Property</i> identifier of the actor, i.e. <tt>ActorUser::photo</tt></td>
-        </tr>
-        <tr>
-            <td class="code">(if email is confirmed)</td>
-            <td><i>Modifier</i> for the actor, where <tt>::email</tt> is a property of ActorUser
-                and <tt>::confirmed()</tt> is a behavior of his email</td>
-        </tr>
-    </table>
-    
-    <p>To make the SRS consistent we should explain what means
-        <tt>upload of photo of ActorUser</tt>, and <tt>confirmed of email of ActorUser</tt>.
-        All other behaviors and properties are clear from the texts above. This is how we can do it
-        (text descriptions are absolutely informal):</p>
-        
-    <p class="code">
-        Photo of ActorUser "to upload" means: select any file on a local computer<br/>
-        and upload it via HTTP PUT, if there is some error a message shall be<br/>
-        visible for the end user.<br/>
-        Email of ActorUser "confirmed" means: confirmation email was sent to the<br/>
-        user and he clicked the link in this email.
-    </p>
-    
-    <p>As you already mentioned, format is flexible, you can use either full form,
-        short form or a redundant form, for example:</p>
-
-    <table>
-        <tr>
-            <th style="width:500px">Full form</th>
-            <th>Possible short/redundant forms</th>
-        </tr>
-        <tr>
-            <td class="code">
-                R3.3: ActorUser can view photos of himself; ActorUser can delete photos of himself.
-            </td>
-            <td class="code">
-                R3.3: ActorUser can <b>view and delete</b> photos of himself.<br/>
-                R3.3: ActorUser can <b>view, delete</b> photos of himself.<br/>
-                R3.3: ActorUser can view<b>,</b> and delete photos of himself.<br/>
-            </td>
-        </tr>
-        <tr>
-            <td class="code">
-                R3.3: ActorUser can upload photo of himself (if email of himself confirmed).
-            </td>
-            <td class="code">
-                R3.3: ActorUser can upload photo (if email confirmed).<br/>
-                R3.3: ActorUser can upload photo (if email <b>is</b> confirmed).<br/>
-            </td>
-        </tr>
-    </table>
-    
-    <p>Plural forms of any object can be expressed by a suffix:</p>
-
-    <ul>
-        <li>"<tt>ImageFile</tt>" means "<tt>exactly one ImageFile</tt>, which is "<tt>1</tt>" in UML</li>
-        <li>"<tt>ImageFile(s)</tt>" means "<tt>one, none or many ImageFiles</tt>": "<tt>0..*</tt>"</li>
-        <li>"<tt>ImageFile-s</tt>" means "<tt>one ImageFile or many</tt>": "<tt>1..*</tt>"</li>
-        <li>"<tt>ImageFile-?</tt>" means "<tt>one ImageFile or none</tt>": "<tt>0..1</tt>"</li>
-    </ul>
-    
 <h1>2. Syntax and Semantic</h1>
 
-    <h2>2.1. Object</h2>
+    <h2>2.1. Entity</h2>
     
-        <p><i>Object</i> is some data entity, or interface, or actor, or system under development (SUD). More
-            formally, object is a <i>class</i> in UML. Objects are specified by CamelCase notation, for example:</p>
+        <p><i>Entity</i> is some data entity, or actor, or system under development (SUD). More
+            formally, object is a <i>class</i> in UML.
+            Objects are specified by CamelCase notation, for example:</p>
             
         <p class="code">
-            ActorVisitor: an originator of HTTP request.<br/>
-            IfAmazon: XML interface between SUD and ActorAmazon.
+            ActorVisitor: "an originator of HTTP request".
         </p>
 
-        <p>Objects may inherit each other, multiple inheritance is allowed, for example
-            (<tt>is a</tt> is a <i>statement modifier</i>):</p>
+        <p>Objects may inherit each other, multiple inheritance is allowed, for example:</p>
         
         <p class="code">
-            ActorUser <b>is a</b>: ActorVisitor.<br/>
+            ActorUser <b>is an</b> ActorVisitor.<br/>
         </p>
             
-        <p>An object can include other objects, which are <i>parts</i> of it
-            (<tt>includes</tt> is a <i>statement modifier</i>). Formally,
-            they have <i>aggregation</i> relations with the object. Parts may be named
+        <p>An object can include other objects, which are <i>slots</i> of it. Formally,
+            they have <i>aggregation</i> relations with the object. Slots may be named
             with small letters only and should not use CamelCase notation.
             Synonyms of <tt>includes</tt> are:
                 <tt>include</tt>,
@@ -206,152 +122,42 @@
         <p class="code">
             ActorUser <b>includes</b>: name; email; date of birth.<br/>
             IfAmazon <b>includes</b>:<br/>
-            &nbsp;&nbsp;secret key: 32-letter/digit string;<br/>
-            &nbsp;&nbsp;account number: unique number of the Amazon account.<br/>
+            &nbsp;&nbsp;secret key: "32-letter/digit string";<br/>
+            &nbsp;&nbsp;account number: "unique number of the Amazon account".<br/>
             ActorAdmin <b>includes</b>:<br/>
             &nbsp;&nbsp;access pair: open key; secret key;;<br/>
             &nbsp;&nbsp;mobile phone.
         </p>
-
-        <p>An object can include links to dynamically generated objects, which are <i>associations</i> of it
-            (<tt>produces</tt> is a <i>statement modifier</i>). Formally,
-            they have <i>association</i> relations with the object. Associations may be named
-            with small letters only and should not use CamelCase notation.
-            Synonyms of <tt>produces</tt> are:
-                <tt>produce</tt>,
-                <tt>relates to</tt>, 
-                <tt>relate to</tt>, 
-                <tt>is related to</tt>.
-            </p>
-
-        <p class="code">
-            ActorUser <b>produces</b>: account balance; ip addresses.<br/>
-            IfAmazon <b>produces</b>:<br/>
-            &nbsp;&nbsp;files: list of files stored in S3;<br/>
-            &nbsp;&nbsp;instances: list of EC2 instances.
-        </p>
-        
-        <p>The main difference between parts and associations is that parts have
-            no sense if the object is removed from the SRS. Associations
-            still have sense and may stay in SRS, even if the object is removed.</p>
 
         <p>To reference an object its full name should be used. Any part of
             an object can be referenced by <tt>of</tt> word, e.g.:</p>
 
         <p class="code">
             ... account balance <b>of</b> ActorUser ...<br/>
-            ... file-s <b>of</b> IfAmazon ...<br/>
-            ... email-s <b>of</b> ActorUser-s ...<br/>
+            ... files <b>of</b> IfAmazon ...<br/>
+            ... emails <b>of</b> ActorUser-s ...<br/>
             ... secret key <b>of</b> access pair <b>of</b> ActorAdmin ...
         </p>
 
-    <h2>2.2. Verb</h2>
-    
-        <p><i>Verb</i> is a defined behavior of an object. There is a number
-            of pre-defined behavior-s of every object, including:</p>
-        
+    <h2>2.2. Plural form</h2>
+
+        <p>Plural forms of any object can be expressed by a suffix:</p>
+
         <ul>
-            <li><tt>manage</tt> &mdash; means nothing, empty behavior;</li>
-            <li><tt>list</tt> &mdash; view the full list of objects;</li>
-            <li><tt>read</tt> &mdash; read values of parts of object (without sub-parts);</li>
-            <li><tt>create</tt> &mdash; create new object;</li>
-            <li><tt>update</tt> &mdash; make changes to values of parts (excluding sub-parts);</li>
-            <li><tt>delete</tt> &mdash; delete object from persistent storage;</li>
-            <li><tt>CRUDL, CRDL, etc.</tt> &mdash; abbreviated verbs.</li>
+            <li>"<tt>ImageFile</tt>" means "<tt>exactly one ImageFile</tt>, which is "<tt>1</tt>" in UML</li>
+            <li>"<tt>ImageFile(s)</tt>" means "<tt>one, none or many ImageFiles</tt>": "<tt>0..*</tt>"</li>
+            <li>"<tt>ImageFile-s</tt>" means "<tt>one ImageFile or many</tt>": "<tt>1..*</tt>"</li>
+            <li>"<tt>ImageFile-?</tt>" means "<tt>one ImageFile or none</tt>": "<tt>0..1</tt>"</li>
         </ul>
-        
-        <p>Additional behavior can be added to an object with explicit
-            declaration:</p>
+
+    <h2>2.3. Vague text</h2>
+
+        <p>You can use any vague text, if it is inside double quotes, for example:</p>
 
         <p class="code">
-            "<b>to approve</b>" ActorUser (aka "+A") means: reviewing information about ActorUser<br/>
-            and accepting or rejecting its access to the SUD.<br/>
-            "<b>to convert</b>" photo of ActorUser means: changing the format of the file.<br/>
+            UC3.4: "will be defined later".<br/>
+            ActorUser: "a human being with persistent ID".
         </p>
-
-    <h2>2.3. NULL words</h2>
-    
-        <p>The following words you can use anywhere, they are ignored:
-            <tt>a</tt>,
-            <tt>the</tt>,
-            <tt>is</tt>,
-            <tt>are</tt>,
-            <tt>have</tt>.
-            </p>
-
-    <h2>2.4. Prohibited words</h2>
-
-        <p>The following words you can not use, they are reserved or prohibited:
-            <tt>not</tt>,
-            <tt>if</tt>,
-            <tt>whether</tt>.
-            </p>
-
-    <h2>2.5. Modifier</h2>
-    
-        <p>Modifier is a collection of <i>predicates</i>, which is attached to a verb or an object
-            (there are two predicates, separated by semicolon):</p>
-
-        <p class="code">
-            R3.4: ActorUser can upload photo of himself<br/>
-                (if email of himself is confirmed;<br/>
-                if he is approved).
-        </p>
-        
-        <p>Predicate starts with a <i>lambda-function</i> followed by object and verb.
-            Reserved word <tt>himself</tt> can be used here instead of an object. It
-            will mean that you're referencing the object from the main part of the sentence.
-            The word <tt>himself</tt> can be replaced by
-                <tt>him</tt>,
-                <tt>it</tt> or
-                <tt>this</tt>.</p>
-       
-        <p>Available lambda-functions are:</p>
-        
-        <ul>
-            <li><tt>if</tt> &mdash; if and only if... (other names are:
-                <tt>only</tt>,
-                <tt>when</tt>);</li>
-        </ul>
-        
-    <h2>2.6. TBD</h2>
-
-        <p>You can use <tt>TBD(...)</tt> where you don't have enough information so far:</p>
-
-        <p class="code">
-            R3.4: TBD(#54).<br/>
-            ActorUser: TBD(#54 "a human being with persistent ID" Shall we keep<br/>
-            his ID in persistent storage, or it's something we keep during one<br/>
-            session only?).
-        </p>
-
-        <p>Param of <tt>TBD</tt> is a link to the document which is waiting for this
-            answer/resolution. It could be a ticket number for example.</p>
-
-    <h2>2.7. Cross-linking</h2>
-
-        <p>A link to another entity you can provide like this:</p>
-
-        <p class="code">
-            See: R3.4, ActorUser.
-        </p>
-
-    <h2>2.8. Attributes</h2>
-
-        <p>You can attach a number of attributes to any entity, which
-            could be used in XML model later:</p>
-
-        <p class="code">
-            R3.4<b>[p7,out]</b>: ActorUser can upload photo of himself.<br/>
-            ActorUser<b>[i]</b>: human being with identity.
-        </p>
-
-<h1>3. Object Model</h1>
-
-    <p>Everything that is defined in text RQDQL parser transforms to an object model,
-        which you can query with XPath (or any other method):</p>
-        
-    <pre class="code"><?=htmlspecialchars(file_get_contents('model.xml'))?></pre>
 
 </body>
 </html>
