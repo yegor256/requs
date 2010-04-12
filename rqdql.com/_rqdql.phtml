@@ -19,17 +19,21 @@
             color: black;
             font-size: 1.2em;
         }
-        tt,
+        tt {
+        }
         .code {
             font-size: 0.8em;
             font-family: monospace;
         }
+        p {
+            width: 700px;
+            line-height: 1.5em;
+        }
         pre.code,
         p.code {
-            background: #BCBEC0;
-            margin-left: 3em;
+            border: 1px solid #BCBEC0;
             padding: 5px;
-            width: 700px;
+            line-height: 1.3em;
         }
         td {
             vertical-align: top;
@@ -51,35 +55,100 @@
         $LastChangedDate: 2010-03-24 08:24:42 +0100 (Wed, 24 Mar 2010) $
     </tt></p>
 
-    <p>IEEE 830 says: "SRS (<i>software requirements specification</i>) should be
+    <p><a href="http://standards.ieee.org/reading/ieee/std_public/description/se/830-1998_desc.html">IEEE 830-1998</a>
+        says: "SRS (<i>software requirements specification</i>) should be
         correct, unambiguous, complete, consistent, ranked for importance and/or stability,
-        verifiable, modifiable, traceable. RQDQL is going to enable the creation 
+        verifiable, modifiable, traceable". RQDQL is going to enable the creation 
         of such documents in plain text format. If you're interested to join the group
         developing RQDQL, email to <a href="team@rqdql.com">team@rqdql.com</a>.</p>
 
 <h1>1. Quick Start</h1>
 
-    <p>Entire scope definition document consists of <i>statements</i>,
-    related to <b>entities</b> and and <b>use cases</b>.
-    Statement always has a trailing dot.
-    This example has three statements (spaces, new lines, and tabs are ignored):</p>
+    <p>The scope definition document consists of <b>classes</b>
+        and <b>use cases</b>, for example there are two classes
+        (<tt>ActorVisitor</tt> and <tt>ImageFile</tt>) and one
+        use case (<tt>UC3.2</tt>):</p>
     
     <p class="code">
         ActorVisitor: "an originator of HTTP request".<br/>
-        UC3 where ActorUser (the user) deletes photos: "we will define it later...".<br/>
-        ActorUser includes: name; password; email.
+        UC3.2 where ActorUser (the user) deletes photos: "we will define it later...".<br/>
+        ImageFile includes: PNG content, name, and size.
     </p>
     
-    <p>Example of a fully-specified <b>entity</b>:</p>
+    <p>Everything that is inside double quotes is considered as
+        informal content, which we take "as is", without
+        any attempt to understand what does it mean. You can place anything
+        into it (except double quotes, of course), and you can place such
+        informal texts in any place of the document. They are ignored
+        during formal analysis.</p>
+    
+    <p>Consider a bit bigger example of a class <tt>ImageFile</tt>:</p>
     
     <p class="code">
-        ActorUser includes:<br/>
-        &nbsp;&nbsp;name: "unique name of the file";<br/>
-        &nbsp;&nbsp;email: email address;<br/>
-        &nbsp;&nbsp;photos: "binary files, in GIF, PNG or JPEG".
+        ImageFile includes:<br/>
+        &nbsp;&nbsp;PNG content: "binary content as defined by ISO-15948";<br/>
+        &nbsp;&nbsp;name: "a unique alpha-numeric name of the image";<br/>
+        &nbsp;&nbsp;size: "total number of bytes in PNG content".
+    </p>
+    
+    <p>The semantic is the same, the class contains three <b>slots</b>
+        (<tt>PNG content</tt>, <tt>name</tt> and <tt>size</tt>). However
+        in this example we added an informal explanation to every one of them.
+        A colon separates the name of the slot and its invariant.
+        Pay attention to the dots, colons, semicolons and commas used above.
+        Comma, semicolon and preposition <tt>and</tt> can replace each other,
+        for example the following declarations are the same in sense of semantic:
+        </p>
+
+    <p class="code">
+        PNG content <b>and</b> name <b>and</b> size<br/>
+        PNG content<b>,</b> name<b>,</b> size<br/>
+        PNG content<b>;</b> name<b>;</b> size
     </p>
 
-    <p>Example of a fully-specified <b>use case</b>:</p>
+    <p>A slot is a class itself and can be used outside of its parent class
+        by means of a preposition "<tt>of</tt>", for example:</b>
+
+    <p class="code">
+        PNG content <b>of</b> ImageFile <b>is a</b> binary file.<br/>
+        Name <b>of</b> ImageFile <b>is</b> unique.<br/>
+        Size <b>of</b> ImageFile <b>is a</b> "size of PNG content of this file".<br/>
+    </p>
+    
+    <p>By means of "<tt>is/is a</tt>" we enable declaration of <b>invariants</b>
+        on classes. Invariant is a condition that is always true, no matter
+        what happens with the system. In the example above it is always true
+        that "<tt>PNG content</tt>" is a file with binary content (not a readable
+        ASCII text). Nobody can break this invariant and put a textual information
+        into this slot. Similarly, the "<tt>name of ImageFile</tt>" is 
+        always unique in its class. We won't be able to find two identical
+        slots in the class "<tt>name of ImageFile</tt>", never.
+        As you noticed, invariant could be declared with an informal text, as we 
+        did above with <tt>size of ImageFile</tt>. Such a declaration means 
+        absolutely nothing and will be ignored. But it helps when you're starting
+        to develop the scope document.</p>
+        
+    <p>Informal texts play an important role during the document initial
+        development and preliminary system analysis. When you don't know for sure
+        how to define the information you have in a strict format &mdash; you
+        should use informal texts. Later you will replace them.</p>
+
+    <p>As you already noticed, RQDQL is a case-insensitive language in all places
+        except one &mdash; class names should use
+        <a href="http://en.wikipedia.org/wiki/CamelCase">CamelCase Notation</a>. Thus
+        "<tt>name of ImageFile</tt>" and "<tt>Name of ImageFile</tt>" point
+        us to the same class. However, <tt>ImageFile</tt> is a valid class
+        name, and <tt>imagefile</tt> is just an English word.</p>
+
+    <p>There is one special meta-class, which we should mention &mdash; Actors.
+        Every class that has <tt>Actor</tt> prefix is an instance of meta-class
+        Actors. In the scope definition document actors represent people,
+        machines, services, databases, etc. &mdash; anything and anybody
+        who interact with our system.</p>
+
+    <p>To put things together we should declare a use case, which is 
+        a step-by-step explanation of interaction between one of actors
+        and a number of classes, for example:</p>
     
     <p class="code">
         UC8.1 where ActorAdmin (the admin) synchronizes database with OnlineBackup:<br/>
@@ -91,73 +160,7 @@
         &nbsp;&nbsp;6. We upload files to ActorAmazon.
     </p>
 
-<h1>2. Syntax and Semantic</h1>
-
-    <h2>2.1. Entity</h2>
-    
-        <p><i>Entity</i> is some data entity, or actor, or system under development (SUD). More
-            formally, object is a <i>class</i> in UML.
-            Objects are specified by CamelCase notation, for example:</p>
-            
-        <p class="code">
-            ActorVisitor: "an originator of HTTP request".
-        </p>
-
-        <p>Objects may inherit each other, multiple inheritance is allowed, for example:</p>
-        
-        <p class="code">
-            ActorUser <b>is an</b> ActorVisitor.<br/>
-        </p>
-            
-        <p>An object can include other objects, which are <i>slots</i> of it. Formally,
-            they have <i>aggregation</i> relations with the object. Slots may be named
-            with small letters only and should not use CamelCase notation.
-            Synonyms of <tt>includes</tt> are:
-                <tt>include</tt>,
-                <tt>has</tt>, 
-                <tt>contain</tt>.
-                <tt>contains</tt>.
-            </p>
-
-        <p class="code">
-            ActorUser <b>includes</b>: name; email; date of birth.<br/>
-            IfAmazon <b>includes</b>:<br/>
-            &nbsp;&nbsp;secret key: "32-letter/digit string";<br/>
-            &nbsp;&nbsp;account number: "unique number of the Amazon account".<br/>
-            ActorAdmin <b>includes</b>:<br/>
-            &nbsp;&nbsp;access pair: open key; secret key;;<br/>
-            &nbsp;&nbsp;mobile phone.
-        </p>
-
-        <p>To reference an object its full name should be used. Any part of
-            an object can be referenced by <tt>of</tt> word, e.g.:</p>
-
-        <p class="code">
-            ... account balance <b>of</b> ActorUser ...<br/>
-            ... files <b>of</b> IfAmazon ...<br/>
-            ... emails <b>of</b> ActorUser-s ...<br/>
-            ... secret key <b>of</b> access pair <b>of</b> ActorAdmin ...
-        </p>
-
-    <h2>2.2. Plural form</h2>
-
-        <p>Plural forms of any object can be expressed by a suffix:</p>
-
-        <ul>
-            <li>"<tt>ImageFile</tt>" means "<tt>exactly one ImageFile</tt>, which is "<tt>1</tt>" in UML</li>
-            <li>"<tt>ImageFile(s)</tt>" means "<tt>one, none or many ImageFiles</tt>": "<tt>0..*</tt>"</li>
-            <li>"<tt>ImageFile-s</tt>" means "<tt>one ImageFile or many</tt>": "<tt>1..*</tt>"</li>
-            <li>"<tt>ImageFile-?</tt>" means "<tt>one ImageFile or none</tt>": "<tt>0..1</tt>"</li>
-        </ul>
-
-    <h2>2.3. Vague text</h2>
-
-        <p>You can use any vague text, if it is inside double quotes, for example:</p>
-
-        <p class="code">
-            UC3.4: "will be defined later".<br/>
-            ActorUser: "a human being with persistent ID".
-        </p>
+    <p>to be continued...</p>
 
 </body>
 </html>
