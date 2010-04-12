@@ -1,5 +1,5 @@
 #
-# @version $Id: .htaccess 1450 2010-03-25 07:07:10Z yegor256@yahoo.com $
+# @version $Id$
 #
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} -s [OR]
