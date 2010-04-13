@@ -1,23 +1,25 @@
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>RQDQL, Requirements Definition and Query Language</title>
     <style type="text/css">
         body {
             font: 12pt Arial;
-            padding: 30px;
+            padding: 1em 3em;
         }
         h1 {
             margin-top: 2em;
             color: #2276A4;
             font-size: 1.5em;
+            font-weight: normal;
         }
         h2 {
             color: black;
             font-size: 1.2em;
+            font-weight: normal;
         }
         tt {
         }
@@ -44,45 +46,46 @@
             color: #2276A4;
             border-bottom: 1px solid #2276A4;
         }
+        a,
+        a:visited {
+            color: #2276A4;
+        }
     </style>
 </head>
 <body>
-    
-<h1>Requirements Definition and Query Language (RQDQL)</h1>
 
-    <p><tt>
-        $Revision: 1426 $<br/>
-        $LastChangedDate: 2010-03-24 08:24:42 +0100 (Wed, 24 Mar 2010) $
-    </tt></p>
+<h1>Requirements Definition and Query Language (<b>RQDQL</b>)</h1>
 
     <p><a href="http://standards.ieee.org/reading/ieee/std_public/description/se/830-1998_desc.html">IEEE 830-1998</a>
         says: "SRS (<i>software requirements specification</i>) should be
         correct, unambiguous, complete, consistent, ranked for importance and/or stability,
         verifiable, modifiable, traceable". RQDQL is going to enable the creation 
         of such documents in plain text format. If you're interested to join the group
-        developing RQDQL, email to <a href="team@rqdql.com">team@rqdql.com</a>.</p>
+        developing RQDQL, email to <a href="mailto:team@rqdql.com">team@rqdql.com</a>.
+    </p>
 
 <h1>1. Quick Start</h1>
 
     <p>The scope definition document consists of <b>classes</b>
-        and <b>use cases</b>, for example there are two classes
+        and <b>use cases</b>. For example, there are two classes
         (<tt>ActorVisitor</tt> and <tt>ImageFile</tt>) and one
-        use case (<tt>UC3.2</tt>):</p>
+        use case (<tt>UC3.2</tt>) defined:</p>
     
     <p class="code">
-        ActorVisitor: "an originator of HTTP request".<br/>
-        UC3.2 where ActorUser (the user) deletes photos: "we will define it later...".<br/>
+        ActorVisitor is an "originator of HTTP request".<br/>
+        UC3.2 where ActorUser (the user) deletes photos of himself:<br/>
+        "we will define it later...".<br/>
         ImageFile includes: PNG content, name, and size.
     </p>
     
-    <p>Everything that is inside double quotes is considered as
+    <p>Everything inside double quotes is considered as an
         informal content, which we take "as is", without
-        any attempt to understand what does it mean. You can place anything
-        into it (except double quotes, of course), and you can place such
+        any attempt to understand what does it mean. You can double quote anything
+        (except double quotes, of course), and you can place
         informal texts in any place of the document. They are ignored
         during formal analysis.</p>
     
-    <p>Consider a bit bigger example of a class <tt>ImageFile</tt>:</p>
+    <p>Let's consider a bit bigger example of a class <tt>ImageFile</tt>:</p>
     
     <p class="code">
         ImageFile includes:<br/>
@@ -91,13 +94,13 @@
         &nbsp;&nbsp;size: "total number of bytes in PNG content".
     </p>
     
-    <p>The semantic is the same, the class contains three <b>slots</b>
+    <p>The semantic is the same &mdash; the class still contains three <b>slots</b>
         (<tt>PNG content</tt>, <tt>name</tt> and <tt>size</tt>). However
-        in this example we added an informal explanation to every one of them.
+        in this example we've added an informal explanation to every one of them.
         A colon separates the name of the slot and its invariant.
         Pay attention to the dots, colons, semicolons and commas used above.
-        Comma, semicolon and preposition <tt>and</tt> can replace each other,
-        for example the following declarations are the same in sense of semantic:
+        Comma, semicolon and preposition "<tt>and</tt>" can replace each other.
+        For example, the following declarations are semantically equivalent:
         </p>
 
     <p class="code">
@@ -107,7 +110,7 @@
     </p>
 
     <p>A slot is a class itself and can be used outside of its parent class
-        by means of a preposition "<tt>of</tt>", for example:</b>
+        by means of a preposition "<tt>of</tt>", for example:</p>
 
     <p class="code">
         PNG content <b>of</b> ImageFile <b>is a</b> binary file.<br/>
@@ -115,25 +118,27 @@
         Size <b>of</b> ImageFile <b>is a</b> "size of PNG content of this file".<br/>
     </p>
     
-    <p>By means of "<tt>is/is a</tt>" we enable declaration of <b>invariants</b>
-        on classes. Invariant is a condition that is always true, no matter
+    <p>By means of "<tt>is/is a</tt>" we enable a declaration of <b>invariants</b>
+        on classes. Invariant is a condition, which is always true, no matter
         what happens with the system. In the example above it is always true
         that "<tt>PNG content</tt>" is a file with binary content (not a readable
         ASCII text). Nobody can break this invariant and put a textual information
         into this slot. Similarly, the "<tt>name of ImageFile</tt>" is 
         always unique in its class. We won't be able to find two identical
         slots in the class "<tt>name of ImageFile</tt>", never.
-        As you noticed, invariant could be declared with an informal text, as we 
-        did above with <tt>size of ImageFile</tt>. Such a declaration means 
+        As you noticed, an invariant could be declared with an informal text, as we've
+        done with "<tt>size of ImageFile</tt>". Such a declaration means 
         absolutely nothing and will be ignored. But it helps when you're starting
         to develop the scope document.</p>
         
-    <p>Informal texts play an important role during the document initial
-        development and preliminary system analysis. When you don't know for sure
+    <p>In general, <b>informal texts</b> play an important role during the initial
+        development of a requirements document and
+        during a preliminary system analysis. When you don't know for sure
         how to define the information you have in a strict format &mdash; you
-        should use informal texts. Later you will replace them.</p>
+        should use informal texts. Later, when you have more information,
+        you will replace them.</p>
 
-    <p>As you already noticed, RQDQL is a case-insensitive language in all places
+    <p>As you've already noticed, RQDQL is a case-insensitive language in all places
         except one &mdash; class names should use
         <a href="http://en.wikipedia.org/wiki/CamelCase">CamelCase Notation</a>. Thus
         "<tt>name of ImageFile</tt>" and "<tt>Name of ImageFile</tt>" point
@@ -141,24 +146,145 @@
         name, and <tt>imagefile</tt> is just an English word.</p>
 
     <p>There is one special meta-class, which we should mention &mdash; Actors.
-        Every class that has <tt>Actor</tt> prefix is an instance of meta-class
-        Actors. In the scope definition document actors represent people,
-        machines, services, databases, etc. &mdash; anything and anybody
-        who interact with our system.</p>
+        Every class that has <tt>Actor</tt> prefix is an instance of a meta-class
+        called "Actors". In the scope definition document actors represent people,
+        machines, services, databases, etc. &mdash; anything and anyone
+        who interacts with the <b>system under development (SUD)</b>,
+        crossing the board of the SUD. Important to note that the SUD is 
+        an actor itself, and its name in the document is <tt>SUD</tt>. You
+        are free to use <tt>SUD</tt> or replace it with more
+        convenient "<tt>we</tt>" and "<tt>us</tt>".</p>
 
     <p>To put things together we should declare a use case, which is 
-        a step-by-step explanation of interaction between one of actors
-        and a number of classes, for example:</p>
+        a step-by-step explanation of interaction between an actor
+        and <b>objects</b>, for example:</p>
     
     <p class="code">
-        UC8.1 where ActorAdmin (the admin) synchronizes database with OnlineBackup:<br/>
-        &nbsp;&nbsp;1. The admin reads status of OnlineBackup.<br/>
-        &nbsp;&nbsp;2. The admin "selects files for new backup" - the files.<br/>
-        &nbsp;&nbsp;3. We validate the files.<br/>
-        &nbsp;&nbsp;4. "Admin confirms that he/she agrees with terms of use".<br/>
-        &nbsp;&nbsp;5. We encrypt the files "using one of the encryption methods pre-defined".<br/>
-        &nbsp;&nbsp;6. We upload files to ActorAmazon.
+        UC8.1 where ActorUser (the user) shares ImageFile with ActorUser:<br/>
+        &nbsp;&nbsp;1. The user creates ImageFile (the photo).<br/>
+        &nbsp;&nbsp;2. The user "attaches this file to" photos of himself.<br/>
+        &nbsp;&nbsp;3. "The person confirms that he/she agrees with the terms of use".<br/>
+        &nbsp;&nbsp;4. The user "selects one of his friends, which is" ActorUser (the friend).<br/>
+        &nbsp;&nbsp;5. We convert the photo "to the right PNG format, 600x600 maximum".<br/>
+        &nbsp;&nbsp;6. We notify the friend by email.<br/>
+        &nbsp;&nbsp;7. The friend reads the photo "in his own web page".<br/>
+        UC8.1 alternative flows:<br/>
+        &nbsp;&nbsp;1a). If "the user exceeds the maximum possible number of photos":<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;1. Failure "photos limit exceeded".<br/>
+        &nbsp;&nbsp;5a). If failed with "invalid format":<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;1. "we notify user about the problem".<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;2. Go to step 1.
     </p>
+
+    <p>First line in this example is a declaration of a use case,
+        which number is <tt>UC8.1</tt>. The use case has a <b>signature</b>,
+        which differentiates it from all other use cases. It is not the
+        ID of the use case, but the signature, which is important. This
+        concept is very similar to
+        <a href="http://en.wikipedia.org/wiki/Signature_(computer_science)">function signature</a>
+        in programming. The 
+        signature of this use case is (classes are in bold):</p>
+
+    <p class="code">
+        <b>ActorUser</b> shares <b>ImageFile</b> with <b>ActorUser</b><br/>
+    </p>
+    
+    <p>In order to include this use case into another one we should use this
+        signature, filling it with particular objects. Objects start with
+        article "<tt>the</tt>" and on their first occurrence they appear in round brackets. In our 
+        use case there are three objects: "<tt>the user</tt>",
+        "<tt>the friend</tt>" and "<tt>the photo</tt>". An object could be
+        either received by a use case or created inside it. However, there is no grammar
+        difference between objects received and objects created. We assume
+        that an object is empty until anyone updates or creates it (more on this later).</p>
+    
+    <p>There are seven <b>main flows</b> in this use case, and five <b>alternative
+        flows</b>. Flows <tt>1</tt>, <tt>5</tt>, <tt>6</tt>, and <tt>7</tt>
+        instruct us to include other use cases that match the signatures
+        provided and pass them the objects we have. Let's see
+        what these flows really tell us about:</p>
+
+    <p class="code">
+        1. <b>ActorUser</b> creates <b>ImageFile</b><br/>
+        &nbsp;&nbsp;the user => ActorUser<br/>
+        &nbsp;&nbsp;the photo => ImageFile<br/>
+        5. SUD converts <b>ImageFile</b><br/>
+        &nbsp;&nbsp;the photo => ImageFile<br/>
+        6. SUD notifies <b>ActorUser</b> by email.<br/>
+        &nbsp;&nbsp;the user => ActorUser<br/>
+        7. ActorUser reads <b>ImageFile</b>.<br/>
+        &nbsp;&nbsp;the photo => ImageFile<br/>
+    </p>
+    
+    <p>There are four use cases that our use case <tt>UC8.1</tt> includes.
+        They have to be defined in somewhere else in the document,
+        otherwise the document would be invalid. But not all four are
+        mandatory, because there are a number of <b>elementary use cases</b>,
+        which are defined in the system, even if the document is
+        empty. The elementary use cases are 
+        (<a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUDL</a> requirements pattern):</p>
+
+    <p class="code">
+        <b>Anyone</b> creates <b>anything</b><br/>
+        <b>Anyone</b> reads <b>anything</b><br/>
+        <b>Anyone</b> updates <b>anything</b><br/>
+        <b>Anyone</b> deletes <b>anything</b><br/>
+        <b>Anyone</b> lists <b>anything</b><br/>
+    </p>
+    
+    <p>As you understand, <tt>anyone</tt> means "any actor",
+        and <tt>anything</tt> means "object of any class".
+        <tt>create</tt> means to make a new object.
+        <tt>read</tt> means to read all and any slots of an object, and all their slots, etc.
+        <tt>update</tt> means to change values of slots of an object.
+        <tt>delete</tt> means to remove an object from a persistent storage.
+        <tt>list</tt> means to iterate through the entire class where an object belongs,
+        seeing all objects.
+        </p>
+        
+    <p>Thus, a valid flow either points us to another use case
+        defined somewhere else in the document, or points us to
+        an elementary use case, or points us nowhere with an informal text
+        (<b>informal flow</b>).</p>
+
+    <p>Besides that, a flow might have a special instruction, which we've seen
+        in alternative flow <tt>1a1</tt> and <tt>5a2</tt>. "<tt>failure</tt>"
+        means that a use case should be stopped at this point and the
+        reason of this termination is explained right after the word <tt>failure</tt>
+        as an informal text. "<tt>go to</tt>" means that the we should just
+        jump to the flow mentioned and continue from there.</p>
+
+    <p>Reason of failure is used by a parent use case, which included the 
+        current one. This is exactly what happens in <tt>5a</tt>. We are
+        waiting for a failure from "<tt>we convert the photo</tt>", and
+        we're ready to accept a failure called "<tt>invalid format</tt>".
+        This approach is very similar to 
+        <a href="http://en.wikipedia.org/wiki/Exception_handling">exception handling paradigm</a>
+        in object-oriented languages.</p>
+
+<h1>2. Scope Vagueness</h1>
+
+    <p>There is only one metric that tells us everything about 
+        the entire scope definition document. The metric is called 
+        "<b>scope vagueness</b>" and is calculated like:</p>
+        
+    <p>SV = V / T</p>
+    
+    <p><i>V</i> stands for a total number of all informal flows,
+        and <i>T</i> is a total number of all use case flows in the document.
+        Thus, if <i>SV</i> equals to zero, the document is absolutely non-vague,
+        which is an almost impossible situation. In real world projects
+        the task of a system analyst is to move <i>SV</i> from 1 to 0.</p>
+        
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <!-- later -->
+    </math>
+
+<h1>3. Invariants</h1>
+
+    <p>to be continued...</p>
+
+<h1>Appendix A. Formal Grammar</h1>
 
     <p>to be continued...</p>
 
