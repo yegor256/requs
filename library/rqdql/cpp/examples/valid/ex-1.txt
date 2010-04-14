@@ -1,11 +1,4 @@
-SUD includes:
-    investors: ActorInvestor-s;
-    agents: ActorAgent-s;
-    applications: InvestorApplication-s;
-    tickets: OnlineTicket-s;
-    ...
-
-ActorUser: "A human being with identity. Also it is our client.".
+ActorUser is a "human being with identity. Also it is our client.".
 ActorUser is an ActorVisitor.
 
 InvestorApplication includes:
@@ -19,58 +12,23 @@ InvestorApplication includes:
     introduction email: "text message when account is registered";
     .
 
-IfLegacy between us and ActorLegacy includes:
-    HTTP request (outbound);
-    encrypted XML files (inbound).
+UC8.1 where somebody speculates:
 
-
-UC1 where somebody speculates:
-
-    1. [We] [get data from] [ActorLegacy].
-    2. [We] [invest into] [InvestmentProject (the project)].
-    3. [Somebody] [!turns into!] [ActorUser (the user)].
-    4. [The user] [buys units in] [the project].
-    5. [We] [pay commission to] [agent of the user].
-    6. [ActorOperator-s] [pay back to] [us].
-    7. [We] [pay earnings to] [the user], via IfBaydonhill.
-    8. [The user] [transfers units to] [ActorUser-s].
+    1. We get data from ActorLegacy.
+    2. We invest into InvestmentProject (the project).
+    3. Somebody turns into ActorUser (the user).
+    4. The user buys units in the project.
+    5. We pay commission to agent of the user.
+    6. ActorOperator pays back to us.
+    7. We pay earnings to the user.
+    8. The user transfers units to ActorUser.
     
-UC297 where we get data from ActorLegacy, via IfLegacy:
-
-    1. [We] [[send] [HTTP request] [to]] [ActorLegacy].
-    2. [ActorLegacy] [[sends] [encrypted XML files] [to]] [us].
-    3. [We] [validate] [encrypted XML files of IfLegacy].
-
-UC309 where SUD pays commission to ActorAgent:
-    TBD #45 "we need to find out what is it...".
-
-UC404 where SUD invests into InvestmentProject: "some story...".
-
-UC536 where ActorUser buys units in InvestmentProject: "I don't know...".
-
-
-UC643 where somebody turns into ActorUser:
-
-    1. Nobody turns into ActorVisitor (the visitor).
-    1. The visitor creates new InvestorApplication (the application).
-    2. SUD validates the application.
-    3. SUD creates a ticket of the application (the ticket).
-    4. ActorManager approves the ticket.
-    5. SUD creates ActorUser (the user).
-    6. SUD sends introduction email of the application.
+UC8.1 alternative flow:
     
-UC643 alternative flow:
-    
-    4a) [If] ["ticket is rejected"]:
+    4a) If "ticket is rejected":
         1. SUD sends rejection email of the application.
         2. Failure: "application rejected".
         
-    4a1a) [If] [email of the application] [is empty]:
+    4a1a) If email of the application is empty:
         1. Failure: "anonymous application rejected".
-        
-UC643 triggers:
-
-    
-
-    
         
