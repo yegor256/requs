@@ -19,8 +19,7 @@
 #include <string>
 #include <stdarg.h>
 #include "rqdql.h"
-#include "scope.h"
-#include "om/Model.h"
+#include "Scope.h"
 
 /**
  * Called when error is found in parser
