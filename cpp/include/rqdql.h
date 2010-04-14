@@ -35,25 +35,14 @@ void yySet(std::string*&, char*&);
 
 // project files
 #include "scope.h"
-#include "scope/Statement.h"
-#include "scope/Action.h"
-#include "scope/Object.h"
 
 using namespace std;
 using namespace rqdql::scope;
 
 typedef union {
-    Object::Plurality plurality;
     string* name;
-
-    Statement* statement;
-    Statement::LeftName* leftName;
-
-    vector<Action*>* actions;
-    Action* action;
-
-    vector<Object*>* objects;
-    Object* object;
+    UseCase* uc;
+    Classe* classe;
 } YYSTYPE;
 
 // bison/flex file

@@ -20,16 +20,6 @@
 
 %{
     #include "rqdql.h"
-    #include "scope.h"
-    #include "scope/Statement.h"
-    #include "scope/Statement/Fur.h"
-    #include "scope/Statement/Qos.h"
-    #include "scope/Statement/Empty.h"
-    #include "scope/Statement/Entity.h"
-    #include "scope/Statement/Entity/Declaration.h"
-    #include "scope/Statement/Entity/Inheritance.h"
-    #include "scope/Statement/Verb.h"
-    #include "scope/Object.h"
 	using boost::format;    
     using rqdql::log;
 %}
@@ -37,56 +27,24 @@
 // Here we should say that the type of non-terminal
 // terms are mapped to %union.name, and are strings because of that
 // %type <statements> SRS
-%type <statement> DottedStatement
-%type <statement> Statement
-%type <statement> FurStatement
-%type <statement> EntityStatement
-%type <statement> QosStatement
-%type <statement> SeeStatement
-%type <statement> VerbStatement
-%type <leftName> lfur
-%type <leftName> lobject
-%type <actions> actions
-%type <action> action
-%type <plurality> plural
-%type <name> verbs
-%type <name> verb
-%type <name> predicates
-%type <name> predicate
-%type <name> words
-%type <name> modifier
-%type <objects> subjects
-%type <objects> subject
-%type <objects> object
-%type <object> attribute
-%type <objects> attributes
 
 // Declaration of all known tokens
 %token <name> INFORMAL
-%token <name> ENTITY
-%token <name> FUR
+%token <name> CLASS
 %token <name> QOS
 %token <name> ACTOR
 %token <name> UC
 %token <name> WORD
-%token <name> ACRONYM 
-%token <name> TBD
-%token <name> ATTRIBS
-%token <name> INFINITIVE
-%token <name> AKA
 
 %token COLON SEMICOLON DOT COMMA
-%token MEANS
-%token SEE
 %token AND OR
-%token CAN
 %token IF
+%token THE
 %token OF
-%token USING
 %token THIS
 %token PLURAL_MANY PLURAL_SOME PLURAL_ANY
 %token OPEN_BRACE CLOSE_BRACE
-%token IS_A INCLUDES PRODUCES
+%token IS_A INCLUDES
 
 %nonassoc COMMA
 %nonassoc AND
@@ -94,35 +52,28 @@
 %right OF
 %right COLON
 %right INCLUDES
-%right PRODUCES
 
 %%
 
 SRS:
     /* it can be empty */ |
-    SRS DottedStatement { rqdql::scope::scope.push_back($2); } |
+    SRS Statement { } |
     SRS error { lyyerror(@2, "statement ignored"); };
 
-DottedStatement:
-    Statement DOT;
-
 Statement:
-    FurStatement |
-    EntityStatement | 
-    QosStatement | 
-    VerbStatement | 
-    SeeStatement
+    InvariantDeclaration | 
+    SlotsDeclaration | 
+    UseCaseDefinition | 
+    UseCaseAlternativeFlow
     ;
 
-FurStatement:
-    lfur COLON actions { yySave<Statement>($$, new FurStatement(*$1 /* todo! */)); } |
-    lfur COLON TBD { yySave<Statement>($$, new FurStatement(*$1 /* todo! */)); } |
-    lfur error { lyyerror(@2, "colon expected after FUR"); } |
-    lfur COLON error { lyyerror(@3, "actions expected after 'FUR:'"); } 
+InvariantDeclaration:
+    class IS_A INFORMAL {  } |
+    class IS_A invariant {  } |
     ;
     
 /* left FUR */
-lfur:
+class:
     FUR { yySave($$, new Statement::LeftName(*$1, "")); } |
     FUR ATTRIBS { yySave($$, new Statement::LeftName(*$1, *$2)); }
     ;
