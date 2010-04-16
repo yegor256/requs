@@ -22,49 +22,48 @@
 #include <vector>
 
 using namespace std;
-using namespace rqdql;
 
 rqdql::LogLevel rqdql::level = L_ERROR;
 
 // explicit instantiation, see Stroustrup C.13.10
-using rqdql::scope::Action;
-template void yyConcat<Action>(vector<Action*>*&, vector<Action*>*&, Action*);
-template void yyAppend<Action>(vector<Action*>*&, Action*);
-template void yySave<Action>(Action*&, Action*);
+// using rqdql::scope::Action;
+// template void yyConcat<Action>(vector<Action*>*&, vector<Action*>*&, Action*);
+// template void yyAppend<Action>(vector<Action*>*&, Action*);
+// template void yySave<Action>(Action*&, Action*);
 
 // explicit instantiation, see Stroustrup C.13.10
-using rqdql::scope::Statement;
-template void yyConcat<Statement>(vector<Statement*>*&, vector<Statement*>*&, Statement*);
-template void yyAppend<Statement>(vector<Statement*>*&, Statement*);
-template void yySave<Statement>(Statement*&, Statement*);
+// using rqdql::scope::Statement;
+// template void yyConcat<Statement>(vector<Statement*>*&, vector<Statement*>*&, Statement*);
+// template void yyAppend<Statement>(vector<Statement*>*&, Statement*);
+// template void yySave<Statement>(Statement*&, Statement*);
 
 // explicit instantiation, see Stroustrup C.13.10
-template void yySave<Statement::LeftName>(Statement::LeftName*&, Statement::LeftName*);
+// template void yySave<Statement::LeftName>(Statement::LeftName*&, Statement::LeftName*);
 
 // explicit instantiation, see Stroustrup C.13.10
-using rqdql::scope::Object;
-template void yyConcat<Object>(vector<Object*>*&, vector<Object*>*&, Object*);
-template void yyAppend<Object>(vector<Object*>*&, Object*);
-template void yySave<Object>(Object*&, Object*);
+// using rqdql::scope::Object;
+// template void yyConcat<Object>(vector<Object*>*&, vector<Object*>*&, Object*);
+// template void yyAppend<Object>(vector<Object*>*&, Object*);
+// template void yySave<Object>(Object*&, Object*);
 
-template <class T> void yyConcat(vector<T*>*& array, vector<T*>*& current, T* item) {
-    if (current) {
-        array = new vector<T*>(*current);
-    } else {
-        array = new vector<T*>;
-    }
-    array->push_back(item);
-}
-
-template <class T> void yyAppend(vector<T*>*& array, T* item) {
-    array = new vector<T*>;
-    array->push_back(item);
-}
-
-template <class T> void yySave(T*& lhs, T* rhs) {
-    lhs = rhs;
-}
-
+// template <class T> void yyConcat(vector<T*>*& array, vector<T*>*& current, T* item) {
+//     if (current) {
+//         array = new vector<T*>(*current);
+//     } else {
+//         array = new vector<T*>;
+//     }
+//     array->push_back(item);
+// }
+// 
+// template <class T> void yyAppend(vector<T*>*& array, T* item) {
+//     array = new vector<T*>;
+//     array->push_back(item);
+// }
+// 
+// template <class T> void yySave(T*& lhs, T* rhs) {
+//     lhs = rhs;
+// }
+// 
 void yySet(string*& lhs, boost::format rhs) {
     lhs = new string(rhs.str());
 }

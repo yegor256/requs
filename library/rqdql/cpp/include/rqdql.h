@@ -27,29 +27,27 @@
 // boost libraries
 #include "boost/format.hpp"
 
-template <class T> void yyConcat(std::vector<T*>*&, std::vector<T*>*&, T*);
-template <class T> void yyAppend(std::vector<T*>*&, T*);
-template <class T> void yySave(T*&, T*);
+// template <class T> void yyConcat(std::vector<T*>*&, std::vector<T*>*&, T*);
+// template <class T> void yyAppend(std::vector<T*>*&, T*);
+// template <class T> void yySave(T*&, T*);
 void yySet(std::string*&, boost::format);
 void yySet(std::string*&, char*&);
 
 // project files
-#include "scope.h"
-
-using namespace std;
-using namespace rqdql::scope;
+#include "Scope.h"
 
 typedef union {
-    string* name;
-    UseCase* uc;
-    Classe* classe;
+    std::string* name;
+    int num;
+    rqdql::UseCase* uc;
+    rqdql::Classe* classe;
 } YYSTYPE;
 
 // bison/flex file
 // this define will protect us against BISON default YYSTYPE
 #define YYSTYPE_IS_DECLARED 1
 #define YYSTYPE_IS_TRIVIAL 1
-#include "../rqdql.tab.h"
+#include "symbols.h"
 
 extern int yyparse();
 extern void yyerror(const char *error, ...);
