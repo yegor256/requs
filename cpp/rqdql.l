@@ -30,33 +30,32 @@
         yycolumn += yyleng;
 %}
 
-%option noyywrap yylineno
+%option noyywrap
+%option yylineno
 %option nodefault
+/* %option case-insensitive */
 
 SPACE ([ \t\r\n]+)
 NSFX ([1-8](\.[1-8])?)
 CAMEL_PART ([A-Z][a-z]+)
 CAMEL ({CAMEL_PART}({CAMEL_PART})+)
-ACTOR (Actor({CAMEL_PART})+|SUD)
 UC (UC{NSFX})
 QOS (QOS{NSFX})
-INCLUDES ((","{SPACE}*)?(including|includes?|has|contains?){SPACE}*":")
 
     /* singular after entity or actor */
 %x SINGULAR
 
     /* informal text */
-%x INFORMAL
+%x READING_QUOTED
 
 %%
 
 #.* { /* ignore comments */ }
 
     /* find entities */
-{ACTOR} { yySet(yylval.name, yytext); log(format("ACTOR: '%s'") % yytext); return ACTOR; }
 {QOS} { yySet(yylval.name, yytext); log(format("QOS: '%s'") % yytext); return QOS; }
 {UC} { yySet(yylval.name, yytext); log(format("UC: '%s'") % yytext); return UC; }
-{CAMEL} { yySet(yylval.name, yytext); log(format("ENTITY: '%s'") % yytext); return CLASS; }
+{CAMEL} { yySet(yylval.name, yytext); log(format("CAMEL: '%s'") % yytext); return CAMEL; }
 
 "-s" { log("PLURAL_MANY"); return PLURAL_MANY; }
 "(s)" { log("PLURAL_SOME"); return PLURAL_SOME; }
@@ -67,25 +66,50 @@ INCLUDES ((","{SPACE}*)?(including|includes?|has|contains?){SPACE}*":")
 ":" { log("COLON"); return COLON; }
 "." { log("DOT"); return DOT; }
 ";" { log("SEMICOLON"); return SEMICOLON; }
+"*" { log("STAR"); return STAR; }
 "," { log("COMMA"); return COMMA; }
-"(" { return OPEN_BRACE; }
-")" { return CLOSE_BRACE; }
-"is a" |
-"is an" | 
-"is" | { log("IS_A"); return IS_A; }
-"and" { log("AND"); return AND; }
-"of" { log("OF"); return OF; }
-"if" { log("IF"); return IF; }
-"the" { log("THE"); return THE; }
+"(" { log("OPEN_BRACE"); return OPEN_BRACE; }
+")" { log("CLOSE_BRACE"); return CLOSE_BRACE; }
+"is"([ \t\r\n]+)"a" |
+"is"([ \t\r\n]+)"an" { log("IS_A"); return IS_A; }
 
-"himself" | 
-"itself" { log("THIS"); return THIS; }
+"are" |
+"is" { log("IS"); return IS; }
 
-[a-z]+ { yySet(yylval.name, yytext); log(format("WORD: '%s'") % yytext); return WORD; }
+[Ww]"here" { log("WHERE"); return WHERE; }
+[Aa]"nd" { log("AND"); return AND; }
+[Oo]"f" { log("OF"); return OF; }
+[Tt]"he" { log("THE"); return THE; }
+[Ii]"ncludes" { log("INCLUDES"); return INCLUDES; }
+[Tt]"o" | 
+[Ww]"ith" |
+[Ii]"nto" |
+[Ii]"n" |
+[Ff]"rom" |
+[Aa]"t" { log("PREPOSITION"); return PREPOSITION; }
 
-(\") { BEGIN(INFORMAL); }
-<INFORMAL>([\n\t.]) { *yylval.name << yytext; }
-<INFORMAL>(\") { BEGIN(INITIAL); yySet(yylval.name, yytext); return INFORMAL; }
+[Hh]"mself" | 
+[Ii]"tself" { log("THIS"); return THIS; }
+
+	/* SUD */
+[Ww]"e" | 
+[Th]"he"[ \t\n\r]+[Ss]"ystem" | 
+"SUD" | 
+[Uu]"s" { log("SUD"); return SUD; }
+
+[Ss]"omebody" { log("SOMEBODY"); return SOMEBODY; }
+[Ss]"omething" { log("SOMETHING"); return SOMETHING; }
+
+	/* numbers and words */
+[0-9]+ { yylval.num, atoi(yytext); log(format("NUMBER: '%s'") % yytext); return NUMBER; }
+[a-zA-Z]/[^a-zA-Z] { yySet(yylval.name, yytext); log(format("LETTER: '%s'") % yytext); return LETTER; }
+[a-zA-Z]+ { yySet(yylval.name, yytext); log(format("WORD: '%s'") % yytext); return WORD; }
+
+	/* quoted informal texts */
+(\") { BEGIN(READING_QUOTED); yySet(yylval.name, format()); }
+<READING_QUOTED>(\") { BEGIN(INITIAL); log(format("QUOTED: '%s'") % *yylval.name); return QUOTED; }
+<READING_QUOTED>([\n\t\r]|.) { *yylval.name += yytext; }
+<READING_QUOTED><<EOF>> { yyerror("unclosed informal text"); }
 
 \n { yycolumn = 1; }
 [ \t\r] { /* ignore spaces */ }

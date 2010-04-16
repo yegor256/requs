@@ -3,32 +3,31 @@ ActorUser is an ActorVisitor.
 
 InvestorApplication includes:
     ticket: OnlineTicket "where this application is discussed and approved";
-    email;
+    email,
     agent: ActorAgent;
     phone: "a telephone number"; and
-    name includes:
-        first name and
-        last name;;
-    introduction email: "text message when account is registered";
-    .
+    name;
+    introduction email: "text message when account is registered".
+    
+Name of InvestorApplication includes: first name and last name.
 
-UC8.1 where somebody speculates:
+UC8.1 where somebody speculates: 
 
-    1. We get data from ActorLegacy.
+    1. We get from ActorLegacy.
     2. We invest into InvestmentProject (the project).
     3. Somebody turns into ActorUser (the user).
-    4. The user buys units in the project.
-    5. We pay commission to agent of the user.
-    6. ActorOperator pays back to us.
-    7. We pay earnings to the user.
-    8. The user transfers units to ActorUser.
+    4. The user "buys specific units in" the project.
+    5. "We do something strange".
+    6. ActorOperator pays to us "when necessary".
+    7. "Every week" we payearnings to the user.
+    8. The user transfersunits to ActorUser.
     
 UC8.1 alternative flow:
     
     4a) If "ticket is rejected":
         1. SUD sends rejection email of the application.
-        2. Failure: "application rejected".
+        2. Failure "application rejected".
         
-    4a1a) If email of the application is empty:
-        1. Failure: "anonymous application rejected".
+    4a1a) If "email of the application is empty":
+        1. Failure "anonymous application rejected".
         

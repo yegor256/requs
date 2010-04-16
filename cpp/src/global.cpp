@@ -79,10 +79,9 @@ int main(int argc, char** argv) {
     // convert input stream into rqdql::om::Model class instance
     yyparse();
     
-    rqdql::om::Model model;
-    rqdql::log(boost::format("%d statements found") % rqdql::scope::scope.size());
-    model.setScope(rqdql::scope::scope);
-    cout << model.query("") << endl;
+    // rqdql::log(boost::format("%d statements found") % rqdql::scope.size());
+    // model.setScope(rqdql::scope::scope);
+    // cout << model.query("") << endl;
     
     // bye-bye log message
     rqdql::log(rqdql::L_INFO, "end.");

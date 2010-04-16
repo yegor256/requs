@@ -14,6 +14,7 @@
 # @copyright Copyright (c) rqdql.com, 2010
 # @version $Id$
 
+SELF = Makefile
 DEBUG_FLAG = -DRQDQL_DEBUG=true
 PATH := $(PATH):/usr/local/bin:/usr/bin
 CPP = c++
@@ -21,6 +22,7 @@ BISON = bison
 FLEX = flex
 CPPFLAGS = -I./include -I./library $(DEBUG_FLAG)
 EXEC = ./rqdql
+SYMBOLS = include/symbols.h
 
 SOURCES := $(shell find src -name "*.cpp")
 OBJS := $(SOURCES:.cpp=.o) $(LIBS:.cpp=.o)
@@ -39,16 +41,16 @@ VALID_EXAMPLES = $(shell find examples/valid -name "*.txt")
 all: rqdql test
 
 # compile/build the product
-rqdql: lex.yy.c $(EXEC).tab.h $(EXEC).tab.c $(OBJS) $(LIB_OBJS) Makefile
+rqdql: lex.yy.c $(EXEC).tab.c $(OBJS) $(LIB_OBJS) $(SELF)
 	$(CPP) $(CPPFLAGS) -o $@ $(EXEC).tab.c lex.yy.c $(OBJS) $(LIB_OBJS)
     
-lex.yy.c: $(EXEC).l $(HEADERS)
+lex.yy.c: $(EXEC).l $(HEADERS) $(SELF)
 	$(FLEX) $(EXEC).l
 	
 $(EXEC).tab.h: $(EXEC).tab.c
 
-$(EXEC).tab.c: $(EXEC).y $(HEADERS)
-	$(BISON) --no-lines --report=all -d $(EXEC).y
+$(EXEC).tab.c: $(EXEC).y $(HEADERS) $(SELF)
+	$(BISON) --no-lines --report=all --defines=$(SYMBOLS) $(EXEC).y
 
 %.o: %.cpp $(HEADERS)
 	$(CPP) $(CPPFLAGS) -o $@ -c $<
@@ -77,10 +79,11 @@ test-examples: $(EXEC) $(VALID_EXAMPLES)
 
 # clean everything!
 clean:
-	rm -f lex.yy.c $(EXEC).tab.c $(EXEC).tab.h
-	rm -f $(EXEC).output
-	rm -f $(OBJS)
-	rm -f $(LIB_OBJS)
-	rm -f $(EXEC)
-	rm -f $(TESTS)
+	rm -f lex.yy.c $(EXEC).tab.c $(EXEC).tab.h \
+	$(EXEC).output \
+	$(OBJS) \
+	$(LIB_OBJS) \
+	$(EXEC) \
+	$(TESTS) \
+	$(SYMBOLS)
 

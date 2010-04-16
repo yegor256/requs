@@ -16,7 +16,7 @@
  * @version $Id$
  */
 
-#include "rqdql.h"
+#include "Scope.h"
 
 // see scope.h
-vector<rqdql::scope::Statement*> rqdql::scope::scope;
+rqdql::Scope scope;

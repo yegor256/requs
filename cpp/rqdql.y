@@ -29,213 +29,232 @@
 // %type <statements> SRS
 
 // Declaration of all known tokens
-%token <name> INFORMAL
-%token <name> CLASS
+%token <name> QUOTED
+%token <name> CAMEL
 %token <name> QOS
-%token <name> ACTOR
 %token <name> UC
 %token <name> WORD
+%token <num> NUMBER
+%token <name> LETTER
 
-%token COLON SEMICOLON DOT COMMA
+%token COLON SEMICOLON DOT COMMA STAR
 %token AND OR
-%token IF
+%token PREPOSITION
+%token WHERE
+%token SUD
+%token SOMEBODY
+%token SOMETHING
 %token THE
 %token OF
 %token THIS
 %token PLURAL_MANY PLURAL_SOME PLURAL_ANY
 %token OPEN_BRACE CLOSE_BRACE
-%token IS_A INCLUDES
+%token IS_A
+%token IS
+%token INCLUDES
 
 %nonassoc COMMA
 %nonassoc AND
 %nonassoc SEMICOLON
+%nonassoc DOT
+%nonassoc PREPOSITION
+%left WORD
+%left NUMBER
 %right OF
 %right COLON
 %right INCLUDES
 
 %%
 
-SRS:
+srs:
     /* it can be empty */ |
-    SRS Statement { } |
-    SRS error { lyyerror(@2, "statement ignored"); };
-
-Statement:
-    InvariantDeclaration | 
-    SlotsDeclaration | 
-    UseCaseDefinition | 
-    UseCaseAlternativeFlow
+    srs statement { } |
+    srs error { lyyerror(@2, "statement ignored"); }
     ;
 
-InvariantDeclaration:
-    class IS_A INFORMAL {  } |
-    class IS_A invariant {  } |
-    ;
-    
-/* left FUR */
-class:
-    FUR { yySave($$, new Statement::LeftName(*$1, "")); } |
-    FUR ATTRIBS { yySave($$, new Statement::LeftName(*$1, *$2)); }
-    ;
-    
-actions:
-    action { yyAppend($$, $1); } |
-    actions SEMICOLON action { yyConcat($$, $1, $3); } 
-    ;
-    
-action:
-    ACTOR CAN verbs subjects {  } |
-    ACTOR error { lyyerror(@2, "'can' missed after '%s'", $1); } |
-    ACTOR CAN error { lyyerror(@3, "list of verbs not found after '%s can'", $1); } |
-    ACTOR CAN verbs error { lyyerror(@4, "list of subjects missed after '%s can %s'", $1, $3); }
-    ;
-    
-verbs:
-    verb |
-    verbs separator verb { yySet($$, format("%s, %s") % $1 % $3); }
-    ;
-    
-verb:
-    ACRONYM |
-    WORD |
-    WORD modifier
-    ;
-    
-subjects:
-    subject |
-    subjects separator subject { /*yyConcat($$, $1, $3);*/ }
-    ;
-    
-separator:
-    COMMA |
-    AND |
-    COMMA AND
-    ;
-    
-subject:
-    object |
-    object modifier { /* to add modifier to the object */ }
-    ;
-    
-object:
-    THIS
-        {
-            yyAppend($$, new Object());
-        } |
-    ACTOR plural
-        { 
-            Object* obj = new Object((format("%s") % $1).str());
-            obj->setPlurality($2);
-            obj->addTag("actor");
-            yyAppend($$, obj);
-        } |
-    ENTITY plural
-        {
-            Object* obj = new Object((format("%s") % $1).str());
-            obj->setPlurality($2);
-            yyAppend($$, obj);
-        } |
-    attributes OF object
-        { 
-            // set parent for every object
-            //$$->setParent($3); 
-            // add them all to collection
-            $$ = $1; 
-        }
-    ;
-    
-attributes:
-    attribute { yyAppend($$, $1); } |
-    attributes separator attribute { yyConcat($$, $1, $3); }
-    ;
-    
-attribute:
-    words { yySave($$, new Object(*$1)); }
-    ;
-    
-words:
-    WORD |
-    words WORD { yySet($$, format("%s %s") % $1 % $2); }
-    ;
-    
-plural:
-    /* singular */ { $$ = Object::SINGULAR; } |
-    PLURAL_MANY { $$ = Object::MANY; } | 
-    PLURAL_SOME { $$ = Object::SOME; } |
-    PLURAL_ANY { $$ = Object::ANY; } 
+statement:
+    invariantDeclaration | 
+    slotsDeclaration | 
+    useCaseDefinition | 
+    useCaseAlternativeFlow
     ;
 
-modifier:
-    OPEN_BRACE predicates CLOSE_BRACE { yySet($$, format("%s") % $2); }
+/** 
+ * Invariants... 
+ */
+invariantDeclaration:
+    className IS_A invariant DOT |
+    className IS_A invariant error { lyyerror(@3, "Maybe a trailing DOT missed?"); }
     ;
     
-predicates:
+invariant:
     predicate |
-    predicates SEMICOLON predicate
+    predicate informal |
+    error { lyyerror(@1, "Predicate is not clear"); }
     ;
     
 predicate:
-    lambda subjects { yySet($$, format("L %s") % $2); } |
-    lambda subjects verbs { yySet($$, format("L %s %s") % $2 % $3); }
-    ;
-    
-lambda:
-    IF |
-    USING 
-    ;
-    
-EntityStatement:
-    lobject COLON INFORMAL { yySave<Statement>($$, new EntityDeclarationStatement(*$1, *$3)); } |
-    lobject IS_A object { yySave<Statement>($$, new EntityInheritanceStatement(*$1, *$3)); }  |
-    lobject INCLUDES parts { yySave<Statement>($$, new EntityStatement(*$1 /* todo! */)); }  |
-    lobject PRODUCES parts { yySave<Statement>($$, new EntityStatement(*$1 /* todo! */)); } 
-    ;
-    
-lobject:
-    ENTITY { yySave($$, new Statement::LeftName(*$1, "")); } |
-    ACTOR { yySave($$, new Statement::LeftName(*$1, "")); $$->addTag("actor"); } 
+    informal |
+    classe
     ;
 
-/* e.g. "email; password; files" */
-parts: 
-    part |
-    parts SEMICOLON part
+classe:
+    className |
+    className OPEN_BRACE objectName CLOSE_BRACE
     ;
 
-/* e.g. "email: string text" */
-part:
-    attribute |
-    attribute COLON INFORMAL |
-    attribute INCLUDES parts SEMICOLON
-    ;
-
-/* QOS3.3: some text. */    
-QosStatement:
-    QOS COLON INFORMAL { yySave<Statement>($$, new QosStatement(Statement::LeftName(*$1, "")/* todo! */)); } 
-    ;
-
-/* email of ActorUser "to approve" means: some text... */
-VerbStatement:
-    INFINITIVE object MEANS COLON INFORMAL { yySave<Statement>($$, new VerbStatement(/* todo! */)); }  |
-    INFINITIVE object AKA MEANS COLON INFORMAL { yySave<Statement>($$, new VerbStatement(/* todo! */)); }  
+/**
+ * Slots... 
+ */
+slotsDeclaration:
+    classe INCLUDES COLON slots DOT
     ;
     
-/* See: R4.4, ActorUser, ... */
-SeeStatement:
-    SEE COLON entities { yySave<Statement>($$, new EmptyStatement()); } 
+slots:
+    slot |
+    slots separator slot
     ;
     
-entities:
-    entity |
-    entities separator entity
+slot:
+    slotName |
+    slotName COLON invariant
     ;
     
-entity: 
-    FUR |
-    UC |
-    subject 
+/**
+ * Use cases... 
+ */
+useCaseDefinition:
+    useCaseDeclaration flows |
+    useCaseDeclaration informal DOT |
+    useCaseDeclaration error { lyyerror(@2, "use case definition is not clear"); } |
+    useCaseDeclaration informal error { lyyerror(@3, "maybe a trailing DOT missed after use case definition?"); }
+    ;
+     
+useCaseDeclaration:
+    UC WHERE signature COLON |
+    UC WHERE signature error { lyyerror(@4, "COLON missed after UC signature"); }
+    ;
+    
+/**
+ * V
+ * O V O V ...
+ * O V O V ... O
+ */
+signature:
+    informal |
+    sigElements |
+    sigElements informal
+    ;
+    
+sigElements:
+    sigElement |
+    sigElements sigElement
+    ;
+    
+sigElement:
+    sigObject |
+    sigVerb |
+    informal sigObject |
+    informal sigVerb
     ;
 
+sigObject:
+    classe |
+    object
+    ;
+    
+object:
+    objectName |
+    slotName OF object
+    ;
+
+/**
+ * w1 w2 TO - is it "(w1) (w2 TO)" or "(w1 w2 TO)"
+ */    
+sigVerb:
+    words PREPOSITION |
+    WORD |
+    WORD PREPOSITION
+    ;
+    
+flows:
+    flow |
+    flows flow
+    ;
+    
+flow:
+    flowOpener signature DOT |
+    flowOpener signature COLON |
+    flowOpener signature error { lyyerror(@3, "maybe a trailing DOT missed after flow?"); } |
+    flowOpener error { lyyerror(@2, "invalid SIGNATURE for the flow"); }
+    ;
+    
+flowOpener:
+    flowId CLOSE_BRACE |
+    flowId DOT
+    ;
+    
+flowId:
+    NUMBER |
+    flowIdPairs
+    ;
+    
+flowIdPairs:
+    flowIdPair |
+    flowIdPairs flowIdPair
+    ;
+    
+flowIdPair:
+    NUMBER LETTER |
+    STAR LETTER
+    ;
+    
+/**
+ * alternative flow of a use case
+ */
+useCaseAlternativeFlow:
+    UC words COLON flows
+    ;
+    
+/**
+ * global elementary things 
+ */
+ 
+words:
+    WORD WORD |
+    words WORD
+    ;
+    
+informal:
+    QUOTED
+    ;
+    
+separator:
+    SEMICOLON | 
+    SEMICOLON AND | 
+    COMMA | 
+    COMMA AND |
+    AND
+    ;
+
+className:
+    SUD |
+    SOMEBODY |
+    SOMETHING |
+    CAMEL |
+    THIS |
+    slotName OF className
+    ;
+    
+slotName:
+    WORD |
+    words
+    ;
+    
+objectName:
+    THE WORD
+    ;
+    
 %%
 
 // see global.cpp

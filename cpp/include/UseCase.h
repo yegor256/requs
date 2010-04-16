@@ -16,26 +16,16 @@
  * @version $Id$
  */
 
-#ifndef __INCLUDE_SCOPE_STATEMENT_H
-#define __INCLUDE_SCOPE_STATEMENT_H
-
-namespace rqdql {
-    namespace scope {
-        class FurStatement;
-        class EntityStatement;
-        class QosStatement;
-        class EmptyStatement;
-        class VerbStatement;
-    }
-};
+#ifndef __INCLUDE_SCOPE_USECASE_H
+#define __INCLUDE_SCOPE_USECASE_H
 
 #include <string>
 #include <vector>
 #include <set>
-#include "scope.h"
 #include "pugixml/pugixml.hpp"
+#include "Scope.h"
 
-class rqdql::scope::Statement : public rqdql::scope::item {
+class rqdql::UseCase {
 protected:
     int _startLineNo;
     int _endLineNo;
@@ -50,9 +40,6 @@ public:
     public:
         LeftName(const std::string& = "", const std::string& = "");
         const std::string& getName() { return this->_name; }
-        const std::vector<std::string>& getAttribs() { return this->_attribs; }
-        const std::set<std::string>& getTags() { return this->_tags; }
-        LeftName& addTag(const std::string& tag) { this->_tags.insert(tag); return *this; }
     };
     
     void setStartLineNo(int lineNo);

@@ -31,4 +31,7 @@ namespace rqdql {
 class rqdql::Scope {
 };
 
+// see Scope.cpp
+extern rqdql::Scope scope;
+
 #endif
