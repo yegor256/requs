@@ -20,13 +20,41 @@
 
 %{
     #include "rqdql.h"
+    #include "Scope.h"
+    #include "Classe.h"
+    #include "UseCase.h"
+    #include "brokers.h"
 	using boost::format;    
-    using rqdql::log;
+    using namespace rqdql;
 %}
 
 // Here we should say that the type of non-terminal
 // terms are mapped to %union.name, and are strings because of that
-// %type <statements> SRS
+%type <name> words
+%type <ptr> className
+%type <ptr> classe
+%type <ptr> object
+%type <name> objectName
+%type <ptr> slots
+%type <ptr> slot
+%type <name> slotName
+%type <ptr> predicate
+%type <ptr> invariant
+%type <ptr> classeDefinition
+%type <ptr> useCaseDefinition
+%type <ptr> invariantDeclaration
+%type <ptr> slotsDeclaration
+%type <ptr> useCaseDeclaration
+%type <ptr> useCaseAlternativeDeclaration
+%type <ptr> useCaseStarter
+%type <ptr> signature
+%type <ptr> sigElements
+%type <ptr> sigElement
+%type <ptr> sigObject
+%type <ptr> sigVerb
+%type <ptr> flows
+%type <ptr> flow
+
 
 // Declaration of all known tokens
 %token <name> QUOTED
@@ -46,7 +74,7 @@
 %token SOMETHING
 %token THE
 %token OF
-%token THIS
+%token SELF
 %token PLURAL_MANY PLURAL_SOME PLURAL_ANY
 %token OPEN_BRACE CLOSE_BRACE
 %token IS_A
@@ -68,22 +96,30 @@
 
 srs:
     /* it can be empty */ |
-    srs statement { } |
+    srs statement |
     srs error { lyyerror(@2, "statement ignored"); }
     ;
 
 statement:
-    invariantDeclaration | 
-    slotsDeclaration | 
-    useCaseDefinition | 
-    useCaseAlternativeFlow
+    classeDefinition { /*addClasse($1);*/ }  | 
+    useCaseDefinition { /*addUseCase($1);*/ }
+    ;
+
+classeDefinition:
+    invariantDeclaration |
+    slotsDeclaration
+    ;
+    
+useCaseDefinition:
+    useCaseDeclaration |
+    useCaseAlternativeDeclaration
     ;
 
 /** 
  * Invariants... 
  */
 invariantDeclaration:
-    className IS_A invariant DOT |
+    className IS_A invariant DOT { } |
     className IS_A invariant error { lyyerror(@3, "Maybe a trailing DOT missed?"); }
     ;
     
@@ -94,44 +130,44 @@ invariant:
     ;
     
 predicate:
-    informal |
-    classe
+    informal { /*$$ = makePredicate($1);*/ } |
+    classe { /*$$ = makePredicate("classe TBD");*/ }
     ;
 
 classe:
-    className |
-    className OPEN_BRACE objectName CLOSE_BRACE
+    className { /*$$ = makeClasse($1);*/ } |
+    className OPEN_BRACE objectName CLOSE_BRACE { /*$$ = makeClasse($1); appendObject($$, $3);*/ }
     ;
 
 /**
  * Slots... 
  */
 slotsDeclaration:
-    classe INCLUDES COLON slots DOT
+    classe INCLUDES COLON slots DOT { /*$$ = makeClasse($1, $4);*/ }
     ;
     
 slots:
-    slot |
-    slots separator slot
+    slot { /*$$ = (new vector<Classe>)->push_back(*static_cast<Classe*>($1)); delete $1;*/ } |
+    slots separator slot { /*$$ = $1; static_cast<vector<Classe>>($$)->push_back(*static_cast<Classe*>($3)); delete $3;*/ } 
     ;
     
 slot:
-    slotName |
-    slotName COLON invariant
+    slotName { /*$$ = makeClasse($1);*/ } |
+    slotName COLON invariant { /*$$ = makeClasse($1); makePredicate($3); */} 
     ;
     
 /**
  * Use cases... 
  */
-useCaseDefinition:
-    useCaseDeclaration flows |
-    useCaseDeclaration informal DOT |
-    useCaseDeclaration error { lyyerror(@2, "use case definition is not clear"); } |
-    useCaseDeclaration informal error { lyyerror(@3, "maybe a trailing DOT missed after use case definition?"); }
+useCaseDeclaration:
+    useCaseStarter flows { /*$$ = $1; static_cast<UseCase*>($$) += $2; */} |
+    useCaseStarter informal DOT |
+    useCaseStarter error { lyyerror(@2, "use case definition is not clear"); } |
+    useCaseStarter informal error { lyyerror(@3, "maybe a trailing DOT missed after use case definition?"); }
     ;
      
-useCaseDeclaration:
-    UC WHERE signature COLON |
+useCaseStarter:
+    UC WHERE signature COLON { /*$$ = new UseCase($3);*/ } |
     UC WHERE signature error { lyyerror(@4, "COLON missed after UC signature"); }
     ;
     
@@ -141,40 +177,40 @@ useCaseDeclaration:
  * O V O V ... O
  */
 signature:
-    informal |
-    sigElements |
-    sigElements informal
+    informal { /*$$ = new Signature($1);*/ } |
+    sigElements { /*$$ = new Signature("signature...", $1);*/ } |
+    sigElements informal { /*$$ = new Signature("signature...", $1);*/ }
     ;
     
 sigElements:
-    sigElement |
-    sigElements sigElement
+    sigElement { /*$$ = (new vector<Signature::Element>)->push_back(static_cast<Signature::Element*>($1)); delete $1;*/ } |
+    sigElements sigElement { /*$$ = $1; static_cast<vector<Signature::Element> >($$)->push_back(static_cast<Signature::Element*>($1)); delete $1;*/ } 
     ;
     
 sigElement:
     sigObject |
     sigVerb |
-    informal sigObject |
-    informal sigVerb
+    informal sigObject { /*$$ = $2; static_cast<Signature::Element*>($$)->addPrefix($1);*/ } |
+    informal sigVerb { /*$$ = $2; static_cast<Signature::Element*>($$)->addPrefix($1);*/ }
     ;
 
 sigObject:
-    classe |
-    object
+    classe { /*$$ = (new Signature::Element())->setClasse($1);*/ } |
+    object { /*$$ = (new Signature::Element())->setObject($1);*/ } 
     ;
     
 object:
-    objectName |
-    slotName OF object
+    objectName { /*$$ = new Classe::Object($1);*/ } |
+    slotName OF object { /*$$ = (new Classe::Object($1))->setParent($3);*/ } 
     ;
 
 /**
  * w1 w2 TO - is it "(w1) (w2 TO)" or "(w1 w2 TO)"
  */    
 sigVerb:
-    words PREPOSITION |
-    WORD |
-    WORD PREPOSITION
+    words PREPOSITION { /*$$ = (new Signature::Element())->setVerb(format("%s %s") % $1 $2);*/ } |
+    WORD { /*$$ = (new Signature::Element())->setVerb($1);*/ } |
+    WORD PREPOSITION { /*$$ = (new Signature::Element())->setVerb(format("%s %s") % $1 $2);*/ } 
     ;
     
 flows:
@@ -183,8 +219,8 @@ flows:
     ;
     
 flow:
-    flowOpener signature DOT |
-    flowOpener signature COLON |
+    flowOpener signature DOT { /*$$ = new UseCase::Flow($1, $2);*/ } |
+    flowOpener signature COLON { /*$$ = new UseCase::Flow($1, $2);*/ } |
     flowOpener signature error { lyyerror(@3, "maybe a trailing DOT missed after flow?"); } |
     flowOpener error { lyyerror(@2, "invalid SIGNATURE for the flow"); }
     ;
@@ -212,17 +248,16 @@ flowIdPair:
 /**
  * alternative flow of a use case
  */
-useCaseAlternativeFlow:
-    UC words COLON flows
+useCaseAlternativeDeclaration:
+    UC words COLON flows { /*$$ = new UseCase(); *$$ ;*/}
     ;
     
 /**
  * global elementary things 
  */
- 
 words:
-    WORD WORD |
-    words WORD
+    WORD WORD { /*$$ = &format("%s %s") % *$1 *$2;*/ } |
+    words WORD { /*$$ = &format("%s %s") % *$1 *$2;*/ }
     ;
     
 informal:
@@ -238,12 +273,12 @@ separator:
     ;
 
 className:
-    SUD |
-    SOMEBODY |
-    SOMETHING |
-    CAMEL |
-    THIS |
-    slotName OF className
+    SUD { /*$$ = new Classe("SUD");*/ } |
+    SOMEBODY { /*$$ = new Classe("somebody");*/ } |
+    SOMETHING { /*$$ = new Classe("something");*/ } |
+    CAMEL { /*$$ = new Classe($1);*/ } |
+    SELF { /*$$ = new Classe("self");*/ } |
+    slotName OF className { /*Classe* c = new Classe($2); c += Classe(*$1); $$ = c[*$1]; delete $1;*/ }
     ;
     
 slotName:
@@ -252,7 +287,7 @@ slotName:
     ;
     
 objectName:
-    THE WORD
+    THE WORD { $$ = $2; }
     ;
     
 %%

@@ -18,5 +18,5 @@
 
 #include <vector>
 #include "rqdql.h"
-
+#include "Classe.h"
 

@@ -13,22 +13,42 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Action.h 1491 2010-04-02 16:48:51Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
 #ifndef __INCLUDE_SCOPE_CLASSE_H
 #define __INCLUDE_SCOPE_CLASSE_H
 
 #include <string>
-#include "Scope.h"
+#include <vector>
+#include "rqdql.h"
 
+/**
+ * Class, like "ActorUser" or "files of ..."
+ */
 class rqdql::Classe {
-public:    
-    enum Plurality { SINGULAR, MANY, SOME, ANY };
+public:        
+    Classe(const std::string& n) : name(n) { /* that's it */ }
+    
+    Classe& operator+=(const Classe& c) { slots.push_back(c); return *this; }
+    Classe& operator[](const std::string& n) throw(rqdql::Exception) {
+        for (std::vector<Classe>::iterator i=slots.begin(); i!=slots.end(); i++) {
+            if (i->getName() == n) {
+                return *i;
+            }
+        }
+        throw new rqdql::Exception(boost::format("slot '%s' not found") % n);
+    }
 
-    Object& setPlurality(Plurality plurality) { this->_plurality = plurality; return *this; }
+    std::string getName() const { return name; }
+    
+    void setObject(const std::string& s) { object = s; }
+    std::string getObject() const { return object; }
 
 private:
+    std::string name;
+    std::string object;
+    std::vector<Classe> slots;
 };
 
 #endif

@@ -89,7 +89,7 @@ QOS (QOS{NSFX})
 [Aa]"t" { log("PREPOSITION"); return PREPOSITION; }
 
 [Hh]"mself" | 
-[Ii]"tself" { log("THIS"); return THIS; }
+[Ii]"tself" { log("SELF"); return SELF; }
 
 	/* SUD */
 [Ww]"e" | 

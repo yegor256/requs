@@ -11,6 +11,8 @@ InvestorApplication includes:
     
 Name of InvestorApplication includes: first name and last name.
 
+UC8.3 where somebody speculates: "something for the future".
+
 UC8.1 where somebody speculates: 
 
     1. We get from ActorLegacy.
