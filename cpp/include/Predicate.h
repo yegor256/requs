@@ -13,13 +13,26 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
  */
 
-#include "rqdql.h"
-#include "Scope.h"
+#ifndef __INCLUDE_SCOPE_PREDICATE_H
+#define __INCLUDE_SCOPE_PREDICATE_H
 
-rqdql::Scope& rqdql::Scope::getScope() {
-    static Scope scope;
-    return scope;
-}
+#include <string>
+#include "rqdql.h"
+
+/**
+ * One boolean predicate
+ */
+class rqdql::Predicate {
+public:
+    Predicate(const std::string& t) : text(t) { /* that's it */ }
+
+    bool operator<(const Predicate& p) const { return true; }
+    
+private:
+    std::string text;
+};
+
+#endif

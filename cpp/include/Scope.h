@@ -20,18 +20,37 @@
 #define __INCLUDE_SCOPE_H
 
 #include <vector>
+#include "rqdql.h"
+#include "Classe.h"
+#include "UseCase.h"
+#include "Predicate.h"
 
-// forward declaration
-namespace rqdql {
-    class Classe;
-    class UseCase;
-    class Scope;
-};
-
+/**
+ * Holder of the entire scope
+ */
 class rqdql::Scope {
-};
+public:
+    static Scope& getScope();
+    
+    /**
+     * Add one class
+     */
+    Scope& operator+=(const rqdql::Classe& c) { classes.push_back(c); return *this; }
 
-// see Scope.cpp
-extern rqdql::Scope scope;
+    /**
+     * Add one use case
+     */
+    Scope& operator+=(const rqdql::UseCase& uc) { useCases.push_back(uc); return *this; };
+    
+    /**
+     * Add one single predicate, that becomes an invariant on the scope
+     */
+    Scope& operator+=(const rqdql::Predicate& p) { predicates.push_back(p); return *this; };
+    
+private:
+    std::vector<Classe> classes;
+    std::vector<UseCase> useCases;
+    std::vector<Predicate> predicates;
+};
 
 #endif

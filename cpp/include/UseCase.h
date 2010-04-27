@@ -20,34 +20,111 @@
 #define __INCLUDE_SCOPE_USECASE_H
 
 #include <string>
-#include <vector>
-#include <set>
-#include "pugixml/pugixml.hpp"
-#include "Scope.h"
+#include <map>
+#include <algorithm>
+#include "boost/lambda/lambda.hpp"
+#include "boost/lambda/bind.hpp"
+#include "boost/lambda/casts.hpp"
+#include "boost/ref.hpp"
+#include "rqdql.h"
+#include "Classe.h"
+#include "Predicate.h"
+using namespace std;
+using namespace boost;
+using namespace boost::lambda;
 
-class rqdql::UseCase {
-protected:
-    int _startLineNo;
-    int _endLineNo;
-
+/**
+ * Signature of a use case or a call to use case
+ */
+class rqdql::Signature {
 public:
-    class LeftName {
-    private:
-        std::string _name;
-        std::vector<std::string> _attribs;
-        std::set<std::string> _tags;
-        
+    /**
+     * Attach an alement to signature
+     */
+    Signature& operator<<(const string& v) { verbs[getNextPos()] = v; return *this; };
+    Signature& operator<<(rqdql::Classe& c) { classes[getNextPos()] = &c; return *this; };
+    int pos() const { return getNextPos(); }
+    string str() const { return getString(); }
+    
+private:
+    typedef map<const int, string> VerbsType;
+    VerbsType verbs;
+    typedef map<const int, rqdql::Classe*> ClassesType;
+    ClassesType classes;
+    
+    template <typename T> class Compare {
     public:
-        LeftName(const std::string& = "", const std::string& = "");
-        const std::string& getName() { return this->_name; }
+        bool operator() (const pair<const int, T>& p1, const pair<const int, T>& p2) const {
+            return p1.first < p2.first;
+        }
+    };
+    int getNextPos() const {
+        return max(
+            max_element(verbs.begin(), verbs.end(), Compare<string>())->first,
+            max_element(classes.begin(), classes.end(), Compare<rqdql::Classe*>())->first
+        ) + 1;
+    }
+
+    string getString() const {
+        map<int, string> stack;
+        
+        for_each(
+            verbs.begin(), 
+            verbs.end(), 
+            (_1 ->* &VerbsType::value_type::first)
+        );
+        
+        string str;
+        return str;
+    }
+};
+
+/**
+ * Collection of flows, this is a base class for UseCase
+ * @see rqdql::UseCase
+ */
+class rqdql::Flows {
+public:
+    /**
+     * One individual flow in a collection
+     */
+    class Flow {
+    public:
+        Flow() : spelling(""), call() { /* that's it */ };
+        Flow(const string& t) : spelling(t), call() { /* that's it */ };
+        Flow(const string& t, const rqdql::Signature& s) : spelling(t), call(s) { /* that's it */ };
+        
+        Flows& operator[](const rqdql::Predicate& p) { return catchers[p]; };
+        
+    private:
+        string spelling;
+        rqdql::Signature call;
+        map<rqdql::Predicate, Flows> catchers;
     };
     
-    void setStartLineNo(int lineNo);
-    void setEndLineNo(int lineNo);
+    /**
+     * Simple setting/getting of a new flow to the collection
+     */
+    Flow& operator[](int i) { return flows[i]; };
 
-    pugi::xml_node findById(const pugi::xml_node&, const std::string&);
+private:
+    /**
+     * Associative array of flows, like "1" => Flow
+     * It's important, that we don't save here letter, just numbers
+     */
+    map<int, Flow> flows;
+};
+
+/**
+ * One use case
+ */
+class rqdql::UseCase : public rqdql::Flows {
+public:
+    UseCase(rqdql::Signature s) : Flows(), signature(s) { /* that's it */ };
     
-    virtual void derive(pugi::xml_node&) = 0;
+private:
+    UseCase(); /* you can't call it this way */
+    rqdql::Signature signature;
 };
 
 #endif

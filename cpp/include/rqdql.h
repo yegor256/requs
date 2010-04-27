@@ -23,6 +23,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <exception>
 
 // boost libraries
 #include "boost/format.hpp"
@@ -33,14 +34,10 @@
 void yySet(std::string*&, boost::format);
 void yySet(std::string*&, char*&);
 
-// project files
-#include "Scope.h"
-
 typedef union {
     std::string* name;
     int num;
-    rqdql::UseCase* uc;
-    rqdql::Classe* classe;
+    void* ptr;
 } YYSTYPE;
 
 // bison/flex file
@@ -79,6 +76,26 @@ namespace rqdql {
     void log(const std::string&);
     void log(const boost::format&);
     
+    /**
+     * Forward declaration
+     */
+    class Predicate;
+    class Signature;
+    class Flows;
+    class Classe;
+    class UseCase;
+    class Scope;
+    
+    /* exception */
+    class Exception {
+    public:
+        Exception(const std::string& s) : msg(s) { /* that's it */ }
+        Exception(const boost::format& s) : msg(s.str()) { /* that's it */ }
+        std::string getMessage() const { return msg; }
+    private:
+        std::string msg;
+    };
+
 }
 
 #endif
