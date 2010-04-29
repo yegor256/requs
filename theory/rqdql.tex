@@ -1,0 +1,40 @@
+\documentclass{article}
+\begin{document}
+
+\title{Use Cases to Predicates}
+\author{Yegor Bugayenko\\\texttt{yegor@tpc2.com}}
+\maketitle
+
+\section{Sample}
+
+Verbal form:
+
+\begin{verbatim}
+User includes: name, and photo-s.
+  
+Photo is a "binary file with a name".
+    
+UC1: User (the user) extends photo album:
+  1. The user "sends image file by HTTP".
+  2. "We validate received file".
+  3. We create photo of the user (the photo).
+  4. The user reads the photo.
+
+UC1: 0a) If number of photos of the user is greater than 5:
+  1. The user deletes photo of himself.
+\end{verbatim}
+
+Formal:
+    
+\newcommand{\type}[1]{\mbox{\texttt{#1}}}
+\vspace*{1em}
+\begin{tabular}{l}
+$uc_1(u):$ \\
+$\quad (u \in \type{User}) \bigwedge$ \\
+$\quad \neg(\| u . \| > 5) \bigwedge$ \\
+$\quad inf(\type{"The user sends image file by HTTP"}) \bigwedge$ \\
+$\quad inf(\type{"We validate received file"}) \bigwedge$ \\
+$\quad (\type{"We validate received file"}) \bigwedge$ \\
+\end{tabular}
+    
+\end{document}
