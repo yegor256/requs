@@ -1,4 +1,11 @@
 \documentclass{article}
+\usepackage{tikz}
+	\usetikzlibrary{shapes,arrows,shadows}
+	\usetikzlibrary{decorations.pathmorphing}
+	\usetikzlibrary{positioning}
+	\usetikzlibrary{fit}
+	\usetikzlibrary{trees} % for grow cyclic
+
 \begin{document}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{1em}
@@ -33,7 +40,7 @@ struct User {
     Formal ($\Pi_i$ is a set):
     
     \begin{maths}
-    $\type{User}(x) =$ \\
+    $\type{User}(x) :$ \\
     $\quad \exists \Pi_1 (|\Pi_1| = 1 \wedge \forall p(p \in \Pi_1 \to \type{integer}(p) \wedge \type{composition}(x, p)) \bigwedge$ \\
     $\quad \exists \Pi_2 (|\Pi_2| = 1 \wedge \forall p(p \in \Pi_2 \to \type{string}(p) \wedge \type{composition}(x, p)) \bigwedge$ \\
     $\quad \exists \Pi_3 (|\Pi_3| \geq 0 \wedge \forall p(p \in \Pi_3 \to \type{Photo}(p) \wedge \type{composition}(x, p)) \bigwedge$ \\
@@ -54,40 +61,37 @@ struct User {
     \begin{verbatim}
     UC1: User (the user) extends photo album:
       1. The user creates photo of himself (the photo).
-      2. We validate the photo.
-      3. The user reads the photo.
+      2. We validate the photo "immediately".
+      3. "We protocol the operation in backlog".
+      4. The user reads the photo.
     UC1: 0a) If number of photos of the user is greater than 5:
       1. The user deletes photo of himself.
     UC1: 2a) If failed with "file format is not valid":
       1. We delete the photo.
       2. Fail with "only PNG images are accepted".\end{verbatim}
 
-    Every use case is a predicate:
+    Every use case is a predicate, $\type{UC}_1(x) = true$ means that the user
+    successfully extended his photo album:
     
     \begin{maths}
-    $\type{UC}_1(x) = $ \\
-    $\quad \type{User}(x) \leftarrow$ \\
-    $\quad \exists \Pi(\type{User.photos}(x, \Pi)) \leftarrow$ \\
+    $\type{UC}_1(x) : $ \\
+    $\quad \type{User}(x) \to$ \\
+    $\quad \exists \Pi(\type{User.photos}(x, \Pi)) \to$ \\
     $\quad ($ \\
-    $\quad\quad |\Pi| > 5 \leftarrow$ \\
-    $\quad\quad \exists y(y \in \Pi) \leftarrow$ \\
-    $\quad\quad \type{deleted}(y)$ \\
-    $\quad ) \leftarrow$ \\
-    $\quad \exists p(p \in \Pi) \leftarrow$ \\
-    $\quad \type{created}(p) \leftarrow$ \\
-    $\quad \type{UC}_2(p) \leftarrow$ \\
+    $\quad\quad |\Pi| > 5 \wedge \type{info}(\mbox{``If number of photos of the user is greater than 5''})\to$ \\
+    $\quad\quad \exists y(y \in \Pi) \to$ \\
+    $\quad\quad \type{deleted}(y) \wedge \type{info}(\mbox{``The user deletes photo of himself''})$ \\
+    $\quad ) \to$ \\
+    $\quad \exists p(p \in \Pi) \to$ \\
+    $\quad \type{created}(p, x) \wedge \type{info}(\mbox{``The user creates photo of himself (the photo)''})\to$ \\
+    $\quad \type{UC}_2(p) \wedge \type{info}(\mbox{``We validate the photo immediately''}) \vee$ \\
     $\quad ($ \\
-    $\quad\quad \type{exception}(\mbox{"file format is not valid"}) \leftarrow$ \\
-    $\quad\quad \type{deleted}(p) \leftarrow$ \\
-    $\quad\quad \type{throw}(\mbox{"only PNG images are accepted"})$ \\
-    $\quad ) \leftarrow$ \\
-    $\quad \type{read}(x, p)$ \\
-    \end{maths}
-    
-    System functionality is defined by invariants:
-
-    \begin{maths}
-    $\forall x(\type{UC}_1(x))$ \\
+    $\quad\quad \type{exception}(\mbox{``file format is not valid''}) \to$ \\
+    $\quad\quad \type{deleted}(p) \wedge \type{info}(\mbox{``We delete the photo''})\to$ \\
+    $\quad\quad \type{throw}(\mbox{``only PNG images are accepted''})$ \\
+    $\quad ) \to$ \\
+    $\quad \type{info}(\mbox{``We protocol the operation in backlog''})$ \\
+    $\quad \type{read}(p, x)\wedge \type{info}(\mbox{``The user reads the photo''})$ \\
     \end{maths}
     
 \newpage
@@ -96,6 +100,7 @@ struct User {
     Basic fundamental predicates:
 
     \begin{maths}
+    $\type{info}(x) = true$ \\
     $\type{composition}(x, y) = \dots$ \\
     $\type{aggregation}(x, y) = \dots$ \\
     $\type{created}(x) = \dots$ \\
@@ -114,5 +119,88 @@ struct User {
     $\type{boolean}(x) = \dots$ \\
     \end{maths}
 
+
+\newpage
+\section{Parser, Validator, Metric Collector, etc.}
+
+    \begin{tikzpicture}
+        [node distance=8em]
+        \node [draw] (yacc) {YACC};
+        \node [draw, right of=yacc] (brokers) {C++ brokers};
+        \node [draw, right of=brokers] (proxy) {Proxy};
+        \node [draw, right of=proxy] (solm) {SOLM};
+        \node [above right of=solm] (uml) {UML};
+        \node [right of=solm] (lisp) {Lisp};
+        \node [below right of=solm] (metrics) {Metrics};
+        
+        \draw [thick, ->] (yacc) -- (brokers);
+        \draw [thick, ->] (brokers) -- (proxy);
+        \draw [thick, ->] (proxy) -- (solm);
+        \draw [dashed, ->] (solm) -- (uml);
+        \draw [dashed, ->] (solm) -- (lisp);
+        \draw [dashed, ->] (solm) -- (metrics);
+    \end{tikzpicture}
+    
+
+    SOLM is a collection of \emph{formulas}:
+
+    \begin{tikzpicture}[
+        every node/.style={class},
+        level 1/.style={level distance=8em, sibling distance=6em, open triangle 90-},
+        ]
+        \tikzstyle{class} = [draw, text width=4em, font={\small\ttfamily}, fill=white, anchor=north];
+        \newcommand{\br}{\linebreak\rule{3em}{0.4pt}\linebreak}
+        \node {formula\br}
+            child {node {braces\br formula}}
+            child {node {unary\br formula\linebreak operand}}
+            child {node {binary\br formula\linebreak formula\linebreak operand}}
+            child {node [dashed] {quantifier\br var[]\linebreak formula}
+                child [level distance=4em] {node {$\forall$}}
+                child [level distance=4em] {node {$\exists$}}
+            }
+            child {node {sequence\br formula[]}} 
+            child {node [dashed] {predicate\br var[]}
+                child {node {math\br operand}}
+                child {node {custom\br name}}
+                child {node {basic\br}}
+            }
+            child {node {declaration\br name\linebreak var[]\linebreak formula}} 
+        ;
+    \end{tikzpicture}
+    
+    \clearpage
+    Proxy is a collection of C++ classes:
+    
+    \begin{verbatim}
+class Predicate {
+  
+}
+typedef map<string, Type> Types;
+class Type {
+  vector<Predicate> predicates;
+  Types slots;
+};
+Types types; // global variable with all known types
+
+class UseCase {
+  class Signature {
+    string format; // e.g. "%s validate %s"
+    struct Position {
+      string object; // e.g. "user"
+      string type; // e.g. "User"
+      boolean input; // TRUE if it's input var, FALSE otherwise
+    };
+    map<int, Position> positions;
+  };
+  Signature signature;
+  typedef map<int, Flow> Flows;
+  class Flow {
+    string informal;
+    Signature signature;
+    map<Predicate, Flows&> alternatives;
+  };
+};
+map<string, UseCase> useCases; // global variable with all use cases
+\end{verbatim}
 
 \end{document}
