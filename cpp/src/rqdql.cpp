@@ -25,45 +25,6 @@ using namespace std;
 
 rqdql::LogLevel rqdql::level = L_ERROR;
 
-// explicit instantiation, see Stroustrup C.13.10
-// using rqdql::scope::Action;
-// template void yyConcat<Action>(vector<Action*>*&, vector<Action*>*&, Action*);
-// template void yyAppend<Action>(vector<Action*>*&, Action*);
-// template void yySave<Action>(Action*&, Action*);
-
-// explicit instantiation, see Stroustrup C.13.10
-// using rqdql::scope::Statement;
-// template void yyConcat<Statement>(vector<Statement*>*&, vector<Statement*>*&, Statement*);
-// template void yyAppend<Statement>(vector<Statement*>*&, Statement*);
-// template void yySave<Statement>(Statement*&, Statement*);
-
-// explicit instantiation, see Stroustrup C.13.10
-// template void yySave<Statement::LeftName>(Statement::LeftName*&, Statement::LeftName*);
-
-// explicit instantiation, see Stroustrup C.13.10
-// using rqdql::scope::Object;
-// template void yyConcat<Object>(vector<Object*>*&, vector<Object*>*&, Object*);
-// template void yyAppend<Object>(vector<Object*>*&, Object*);
-// template void yySave<Object>(Object*&, Object*);
-
-// template <class T> void yyConcat(vector<T*>*& array, vector<T*>*& current, T* item) {
-//     if (current) {
-//         array = new vector<T*>(*current);
-//     } else {
-//         array = new vector<T*>;
-//     }
-//     array->push_back(item);
-// }
-// 
-// template <class T> void yyAppend(vector<T*>*& array, T* item) {
-//     array = new vector<T*>;
-//     array->push_back(item);
-// }
-// 
-// template <class T> void yySave(T*& lhs, T* rhs) {
-//     lhs = rhs;
-// }
-// 
 void yySet(string*& lhs, boost::format rhs) {
     lhs = new string(rhs.str());
 }
@@ -109,5 +70,73 @@ void rqdql::log(const rqdql::LogLevel lvl, const std::string& line) {
     if (lvl >= rqdql::level) {
         cout << '[' << label << "] " << line << endl;
     }
+}
+
+/**
+ * Called when error is found in parser
+ */
+void yyerror(const char *error, ...) {
+    // if (YYRECOVERING()) {
+    //     return;
+    // }
+    va_list args;
+    va_start(args, error);
+    char s[500];
+    vsprintf(s, error, args);
+    if (yylloc.first_line) {
+        char s1[500];
+        sprintf(
+            s1, 
+            "%d.%d error: %s",
+            yylloc.first_line,
+            yylloc.first_column,
+            s
+        );
+        strcpy(s, s1);
+    }
+    std::string line = s;
+    rqdql::log(rqdql::L_ERROR, line);
+}
+    
+void lyyerror(YYLTYPE t, const char *error, ...) {
+    va_list args;
+    va_start(args, error);
+    char s[500];
+    vsprintf(s, error, args);
+    if (t.first_line) {
+        char s1[500];
+        sprintf(
+            s1, 
+            "%d.%d error: %s",
+            t.first_line,
+            t.first_column,
+            s
+        );
+        strcpy(s, s1);
+    }
+    std::string line = s;
+    rqdql::log(rqdql::L_ERROR, line);
+}
+    
+int main(int argc, char** argv) {
+    // this option is set in Makefile, when building a project for tests
+    #ifdef RQDQL_DEBUG
+        rqdql::level = rqdql::L_DEBUG;
+    #endif
+
+    // entry log message
+    rqdql::log(rqdql::L_INFO, "rqdql v0.1");
+
+    // convert input stream into rqdql::om::Model class instance
+    yyparse();
+    
+    // rqdql::log(boost::format("%d statements found") % rqdql::scope.size());
+    // model.setScope(rqdql::scope::scope);
+    // cout << model.query("") << endl;
+    
+    // bye-bye log message
+    rqdql::log(rqdql::L_INFO, "end.");
+    
+    return 0;
 }
 
