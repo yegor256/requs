@@ -15,7 +15,6 @@
 # @version $Id$
 
 SELF = Makefile
-DEBUG_FLAG = -DRQDQL_DEBUG=true
 PATH := $(PATH):/usr/local/bin:/usr/bin
 CPP = c++
 BISON = bison
@@ -68,7 +67,7 @@ test: $(TESTS) test-examples
 
 # compilation of unit tests
 %.test: %.cpp
-	$(CPP) $(CPPFLAGS) $(DEBUG_FLAG) -o $@ $< $(subst src/global.o, "", $(OBJS)) $(LIB_OBJS)
+	$(CPP) $(CPPFLAGS) -o $@ $< $(subst src/global.o, "", $(OBJS)) $(LIB_OBJS)
 
 # test the entire mechanism with all test files
 test-examples: $(EXEC) $(VALID_EXAMPLES)

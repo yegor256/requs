@@ -26,11 +26,6 @@ using namespace std;
 rqdql::LogLevel rqdql::level = L_ERROR;
 
 int main(int argc, char** argv) {
-    // this option is set in Makefile, when building a project for tests
-    #ifdef RQDQL_DEBUG
-        rqdql::level = rqdql::L_DEBUG;
-    #endif
-
     // entry log message
     rqdql::log(rqdql::L_INFO, "rqdql v0.1");
 
