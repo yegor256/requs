@@ -22,7 +22,6 @@
     #include "rqdql.h"
     #include "brokers.h"
 	using boost::format;    
-    using namespace brokers;
 %}
 
 // Here we should say that the type of non-terminal
