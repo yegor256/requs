@@ -25,6 +25,28 @@ using namespace std;
 
 rqdql::LogLevel rqdql::level = L_ERROR;
 
+int main(int argc, char** argv) {
+    // this option is set in Makefile, when building a project for tests
+    #ifdef RQDQL_DEBUG
+        rqdql::level = rqdql::L_DEBUG;
+    #endif
+
+    // entry log message
+    rqdql::log(rqdql::L_INFO, "rqdql v0.1");
+
+    // convert input stream into rqdql::om::Model class instance
+    yyparse();
+    
+    // rqdql::log(boost::format("%d statements found") % rqdql::scope.size());
+    // model.setScope(rqdql::scope::scope);
+    // cout << model.query("") << endl;
+    
+    // bye-bye log message
+    rqdql::log(rqdql::L_INFO, "end.");
+    
+    return 0;
+}
+
 /**
  * Called when error is found in parser
  */
