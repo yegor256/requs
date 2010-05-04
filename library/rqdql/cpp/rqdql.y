@@ -20,12 +20,9 @@
 
 %{
     #include "rqdql.h"
-    #include "Scope.h"
-    #include "Classe.h"
-    #include "UseCase.h"
     #include "brokers.h"
 	using boost::format;    
-    using namespace rqdql;
+    using namespace brokers;
 %}
 
 // Here we should say that the type of non-terminal

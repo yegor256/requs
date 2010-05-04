@@ -28,9 +28,6 @@
 // boost libraries
 #include "boost/format.hpp"
 
-// template <class T> void yyConcat(std::vector<T*>*&, std::vector<T*>*&, T*);
-// template <class T> void yyAppend(std::vector<T*>*&, T*);
-// template <class T> void yySave(T*&, T*);
 void yySet(std::string*&, boost::format);
 void yySet(std::string*&, char*&);
 
@@ -75,16 +72,6 @@ namespace rqdql {
     void log(LogLevel, const boost::format&);
     void log(const std::string&);
     void log(const boost::format&);
-    
-    /**
-     * Forward declaration
-     */
-    class Predicate;
-    class Signature;
-    class Flows;
-    class Classe;
-    class UseCase;
-    class Scope;
     
     /* exception */
     class Exception {
