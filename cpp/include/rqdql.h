@@ -25,11 +25,13 @@
 #include <string>
 #include <exception>
 
+using namespace std;
+
 // boost libraries
 #include "boost/format.hpp"
 
 typedef union {
-    std::string* name;
+    string* name;
     int num;
     void* ptr;
 } YYSTYPE;
@@ -63,8 +65,8 @@ namespace rqdql {
     /**
      * To log a line
      */
-    inline void rqdql::log(const rqdql::LogLevel lvl, const std::string& line) {   
-        std::string label;
+    inline void log(const LogLevel lvl, const string& line) {   
+        string label;
         switch (lvl) {
             case L_DEBUG:
                 label = "DEBUG";
@@ -82,32 +84,32 @@ namespace rqdql {
                 label = "ERR";
                 break;
         }
-        if (lvl >= rqdql::level) {
+        if (lvl >= level) {
             cout << '[' << label << "] " << line << endl;
         }
     }
 
     
-    inline void rqdql::log(const std::string& line) {
+    inline void log(const string& line) {
         return log(L_DEBUG, line);
     }
 
-    inline void rqdql::log(const boost::format& line) {
+    inline void log(const boost::format& line) {
         return log(L_DEBUG, line.str());
     }
 
-    inline void rqdql::log(const rqdql::LogLevel lvl, const boost::format& line) {
+    inline void log(const LogLevel lvl, const boost::format& line) {
         return log(lvl, line.str());
     }
 
     /* exception */
     class Exception {
     public:
-        Exception(const std::string& s) : msg(s) { /* that's it */ }
+        Exception(const string& s) : msg(s) { /* that's it */ }
         Exception(const boost::format& s) : msg(s.str()) { /* that's it */ }
-        std::string getMessage() const { return msg; }
+        string getMessage() const { return msg; }
     private:
-        std::string msg;
+        string msg;
     };
 
     inline void yySet(string*& lhs, boost::format rhs) {
