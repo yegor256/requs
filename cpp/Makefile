@@ -20,7 +20,7 @@ PATH := $(PATH):/usr/local/bin:/usr/bin
 CPP = c++
 BISON = bison
 FLEX = flex
-CPPFLAGS = -I./include -I./library $(DEBUG_FLAG)
+CPPFLAGS = -I./include -I./library
 EXEC = ./rqdql
 SYMBOLS = include/symbols.h
 
@@ -41,8 +41,8 @@ VALID_EXAMPLES = $(shell find examples/valid -name "*.txt")
 all: rqdql test
 
 # compile/build the product
-rqdql: lex.yy.c $(EXEC).tab.c $(OBJS) $(LIB_OBJS) $(SELF)
-	$(CPP) $(CPPFLAGS) -o $@ $(EXEC).tab.c lex.yy.c $(OBJS) $(LIB_OBJS)
+rqdql: lex.yy.c $(EXEC).tab.c $(EXEC).cpp $(OBJS) $(LIB_OBJS) $(SELF)
+	$(CPP) $(CPPFLAGS) -o $@ $(EXEC).cpp $(EXEC).tab.c lex.yy.c $(OBJS) $(LIB_OBJS)
     
 lex.yy.c: $(EXEC).l $(HEADERS) $(SELF)
 	$(FLEX) $(EXEC).l

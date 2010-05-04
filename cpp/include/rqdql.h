@@ -28,9 +28,6 @@
 // boost libraries
 #include "boost/format.hpp"
 
-void yySet(std::string*&, boost::format);
-void yySet(std::string*&, char*&);
-
 typedef union {
     std::string* name;
     int num;
@@ -64,15 +61,45 @@ namespace rqdql {
     extern LogLevel level;
     
     /**
-     * Simple logger, that filters messages by their types
-     * @see LogLevel
-     * @see rqdql.l
+     * To log a line
      */
-    void log(LogLevel, const std::string&);
-    void log(LogLevel, const boost::format&);
-    void log(const std::string&);
-    void log(const boost::format&);
+    inline void rqdql::log(const rqdql::LogLevel lvl, const std::string& line) {   
+        std::string label;
+        switch (lvl) {
+            case L_DEBUG:
+                label = "DEBUG";
+                break;
+            case L_VERBOSE:
+                label = "VERB";
+                break;
+            case L_INFO:
+                label = "INFO";
+                break;
+            case L_WARNING:
+                label = "WARN";
+                break;
+            case L_ERROR:
+                label = "ERR";
+                break;
+        }
+        if (lvl >= rqdql::level) {
+            cout << '[' << label << "] " << line << endl;
+        }
+    }
+
     
+    inline void rqdql::log(const std::string& line) {
+        return log(L_DEBUG, line);
+    }
+
+    inline void rqdql::log(const boost::format& line) {
+        return log(L_DEBUG, line.str());
+    }
+
+    inline void rqdql::log(const rqdql::LogLevel lvl, const boost::format& line) {
+        return log(lvl, line.str());
+    }
+
     /* exception */
     class Exception {
     public:
@@ -82,6 +109,14 @@ namespace rqdql {
     private:
         std::string msg;
     };
+
+    inline void yySet(string*& lhs, boost::format rhs) {
+        lhs = new string(rhs.str());
+    }
+
+    inline void yySet(string*& lhs, char*& rhs) {
+        lhs = new string(rhs);
+    }
 
 }
 
