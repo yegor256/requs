@@ -146,25 +146,30 @@ struct User {
 
     \begin{tikzpicture}[
         every node/.style={class},
-        level 1/.style={level distance=8em, sibling distance=6em, open triangle 90-},
+        level 1/.style={level distance=8em, sibling distance=10em, open triangle 90-},
+        level 2/.style={sibling distance=5em},
         ]
-        \tikzstyle{class} = [draw, text width=4em, font={\small\ttfamily}, fill=white, anchor=north];
+        \tikzstyle{class} = [draw, text width=3em, font={\small\ttfamily}, fill=white, anchor=north];
         \newcommand{\br}{\linebreak\rule{3em}{0.4pt}\linebreak}
         \node {formula\br}
-            child {node {braces\br formula}}
-            child {node {unary\br formula\linebreak operand}}
-            child {node {binary\br formula\linebreak formula\linebreak operand}}
-            child {node [dashed] {quantifier\br var[]\linebreak formula}
-                child [level distance=4em] {node {$\forall$}}
-                child [level distance=4em] {node {$\exists$}}
+            child {node [dashed] {unary\br formula}
+                child {node {braces\br}}
+                child {node [dashed] {quantifier\br var[]}
+                    child [level distance=4em] {node {forall}}
+                    child [level distance=4em] {node {exists}}
+                }
+                child {node {declaration\br name\linebreak var[]}} 
             }
-            child {node {sequence\br formula[]}} 
+            child {node [dashed] {binary\br formula\linebreak formula}
+                child {node {and\br}} 
+                child {node {or\br}} 
+            }
+            child {node {sequence\br formula[]\linebreak operand}} 
             child {node [dashed] {predicate\br var[]}
                 child {node {math\br operand}}
-                child {node {custom\br name}}
-                child {node {basic\br}}
+                child {node {function\br name}}
+                child {node {primitive\br}}
             }
-            child {node {declaration\br name\linebreak var[]\linebreak formula}} 
         ;
     \end{tikzpicture}
     
@@ -184,13 +189,8 @@ Types types; // global variable with all known types
 
 class UseCase {
   class Signature {
-    string format; // e.g. "%s validate %s"
-    struct Position {
-      string object; // e.g. "user"
-      string type; // e.g. "User"
-      boolean input; // TRUE if it's input var, FALSE otherwise
-    };
-    map<int, Position> positions;
+    string format; // e.g. "%sud validate %photo"
+    map<string, string> positions; // e.g. <"photo", "User.photos">
   };
   Signature signature;
   typedef map<int, Flow> Flows;

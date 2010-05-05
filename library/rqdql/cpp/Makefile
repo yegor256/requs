@@ -66,7 +66,7 @@ test: $(TESTS) test-examples
 	done
 
 # compilation of unit tests
-%.test: %.cpp
+%.test: %.cpp $(HEADERS)
 	$(CPP) $(CPPFLAGS) -o $@ $< $(subst src/global.o, "", $(OBJS)) $(LIB_OBJS)
 
 # test the entire mechanism with all test files
