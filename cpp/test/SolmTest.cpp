@@ -17,6 +17,7 @@
  */
 
 #include <boost/test/minimal.hpp>
+#include <boost/algorithm/string/join.hpp>>
 #include <string>
 #include "rqdql.h"
 #include "Solm.h"
@@ -149,10 +150,28 @@ void testComplex() {
     rqdql::log(boost::format("scope ambiguity is: %0.2f") % ambiguity);
 }
 
+void testWeCanFindAllFunctionDeclarations() {
+    Solm::getInstance().clear();
+    Solm::getInstance()
+        .add((new Declaration("User"))->addVar("x")->setFormula((new Info())->addVar("'nothing to say")))
+        .add((new Declaration("Photo"))->addVar("x")->setFormula((new Info())->addVar("'nothing to say")))
+        .add((new Declaration("File"))->addVar("x")->setFormula((new Info())->addVar("'nothing to say")))
+        .add((new Declaration("Image"))->addVar("x")->setFormula((new Info())->addVar("'nothing to say")));
+        
+    vector<string> list = Solm::getInstance().getAllFunctions();
+    BOOST_CHECK(list.size() == 4);
+    rqdql::log(
+        boost::format("Totally found %d functions: %s") % 
+        list.size() %
+        boost::algorithm::join(list, ", ")
+    );
+}
+
 int test_main(int, char *[]) {
     testSimple();
     testMoreComplexStructure();
     testComplex();
+    testWeCanFindAllFunctionDeclarations();
     
     return 0;
 }
