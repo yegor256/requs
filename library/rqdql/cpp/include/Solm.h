@@ -122,6 +122,7 @@ template <typename T> class Predicate : public Formula, public Parametrized<T> {
 class Declaration : public Unary<Declaration>, public Parametrized<Declaration> {
 public:
     Declaration(const string& n) : Unary<Declaration>(), Parametrized<Declaration>(), name(n) { /* that's it */ }
+    const string& getName() const { return name; }
 private:
     string name;
 };
@@ -167,8 +168,17 @@ private:
     string operand;
 };
 
+/**
+ * Second-Order Logic Model (SOLM)
+ * This is a collection of formulas, and some nice methods
+ * to manipulate with the collection.
+ */
 class Solm {
 public:
+    /**
+     * This is a singleton pattern. In order to get an instance
+     * of this class you should call getInstance()
+     */
     static Solm& getInstance() {
         static Solm* solm;
         if (!solm) {
@@ -176,10 +186,16 @@ public:
         }
         return *solm;
     }
+    /**
+     * Add new formula to the collection.
+     */
     Solm& add(Formula* f) {
         collection.push_back(f);
         return *this;
     }
+    /**
+     * Remove all formulas from the collection.
+     */
     void clear() {
         collection.clear();
     }
@@ -203,16 +219,32 @@ public:
      * Solm::getInstance().countTypes<Function>() will return integer
      */
     template <typename T> int countTypes() {
-        int cnt = 0;
-        // get full list of ALL formulas in the holder
+        return findTypes<T>().size();
+    }
+    /**
+     * Find formulas with given type
+     */
+    template <typename T> vector<T*> findTypes() {
+        vector<T*> list;
         vector<Formula*> v = retrieve(collection);
         for (vector<Formula*>::iterator i = v.begin(); i != v.end(); ++i) {
-            // cout << "class: [" << typeid(**i).name() << "], asked: [" << typeid(T).name() << "]" << endl;
             if (typeid(**i) == typeid(T)) {
-                ++cnt;
+                list.push_back(static_cast<T*>(*i));
             }
         }
-        return cnt;
+        return list;
+    }
+    /**
+     * Get names of all declared functions, which are inside
+     * declarations.
+     */
+    vector<string> getAllFunctions() {
+        vector<string> list;
+        vector<Declaration*> v = findTypes<Declaration>();
+        for (vector<Declaration*>::iterator i = v.begin(); i != v.end(); ++i) {
+            list.push_back((*i)->getName());
+        }
+        return list;
     }
 private:
     vector<Formula*> collection;
