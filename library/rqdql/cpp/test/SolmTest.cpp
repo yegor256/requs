@@ -29,7 +29,7 @@ rqdql::LogLevel rqdql::level = L_DEBUG;
 void testSimple() {
     Solm::getInstance().clear();
     Math* math = new Math(">");
-    math->addVar("'5")->addVar("'3");
+    math->arg("5")->arg("3");
     Solm::getInstance().add(math);
     
     BOOST_CHECK(Solm::getInstance().countTypes<Math>() == 1);
@@ -40,24 +40,24 @@ void testMoreComplexStructure() {
     
     Solm::getInstance().add(
         (new Declaration("UC8"))
-        ->addVar("x")
+        ->arg("x")
         ->setFormula(
             (new Math(">"))
-            ->addVar("'5")
-            ->addVar("'3")
+            ->arg("5")
+            ->arg("3")
         )
     );
     
     Solm::getInstance().add(
         (new Declaration("UC14"))
-        ->addVar("x")
+        ->arg("x")
         ->setFormula(
             (new Sequence())
-            ->addFormula((new Function("User"))->addVar("x"))
+            ->addFormula((new Function("User"))->arg("x"))
             ->addFormula(
                 (new Exists())
-                ->addVar("P")
-                ->setFormula((new Function("User.photos"))->addVar("x")->addVar("P"))
+                ->arg("P")
+                ->setFormula((new Function("User.photos"))->arg("x")->arg("P"))
             )
         )
     );
@@ -69,66 +69,66 @@ void testComplex() {
     Solm::getInstance().clear();
     Solm::getInstance().add(
         (new Declaration("UC1"))
-        ->addVar("x")
+        ->arg("x")
         ->setFormula(
             (new Sequence())
-            ->addFormula((new Function("User"))->addVar("x"))
+            ->addFormula((new Function("User"))->arg("x"))
             ->addFormula(
                 (new Exists())
-                ->addVar("P")
-                ->setFormula((new Function("User.photos"))->addVar("x")->addVar("P"))
+                ->arg("P")
+                ->setFormula((new Function("User.photos"))->arg("x")->arg("P"))
             )
             ->addFormula(
                 (new Sequence())
                 ->addFormula(
                     (new And())
-                    ->setLhs((new Math(">"))->addVar("P")->addVar("'5"))
-                    ->setRhs((new Info())->addVar("'If number of photos of the user is greater than 5"))
+                    ->setLhs((new Math(">"))->arg("P")->arg("5"))
+                    ->setRhs(new Info("If number of photos of the user is greater than 5"))
                 )
                 ->addFormula(
                     (new Exists())
-                    ->addVar("y")
-                    ->setFormula((new In())->addVar("y")->addVar("P"))
+                    ->arg("y")
+                    ->setFormula((new In())->arg("y")->arg("P"))
                 )
                 ->addFormula(
                     (new And())
-                    ->setLhs((new Deleted())->addVar("y"))
-                    ->setRhs((new Info())->addVar("'The user deletes photo of himself"))
+                    ->setLhs((new Deleted())->arg("y"))
+                    ->setRhs(new Info("The user deletes photo of himself"))
                 )
             )    
             ->addFormula(
                 (new Exists())
-                ->addVar("p")
-                ->setFormula((new In())->addVar("p")->addVar("P"))
+                ->arg("p")
+                ->setFormula((new In())->arg("p")->arg("P"))
             )
             ->addFormula(
                 (new And())
-                ->setLhs((new Created())->addVar("p")->addVar("x"))
-                ->setRhs((new Info())->addVar("'The user creates photo of himself (the photo)"))
+                ->setLhs((new Created())->arg("p")->arg("x"))
+                ->setRhs(new Info("The user creates photo of himself (the photo)"))
             )
             ->addFormula(
                 (new Sequence(Sequence::OP_OR))
                 ->addFormula(
                     (new And())
-                    ->setLhs((new Function("UC2"))->addVar("p"))
-                    ->setRhs((new Info())->addVar("'We validate the photo immediately"))
+                    ->setLhs((new Function("UC2"))->arg("p"))
+                    ->setRhs(new Info("We validate the photo immediately"))
                 )
                 ->addFormula(
                     (new Sequence())
-                    ->addFormula((new Caught())->addVar("'file format is not valid"))
+                    ->addFormula((new Caught())->arg("file format is not valid"))
                     ->addFormula(
                         (new And())
-                        ->setLhs((new Deleted())->addVar("p"))
-                        ->setRhs((new Info())->addVar("'We delete the photo"))
+                        ->setLhs((new Deleted())->arg("p"))
+                        ->setRhs(new Info("We delete the photo"))
                     )
-                    ->addFormula((new Throw())->addVar("'only PNG images are accepted"))
+                    ->addFormula((new Throw())->arg("only PNG images are accepted"))
                 )
             )
-            ->addFormula((new Silent())->addVar("'We protocol the operation in backlog"))
+            ->addFormula((new Silent())->arg("We protocol the operation in backlog"))
             ->addFormula(
                 (new And())
-                ->setLhs((new Read())->addVar("p")->addVar("x"))
-                ->setRhs((new Info())->addVar("'The user reads the photo"))
+                ->setLhs((new Read())->arg("p")->arg("x"))
+                ->setRhs(new Info("The user reads the photo"))
             )
         )
     );
@@ -153,10 +153,10 @@ void testComplex() {
 void testWeCanFindAllFunctionDeclarations() {
     Solm::getInstance().clear();
     Solm::getInstance()
-        .add((new Declaration("User"))->addVar("x")->setFormula((new Info())->addVar("'nothing to say")))
-        .add((new Declaration("Photo"))->addVar("x")->setFormula((new Info())->addVar("'nothing to say")))
-        .add((new Declaration("File"))->addVar("x")->setFormula((new Info())->addVar("'nothing to say")))
-        .add((new Declaration("Image"))->addVar("x")->setFormula((new Info())->addVar("'nothing to say")));
+        .add((new Declaration("User"))->arg("x")->setFormula(new Info("nothing to say")))
+        .add((new Declaration("Photo"))->arg("x")->setFormula(new Info("nothing to say")))
+        .add((new Declaration("File"))->arg("x")->setFormula(new Info("nothing to say")))
+        .add((new Declaration("Image"))->arg("x")->setFormula(new Info("nothing to say")));
         
     vector<string> list = Solm::getInstance().getAllFunctions();
     BOOST_CHECK(list.size() == 4);

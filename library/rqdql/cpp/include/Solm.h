@@ -28,6 +28,7 @@ namespace solm {
 /* forward declaration, and class hierarchy */
 template<typename T> class Parametrized;
 class Formula;
+    class Constant;
     template<typename T> class Unary;
         class Declaration; // extends Parametrized
         template<typename T> class Quantifier; // extends Parametrized
@@ -55,7 +56,7 @@ class Formula;
 
 class Formula {
 public:
-    virtual ~Formula() { /* nothing */ };
+    virtual ~Formula() { /* nothing, just to make this class polymorphic */ };
     const vector<Formula*>& getFormulas() const {
         return subs;
     }
@@ -73,9 +74,18 @@ private:
     vector<Formula*> subs;
 };
 
+class Constant : public Formula {
+public:
+    Constant(bool v = true) : Formula() {
+        value = v;
+    }
+private:
+    bool value;
+};
+
 template <typename T> class Parametrized {
 public:
-    T* addVar(const string& s) {
+    T* arg(const string& s) {
         vars.push_back(s);
         return static_cast<T*>(this);
     }
@@ -152,7 +162,12 @@ class Throw : public Primitive<Throw> { /* later maybe more details*/ };
 
 template <typename T> class Informal : public Primitive<T> { /* tbd */ };
 
-class Info : public Informal<Info> { /* later maybe more details*/ };
+class Info : public Informal<Info> {
+public:
+    Info(const string& s) : Informal<Info>() {
+        arg(s);
+    }
+};
 class Silent : public Informal<Silent> { /* later maybe more details*/ };
 
 template <typename T> class Manipulator : public Primitive<T> { /* tbd */ };
@@ -226,7 +241,7 @@ public:
      */
     template <typename T> vector<T*> findTypes() {
         vector<T*> list;
-        vector<Formula*> v = retrieve(collection);
+        vector<Formula*> v = _retrieve(collection);
         for (vector<Formula*>::iterator i = v.begin(); i != v.end(); ++i) {
             if (typeid(**i) == typeid(T)) {
                 list.push_back(static_cast<T*>(*i));
@@ -252,11 +267,11 @@ private:
      * Recursively collects all formulas in the collection into
      * a flat vector
      */
-    vector<Formula*> retrieve(vector<Formula*> v) const {
+    vector<Formula*> _retrieve(vector<Formula*> v) const {
         vector<Formula*> result;
         for (vector<Formula*>::iterator i = v.begin(); i != v.end(); ++i) {
             result.push_back(*i);
-            vector<Formula*> fs = retrieve((*i)->getFormulas());
+            vector<Formula*> fs = _retrieve((*i)->getFormulas());
             for (vector<Formula*>::iterator j = fs.begin(); j != fs.end(); ++j) {
                 result.push_back(*j);
             }

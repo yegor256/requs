@@ -12,7 +12,7 @@
 \newcommand{\type}[1]{\mbox{\texttt{#1}}}
 \newenvironment{maths}
 {
-    \vspace*{1em}
+    \vspace*{0.5em}
     \begin{tabular}{l}
 }
 {
@@ -30,27 +30,50 @@
     Verbal form of a type/class (C++ as an example):
 
     \begin{verbatim}
-struct User {
-    unsigned int id; // unique ID of the user
-    string email; // email address
-    vector<Photo> photos; // a collection of photos
-    User& manager; // user's manager, if any
-}\end{verbatim}
+User includes:
+  email: "email address";
+  photos: Photo-s "a collection of photos";
+  manager: User "user's manager, if any";
+  address includes: city, country, street.\end{verbatim}
 
     Formal ($\Pi_i$ is a set):
     
     \begin{maths}
     $\type{User}(x) :$ \\
-    $\quad \exists \Pi_1 (|\Pi_1| = 1 \wedge \forall p(p \in \Pi_1 \to \type{integer}(p) \wedge \type{composition}(x, p)) \bigwedge$ \\
-    $\quad \exists \Pi_2 (|\Pi_2| = 1 \wedge \forall p(p \in \Pi_2 \to \type{string}(p) \wedge \type{composition}(x, p)) \bigwedge$ \\
-    $\quad \exists \Pi_3 (|\Pi_3| \geq 0 \wedge \forall p(p \in \Pi_3 \to \type{Photo}(p) \wedge \type{composition}(x, p)) \bigwedge$ \\
-    $\quad \exists \Pi_4 (|\Pi_4| < 2 \wedge \forall p(p \in \Pi_4 \to \type{User}(p) \wedge \type{aggregation}(x, p))$ \\
+    $\quad \exists \Pi_1 (|\Pi_1| = 1 \wedge$ \\
+    $\quad\quad \forall p(p \in \Pi_1 \to $ \\
+    $\quad\quad\quad \type{string}(p) \wedge$ \\
+    $\quad\quad\quad \type{composition}(x, p) \wedge$ \\
+    $\quad\quad\quad \type{info}(\mbox{``email address''})$ \\
+    $\quad\quad ) $ \\
+    $\quad ) \bigwedge $ \\
+    $\quad \exists \Pi_2 (|\Pi_2| \geq 0 \wedge$ \\
+    $\quad\quad \forall p(p \in \Pi_2 \to $ \\
+    $\quad\quad\quad \type{Photo}(p) \wedge$ \\
+    $\quad\quad\quad \type{composition}(x, p) \wedge$ \\
+    $\quad\quad\quad \type{info}(\mbox{``a collection of photos''})$ \\
+    $\quad\quad ) $ \\
+    $\quad ) \bigwedge $ \\
+    $\quad \exists \Pi_3 (|\Pi_4| < 2 \wedge $ \\
+    $\quad\quad \forall p(p \in \Pi_4 \to $ \\
+    $\quad\quad \type{User}(p) \wedge$ \\
+    $\quad\quad \type{aggregation}(x, p) \wedge$ \\
+    $\quad\quad \type{info}(\mbox{``user's manager, if any''})$ \\
+    $\quad\quad ) $ \\
+    $\quad ) \bigwedge $ \\
+    $\quad \exists \Pi_4 (|\Pi_4| = 1 \wedge$ \\
+    $\quad\quad \forall p(p \in \Pi_4 \to$ \\
+    $\quad\quad\quad \exists \Psi_1(|\Psi_1|=1 \wedge \forall \psi(\psi \in \Psi_1 \to \type{string}(\psi) \wedge \type{composition}(p, \psi))) \wedge$ \\
+    $\quad\quad\quad \exists \Psi_2(|\Psi_2|=1 \wedge \forall \psi(\psi \in \Psi_2 \to \type{string}(\psi) \wedge \type{composition}(p, \psi))) \wedge$ \\
+    $\quad\quad\quad \exists \Psi_3(|\Psi_3|=1 \wedge \forall \psi(\psi \in \Psi_3 \to \type{string}(\psi) \wedge \type{composition}(p, \psi)))$ \\
+    $\quad\quad ) $ \\
+    $\quad )$ \\
     \end{maths}
     
     There are a number of sub-predicates:
 
     \begin{maths}
-    $\type{User.id}(x, \Pi) = (|\Pi| = 1 \wedge \forall p(p \in \Pi \to \type{integer}(p) \wedge \type{composition}(x, p))$ \\
+    $\type{User.email}(x, \Pi) = (|\Pi| = 1 \wedge \forall p(p \in \Pi \to \type{string}(p) \wedge \type{composition}(x, p))$ \\
     \end{maths}
     
 \newpage
@@ -90,7 +113,7 @@ struct User {
     $\quad\quad \type{deleted}(p) \wedge \type{info}(\mbox{``We delete the photo''})\to$ \\
     $\quad\quad \type{throw}(\mbox{``only PNG images are accepted''})$ \\
     $\quad ) \to$ \\
-    $\quad \type{info}(\mbox{``We protocol the operation in backlog''})$ \\
+    $\quad \type{silent}(\mbox{``We protocol the operation in backlog''})$ \\
     $\quad \type{read}(p, x)\wedge \type{info}(\mbox{``The user reads the photo''})$ \\
     \end{maths}
     
@@ -149,22 +172,21 @@ struct User {
         level 1/.style={level distance=8em, sibling distance=10em, open triangle 90-},
         level 2/.style={sibling distance=5em},
         ]
-        \tikzstyle{class} = [draw, text width=3em, font={\small\ttfamily}, fill=white, anchor=north];
+        \tikzstyle{class} = [draw, text width=4em, font={\small\ttfamily}, fill=white, anchor=north];
         \newcommand{\br}{\linebreak\rule{3em}{0.4pt}\linebreak}
-        \node {formula\br}
-            child {node [dashed] {unary\br formula}
-                child {node {braces\br}}
+        \node {formula\br formula[]}
+            child {node [dashed] {unary\br}
                 child {node [dashed] {quantifier\br var[]}
                     child [level distance=4em] {node {forall}}
                     child [level distance=4em] {node {exists}}
                 }
                 child {node {declaration\br name\linebreak var[]}} 
             }
-            child {node [dashed] {binary\br formula\linebreak formula}
+            child {node [dashed] {binary\br}
                 child {node {and\br}} 
                 child {node {or\br}} 
             }
-            child {node {sequence\br formula[]\linebreak operand}} 
+            child {node {sequence\br operand}} 
             child {node [dashed] {predicate\br var[]}
                 child {node {math\br operand}}
                 child {node {function\br name}}
@@ -177,16 +199,17 @@ struct User {
     Proxy is a collection of C++ classes:
     
     \begin{verbatim}
-class Predicate {
-  
-}
-typedef map<string, Type> Types;
 class Type {
-  vector<Predicate> predicates;
-  Types slots;
+  vector<solm::Formula*> predicates;
+  vector<Slot> slots;
 };
-Types types; // global variable with all known types
-
+class Slot {
+  string name;
+  Cardinality cardinality;
+  vector<solm::Formula*> predicates;
+  Type* type;
+};
+map<string, Type> types; // all named types
 class UseCase {
   class Signature {
     string format; // e.g. "%sud validate %photo"
@@ -197,10 +220,9 @@ class UseCase {
   class Flow {
     string informal;
     Signature signature;
-    map<Predicate, Flows&> alternatives;
+    map<solm::Formula*, Flows&> alternatives;
   };
 };
-map<string, UseCase> useCases; // global variable with all use cases
 \end{verbatim}
 
 \end{document}
