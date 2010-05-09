@@ -156,6 +156,7 @@ void testWeCanBuildNewUseCase() {
             )
         );
         
+    Proxy::getInstance().inject();
 }
 
 int test_main(int, char *[]) {
