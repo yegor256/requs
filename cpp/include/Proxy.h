@@ -117,7 +117,7 @@ private:
 
 class UseCase : public Flows {
 public:
-    UseCase() : signature(0), Flows() { /* that's it */ }
+    UseCase() : Flows(), signature(0) { /* that's it */ }
     UseCase* setSignature(Signature* s) { signature = s; return this; }
 private:
     Signature* signature;
@@ -172,13 +172,16 @@ Type* Type::addSlot(const string& s) {
     return addSlot(new Slot(s));
 }
 
+/**
+ * To convert type into string detailed presentation
+ */
 const string Type::toString() const {
     string s = "{";
     for (vector<Slot*>::const_iterator i = slots.begin(); i != slots.end(); ++i) {
         if (i != slots.begin()) {
             s += "; ";
         }
-        // end-less recursion !!
+        // be aware of possible end-less recursion !!
         s += (*i)->getName() + ": " + (*i)->getType()->getName();
     }
     return s + "}";
@@ -210,6 +213,9 @@ Flows::Flows() : flows() {
     addFlow(0, new Flow("start"));
 }
 
+/**
+ * Get a flow by its number, if it exists
+ */
 Flow* Flows::getFlow(int i) { 
     if (flows.find(i) == flows.end()) {
         throw (boost::format("Flow no.%d not found") % i).str();
