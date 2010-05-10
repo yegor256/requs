@@ -22,6 +22,7 @@
 #include "rqdql.h"
 #include "Solm.h"
 #include "Proxy.h"
+#include "Logger.h"
 using namespace proxy;
 using namespace std;
 
@@ -84,19 +85,15 @@ void testWeCanBuildNewType() {
         )
     );
     
+    Proxy::getInstance().inject();
+
     BOOST_CHECK(Proxy::getInstance().countTypes() >= 3); // User, string, and Photo
     
     rqdql::log("Definition of type 'User': " + Proxy::getInstance().getType("User")->toString());
-    
-    rqdql::log(
-        boost::format("Errors detected in validation: %s") % 
-        boost::algorithm::join(Proxy::getInstance().validate(), "; ")
-    );
+    rqdql::log(rqdql::Logger::getInstance().getReport());
 }
 
-void testWeCanBuildNewUseCase() {
-    Proxy::getInstance().clear();
-    UseCase* uc = Proxy::getInstance().getUseCase("UC1");
+void fillUseCase(UseCase* uc) {
     uc
     ->setSignature(
         (new Signature("${sud} validate ${photo}"))
@@ -155,15 +152,41 @@ void testWeCanBuildNewUseCase() {
                 "Fail with \"only PNG images\" are accepted"
             )
         );
+}
+
+void testWeCanBuildNewUseCase() {
+    Proxy::getInstance().clear();
+    UseCase* uc = Proxy::getInstance().getUseCase("UC1");
+    fillUseCase(uc);
+    rqdql::log(uc->toString());
+}
+
+void testWeCanInjectUseCase() {
+    Proxy::getInstance().clear();
+    UseCase* uc = Proxy::getInstance().getUseCase("UC1");
+    
+    fillUseCase(uc);
         
     Proxy::getInstance().inject();
+
+    vector<string> list = solm::Solm::getInstance().getAllFunctions();
+    BOOST_CHECK(list.size() >= 2);
+    rqdql::log(
+        boost::format("Totally created %d functions: %s") % 
+        list.size() %
+        boost::algorithm::join(list, ", ")
+    );
+    
+    // show it all as string
+    rqdql::log(solm::Solm::getInstance().toString());
 }
 
 int test_main(int, char *[]) {
-    testGabrageCollectionWorksProperly();
-    testContainerWorksProperly();
-    testWeCanBuildNewType();
-    testWeCanBuildNewUseCase();
+    // testGabrageCollectionWorksProperly();
+    // testContainerWorksProperly();
+    // testWeCanBuildNewType();
+    // testWeCanBuildNewUseCase();
+    testWeCanInjectUseCase();
     
     return 0;
 }
