@@ -236,18 +236,15 @@ private:
  */
 class Solm : public Sequence {
 public:
-    static Solm& getInstance();
-    /**
-     * Remove all formulas from the collection.
-     */
-    void clear() { subs.clear(); }
-    const double getAmbiguity() const;
-    template <typename T> const int countTypes() const;
-    template <typename T> const vector<T*> findTypes() const;
-    const vector<string> getAllFunctions() const;
+    static Solm& getInstance(); // singleton pattern
+    void clear(); // remove everything from the collection
+    const double getAmbiguity() const; // calculate scope ambiguity
+    template <typename T> const int countTypes() const; // count objects of given type
+    template <typename T> const vector<T*> findTypes() const; // find all objects of given type
+    const vector<string> getAllFunctions() const; // get list of all declared functions
 private:
     Solm() : Sequence() { /* that's it */ }
-    const vector<Formula*> _retrieve(vector<Formula*> v) const;
+    const vector<Formula*> _retrieve(vector<Formula*> v) const; // get all formulas, including sub-formulas
 };
 
 #include "Solm/Solm.h"

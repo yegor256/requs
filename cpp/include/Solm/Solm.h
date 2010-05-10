@@ -44,6 +44,13 @@ const double Solm::getAmbiguity() const {
 }
 
 /**
+ * Remove all formulas from the collection.
+ */
+void Solm::clear() {
+    subs.clear();
+}
+
+/**
  * To calculate how many formulas of a given type
  * we have in the collection. For example:
  * Solm::getInstance().countTypes<Function>() will return integer
@@ -94,3 +101,4 @@ const vector<Formula*> Solm::_retrieve(vector<Formula*> v) const {
     }
     return result;
 }
+
