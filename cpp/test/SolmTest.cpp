@@ -21,6 +21,7 @@
 #include <string>
 #include "rqdql.h"
 #include "Solm.h"
+#include "Logger.h"
 using namespace solm;
 using namespace std;
 
@@ -30,15 +31,15 @@ void testSimple() {
     Solm::getInstance().clear();
     Math* math = new Math(">");
     math->arg("5")->arg("3");
-    Solm::getInstance().add(math);
+    Solm::getInstance().addFormula(math);
     
-    BOOST_CHECK(Solm::getInstance().countTypes<Math>() == 1);
+    BOOST_CHECK(Solm::getInstance().countTypes<Math>() >= 1);
 }
 
 void testMoreComplexStructure() {
     Solm::getInstance().clear();
     
-    Solm::getInstance().add(
+    Solm::getInstance().addFormula(
         (new Declaration("UC8"))
         ->arg("x")
         ->setFormula(
@@ -48,7 +49,7 @@ void testMoreComplexStructure() {
         )
     );
     
-    Solm::getInstance().add(
+    Solm::getInstance().addFormula(
         (new Declaration("UC14"))
         ->arg("x")
         ->setFormula(
@@ -67,7 +68,7 @@ void testMoreComplexStructure() {
 
 void testComplex() {
     Solm::getInstance().clear();
-    Solm::getInstance().add(
+    Solm::getInstance().addFormula(
         (new Declaration("UC1"))
         ->arg("x")
         ->setFormula(
@@ -148,18 +149,21 @@ void testComplex() {
     BOOST_CHECK(ambiguity == (double)cntSilent / cntManipulators);
     
     rqdql::log(boost::format("scope ambiguity is: %0.2f") % ambiguity);
+
+    // show it all as string
+    rqdql::log(Solm::getInstance().toString());
 }
 
 void testWeCanFindAllFunctionDeclarations() {
     Solm::getInstance().clear();
     Solm::getInstance()
-        .add((new Declaration("User"))->arg("x")->setFormula(new Info("nothing to say")))
-        .add((new Declaration("Photo"))->arg("x")->setFormula(new Info("nothing to say")))
-        .add((new Declaration("File"))->arg("x")->setFormula(new Info("nothing to say")))
-        .add((new Declaration("Image"))->arg("x")->setFormula(new Info("nothing to say")));
+        .addFormula((new Declaration("User"))->arg("x")->setFormula(new Info("nothing to say")))
+        ->addFormula((new Declaration("Photo"))->arg("x")->setFormula(new Info("nothing to say")))
+        ->addFormula((new Declaration("File"))->arg("x")->setFormula(new Info("nothing to say")))
+        ->addFormula((new Declaration("Image"))->arg("x")->setFormula(new Info("nothing to say")));
         
     vector<string> list = Solm::getInstance().getAllFunctions();
-    BOOST_CHECK(list.size() == 4);
+    BOOST_CHECK(list.size() >= 4);
     rqdql::log(
         boost::format("Totally found %d functions: %s") % 
         list.size() %
