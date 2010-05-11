@@ -23,7 +23,7 @@ const string Type::getName() const {
 }
 
 Type* Type::getSlot(const string& s) {
-    for (vector<Slot*>::const_iterator i = slots.begin(); i != slots.end(); ++i) {
+    for (Slots::const_iterator i = slots.begin(); i != slots.end(); ++i) {
         if ((*i)->getName() == s) {
             return (*i);
         }
@@ -53,7 +53,7 @@ Type* Type::addSlot(const string& s) {
  */
 const string Type::toString() const {
     string s = "{";
-    for (vector<Slot*>::const_iterator i = slots.begin(); i != slots.end(); ++i) {
+    for (Slots::const_iterator i = slots.begin(); i != slots.end(); ++i) {
         if (i != slots.begin()) {
             s += "; ";
         }

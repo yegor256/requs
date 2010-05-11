@@ -49,14 +49,15 @@ public:
     bool isEmpty() const { return !slots.size() && !predicate; }
     bool hasPredicate() const { return predicate; }
     solm::Sequence* getPredicate() const { return predicate; }
-    Type* getSlot(const string& s);
+    Type* getSlot(const string& s); // get slot of CREATE it, if absent
     Type* addSlot(Slot* s);
     Type* addSlot(const string& s);
     Type* addPredicate(solm::Formula* f);
     const string toString() const;
     const string getName() const; 
 private:
-    vector<Slot*> slots;
+    typedef vector<Slot*> Slots;
+    Slots slots;
     solm::Sequence* predicate;
 };
 
@@ -76,7 +77,7 @@ public:
     Slot(const string& n, const Cardinality& c, solm::Formula* f, Type* t);
     Slot(const string& n); // see end of file
     const string& getName() const { return name; }
-    Type* getType() const { return type; }
+    const Type* getType() const { return type; }
 private:
     string name;
     Cardinality cardinality;
@@ -100,12 +101,13 @@ public:
         string slot;
         string object;
     };
+    typedef map<string, Explanation*> Explanations;
     Signature(const string& t) : text(t) { /* that's it */ }
     Signature* explain(const string& n, Explanation* e) { explanations[n] = e; return this; }
     const string toString() const { return text; }
 private:
     string text;
-    map<string, Explanation*> explanations;
+    Explanations explanations;
 };
 
 class Flow {
@@ -116,9 +118,11 @@ public:
     const string toString() const;
     solm::Formula* makeFormula() const;
 private:
+    typedef map<solm::Formula*, Flows*> Alternatives;
     string text;
     Signature* signature;
-    map<solm::Formula*, Flows*> alternatives;
+    Alternatives alternatives;
+    solm::Formula* getTarget() const; // get Formula which is called by this signature
 };
 
 class Flows {
@@ -139,7 +143,7 @@ public:
     const string toString() const;
     const string getName() const;
 private:
-    Signature* signature;
+    const Signature* signature;
 };
 
 class Proxy {
