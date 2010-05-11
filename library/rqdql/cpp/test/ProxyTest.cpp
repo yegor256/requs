@@ -31,7 +31,7 @@ rqdql::LogLevel rqdql::level = L_DEBUG;
 void setUp() {
     rqdql::Logger::getInstance().clear();
     Proxy::getInstance().clear();
-    Solm::getInstance().clear();
+    solm::Solm::getInstance().clear();
 }
 
 void tearDown() {
@@ -197,12 +197,44 @@ void testWeCanInjectUseCase() {
     tearDown();
 }
 
+void testUseCasesMatchEachOther() {
+    setUp();
+    UseCase* uc1 = Proxy::getInstance().getUseCase("UC1");
+    uc1->setSignature(
+        (new Signature("${sud} validate ${photo}"))
+        ->explain("photo", new Signature::ExpType(Proxy::getInstance().getType("Photo")))
+    );
+    uc1->addFlow(
+        1,
+        new Flow("We check that it's either PNG or GIF")
+    );
+    
+    UseCase* uc2 = Proxy::getInstance().getUseCase("UC2");
+    uc2->setSignature(
+        (new Signature("${user} upload ${photo}"))
+        ->explain("photo", new Signature::ExpType(Proxy::getInstance().getType("Photo")))
+    );
+    uc2->addFlow(
+        1,
+        new Flow(
+            "We validate the photo",
+            (new Signature("${sud} validate ${photo}"))
+            ->explain("photo", new Signature::ExpType(Proxy::getInstance().getType("Photo")))
+        )
+    );
+    
+    Proxy::getInstance().inject();
+    rqdql::log(solm::Solm::getInstance().toString());
+    tearDown();
+}
+
 int test_main(int, char *[]) {
     testGabrageCollectionWorksProperly();
     testContainerWorksProperly();
     testWeCanBuildNewType();
     testWeCanBuildNewUseCase();
     testWeCanInjectUseCase();
+    testUseCasesMatchEachOther();
     
     return 0;
 }

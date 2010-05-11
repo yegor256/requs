@@ -19,5 +19,5 @@
  */
 
 bool Signature::match(const Signature* s) const {
-    return false;
+    return text == s->text;
 }
