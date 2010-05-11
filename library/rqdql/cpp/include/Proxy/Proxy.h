@@ -40,7 +40,10 @@ void Proxy::inject() {
         // in text, but we anyway should work with this type. Thus,
         // we report about a problem here and continue.
         if ((*i).second->isEmpty()) {
-            rqdql::Logger::getInstance().log(0, (boost::format("Entity '%s' is empty") % i->first).str());
+            rqdql::Logger::getInstance().log(
+                i->second, 
+                (boost::format("Entity '%s' is empty") % i->first).str()
+            );
         }
         
         // This is a new declaration of a type. Again, if the TYPE doesn't
@@ -50,7 +53,10 @@ void Proxy::inject() {
             d->arg("x");
             d->setFormula((*i).second->getPredicate());
         } else {
-            rqdql::Logger::getInstance().log(0, (boost::format("Entity '%s' doesn't have a predicate") % i->first).str());
+            rqdql::Logger::getInstance().log(
+                i->second, 
+                (boost::format("Entity '%s' doesn't have a predicate") % i->first).str()
+            );
             d->setFormula(new Err("'missed predicate"));
         }
         
