@@ -28,6 +28,10 @@ Scanner& Scanner::getInstance() {
     return *scanner;
 }
 
+/**
+ * Run scanner
+ */
 void Scanner::scan(const string& s) {
-    // yyparse();
+    yy_switch_to_buffer(yy_scan_string(s.c_str()));
+    yyparse();
 }

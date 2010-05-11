@@ -19,8 +19,6 @@
 #ifndef __INCLUDE_SCOPE_SCANNER_H
 #define __INCLUDE_SCOPE_SCANNER_H
 
-#include <vector>
-
 typedef union {
     string* name;
     int num;
@@ -37,65 +35,18 @@ extern int yyparse();
 extern int yylex(void);
 extern int yylineno;
 
+#include "Logger.h"
+#include "Scanner/supplementary.h"
+#include "Scanner/rqdql.y.c"
+#include "Scanner/rqdql.l.c"
+
 namespace rqdql {
-    
 class Scanner {
 public:
     static Scanner& getInstance(); // singleton pattern
     void scan(const string&); // scan input string
 };
-
 #include "Scanner/ScannerImpl.h"
-
 }
-
-/**
- * Called when error is found in parser
- */
-void yyerror(const char *error, ...) {
-    // if (YYRECOVERING()) {
-    //     return;
-    // }
-    va_list args;
-    va_start(args, error);
-    char s[500];
-    vsprintf(s, error, args);
-    if (yylloc.first_line) {
-        char s1[500];
-        sprintf(
-            s1, 
-            "%d.%d error: %s",
-            yylloc.first_line,
-            yylloc.first_column,
-            s
-        );
-        strcpy(s, s1);
-    }
-    std::string line = s;
-    rqdql::log(rqdql::L_ERROR, line);
-}
-    
-void lyyerror(YYLTYPE t, const char *error, ...) {
-    va_list args;
-    va_start(args, error);
-    char s[500];
-    vsprintf(s, error, args);
-    if (t.first_line) {
-        char s1[500];
-        sprintf(
-            s1, 
-            "%d.%d error: %s",
-            t.first_line,
-            t.first_column,
-            s
-        );
-        strcpy(s, s1);
-    }
-    std::string line = s;
-    rqdql::log(rqdql::L_ERROR, line);
-}
-    
-#include "Scanner/rqdql.y.c"
-#include "Scanner/rqdql.l.c"
 
 #endif
