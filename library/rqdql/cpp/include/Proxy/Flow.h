@@ -49,6 +49,7 @@ solm::Formula* Flow::makeFormula() const {
             Sequence* s = new Sequence();
             s->addFormula(i->first);
             s->append(i->second->makeSequence());
+            f->addFormula(s);
         }
     }
     return f;
