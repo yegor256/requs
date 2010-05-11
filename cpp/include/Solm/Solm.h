@@ -14,6 +14,8 @@
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
  * @version $Id$
+ *
+ * This file is included ONLY from Solm.h
  */
 
 /**
@@ -44,13 +46,6 @@ const double Solm::getAmbiguity() const {
 }
 
 /**
- * Remove all formulas from the collection.
- */
-void Solm::clear() {
-    subs.clear();
-}
-
-/**
  * To calculate how many formulas of a given type
  * we have in the collection. For example:
  * Solm::getInstance().countTypes<Function>() will return integer
@@ -64,7 +59,7 @@ template <typename T> const int Solm::countTypes() const {
  */
 template <typename T> const vector<T*> Solm::findTypes() const {
     vector<T*> list;
-    vector<Formula*> v = _retrieve(subs);
+    vector<Formula*> v = _retrieve(getFormulas());
     for (vector<Formula*>::const_iterator i = v.begin(); i != v.end(); ++i) {
         if (typeid(**i) == typeid(T)) {
             list.push_back(static_cast<T*>(*i));

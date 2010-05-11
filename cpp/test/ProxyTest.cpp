@@ -28,16 +28,28 @@ using namespace std;
 
 rqdql::LogLevel rqdql::level = L_DEBUG;
 
-void testGabrageCollectionWorksProperly() {
+void setUp() {
+    rqdql::Logger::getInstance().clear();
     Proxy::getInstance().clear();
+}
+
+void tearDown() {
+    if (!rqdql::Logger::getInstance().empty()) {
+        rqdql::log("Log report is not empty:\n" + rqdql::Logger::getInstance().getReport());
+    }
+}
+
+void testGabrageCollectionWorksProperly() {
+    setUp();
     Proxy::getInstance().getTypeNames();
     Proxy::getInstance().getType("User");
     Proxy::getInstance().getTypeNames();
     Proxy::getInstance().clear();
+    tearDown();
 }
 
 void testContainerWorksProperly() {
-    Proxy::getInstance().clear();
+    setUp();
     Proxy::getInstance().getType("User");
     Proxy::getInstance().getType("Photo");
     Proxy::getInstance().getType("File");
@@ -47,10 +59,11 @@ void testContainerWorksProperly() {
         boost::format("Types in container: %s") % 
         boost::algorithm::join(Proxy::getInstance().getTypeNames(), ", ")
     );
+    tearDown();
 }
 
 void testWeCanBuildNewType() {
-    Proxy::getInstance().clear();
+    setUp();
     Type* t = Proxy::getInstance().getType("User");
     t->addSlot(
         new Slot(
@@ -90,7 +103,7 @@ void testWeCanBuildNewType() {
     BOOST_CHECK(Proxy::getInstance().countTypes() >= 3); // User, string, and Photo
     
     rqdql::log("Definition of type 'User': " + Proxy::getInstance().getType("User")->toString());
-    rqdql::log(rqdql::Logger::getInstance().getReport());
+    tearDown();
 }
 
 void fillUseCase(UseCase* uc) {
@@ -155,14 +168,15 @@ void fillUseCase(UseCase* uc) {
 }
 
 void testWeCanBuildNewUseCase() {
-    Proxy::getInstance().clear();
+    setUp();
     UseCase* uc = Proxy::getInstance().getUseCase("UC1");
     fillUseCase(uc);
     rqdql::log(uc->toString());
+    tearDown();
 }
 
 void testWeCanInjectUseCase() {
-    Proxy::getInstance().clear();
+    setUp();
     UseCase* uc = Proxy::getInstance().getUseCase("UC1");
     
     fillUseCase(uc);
@@ -179,13 +193,14 @@ void testWeCanInjectUseCase() {
     
     // show it all as string
     rqdql::log(solm::Solm::getInstance().toString());
+    tearDown();
 }
 
 int test_main(int, char *[]) {
-    // testGabrageCollectionWorksProperly();
-    // testContainerWorksProperly();
-    // testWeCanBuildNewType();
-    // testWeCanBuildNewUseCase();
+    testGabrageCollectionWorksProperly();
+    testContainerWorksProperly();
+    testWeCanBuildNewType();
+    testWeCanBuildNewUseCase();
     testWeCanInjectUseCase();
     
     return 0;

@@ -21,9 +21,10 @@
 
 #include <vector>
 #include <typeinfo>
-#include <boost/format.hpp>
-#include <boost/algorithm/string/join.hpp> // join()
-#include <boost/algorithm/string/replace.hpp> // replace_all_copy()
+#include <boost/format.hpp> // boost::format()
+#include <boost/algorithm/string/join.hpp> // boost::algorithm::join()
+#include <boost/algorithm/string/replace.hpp> // boost::algorithm::replace_all_copy()
+#include "Logger.h"
 using namespace std;
 
 namespace solm {
@@ -49,6 +50,7 @@ class Formula;
             template<typename T> class Informal;
                 class Info;
                 class Silent;
+                class Err;
             template<typename T> class Manipulator;
                 class Created;
                 class Read;
@@ -60,12 +62,13 @@ class Formula;
 class Formula {
 public:
     virtual ~Formula() { /* nothing, just to make this class polymorphic */ };
-    const vector<Formula*>& getFormulas() const { return subs; }
-    virtual const string toString() const { return "???"; }
-    Formula* getFormula(size_t i = 0) const;
+    virtual const string toString() const;
+    void clear() { subs.clear(); } // remove everything from the collection
+    Formula* getFormula(size_t i = 0) const; // get formula by index
     void setFormula(Formula* f, size_t i = 0);
     void addFormula(Formula* f) { subs.push_back(f); }
-protected:
+    const vector<Formula*>& getFormulas() const { return subs; }
+private:
     vector<Formula*> subs;
 };
 
@@ -80,7 +83,8 @@ private:
 template <typename T> class Parametrized {
 public:
     T* arg(const string& s) { vars.push_back(s); return static_cast<T*>(this); }
-protected:
+    const vector<string>& getVars() const { return vars; }
+private:
     vector<string> vars;
 };
 
@@ -95,7 +99,7 @@ public:
     T* setRhs(Formula* f) { Formula::setFormula(f, 1); return static_cast<T*>(this); }
 protected:
     const string _toString(const string& op) const {
-        if (subs.size() != 2) {
+        if (getFormulas().size() != 2) {
             throw "BINARY shall have exactly two formulas inside";
         }
         return getFormula(0)->toString() + " " + op + " " + getFormula(1)->toString();
@@ -115,7 +119,7 @@ private:
 template <typename T> class Predicate : public Formula, public Parametrized<T> {
 protected:
     const string _toString(const string& t) const {
-        return t + "(" + boost::algorithm::join(Parametrized<T>::vars, ", ") + ")";
+        return t + "(" + boost::algorithm::join(Parametrized<T>::getVars(), ", ") + ")";
     }
 };
 
@@ -130,17 +134,12 @@ private:
 
 template <typename T> class Quantifier : public Unary<T>, public Parametrized<T> {
 public:
-    const string _toString(const string& t) const {
-        if (Unary<T>::subs.size() != 1) {
-            throw "Quantifier shall have exactly one formula inside";
-        }
-        return t + " " + boost::algorithm::join(Parametrized<T>::vars, ", ") + "(" + Unary<T>::getFormula()->toString() + ")";
-    }
+    const string _toString(const string& t) const;
 };
 
 class Forall : public Quantifier<Forall> {
 public:
-    virtual const string toString() const { return _toString("\\forall"); }
+    virtual const string toString() const { return Quantifier<Forall>::_toString("\\forall"); }
 };
 
 class Exists : public Quantifier<Exists> {
@@ -170,12 +169,7 @@ template <typename T> class Primitive : public Predicate<T> { /* ... */ };
 
 class In : public Primitive<In> {
 public:
-    virtual const string toString() const {
-        if (vars.size() != 2) {
-            throw "IN() shall have exactly two arguments";
-        }
-        return vars.at(0) + " \\in " + vars.at(1);
-    }
+    virtual const string toString() const;
 };
 class Caught : public Primitive<Caught> {
 public:
@@ -186,18 +180,23 @@ public:
     virtual const string toString() const { return _toString("throw"); }
 };
 
-template <typename T> class Informal : public Primitive<T> { /* tbd */ };
+template <typename T> class Informal : public Primitive<T> {
+};
 
 class Info : public Informal<Info> {
 public:
-    Info(const string& s) : Informal<Info>() {
-        arg(s);
-    }
+    Info(const string& s) : Informal<Info>() { arg(s); }
     virtual const string toString() const { return _toString("info"); }
 };
 class Silent : public Informal<Silent> {
 public:
+    Silent(const string& s) : Informal<Silent>() { arg(s); }
     virtual const string toString() const { return _toString("silent"); }
+};
+class Err : public Informal<Err> {
+public:
+    Err(const string& s) : Informal<Err>() { arg(s); }
+    virtual const string toString() const { return _toString("err"); }
 };
 
 template <typename T> class Manipulator : public Primitive<T> {
@@ -219,12 +218,7 @@ public:
 class Math : public Predicate<Math> {
 public:
     Math(const string& op) : Predicate<Math>(), operand(op) { /* that's it */ }
-    virtual const string toString() const {
-        if (vars.size() != 2) {
-            throw "Math() shall have exactly two arguments";
-        }
-        return vars.at(0) + " " + operand + " " + vars.at(1);
-    }
+    virtual const string toString() const;
 private:
     string operand;
 };
@@ -237,7 +231,6 @@ private:
 class Solm : public Sequence {
 public:
     static Solm& getInstance(); // singleton pattern
-    void clear(); // remove everything from the collection
     const double getAmbiguity() const; // calculate scope ambiguity
     template <typename T> const int countTypes() const; // count objects of given type
     template <typename T> const vector<T*> findTypes() const; // find all objects of given type
@@ -251,6 +244,9 @@ private:
 #include "Solm/Formula.h"
 #include "Solm/Declaration.h"
 #include "Solm/Sequence.h"
+#include "Solm/Math.h"
+#include "Solm/Quantifier.h"
+#include "Solm/Primitive.h"
 
 }
 

@@ -84,7 +84,7 @@ void testComplex() {
                 ->addFormula(
                     (new And())
                     ->setLhs((new Math(">"))->arg("P")->arg("5"))
-                    ->setRhs(new Info("If number of photos of the user is greater than 5"))
+                    ->setRhs(new Info("'If number of photos of the user is greater than 5"))
                 )
                 ->addFormula(
                     (new Exists())
@@ -94,7 +94,7 @@ void testComplex() {
                 ->addFormula(
                     (new And())
                     ->setLhs((new Deleted())->arg("y"))
-                    ->setRhs(new Info("The user deletes photo of himself"))
+                    ->setRhs(new Info("'The user deletes photo of himself"))
                 )
             )    
             ->addFormula(
@@ -105,31 +105,31 @@ void testComplex() {
             ->addFormula(
                 (new And())
                 ->setLhs((new Created())->arg("p")->arg("x"))
-                ->setRhs(new Info("The user creates photo of himself (the photo)"))
+                ->setRhs(new Info("'The user creates photo of himself (the photo)"))
             )
             ->addFormula(
                 (new Sequence(Sequence::OP_OR))
                 ->addFormula(
                     (new And())
                     ->setLhs((new Function("UC2"))->arg("p"))
-                    ->setRhs(new Info("We validate the photo immediately"))
+                    ->setRhs(new Info("'We validate the photo immediately"))
                 )
                 ->addFormula(
                     (new Sequence())
-                    ->addFormula((new Caught())->arg("file format is not valid"))
+                    ->addFormula((new Caught())->arg("'file format is not valid"))
                     ->addFormula(
                         (new And())
                         ->setLhs((new Deleted())->arg("p"))
-                        ->setRhs(new Info("We delete the photo"))
+                        ->setRhs(new Info("'We delete the photo"))
                     )
-                    ->addFormula((new Throw())->arg("only PNG images are accepted"))
+                    ->addFormula((new Throw())->arg("'only PNG images are accepted"))
                 )
             )
-            ->addFormula((new Silent())->arg("We protocol the operation in backlog"))
+            ->addFormula(new Silent("'We protocol the operation in backlog"))
             ->addFormula(
                 (new And())
                 ->setLhs((new Read())->arg("p")->arg("x"))
-                ->setRhs(new Info("The user reads the photo"))
+                ->setRhs(new Info("'The user reads the photo"))
             )
         )
     );

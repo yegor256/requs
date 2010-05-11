@@ -26,15 +26,15 @@
 using namespace std;
 
 namespace rqdql {
-
 class Logger {
 public:
     static Logger& getInstance();
-    void addSubject(void* s, int l) { subjects[s] = l; };
-    bool hasSubject(void* s) { return subjects.find(s) != subjects.end(); };
-    void log(void* s, const string& m);
+    void addSubject(const void* s, int l) { subjects[s] = l; };
+    bool hasSubject(const void* s) const { return subjects.find(s) != subjects.end(); };
+    void log(const void* s, const string& m);
     bool empty() const { return messages.empty(); }
     const string getReport() const;
+    void clear() { messages.clear(); }
 private:
     class Message {
     public:
@@ -45,46 +45,12 @@ private:
         int lineNo;
         string message;
     };
-    map<void*, int> subjects;
+    map<const void*, int> subjects;
     vector<Message> messages;
     Logger() : messages() { /* that's it */ }
 };
 
-/**
- * This is a singleton pattern. In order to get an instance
- * of this class you should call getInstance()
- */
-Logger& Logger::getInstance() {
-    static Logger* logger;
-    if (!logger) {
-        logger = new Logger();
-    }
-    return *logger;
-}
-
-/**
- * Log one line
- */
-void Logger::log(void* s, const string& m) {
-    int lineNo;
-    if (hasSubject(s)) {
-        lineNo = subjects[s];
-    } else {
-        lineNo = 1;
-    }
-    messages.push_back(Message(lineNo, m));
-}
-
-/**
- * Build summary report
- */
-const string Logger::getReport() const {
-    vector<string> lines;
-    for (vector<Message>::const_iterator i = messages.begin(); i != messages.end(); ++i) {
-        lines.push_back((boost::format("[%d] %s") % (*i).getLineNo() % (*i).getMessage()).str());
-    }
-    return boost::algorithm::join(lines, "\n");
-}
+#include "Logger/Logger.h"
 
 }
 

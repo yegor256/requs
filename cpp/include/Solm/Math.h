@@ -13,29 +13,18 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: Solm.h 1811 2010-05-10 14:36:27Z yegor256@yahoo.com $
+ *
+ * This file is included ONLY from Solm.h
  */
 
-const string Declaration::toString() const { 
-    string f;
-    if (Unary<Declaration>::getFormulas().size() != 1) {
+const string Math::toString() const {
+    if (getVars().size() != 2) {
         rqdql::Logger::getInstance().log(
             this, 
-            (boost::format("Declaration '%s' shall have exactly one formula inside") % name).str()
+            (boost::format("MATH('%s') primitive shall have exactly two arguments") % operand).str()
         );
-        f = Err("'missed formula").toString();
-    } else {
-        f = getFormula()->toString();
+        return "TRUE";
     }
-    
-    vector<string> v = getVars();
-    if (!getVars().size()) {
-        rqdql::Logger::getInstance().log(
-            this, 
-            (boost::format("Declaration '%s' shall have at least one argument") % name).str()
-        );
-        v.push_back("x");
-    }
-    
-    return name + "(" + boost::algorithm::join(v, ", ") + "): " + f;
+    return getVars().at(0) + " " + operand + " " + getVars().at(1);
 }

@@ -51,7 +51,7 @@ void Proxy::inject() {
             d->setFormula((*i).second->getPredicate());
         } else {
             rqdql::Logger::getInstance().log(0, (boost::format("Entity '%s' doesn't have a predicate") % i->first).str());
-            d->setFormula(new Constant("true"));
+            d->setFormula(new Err("'missed predicate"));
         }
         
         // Here we should add slots to the TYPE

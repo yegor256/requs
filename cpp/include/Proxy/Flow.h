@@ -30,6 +30,10 @@ const string Flow::toString() const {
     return str;
 }
 
+/**
+ * Convert Flow into SOLM formula
+ * @see Flows::makeSequence()
+ */
 solm::Formula* Flow::makeFormula() const {
     return new solm::Formula();
 }
