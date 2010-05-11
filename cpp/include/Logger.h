@@ -50,7 +50,7 @@ private:
     Logger() : messages() { /* that's it */ }
 };
 
-#include "Logger/Logger.h"
+#include "Logger/LoggerImpl.h"
 
 }
 
