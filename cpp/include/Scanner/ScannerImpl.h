@@ -16,39 +16,17 @@
  * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SCOPE_SCANNER_H
-#define __INCLUDE_SCOPE_SCANNER_H
-
-#include <vector>
-
-typedef union {
-    string* name;
-    int num;
-    void* ptr;
-} YYSTYPE;
-
-// bison/flex file
-// this define will protect us against BISON default YYSTYPE
-#define YYSTYPE_IS_DECLARED 1
-#define YYSTYPE_IS_TRIVIAL 1
-#include "Scanner/symbols.h"
-
-extern int yyparse();
-extern void yyerror(const char *error, ...);
-void lyyerror(YYLTYPE t, const char *error, ...);
-extern int yylex(void);
-extern int yylineno;
-
-namespace rqdql {
-    
-class Scanner {
-public:
-    static Scanner& getInstance(); // singleton pattern
-    void scan(const string&); // scan input string
-};
-
-#include "Scanner/ScannerImpl.h"
-
+/**
+ * This is a singleton pattern. In order to get an instance
+ * of this class you should call getInstance()
+ */
+Scanner& Scanner::getInstance() {
+    static Scanner* scanner;
+    if (!scanner) {
+        scanner = new Scanner();
+    }
+    return *scanner;
 }
 
-#endif
+void Scanner::scan(const string& s) {
+}

@@ -31,7 +31,7 @@ const string Formula::toString() const {
     return Err("'Formula::toString()").toString();
 }
 
-void Formula::setFormula(Formula* f, size_t i) {
+void Formula::setFormula(Formula* f, size_t i = 0) {
     if (subs.size() < i+1) {
         subs.resize(i+1);
     }
@@ -42,7 +42,7 @@ void Formula::setFormula(Formula* f, size_t i) {
  * Get formula by index. If it is absent, this situation will be logged
  * and TRUE constant will be returned.
  */
-Formula* Formula::getFormula(size_t i) const {
+Formula* Formula::getFormula(size_t i = 0) const {
     if (i > subs.size()-1) {
         rqdql::Logger::getInstance().log(
             this, 

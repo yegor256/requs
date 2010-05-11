@@ -17,6 +17,7 @@
  */
 
 #include "rqdql.h"
+#include "Scanner.h"
 #include <stdarg.h>
 #include <iostream>
 #include <vector>
@@ -26,20 +27,19 @@ using namespace std;
 rqdql::LogLevel rqdql::level = L_ERROR;
 
 int main(int argc, char** argv) {
-    // entry log message
-    rqdql::log(rqdql::L_INFO, "rqdql v0.1");
+    // yyparse();
+    string s;
+    cin >> s;
+    rqdql::Scanner::getInstance().scan(s);
 
-    // convert input stream into rqdql::om::Model class instance
-    yyparse();
+    // everything OK?
+    if (rqdql::Logger::getInstance().empty()) {
+        return 0;
+    }
     
-    // rqdql::log(boost::format("%d statements found") % rqdql::scope.size());
-    // model.setScope(rqdql::scope::scope);
-    // cout << model.query("") << endl;
-    
-    // bye-bye log message
-    rqdql::log(rqdql::L_INFO, "end.");
-    
-    return 0;
+    // no, we should display all errors found
+    cout << rqdql::Logger::getInstance().getReport();
+    return -1;
 }
 
 /**
