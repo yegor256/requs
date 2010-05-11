@@ -31,6 +31,7 @@ rqdql::LogLevel rqdql::level = L_DEBUG;
 void setUp() {
     rqdql::Logger::getInstance().clear();
     Proxy::getInstance().clear();
+    Solm::getInstance().clear();
 }
 
 void tearDown() {
