@@ -29,4 +29,5 @@ Scanner& Scanner::getInstance() {
 }
 
 void Scanner::scan(const string& s) {
+    // yyparse();
 }

@@ -21,7 +21,12 @@ BISON = bison
 FLEX = flex
 CPPFLAGS = -I./include -I./library
 EXEC = ./rqdql
+
 SYMBOLS = include/Scanner/symbols.h
+FLEX_SRC = include/Scanner/rqdql.l
+FLEX_DEST = include/Scanner/rqdql.l.c
+BISON_SRC = include/Scanner/rqdql.y
+BISON_DEST = include/Scanner/rqdql.y.c
 
 LIB_DIRS = library/pugixml library/boost-libs
 LIB_SOURCES = $(shell find $(LIB_DIRS) -name "*.cpp")
@@ -30,28 +35,23 @@ LIB_OBJS := $(LIB_SOURCES:.cpp=.obj)
 HEADERS := $(shell find include -name "*.h")
 
 TEST_SOURCES := $(shell find test -name "*.cpp")
-TESTS := $(TEST_SOURCES:.cpp=.test)
+TESTS := $(TEST_SOURCES:.cpp=.o)
 VALID_EXAMPLES = $(shell find examples/valid -name "*.txt")
 
 # compile the product and run all tests
-all: rqdql test
+all: $(EXEC) test
 
 # compile/build the product
-rqdql: lex.yy.c $(EXEC).tab.c $(EXEC).cpp $(LIB_OBJS) $(SELF)
-	$(CPP) $(CPPFLAGS) -o $@ $(EXEC).cpp $(EXEC).tab.c lex.yy.c $(LIB_OBJS)
+$(EXEC): $(EXEC).o
+	mv $(EXEC).o $(EXEC)
     
-lex.yy.c: $(EXEC).l $(HEADERS) $(SELF)
-	$(FLEX) $(EXEC).l
+$(FLEX_DEST): $(FLEX_SRC) $(HEADERS) $(SELF)
+	$(FLEX) --outfile=$(FLEX_DEST) $(FLEX_SRC)
 	
-$(EXEC).tab.h: $(EXEC).tab.c
+$(BISON_DEST): $(BISON_SRC) $(HEADERS) $(SELF)
+	$(BISON) --no-lines --report=all --defines=$(SYMBOLS) --output=$(BISON_DEST) $(BISON_SRC)
 
-$(EXEC).tab.c: $(EXEC).y $(HEADERS) $(SELF)
-	$(BISON) --no-lines --report=all --defines=$(SYMBOLS) $(EXEC).y
-
-%.o: %.cpp $(HEADERS)
-	$(CPP) $(CPPFLAGS) -o $@ -c $<
-
-# library objects
+# library objects, we just compile them, NO linking
 %.obj: %.cpp
 	$(CPP) $(CPPFLAGS) -o $@ -c $<
 
@@ -62,8 +62,8 @@ test: $(TESTS) test-examples
 		$$i; \
 	done
 
-# compilation of unit tests
-%.test: %.cpp $(HEADERS)
+# compilation of unit tests and any other CPP file AND linking with all libs
+%.o: %.cpp $(HEADERS) $(BISON_DEST) $(FLEX_DEST)
 	$(CPP) $(CPPFLAGS) -o $@ $< $(LIB_OBJS)
 
 # test the entire mechanism with all test files
@@ -75,10 +75,11 @@ test-examples: $(EXEC) $(VALID_EXAMPLES)
 
 # clean everything!
 clean:
-	rm -f lex.yy.c $(EXEC).tab.c $(EXEC).tab.h \
-	$(EXEC).output \
-	$(LIB_OBJS) \
+	rm -f \
+	$(BISON_DEST) \
+	$(FLEX_DEST) \
 	$(EXEC) \
+	$(LIB_OBJS) \
 	$(TESTS) \
 	$(SYMBOLS)
 
