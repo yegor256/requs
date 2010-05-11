@@ -141,7 +141,7 @@ void fillUseCase(UseCase* uc) {
         )
     );
     
-    uc->getFlow(0)->addAlternative(new solm::Info("number of photos of the user is greater than 5"))
+    uc->getFlow(0)->addAlternative(new solm::Info("'number of photos of the user is greater than 5"))
         ->addFlow(
             1,
             new Flow(
@@ -151,7 +151,7 @@ void fillUseCase(UseCase* uc) {
             )
         );
         
-    uc->getFlow(2)->addAlternative((new solm::Caught())->arg("file format is not valid"))
+    uc->getFlow(2)->addAlternative((new solm::Caught())->arg("'file format is not valid"))
         ->addFlow(
             1,
             new Flow(
