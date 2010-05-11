@@ -30,23 +30,6 @@ using namespace std;
 // boost libraries
 #include "boost/format.hpp"
 
-typedef union {
-    string* name;
-    int num;
-    void* ptr;
-} YYSTYPE;
-
-// bison/flex file
-// this define will protect us against BISON default YYSTYPE
-#define YYSTYPE_IS_DECLARED 1
-#define YYSTYPE_IS_TRIVIAL 1
-#include "symbols.h"
-
-extern int yyparse();
-extern void yyerror(const char *error, ...);
-void lyyerror(YYLTYPE t, const char *error, ...);
-extern int yylex(void);
-extern int yylineno;
 
 namespace rqdql {
     
@@ -101,16 +84,6 @@ namespace rqdql {
     inline void log(const LogLevel lvl, const boost::format& line) {
         return log(lvl, line.str());
     }
-
-    /* exception */
-    class Exception {
-    public:
-        Exception(const string& s) : msg(s) { /* that's it */ }
-        Exception(const boost::format& s) : msg(s.str()) { /* that's it */ }
-        string getMessage() const { return msg; }
-    private:
-        string msg;
-    };
 
     inline void yySet(string*& lhs, boost::format rhs) {
         lhs = new string(rhs.str());

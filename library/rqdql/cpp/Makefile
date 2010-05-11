@@ -21,10 +21,7 @@ BISON = bison
 FLEX = flex
 CPPFLAGS = -I./include -I./library
 EXEC = ./rqdql
-SYMBOLS = include/symbols.h
-
-SOURCES := $(shell find src -name "*.cpp")
-OBJS := $(SOURCES:.cpp=.o) $(LIBS:.cpp=.o)
+SYMBOLS = include/Scanner/symbols.h
 
 LIB_DIRS = library/pugixml library/boost-libs
 LIB_SOURCES = $(shell find $(LIB_DIRS) -name "*.cpp")
@@ -40,8 +37,8 @@ VALID_EXAMPLES = $(shell find examples/valid -name "*.txt")
 all: rqdql test
 
 # compile/build the product
-rqdql: lex.yy.c $(EXEC).tab.c $(EXEC).cpp $(OBJS) $(LIB_OBJS) $(SELF)
-	$(CPP) $(CPPFLAGS) -o $@ $(EXEC).cpp $(EXEC).tab.c lex.yy.c $(OBJS) $(LIB_OBJS)
+rqdql: lex.yy.c $(EXEC).tab.c $(EXEC).cpp $(LIB_OBJS) $(SELF)
+	$(CPP) $(CPPFLAGS) -o $@ $(EXEC).cpp $(EXEC).tab.c lex.yy.c $(LIB_OBJS)
     
 lex.yy.c: $(EXEC).l $(HEADERS) $(SELF)
 	$(FLEX) $(EXEC).l
@@ -67,7 +64,7 @@ test: $(TESTS) test-examples
 
 # compilation of unit tests
 %.test: %.cpp $(HEADERS)
-	$(CPP) $(CPPFLAGS) -o $@ $< $(subst src/global.o, "", $(OBJS)) $(LIB_OBJS)
+	$(CPP) $(CPPFLAGS) -o $@ $< $(LIB_OBJS)
 
 # test the entire mechanism with all test files
 test-examples: $(EXEC) $(VALID_EXAMPLES)
@@ -80,7 +77,6 @@ test-examples: $(EXEC) $(VALID_EXAMPLES)
 clean:
 	rm -f lex.yy.c $(EXEC).tab.c $(EXEC).tab.h \
 	$(EXEC).output \
-	$(OBJS) \
 	$(LIB_OBJS) \
 	$(EXEC) \
 	$(TESTS) \

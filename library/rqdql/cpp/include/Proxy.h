@@ -49,10 +49,10 @@ public:
     bool isEmpty() const { return !slots.size() && !predicate; }
     bool hasPredicate() const { return predicate; }
     solm::Sequence* getPredicate() const { return predicate; }
-    Type* getSlot(const string& s); // get slot of CREATE it, if absent
-    Type* addSlot(Slot* s);
-    Type* addSlot(const string& s);
-    Type* addPredicate(solm::Formula* f);
+    Type* getSlot(const string&); // get slot of CREATE it, if absent
+    Type* addSlot(Slot*);
+    Type* addSlot(const string&);
+    Type* addPredicate(solm::Formula*);
     const string toString() const;
     const string getName() const; 
 private:
@@ -74,8 +74,8 @@ public:
     private:
         string mnemo;
     };
-    Slot(const string& n, const Cardinality& c, solm::Formula* f, Type* t);
-    Slot(const string& n); // see end of file
+    Slot(const string&, const Cardinality&, solm::Formula*, Type*);
+    Slot(const string&);
     const string& getName() const { return name; }
     const Type* getType() const { return type; }
 private:
@@ -105,7 +105,7 @@ public:
     Signature(const string& t) : text(t) { /* that's it */ }
     Signature* explain(const string& n, Explanation* e) { explanations[n] = e; return this; }
     const string toString() const { return text; }
-    bool match(const Signature* s) const;
+    bool match(const Signature*) const;
 private:
     string text;
     Explanations explanations;
@@ -115,7 +115,7 @@ class Flow {
 public:
     Flow(const string& t, Signature* s) : text(t), signature(s) { /* that's it */ }
     Flow(const string& t) : text(t), signature(0) { /* that's it */ }
-    Flows* addAlternative(solm::Formula* f);
+    Flows* addAlternative(solm::Formula*);
     const string toString() const;
     solm::Formula* makeFormula() const;
 private:
@@ -130,7 +130,7 @@ class Flows {
 public:
     Flows();
     Flows* addFlow(int i, Flow* f) { flows[i] = f; return this; }
-    Flow* getFlow(int i);
+    Flow* getFlow(int);
     const string toString() const;
     solm::Sequence* makeSequence() const;
 private:
@@ -155,11 +155,11 @@ public:
     void clear();
     int countTypes() const { return types.size(); } 
     const vector<string> getTypeNames() const;
-    Type* getType(const string& name);
-    UseCase* getUseCase(const string& name);
+    Type* getType(const string&);
+    UseCase* getUseCase(const string&);
     const vector<string> getAllUseCaseNames() const;
-    const string findTypeName(const Type* t) const;
-    const string findUseCaseName(const UseCase* uc) const;
+    const string findTypeName(const Type*) const;
+    const string findUseCaseName(const UseCase*) const;
 private:
     typedef map<string, Type*> Types;
     typedef map<string, UseCase*> UseCases;

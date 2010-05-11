@@ -65,8 +65,8 @@ public:
     virtual ~Formula() { /* nothing, just to make this class polymorphic */ };
     virtual const string toString() const;
     void clear() { subs.clear(); } // remove everything from the collection
-    Formula* getFormula(size_t i = 0) const; // get formula by index
-    void setFormula(Formula* f, size_t i = 0);
+    Formula* getFormula(size_t) const; // get formula by index
+    void setFormula(Formula*, size_t);
     void addFormula(Formula* f) { subs.push_back(f); }
     const Formulas& getFormulas() const { return subs; }
 private:
@@ -240,7 +240,7 @@ public:
     const vector<string> getAllFunctions() const; // get list of all declared functions
 private:
     Solm() : Sequence(Sequence::OP_SEMICOLON) { /* that's it */ }
-    const Formulas _retrieve(Formulas v) const; // get all formulas, including sub-formulas
+    const Formulas _retrieve(Formulas) const; // get all formulas, including sub-formulas
 };
 
 #include "Solm/SolmImpl.h"
