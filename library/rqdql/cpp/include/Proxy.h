@@ -105,6 +105,7 @@ public:
     Signature(const string& t) : text(t) { /* that's it */ }
     Signature* explain(const string& n, Explanation* e) { explanations[n] = e; return this; }
     const string toString() const { return text; }
+    bool match(const Signature* s) const;
 private:
     string text;
     Explanations explanations;
@@ -142,8 +143,9 @@ public:
     UseCase* setSignature(Signature* s) { signature = s; return this; }
     const string toString() const;
     const string getName() const;
+    Signature* getSignature() const { return signature; }
 private:
-    const Signature* signature;
+    Signature* signature;
 };
 
 class Proxy {
@@ -155,6 +157,7 @@ public:
     const vector<string> getTypeNames() const;
     Type* getType(const string& name);
     UseCase* getUseCase(const string& name);
+    const vector<string> getAllUseCaseNames() const;
     const string findTypeName(const Type* t) const;
     const string findUseCaseName(const UseCase* uc) const;
 private:
@@ -172,6 +175,7 @@ private:
 #include "Proxy/Slot.h"
 #include "Proxy/Flows.h"
 #include "Proxy/UseCase.h"
+#include "Proxy/Signature.h"
 
 }
 

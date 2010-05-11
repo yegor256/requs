@@ -126,3 +126,14 @@ const string Proxy::findUseCaseName(const UseCase* uc) const {
     }
     return "undefined";
 }
+
+/**
+ * Get full list of use case names (strings)
+ */
+const vector<string> Proxy::getAllUseCaseNames() const {
+    vector<string> v;
+    for (UseCases::const_iterator i = useCases.begin(); i != useCases.end(); ++i) {
+        v.push_back(i->first);
+    }
+    return v;
+}

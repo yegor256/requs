@@ -60,5 +60,16 @@ solm::Formula* Flow::makeFormula() const {
  * if it's possible at all.
  */
 solm::Formula* Flow::getTarget() const {
-    return new solm::Info("something...");
+    vector<string> names = Proxy::getInstance().getAllUseCaseNames();
+    for (vector<string>::const_iterator i = names.begin(); i != names.end(); ++i) {
+        UseCase* uc = Proxy::getInstance().getUseCase(*i);
+        if (uc->getSignature()->match(signature)) {
+            return (new solm::Function(uc->getName()))->arg("x");
+        }
+    }
+    rqdql::Logger::getInstance().log(
+        this, 
+        (boost::format("Signature '%s' is not recognized") % signature->toString()).str()
+    );
+    return new solm::Err("'" + signature->toString());
 }
