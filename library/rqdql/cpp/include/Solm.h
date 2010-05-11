@@ -243,7 +243,7 @@ private:
     const Formulas _retrieve(Formulas v) const; // get all formulas, including sub-formulas
 };
 
-#include "Solm/Solm.h"
+#include "Solm/SolmImpl.h"
 #include "Solm/Formula.h"
 #include "Solm/Declaration.h"
 #include "Solm/Sequence.h"

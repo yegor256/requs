@@ -169,8 +169,8 @@ private:
 };
 
 
+#include "Proxy/ProxyImpl.h"
 #include "Proxy/Type.h"
-#include "Proxy/Proxy.h"
 #include "Proxy/Flow.h"
 #include "Proxy/Slot.h"
 #include "Proxy/Flows.h"
