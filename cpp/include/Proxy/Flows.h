@@ -27,7 +27,10 @@ Flows::Flows() : flows() {
  */
 Flow* Flows::getFlow(int i) { 
     if (flows.find(i) == flows.end()) {
-        rqdql::Logger::getInstance().log(0, (boost::format("Flow no.%d not found") % i).str());
+        rqdql::Logger::getInstance().log(
+            this, 
+            (boost::format("Flow no.%d not found") % i).str()
+        );
         addFlow(i, new Flow("some action..."));
     }
     return flows[i]; 

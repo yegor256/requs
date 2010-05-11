@@ -59,10 +59,10 @@ template <typename T> const int Solm::countTypes() const {
  */
 template <typename T> const vector<T*> Solm::findTypes() const {
     vector<T*> list;
-    vector<Formula*> v = _retrieve(getFormulas());
-    for (vector<Formula*>::const_iterator i = v.begin(); i != v.end(); ++i) {
+    Formulas v = _retrieve(getFormulas());
+    for (Formulas::const_iterator i = v.begin(); i != v.end(); ++i) {
         if (typeid(**i) == typeid(T)) {
-            list.push_back(static_cast<T*>(*i));
+            list.push_back(static_cast<const T*>(*i));
         }
     }
     return list;
@@ -85,12 +85,12 @@ const vector<string> Solm::getAllFunctions() const {
  * Recursively collects all formulas in the collection into
  * a flat vector
  */
-const vector<Formula*> Solm::_retrieve(vector<Formula*> v) const {
-    vector<Formula*> result;
-    for (vector<Formula*>::const_iterator i = v.begin(); i != v.end(); ++i) {
+const Formula::Formulas Solm::_retrieve(Formulas v) const {
+    Formulas result;
+    for (Formulas::const_iterator i = v.begin(); i != v.end(); ++i) {
         result.push_back(*i);
-        vector<Formula*> fs = _retrieve((*i)->getFormulas());
-        for (vector<Formula*>::const_iterator j = fs.begin(); j != fs.end(); ++j) {
+        Formulas fs = _retrieve((*i)->getFormulas());
+        for (Formulas::const_iterator j = fs.begin(); j != fs.end(); ++j) {
             result.push_back(*j);
         }
     }

@@ -18,7 +18,7 @@
 
 const string Sequence::toString() const {
     vector<string> lines;
-    for (vector<Formula*>::const_iterator i = getFormulas().begin(); i != getFormulas().end(); ++i) {
+    for (Formulas::const_iterator i = getFormulas().begin(); i != getFormulas().end(); ++i) {
         lines.push_back((*i)->toString());
     }
     string separator;
@@ -32,11 +32,20 @@ const string Sequence::toString() const {
         case OP_TO:
             separator = "\\to";
             break;
+        case OP_SEMICOLON:
+            separator = ";";
+            break;
     }
     return "(\n\t" + boost::algorithm::replace_all_copy(
         boost::algorithm::join(lines, " " + separator + " \n"), 
         "\n", 
         "\n\t"
     ) + "\n)";
+}
+
+void Sequence::append(const Sequence* s) {
+    for (Formulas::const_iterator i = s->getFormulas().begin(); i != s->getFormulas().end(); ++i) {
+        addFormula(*i);
+    }
 }
 

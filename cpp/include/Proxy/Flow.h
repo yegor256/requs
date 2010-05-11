@@ -24,7 +24,7 @@ Flows* Flow::addAlternative(solm::Formula* f) {
 
 const string Flow::toString() const {
     string str = text;
-    for (map<solm::Formula*, Flows*>::const_iterator i = alternatives.begin(); i != alternatives.end(); ++i) {
+    for (Alternatives::const_iterator i = alternatives.begin(); i != alternatives.end(); ++i) {
         str = str + "\n\tIf ...\n\t\t" + boost::algorithm::replace_all_copy((*i).second->toString(), "\n", "\n\t\t");
     }
     return str;
@@ -35,6 +35,29 @@ const string Flow::toString() const {
  * @see Flows::makeSequence()
  */
 solm::Formula* Flow::makeFormula() const {
-    return new solm::Formula();
+    using namespace solm;
+    Formula* f;
+    if (!signature) {
+        f = new Silent("'" + text);
+    } else {
+        f = (new And())->setLhs(getTarget())->setRhs(new Info("'" + text));
+    }
+    
+    if (alternatives.size()) {
+        f = (new Sequence(Sequence::OP_OR))->addFormula(f);
+        for (Alternatives::const_iterator i = alternatives.begin(); i != alternatives.end(); ++i) {
+            Sequence* s = new Sequence();
+            s->addFormula(i->first);
+            s->append(i->second->makeSequence());
+        }
+    }
+    return f;
 }
 
+/**
+ * Try to find a formula which is targeted by this signature,
+ * if it's possible at all.
+ */
+solm::Formula* Flow::getTarget() const {
+    return new solm::Info("something...");
+}

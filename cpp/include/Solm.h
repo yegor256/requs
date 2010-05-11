@@ -61,15 +61,16 @@ class Formula;
 
 class Formula {
 public:
+    typedef vector<Formula*> Formulas;
     virtual ~Formula() { /* nothing, just to make this class polymorphic */ };
     virtual const string toString() const;
     void clear() { subs.clear(); } // remove everything from the collection
     Formula* getFormula(size_t i = 0) const; // get formula by index
     void setFormula(Formula* f, size_t i = 0);
     void addFormula(Formula* f) { subs.push_back(f); }
-    const vector<Formula*>& getFormulas() const { return subs; }
+    const Formulas& getFormulas() const { return subs; }
 private:
-    vector<Formula*> subs;
+    Formulas subs;
 };
 
 class Constant : public Formula {
@@ -82,10 +83,11 @@ private:
 
 template <typename T> class Parametrized {
 public:
+    typedef vector<string> Vars;
     T* arg(const string& s) { vars.push_back(s); return static_cast<T*>(this); }
-    const vector<string>& getVars() const { return vars; }
+    const Vars& getVars() const { return vars; }
 private:
-    vector<string> vars;
+    Vars vars;
 };
 
 template <typename T> class Unary : public Formula {
@@ -108,10 +110,11 @@ protected:
 
 class Sequence : public Formula {
 public:
-    typedef enum {OP_TO, OP_AND, OP_OR} Operand;
+    typedef enum {OP_TO, OP_AND, OP_OR, OP_SEMICOLON} Operand;
     Sequence(Operand op = OP_TO) : Formula(), operand(op) { /* that's it */ }
     Sequence* addFormula(Formula* f) { Formula::addFormula(f); return this; }
     virtual const string toString() const;
+    void append(const Sequence* s);
 private:
     Operand operand;
 };
@@ -236,8 +239,8 @@ public:
     template <typename T> const vector<T*> findTypes() const; // find all objects of given type
     const vector<string> getAllFunctions() const; // get list of all declared functions
 private:
-    Solm() : Sequence() { /* that's it */ }
-    const vector<Formula*> _retrieve(vector<Formula*> v) const; // get all formulas, including sub-formulas
+    Solm() : Sequence(Sequence::OP_SEMICOLON) { /* that's it */ }
+    const Formulas _retrieve(Formulas v) const; // get all formulas, including sub-formulas
 };
 
 #include "Solm/Solm.h"

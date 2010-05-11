@@ -33,14 +33,16 @@ Logger& Logger::getInstance() {
 /**
  * Log one line
  */
-void Logger::log(const void* s, const string& m) {
+template <typename T> void Logger::log(const T* s, const string& m) {
     int lineNo;
+    string str = m;
     if (hasSubject(s)) {
         lineNo = subjects[s];
     } else {
         lineNo = 0;
+        str = str + " (" + typeid(*s).name() + ")"; 
     }
-    messages.push_back(Message(lineNo, m));
+    messages.push_back(Message(lineNo, str));
 }
 
 /**

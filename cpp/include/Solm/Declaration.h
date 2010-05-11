@@ -28,7 +28,7 @@ const string Declaration::toString() const {
         f = getFormula()->toString();
     }
     
-    vector<string> v = getVars();
+    Vars v = getVars();
     if (!getVars().size()) {
         rqdql::Logger::getInstance().log(
             this, 
