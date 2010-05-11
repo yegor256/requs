@@ -14,29 +14,8 @@
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
  * @version $Id$
+ *
+ * This file is included ONLY from Solm/Primitive.h
  */
 
-const string Sequence::toString() const {
-    vector<string> lines;
-    for (vector<Formula*>::const_iterator i = getFormulas().begin(); i != getFormulas().end(); ++i) {
-        lines.push_back((*i)->toString());
-    }
-    string separator;
-    switch (operand) {
-        case OP_AND:
-            separator = "\\vee";
-            break;
-        case OP_OR:
-            separator = "\\wedge";
-            break;
-        case OP_TO:
-            separator = "\\to";
-            break;
-    }
-    return "(\n\t" + boost::algorithm::replace_all_copy(
-        boost::algorithm::join(lines, " " + separator + " \n"), 
-        "\n", 
-        "\n\t"
-    ) + "\n)";
-}
-
+#include "Solm/Primitive/In.h"

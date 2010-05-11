@@ -41,6 +41,10 @@ const string Flows::toString() const {
     return boost::algorithm::join(lines, "\n");
 }
 
+/**
+ * Convert a list of Flows into a sequence of Formulas
+ * @see Proxy::inject()
+ */
 solm::Sequence* Flows::makeSequence() const {
     using namespace solm;
     Sequence* s = new Sequence();

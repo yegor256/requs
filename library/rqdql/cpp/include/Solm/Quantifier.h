@@ -13,29 +13,20 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: Solm.h 1811 2010-05-10 14:36:27Z yegor256@yahoo.com $
+ *
+ * This file is included ONLY from Solm.h
  */
 
-const string Declaration::toString() const { 
-    string f;
-    if (Unary<Declaration>::getFormulas().size() != 1) {
+template <typename T> const string Quantifier<T>::_toString(const string& t) const {
+    if (Unary<T>::getFormulas().size() != 1) {
         rqdql::Logger::getInstance().log(
             this, 
-            (boost::format("Declaration '%s' shall have exactly one formula inside") % name).str()
+            "Quantifier shall have exactly one formula inside"
         );
-        f = Err("'missed formula").toString();
-    } else {
-        f = getFormula()->toString();
+        return "TRUE";
     }
-    
-    vector<string> v = getVars();
-    if (!getVars().size()) {
-        rqdql::Logger::getInstance().log(
-            this, 
-            (boost::format("Declaration '%s' shall have at least one argument") % name).str()
-        );
-        v.push_back("x");
-    }
-    
-    return name + "(" + boost::algorithm::join(v, ", ") + "): " + f;
+    return t + " " 
+    + boost::algorithm::join(Parametrized<T>::getVars(), ", ") 
+    + "(" + Unary<T>::getFormula()->toString() + ")";
 }

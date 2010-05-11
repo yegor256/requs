@@ -14,7 +14,22 @@
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
  * @version $Id$
+ *
+ * This file is included ONLY from Solm.h
  */
+
+/**
+ * Convert it to string, if possible. Actually, we should NEVER
+ * reach this point, since FORMULA is an abstract class. But it might
+ * happen due to some error.
+ */
+const string Formula::toString() const {
+    rqdql::Logger::getInstance().log(
+        this, 
+        "FORMULA is an abstract class, can't return toString()"
+    );
+    return Err("'Formula::toString()").toString();
+}
 
 void Formula::setFormula(Formula* f, size_t i) {
     if (subs.size() < i+1) {
@@ -23,9 +38,17 @@ void Formula::setFormula(Formula* f, size_t i) {
     subs[i] = f;
 }
 
+/**
+ * Get formula by index. If it is absent, this situation will be logged
+ * and TRUE constant will be returned.
+ */
 Formula* Formula::getFormula(size_t i) const {
     if (i > subs.size()-1) {
-        return new Constant(true);
+        rqdql::Logger::getInstance().log(
+            this, 
+            (boost::format("Formula no.%d is absent, returning TRUE instead") % i).str()
+        );
+        return new Err((boost::format("'absent formula no.%d") % i).str());
     }
     return subs.at(i);
 }
