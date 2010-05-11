@@ -18,16 +18,15 @@
 
 #include "rqdql.h"
 #include "Scanner.h"
+#include "Logger.h"
 #include <stdarg.h>
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
 rqdql::LogLevel rqdql::level = L_ERROR;
 
 int main(int argc, char** argv) {
-    // yyparse();
     string s;
     cin >> s;
     rqdql::Scanner::getInstance().scan(s);
@@ -42,49 +41,3 @@ int main(int argc, char** argv) {
     return -1;
 }
 
-/**
- * Called when error is found in parser
- */
-void yyerror(const char *error, ...) {
-    // if (YYRECOVERING()) {
-    //     return;
-    // }
-    va_list args;
-    va_start(args, error);
-    char s[500];
-    vsprintf(s, error, args);
-    if (yylloc.first_line) {
-        char s1[500];
-        sprintf(
-            s1, 
-            "%d.%d error: %s",
-            yylloc.first_line,
-            yylloc.first_column,
-            s
-        );
-        strcpy(s, s1);
-    }
-    std::string line = s;
-    rqdql::log(rqdql::L_ERROR, line);
-}
-    
-void lyyerror(YYLTYPE t, const char *error, ...) {
-    va_list args;
-    va_start(args, error);
-    char s[500];
-    vsprintf(s, error, args);
-    if (t.first_line) {
-        char s1[500];
-        sprintf(
-            s1, 
-            "%d.%d error: %s",
-            t.first_line,
-            t.first_column,
-            s
-        );
-        strcpy(s, s1);
-    }
-    std::string line = s;
-    rqdql::log(rqdql::L_ERROR, line);
-}
-    

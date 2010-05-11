@@ -23,13 +23,10 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <exception>
-
 using namespace std;
 
 // boost libraries
 #include "boost/format.hpp"
-
 
 namespace rqdql {
     
