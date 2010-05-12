@@ -20,14 +20,18 @@
 
 %{
     #include "rqdql.h"
+    #include "Proxy.h"
+    #include "Solm.h"
     #include "brokers.h"
 	using boost::format;    
+    using namespace proxy;
 %}
 
 // Here we should say that the type of non-terminal
 // terms are mapped to %union.name, and are strings because of that
 %type <name> words
-%type <ptr> className
+%type <name> className
+%type <ptr> classPath
 %type <name> objectName
 %type <ptr> slots
 %type <ptr> slot
@@ -49,6 +53,7 @@
 %type <ptr> verb
 %type <ptr> flows
 %type <ptr> flow
+%type <name> informal
 
 
 // Declaration of all known tokens
@@ -96,8 +101,8 @@ srs:
     ;
 
 statement:
-    classDefinition { /*addClasse($1);*/ }  | 
-    useCaseDefinition { /*addUseCase($1);*/ }
+    classDefinition  | 
+    useCaseDefinition 
     ;
 
 classDefinition:
@@ -114,7 +119,14 @@ useCaseDefinition:
  * Invariants... 
  */
 invariantDeclaration:
-    className IS_A invariant DOT { } |
+    className IS_A invariant DOT 
+        { 
+            Type* t = Proxy::getInstance().getType(*$1);
+            t->addPredicate(static_cast<solm::Formula*>($3));
+            $$ = t;
+            protocol(@1, $$);
+        } 
+    |
     className IS_A invariant error { lyyerror(@3, "Maybe a trailing DOT missed?"); }
     ;
     
@@ -125,30 +137,89 @@ invariant:
     ;
     
 predicate:
-    informal { /*$$ = makePredicate($1);*/ } |
-    className { /*$$ = makePredicate("class TBD");*/ }
+    informal 
+        {
+            $$ = new solm::Info("'" + *$1);
+            protocol(@1, $$);
+        } 
+    |
+    className 
+        {
+            $$ = new solm::Info("'instance of " + *$1);
+            protocol(@1, $$);
+        }
     ;
 
 /**
  * Slots... 
  */
 slotsDeclaration:
-    classPath INCLUDES COLON slots DOT { /*$$ = makeClasse($1, $4);*/ }
+    classPath INCLUDES COLON slots DOT 
+        {
+            Type* t = static_cast<Type*>($1);
+            Type::Slots* e = static_cast<Type::Slots*>($4);
+            for (Type::Slots::const_iterator i = e->begin(); i != e->end(); ++i) {
+                t->addSlot(*i);
+            }
+            $$ = t;
+            protocol(@1, $$);
+        }
     ;
     
 classPath:
-    className |
+    className 
+        {
+            $$ = Proxy::getInstance().getType(*$1);
+            protocol(@1, $$);
+        }
+    |
     slotName OF classPath
+        {
+            Type* t = static_cast<Type*>($3);
+            $$ = t->getSlot(*$1)->getType();
+            protocol(@1, $$);
+        }
     ;
     
 slots:
-    slot { /*$$ = (new vector<Classe>)->push_back(*static_cast<Classe*>($1)); delete $1;*/ } |
-    slots separator slot { /*$$ = $1; static_cast<vector<Classe>>($$)->push_back(*static_cast<Classe*>($3)); delete $3;*/ } 
+    slot
+        {
+            Type::Slots* v = new Type::Slots();
+            v->push_back(static_cast<Slot*>($1));
+            $$ = v;
+            protocol(@1, $$);
+        }
+    |
+    slots separator slot 
+        {
+            Type::Slots* v = new Type::Slots();
+            Type::Slots* e = static_cast<Type::Slots*>($1);
+            for (Type::Slots::const_iterator i = e->begin(); i != e->end(); ++i) {
+                v->push_back(*i);
+            }
+            v->push_back(static_cast<Slot*>($3));
+            $$ = v;
+            protocol(@1, $$);
+        } 
     ;
     
 slot:
-    slotName { /*$$ = makeClasse($1);*/ } |
-    slotName COLON invariant { /*$$ = makeClasse($1); makePredicate($3); */} 
+    slotName
+        {
+            $$ = new Slot(*$1);
+            protocol(@1, $$);
+        }
+    |
+    slotName COLON invariant
+        { 
+            $$ = new Slot(
+                *$1, 
+                "1..n -> 1", 
+                static_cast<solm::Formula*>($3), 
+                Proxy::getInstance().getType("text")
+            );
+            protocol(@1, $$);
+        }
     ;
     
 /**

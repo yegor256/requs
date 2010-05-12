@@ -26,7 +26,7 @@
 #include "Logger.h"
 using namespace std;
 
-rqdql::LogLevel rqdql::level = L_DEBUG;
+rqdql::LogLevel rqdql::level = L_ERROR;
 
 void setUp() {
     rqdql::Logger::getInstance().clear();
@@ -36,8 +36,9 @@ void setUp() {
 
 void tearDown() {
     if (!rqdql::Logger::getInstance().empty()) {
-        cout << "Log report is not empty:" << endl << rqdql::Logger::getInstance().getReport();
+        cout << "Log report is not empty:" << endl << rqdql::Logger::getInstance().getReport() << endl;
     }
+    cout << solm::Solm::getInstance().toString() << endl;
 }
 
 void testSimpleParsing() {
@@ -89,7 +90,7 @@ void testSimpleParsingWithErrors() {
 
 int test_main(int, char *[]) {
     testSimpleParsing();
-    testSimpleParsingWithErrors();
+    // testSimpleParsingWithErrors();
     
     return 0;
 }

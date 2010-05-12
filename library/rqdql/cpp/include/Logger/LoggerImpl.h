@@ -34,32 +34,50 @@ Logger& Logger::getInstance() {
  * Log one line
  */
 template <typename T> void Logger::log(const T* s, const string& m) {
-    int lineNo;
+    vector<int> lines;
     string str = m;
     if (hasSubject(s)) {
-        lineNo = subjects[s];
+        lines = subjects[s];
     } else {
-        lineNo = 0;
         str = str + " (" + typeid(*s).name() + ")"; 
     }
-    messages.push_back(Message(lineNo, str));
+    messages.push_back(Message(lines, str));
 }
 
 /**
  * Log one line, we know exact line number
  */
 void Logger::log(int lineNo, const string& m) {
-    messages.push_back(Message(lineNo, m));
+    vector<int> lines;
+    lines.push_back(lineNo);
+    messages.push_back(Message(lines, m));
 }
 
 /**
  * Build summary report
  */
 const string Logger::getReport() const {
-    vector<string> lines;
+    vector<string> msgs;
     for (vector<Message>::const_iterator i = messages.begin(); i != messages.end(); ++i) {
-        lines.push_back((boost::format("[%d] %s") % (*i).getLineNo() % (*i).getMessage()).str());
+        // sort them in proper order
+        vector<int> lines = (*i).getLines();
+        sort(lines.begin(), lines.end());
+        
+        // leave only unique elements
+        vector<int>::const_iterator end = unique(lines.begin(), lines.end());
+        
+        // convert them to strings
+        vector<string> lineNumbers;
+        for (vector<int>::const_iterator j = lines.begin(); j != end; ++j) {
+            lineNumbers.push_back((boost::format("%d") % *j).str());
+        }
+        
+        // create a message
+        msgs.push_back((boost::format("[%s] %s") 
+            % boost::algorithm::join(lineNumbers, ", ") 
+            % (*i).getMessage()
+        ).str());
     }
-    return boost::algorithm::join(lines, "\n");
+    return boost::algorithm::join(msgs, "\n");
 }
 

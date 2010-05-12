@@ -41,3 +41,7 @@ void lyyerror(YYLTYPE t, const char *error, ...) {
     va_end(args);
     rqdql::Logger::getInstance().log((int)t.first_line, s);
 }
+
+inline void protocol(YYLTYPE t, void* x) {
+    rqdql::Logger::getInstance().addSubject(x, t.first_line);
+}

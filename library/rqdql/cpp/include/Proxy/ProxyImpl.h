@@ -36,44 +36,21 @@ void Proxy::inject() {
     // first, we inject all TYPES, converting them into definitions
     // of new functions (declaration)
     for (Types::const_iterator i = types.begin(); i != types.end(); ++i) {
-        // This TYPE is empty and it's definitely an error
-        // in text, but we anyway should work with this type. Thus,
-        // we report about a problem here and continue.
-        if ((*i).second->isEmpty()) {
-            rqdql::Logger::getInstance().log(
-                i->second, 
-                (boost::format("Entity '%s' is empty") % i->first).str()
-            );
-        }
-        
-        // This is a new declaration of a type. Again, if the TYPE doesn't
-        // have a predicated, we don't skip it, but work with it.
-        Declaration* d = new Declaration((*i).first);
-        if ((*i).second->hasPredicate()) {
-            d->arg("x");
-            d->setFormula((*i).second->getPredicate());
-        } else {
-            rqdql::Logger::getInstance().log(
-                i->second, 
-                (boost::format("Entity '%s' doesn't have a predicate") % i->first).str()
-            );
-            d->setFormula(new Err("'missed predicate"));
-        }
-        
-        // Here we should add slots to the TYPE
-        
-        
         // add this declaration to SOLM
-        Solm::getInstance().addFormula(d);
+        Solm::getInstance().addFormula(
+            (new Declaration((*i).first))
+            ->arg("x")
+            ->setFormula((*i).second->makeFormula("x"))
+        );
     }
 
     // now we inject all use cases
     for (UseCases::const_iterator i = useCases.begin(); i != useCases.end(); ++i) {
-        Declaration* d = new Declaration((*i).first);
-        d->setFormula((*i).second->makeSequence());
-
         // add this declaration to SOLM
-        Solm::getInstance().addFormula(d);
+        Solm::getInstance().addFormula(
+            (new Declaration((*i).first))
+            ->setFormula((*i).second->makeSequence())
+        );
     }
 }
 

@@ -45,18 +45,20 @@ class Proxy;
  */
 class Type {
 public:
+    typedef vector<Slot*> Slots;
     Type() : slots(), predicate(0) { /* that's it */ }
     bool isEmpty() const { return !slots.size() && !predicate; }
     bool hasPredicate() const { return predicate; }
     solm::Sequence* getPredicate() const { return predicate; }
-    Type* getSlot(const string&); // get slot of CREATE it, if absent
+    Slot* getSlot(const string&); // get slot of CREATE it, if absent
+    Slots getSlots() const { return slots; }
     Type* addSlot(Slot*);
     Type* addSlot(const string&);
     Type* addPredicate(solm::Formula*);
     const string toString() const;
     const string getName() const; 
+    solm::Formula* makeFormula(const string&) const;
 private:
-    typedef vector<Slot*> Slots;
     Slots slots;
     solm::Sequence* predicate;
 };
@@ -77,7 +79,8 @@ public:
     Slot(const string&, const Cardinality&, solm::Formula*, Type*);
     Slot(const string&);
     const string& getName() const { return name; }
-    const Type* getType() const { return type; }
+    Type* getType() const { return type; }
+    solm::Formula* getFormula() const { return formula; }
 private:
     string name;
     Cardinality cardinality;
