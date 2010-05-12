@@ -192,7 +192,7 @@ void testWeCanInjectUseCase() {
         boost::algorithm::join(list, ", ");
     
     // show it all as string
-    cout << solm::Solm::getInstance().toString();
+    cout << solm::Solm::getInstance().toString() << endl;
     tearDown();
 }
 
@@ -223,7 +223,7 @@ void testUseCasesMatchEachOther() {
     );
     
     Proxy::getInstance().inject();
-    cout << solm::Solm::getInstance().toString();
+    cout << solm::Solm::getInstance().toString() << endl;
     tearDown();
 }
 

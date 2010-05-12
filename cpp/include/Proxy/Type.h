@@ -22,13 +22,14 @@ const string Type::getName() const {
     return Proxy::getInstance().findTypeName(this);
 }
 
-Type* Type::getSlot(const string& s) {
+Slot* Type::getSlot(const string& s) {
     for (Slots::const_iterator i = slots.begin(); i != slots.end(); ++i) {
         if ((*i)->getName() == s) {
             return (*i);
         }
     }
-    return addSlot(s);
+    addSlot(s);
+    return getSlot(s);
 }
 
 Type* Type::addSlot(Slot* s) { 
@@ -61,4 +62,70 @@ const string Type::toString() const {
         s += (*i)->getName() + ": " + (*i)->getType()->getName();
     }
     return s + "}";
+}
+
+solm::Formula* Type::makeFormula(const string& x) const {
+    using namespace solm;
+    // This TYPE is empty and it's definitely an error
+    // in text, but we anyway should work with this type. Thus,
+    // we report about a problem here and continue.
+    if (isEmpty()) {
+        rqdql::Logger::getInstance().log(
+            this, 
+            (boost::format("Entity '%s' is empty, probably its name is misspelled") % getName()).str()
+        );
+        return new Err("'entity is empty");
+    }
+    
+    // This is a new declaration of a type. Again, if the TYPE doesn't
+    // have a predicated, we don't skip it, but work with it.
+    Sequence* sequence;
+    if (hasPredicate()) {
+        sequence = getPredicate();
+    } else {
+        rqdql::Logger::getInstance().log(
+            this, 
+            (boost::format("Entity '%s' doesn't have any textual explanation") % getName()).str()
+        );
+        sequence = new Sequence();
+    }
+    
+    // Here we should add slots to the TYPE
+    int propertyCounter = 1;
+    for (Slots::const_iterator j = slots.begin(); j != slots.end(); ++j) {
+        Slot* slot = *j;
+        string propertyName = (boost::format("P%d") % propertyCounter).str();
+        
+        Sequence* sq = new Sequence(Sequence::OP_AND);
+        sq->addFormula((new Function(slot->getType()->getName()))->arg("p"));
+        sq->addFormula((new Function("composition"))->arg(x)->arg("p"));
+        sq->addFormula(slot->getFormula());
+        
+        Exists* e = (new Exists())
+            ->arg(propertyName)
+            ->setFormula(
+                (new And())
+                ->setLhs(
+                    (new Math("="))
+                    ->arg("|" + propertyName + "|")
+                    ->arg("1")
+                )
+                ->setRhs(
+                    (new Forall())
+                    ->arg("p")
+                    ->setFormula(
+                        (new Sequence())
+                        ->addFormula(
+                            (new In())
+                            ->arg("p")
+                            ->arg(propertyName)
+                        )
+                        ->addFormula(sq)
+                    )
+                )
+            );
+        sequence->addFormula(e);
+        propertyCounter++;
+    }
+    return sequence;
 }

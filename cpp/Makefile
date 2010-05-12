@@ -36,7 +36,7 @@ LIB_OBJS := $(LIB_SOURCES:.cpp=.obj)
 HEADERS := $(shell find include -name "*.h")
 
 TEST_SOURCES := $(shell find test -name "*.cpp")
-TESTS := $(TEST_SOURCES:.cpp=.o)
+TESTS := $(TEST_SOURCES:.cpp=.test)
 VALID_EXAMPLES = $(shell find examples/valid -name "*.txt")
 
 # instruct Make NOT to remove intermediate files
@@ -64,10 +64,9 @@ $(BISON_DEST): $(BISON_SRC) $(HEADERS) $(SELF)
 
 # test everything
 test: $(TESTS)
-	@for i in $(TESTS); do \
-		echo "testing with '$$i':"; \
-		$$i; \
-	done
+
+%.test: %.o
+	$<
 
 # compilation of unit tests and any other CPP file AND linking with all libs
 %.o: %.cpp $(HEADERS) $(BISON_DEST) $(FLEX_DEST) $(LIB_OBJS)

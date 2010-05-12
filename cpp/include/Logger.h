@@ -29,7 +29,7 @@ namespace rqdql {
 class Logger {
 public:
     static Logger& getInstance();
-    void addSubject(const void* s, int l) { subjects[s] = l; };
+    void addSubject(const void* s, int l) { subjects[s].push_back(l); };
     bool hasSubject(const void* s) const { return subjects.find(s) != subjects.end(); };
     template <typename T> void log(const T*, const string&); // we know a link to an object
     void log(int, const string&); // we know exact line number
@@ -39,14 +39,15 @@ public:
 private:
     class Message {
     public:
-        Message(int l, const string& m) : lineNo(l), message(m) { /* that's it */ }
-        const int getLineNo() const { return lineNo; }
+        Message(const vector<int>& v, const string& m) : lines(v), message(m) { /* that's it */ }
+        const vector<int> getLines() const { return lines; }
         const string getMessage() const { return message; }
     private:
-        int lineNo;
+        vector<int> lines;
         string message;
     };
-    map<const void*, int> subjects;
+    typedef map<const void*, vector<int> > Subjects;
+    Subjects subjects;
     vector<Message> messages;
     Logger() : messages() { /* that's it */ }
 };

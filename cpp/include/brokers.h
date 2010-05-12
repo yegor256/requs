@@ -19,8 +19,11 @@
 #ifndef __INCLUDE_SCOPE_BROKERS_H
 #define __INCLUDE_SCOPE_BROKERS_H
 
-#include <vector>
-#include <string>
+// #include <vector>
+// #include <string>
+#include "Logger.h"
 
+namespace rqdql {
+}
 
 #endif
