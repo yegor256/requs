@@ -14,6 +14,7 @@
 # @copyright Copyright (c) rqdql.com, 2010
 # @version $Id$
 
+MAKEFLAGS = -r
 SELF = Makefile
 PATH := $(PATH):/usr/local/bin:/usr/bin
 CPP = c++
@@ -38,16 +39,22 @@ TEST_SOURCES := $(shell find test -name "*.cpp")
 TESTS := $(TEST_SOURCES:.cpp=.o)
 VALID_EXAMPLES = $(shell find examples/valid -name "*.txt")
 
+# instruct Make NOT to remove intermediate files
+.SECONDARY:
+
+# disable built-in implicit rule
+%.o: %.cpp
+
 # compile the product and run all tests
 all: $(EXEC) test
 
 # compile/build the product
 $(EXEC): $(EXEC).o
 	mv $(EXEC).o $(EXEC)
-    
+
 $(FLEX_DEST): $(FLEX_SRC) $(HEADERS) $(SELF)
 	$(FLEX) --outfile=$(FLEX_DEST) $(FLEX_SRC)
-	
+
 $(BISON_DEST): $(BISON_SRC) $(HEADERS) $(SELF)
 	$(BISON) --no-lines --report=all --defines=$(SYMBOLS) --output=$(BISON_DEST) $(BISON_SRC)
 
@@ -63,7 +70,7 @@ test: $(TESTS) test-examples
 	done
 
 # compilation of unit tests and any other CPP file AND linking with all libs
-%.o: %.cpp $(HEADERS) $(BISON_DEST) $(FLEX_DEST)
+%.o: %.cpp $(HEADERS) $(BISON_DEST) $(FLEX_DEST) $(LIB_OBJS)
 	$(CPP) $(CPPFLAGS) -o $@ $< $(LIB_OBJS)
 
 # test the entire mechanism with all test files
