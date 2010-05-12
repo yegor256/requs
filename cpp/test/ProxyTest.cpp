@@ -18,6 +18,7 @@
 
 #include <boost/test/minimal.hpp>
 #include <string>
+#include <iostream>
 #include <boost/algorithm/string/join.hpp>>
 #include "rqdql.h"
 #include "Solm.h"
@@ -36,7 +37,7 @@ void setUp() {
 
 void tearDown() {
     if (!rqdql::Logger::getInstance().empty()) {
-        rqdql::log("Log report is not empty:\n" + rqdql::Logger::getInstance().getReport());
+        cout << "Log report is not empty:" << endl << rqdql::Logger::getInstance().getReport();
     }
 }
 
@@ -56,10 +57,9 @@ void testContainerWorksProperly() {
     Proxy::getInstance().getType("File");
     Proxy::getInstance().getType("File");
     BOOST_CHECK(Proxy::getInstance().countTypes() > 3); // + text, numeric, etc.
-    rqdql::log(
+    cout <<
         boost::format("Types in container: %s") % 
-        boost::algorithm::join(Proxy::getInstance().getTypeNames(), ", ")
-    );
+        boost::algorithm::join(Proxy::getInstance().getTypeNames(), ", ");
     tearDown();
 }
 
@@ -103,7 +103,7 @@ void testWeCanBuildNewType() {
 
     BOOST_CHECK(Proxy::getInstance().countTypes() >= 3); // User, string, and Photo
     
-    rqdql::log("Definition of type 'User': " + Proxy::getInstance().getType("User")->toString());
+    cout << "Definition of type 'User': " << Proxy::getInstance().getType("User")->toString();
     tearDown();
 }
 
@@ -172,7 +172,7 @@ void testWeCanBuildNewUseCase() {
     setUp();
     UseCase* uc = Proxy::getInstance().getUseCase("UC1");
     fillUseCase(uc);
-    rqdql::log(uc->toString());
+    cout << uc->toString();
     tearDown();
 }
 
@@ -186,14 +186,13 @@ void testWeCanInjectUseCase() {
 
     vector<string> list = solm::Solm::getInstance().getAllFunctions();
     BOOST_CHECK(list.size() >= 2);
-    rqdql::log(
+    cout <<
         boost::format("Totally created %d functions: %s") % 
         list.size() %
-        boost::algorithm::join(list, ", ")
-    );
+        boost::algorithm::join(list, ", ");
     
     // show it all as string
-    rqdql::log(solm::Solm::getInstance().toString());
+    cout << solm::Solm::getInstance().toString();
     tearDown();
 }
 
@@ -224,7 +223,7 @@ void testUseCasesMatchEachOther() {
     );
     
     Proxy::getInstance().inject();
-    rqdql::log(solm::Solm::getInstance().toString());
+    cout << solm::Solm::getInstance().toString();
     tearDown();
 }
 

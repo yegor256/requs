@@ -31,7 +31,8 @@ public:
     static Logger& getInstance();
     void addSubject(const void* s, int l) { subjects[s] = l; };
     bool hasSubject(const void* s) const { return subjects.find(s) != subjects.end(); };
-    template <typename T> void log(const T* s, const string& m);
+    template <typename T> void log(const T*, const string&); // we know a link to an object
+    void log(int, const string&); // we know exact line number
     bool empty() const { return messages.empty(); }
     const string getReport() const;
     void clear() { messages.clear(); }

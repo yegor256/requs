@@ -27,6 +27,9 @@ using namespace std;
 // boost libraries
 #include "boost/format.hpp"
 
+// logger
+#include "Logger.h"
+
 namespace rqdql {
     
     /**
@@ -64,7 +67,7 @@ namespace rqdql {
                 break;
         }
         if (lvl >= level) {
-            cout << '[' << label << "] " << line << endl;
+            rqdql::Logger::getInstance().log(0, "[" + label + "] " + line);
         }
     }
 

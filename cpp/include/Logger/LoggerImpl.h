@@ -46,6 +46,13 @@ template <typename T> void Logger::log(const T* s, const string& m) {
 }
 
 /**
+ * Log one line, we know exact line number
+ */
+void Logger::log(int lineNo, const string& m) {
+    messages.push_back(Message(lineNo, m));
+}
+
+/**
  * Build summary report
  */
 const string Logger::getReport() const {

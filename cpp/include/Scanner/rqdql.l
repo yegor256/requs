@@ -61,8 +61,6 @@ QOS (QOS{NSFX})
 "(s)" { log("PLURAL_SOME"); return PLURAL_SOME; }
 "?" { log("PLURAL_ANY"); return PLURAL_ANY; }
     
-"/" |
-"or" { log("OR"); return OR; }
 ":" { log("COLON"); return COLON; }
 "." { log("DOT"); return DOT; }
 ";" { log("SEMICOLON"); return SEMICOLON; }
@@ -77,6 +75,8 @@ QOS (QOS{NSFX})
 "is" { log("IS"); return IS; }
 
 [Ww]"here" { log("WHERE"); return WHERE; }
+"/" |
+[Oo]"r" { log("OR"); return OR; }
 [Aa]"nd" { log("AND"); return AND; }
 [Oo]"f" { log("OF"); return OF; }
 [Tt]"he" { log("THE"); return THE; }
