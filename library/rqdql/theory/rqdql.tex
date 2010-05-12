@@ -212,8 +212,8 @@ class Slot {
 map<string, Type> types; // all named types
 class UseCase {
   class Signature {
-    string format; // e.g. "%sud validate %photo"
-    map<string, string> positions; // e.g. <"photo", "User.photos">
+    string format; // e.g. "${sud} validate ${photo}"
+    map<string, Explanation> explanations; // e.g. <"photo", "User.photos">
   };
   Signature signature;
   typedef map<int, Flow> Flows;
