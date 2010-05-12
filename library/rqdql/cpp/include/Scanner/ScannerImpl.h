@@ -32,6 +32,7 @@ Scanner& Scanner::getInstance() {
  * Run scanner
  */
 void Scanner::scan(const string& s) {
+    yylineno = 1; // reset line number to 1
     yy_switch_to_buffer(yy_scan_string(s.c_str()));
     yyparse();
 }

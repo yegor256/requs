@@ -19,6 +19,7 @@
 #include <boost/test/minimal.hpp>
 #include <boost/algorithm/string/join.hpp>>
 #include <string>
+#include <iostream>
 #include "rqdql.h"
 #include "Solm.h"
 #include "Logger.h"
@@ -136,22 +137,22 @@ void testComplex() {
         
     int cntSilent = Solm::getInstance().countTypes<Silent>();
     BOOST_CHECK(cntSilent > 0);
-    rqdql::log(boost::format("Totally %d SILENT() formulas") % cntSilent);
+    cout << boost::format("Totally %d SILENT() formulas") % cntSilent;
 
     int cntManipulators = 
         Solm::getInstance().countTypes<Created>()
         + Solm::getInstance().countTypes<Deleted>()
         + Solm::getInstance().countTypes<Read>();
     BOOST_CHECK(cntManipulators > 0);
-    rqdql::log(boost::format("Totally %d manipulators") % cntManipulators);
+    cout << boost::format("Totally %d manipulators") % cntManipulators;
 
     double ambiguity = Solm::getInstance().getAmbiguity();
     BOOST_CHECK(ambiguity == (double)cntSilent / cntManipulators);
     
-    rqdql::log(boost::format("scope ambiguity is: %0.2f") % ambiguity);
+    cout << boost::format("scope ambiguity is: %0.2f") % ambiguity;
 
     // show it all as string
-    rqdql::log(Solm::getInstance().toString());
+    cout << Solm::getInstance().toString();
 }
 
 void testWeCanFindAllFunctionDeclarations() {
@@ -164,11 +165,10 @@ void testWeCanFindAllFunctionDeclarations() {
         
     vector<string> list = Solm::getInstance().getAllFunctions();
     BOOST_CHECK(list.size() >= 4);
-    rqdql::log(
+    cout <<
         boost::format("Totally found %d functions: %s") % 
         list.size() %
-        boost::algorithm::join(list, ", ")
-    );
+        boost::algorithm::join(list, ", ");
 }
 
 int test_main(int, char *[]) {

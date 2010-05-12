@@ -28,15 +28,13 @@
 // terms are mapped to %union.name, and are strings because of that
 %type <name> words
 %type <ptr> className
-%type <ptr> classe
-%type <ptr> object
 %type <name> objectName
 %type <ptr> slots
 %type <ptr> slot
 %type <name> slotName
 %type <ptr> predicate
 %type <ptr> invariant
-%type <ptr> classeDefinition
+%type <ptr> classDefinition
 %type <ptr> useCaseDefinition
 %type <ptr> invariantDeclaration
 %type <ptr> slotsDeclaration
@@ -46,8 +44,9 @@
 %type <ptr> signature
 %type <ptr> sigElements
 %type <ptr> sigElement
-%type <ptr> sigObject
-%type <ptr> sigVerb
+%type <ptr> de
+%type <ptr> deType
+%type <ptr> verb
 %type <ptr> flows
 %type <ptr> flow
 
@@ -97,11 +96,11 @@ srs:
     ;
 
 statement:
-    classeDefinition { /*addClasse($1);*/ }  | 
+    classDefinition { /*addClasse($1);*/ }  | 
     useCaseDefinition { /*addUseCase($1);*/ }
     ;
 
-classeDefinition:
+classDefinition:
     invariantDeclaration |
     slotsDeclaration
     ;
@@ -127,19 +126,19 @@ invariant:
     
 predicate:
     informal { /*$$ = makePredicate($1);*/ } |
-    classe { /*$$ = makePredicate("classe TBD");*/ }
-    ;
-
-classe:
-    className { /*$$ = makeClasse($1);*/ } |
-    className OPEN_BRACE objectName CLOSE_BRACE { /*$$ = makeClasse($1); appendObject($$, $3);*/ }
+    className { /*$$ = makePredicate("class TBD");*/ }
     ;
 
 /**
  * Slots... 
  */
 slotsDeclaration:
-    classe INCLUDES COLON slots DOT { /*$$ = makeClasse($1, $4);*/ }
+    classPath INCLUDES COLON slots DOT { /*$$ = makeClasse($1, $4);*/ }
+    ;
+    
+classPath:
+    className |
+    slotName OF classPath
     ;
     
 slots:
@@ -184,26 +183,27 @@ sigElements:
     ;
     
 sigElement:
-    sigObject |
-    sigVerb |
-    informal sigObject { /*$$ = $2; static_cast<Signature::Element*>($$)->addPrefix($1);*/ } |
-    informal sigVerb { /*$$ = $2; static_cast<Signature::Element*>($$)->addPrefix($1);*/ }
+    de |
+    verb |
+    informal de { /*$$ = $2; static_cast<Signature::Element*>($$)->addPrefix($1);*/ } |
+    informal verb { /*$$ = $2; static_cast<Signature::Element*>($$)->addPrefix($1);*/ }
     ;
 
-sigObject:
-    classe { /*$$ = (new Signature::Element())->setClasse($1);*/ } |
-    object { /*$$ = (new Signature::Element())->setObject($1);*/ } 
+de:
+    objectName |
+    deType |
+    deType OPEN_BRACE objectName CLOSE_BRACE
     ;
     
-object:
-    objectName { /*$$ = new Classe::Object($1);*/ } |
-    slotName OF object { /*$$ = (new Classe::Object($1))->setParent($3);*/ } 
+deType:    
+    className { /*$$ = makeClasse($1);*/ } |
+    slotName OF objectName { /*$$ = makeClasse($1); appendObject($$, $3);*/ }
     ;
-
+    
 /**
  * w1 w2 TO - is it "(w1) (w2 TO)" or "(w1 w2 TO)"
  */    
-sigVerb:
+verb:
     words PREPOSITION { /*$$ = (new Signature::Element())->setVerb(format("%s %s") % $1 $2);*/ } |
     WORD { /*$$ = (new Signature::Element())->setVerb($1);*/ } |
     WORD PREPOSITION { /*$$ = (new Signature::Element())->setVerb(format("%s %s") % $1 $2);*/ } 
@@ -273,8 +273,7 @@ className:
     SOMEBODY { /*$$ = new Classe("somebody");*/ } |
     SOMETHING { /*$$ = new Classe("something");*/ } |
     CAMEL { /*$$ = new Classe($1);*/ } |
-    SELF { /*$$ = new Classe("self");*/ } |
-    slotName OF className { /*Classe* c = new Classe($2); c += Classe(*$1); $$ = c[*$1]; delete $1;*/ }
+    SELF { /*$$ = new Classe("self");*/ }
     ;
     
 slotName:

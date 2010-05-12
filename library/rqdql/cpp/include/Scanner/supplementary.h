@@ -16,6 +16,8 @@
  * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
  */
 
+#include "Logger.h"
+
 /**
  * Called when error is found in parser
  */
@@ -27,19 +29,8 @@ void yyerror(const char *error, ...) {
     va_start(args, error);
     char s[500];
     vsprintf(s, error, args);
-    if (yylloc.first_line) {
-        char s1[500];
-        sprintf(
-            s1, 
-            "%d.%d error: %s",
-            yylloc.first_line,
-            yylloc.first_column,
-            s
-        );
-        strcpy(s, s1);
-    }
-    std::string line = s;
-    rqdql::log(rqdql::L_ERROR, line);
+    va_end(args);
+    rqdql::Logger::getInstance().log((int)yylloc.first_line, s);
 }
     
 void lyyerror(YYLTYPE t, const char *error, ...) {
@@ -47,17 +38,6 @@ void lyyerror(YYLTYPE t, const char *error, ...) {
     va_start(args, error);
     char s[500];
     vsprintf(s, error, args);
-    if (t.first_line) {
-        char s1[500];
-        sprintf(
-            s1, 
-            "%d.%d error: %s",
-            t.first_line,
-            t.first_column,
-            s
-        );
-        strcpy(s, s1);
-    }
-    std::string line = s;
-    rqdql::log(rqdql::L_ERROR, line);
+    va_end(args);
+    rqdql::Logger::getInstance().log((int)t.first_line, s);
 }
