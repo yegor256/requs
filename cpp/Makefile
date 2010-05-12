@@ -63,7 +63,7 @@ $(BISON_DEST): $(BISON_SRC) $(HEADERS) $(SELF)
 	$(CPP) $(CPPFLAGS) -o $@ -c $<
 
 # test everything
-test: $(TESTS) test-examples
+test: $(TESTS)
 	@for i in $(TESTS); do \
 		echo "testing with '$$i':"; \
 		$$i; \
@@ -72,13 +72,6 @@ test: $(TESTS) test-examples
 # compilation of unit tests and any other CPP file AND linking with all libs
 %.o: %.cpp $(HEADERS) $(BISON_DEST) $(FLEX_DEST) $(LIB_OBJS)
 	$(CPP) $(CPPFLAGS) -o $@ $< $(LIB_OBJS)
-
-# test the entire mechanism with all test files
-test-examples: $(EXEC) $(VALID_EXAMPLES)
-	@for i in $(VALID_EXAMPLES); do \
-		echo "testing with valid example '$$i':"; \
-		$(EXEC) "//*" < $$i; \
-	done
 
 # clean everything!
 clean:

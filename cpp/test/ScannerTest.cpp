@@ -42,7 +42,7 @@ void tearDown() {
 void testSimpleParsing() {
     setUp();
     rqdql::Scanner::getInstance().scan(
-        "User is a: human being."
+        "ActorUser: \"human being\"."
     );
     tearDown();
 }
