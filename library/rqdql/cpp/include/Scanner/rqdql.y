@@ -30,12 +30,14 @@
 // Here we should say that the type of non-terminal
 // terms are mapped to %union.name, and are strings because of that
 %type <name> words
-%type <name> className
-%type <ptr> classPath
+%type <name> slotName
 %type <name> objectName
+%type <name> informal
+%type <name> verb
+%type <ptr> theClass
+%type <ptr> classPath
 %type <ptr> slots
 %type <ptr> slot
-%type <name> slotName
 %type <ptr> predicate
 %type <ptr> invariant
 %type <ptr> classDefinition
@@ -50,10 +52,10 @@
 %type <ptr> sigElement
 %type <ptr> de
 %type <ptr> deType
-%type <ptr> verb
 %type <ptr> flows
 %type <ptr> flow
-%type <name> informal
+%type <ptr> altId
+%type <ptr> altIdPair
 
 
 // Declaration of all known tokens
@@ -64,16 +66,17 @@
 %token <name> WORD
 %token <num> NUMBER
 %token <name> LETTER
+%token <name> PREPOSITION
 
 %token COLON SEMICOLON DOT COMMA STAR
 %token AND OR
-%token PREPOSITION
 %token WHERE
 %token SUD
 %token SOMEBODY
 %token SOMETHING
 %token THE
 %token OF
+%token IF
 %token SELF
 %token PLURAL_MANY PLURAL_SOME PLURAL_ANY
 %token OPEN_BRACE CLOSE_BRACE
@@ -119,15 +122,19 @@ useCaseDefinition:
  * Invariants... 
  */
 invariantDeclaration:
-    className IS_A invariant DOT 
+    theClass IS_A invariant DOT 
         { 
-            Type* t = Proxy::getInstance().getType(*$1);
-            t->addPredicate(static_cast<solm::Formula*>($3));
-            $$ = t;
-            protocol(@1, $$);
+            if (!$1) {
+                lyyerror(@3, "You can't place HIMSELF to the left part of declaration");
+            } else {
+                Type* t = static_cast<Type*>($1);
+                t->addPredicate(static_cast<solm::Formula*>($3));
+                $$ = t;
+                protocol(@1, $$);
+            }
         } 
     |
-    className IS_A invariant error { lyyerror(@3, "Maybe a trailing DOT missed?"); }
+    theClass IS_A invariant error { lyyerror(@3, "Maybe a trailing DOT missed?"); }
     ;
     
 invariant:
@@ -143,10 +150,15 @@ predicate:
             protocol(@1, $$);
         } 
     |
-    className 
+    theClass 
         {
-            $$ = new solm::Info("'instance of " + *$1);
-            protocol(@1, $$);
+            if (!$1) {
+                lyyerror(@1, "Class can't be an instance of himself");
+            } else {
+                Type* t = static_cast<Type*>($1);
+                $$ = new solm::Info("'instance of " + t->getName());
+                protocol(@1, $$);
+            }
         }
     ;
 
@@ -167,10 +179,14 @@ slotsDeclaration:
     ;
     
 classPath:
-    className 
+    theClass 
         {
-            $$ = Proxy::getInstance().getType(*$1);
-            protocol(@1, $$);
+            if (!$1) {
+                lyyerror(@1, "HIMSELF is forbidden here, in class path");
+            } else {
+                $$ = $1;
+                protocol(@1, $$);
+            }
         }
     |
     slotName OF classPath
@@ -226,14 +242,31 @@ slot:
  * Use cases... 
  */
 useCaseDeclaration:
-    useCaseStarter flows { /*$$ = $1; static_cast<UseCase*>($$) += $2; */} |
-    useCaseStarter informal DOT |
-    useCaseStarter error { lyyerror(@2, "use case definition is not clear"); } |
-    useCaseStarter informal error { lyyerror(@3, "maybe a trailing DOT missed after use case definition?"); }
+    useCaseStarter flows 
+        {
+            UseCase* uc = static_cast<UseCase*>($1);
+            uc->setFlows(static_cast<Flows*>($2));
+        } 
+    |
+    useCaseStarter informal DOT
+        {
+            UseCase* uc = static_cast<UseCase*>($1);
+            uc->setFormula(new solm::Silent("'" + *$2));
+        }
+    |
+    useCaseStarter error { lyyerror(@2, "Use case definition is not clear"); } |
+    useCaseStarter informal error { lyyerror(@3, "Maybe a trailing DOT missed after use case definition?"); }
     ;
      
 useCaseStarter:
-    UC WHERE signature COLON { /*$$ = new UseCase($3);*/ } |
+    UC WHERE signature COLON 
+        {
+            UseCase* uc = Proxy::getInstance().getUseCase(*$1);
+            uc->setSignature((static_cast<brokers::SignatureHolder*>($3))->getSignature());
+            $$ = uc;
+            protocol(@1, $$);
+        }
+    |
     UC WHERE signature error { lyyerror(@4, "COLON missed after UC signature"); }
     ;
     
@@ -243,88 +276,281 @@ useCaseStarter:
  * O V O V ... O
  */
 signature:
-    informal { /*$$ = new Signature($1);*/ } |
-    sigElements { /*$$ = new Signature("signature...", $1);*/ } |
-    sigElements informal { /*$$ = new Signature("signature...", $1);*/ }
+    informal 
+        {
+            brokers::SignatureHolder* s = new brokers::SignatureHolder();
+            s->setText(*$1);
+            s->setSignature(new Signature());
+            $$ = s;
+            protocol(@1, $$);
+        }
+    |
+    sigElements 
+        {
+            brokers::SignatureHolder* s = new brokers::SignatureHolder();
+            s->setSignature(static_cast<brokers::SigElements*>($1));
+            $$ = s;
+            protocol(@1, $$);
+        }
+    |
+    sigElements informal 
+        {
+            brokers::SignatureHolder* s = new brokers::SignatureHolder();
+            s->setSignature(static_cast<brokers::SigElements*>($1));
+            s->setText(s->getText() + " " + *$2);
+            $$ = s;
+            protocol(@1, $$);
+        }
     ;
     
 sigElements:
-    sigElement { /*$$ = (new vector<Signature::Element>)->push_back(static_cast<Signature::Element*>($1)); delete $1;*/ } |
-    sigElements sigElement { /*$$ = $1; static_cast<vector<Signature::Element> >($$)->push_back(static_cast<Signature::Element*>($1)); delete $1;*/ } 
+    sigElement
+        {
+            brokers::SigElements* v = new brokers::SigElements();
+            v->push_back(static_cast<brokers::SigElement*>($1));
+            $$ = v;
+            protocol(@1, $$);
+        }
+    |
+    sigElements sigElement
+        {
+            brokers::SigElements* v = new brokers::SigElements();
+            brokers::SigElements* e = static_cast<brokers::SigElements*>($1);
+            for (brokers::SigElements::const_iterator i = e->begin(); i != e->end(); ++i) {
+                v->push_back(*i);
+            }
+            v->push_back(static_cast<brokers::SigElement*>($2));
+            $$ = v;
+            protocol(@1, $$);
+        }
     ;
     
 sigElement:
-    de |
-    verb |
-    informal de { /*$$ = $2; static_cast<Signature::Element*>($$)->addPrefix($1);*/ } |
-    informal verb { /*$$ = $2; static_cast<Signature::Element*>($$)->addPrefix($1);*/ }
+    de
+        {
+            brokers::SigElement* se = new brokers::SigElement();
+            se->setDe(static_cast<brokers::De*>($1));
+            $$ = se;
+            protocol(@1, $$);
+        }
+    |
+    verb 
+        {
+            brokers::SigElement* se = new brokers::SigElement();
+            se->setVerb(*$1);
+            $$ = se;
+            protocol(@1, $$);
+        }
+    |
+    informal de 
+        {
+            brokers::SigElement* se = new brokers::SigElement();
+            se->setInformal(*$1);
+            se->setDe(static_cast<brokers::De*>($2));
+            $$ = se;
+            protocol(@1, $$);
+        }
+    |
+    informal verb
+        {
+            brokers::SigElement* se = new brokers::SigElement();
+            se->setInformal(*$1);
+            se->setVerb(*$2);
+            $$ = se;
+            protocol(@1, $$);
+        }
     ;
 
 de:
-    objectName |
-    deType |
+    objectName 
+        { 
+            brokers::De* de = new brokers::De();
+            de->setName(*$1);
+            protocol(@1, $$);
+        }
+    |
+    deType 
+        {
+            brokers::De* de = new brokers::De();
+            de->setExplanation(static_cast<Signature::Explanation*>($1));
+            protocol(@1, $$);
+        }
+    |
     deType OPEN_BRACE objectName CLOSE_BRACE
+        {
+            brokers::De* de = new brokers::De();
+            de->setExplanation(static_cast<Signature::Explanation*>($1));
+            de->setName(*$3);
+            protocol(@1, $$);
+        }
     ;
     
 deType:    
-    className { /*$$ = makeClasse($1);*/ } |
-    slotName OF objectName { /*$$ = makeClasse($1); appendObject($$, $3);*/ }
+    theClass 
+        {
+            Signature::ExpType* e;
+            // maybe it's SELF?
+            if (!$1) {
+                e = new Signature::ExpType(0);
+            } else {
+                Type* t = static_cast<Type*>($1);
+                e = new Signature::ExpType(t);
+            }
+            $$ = e;
+            protocol(@1, $$);
+        }
+    |
+    slotName OF objectName 
+        {
+            Signature::ExpObject* e = new Signature::ExpObject(*$1, *$3);
+            $$ = e;
+            protocol(@1, $$);
+        }
     ;
     
 /**
  * w1 w2 TO - is it "(w1) (w2 TO)" or "(w1 w2 TO)"
  */    
 verb:
-    words PREPOSITION { /*$$ = (new Signature::Element())->setVerb(format("%s %s") % $1 $2);*/ } |
-    WORD { /*$$ = (new Signature::Element())->setVerb($1);*/ } |
-    WORD PREPOSITION { /*$$ = (new Signature::Element())->setVerb(format("%s %s") % $1 $2);*/ } 
+    words PREPOSITION 
+        {
+            string* s = new string((format("%s %s") % *$1 % *$2).str());
+            $$ = s;
+        } 
+    |
+    WORD 
+        {
+            $$ = $1;
+        }
+    |
+    WORD PREPOSITION 
+        {
+            string* s = new string((format("%s %s") % *$1 % *$2).str());
+            $$ = s;
+        } 
     ;
     
 flows:
-    flow |
+    flow 
+        {
+            Flows* v = new Flows();
+            brokers::FlowHolder* f = static_cast<brokers::FlowHolder*>($1);
+            v->addFlow(f->getId(), f->getFlow());
+            $$ = v;
+            protocol(@1, $$);
+        }
+    |
     flows flow
+        {
+            Flows* v = new Flows();
+            typedef map<int, Flow*> FlowsList;
+            FlowsList e = (static_cast<Flows*>($1))->getFlows();
+            for (FlowsList::const_iterator i = e.begin(); i != e.end(); ++i) {
+                v->addFlow((*i).first, (*i).second);
+            }
+            brokers::FlowHolder* f = static_cast<brokers::FlowHolder*>($2);
+            v->addFlow(f->getId(), f->getFlow());
+            $$ = v;
+            protocol(@1, $$);
+        }
     ;
     
 flow:
-    flowOpener signature DOT { /*$$ = new UseCase::Flow($1, $2);*/ } |
-    flowOpener signature COLON { /*$$ = new UseCase::Flow($1, $2);*/ } |
-    flowOpener signature error { lyyerror(@3, "maybe a trailing DOT missed after flow?"); } |
-    flowOpener error { lyyerror(@2, "invalid SIGNATURE for the flow"); }
-    ;
-    
-flowOpener:
-    flowId CLOSE_BRACE |
-    flowId DOT
-    ;
-    
-flowId:
-    NUMBER |
-    flowIdPairs
-    ;
-    
-flowIdPairs:
-    flowIdPair |
-    flowIdPairs flowIdPair
-    ;
-    
-flowIdPair:
-    NUMBER LETTER |
-    STAR LETTER
+    NUMBER DOT signature DOT 
+        {
+            brokers::FlowHolder* f = new brokers::FlowHolder();
+            brokers::SignatureHolder* s = static_cast<brokers::SignatureHolder*>($3);
+            f->setFlow(
+                new Flow(
+                    s->getText(),
+                    s->getSignature()
+                )
+            );
+            f->setId($1);
+            $$ = f;
+            protocol(@1, $$);
+        }
+    |
+    NUMBER DOT signature error { lyyerror(@3, "Maybe a trailing DOT missed after flow?"); } |
+    NUMBER DOT error { lyyerror(@2, "Invalid SIGNATURE for the flow"); }
     ;
     
 /**
  * alternative flow of a use case
  */
 useCaseAlternativeDeclaration:
-    UC words COLON flows { /*$$ = new UseCase(); *$$ ;*/}
+    UC altId CLOSE_BRACE IF predicate COLON flows 
+    {
+        Flows* flows = Proxy::getInstance().getUseCase(*$1);
+        brokers::AltPairs* e = static_cast<brokers::AltPairs*>($2);
+        Flow* dest = 0;
+        for (brokers::AltPairs::const_iterator i = e->begin(); i != e->end(); ++i) {
+            if (dest) {
+                flows = dest->findAlternative((*(i-1))->getLetter());
+            }
+            if ((*i)->getNum() == -1) {
+                lyyerror(@2, "STAR is not supported yet");
+                dest = 0;
+                break;
+            } else {
+                dest = flows->getFlow((*i)->getNum());
+            }
+        }
+        if (dest) {
+            // it's found, inject flows there!
+            Flows* alt = dest->addAlternative(static_cast<solm::Formula*>($5));
+            alt->setFlows(static_cast<Flows*>($7));
+        }
+    }
+    ;
+    
+altId:
+    altIdPair
+        {
+            brokers::AltPairs* p = new brokers::AltPairs();
+            p->push_back(static_cast<brokers::AltPair*>($1));
+            $$ = p;
+        }
+    |
+    altId altIdPair
+        {
+            brokers::AltPairs* p = new brokers::AltPairs();
+            brokers::AltPairs* e = static_cast<brokers::AltPairs*>($1);
+            for (brokers::AltPairs::const_iterator i = e->begin(); i != e->end(); ++i) {
+                p->push_back(*i);
+            }
+            p->push_back(static_cast<brokers::AltPair*>($2));
+            $$ = p;
+        }
+    ;
+    
+altIdPair:
+    NUMBER LETTER 
+        {
+            $$ = new brokers::AltPair($1, $2->at(0));
+        }
+    |
+    STAR LETTER
+        {
+            $$ = new brokers::AltPair(-1, $2->at(0));
+        }
     ;
     
 /**
  * global elementary things 
  */
 words:
-    WORD WORD { /*$$ = &format("%s %s") % *$1 *$2;*/ } |
-    words WORD { /*$$ = &format("%s %s") % *$1 *$2;*/ }
+    WORD WORD
+        {
+            string* s = new string((format("%s %s") % *$1 % *$2).str());
+            $$ = s;
+        }
+    |
+    words WORD
+        {
+            string* s = new string((format("%s %s") % *$1 % *$2).str());
+            $$ = s;
+        }
     ;
     
 informal:
@@ -339,12 +565,31 @@ separator:
     AND
     ;
 
-className:
-    SUD { /*$$ = new Classe("SUD");*/ } |
-    SOMEBODY { /*$$ = new Classe("somebody");*/ } |
-    SOMETHING { /*$$ = new Classe("something");*/ } |
-    CAMEL { /*$$ = new Classe($1);*/ } |
-    SELF { /*$$ = new Classe("self");*/ }
+theClass:
+    CAMEL 
+        {
+            $$ = Proxy::getInstance().getType(*$1);
+        }
+    |
+    SUD 
+        {
+            $$ = Proxy::getInstance().getType("SUD");
+        }
+    |
+    SOMEBODY
+        {
+            $$ = Proxy::getInstance().getType("somebody");
+        }
+    |
+    SOMETHING
+        {
+            $$ = Proxy::getInstance().getType("something");
+        }
+    |
+    SELF
+        {
+            $$ = 0;
+        }
     ;
     
 slotName:

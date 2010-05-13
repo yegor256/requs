@@ -18,7 +18,7 @@
  * This file is included ONLY from Proxy.h
  */
 
-Flows::Flows() : flows() {
+Flows::Flows() : flows(), formula(0) {
     addFlow(0, new Flow("start"));
 }
 
@@ -50,6 +50,9 @@ const string Flows::toString() const {
  */
 solm::Sequence* Flows::makeSequence() const {
     using namespace solm;
+    if (!hasSequence()) {
+        throw "There is no sequence here!";
+    }
     Sequence* s = new Sequence();
     for (map<int, Flow*>::const_iterator i = flows.begin(); i != flows.end(); ++i) {
         s->addFormula((*i).second->makeFormula());

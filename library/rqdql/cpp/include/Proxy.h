@@ -90,7 +90,7 @@ private:
 
 class Signature {
 public:
-    class Explanation { /* empty */ };
+    class Explanation {};
     class ExpType : public Explanation {
     public:
         ExpType(Type* t) : type(t) { /* that's it */ }
@@ -105,7 +105,10 @@ public:
         string object;
     };
     typedef map<string, Explanation*> Explanations;
-    Signature(const string& t) : text(t) { /* that's it */ }
+    Signature() : text(""), explanations() { /* that's it */ }
+    Signature(const string& t) : text(t), explanations() { /* that's it */ }
+    void setText(const string& t) { text = t; }
+    string getText() const { return text; }
     Signature* explain(const string& n, Explanation* e) { explanations[n] = e; return this; }
     const string toString() const { return text; }
     bool match(const Signature*) const;
@@ -119,6 +122,7 @@ public:
     Flow(const string& t, Signature* s) : text(t), signature(s) { /* that's it */ }
     Flow(const string& t) : text(t), signature(0) { /* that's it */ }
     Flows* addAlternative(solm::Formula*);
+    Flows* findAlternative(char); // find alternative by letter or add it if not found
     const string toString() const;
     solm::Formula* makeFormula() const;
 private:
@@ -136,8 +140,15 @@ public:
     Flow* getFlow(int);
     const string toString() const;
     solm::Sequence* makeSequence() const;
+    bool hasSequence() const { return !formula && !flows.empty(); }
+    void setFlows(Flows* f) { flows = f->flows; }
+    map<int, Flow*> getFlows() const { return flows; }
+    void setFormula(solm::Formula* f) { formula = f; } // instead of sequence, just one formula
+    bool hasFormula() const { return formula; }
+    solm::Formula* getFormula() { return formula; }
 private:
     map<int, Flow*> flows;
+    solm::Formula* formula;
 };
 
 class UseCase : public Flows {
