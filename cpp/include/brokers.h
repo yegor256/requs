@@ -139,9 +139,6 @@ void SignatureHolder::setSignature(SigElements* e) {
     }
     s->setText(boost::algorithm::join(sigs, " "));
     setText(boost::algorithm::join(texts, " "));
-    if (!hasText()) {
-        setText("strange...?");
-    }
     setSignature(s);
 }
 
