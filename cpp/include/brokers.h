@@ -78,7 +78,7 @@ class SignatureHolder {
 public:
     SignatureHolder() : signature(0), text("") { /* that's it */ }
     void setSignature(proxy::Signature* s) { signature = s; }
-    void setSignature(SigElements*);
+    void setSignature(const SigElements*);
     proxy::Signature* getSignature() const { if (!hasSignature()) throw "no signature here"; return signature; }
     bool hasSignature() const { return signature; }
     void setText(const string& t) { text = t; }
@@ -109,7 +109,11 @@ const string SigElement::toInformalString() const {
         txt = txt + getInformal() + " ";
     }
     if (hasDe()) {
-    //     txt = txt + getDe()->getExplanation()->toString();
+        if (getDe()->hasExplanation()) {
+            txt = txt + getDe()->getExplanation()->toString();
+        } else {
+            txt = txt + "the " + getDe()->getName();
+        }
     } else {
         txt = txt + getVerb();
     }
@@ -124,7 +128,7 @@ const string SigElement::toFormalString() const {
     }
 }
 
-void SignatureHolder::setSignature(SigElements* e) {
+void SignatureHolder::setSignature(const SigElements* e) {
     using namespace proxy;
     Signature* s = new Signature();
     vector<string> texts; // full informal presentation of the signature
@@ -132,13 +136,13 @@ void SignatureHolder::setSignature(SigElements* e) {
     for (SigElements::const_iterator i = e->begin(); i != e->end(); ++i) {
         SigElement* se = *i;
         sigs.push_back(se->toFormalString());
-        if (se->hasDe() && se->getDe()->hasName()) {
+        if (se->hasDe() && se->getDe()->hasName() && se->getDe()->hasExplanation()) {
             s->explain(se->getDe()->getName(), se->getDe()->getExplanation());
         }
         texts.push_back(se->toInformalString());
     }
-    s->setText(boost::algorithm::join(sigs, " "));
-    setText(boost::algorithm::join(texts, " "));
+    s->setText(boost::algorithm::join(sigs, " ")); // formal signature
+    setText(boost::algorithm::join(texts, " ")); // informal string
     setSignature(s);
 }
 

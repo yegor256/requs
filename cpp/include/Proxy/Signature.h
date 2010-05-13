@@ -29,3 +29,14 @@ const string Signature::simplify(const string& s) const {
 bool Signature::match(const Signature* s) const {
     return simplify(text) == simplify(s->text);
 }
+
+const string Signature::Explanation::toString() const {
+    if (type) {
+        return type->getName();
+    }
+    if (!slot.empty() && !object.empty()) {
+        return slot + " (the " + object + ")"; 
+    }
+    return "itself"; 
+}
+
