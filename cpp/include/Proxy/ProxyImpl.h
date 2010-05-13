@@ -46,10 +46,13 @@ void Proxy::inject() {
 
     // now we inject all use cases
     for (UseCases::const_iterator i = useCases.begin(); i != useCases.end(); ++i) {
+        UseCase* uc = (*i).second;
         // add this declaration to SOLM
         Solm::getInstance().addFormula(
             (new Declaration((*i).first))
-            ->setFormula((*i).second->makeSequence())
+            ->setFormula(
+                uc->hasSequence() ? uc->makeSequence() : uc->getFormula()
+            )
         );
     }
 }

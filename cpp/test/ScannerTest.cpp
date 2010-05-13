@@ -64,12 +64,11 @@ void testSimpleParsing() {
             "6. ActorOperator pays to us \"when necessary\".\n"
             "7. \"Every week\" we payearnings to the user.\n"
             "8. The user transfersunits to ActorUser.\n"
-        "UC8.1 alternative flow:\n"
-            "4a) If \"ticket is rejected\":\n"
-                "1. SUD sends rejection email of the application.\n"
-                "2. Failure \"application rejected\".\n"
-            "4a1a) If \"email of the application is empty\":\n"
-                "1. Failure \"anonymous application rejected\".\n"
+        "UC8.1 4a) if \"ticket is rejected\":\n"
+            "1. SUD sends rejection email of the application.\n"
+            "2. Failure \"application rejected\".\n"
+        "UC8.1 4a1a) if \"email of the application is empty\":\n"
+            "1. Failure \"anonymous application rejected\".\n"
     );
     proxy::Proxy::getInstance().inject();
     BOOST_CHECK(rqdql::Logger::getInstance().empty());

@@ -22,6 +22,27 @@ Flows* Flow::addAlternative(solm::Formula* f) {
     return alternatives[f] = new Flows; 
 }
 
+/**
+ * Find alternative by letter or add it there if not found
+ */
+Flows* Flow::findAlternative(char c) {
+    Flows* found = 0;
+    char now = 'a';
+    for (Alternatives::const_iterator i = alternatives.begin(); i != alternatives.end(); ++i) {
+        if (now == c) {
+            found = (*i).second;
+            break;
+        }
+        now++;
+    }
+    if (!found) {
+        string msg = (boost::format("'Alternative '%c' is not found") % c).str();
+        rqdql::Logger::getInstance().log(this, msg);
+        found = addAlternative(new solm::Err(msg));
+    }
+    return found;
+}
+
 const string Flow::toString() const {
     string str = text;
     for (Alternatives::const_iterator i = alternatives.begin(); i != alternatives.end(); ++i) {
@@ -37,10 +58,11 @@ const string Flow::toString() const {
 solm::Formula* Flow::makeFormula() const {
     using namespace solm;
     Formula* f;
+    string mnemo = (boost::format("'%s") % text).str();
     if (!signature) {
-        f = new Silent("'" + text);
+        f = new Silent(mnemo);
     } else {
-        f = (new And())->setLhs(getTarget())->setRhs(new Info("'" + text));
+        f = (new And())->setLhs(getTarget())->setRhs(new Info(mnemo));
     }
     
     if (alternatives.size()) {
@@ -48,7 +70,17 @@ solm::Formula* Flow::makeFormula() const {
         for (Alternatives::const_iterator i = alternatives.begin(); i != alternatives.end(); ++i) {
             Sequence* s = new Sequence();
             s->addFormula(i->first);
-            s->append(i->second->makeSequence());
+            if (i->second->hasSequence()) {
+                s->append(i->second->makeSequence());
+            } else if (i->second->hasFormula()) {
+                s->addFormula(i->second->getFormula());
+            } else {
+                rqdql::Logger::getInstance().log(
+                    this, 
+                    "Neither formula nor sequence found"
+                );
+                s->addFormula(new Err("'neither formula nor sequence found"));
+            }
             f->addFormula(s);
         }
     }
