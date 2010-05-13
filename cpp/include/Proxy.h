@@ -26,6 +26,7 @@
 #include <boost/format.hpp>
 #include <boost/algorithm/string/join.hpp> // join()
 #include <boost/algorithm/string/replace.hpp> // replace_all_copy()
+#include <boost/algorithm/string/regex.hpp> // replace_regex
 #include "Solm.h"
 #include "Logger.h"
 using namespace std;
@@ -90,16 +91,21 @@ private:
 
 class Signature {
 public:
-    class Explanation {};
+    class Explanation {
+    public:
+        virtual string toString() const = 0;
+    };
     class ExpType : public Explanation {
     public:
         ExpType(Type* t) : type(t) { /* that's it */ }
+        virtual string toString() const { return type->getName(); }
     private:
         Type* type;
     };
     class ExpObject : public Explanation {
     public:
         ExpObject(const string& s, const string& o) : slot(s), object(o) { /* that's it */ }
+        virtual string toString() const { return slot + " (the " + object + ")"; }
     private:
         string slot;
         string object;
@@ -115,6 +121,7 @@ public:
 private:
     string text;
     Explanations explanations;
+    const string simplify(const string&) const;
 };
 
 class Flow {

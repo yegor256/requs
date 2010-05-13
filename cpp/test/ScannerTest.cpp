@@ -62,7 +62,7 @@ void testSimpleParsing() {
             "3. Somebody turns into ActorUser (the user).\n"
             "4. The user \"buys specific units in\" the project.\n"
             "5. \"We do something strange\".\n"
-            "6. ActorOperator pays to us \"when necessary\".\n"
+            "6. ActorOperator \"when he wants\" pays to us \"when necessary\".\n"
             "7. \"Every week\" we payearnings to the user.\n"
             "8. The user transfersunits to ActorUser.\n"
         "UC8.1 4a) if \"ticket is rejected\":\n"

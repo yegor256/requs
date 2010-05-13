@@ -280,7 +280,6 @@ signature:
         {
             brokers::SignatureHolder* s = new brokers::SignatureHolder();
             s->setText(*$1);
-            s->setSignature(new Signature());
             $$ = s;
             protocol(@1, $$);
         }
@@ -460,12 +459,11 @@ flow:
         {
             brokers::FlowHolder* f = new brokers::FlowHolder();
             brokers::SignatureHolder* s = static_cast<brokers::SignatureHolder*>($3);
-            f->setFlow(
-                new Flow(
-                    s->getText(),
-                    s->getSignature()
-                )
-            );
+            if (s->hasSignature()) {
+                f->setFlow(new Flow(s->getText(), s->getSignature()));
+            } else {
+                f->setFlow(new Flow(s->getText()));
+            }
             f->setId($1);
             $$ = f;
             protocol(@1, $$);

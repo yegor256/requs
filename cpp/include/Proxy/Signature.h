@@ -18,6 +18,12 @@
  * This file is included ONLY from Proxy.h
  */
 
+const string Signature::simplify(const string& s) const {
+    using namespace boost::algorithm;
+    // return replace_regex_copy(s, boost::regex("\\{.*?\\}"), "{...}");
+    return s;
+}
+
 bool Signature::match(const Signature* s) const {
-    return text == s->text;
+    return simplify(text) == simplify(s->text);
 }
