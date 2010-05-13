@@ -437,6 +437,7 @@ flows:
             v->addFlow(f->getId(), f->getFlow());
             $$ = v;
             protocol(@1, $$);
+            protocol(@1, f->getFlow());
         }
     |
     flows flow
@@ -451,6 +452,7 @@ flows:
             v->addFlow(f->getId(), f->getFlow());
             $$ = v;
             protocol(@1, $$);
+            protocol(@2, f->getFlow());
         }
     ;
     
@@ -460,6 +462,7 @@ flow:
             brokers::FlowHolder* f = new brokers::FlowHolder();
             brokers::SignatureHolder* s = static_cast<brokers::SignatureHolder*>($3);
             if (s->hasSignature()) {
+                protocol(@3, s->getSignature());
                 f->setFlow(new Flow(s->getText(), s->getSignature()));
             } else {
                 f->setFlow(new Flow(s->getText()));
@@ -567,21 +570,25 @@ theClass:
     CAMEL 
         {
             $$ = Proxy::getInstance().getType(*$1);
+            protocol(@1, $$);
         }
     |
     SUD 
         {
             $$ = Proxy::getInstance().getType("SUD");
+            protocol(@1, $$);
         }
     |
     SOMEBODY
         {
             $$ = Proxy::getInstance().getType("somebody");
+            protocol(@1, $$);
         }
     |
     SOMETHING
         {
             $$ = Proxy::getInstance().getType("something");
+            protocol(@1, $$);
         }
     |
     SELF
