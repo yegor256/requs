@@ -19,9 +19,11 @@
  */
 
 const string Signature::simplify(const string& s) const {
-    using namespace boost::algorithm;
-    // return replace_regex_copy(s, boost::regex("\\{.*?\\}"), "{...}");
-    return s;
+    return boost::algorithm::replace_regex_copy(
+        s, // source string
+        boost::regex("\\{.*?\\}"), // what to find
+        string("{...}") // what to replace to
+    );
 }
 
 bool Signature::match(const Signature* s) const {
