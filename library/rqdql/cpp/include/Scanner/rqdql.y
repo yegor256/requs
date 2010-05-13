@@ -275,7 +275,7 @@ useCaseStarter:
  * O V O V ...
  * O V O V ... O
  */
-signature:
+signature: /* brokers::SignatureHolder* */
     informal 
         {
             brokers::SignatureHolder* s = new brokers::SignatureHolder();
@@ -302,7 +302,7 @@ signature:
         }
     ;
     
-sigElements:
+sigElements: /* brokers::SigElements* */
     sigElement
         {
             brokers::SigElements* v = new brokers::SigElements();
@@ -324,7 +324,7 @@ sigElements:
         }
     ;
     
-sigElement:
+sigElement: /* brokers::SigElement* */
     de
         {
             brokers::SigElement* se = new brokers::SigElement();
@@ -360,11 +360,12 @@ sigElement:
         }
     ;
 
-de:
+de: /* brokers::De* */
     objectName 
         { 
             brokers::De* de = new brokers::De();
             de->setName(*$1);
+            $$ = de;
             protocol(@1, $$);
         }
     |
@@ -372,6 +373,7 @@ de:
         {
             brokers::De* de = new brokers::De();
             de->setExplanation(static_cast<Signature::Explanation*>($1));
+            $$ = de;
             protocol(@1, $$);
         }
     |
@@ -380,20 +382,21 @@ de:
             brokers::De* de = new brokers::De();
             de->setExplanation(static_cast<Signature::Explanation*>($1));
             de->setName(*$3);
+            $$ = de;
             protocol(@1, $$);
         }
     ;
     
-deType:    
+deType: /* Signature::Explanation* */
     theClass 
         {
-            Signature::ExpType* e;
+            Signature::Explanation* e;
+            Type* t = static_cast<Type*>($1);
             // maybe it's SELF?
-            if (!$1) {
-                e = new Signature::ExpType(0);
+            if (!t) {
+                e = new Signature::Explanation();
             } else {
-                Type* t = static_cast<Type*>($1);
-                e = new Signature::ExpType(t);
+                e = new Signature::Explanation(t);
             }
             $$ = e;
             protocol(@1, $$);
@@ -401,7 +404,7 @@ deType:
     |
     slotName OF objectName 
         {
-            Signature::ExpObject* e = new Signature::ExpObject(*$1, *$3);
+            Signature::Explanation* e = new Signature::Explanation(*$1, *$3);
             $$ = e;
             protocol(@1, $$);
         }
@@ -429,7 +432,7 @@ verb:
         } 
     ;
     
-flows:
+flows: /* Flows* */
     flow 
         {
             Flows* v = new Flows();
@@ -456,7 +459,7 @@ flows:
         }
     ;
     
-flow:
+flow: /* brokers::FlowHolder* */
     NUMBER DOT signature DOT 
         {
             brokers::FlowHolder* f = new brokers::FlowHolder();
@@ -505,7 +508,7 @@ useCaseAlternativeDeclaration:
     }
     ;
     
-altId:
+altId: /* brokers::AltPairs* */
     altIdPair
         {
             brokers::AltPairs* p = new brokers::AltPairs();
@@ -525,7 +528,7 @@ altId:
         }
     ;
     
-altIdPair:
+altIdPair: /* brokers::AltPair* */
     NUMBER LETTER 
         {
             $$ = new brokers::AltPair($1, $2->at(0));
