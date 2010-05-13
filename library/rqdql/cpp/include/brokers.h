@@ -29,12 +29,11 @@ class De { // data element
 public:
     De() : name(""), explanation(0) { /* that's it */ }
     void setName(const string& n) { name = n; }
-    const string getName() const { return name; }
+    const string getName() const { if (!hasName()) throw "no NAME in this DE"; return name; }
     bool hasName() const { return !name.empty(); }
     void setExplanation(proxy::Signature::Explanation* e) { explanation = e; }
-    proxy::Signature::Explanation* getExplanation() const { return explanation; }
+    proxy::Signature::Explanation* getExplanation() const { if (!hasExplanation()) throw "no EXPLANATION here"; return explanation; }
     bool hasExplanation() const { return explanation; }
-    const string toString() const;
 private:
     string name;
     proxy::Signature::Explanation* explanation;
@@ -45,14 +44,15 @@ public:
     SigElement() : de(0), informal(""), verb("") { /* that's it */ }
     void setInformal(const string& s) { informal = s; }
     bool hasInformal() const { return !informal.empty(); }
-    const string getInformal() const { return informal; }
+    const string getInformal() const { if (!hasInformal()) throw "no INFORMAL here"; return informal; }
     void setDe(De* d) { de = d; }
-    De* getDe() const { return de; }
+    De* getDe() const { if (!hasDe()) throw "no DE here"; return de; }
     bool hasDe() const { return de; }
     void setVerb(const string& v) { verb = v; }
-    const string getVerb() const { return verb; }
+    const string getVerb() const { if (!hasVerb()) throw "no VERB here"; return verb; }
     bool hasVerb() const { return !verb.empty(); }
-    const string toString() const;
+    const string toFormalString() const; // like "${user}"
+    const string toInformalString() const; // like "\"some\" ActorUser (the user)"
 private:
     De* de;
     string informal;    
@@ -63,8 +63,10 @@ typedef vector<SigElement*> SigElements;
 
 class FlowHolder {
 public:
+    FlowHolder() : flow(0), id(0) { /* that's it */ }
     void setFlow(proxy::Flow* f) { flow = f; }
-    proxy::Flow* getFlow() const { return flow; }
+    bool hasFlow() const { return flow; }
+    proxy::Flow* getFlow() const { if (!hasFlow()) throw "no FLOW here"; return flow; }
     void setId(int i) { id = i; }
     int getId() const { return id; }
 private:
@@ -74,11 +76,14 @@ private:
 
 class SignatureHolder {
 public:
+    SignatureHolder() : signature(0), text("") { /* that's it */ }
     void setSignature(proxy::Signature* s) { signature = s; }
     void setSignature(SigElements*);
-    proxy::Signature* getSignature() const { return signature; }
+    proxy::Signature* getSignature() const { if (!hasSignature()) throw "no signature here"; return signature; }
+    bool hasSignature() const { return signature; }
     void setText(const string& t) { text = t; }
-    const string getText() const { return text; }
+    const string getText() const { if (!hasText()) throw "no TEXT in this SignatureHolder"; return text; }
+    bool hasText() const { return !text.empty(); }
 private:
     proxy::Signature* signature;
     string text;
@@ -98,44 +103,45 @@ private:
 
 typedef vector<AltPair*> AltPairs;
 
-const string De::toString() const {
-    string s = "${";
-    if (!name.empty()) {
-        s = s + "oops"; 
-        // why so? endless cycle here... can't understand...
-        // s = s + name;
-    } else {
-        s = s + "noname";
-    }
-    return s + "}";
-}
-
-const string SigElement::toString() const {
-    vector<string> sectors;
+const string SigElement::toInformalString() const {
+    string txt;
     if (hasInformal()) {
-        sectors.push_back(getInformal());
+        txt = txt + getInformal() + " ";
     }
     if (hasDe()) {
-        sectors.push_back(getDe()->toString());
+    //     txt = txt + getDe()->getExplanation()->toString();
+    } else {
+        txt = txt + getVerb();
     }
-    if (hasVerb()) {
-        sectors.push_back(getVerb());
+    return txt;
+}
+
+const string SigElement::toFormalString() const {
+    if (hasDe()) {
+        return "{" + (getDe()->hasName() ? getDe()->getName() : "?") + "}";
+    } else {
+        return getVerb();
     }
-    return boost::algorithm::join(sectors, " ");
 }
 
 void SignatureHolder::setSignature(SigElements* e) {
     using namespace proxy;
     Signature* s = new Signature();
-    vector<string> texts;
+    vector<string> texts; // full informal presentation of the signature
+    vector<string> sigs; // formal signature string elements
     for (SigElements::const_iterator i = e->begin(); i != e->end(); ++i) {
-        texts.push_back((*i)->toString());
-        if ((*i)->hasDe()) {
-            s->explain((*i)->getDe()->getName(), (*i)->getDe()->getExplanation());
+        SigElement* se = *i;
+        sigs.push_back(se->toFormalString());
+        if (se->hasDe() && se->getDe()->hasName()) {
+            s->explain(se->getDe()->getName(), se->getDe()->getExplanation());
         }
+        texts.push_back(se->toInformalString());
     }
-    s->setText(boost::algorithm::join(texts, " "));
+    s->setText(boost::algorithm::join(sigs, " "));
     setText(boost::algorithm::join(texts, " "));
+    if (!hasText()) {
+        setText("strange...?");
+    }
     setSignature(s);
 }
 
