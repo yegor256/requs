@@ -18,18 +18,32 @@
  * This file is included ONLY from Proxy.h
  */
 
+/**
+ * Simplify the signature before matching
+ * @see match()
+ */
 const string Signature::simplify(const string& s) const {
-    return boost::algorithm::replace_regex_copy(
+    using namespace boost::algorithm;
+    string n = replace_regex_copy(
         s, // source string
         boost::regex("\\{.*?\\}"), // what to find
         string("{...}") // what to replace to
     );
+    n = to_lower_copy(n);
+    return n;
 }
 
+/**
+ * Compare two signatures and match them. Returns TRUE if
+ * two signatures look identical or very similar.
+ */
 bool Signature::match(const Signature* s) const {
     return simplify(text) == simplify(s->text);
 }
 
+/**
+ * Convert one explanation to string
+ */
 const string Signature::Explanation::toString() const {
     if (type) {
         return type->getName();
