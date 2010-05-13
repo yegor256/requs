@@ -26,7 +26,8 @@
 #include <boost/format.hpp>
 #include <boost/algorithm/string/join.hpp> // join()
 #include <boost/algorithm/string/replace.hpp> // replace_all_copy()
-#include <boost/algorithm/string/regex.hpp> // replace_regex
+#include <boost/algorithm/string/regex.hpp> // replace_regex_copy()
+#include <boost/algorithm/string/case_conv.hpp> // to_lower_copy()
 #include "Solm.h"
 #include "Logger.h"
 using namespace std;
