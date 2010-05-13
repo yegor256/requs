@@ -55,6 +55,7 @@ void testSimpleParsing() {
             "introduction email: \"text message when account is registered\".\n"
         "Name of InvestorApplication includes: first name and last name.\n"
         "UC8.3 where we invest into InvestmentProject: \"something for the future\".\n"
+        "UC8.4 where ActorOperator pays to us: \"we will talk later about it...\".\n"
         "UC8.1 where somebody speculates:\n"
             "1. We get from ActorLegacy.\n"
             "2. We invest into InvestmentProject (the project).\n"
