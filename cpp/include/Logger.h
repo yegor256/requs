@@ -22,7 +22,7 @@
 #include <vector>
 #include <map>
 #include <boost/format.hpp>
-#include <boost/algorithm/string/join.hpp>>
+#include <boost/algorithm/string/join.hpp>
 using namespace std;
 
 namespace rqdql {
