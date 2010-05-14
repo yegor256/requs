@@ -16,6 +16,7 @@
  * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
  */
 
+#include <stdarg.h>
 #include "Logger.h"
 
 /**
