@@ -23,7 +23,18 @@ const string UseCase::toString() const {
     + Flows::toString();
 }
 
+/**
+ * Validates whether the use case has static name
+ */
+bool UseCase::hasName() const {
+    return Proxy::getInstance().hasName(this);
+}
+
+/**
+ * Returns the name of USE CASE if it is in the static holder,
+ * otherwise an exception will be thrown
+ */
 const string UseCase::getName() const {
-    return Proxy::getInstance().findUseCaseName(this);
+    return Proxy::getInstance().findName(this);
 }
 

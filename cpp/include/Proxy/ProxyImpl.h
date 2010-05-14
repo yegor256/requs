@@ -89,22 +89,64 @@ UseCase* Proxy::getUseCase(const string& name) {
     return uc;
 }
 
-const string Proxy::findTypeName(const Type* t) const {
+/**
+ * Validates whether the given type has a static name in 
+ * the holder.
+ * @see Type::hasName()
+ */
+bool Proxy::hasName(const Type* t) const {
+    for (Types::const_iterator i = types.begin(); i != types.end(); ++i) {
+        if (i->second == t) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Validates whether the given use case has a static name in 
+ * the holder.
+ */
+bool Proxy::hasName(const UseCase* uc) const {
+    for (UseCases::const_iterator i = useCases.begin(); i != useCases.end(); ++i) {
+        if (i->second == uc) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Finds name of the type in the static holder. If this
+ * type is attached to the holder -- the name will be found. If it
+ * is not -- we should raise an exception. You should call
+ * hasName() before, to validate whether this type has
+ * a name or not.
+ * @see Type::getName()
+ */
+const string Proxy::findName(const Type* t) const {
     for (Types::const_iterator i = types.begin(); i != types.end(); ++i) {
         if (i->second == t) {
             return i->first;
         }
     }
-    return "undefined";
+    throw "this type doesn't have a name";
 }
 
-const string Proxy::findUseCaseName(const UseCase* uc) const {
+/**
+ * Finds name of the use case in the static holder. If this
+ * use case is attached to the holder -- the name will be found. If it
+ * is not -- we should raise an exception. You should call
+ * hasName() before, to validate whether this type has
+ * a name or not.
+ */
+const string Proxy::findName(const UseCase* uc) const {
     for (UseCases::const_iterator i = useCases.begin(); i != useCases.end(); ++i) {
         if (i->second == uc) {
             return i->first;
         }
     }
-    return "undefined";
+    throw "this UseCase doesn't have a name";
 }
 
 /**

@@ -59,6 +59,7 @@ public:
     Type* addPredicate(solm::Formula*);
     const string toString() const;
     const string getName() const; 
+    bool hasName() const; 
     solm::Formula* makeFormula(const string&) const;
 private:
     Slots slots;
@@ -81,6 +82,7 @@ public:
     Slot(const string&, const Cardinality&, solm::Formula*, Type*);
     Slot(const string&);
     const string& getName() const { return name; }
+    bool hasName() const { return true; } 
     Type* getType() const { return type; }
     solm::Formula* getFormula() const { return formula; }
 private:
@@ -157,6 +159,7 @@ public:
     UseCase* setSignature(Signature* s) { signature = s; return this; }
     const string toString() const;
     const string getName() const;
+    bool hasName() const; 
     Signature* getSignature() const { return signature; }
 private:
     Signature* signature;
@@ -172,8 +175,10 @@ public:
     Type* getType(const string&);
     UseCase* getUseCase(const string&);
     const vector<string> getAllUseCaseNames() const;
-    const string findTypeName(const Type*) const;
-    const string findUseCaseName(const UseCase*) const;
+    bool hasName(const Type*) const;
+    bool hasName(const UseCase*) const;
+    const string findName(const Type*) const;
+    const string findName(const UseCase*) const;
 private:
     typedef map<string, Type*> Types;
     typedef map<string, UseCase*> UseCases;

@@ -18,10 +18,25 @@
  * This file is included ONLY from Proxy.h
  */
 
-const string Type::getName() const {
-    return Proxy::getInstance().findTypeName(this);
+/**
+ * Validates whether the TYPE has static name.
+ */
+bool Type::hasName() const {
+    return Proxy::getInstance().hasName(this);
 }
 
+/**
+ * Returns a name of the TYPE if it is in the static
+ * holder now. Otherwise will throw an exception. You should use
+ * hasName() in order to validate before.
+ */
+const string Type::getName() const {
+    return Proxy::getInstance().findName(this);
+}
+
+/**
+ * Find slot by name or create it if not found
+ */
 Slot* Type::getSlot(const string& s) {
     for (Slots::const_iterator i = slots.begin(); i != slots.end(); ++i) {
         if ((*i)->getName() == s) {
@@ -32,6 +47,9 @@ Slot* Type::getSlot(const string& s) {
     return getSlot(s);
 }
 
+/**
+ * Explicitly add new slot to the type
+ */
 Type* Type::addSlot(Slot* s) { 
     slots.push_back(s); 
     return this;
@@ -58,8 +76,12 @@ const string Type::toString() const {
         if (i != slots.begin()) {
             s += "; ";
         }
-        // be aware of possible end-less recursion !!
-        s += (*i)->getName() + ": " + (*i)->getType()->getName();
+        s += (*i)->getName() + ": ";
+        if ((*i)->getType()->hasName()) {
+            s = s + (*i)->getType()->getName();
+        } else {
+            s = s + (*i)->getType()->toString();
+        }
     }
     return s + "}";
 }
@@ -97,7 +119,9 @@ solm::Formula* Type::makeFormula(const string& x) const {
         string propertyName = (boost::format("P%d") % propertyCounter).str();
         
         Sequence* sq = new Sequence(Sequence::OP_AND);
-        sq->addFormula((new Function(slot->getType()->getName()))->arg("p"));
+        if (slot->getType()->hasName()) {
+            sq->addFormula((new Function(slot->getType()->getName()))->arg("p"));
+        }
         sq->addFormula((new Function("composition"))->arg(x)->arg("p"));
         sq->addFormula(slot->getFormula());
         

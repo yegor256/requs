@@ -191,8 +191,9 @@ classPath:
     |
     slotName OF classPath
         {
-            Type* t = static_cast<Type*>($3);
-            $$ = t->getSlot(*$1)->getType();
+            Type* e = static_cast<Type*>($3);
+            Type* t = e->getSlot(*$1)->getType();
+            $$ = t;
             protocol(@1, $$);
         }
     ;
@@ -232,7 +233,7 @@ slot:
                 *$1, 
                 "1..n -> 1", 
                 static_cast<solm::Formula*>($3), 
-                Proxy::getInstance().getType("text")
+                new Type()
             );
             protocol(@1, $$);
         }

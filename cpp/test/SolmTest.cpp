@@ -152,7 +152,7 @@ void testComplex() {
     cout << boost::format("scope ambiguity is: %0.2f") % ambiguity << endl;
 
     // show it all as string
-    cout << Solm::getInstance().toString();
+    cout << Solm::getInstance().toString() << endl;
 }
 
 void testWeCanFindAllFunctionDeclarations() {
@@ -168,7 +168,7 @@ void testWeCanFindAllFunctionDeclarations() {
     cout <<
         boost::format("Totally found %d functions: %s") % 
         list.size() %
-        boost::algorithm::join(list, ", ");
+        boost::algorithm::join(list, ", ") << endl;
 }
 
 int test_main(int, char *[]) {

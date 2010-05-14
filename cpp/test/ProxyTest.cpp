@@ -37,7 +37,7 @@ void setUp() {
 
 void tearDown() {
     if (!rqdql::Logger::getInstance().empty()) {
-        cout << "Log report is not empty:" << endl << rqdql::Logger::getInstance().getReport();
+        cout << "Log report is not empty:" << endl << rqdql::Logger::getInstance().getReport() << endl;
     }
 }
 
