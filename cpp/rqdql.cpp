@@ -37,10 +37,16 @@ int main(int argc, char** argv) {
             case 'v':
                 cout << RQDQL_VERSION << endl;
                 return 0;
-                break;
+            case '?':
+                cout << 
+                "Options available:" << endl <<
+                "-? shows this help message" << endl <<
+                "-v returns current version of the product" << endl
+                ;
+                return 0;
             default:
-                cout << "error" << endl;
-                break;
+                cout << "unknown option" << endl;
+                return -1;
         }
     }
     
