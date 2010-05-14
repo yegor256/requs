@@ -16,17 +16,34 @@
  * @version $Id: rqdql.cpp 1746 2010-05-04 11:47:08Z yegor256@yahoo.com $
  */
 
+#include <stdarg.h>
+#include <unistd.h>
+#include <iostream>
 #include "rqdql.h"
 #include "Scanner.h"
 #include "Logger.h"
-#include <stdarg.h>
-#include <iostream>
-
-using namespace std;
 
 rqdql::LogLevel rqdql::level = L_ERROR;
 
+/**
+ * Main method in the product
+ */
 int main(int argc, char** argv) {
+    using namespace std;
+
+    char c;
+    while ((c = getopt(argc, argv, "v")) != -1) {
+        switch (c) {
+            case 'v':
+                cout << RQDQL_VERSION << endl;
+                return 0;
+                break;
+            default:
+                cout << "error" << endl;
+                break;
+        }
+    }
+    
     string s;
     cin >> s;
     rqdql::Scanner::getInstance().scan(s);
