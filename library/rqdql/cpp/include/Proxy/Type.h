@@ -91,7 +91,7 @@ solm::Formula* Type::makeFormula(const string& x) const {
     // This TYPE is empty and it's definitely an error
     // in text, but we anyway should work with this type. Thus,
     // we report about a problem here and continue.
-    if (isEmpty()) {
+    if (isEmpty() && hasName()) {
         rqdql::Logger::getInstance().log(
             this, 
             (boost::format("Entity '%s' is empty, probably its name is misspelled") % getName()).str()
@@ -105,10 +105,12 @@ solm::Formula* Type::makeFormula(const string& x) const {
     if (hasPredicate()) {
         sequence = getPredicate();
     } else {
-        rqdql::Logger::getInstance().log(
-            this, 
-            (boost::format("Entity '%s' doesn't have any textual explanation") % getName()).str()
-        );
+        if (hasName()) {
+            rqdql::Logger::getInstance().log(
+                this, 
+                (boost::format("Entity '%s' doesn't have any textual explanation") % getName()).str()
+            );
+        }
         sequence = new Sequence();
     }
     
@@ -122,7 +124,7 @@ solm::Formula* Type::makeFormula(const string& x) const {
         if (slot->getType()->hasName()) {
             sq->addFormula((new Function(slot->getType()->getName()))->arg("p"));
         } else {
-            sq->addFormula(slot->getType()->makeFormula());
+            sq->addFormula(slot->getType()->makeFormula("p"));
         }
         sq->addFormula((new Function("composition"))->arg(x)->arg("p"));
         sq->addFormula(slot->getFormula());
