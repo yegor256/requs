@@ -30,7 +30,7 @@ using namespace std;
 // logger
 #include "Logger.h"
 
-#define RQDQL_VERSION "0.2"
+#define RQDQL_VERSION "0.3"
 
 namespace rqdql {
     
