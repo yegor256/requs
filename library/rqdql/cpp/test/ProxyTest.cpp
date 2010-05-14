@@ -111,14 +111,14 @@ void fillUseCase(UseCase* uc) {
     uc
     ->setSignature(
         (new Signature("${sud} validate ${photo}"))
-        ->explain("photo", new Signature::ExpType(Proxy::getInstance().getType("Photo")))
+        ->explain("photo", new Signature::Explanation(Proxy::getInstance().getType("Photo")))
     )
     ->addFlow(
         1,
         new Flow(
             "The user creates photo of himself (the photo)",
             (new Signature("${user} creates ${photo}"))
-            ->explain("photo", new Signature::ExpObject("photo", "himself"))
+            ->explain("photo", new Signature::Explanation("photo", "himself"))
         )
     )
     ->addFlow(
@@ -148,7 +148,7 @@ void fillUseCase(UseCase* uc) {
             new Flow(
                 "The user deletes photo of himself",
                 (new Signature("${user} read ${photo}"))
-                ->explain("photo", new Signature::ExpObject("photo", "himself"))
+                ->explain("photo", new Signature::Explanation("photo", "himself"))
             )
         );
         
@@ -201,7 +201,7 @@ void testUseCasesMatchEachOther() {
     UseCase* uc1 = Proxy::getInstance().getUseCase("UC1");
     uc1->setSignature(
         (new Signature("${sud} validate ${photo}"))
-        ->explain("photo", new Signature::ExpType(Proxy::getInstance().getType("Photo")))
+        ->explain("photo", new Signature::Explanation(Proxy::getInstance().getType("Photo")))
     );
     uc1->addFlow(
         1,
@@ -211,14 +211,14 @@ void testUseCasesMatchEachOther() {
     UseCase* uc2 = Proxy::getInstance().getUseCase("UC2");
     uc2->setSignature(
         (new Signature("${user} upload ${photo}"))
-        ->explain("photo", new Signature::ExpType(Proxy::getInstance().getType("Photo")))
+        ->explain("photo", new Signature::Explanation(Proxy::getInstance().getType("Photo")))
     );
     uc2->addFlow(
         1,
         new Flow(
             "We validate the photo",
             (new Signature("${sud} validate ${photo}"))
-            ->explain("photo", new Signature::ExpType(Proxy::getInstance().getType("Photo")))
+            ->explain("photo", new Signature::Explanation(Proxy::getInstance().getType("Photo")))
         )
     );
     
