@@ -52,9 +52,13 @@ int main(int argc, char** argv) {
         }
     }
     
-    string s;
-    cin >> s;
-    rqdql::Scanner::getInstance().scan(s);
+    string text;
+    while (!cin.eof()) {
+        string s;
+        getline(cin, s);
+        text = text + s + "\n";
+    }
+    rqdql::Scanner::getInstance().scan(text);
 
     // everything OK?
     if (rqdql::Logger::getInstance().empty()) {
