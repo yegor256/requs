@@ -53,7 +53,7 @@ $(EXEC): $(EXEC).o
 	mv $(EXEC).o $(EXEC)
 
 $(FLEX_DEST): $(FLEX_SRC) $(HEADERS) $(SELF)
-	$(FLEX) --outfile=$(FLEX_DEST) $(FLEX_SRC)
+	$(FLEX) -o$(FLEX_DEST) $(FLEX_SRC)
 
 $(BISON_DEST): $(BISON_SRC) $(HEADERS) $(SELF)
 	$(BISON) --no-lines --report=all --defines=$(SYMBOLS) --output=$(BISON_DEST) $(BISON_SRC)
