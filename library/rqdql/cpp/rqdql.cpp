@@ -39,9 +39,11 @@ int main(int argc, char** argv) {
                 return 0;
             case '?':
                 cout << 
-                "Options available:" << endl <<
-                "-? shows this help message" << endl <<
-                "-v returns current version of the product" << endl
+                "usage: rqdql [-?v]" << endl <<
+                "Options:" << endl <<
+                "  -?    Shows this help message" << endl <<
+                "  -v    Returns current version of the product" << endl <<
+                "Report bugs to <team@rqdql.com>" << endl
                 ;
                 return 0;
             default:
