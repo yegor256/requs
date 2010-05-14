@@ -59,6 +59,7 @@ int main(int argc, char** argv) {
         text = text + s + "\n";
     }
     rqdql::Scanner::getInstance().scan(text);
+    proxy::Proxy::getInstance().inject();
 
     // everything OK?
     if (rqdql::Logger::getInstance().empty()) {
