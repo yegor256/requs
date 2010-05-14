@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
     }
     
     // no, we should display all errors found
-    cout << rqdql::Logger::getInstance().getReport();
+    cout << rqdql::Logger::getInstance().getReport() << endl;
     return -1;
 }
 
