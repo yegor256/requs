@@ -16,13 +16,23 @@
  * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
  */
 
+/**
+ * Creates a new slot when all params are provided
+ */
 Slot::Slot(const string& n, const Cardinality& c, solm::Formula* f, Type* t) :
     name(n), cardinality(c), formula(f), type(t) {
     /* nothing for now */
 }
 
+/**
+ * Creates a new slot with just one name provided
+ */
 Slot::Slot(const string& n) :
-    name(n), cardinality("1..n -> 1"), formula(new solm::Constant(true)), type(Proxy::getInstance().getType("text")) {
+    name(n), 
+    cardinality("1..n -> 1"), 
+    formula(new solm::Constant(true)), 
+    type(new Type())
+{
     /* nothing for now */
 }
 
