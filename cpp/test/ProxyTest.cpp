@@ -19,7 +19,7 @@
 #include <boost/test/minimal.hpp>
 #include <string>
 #include <iostream>
-#include <boost/algorithm/string/join.hpp>>
+#include <boost/algorithm/string/join.hpp>
 #include "rqdql.h"
 #include "Solm.h"
 #include "Proxy.h"
