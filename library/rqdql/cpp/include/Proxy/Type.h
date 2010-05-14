@@ -121,6 +121,8 @@ solm::Formula* Type::makeFormula(const string& x) const {
         Sequence* sq = new Sequence(Sequence::OP_AND);
         if (slot->getType()->hasName()) {
             sq->addFormula((new Function(slot->getType()->getName()))->arg("p"));
+        } else {
+            sq->addFormula(slot->getType()->makeFormula());
         }
         sq->addFormula((new Function("composition"))->arg(x)->arg("p"));
         sq->addFormula(slot->getFormula());
