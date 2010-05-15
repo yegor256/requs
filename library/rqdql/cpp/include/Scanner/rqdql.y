@@ -143,8 +143,14 @@ invariantDeclaration:
     ;
     
 invariant:
-    predicate |
+    predicate 
+    |
     predicate informal
+    |
+    error 
+        { 
+            lyyerror(@1, "Predicate is not clear, could be either type name or quoted informal text"); 
+        }
     ;
     
 predicate:
@@ -163,11 +169,6 @@ predicate:
                 $$ = new solm::Info("'instance of " + t->getName());
                 protocol(@1, $$);
             }
-        }
-    |
-    error 
-        { 
-            lyyerror(@1, "Predicate is not clear, could be either type name or quoted informal text"); 
         }
     ;
 
@@ -204,11 +205,6 @@ classPath:
             Type* t = e->getSlot(*$1)->getType();
             $$ = t;
             protocol(@1, $$);
-        }
-    |
-    error 
-        {
-            lyyerror(@1, "Slot name is not clear"); 
         }
     ;
     
@@ -277,12 +273,20 @@ useCaseStarter:
     UC WHERE signature COLON 
         {
             UseCase* uc = Proxy::getInstance().getUseCase(*$1);
-            uc->setSignature((static_cast<brokers::SignatureHolder*>($3))->getSignature());
+            brokers::SignatureHolder* sh = static_cast<brokers::SignatureHolder*>($3);
+            if (sh->hasSignature()) {
+                uc->setSignature(sh->getSignature());
+            } else {
+                lyyerror(@1, "Use Case signature can't be completely informal");
+            }
             $$ = uc;
             protocol(@1, $$);
         }
     |
-    UC WHERE signature error { lyyerror(@4, "COLON missed after UC signature"); }
+    UC WHERE signature error 
+        { 
+            lyyerror(@4, "COLON missed after UC signature"); 
+        }
     ;
     
 /**

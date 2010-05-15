@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
     using namespace std;
 
     char c;
-    while ((c = getopt(argc, argv, "v")) != -1) {
+    while ((c = getopt(argc, argv, "v?")) != -1) {
         switch (c) {
             case 'v':
                 cout << RQDQL_VERSION << endl;
@@ -43,6 +43,7 @@ int main(int argc, char** argv) {
                 "Options:" << endl <<
                 "  -?\tShows this help message" << endl <<
                 "  -v\tReturns current version of the product" << endl <<
+                "This program built for " << __VERSION__ << endl <<
                 "Report bugs to <team@rqdql.com>" << endl
                 ;
                 return 0;
@@ -58,8 +59,15 @@ int main(int argc, char** argv) {
         getline(cin, s);
         text = text + s + "\n";
     }
-    rqdql::Scanner::getInstance().scan(text);
-    proxy::Proxy::getInstance().inject();
+    
+    try {
+        rqdql::Scanner::getInstance().scan(text);
+        proxy::Proxy::getInstance().inject();
+    } catch (char* e) {
+        cout << "Internal error: \"" << e << "\"" << endl;
+    } catch (...) {
+        cout << "Unknown internal error, email us your text to <team@rqdql.com>" << endl;
+    }
 
     // everything OK?
     if (rqdql::Logger::getInstance().empty()) {
