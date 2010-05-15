@@ -41,14 +41,14 @@ TEST_SOURCES := $(shell find test -name "*.cpp")
 TESTS := $(TEST_SOURCES:.cpp=.test)
 VALID_EXAMPLES = $(shell find examples/valid -name "*.txt")
 
+# compile the product and run all tests
+all: $(EXEC) test
+
 # instruct Make NOT to remove intermediate files
 .SECONDARY:
 
 # disable built-in implicit rule
 %.o: %.cpp
-
-# compile the product and run all tests
-all: $(EXEC) test
 
 # compile/build the product
 $(EXEC): $(EXEC).o
