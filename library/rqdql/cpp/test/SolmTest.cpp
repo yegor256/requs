@@ -17,7 +17,7 @@
  */
 
 #include <boost/test/minimal.hpp>
-#include <boost/algorithm/string/join.hpp>>
+#include <boost/algorithm/string/join.hpp>
 #include <string>
 #include <iostream>
 #include "rqdql.h"
