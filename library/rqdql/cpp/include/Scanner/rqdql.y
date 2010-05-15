@@ -98,9 +98,11 @@
 %%
 
 srs:
-    /* it can be empty */ |
-    srs statement |
-    srs error { lyyerror(@2, "statement ignored"); }
+    /* it can be empty */ 
+    |
+    srs statement 
+    |
+    srs error { /* lyyerror(@2, "Statement ignored"); */ }
     ;
 
 statement:
@@ -134,13 +136,15 @@ invariantDeclaration:
             }
         } 
     |
-    theClass IS_A invariant error { lyyerror(@3, "Maybe a trailing DOT missed?"); }
+    theClass IS_A invariant error 
+        { 
+            lyyerror(@3, "Maybe a trailing DOT missed?"); 
+        }
     ;
     
 invariant:
     predicate |
-    predicate informal |
-    error { lyyerror(@1, "Predicate is not clear"); }
+    predicate informal
     ;
     
 predicate:
@@ -159,6 +163,11 @@ predicate:
                 $$ = new solm::Info("'instance of " + t->getName());
                 protocol(@1, $$);
             }
+        }
+    |
+    error 
+        { 
+            lyyerror(@1, "Predicate is not clear, could be either type name or quoted informal text"); 
         }
     ;
 
@@ -195,6 +204,11 @@ classPath:
             Type* t = e->getSlot(*$1)->getType();
             $$ = t;
             protocol(@1, $$);
+        }
+    |
+    error 
+        {
+            lyyerror(@1, "Slot name is not clear"); 
         }
     ;
     

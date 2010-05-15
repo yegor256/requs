@@ -41,8 +41,8 @@ int main(int argc, char** argv) {
                 cout << 
                 "usage: rqdql [-?v]" << endl <<
                 "Options:" << endl <<
-                "  -?    Shows this help message" << endl <<
-                "  -v    Returns current version of the product" << endl <<
+                "  -?\tShows this help message" << endl <<
+                "  -v\tReturns current version of the product" << endl <<
                 "Report bugs to <team@rqdql.com>" << endl
                 ;
                 return 0;
