@@ -106,7 +106,9 @@ srs:
 statement:
     classDefinition  
     | 
-    useCaseDefinition 
+    useCaseDefinition  
+    | 
+    qosDefinition 
     |
     error
         {
@@ -124,6 +126,10 @@ useCaseDefinition:
     useCaseAlternativeDeclaration
     ;
 
+qosDefinition:
+    QOS informal DOT
+    ;
+    
 /** 
  * Invariants... 
  */
