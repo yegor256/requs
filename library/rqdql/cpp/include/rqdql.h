@@ -31,7 +31,7 @@ using namespace std;
 #include "Logger.h"
 
 namespace rqdql {
-    
+
     /**
      * Different levels of logging
      */
