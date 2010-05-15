@@ -32,7 +32,6 @@
 
 %option noyywrap
 %option yylineno
-%option nodefault
 /* %option case-insensitive */
 
 SPACE ([ \t\r\n]+)
@@ -107,13 +106,13 @@ QOS (QOS{NSFX})
 [a-zA-Z]+ { yySet(yylval.name, yytext); log(format("WORD: '%s'") % yytext); return WORD; }
 
 	/* quoted informal texts */
-(\") { BEGIN(READING_QUOTED); yySet(yylval.name, format()); }
+(\") { BEGIN(READING_QUOTED); yylval.name = new string(""); }
 <READING_QUOTED>(\") { BEGIN(INITIAL); log(format("QUOTED: '%s'") % *yylval.name); return QUOTED; }
-<READING_QUOTED>([\n\t\r]|.) { *yylval.name += yytext; }
-<READING_QUOTED><<EOF>> { yyerror("unclosed informal text"); }
+<READING_QUOTED>([\n\t\r]|.) { *yylval.name = *yylval.name + yytext; }
+<READING_QUOTED><<EOF>> { yyerror("Unclosed informal text"); return WORD; }
 
 \n { yycolumn = 1; }
 [ \t\r] { /* ignore spaces */ }
-. { yyerror("unknown symbol %c", yytext[0]); }
+. { yyerror("Unknown symbol \"%c\"", yytext[0]); }
 
 %%

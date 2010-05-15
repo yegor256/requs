@@ -101,13 +101,17 @@ srs:
     /* it can be empty */ 
     |
     srs statement 
-    |
-    srs error { /* lyyerror(@2, "Statement ignored"); */ }
     ;
 
 statement:
-    classDefinition  | 
+    classDefinition  
+    | 
     useCaseDefinition 
+    |
+    error
+        {
+            lyyerror(@1, "Statement ignored"); 
+        }
     ;
 
 classDefinition:
@@ -135,22 +139,12 @@ invariantDeclaration:
                 protocol(@1, $$);
             }
         } 
-    |
-    theClass IS_A invariant error 
-        { 
-            lyyerror(@3, "Maybe a trailing DOT missed?"); 
-        }
     ;
     
 invariant:
     predicate 
     |
     predicate informal
-    |
-    error 
-        { 
-            lyyerror(@1, "Predicate is not clear, could be either type name or quoted informal text"); 
-        }
     ;
     
 predicate:
@@ -264,9 +258,6 @@ useCaseDeclaration:
             UseCase* uc = static_cast<UseCase*>($1);
             uc->setFormula(new solm::Silent("'" + *$2));
         }
-    |
-    useCaseStarter error { lyyerror(@2, "Use case definition is not clear"); } |
-    useCaseStarter informal error { lyyerror(@3, "Maybe a trailing DOT missed after use case definition?"); }
     ;
      
 useCaseStarter:
@@ -281,11 +272,6 @@ useCaseStarter:
             }
             $$ = uc;
             protocol(@1, $$);
-        }
-    |
-    UC WHERE signature error 
-        { 
-            lyyerror(@4, "COLON missed after UC signature"); 
         }
     ;
     
@@ -493,9 +479,6 @@ flow: /* brokers::FlowHolder* */
             $$ = f;
             protocol(@1, $$);
         }
-    |
-    NUMBER DOT signature error { lyyerror(@3, "Maybe a trailing DOT missed after flow?"); } |
-    NUMBER DOT error { lyyerror(@2, "Invalid SIGNATURE for the flow"); }
     ;
     
 /**

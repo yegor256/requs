@@ -1,4 +1,4 @@
 UC1 where "test":
 
-3. "to the processing queue" "see UC3". 
+3. "to the processing queue" "test"
 
