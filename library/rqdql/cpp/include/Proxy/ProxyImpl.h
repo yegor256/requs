@@ -57,12 +57,17 @@ void Proxy::inject() {
     }
 }
 
+/**
+ * Clear proxy and prepare default types
+ */
 void Proxy::clear() {
     types.clear();
     useCases.clear();
     getType("text")->addPredicate((new solm::Function("string"))->arg("x"));
     getType("number")->addPredicate((new solm::Function("integer"))->arg("x"));
     getType("SUD")->addPredicate(new solm::Constant(true));
+    getType("somebody")->addPredicate(new solm::Constant(true));
+    getType("something")->addPredicate(new solm::Constant(true));
 }
 
 const vector<string> Proxy::getTypeNames() const {

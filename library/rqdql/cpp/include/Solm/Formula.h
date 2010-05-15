@@ -31,6 +31,10 @@ const string Formula::toString() const {
     return Err("'Formula::toString()").toString();
 }
 
+/**
+ * Set formula to the absolute position in the collection,
+ * if this position is busy, this method will OVERWRITE it
+ */
 void Formula::setFormula(Formula* f, size_t i = 0) {
     if (subs.size() < i+1) {
         subs.resize(i+1);
