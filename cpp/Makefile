@@ -23,6 +23,8 @@ FLEX = flex
 CPPFLAGS = -I./include -I./library
 EXEC = ./rqdql
 
+VERSION = 0.3
+
 SYMBOLS = include/Scanner/symbols.h
 FLEX_SRC = include/Scanner/rqdql.l
 FLEX_DEST = include/Scanner/rqdql.l.c
@@ -70,7 +72,8 @@ test: $(TESTS)
 
 # compilation of unit tests and any other CPP file AND linking with all libs
 %.o: %.cpp $(HEADERS) $(BISON_DEST) $(FLEX_DEST) $(LIB_OBJS)
-	$(CPP) $(CPPFLAGS) -o $@ $< $(LIB_OBJS)
+	$(CPP) $(CPPFLAGS) -o $@ $< $(LIB_OBJS) \
+	-D RQDQL_VERSION="\"$(VERSION)$(shell svn info | grep "Revision:" | sed "s/Revision: /r/g")\""
 
 # clean everything!
 clean:

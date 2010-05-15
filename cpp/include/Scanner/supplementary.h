@@ -28,7 +28,7 @@ void yyerror(const char *error, ...) {
     // }
     va_list args;
     va_start(args, error);
-    char s[500];
+    char s[1000];
     vsprintf(s, error, args);
     va_end(args);
     rqdql::Logger::getInstance().log((int)yylloc.first_line, s);
@@ -37,7 +37,7 @@ void yyerror(const char *error, ...) {
 void lyyerror(YYLTYPE t, const char *error, ...) {
     va_list args;
     va_start(args, error);
-    char s[500];
+    char s[1000];
     vsprintf(s, error, args);
     va_end(args);
     rqdql::Logger::getInstance().log((int)t.first_line, s);
