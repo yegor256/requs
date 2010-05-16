@@ -35,7 +35,7 @@ int main(int argc, char** argv) {
     bool optIndicateLinks = false;
 
     char c;
-    while ((c = getopt(argc, argv, "va?")) != -1) {
+    while ((c = getopt(argc, argv, "val?")) != -1) {
         switch (c) {
             case 'a':
                 optIndicateAmbiguity = true;
@@ -53,6 +53,7 @@ int main(int argc, char** argv) {
                 "  -?\tShows this help message" << endl <<
                 "  -v\tReturns current version of the product" << endl <<
                 "  -a\tAdd scope ambiguity to the report" << endl <<
+                "  -l\tAdd links between objects into the report" << endl <<
                 "This program built for " << __VERSION__ << endl <<
                 "Report bugs to <bugs@rqdql.com>" << endl
                 ;
