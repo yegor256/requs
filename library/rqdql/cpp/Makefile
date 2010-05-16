@@ -24,6 +24,7 @@ BISON = bison
 FLEX = flex
 CPPFLAGS = -I./include -I./library
 EXEC = ./rqdql
+SVN = /usr/local/bin/svn
 
 SYMBOLS = include/Scanner/symbols.h
 FLEX_SRC = include/Scanner/rqdql.l
@@ -73,7 +74,7 @@ test: $(TESTS)
 # compilation of unit tests and any other CPP file AND linking with all libs
 %.o: %.cpp $(HEADERS) $(BISON_DEST) $(FLEX_DEST) $(LIB_OBJS)
 	$(CPP) $(CPPFLAGS) -o $@ $< $(LIB_OBJS) \
-	-D RQDQL_VERSION="\"$(VERSION)$(shell svn info | grep "Revision:" | sed "s/Revision: /r/g")\""
+	-D RQDQL_VERSION="\"$(VERSION)$(shell $(SVN) info | grep "Revision:" | sed "s/Revision: /r/g")\""
 
 # clean everything!
 clean:
