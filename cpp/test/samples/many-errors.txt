@@ -1,4 +1,11 @@
-UC1 where "test":
 
-3. "to the processing queue" "test"
+
+UC1 where ActorUser (the user) converts LatexDocument (the document):
+ 1. "something".
+ 2. The user uploads the document.
+ 3. The user pushes the document. 
+ 4. We dispatch DocumentQueue "see UC4".
+ 5. The user retrieves files of the document "for example PDF files, see UC5".
+ 6. The user reads statistic "see UC6".
+ 7. We charge the user "see UC7".
 

@@ -14,16 +14,16 @@
 # @copyright Copyright (c) rqdql.com, 2010
 # @version $Id$
 
+VERSION = 0.3.1
+
 MAKEFLAGS = -r
 SELF = Makefile
 PATH := $(PATH):/usr/local/bin:/usr/bin
 CPP = c++
 BISON = bison
 FLEX = flex
-CPPFLAGS = -I./include -I./library
+CPPFLAGS = -I./include -I./library -O4
 EXEC = ./rqdql
-
-VERSION = 0.3
 
 SYMBOLS = include/Scanner/symbols.h
 FLEX_SRC = include/Scanner/rqdql.l

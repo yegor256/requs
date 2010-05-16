@@ -72,6 +72,11 @@ const string Logger::getReport() const {
             lineNumbers.push_back((boost::format("%d") % *j).str());
         }
         
+        // if no lines founds, show at least ZERO
+        if (lineNumbers.empty()) {
+            lineNumbers.push_back(0);
+        }
+        
         // create a message
         msgs.push_back((boost::format("[%s] %s") 
             % boost::algorithm::join(lineNumbers, ", ") 
