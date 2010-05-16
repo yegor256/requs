@@ -22,6 +22,7 @@
 #include <vector>
 #include <map>
 #include <boost/format.hpp>
+#include <boost/regex.hpp>
 #include <boost/algorithm/string/join.hpp>
 using namespace std;
 
@@ -35,6 +36,7 @@ public:
     template <typename T> void log(const T*, const string&); // we know a link to an object
     void log(int, const string&); // we know exact line number
     bool empty() const { return messages.empty(); }
+    bool hasErrors() const;
     const string getReport() const;
     void reportLinks();
     void clear() { messages.clear(); }
@@ -45,6 +47,7 @@ private:
         Message(const vector<int>& v, const string& m) : lines(v), message(m) { /* that's it */ }
         const vector<int> getLines() const { return lines; }
         const string getMessage() const { return message; }
+        bool isError() const;
     private:
         vector<int> lines;
         string message;
