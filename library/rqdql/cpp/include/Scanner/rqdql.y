@@ -127,7 +127,7 @@ useCaseDefinition:
     ;
 
 qosDefinition:
-    QOS informal DOT
+    QOS COLON informal DOT
     ;
     
 /** 
