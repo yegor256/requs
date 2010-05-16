@@ -84,7 +84,9 @@ void testCleanParsing() {
     rqdql::Scanner::getInstance().scan(getFile("valid.txt"));
     proxy::Proxy::getInstance().inject();
     rqdql::Logger::getInstance().reportLinks();
+
     BOOST_CHECK(!rqdql::Logger::getInstance().hasErrors());
+    BOOST_CHECK(solm::Solm::getInstance().getAmbiguity() > 0);
     tearDown();
 }
 

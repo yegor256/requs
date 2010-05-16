@@ -40,7 +40,7 @@ const double Solm::getAmbiguity() const {
     int x = countTypes<Silent>();
     int y = countTypes<Created>() + countTypes<Deleted>() + countTypes<Read>();
     if (!y) {
-        return 0;
+        return 1;
     }
     return (double)x / y;
 }
