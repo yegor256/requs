@@ -113,7 +113,7 @@ void Logger::reportLinks() {
         for (vector<int>::const_iterator j = subjects[right].begin(); j != subjects[right].end(); ++j) {
             lineNumbers.push_back((boost::format("%d") % *j).str());
         }
-        log(left, "LINK TO: " + boost::algorithm::join(lineNumbers, ", "));
+        log(left, "[LINK] " + boost::algorithm::join(lineNumbers, ", "));
     }
 }
 
