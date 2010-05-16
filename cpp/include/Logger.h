@@ -36,6 +36,7 @@ public:
     bool empty() const { return messages.empty(); }
     const string getReport() const;
     void clear() { messages.clear(); }
+    size_t size() const { return messages.size(); }
 private:
     class Message {
     public:
