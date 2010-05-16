@@ -150,7 +150,7 @@ int Logger::countErrors() const {
  */
 bool Logger::Message::isError() const {
     // it's a system message
-    if (boost::regex_match(message, boost::regex("^\\[[A-Z]+\\]"))) {
+    if (boost::regex_match(message, boost::regex("^\\[[A-Z]+\\].*"))) {
         return false;
     }
     if (lines.empty()) {

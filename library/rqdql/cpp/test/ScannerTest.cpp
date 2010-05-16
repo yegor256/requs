@@ -42,21 +42,25 @@ void tearDown() {
     cout << solm::Solm::getInstance().toString() << endl;
 }
 
-void testSimpleParsing() {
-    setUp();
+string getFile(const string& n) {
     ifstream f;
-    f.open("test/samples/sample1.txt");
-    string sample;
+    f.open(string("test/samples/" + n).c_str());
+    string buffer;
     if (!f.is_open()) {
-        throw "failed to open sample file";
+        throw "failed to open sample file " + n;
     }
     while (!f.eof()) {
         string s;
         getline(f, s);
-        sample = sample + s + "\n";
+        buffer = buffer + s + "\n";
     }
     f.close();
-    rqdql::Scanner::getInstance().scan(sample);
+    return buffer;
+}
+
+void testSimpleParsing() {
+    setUp();
+    rqdql::Scanner::getInstance().scan(getFile("sample1.txt"));
     proxy::Proxy::getInstance().inject();
     rqdql::Logger::getInstance().reportLinks();
     BOOST_CHECK(rqdql::Logger::getInstance().empty());
@@ -75,9 +79,19 @@ void testSimpleParsingWithErrors() {
     tearDown();
 }
 
+void testCleanParsing() {
+    setUp();
+    rqdql::Scanner::getInstance().scan(getFile("valid.txt"));
+    proxy::Proxy::getInstance().inject();
+    rqdql::Logger::getInstance().reportLinks();
+    BOOST_CHECK(!rqdql::Logger::getInstance().hasErrors());
+    tearDown();
+}
+
 int test_main(int, char *[]) {
-    testSimpleParsing();
+    // testSimpleParsing();
     // testSimpleParsingWithErrors();
+    testCleanParsing();
     
     return 0;
 }
