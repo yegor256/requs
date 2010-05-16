@@ -58,6 +58,7 @@ void testSimpleParsing() {
     f.close();
     rqdql::Scanner::getInstance().scan(sample);
     proxy::Proxy::getInstance().inject();
+    rqdql::Logger::getInstance().reportLinks();
     BOOST_CHECK(rqdql::Logger::getInstance().empty());
     tearDown();
 }

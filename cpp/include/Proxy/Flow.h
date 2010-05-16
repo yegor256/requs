@@ -96,6 +96,7 @@ solm::Formula* Flow::getTarget() const {
     for (vector<string>::const_iterator i = names.begin(); i != names.end(); ++i) {
         UseCase* uc = Proxy::getInstance().getUseCase(*i);
         if (uc->getSignature()->match(signature)) {
+            rqdql::Logger::getInstance().addLink(this, uc);
             return (new solm::Function(uc->getName()))->arg("x");
         }
     }

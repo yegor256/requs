@@ -32,12 +32,16 @@ int main(int argc, char** argv) {
     using namespace std;
 
     bool optIndicateAmbiguity = false;
+    bool optIndicateLinks = false;
 
     char c;
     while ((c = getopt(argc, argv, "va?")) != -1) {
         switch (c) {
             case 'a':
                 optIndicateAmbiguity = true;
+                break;
+            case 'l':
+                optIndicateLinks = true;
                 break;
             case 'v':
                 cout << RQDQL_VERSION << endl;
@@ -66,6 +70,13 @@ int main(int argc, char** argv) {
     try {
         rqdql::Scanner::getInstance().scan(text);
         proxy::Proxy::getInstance().inject();
+        
+        // show cross-links between lines
+        if (optIndicateLinks) {
+            rqdql::Logger::getInstance().reportLinks();
+        }
+        
+        // show summary ambiguity
         if (optIndicateAmbiguity) {
             if (rqdql::Logger::getInstance().empty()) {
                 rqdql::Logger::getInstance().log(
