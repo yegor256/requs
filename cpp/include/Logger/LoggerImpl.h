@@ -124,3 +124,30 @@ void Logger::addLink(const void* l, const void* r) {
     // validate for duplicated links!
     links.push_back(Link(l, r)); 
 }
+
+/**
+ * Log report has scope errors?
+ */
+bool Logger::hasErrors() const {
+    for (vector<Message>::const_iterator i = messages.begin(); i != messages.end(); ++i) {
+        if ((*i).isError()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * This message is a scope error?
+ */
+bool Logger::Message::isError() const {
+    // it's a system message
+    if (boost::regex_match(message, boost::regex("^\\[[A-Z]+\\]"))) {
+        return false;
+    }
+    if (lines.empty()) {
+        return false;
+    }
+    return true;
+}
+

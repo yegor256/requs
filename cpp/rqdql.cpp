@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
         
         // show summary ambiguity
         if (optIndicateAmbiguity) {
-            if (rqdql::Logger::getInstance().empty()) {
+            if (!rqdql::Logger::getInstance().hasErrors()) {
                 rqdql::Logger::getInstance().log(
                     0,
                     (boost::format("Scope ambiguity: %0.2f") % solm::Solm::getInstance().getAmbiguity()).str()
