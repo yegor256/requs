@@ -74,7 +74,7 @@ const string Logger::getReport() const {
         
         // if no lines founds, show at least ZERO
         if (lineNumbers.empty()) {
-            lineNumbers.push_back(0);
+            lineNumbers.push_back("0");
         }
         
         // create a message

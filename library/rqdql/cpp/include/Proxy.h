@@ -76,6 +76,7 @@ public:
     public:
         Cardinality(const string& s) : mnemo(s) { /* later */ }
         Cardinality(const char* s) : mnemo(s) { /* later */ }
+        const string toString() const { return mnemo; }
     private:
         string mnemo;
     };
@@ -85,6 +86,7 @@ public:
     bool hasName() const { return true; } 
     Type* getType() const { return type; }
     solm::Formula* getFormula() const { return formula; }
+    const Cardinality& getCardinality() const { return cardinality; }
 private:
     string name;
     Cardinality cardinality;

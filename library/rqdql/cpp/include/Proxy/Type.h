@@ -71,19 +71,23 @@ Type* Type::addSlot(const string& s) {
  * To convert type into string detailed presentation
  */
 const string Type::toString() const {
-    string s = "{";
+    if (slots.empty()) {
+        return "{}";
+    }
+    
+    string s = "{\n";
     for (Slots::const_iterator i = slots.begin(); i != slots.end(); ++i) {
         if (i != slots.begin()) {
-            s += "; ";
+            s = s + ";\n";
         }
-        s += (*i)->getName() + ": ";
+        s = s + "\t" + (*i)->getName() + "[" + (*i)->getCardinality().toString() + "]: ";
         if ((*i)->getType()->hasName()) {
             s = s + (*i)->getType()->getName();
         } else {
-            s = s + (*i)->getType()->toString();
+            s = s + boost::algorithm::replace_all_copy((*i)->getType()->toString(), "\n", "\n\t");
         }
     }
-    return s + "}";
+    return s + "\n}";
 }
 
 solm::Formula* Type::makeFormula(const string& x) const {
