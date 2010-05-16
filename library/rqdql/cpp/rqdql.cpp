@@ -82,7 +82,7 @@ int main(int argc, char** argv) {
             if (!rqdql::Logger::getInstance().hasErrors()) {
                 rqdql::Logger::getInstance().log(
                     0,
-                    (boost::format("Scope ambiguity: %0.2f") % solm::Solm::getInstance().getAmbiguity()).str()
+                    (boost::format("[INFO] Scope ambiguity: %0.2f") % solm::Solm::getInstance().getAmbiguity()).str()
                 );
             } else {
                 rqdql::Logger::getInstance().log(
