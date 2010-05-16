@@ -34,12 +34,21 @@ Logger& Logger::getInstance() {
  * Log one line
  */
 template <typename T> void Logger::log(const T* s, const string& m) {
+    string str = m;
+    if (!hasSubject(s)) {
+        str = str + " (" + typeid(*s).name() + ")"; 
+    }
+    log(static_cast<const void*>(s), str);
+}
+
+/**
+ * Log one line, by explicit link
+ */
+template<> void Logger::log(const void* s, const string& m) {
     vector<int> lines;
     string str = m;
     if (hasSubject(s)) {
         lines = subjects[s];
-    } else {
-        str = str + " (" + typeid(*s).name() + ")"; 
     }
     messages.push_back(Message(lines, str));
 }
@@ -86,3 +95,32 @@ const string Logger::getReport() const {
     return boost::algorithm::join(msgs, "\n");
 }
 
+/**
+ * All links found between elements report to log lines
+ * @see rqdql.cpp
+ */
+void Logger::reportLinks() {
+    for (vector<Link>::const_iterator i = links.begin(); i != links.end(); ++i) {
+        const void* left = (*i).getLeft();
+        const void* right = (*i).getRight();
+        if (!hasSubject(left)) {
+            throw "LEFT subject not found when reporting links";
+        }
+        if (!hasSubject(right)) {
+            throw "RIGHT subject not found when reporting links";
+        }
+        vector<string> lineNumbers;
+        for (vector<int>::const_iterator j = subjects[right].begin(); j != subjects[right].end(); ++j) {
+            lineNumbers.push_back((boost::format("%d") % *j).str());
+        }
+        log(left, "LINK TO: " + boost::algorithm::join(lineNumbers, ", "));
+    }
+}
+
+/**
+ * Add one link between two subjects
+ */
+void Logger::addLink(const void* l, const void* r) { 
+    // validate for duplicated links!
+    links.push_back(Link(l, r)); 
+}

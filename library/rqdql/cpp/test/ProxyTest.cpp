@@ -229,12 +229,12 @@ void testUseCasesMatchEachOther() {
 }
 
 int test_main(int, char *[]) {
-    // testGabrageCollectionWorksProperly();
-    // testContainerWorksProperly();
+    testGabrageCollectionWorksProperly();
+    testContainerWorksProperly();
     testWeCanBuildNewType();
-    // testWeCanBuildNewUseCase();
-    // testWeCanInjectUseCase();
-    // testUseCasesMatchEachOther();
+    testWeCanBuildNewUseCase();
+    testWeCanInjectUseCase();
+    testUseCasesMatchEachOther();
     
     return 0;
 }
