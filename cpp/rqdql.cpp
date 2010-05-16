@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
                 "  -v\tReturns current version of the product" << endl <<
                 "  -a\tAdd scope ambiguity to the report" << endl <<
                 "This program built for " << __VERSION__ << endl <<
-                "Report bugs to <team@rqdql.com>" << endl
+                "Report bugs to <bugs@rqdql.com>" << endl
                 ;
                 return 0;
         }
