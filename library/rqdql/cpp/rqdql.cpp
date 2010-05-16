@@ -31,9 +31,14 @@ rqdql::LogLevel rqdql::level = L_ERROR;
 int main(int argc, char** argv) {
     using namespace std;
 
+    bool optIndicateAmbiguity = false;
+
     char c;
-    while ((c = getopt(argc, argv, "v?")) != -1) {
+    while ((c = getopt(argc, argv, "va?")) != -1) {
         switch (c) {
+            case 'a':
+                optIndicateAmbiguity = true;
+                break;
             case 'v':
                 cout << RQDQL_VERSION << endl;
                 return 0;
@@ -43,13 +48,11 @@ int main(int argc, char** argv) {
                 "Options:" << endl <<
                 "  -?\tShows this help message" << endl <<
                 "  -v\tReturns current version of the product" << endl <<
+                "  -a\tAdd scope ambiguity to the report" << endl <<
                 "This program built for " << __VERSION__ << endl <<
                 "Report bugs to <team@rqdql.com>" << endl
                 ;
                 return 0;
-            default:
-                cout << "unknown option" << endl;
-                return -1;
         }
     }
     
@@ -63,19 +66,29 @@ int main(int argc, char** argv) {
     try {
         rqdql::Scanner::getInstance().scan(text);
         proxy::Proxy::getInstance().inject();
+        if (optIndicateAmbiguity) {
+            if (rqdql::Logger::getInstance().empty()) {
+                rqdql::Logger::getInstance().log(
+                    0,
+                    (boost::format("Scope ambiguity: %0.2f") % solm::Solm::getInstance().getAmbiguity()).str()
+                );
+            } else {
+                rqdql::Logger::getInstance().log(
+                    0,
+                    (boost::format("Scope ambiguity can't be calculated since there are %d errors") 
+                        % rqdql::Logger::getInstance().size()
+                    ).str()
+                );
+            }
+        }
     } catch (char* e) {
         cout << "Internal error: \"" << e << "\"" << endl;
     } catch (...) {
         cout << "Unknown internal error, email us your text to <team@rqdql.com>" << endl;
     }
 
-    // everything OK?
-    if (rqdql::Logger::getInstance().empty()) {
-        return 0;
-    }
-    
-    // no, we should display all errors found
+    // no, we should display all errors and log messages found
     cout << rqdql::Logger::getInstance().getReport() << endl;
-    return -1;
+    return 0;
 }
 
