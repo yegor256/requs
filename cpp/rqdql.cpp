@@ -88,7 +88,7 @@ int main(int argc, char** argv) {
                 rqdql::Logger::getInstance().log(
                     0,
                     (boost::format("Scope ambiguity can't be calculated since there are %d errors") 
-                        % rqdql::Logger::getInstance().size()
+                        % rqdql::Logger::getInstance().countErrors()
                     ).str()
                 );
             }

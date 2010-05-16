@@ -129,12 +129,20 @@ void Logger::addLink(const void* l, const void* r) {
  * Log report has scope errors?
  */
 bool Logger::hasErrors() const {
+    return countErrors();
+}
+
+/**
+ * How many errors we have?
+ */
+int Logger::countErrors() const {
+    int cnt = 0;
     for (vector<Message>::const_iterator i = messages.begin(); i != messages.end(); ++i) {
         if ((*i).isError()) {
-            return true;
+            cnt++;
         }
     }
-    return false;
+    return cnt;
 }
 
 /**
