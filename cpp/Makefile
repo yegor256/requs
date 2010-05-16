@@ -22,7 +22,7 @@ PATH := $(PATH):/usr/local/bin:/usr/bin
 CPP = c++
 BISON = bison
 FLEX = flex
-CPPFLAGS = -I./include -I./library -O4
+CPPFLAGS = -I./include -I./library
 EXEC = ./rqdql
 
 SYMBOLS = include/Scanner/symbols.h
@@ -79,6 +79,7 @@ test: $(TESTS)
 clean:
 	rm -f \
 	$(BISON_DEST) \
+	include/Scanner/rqdql.y.output \
 	$(FLEX_DEST) \
 	$(EXEC) \
 	$(LIB_OBJS) \
