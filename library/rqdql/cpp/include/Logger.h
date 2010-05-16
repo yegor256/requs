@@ -37,6 +37,7 @@ public:
     void log(int, const string&); // we know exact line number
     bool empty() const { return messages.empty(); }
     bool hasErrors() const;
+    int countErrors() const;
     const string getReport() const;
     void reportLinks();
     void clear() { messages.clear(); }
