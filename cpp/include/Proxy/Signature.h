@@ -96,6 +96,9 @@ solm::Formula* Signature::makeFormula() const {
     if (regex_match(t, regex("\\{...\\} deletes? \\{...\\}"))) {
         return (new Deleted())->arg(getPlaceName(0))->arg(getPlaceName(1));
     }
+    if (regex_match(t, regex("\\{...\\} updates? \\{...\\}"))) {
+        return (new Updated())->arg(getPlaceName(0))->arg(getPlaceName(1));
+    }
     if (regex_match(t, regex("\\{...\\} turns? into \\{...\\}"))) {
         return new Info("'not implemented yet: " + t);
     }

@@ -55,6 +55,7 @@ class Formula;
                 class Created;
                 class Read;
                 class Deleted;
+                class Updated;
             class Throw;
             class Caught;
         class Math;
@@ -216,6 +217,10 @@ public:
 class Deleted : public Manipulator<Deleted> {
 public:
     virtual const string toString() const { return _toString("deleted"); }
+};
+class Updated : public Manipulator<Updated> {
+public:
+    virtual const string toString() const { return _toString("updated"); }
 };
 
 class Math : public Predicate<Math> {
