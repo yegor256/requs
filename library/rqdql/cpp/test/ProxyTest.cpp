@@ -56,7 +56,7 @@ void testContainerWorksProperly() {
     Proxy::getInstance().getType("Photo");
     Proxy::getInstance().getType("File");
     Proxy::getInstance().getType("File");
-    BOOST_CHECK(Proxy::getInstance().countTypes() > 3); // + text, numeric, etc.
+    BOOST_REQUIRE(Proxy::getInstance().countTypes() > 3); // + text, numeric, etc.
     cout <<
         boost::format("Types in container: %s") % 
         boost::algorithm::join(Proxy::getInstance().getTypeNames(), ", ") << endl;
@@ -101,7 +101,7 @@ void testWeCanBuildNewType() {
     
     Proxy::getInstance().inject();
 
-    BOOST_CHECK(Proxy::getInstance().countTypes() >= 3); // User, string, and Photo
+    BOOST_REQUIRE(Proxy::getInstance().countTypes() >= 3); // User, string, and Photo
     
     cout << "Definition of type 'User': " 
     << Proxy::getInstance().getType("User")->toString() << endl;
@@ -186,7 +186,7 @@ void testWeCanInjectUseCase() {
     Proxy::getInstance().inject();
 
     vector<string> list = solm::Solm::getInstance().getAllFunctions();
-    BOOST_CHECK(list.size() >= 2);
+    BOOST_REQUIRE(list.size() >= 2);
     cout <<
         boost::format("Totally created %d functions: %s") % 
         list.size() %

@@ -16,7 +16,8 @@
 
 # 0.3.2: added signature matching to find manipulators
 # 0.3.3: TURNS INTO is parseable
-VERSION = 0.3.3
+# 0.3.4: Plurality introduced into BISON
+VERSION = 0.3.4
 
 MAKEFLAGS = -r
 SELF = Makefile
@@ -69,6 +70,7 @@ $(BISON_DEST): $(BISON_SRC) $(HEADERS) $(SELF)
 
 # test everything
 test: $(TESTS)
+	echo "Testing finished, everything OK"
 
 %.test: %.o
 	$<

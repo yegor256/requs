@@ -34,7 +34,7 @@ void testSimple() {
     math->arg("5")->arg("3");
     Solm::getInstance().addFormula(math);
     
-    BOOST_CHECK(Solm::getInstance().countTypes<Math>() >= 1);
+    BOOST_REQUIRE(Solm::getInstance().countTypes<Math>() >= 1);
 }
 
 void testMoreComplexStructure() {
@@ -63,8 +63,8 @@ void testMoreComplexStructure() {
             )
         )
     );
-    BOOST_CHECK(Solm::getInstance().countTypes<Sequence>() == 1);
-    BOOST_CHECK(Solm::getInstance().countTypes<Function>() == 2);
+    BOOST_REQUIRE(Solm::getInstance().countTypes<Sequence>() == 1);
+    BOOST_REQUIRE(Solm::getInstance().countTypes<Function>() == 2);
 }
 
 void testComplex() {
@@ -136,18 +136,18 @@ void testComplex() {
     );
         
     int cntSilent = Solm::getInstance().countTypes<Silent>();
-    BOOST_CHECK(cntSilent > 0);
+    BOOST_REQUIRE(cntSilent > 0);
     cout << boost::format("Totally %d SILENT() formulas") % cntSilent << endl;
 
     int cntManipulators = 
         Solm::getInstance().countTypes<Created>()
         + Solm::getInstance().countTypes<Deleted>()
         + Solm::getInstance().countTypes<Read>();
-    BOOST_CHECK(cntManipulators > 0);
+    BOOST_REQUIRE(cntManipulators > 0);
     cout << boost::format("Totally %d manipulators") % cntManipulators << endl;
 
     double ambiguity = Solm::getInstance().getAmbiguity();
-    BOOST_CHECK(ambiguity == (double)cntSilent / cntManipulators);
+    BOOST_REQUIRE(ambiguity == (double)cntSilent / (cntManipulators + cntSilent));
     
     cout << boost::format("scope ambiguity is: %0.2f") % ambiguity << endl;
 
@@ -164,7 +164,7 @@ void testWeCanFindAllFunctionDeclarations() {
         ->addFormula((new Declaration("Image"))->arg("x")->setFormula(new Info("nothing to say")));
         
     vector<string> list = Solm::getInstance().getAllFunctions();
-    BOOST_CHECK(list.size() >= 4);
+    BOOST_REQUIRE(list.size() >= 4);
     cout <<
         boost::format("Totally found %d functions: %s") % 
         list.size() %

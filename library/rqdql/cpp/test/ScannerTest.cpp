@@ -63,8 +63,13 @@ void testSimpleParsing() {
     rqdql::Scanner::getInstance().scan(getFile("sample1.txt"));
     proxy::Proxy::getInstance().inject();
     rqdql::Logger::getInstance().reportLinks();
-    BOOST_CHECK(rqdql::Logger::getInstance().empty());
     tearDown();
+
+    // no errors there!
+    BOOST_REQUIRE(!rqdql::Logger::getInstance().hasErrors());
+    
+    // but the log should NOT be empty
+    BOOST_REQUIRE(!rqdql::Logger::getInstance().empty());
 }
 
 void testSimpleParsingWithErrors() {
@@ -75,8 +80,9 @@ void testSimpleParsingWithErrors() {
         "Name of InvestorApplication includes: first name and last name.\n"
     );
     proxy::Proxy::getInstance().inject();
-    BOOST_CHECK(!rqdql::Logger::getInstance().empty());
     tearDown();
+
+    BOOST_REQUIRE(!rqdql::Logger::getInstance().empty());
 }
 
 void testCleanParsing() {
@@ -84,10 +90,10 @@ void testCleanParsing() {
     rqdql::Scanner::getInstance().scan(getFile("valid.txt"));
     proxy::Proxy::getInstance().inject();
     rqdql::Logger::getInstance().reportLinks();
-
-    BOOST_CHECK(!rqdql::Logger::getInstance().hasErrors());
-    BOOST_CHECK(solm::Solm::getInstance().getAmbiguity() > 0);
     tearDown();
+
+    BOOST_REQUIRE(!rqdql::Logger::getInstance().hasErrors());
+    BOOST_REQUIRE(solm::Solm::getInstance().getAmbiguity() > 0);
 }
 
 int test_main(int, char *[]) {
