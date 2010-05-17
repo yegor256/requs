@@ -112,13 +112,19 @@ public:
     Signature(const string& t) : text(t), explanations() { /* that's it */ }
     void setText(const string& t) { text = t; }
     string getText() const { return text; }
-    Signature* explain(const string& n, Explanation* e) { explanations[n] = e; return this; }
+    Signature* explain(const string&, Explanation*);
     const string toString() const { return text; }
     bool match(const Signature*) const;
+    bool isFormula() const;
+    solm::Formula* makeFormula() const;
 private:
     string text;
     Explanations explanations;
     const string simplify(const string&) const;
+    string getPlaceName(size_t) const;
+    bool hasPlaces() const;
+    bool hasPlace(const string&) const;
+    vector<string> getPlaces() const;
 };
 
 class Flow {
