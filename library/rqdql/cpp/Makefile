@@ -14,8 +14,9 @@
 # @copyright Copyright (c) rqdql.com, 2010
 # @version $Id$
 
-# added signature matching to find manipulators
-VERSION = 0.3.2
+# 0.3.2: added signature matching to find manipulators
+# 0.3.3: TURNS INTO is parseable
+VERSION = 0.3.3
 
 MAKEFLAGS = -r
 SELF = Makefile
