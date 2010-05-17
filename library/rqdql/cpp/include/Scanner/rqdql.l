@@ -35,7 +35,7 @@
 /* %option case-insensitive */
 
 SPACE ([ \t\r\n]+)
-NSFX ([1-8](\.[1-8])?)
+NSFX ([0-9]+(\.[0-9]+)*)
 CAMEL_PART ([A-Z][a-z]+)
 CAMEL ({CAMEL_PART}({CAMEL_PART})+)
 UC (UC{NSFX})
