@@ -39,10 +39,10 @@ Solm& Solm::getInstance() {
 const double Solm::getAmbiguity() const {
     int x = countTypes<Silent>();
     int y = countTypes<Created>() + countTypes<Deleted>() + countTypes<Read>();
-    if (!y) {
+    if (x + y == 0) {
         return 1;
     }
-    return (double)x / y;
+    return (double)x / (x + y);
 }
 
 /**
