@@ -168,12 +168,11 @@
         &nbsp;&nbsp;5. We convert the photo "to the right PNG format, 600x600 maximum".<br/>
         &nbsp;&nbsp;6. We notify the friend by email.<br/>
         &nbsp;&nbsp;7. The friend reads the photo "in his own web page".<br/>
-        UC8.1 alternative flows:<br/>
-        &nbsp;&nbsp;1a). If "the user exceeds the maximum possible number of photos":<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;1. Failure "photos limit exceeded".<br/>
-        &nbsp;&nbsp;5a). If failed with "invalid format":<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;1. "we notify user about the problem".<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;2. Go to step 1.
+        UC8.1 1a) If "the user exceeds the maximum possible number of photos":<br/>
+        &nbsp;&nbsp;1. Failure "photos limit exceeded".<br/>
+        UC8 5a) If failed with "invalid format":<br/>
+        &nbsp;&nbsp;1. "we notify user about the problem".<br/>
+        &nbsp;&nbsp;2. Failure "can't convert photo".
     </p>
 
     <p>First line in this example is a declaration of a use case,
@@ -222,24 +221,21 @@
         mandatory, because there are a number of <b>elementary use cases</b>,
         which are defined in the system, even if the document is
         empty. The elementary use cases are 
-        (<a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUDL</a> requirements pattern):</p>
+        (<a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a> requirements pattern):</p>
 
     <p class="code">
         <b>Anyone</b> creates <b>anything</b><br/>
         <b>Anyone</b> reads <b>anything</b><br/>
         <b>Anyone</b> updates <b>anything</b><br/>
         <b>Anyone</b> deletes <b>anything</b><br/>
-        <b>Anyone</b> lists <b>anything</b><br/>
     </p>
     
-    <p>As you understand, <tt>anyone</tt> means "any actor",
-        and <tt>anything</tt> means "object of any class".
+    <p>As you understand, <tt>somebody</tt> means "any actor",
+        and <tt>something</tt> means "object of any class".
         <tt>create</tt> means to make a new object.
         <tt>read</tt> means to read all and any slots of an object, and all their slots, etc.
         <tt>update</tt> means to change values of slots of an object.
         <tt>delete</tt> means to remove an object from a persistent storage.
-        <tt>list</tt> means to iterate through the entire class where an object belongs,
-        seeing all objects.
         </p>
         
     <p>Thus, a valid flow either points us to another use case
@@ -251,8 +247,7 @@
         in alternative flow <tt>1a1</tt> and <tt>5a2</tt>. "<tt>failure</tt>"
         means that a use case should be stopped at this point and the
         reason of this termination is explained right after the word <tt>failure</tt>
-        as an informal text. "<tt>go to</tt>" means that the we should just
-        jump to the flow mentioned and continue from there.</p>
+        as an informal text.</p>
 
     <p>Reason of failure is used by a parent use case, which included the 
         current one. This is exactly what happens in <tt>5a</tt>. We are
@@ -268,10 +263,10 @@
         the entire scope definition document. The metric is called 
         "<b>scope vagueness</b>" and is calculated like:</p>
         
-    <p>SV = V / T</p>
+    <p>SV = I / (I + M)</p>
     
-    <p><i>V</i> stands for a total number of all informal flows,
-        and <i>T</i> is a total number of all use case flows in the document.
+    <p><i>I</i> stands for a total number of all informal flows,
+        and <i>M</i> is a total number of CRUD-manipulators.
         Thus, if <i>SV</i> equals to zero, the document is absolutely non-vague,
         which is an almost impossible situation. In real world projects
         the task of a system analyst is to move <i>SV</i> from 1 to 0.</p>
