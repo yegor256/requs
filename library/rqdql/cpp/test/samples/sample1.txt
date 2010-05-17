@@ -2,9 +2,12 @@ ActorUser is a "human being with identity. Also it is our client.".
 
 ActorUser is an ActorVisitor.
 
+ActorUser includes: email and name.
+Email of ActorUser is unique.
+
 InvestorApplication includes:
     ticket: OnlineTicket "where this application is discussed and approved"; 
-    email, 
+    email: text, 
     agent: ActorAgent-s; 
     phone: "a telephone number"; and 
     name; 
@@ -34,7 +37,7 @@ UC8.1 4a1a) if "email of the application is empty":
     1. Failure "anonymous application rejected".
 
 ActorAgent is an "unknown something".
-ActorLegacy is an "unknown something".
+ActorLegacy is "unknown yet".
 ActorOperator is an "unknown something".
 ActorVisitor is an "unknown something".
 InvestmentProject is an "unknown something".

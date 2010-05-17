@@ -67,11 +67,10 @@ QOS (QOS{NSFX})
 "," { log("COMMA"); return COMMA; }
 "(" { log("OPEN_BRACE"); return OPEN_BRACE; }
 ")" { log("CLOSE_BRACE"); return CLOSE_BRACE; }
+"are" |
+"is" |
 "is"([ \t\r\n]+)"a" |
 "is"([ \t\r\n]+)"an" { log("IS_A"); return IS_A; }
-
-"are" |
-"is" { log("IS"); return IS; }
 
 [Ww]"here" { log("WHERE"); return WHERE; }
 "/" |
