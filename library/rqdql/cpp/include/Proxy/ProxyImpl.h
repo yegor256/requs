@@ -30,6 +30,9 @@ Proxy& Proxy::getInstance() {
     return *proxy;
 }
 
+/**
+ * Inject all Types and Use Cases from PROXY into SOLM
+ */
 void Proxy::inject() {
     using namespace solm;
     
@@ -63,6 +66,7 @@ void Proxy::inject() {
 void Proxy::clear() {
     types.clear();
     useCases.clear();
+    
     getType("text")->addPredicate((new solm::Function("string"))->arg("x"));
     getType("number")->addPredicate((new solm::Function("integer"))->arg("x"));
     getType("SUD")->addPredicate(new solm::Constant(true));
@@ -70,6 +74,9 @@ void Proxy::clear() {
     getType("something")->addPredicate(new solm::Constant(true));
 }
 
+/**
+ * Get full list of all type names
+ */
 const vector<string> Proxy::getTypeNames() const {
     vector<string> v;
     for (Types::const_iterator i = types.begin(); i != types.end(); ++i) {
@@ -78,6 +85,19 @@ const vector<string> Proxy::getTypeNames() const {
     return v;
 }
 
+/**
+ * Get full list of use case names (strings)
+ */
+const vector<string> Proxy::getAllUseCaseNames() const {
+    vector<string> v;
+    for (UseCases::const_iterator i = useCases.begin(); i != useCases.end(); ++i) {
+        v.push_back(i->first);
+    }
+    return v;
+}
+/**
+ * Get Type by name OR create it if it's not found
+ */
 Type* Proxy::getType(const string& name) {
     Type* t = types[name];
     if (!t) {
@@ -86,6 +106,9 @@ Type* Proxy::getType(const string& name) {
     return t;
 }
 
+/**
+ * Get Use Case by name OR create it if it's not found
+ */
 UseCase* Proxy::getUseCase(const string& name) {
     UseCase* uc = useCases[name];
     if (!uc) {
@@ -154,13 +177,3 @@ const string Proxy::findName(const UseCase* uc) const {
     throw "this UseCase doesn't have a name";
 }
 
-/**
- * Get full list of use case names (strings)
- */
-const vector<string> Proxy::getAllUseCaseNames() const {
-    vector<string> v;
-    for (UseCases::const_iterator i = useCases.begin(); i != useCases.end(); ++i) {
-        v.push_back(i->first);
-    }
-    return v;
-}

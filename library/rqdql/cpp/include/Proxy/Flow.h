@@ -92,6 +92,12 @@ solm::Formula* Flow::makeFormula() const {
  * if it's possible at all.
  */
 solm::Formula* Flow::getTarget() const {
+    // maybe it's a formula already?
+    if (signature->isFormula()) {
+        return signature->makeFormula();
+    }
+    
+    // trying to find a UC which matches this call
     vector<string> names = Proxy::getInstance().getAllUseCaseNames();
     for (vector<string>::const_iterator i = names.begin(); i != names.end(); ++i) {
         UseCase* uc = Proxy::getInstance().getUseCase(*i);

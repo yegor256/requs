@@ -14,7 +14,8 @@
 # @copyright Copyright (c) rqdql.com, 2010
 # @version $Id$
 
-VERSION = 0.3.1
+# added signature matching to find manipulators
+VERSION = 0.3.2
 
 MAKEFLAGS = -r
 SELF = Makefile
