@@ -160,7 +160,7 @@ predicate:
             protocol(@1, $$);
         } 
     |
-    theClass 
+    theClass plurality
         {
             if (!$1) {
                 lyyerror(@1, "Class can't be an instance of himself");
@@ -606,6 +606,13 @@ theClass:
         {
             $$ = 0;
         }
+    ;
+    
+plurality:
+    /* empty */ |
+    PLURAL_MANY |
+    PLURAL_SOME |
+    PLURAL_ANY
     ;
     
 slotName:
