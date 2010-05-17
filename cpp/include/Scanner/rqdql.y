@@ -81,7 +81,6 @@
 %token PLURAL_MANY PLURAL_SOME PLURAL_ANY
 %token OPEN_BRACE CLOSE_BRACE
 %token IS_A
-%token IS
 %token INCLUDES
 
 %nonassoc COMMA
@@ -134,7 +133,7 @@ qosDefinition:
  * Invariants... 
  */
 invariantDeclaration:
-    theClass IS_A invariant DOT 
+    classPath IS_A invariant DOT 
         { 
             if (!$1) {
                 lyyerror(@3, "You can't place HIMSELF to the left part of declaration");
@@ -159,6 +158,18 @@ predicate:
             $$ = new solm::Info("'" + *$1);
             protocol(@1, $$);
         } 
+    |
+    words
+        {
+            $$ = new solm::Info("'predicate: " + *$1);
+            protocol(@1, $$);
+        }
+    |
+    WORD
+        {
+            $$ = new solm::Info("'predicate: " + *$1);
+            protocol(@1, $$);
+        }
     |
     theClass plurality
         {
