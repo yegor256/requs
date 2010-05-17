@@ -85,23 +85,27 @@ bool Signature::isFormula() const {
  */
 solm::Formula* Signature::makeFormula() const {
     using namespace solm;
+    using namespace boost;
     string t = simplify(text);
-    if (boost::regex_match(t, boost::regex("\\{...\\} reads? \\{...\\}"))) {
+    if (regex_match(t, regex("\\{...\\} reads? \\{...\\}"))) {
         return (new Read())->arg(getPlaceName(0))->arg(getPlaceName(1));
     }
-    if (boost::regex_match(t, boost::regex("\\{...\\} creates? \\{...\\}"))) {
+    if (regex_match(t, regex("\\{...\\} creates? \\{...\\}"))) {
         return (new Created())->arg(getPlaceName(0))->arg(getPlaceName(1));
     }
-    if (boost::regex_match(t, boost::regex("\\{...\\} deletes? \\{...\\}"))) {
+    if (regex_match(t, regex("\\{...\\} deletes? \\{...\\}"))) {
         return (new Deleted())->arg(getPlaceName(0))->arg(getPlaceName(1));
     }
-    if (boost::regex_match(t, boost::regex("failure"))) {
+    if (regex_match(t, regex("\\{...\\} turns? into \\{...\\}"))) {
+        return new Info("'not implemented yet: " + t);
+    }
+    if (regex_match(t, regex("failure"))) {
         return (new Throw())->arg("'not implemented yet");
     }
-    if (boost::regex_match(t, boost::regex("if failure"))) {
+    if (regex_match(t, regex("if failure"))) {
         return (new Caught())->arg("'not implemented yet");
     }
-    throw (boost::format("Signature '%s' is not a formula") % text).str();
+    throw (format("Signature '%s' is not a formula") % text).str();
 }
 
 /**
@@ -144,7 +148,6 @@ vector<string> Signature::getPlaces() const {
         places.push_back(string(what[1].first, what[2].second-1));
         begin = what[0].second;
     }
-    
     // for (vector<string>::const_iterator i = places.begin(); i != places.end(); ++i) {
     //     cout << *i << endl;
     // }

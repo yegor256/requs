@@ -91,8 +91,8 @@ void testCleanParsing() {
 }
 
 int test_main(int, char *[]) {
-    // testSimpleParsing();
-    // testSimpleParsingWithErrors();
+    testSimpleParsing();
+    testSimpleParsingWithErrors();
     testCleanParsing();
     
     return 0;
