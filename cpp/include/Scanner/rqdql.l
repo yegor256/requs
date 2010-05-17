@@ -109,7 +109,7 @@ QOS (QOS{NSFX})
 (\") { BEGIN(READING_QUOTED); yylval.name = new string(""); }
 <READING_QUOTED>(\") { BEGIN(INITIAL); log(format("QUOTED: '%s'") % *yylval.name); return QUOTED; }
 <READING_QUOTED>([\n\t\r]|.) { *yylval.name = *yylval.name + yytext; }
-<READING_QUOTED><<EOF>> { yyerror("Unclosed informal text"); return WORD; }
+<READING_QUOTED><<EOF>> { BEGIN(INITIAL); yyerror("Unclosed informal text"); throw "Unclosed informal text"; }
 
 \n { yycolumn = 1; }
 [ \t\r] { /* ignore spaces */ }
