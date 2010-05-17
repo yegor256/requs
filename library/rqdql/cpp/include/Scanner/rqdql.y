@@ -109,6 +109,8 @@ statement:
     | 
     qosDefinition 
     |
+    informal
+    |
     error
         {
             lyyerror(@1, "Statement ignored"); 

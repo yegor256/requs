@@ -1,5 +1,7 @@
 ActorUser is a "human being with identity. Also it is our client.".
 
+"just some informal text..."
+
 ActorUser is an ActorVisitor.
 
 ActorUser includes: email and name.
