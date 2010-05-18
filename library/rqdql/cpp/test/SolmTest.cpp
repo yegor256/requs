@@ -16,17 +16,9 @@
  * @version $Id: ScopeTest.cpp 1487 2010-04-01 08:45:47Z yegor256@yahoo.com $
  */
 
-#include <boost/test/minimal.hpp>
-#include <boost/algorithm/string/join.hpp>
-#include <string>
-#include <iostream>
-#include "rqdql.h"
-#include "Solm.h"
-#include "Logger.h"
-using namespace solm;
-using namespace std;
+#include "AbstractTestCase.h"
 
-rqdql::LogLevel rqdql::level = L_DEBUG;
+using namespace solm;
 
 void testSimple() {
     Solm::getInstance().clear();
