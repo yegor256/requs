@@ -21,23 +21,29 @@
 void Errors::fillNode(pugi::xml_node& n) {
     using namespace pugi;
 
+    int max = atoi(getParam("max").c_str());
+    if (!max) {
+        max = 50;
+    }
+
+    vector<Error> errors;
     typedef vector<rqdql::Logger::Message> Msgs;
     Msgs v = rqdql::Logger::getInstance().getMessages();
-    
     for (Msgs::const_iterator i = v.begin(); i != v.end(); ++i) {
+        for (vector<int>::const_iterator k = (*i).getLines().begin(); k != (*i).getLines().end(); ++k) {
+            errors.push_back(Error(*k, (*i).getMessage()));
+        }
+    }
+
+    sort(errors.begin(), errors.end());
+    
+    for (vector<Error>::const_iterator i = errors.begin(); i != errors.end(); ++i) {
         pugi::xml_node err = n.append_child();
         err.set_name("error");
-        
-        pugi::xml_node m = err.append_child();
-        m.set_name("msg");
-        m.append_child(pugi::node_pcdata).set_value((*i).getMessage().c_str());
-        
-        pugi::xml_node lines = err.append_child();
-        lines.set_name("lines");
-        for (vector<int>::const_iterator k = (*i).getLines().begin(); k != (*i).getLines().end(); ++k) {
-            pugi::xml_node l = lines.append_child();
-            l.set_name("line");
-            l.append_child(pugi::node_pcdata).set_value((boost::format("%d") % *k).str().c_str());
+        err.append_child(pugi::node_pcdata).set_value((*i).message.c_str());
+        err.append_attribute("line").set_value((*i).line);
+        if (!--max) {
+            break;
         }
     }
 }

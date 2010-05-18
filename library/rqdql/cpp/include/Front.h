@@ -43,6 +43,7 @@ public:
 protected:
     Reporter(const Params& p) : params(p) { /* it's private, use factory() instead */ };
     virtual void fillNode(pugi::xml_node&) = 0;
+    const string& getParam(const string& n) { return params[n]; }
 private:
     string name;
     Params params;
@@ -52,6 +53,14 @@ class Errors : public Reporter {
 public:
     Errors(const Params& p) : Reporter(p) { /* that's it */ }
     void fillNode(pugi::xml_node&);
+private:
+    class Error {
+    public:
+        int line;
+        string message;
+        Error(int l, const string& m) : line(l), message(m) { /* .. */ }
+        bool operator< (const Error& e) const { return line < e.line; }
+    };
 };
 class Metrics : public Reporter {
 public:
