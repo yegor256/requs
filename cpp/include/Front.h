@@ -60,6 +60,7 @@ private:
         string message;
         Error(int l, const string& m) : line(l), message(m) { /* .. */ }
         bool operator< (const Error& e) const { return line < e.line; }
+        bool operator== (const Error& e) const { return (line == e.line) && (message == e.message); }
     };
 };
 class Metrics : public Reporter {
