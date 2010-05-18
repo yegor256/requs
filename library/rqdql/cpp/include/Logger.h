@@ -29,6 +29,30 @@ using namespace std;
 namespace rqdql {
 class Logger {
 public:
+    class Message {
+    public:
+        Message(const vector<int>& v, const string& m) : lines(v), message(m) { /* that's it */ }
+        const vector<int>& getLines() const { return lines; }
+        const string& getMessage() const { return message; }
+    private:
+        vector<int> lines;
+        string message;
+    };
+    class Link {
+    public:
+        Link(const void* l, const void* r) : left(l), right(r) { /* that's it */ }
+        const void* getLeft() const { return left; }
+        const void* getRight() const { return right; }
+        void setLeftLines(vector<int> l) { leftLines = l; }
+        const vector<int>& getLeftLines() const { return leftLines; }
+        void setRightLines(vector<int> l) { rightLines = l; }
+        const vector<int>& getRightLines() const { return rightLines; }
+    private:
+        const void* left;
+        const void* right;
+        vector<int> leftLines;
+        vector<int> rightLines;
+    };
     static Logger& getInstance();
     void addSubject(const void* s, int l) { subjects[s].push_back(l); }
     bool hasSubject(const void* s) const { return subjects.find(s) != subjects.end(); }
@@ -36,33 +60,13 @@ public:
     template <typename T> void log(const T*, const string&); // we know a link to an object
     void log(int, const string&); // we know exact line number
     bool empty() const { return messages.empty(); }
-    bool hasErrors() const;
-    int countErrors() const;
     const string getReport() const;
-    void reportLinks();
+    const vector<Message>& getMessages() const { return messages; }
+    const vector<Link>& getLinks();
     void clear() { messages.clear(); }
     size_t size() const { return messages.size(); }
 private:
-    class Message {
-    public:
-        Message(const vector<int>& v, const string& m) : lines(v), message(m) { /* that's it */ }
-        const vector<int> getLines() const { return lines; }
-        const string getMessage() const { return message; }
-        bool isError() const;
-    private:
-        vector<int> lines;
-        string message;
-    };
     typedef map<const void*, vector<int> > Subjects;
-    class Link {
-    public:
-        Link(const void* l, const void* r) : left(l), right(r) { /* that's it */ }
-        const void* getLeft() const { return left; }
-        const void* getRight() const { return right; }
-    private:
-        const void* left;
-        const void* right;
-    };
     Subjects subjects;
     vector<Link> links;
     vector<Message> messages;

@@ -20,6 +20,27 @@
 
 void Links::fillNode(pugi::xml_node& n) {
     using namespace pugi;
+
+    typedef vector<rqdql::Logger::Link> Links;
+    Links v = rqdql::Logger::getInstance().getLinks();
+    
+    map<int, int> links;
+    for (Links::const_iterator i = v.begin(); i != v.end(); ++i) {
+        for (vector<int>::const_iterator k = (*i).getLeftLines().begin(); k != (*i).getLeftLines().end(); ++k) {
+            for (vector<int>::const_iterator j = (*i).getRightLines().begin(); j != (*i).getRightLines().end(); ++j) {
+                links[*k] = *j;
+            }
+        }
+    }
+
+    for (map<int, int>::const_iterator i = links.begin(); i != links.end(); ++i) {
+        pugi::xml_node l = n.append_child();
+        l.set_name("link");
+        l.append_child().set_name("left");
+        l.child("left").append_child(pugi::node_pcdata).set_value((boost::format("%d") % (*i).first).str().c_str());
+        l.append_child().set_name("right");
+        l.child("right").append_child(pugi::node_pcdata).set_value((boost::format("%d") % (*i).second).str().c_str());
+    }
 }
 
 

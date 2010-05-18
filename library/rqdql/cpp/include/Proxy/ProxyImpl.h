@@ -56,6 +56,7 @@ void Proxy::inject() {
             ->setFormula(
                 uc->hasSequence() ? uc->makeSequence() : uc->getFormula()
             )
+            ->arg("x") // temporary solution
         );
     }
 }
