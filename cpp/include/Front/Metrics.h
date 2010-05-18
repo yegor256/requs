@@ -20,6 +20,14 @@
 
 void Metrics::fillNode(pugi::xml_node& n) {
     using namespace pugi;
+
+    pugi::xml_node x;
+    
+    x = n.append_child();
+    x.set_name("ambiguity");
+    
+    double a = solm::Solm::getInstance().getAmbiguity();
+    x.append_child(pugi::node_pcdata).set_value((boost::format("%0.3f") % a).str().c_str());
 }
 
 

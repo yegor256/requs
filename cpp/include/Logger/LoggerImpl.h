@@ -97,10 +97,9 @@ const string Logger::getReport() const {
 
 /**
  * All links found between elements report to log lines
- * @see rqdql.cpp
  */
-void Logger::reportLinks() {
-    for (vector<Link>::const_iterator i = links.begin(); i != links.end(); ++i) {
+const vector<Logger::Link>& Logger::getLinks() {
+    for (vector<Link>::iterator i = links.begin(); i != links.end(); ++i) {
         const void* left = (*i).getLeft();
         const void* right = (*i).getRight();
         if (!hasSubject(left)) {
@@ -109,12 +108,10 @@ void Logger::reportLinks() {
         if (!hasSubject(right)) {
             throw "RIGHT subject not found when reporting links";
         }
-        vector<string> lineNumbers;
-        for (vector<int>::const_iterator j = subjects[right].begin(); j != subjects[right].end(); ++j) {
-            lineNumbers.push_back((boost::format("%d") % *j).str());
-        }
-        log(left, "[LINK] " + boost::algorithm::join(lineNumbers, ", "));
+        (*i).setLeftLines(subjects[left]);
+        (*i).setRightLines(subjects[right]);
     }
+    return links;
 }
 
 /**
@@ -123,39 +120,5 @@ void Logger::reportLinks() {
 void Logger::addLink(const void* l, const void* r) { 
     // validate for duplicated links!
     links.push_back(Link(l, r)); 
-}
-
-/**
- * Log report has scope errors?
- */
-bool Logger::hasErrors() const {
-    return countErrors();
-}
-
-/**
- * How many errors we have?
- */
-int Logger::countErrors() const {
-    int cnt = 0;
-    for (vector<Message>::const_iterator i = messages.begin(); i != messages.end(); ++i) {
-        if ((*i).isError()) {
-            cnt++;
-        }
-    }
-    return cnt;
-}
-
-/**
- * This message is a scope error?
- */
-bool Logger::Message::isError() const {
-    // it's a system message
-    if (boost::regex_match(message, boost::regex("^\\[[A-Z]+\\].*"))) {
-        return false;
-    }
-    if (lines.empty()) {
-        return false;
-    }
-    return true;
 }
 
