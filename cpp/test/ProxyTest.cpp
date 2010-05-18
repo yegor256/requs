@@ -16,30 +16,9 @@
  * @version $Id: ScopeTest.cpp 1487 2010-04-01 08:45:47Z yegor256@yahoo.com $
  */
 
-#include <boost/test/minimal.hpp>
-#include <string>
-#include <iostream>
-#include <boost/algorithm/string/join.hpp>
-#include "rqdql.h"
-#include "Solm.h"
-#include "Proxy.h"
-#include "Logger.h"
+#include "AbstractTestCase.h"
+
 using namespace proxy;
-using namespace std;
-
-rqdql::LogLevel rqdql::level = L_DEBUG;
-
-void setUp() {
-    rqdql::Logger::getInstance().clear();
-    Proxy::getInstance().clear();
-    solm::Solm::getInstance().clear();
-}
-
-void tearDown() {
-    if (!rqdql::Logger::getInstance().empty()) {
-        cout << "Log report is not empty:" << endl << rqdql::Logger::getInstance().getReport() << endl;
-    }
-}
 
 void testGabrageCollectionWorksProperly() {
     setUp();

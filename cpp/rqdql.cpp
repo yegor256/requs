@@ -22,6 +22,7 @@
 #include "rqdql.h"
 #include "Scanner.h"
 #include "Logger.h"
+#include "Front.h"
 
 rqdql::LogLevel rqdql::level = L_ERROR;
 
@@ -31,29 +32,18 @@ rqdql::LogLevel rqdql::level = L_ERROR;
 int main(int argc, char** argv) {
     using namespace std;
 
-    bool optIndicateAmbiguity = false;
-    bool optIndicateLinks = false;
-
     char c;
-    while ((c = getopt(argc, argv, "val?")) != -1) {
+    while ((c = getopt(argc, argv, "v?")) != -1) {
         switch (c) {
-            case 'a':
-                optIndicateAmbiguity = true;
-                break;
-            case 'l':
-                optIndicateLinks = true;
-                break;
             case 'v':
                 cout << RQDQL_VERSION << endl;
                 return 0;
             case '?':
                 cout << 
-                "usage: rqdql [-?v]" << endl <<
+                "usage: rqdql [-?v] [reports...]" << endl <<
                 "Options:" << endl <<
                 "  -?\tShows this help message" << endl <<
                 "  -v\tReturns current version of the product" << endl <<
-                "  -a\tAdd scope ambiguity to the report" << endl <<
-                "  -l\tAdd links between objects into the report" << endl <<
                 "This program built for " << __VERSION__ << endl <<
                 "Report bugs to <bugs@rqdql.com>" << endl
                 ;
@@ -71,36 +61,19 @@ int main(int argc, char** argv) {
     try {
         rqdql::Scanner::getInstance().scan(text);
         proxy::Proxy::getInstance().inject();
-        
-        // show cross-links between lines
-        if (optIndicateLinks) {
-            rqdql::Logger::getInstance().reportLinks();
-        }
-        
-        // show summary ambiguity
-        if (optIndicateAmbiguity) {
-            if (!rqdql::Logger::getInstance().hasErrors()) {
-                rqdql::Logger::getInstance().log(
-                    0,
-                    (boost::format("[INFO] ambiguity=%0.3f") % solm::Solm::getInstance().getAmbiguity()).str()
-                );
-            } else {
-                rqdql::Logger::getInstance().log(
-                    0,
-                    (boost::format("Scope ambiguity can't be calculated since there are %d errors") 
-                        % rqdql::Logger::getInstance().countErrors()
-                    ).str()
-                );
+        for (int i = 1; i < argc; ++i) {
+            if (argv[i][0] != '-') {
+                front::Front::getInstance().require(argv[i]);
             }
         }
+        cout << front::Front::getInstance().asXml() << endl;
     } catch (char* e) {
         cout << "Internal error: \"" << e << "\"" << endl;
+        return -1;
     } catch (...) {
         cout << "Unknown internal error, email us your text to <team@rqdql.com>" << endl;
+        return -1;
     }
-
-    // no, we should display all errors and log messages found
-    cout << rqdql::Logger::getInstance().getReport() << endl;
     return 0;
 }
 

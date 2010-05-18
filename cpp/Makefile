@@ -41,7 +41,7 @@ LIB_OBJS := $(LIB_SOURCES:.cpp=.obj)
 
 HEADERS := $(shell find include -name "*.h")
 
-TEST_SOURCES := $(shell find test -name "*.cpp")
+TEST_SOURCES := $(shell find test -name "*Test.cpp")
 TESTS := $(TEST_SOURCES:.cpp=.test)
 VALID_EXAMPLES = $(shell find examples/valid -name "*.txt")
 
