@@ -35,7 +35,7 @@ void Errors::fillNode(pugi::xml_node& n) {
         }
     }
 
-    unique(errors.begin(), errors.end());
+    errors.resize(unique(errors.begin(), errors.end()) - errors.begin());
     sort(errors.begin(), errors.end());
     
     for (vector<Error>::const_iterator i = errors.begin(); i != errors.end(); ++i) {
