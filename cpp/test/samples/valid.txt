@@ -1,7 +1,7 @@
 ActorUser is a "human".
 PhotoFile is a "file".
-UC1 where ActorUser (the user) uploads PhotoFile (the file):
+UC14.78 where ActorUser (the user) uploads PhotoFile (the file):
 1. "The user uploads the file".
 2. The user reads the file.
-3. We validate the file.
-UC2 where we validate PhotoFile (the file): "we will define it later".
+3. We seriously validate name of the file when we want it.
+UC25.4 where we seriously validate PhotoFile (the file) when we want it: "we will define it later".
