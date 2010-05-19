@@ -119,7 +119,7 @@
     </p>
     
     <p>By means of "<tt>is/is a</tt>" we enable a declaration of <b>invariants</b>
-        on classes. Invariant is a condition, which is always true, no matter
+        on classes. Invariant is a <b>predicate</b>, which is always true, no matter
         what happens with the system. In the example above it is always true
         that "<tt>PNG content</tt>" is a file with binary content (not a readable
         ASCII text). Nobody can break this invariant and put a textual information
@@ -257,25 +257,27 @@
         <a href="http://en.wikipedia.org/wiki/Exception_handling">exception handling paradigm</a>
         in object-oriented languages.</p>
 
-<h1>2. Scope Vagueness</h1>
+<h1>2. Scope Ambiguity</h1>
 
     <p>There is only one metric that tells us everything about 
         the entire scope definition document. The metric is called 
-        "<b>scope vagueness</b>" and is calculated like:</p>
+        "<b>scope ambiguity</b>" and is calculated like:</p>
         
-    <p>SV = I / (I + M)</p>
+    <p>A = S / (S + M)</p>
     
-    <p><i>I</i> stands for a total number of all informal flows,
+    <p><i>S</i> stands for a total number of all informal flows,
         and <i>M</i> is a total number of CRUD-manipulators.
-        Thus, if <i>SV</i> equals to zero, the document is absolutely non-vague,
+        Thus, if <i>A</i> equals to 0, the document is absolutely non-ambiguous,
         which is an almost impossible situation. In real world projects
-        the task of a system analyst is to move <i>SV</i> from 1 to 0.</p>
+        the task of a system analyst is to move <i>A</i> from 1 to 0.</p>
         
     <math xmlns="http://www.w3.org/1998/Math/MathML">
         <!-- later -->
     </math>
 
-<h1>3. Invariants</h1>
+<h1>3. Predicates</h1>
+
+    <p>Possible predicates now are: <tt>text</tt> and <tt>number</tt>.</p>
 
     <p>to be continued...</p>
 
