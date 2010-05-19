@@ -103,7 +103,7 @@ QOS (QOS{NSFX})
 	/* numbers and words */
 [0-9]+ { yylval.num = atoi(yytext); log(format("NUMBER: '%s'") % yytext); return NUMBER; }
 [a-zA-Z]/[^a-zA-Z] { yySet(yylval.name, yytext); log(format("LETTER: '%s'") % yytext); return LETTER; }
-[a-zA-Z]+ { yySet(yylval.name, yytext); log(format("WORD: '%s'") % yytext); return WORD; }
+[a-zA-Z\-]+ { yySet(yylval.name, yytext); log(format("WORD: '%s'") % yytext); return WORD; }
 
 	/* quoted informal texts */
 (\") { BEGIN(READING_QUOTED); yylval.name = new string(""); }
