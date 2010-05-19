@@ -68,10 +68,10 @@ int main(int argc, char** argv) {
         }
         cout << front::Front::getInstance().asXml() << endl;
     } catch (char* e) {
-        cout << "Internal error: \"" << e << "\"" << endl;
+        cerr << "Internal error: \"" << e << "\"" << endl;
         return -1;
     } catch (...) {
-        cout << "Unknown internal error, email us your text to <team@rqdql.com>" << endl;
+        cerr << "Unknown internal error, email us your text to <team@rqdql.com>" << endl;
         return -1;
     }
     return 0;
