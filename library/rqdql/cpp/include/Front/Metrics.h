@@ -34,6 +34,26 @@ void Metrics::fillNode(pugi::xml_node& n) {
     x.append_child(pugi::node_pcdata).set_value(
         (boost::format("%d") % rqdql::Logger::getInstance().size()).str().c_str()
     );
+
+    if (getParam<bool>("lists", true)) {
+        x = n.append_child();
+        x.set_name("types");
+        vector<string> v = proxy::Proxy::getInstance().getTypeNames();
+        for (vector<string>::const_iterator i = v.begin(); i != v.end(); ++i) {
+            pugi::xml_node t = x.append_child();
+            t.set_name("type");
+            t.append_child(pugi::node_pcdata).set_value((*i).c_str());
+        }
+
+        x = n.append_child();
+        x.set_name("useCases");
+        v = proxy::Proxy::getInstance().getAllUseCaseNames();
+        for (vector<string>::const_iterator i = v.begin(); i != v.end(); ++i) {
+            pugi::xml_node t = x.append_child();
+            t.set_name("uc");
+            t.append_child(pugi::node_pcdata).set_value((*i).c_str());
+        }
+    }
 }
 
 

@@ -82,5 +82,8 @@ template<> bool Reporter::getParam<bool>(const string& n, const bool& d) {
     if (s == "on") {
         return true;
     }
+    if (s == "true") {
+        return true;
+    }
     return false;
 }

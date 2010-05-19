@@ -61,6 +61,7 @@ public:
     void log(int, const string&); // we know exact line number
     bool empty() const { return messages.empty(); }
     const string getReport() const;
+    const vector<int>& getLinesFor(const void* s) { return subjects[s]; }
     const vector<Message>& getMessages() const { return messages; }
     const vector<Link>& getLinks();
     void clear() { messages.clear(); }

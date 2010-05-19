@@ -33,13 +33,60 @@ void Links::fillNode(pugi::xml_node& n) {
         }
     }
 
+    pugi::xml_node x = n.append_child();
+    x.set_name("crosses");
     for (map<int, int>::const_iterator i = links.begin(); i != links.end(); ++i) {
-        pugi::xml_node l = n.append_child();
+        pugi::xml_node l = x.append_child();
         l.set_name("link");
         l.append_child().set_name("left");
         l.child("left").append_child(pugi::node_pcdata).set_value((boost::format("%d") % (*i).first).str().c_str());
         l.append_child().set_name("right");
         l.child("right").append_child(pugi::node_pcdata).set_value((boost::format("%d") % (*i).second).str().c_str());
+    }
+
+    x = n.append_child();
+    x.set_name("locations");
+
+    /**
+     * @todo Totally ineffective implementation now!!
+     */
+
+    vector<string> types = proxy::Proxy::getInstance().getTypeNames();
+    for (vector<string>::const_iterator i = types.begin(); i != types.end(); ++i) {
+        vector<int> lines = rqdql::Logger::getInstance().getLinesFor(proxy::Proxy::getInstance().getType(*i));
+        if (lines.empty()) {
+            continue;
+        }
+
+        pugi::xml_node t = x.append_child();
+        t.set_name("loc");
+        t.append_attribute("name").set_value((*i).c_str());
+        for (vector<int>::const_iterator j = lines.begin(); j != lines.end(); ++j) {
+            pugi::xml_node loc = t.append_child();
+            loc.set_name("line");
+            loc.append_child(pugi::node_pcdata).set_value(
+                (boost::format("%d") % (*j)).str().c_str()
+            );
+        }
+    }
+
+    vector<string> useCases = proxy::Proxy::getInstance().getAllUseCaseNames();
+    for (vector<string>::const_iterator i = useCases.begin(); i != useCases.end(); ++i) {
+        vector<int> lines = rqdql::Logger::getInstance().getLinesFor(proxy::Proxy::getInstance().getUseCase(*i));
+        if (lines.empty()) {
+            continue;
+        }
+
+        pugi::xml_node t = x.append_child();
+        t.set_name("loc");
+        t.append_attribute("name").set_value((*i).c_str());
+        for (vector<int>::const_iterator j = lines.begin(); j != lines.end(); ++j) {
+            pugi::xml_node loc = t.append_child();
+            loc.set_name("line");
+            loc.append_child(pugi::node_pcdata).set_value(
+                (boost::format("%d") % (*j)).str().c_str()
+            );
+        }
     }
 }
 
