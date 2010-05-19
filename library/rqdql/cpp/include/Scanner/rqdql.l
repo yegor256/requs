@@ -58,6 +58,7 @@ QOS (QOS{NSFX})
 
 "-s" { log("PLURAL_MANY"); return PLURAL_MANY; }
 "(s)" { log("PLURAL_SOME"); return PLURAL_SOME; }
+"-?" |
 "?" { log("PLURAL_ANY"); return PLURAL_ANY; }
     
 ":" { log("COLON"); return COLON; }
