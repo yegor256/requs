@@ -111,7 +111,7 @@ statement:
     |
     informal
     |
-    error
+    error DOT
         {
             lyyerror(@1, "Statement ignored"); 
         }
