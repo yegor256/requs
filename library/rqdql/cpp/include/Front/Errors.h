@@ -18,13 +18,13 @@
  * This file is included ONLY from Front.h
  */
 
+/**
+ * Convert errors into XML node
+ */
 void Errors::fillNode(pugi::xml_node& n) {
     using namespace pugi;
 
-    int max = atoi(getParam("max").c_str());
-    if (!max) {
-        max = 50;
-    }
+    int max = getParam<int>("max", 50);
 
     vector<Error> errors;
     typedef vector<rqdql::Logger::Message> Msgs;
@@ -35,8 +35,10 @@ void Errors::fillNode(pugi::xml_node& n) {
         }
     }
 
-    errors.resize(unique(errors.begin(), errors.end()) - errors.begin());
-    sort(errors.begin(), errors.end());
+    if (getParam<int>("unique", true)) {
+        errors.resize(unique(errors.begin(), errors.end()) - errors.begin());
+        sort(errors.begin(), errors.end());
+    }
     
     for (vector<Error>::const_iterator i = errors.begin(); i != errors.end(); ++i) {
         pugi::xml_node err = n.append_child();

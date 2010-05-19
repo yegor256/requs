@@ -1,6 +1,9 @@
 ActorUser works hard fds.
 ActorUser could work betterfdsf  fds fds .
 
+ActorUser includes:
+ name: "something very good for me".
+
 UC1 where ActorUser (the user) converts LatexDocument (the document):
  1. "something".
  2. The user uploads the document.

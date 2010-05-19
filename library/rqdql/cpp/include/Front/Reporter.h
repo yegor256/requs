@@ -58,3 +58,29 @@ void Reporter::appendNode(pugi::xml_node& r) {
     fillNode(n);
 }
 
+/**
+ * Get INTEGER parameter
+ */
+template<> int Reporter::getParam<int>(const string& n, const int& d) {
+    if (params.find(n) == params.end()) {
+        return d;
+    }
+    return atoi(params[n].c_str());
+}
+
+/**
+ * Get BOOLEAN parameter
+ */
+template<> bool Reporter::getParam<bool>(const string& n, const bool& d) {
+    if (params.find(n) == params.end()) {
+        return d;
+    }
+    string s = boost::algorithm::to_lower_copy(params[n]);
+    if (s == "yes") {
+        return true;
+    }
+    if (s == "on") {
+        return true;
+    }
+    return false;
+}

@@ -43,7 +43,7 @@ public:
 protected:
     Reporter(const Params& p) : params(p) { /* it's private, use factory() instead */ };
     virtual void fillNode(pugi::xml_node&) = 0;
-    const string& getParam(const string& n) { return params[n]; }
+    template <typename T> T getParam(const string& n, const T&);
 private:
     string name;
     Params params;
