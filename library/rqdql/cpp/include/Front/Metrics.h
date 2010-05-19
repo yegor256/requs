@@ -35,6 +35,10 @@ void Metrics::fillNode(pugi::xml_node& n) {
         (boost::format("%d") % rqdql::Logger::getInstance().size()).str().c_str()
     );
 
+    x = n.append_child();
+    x.set_name("version");
+    x.append_child(pugi::node_pcdata).set_value(RQDQL_VERSION);
+
     if (getParam<bool>("lists", true)) {
         x = n.append_child();
         x.set_name("types");
