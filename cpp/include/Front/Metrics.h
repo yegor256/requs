@@ -25,9 +25,15 @@ void Metrics::fillNode(pugi::xml_node& n) {
     
     x = n.append_child();
     x.set_name("ambiguity");
+    x.append_child(pugi::node_pcdata).set_value(
+        (boost::format("%0.3f") % solm::Solm::getInstance().getAmbiguity()).str().c_str()
+    );
     
-    double a = solm::Solm::getInstance().getAmbiguity();
-    x.append_child(pugi::node_pcdata).set_value((boost::format("%0.3f") % a).str().c_str());
+    x = n.append_child();
+    x.set_name("errorsCount");
+    x.append_child(pugi::node_pcdata).set_value(
+        (boost::format("%d") % rqdql::Logger::getInstance().size()).str().c_str()
+    );
 }
 
 
