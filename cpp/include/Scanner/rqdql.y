@@ -241,6 +241,11 @@ slots:
             $$ = v;
             protocol(@1, $$);
         } 
+    |
+    slots separator error
+        {
+            lyyerror(@3, "Slot ignored"); 
+        }
     ;
     
 slot:
