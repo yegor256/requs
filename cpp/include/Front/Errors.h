@@ -35,7 +35,7 @@ void Errors::fillNode(pugi::xml_node& n) {
         }
     }
 
-    if (getParam<int>("unique", true)) {
+    if (getParam<bool>("unique", true)) {
         errors.resize(unique(errors.begin(), errors.end()) - errors.begin());
         sort(errors.begin(), errors.end());
     }
