@@ -80,7 +80,7 @@ QOS (QOS{NSFX})
 [Aa]"nd" { log("AND"); return AND; }
 [Oo]"f" { log("OF"); return OF; }
 [Tt]"he" { log("THE"); return THE; }
-[Ii]"ncludes" { log("INCLUDES"); return INCLUDES; }
+[Ii]"nclude"s? { log("INCLUDES"); return INCLUDES; }
 [Tt]"o" | 
 [Ww]"ith" |
 [Ii]"nto" |
