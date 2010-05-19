@@ -216,9 +216,9 @@
     </p>
     
     <p>There are four use cases that our use case <tt>UC8.1</tt> includes.
-        They have to be defined in somewhere else in the document,
+        They have to be defined somewhere else in the document,
         otherwise the document would be invalid. But not all four are
-        mandatory, because there are a number of <b>elementary use cases</b>,
+        mandatory, because there is a number of <b>elementary use cases</b>,
         which are defined in the system, even if the document is
         empty. The elementary use cases are 
         (<a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a> requirements pattern):</p>
@@ -228,6 +228,7 @@
         <b>Somebody</b> reads <b>something</b><br/>
         <b>Somebody</b> updates <b>something</b><br/>
         <b>Somebody</b> deletes <b>something</b><br/>
+        <b>Somebody</b> turns into <b>somebody</b><br/>
     </p>
     
     <p>As you understand, <tt>somebody</tt> means "any actor",
@@ -237,6 +238,9 @@
         <tt>update</tt> means to change values of slots of an object.
         <tt>delete</tt> means to remove an object from a persistent storage.
         </p>
+        
+    <p>With <tt>turns into</tt> elementary use case we convert one
+        actor to another.</p>
         
     <p>Thus, a valid flow either points us to another use case
         defined somewhere else in the document, or points us to
