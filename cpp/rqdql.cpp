@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
         cerr << "Internal error: \"" << e << "\"" << endl;
         return -1;
     } catch (...) {
-        cerr << "Unknown internal error, email us your text to <team@rqdql.com>" << endl;
+        cerr << "Unknown internal error, please email your text to <bugs@rqdql.com>" << endl;
         return -1;
     }
     return 0;
