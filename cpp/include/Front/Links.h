@@ -61,6 +61,7 @@ void Links::fillNode(pugi::xml_node& n) {
         pugi::xml_node t = x.append_child();
         t.set_name("loc");
         t.append_attribute("name").set_value((*i).c_str());
+        t.append_attribute("what").set_value("type");
         for (vector<int>::const_iterator j = lines.begin(); j != lines.end(); ++j) {
             pugi::xml_node loc = t.append_child();
             loc.set_name("line");
@@ -80,6 +81,7 @@ void Links::fillNode(pugi::xml_node& n) {
         pugi::xml_node t = x.append_child();
         t.set_name("loc");
         t.append_attribute("name").set_value((*i).c_str());
+        t.append_attribute("what").set_value("uc");
         for (vector<int>::const_iterator j = lines.begin(); j != lines.end(); ++j) {
             pugi::xml_node loc = t.append_child();
             loc.set_name("line");
