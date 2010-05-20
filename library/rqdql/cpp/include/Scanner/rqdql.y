@@ -179,7 +179,7 @@ predicate:
                 lyyerror(@1, "Class can't be an instance of himself");
             } else {
                 Type* t = static_cast<Type*>($1);
-                $$ = new solm::Info("'instance of " + t->getName());
+                $$ = (new solm::Function(t->getName()))->arg("x");
                 protocol(@1, $$);
             }
         }

@@ -31,45 +31,32 @@ void Links::fillNode(pugi::xml_node& n) {
         }
     }
 
-    // pugi::xml_node x = n.append_child();
-    // x.set_name("crosses");
     for (map<int, int>::const_iterator i = links.begin(); i != links.end(); ++i) {
         ((n / "crosses" + "link") / "left" = (*i).first) / "right" = (*i).second;
     }
+    
+    addLocations<proxy::Type>(n, "type");
+    addLocations<proxy::UseCase>(n, "uc");
+}
 
-    /**
-     * @todo Totally ineffective implementation now!!
-     */
-
-    vector<string> types = proxy::Proxy::getInstance().getNames<proxy::Type>();
+/**
+ * Add locations of objects, found in the scope
+ */
+template<typename T> void Links::addLocations(pugi::xml_node& n, const string& label) const {
+    vector<string> types = proxy::Proxy::getInstance().getNames<T>();
     for (vector<string>::const_iterator i = types.begin(); i != types.end(); ++i) {
-        vector<int> lines = rqdql::Logger::getInstance().getLinesFor(proxy::Proxy::getInstance().get<proxy::Type>(*i));
+        vector<int> lines = rqdql::Logger::getInstance().getLinesFor(proxy::Proxy::getInstance().get<T>(*i));
         if (lines.empty()) {
             continue;
         }
 
+        // leave only unique lines
+        lines.resize(unique(lines.begin(), lines.end()) - lines.begin());
         PugiNodeWrapper t = n / "locations" + "loc";
         t["name"] = *i;
-        t["what"] = "type";
-        for (vector<int>::const_iterator j = lines.begin(); j != lines.end(); ++j) {
-            t + "line" = *j;
-        }
-    }
-
-    vector<string> useCases = proxy::Proxy::getInstance().getNames<proxy::UseCase>();
-    for (vector<string>::const_iterator i = useCases.begin(); i != useCases.end(); ++i) {
-        vector<int> lines = rqdql::Logger::getInstance().getLinesFor(proxy::Proxy::getInstance().get<proxy::UseCase>(*i));
-        if (lines.empty()) {
-            continue;
-        }
-
-        PugiNodeWrapper t = n / "locations" + "loc";
-        t["name"] = *i;
-        t["what"] = "uc";
+        t["what"] = label;
         for (vector<int>::const_iterator j = lines.begin(); j != lines.end(); ++j) {
             t + "line" = *j;
         }
     }
 }
-
-

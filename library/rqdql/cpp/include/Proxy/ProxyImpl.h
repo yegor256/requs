@@ -123,6 +123,23 @@ template<typename T> size_t Proxy::count() const {
 }
 
 /**
+ * Initialize TYPE right after its created
+ */
+template<> void Proxy::initialize<Type>(Type* t) {
+    // automatically add a predicate, that this type inherits from "actor"
+    if (boost::regex_match(findName(t), boost::regex("Actor.*"))) {
+        t->addPredicate((new solm::Function("actor"))->arg("x"));
+    }
+}
+
+/**
+ * Initialize UseCase right after its created
+ */
+template<> void Proxy::initialize<UseCase>(UseCase* t) {
+    /* nothing special for now */
+}
+
+/**
  * Get Type by name OR create it if it's not found
  */
 template<typename T> T* Proxy::get(const string& name) {
@@ -130,6 +147,7 @@ template<typename T> T* Proxy::get(const string& name) {
     T* t = list[name];
     if (!t) {
         t = list[name] = new T();
+        initialize(t);
     }
     return t;
 }

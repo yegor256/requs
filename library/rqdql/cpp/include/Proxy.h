@@ -191,6 +191,7 @@ private:
     Proxy() : types(), useCases() { clear(); }
     template<typename T> map<string, T*>& getArray();
     template<typename T> const map<string, T*>& getConstArray() const;
+    template<typename T> void initialize(T* t);
 };
 
 
