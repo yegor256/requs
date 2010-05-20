@@ -88,6 +88,8 @@ class Links : public Reporter {
 public:
     Links(const Params& p) : Reporter(p) { /* that's it */ }
     void fillNode(pugi::xml_node&);
+private:
+    template<typename T> void addLocations(pugi::xml_node&, const string&) const;
 };
     
 class Front {
