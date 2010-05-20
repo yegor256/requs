@@ -41,10 +41,11 @@ void Errors::fillNode(pugi::xml_node& n) {
     }
     
     for (vector<Error>::const_iterator i = errors.begin(); i != errors.end(); ++i) {
-        pugi::xml_node err = n.append_child();
-        err.set_name("error");
-        err.append_child(pugi::node_pcdata).set_value((*i).message.c_str());
-        err.append_attribute("line").set_value((*i).line);
+        (n / "errors" + "error" = (*i).message) ["line"] = (*i).line;
+        // pugi::xml_node err = n.append_child();
+        // err.set_name("error");
+        // err.append_child(pugi::node_pcdata).set_value((*i).message.c_str());
+        // err.append_attribute("line").set_value((*i).line);
         if (!--max) {
             break;
         }

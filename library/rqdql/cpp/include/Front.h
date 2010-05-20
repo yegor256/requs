@@ -100,6 +100,27 @@ private:
     vector<Reporter*> reporters;
 };
 
+class PugiNodeWrapper;
+class PugiAttributeWrapper : public pugi::xml_attribute {
+public:
+    PugiAttributeWrapper(pugi::xml_attribute& a) : pugi::xml_attribute(a) { /* that's it */ }
+    // PugiNodeWrapper operator=(const string&);
+    // PugiNodeWrapper operator=(int);
+    void operator=(const string&);
+    void operator=(int);
+};
+
+class PugiNodeWrapper : public pugi::xml_node {
+public:
+    PugiNodeWrapper(pugi::xml_node& n) : pugi::xml_node(n) { /* that's it */ }
+    PugiNodeWrapper operator+(const string&);
+    PugiNodeWrapper& operator=(const string&);
+    PugiNodeWrapper& operator=(double);
+    PugiNodeWrapper& operator=(int);
+    PugiAttributeWrapper operator[](const string&);
+};
+
+#include "Front/PugiWrapper.h"
 #include "Front/FrontImpl.h"
 #include "Front/Reporter.h"
 #include "Front/Errors.h"
