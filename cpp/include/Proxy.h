@@ -178,21 +178,19 @@ public:
     static Proxy& getInstance();
     void inject();
     void clear();
-    int countTypes() const { return types.size(); } 
-    const vector<string> getTypeNames() const;
-    Type* getType(const string&);
-    UseCase* getUseCase(const string&);
-    const vector<string> getAllUseCaseNames() const;
-    bool hasName(const Type*) const;
-    bool hasName(const UseCase*) const;
-    const string findName(const Type*) const;
-    const string findName(const UseCase*) const;
+    template<typename T> size_t count() const; 
+    template<typename T> const vector<string> getNames() const;
+    template<typename T> T* get(const string&);
+    template<typename T> bool hasName(const T*) const;
+    template<typename T> const string findName(const T*) const;
 private:
     typedef map<string, Type*> Types;
     typedef map<string, UseCase*> UseCases;
     Types types;
     UseCases useCases;
     Proxy() : types(), useCases() { clear(); }
+    template<typename T> map<string, T*>& getArray();
+    template<typename T> const map<string, T*>& getConstArray() const;
 };
 
 

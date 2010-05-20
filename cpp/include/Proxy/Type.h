@@ -31,7 +31,11 @@ bool Type::hasName() const {
  * hasName() in order to validate before.
  */
 const string Type::getName() const {
-    return Proxy::getInstance().findName(this);
+    try {
+        return Proxy::getInstance().findName(this);
+    } catch (rqdql::Exception e) {
+        throw rqdql::Exception("Type doesn't have a name, but getName() called");
+    }
 }
 
 /**

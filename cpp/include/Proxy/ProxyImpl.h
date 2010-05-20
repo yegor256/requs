@@ -19,6 +19,34 @@
  */
 
 /**
+ * Get reference to the list of types
+ */
+template<> map<string, Type*>& Proxy::getArray<Type>() {
+    return types;
+}
+
+/**
+ * Get reference to the list of use cases
+ */
+template<> map<string, UseCase*>& Proxy::getArray<UseCase>() {
+    return useCases;
+}
+
+/**
+ * Get reference to the list of types
+ */
+template<> const map<string, Type*>& Proxy::getConstArray<Type>() const {
+    return types;
+}
+
+/**
+ * Get reference to the list of use cases
+ */
+template<> const map<string, UseCase*>& Proxy::getConstArray<UseCase>() const {
+    return useCases;
+}
+
+/**
  * This is a singleton pattern. In order to get an instance
  * of this class you should call getInstance()
  */
@@ -65,57 +93,45 @@ void Proxy::inject() {
  * Clear proxy and prepare default types
  */
 void Proxy::clear() {
-    types.clear();
-    useCases.clear();
+    getArray<Type>().clear();
+    getArray<UseCase>().clear();
     
-    getType("text")->addPredicate((new solm::Function("string"))->arg("x"));
-    getType("number")->addPredicate((new solm::Function("integer"))->arg("x"));
-    getType("SUD")->addPredicate(new solm::Constant(true));
-    getType("somebody")->addPredicate(new solm::Constant(true));
-    getType("something")->addPredicate(new solm::Constant(true));
+    get<Type>("text")->addPredicate((new solm::Function("string"))->arg("x"));
+    get<Type>("number")->addPredicate((new solm::Function("integer"))->arg("x"));
+    get<Type>("SUD")->addPredicate(new solm::Constant(true));
+    get<Type>("somebody")->addPredicate(new solm::Constant(true));
+    get<Type>("something")->addPredicate(new solm::Constant(true));
 }
 
 /**
  * Get full list of all type names
  */
-const vector<string> Proxy::getTypeNames() const {
+template<typename T> const vector<string> Proxy::getNames() const {
+    const map<string, T*>& list = getConstArray<T>();
     vector<string> v;
-    for (Types::const_iterator i = types.begin(); i != types.end(); ++i) {
+    for (typename map<string, T*>::const_iterator i = list.begin(); i != list.end(); ++i) {
         v.push_back(i->first);
     }
     return v;
 }
 
 /**
- * Get full list of use case names (strings)
+ * Count elements of given type
  */
-const vector<string> Proxy::getAllUseCaseNames() const {
-    vector<string> v;
-    for (UseCases::const_iterator i = useCases.begin(); i != useCases.end(); ++i) {
-        v.push_back(i->first);
-    }
-    return v;
+template<typename T> size_t Proxy::count() const {
+    return getConstArray<T>().size();
 }
+
 /**
  * Get Type by name OR create it if it's not found
  */
-Type* Proxy::getType(const string& name) {
-    Type* t = types[name];
+template<typename T> T* Proxy::get(const string& name) {
+    map<string, T*>& list = getArray<T>();
+    T* t = list[name];
     if (!t) {
-        t = types[name] = new Type();
+        t = list[name] = new T();
     }
     return t;
-}
-
-/**
- * Get Use Case by name OR create it if it's not found
- */
-UseCase* Proxy::getUseCase(const string& name) {
-    UseCase* uc = useCases[name];
-    if (!uc) {
-        uc = useCases[name] = new UseCase();
-    }
-    return uc;
 }
 
 /**
@@ -123,22 +139,10 @@ UseCase* Proxy::getUseCase(const string& name) {
  * the holder.
  * @see Type::hasName()
  */
-bool Proxy::hasName(const Type* t) const {
-    for (Types::const_iterator i = types.begin(); i != types.end(); ++i) {
+template<typename T> bool Proxy::hasName(const T* t) const {
+    const map<string, T*>& list = getConstArray<T>();
+    for (typename map<string, T*>::const_iterator i = list.begin(); i != list.end(); ++i) {
         if (i->second == t) {
-            return true;
-        }
-    }
-    return false;
-}
-
-/**
- * Validates whether the given use case has a static name in 
- * the holder.
- */
-bool Proxy::hasName(const UseCase* uc) const {
-    for (UseCases::const_iterator i = useCases.begin(); i != useCases.end(); ++i) {
-        if (i->second == uc) {
             return true;
         }
     }
@@ -153,28 +157,14 @@ bool Proxy::hasName(const UseCase* uc) const {
  * a name or not.
  * @see Type::getName()
  */
-const string Proxy::findName(const Type* t) const {
-    for (Types::const_iterator i = types.begin(); i != types.end(); ++i) {
+template<typename T> const string Proxy::findName(const T* t) const {
+    const map<string, T*>& list = getConstArray<T>();
+    for (typename map<string, T*>::const_iterator i = list.begin(); i != list.end(); ++i) {
         if (i->second == t) {
             return i->first;
         }
     }
-    throw "this type doesn't have a name";
+    throw rqdql::Exception("Element doesn't have a system-wide name");
 }
 
-/**
- * Finds name of the use case in the static holder. If this
- * use case is attached to the holder -- the name will be found. If it
- * is not -- we should raise an exception. You should call
- * hasName() before, to validate whether this type has
- * a name or not.
- */
-const string Proxy::findName(const UseCase* uc) const {
-    for (UseCases::const_iterator i = useCases.begin(); i != useCases.end(); ++i) {
-        if (i->second == uc) {
-            return i->first;
-        }
-    }
-    throw "this UseCase doesn't have a name";
-}
 
