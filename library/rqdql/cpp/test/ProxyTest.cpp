@@ -22,35 +22,35 @@ using namespace proxy;
 
 void testGabrageCollectionWorksProperly() {
     setUp();
-    Proxy::getInstance().getTypeNames();
-    Proxy::getInstance().getType("User");
-    Proxy::getInstance().getTypeNames();
+    Proxy::getInstance().getNames<Type>();
+    Proxy::getInstance().get<Type>("User");
+    Proxy::getInstance().getNames<Type>();
     Proxy::getInstance().clear();
     tearDown();
 }
 
 void testContainerWorksProperly() {
     setUp();
-    Proxy::getInstance().getType("User");
-    Proxy::getInstance().getType("Photo");
-    Proxy::getInstance().getType("File");
-    Proxy::getInstance().getType("File");
-    BOOST_REQUIRE(Proxy::getInstance().countTypes() > 3); // + text, numeric, etc.
+    Proxy::getInstance().get<Type>("User");
+    Proxy::getInstance().get<Type>("Photo");
+    Proxy::getInstance().get<Type>("File");
+    Proxy::getInstance().get<Type>("File");
+    BOOST_REQUIRE(Proxy::getInstance().count<Type>() > 3); // + text, numeric, etc.
     cout <<
         boost::format("Types in container: %s") % 
-        boost::algorithm::join(Proxy::getInstance().getTypeNames(), ", ") << endl;
+        boost::algorithm::join(Proxy::getInstance().getNames<Type>(), ", ") << endl;
     tearDown();
 }
 
 void testWeCanBuildNewType() {
     setUp();
-    Type* t = Proxy::getInstance().getType("User");
+    Type* t = Proxy::getInstance().get<Type>("User");
     t->addSlot(
         new Slot(
             "email", 
             "1..n -> 1", 
             new solm::Info("email address"), 
-            Proxy::getInstance().getType("text")
+            Proxy::getInstance().get<Type>("text")
         )
     )
     ->addSlot(
@@ -58,7 +58,7 @@ void testWeCanBuildNewType() {
             "photos", 
             "1..n -> 0..n", 
             new solm::Info("a collection of photos"), 
-            Proxy::getInstance().getType("Photo")
+            Proxy::getInstance().get<Type>("Photo")
         )
     )
     ->addSlot(
@@ -66,7 +66,7 @@ void testWeCanBuildNewType() {
             "manager", 
             "1..n -> 1", 
             new solm::Info("user's manager, if any"), 
-            Proxy::getInstance().getType("User")
+            Proxy::getInstance().get<Type>("User")
         )
     )
     ->addSlot(
@@ -80,10 +80,10 @@ void testWeCanBuildNewType() {
     
     Proxy::getInstance().inject();
 
-    BOOST_REQUIRE(Proxy::getInstance().countTypes() >= 3); // User, string, and Photo
+    BOOST_REQUIRE(Proxy::getInstance().count<Type>() >= 3); // User, string, and Photo
     
     cout << "Definition of type 'User': " 
-    << Proxy::getInstance().getType("User")->toString() << endl;
+    << Proxy::getInstance().get<Type>("User")->toString() << endl;
     tearDown();
 }
 
@@ -91,7 +91,7 @@ void fillUseCase(UseCase* uc) {
     uc
     ->setSignature(
         (new Signature("${sud} validate ${photo}"))
-        ->explain("photo", new Signature::Explanation(Proxy::getInstance().getType("Photo")))
+        ->explain("photo", new Signature::Explanation(Proxy::getInstance().get<Type>("Photo")))
     )
     ->addFlow(
         1,
@@ -150,7 +150,7 @@ void fillUseCase(UseCase* uc) {
 
 void testWeCanBuildNewUseCase() {
     setUp();
-    UseCase* uc = Proxy::getInstance().getUseCase("UC1");
+    UseCase* uc = Proxy::getInstance().get<UseCase>("UC1");
     fillUseCase(uc);
     cout << uc->toString() << endl;
     tearDown();
@@ -158,7 +158,7 @@ void testWeCanBuildNewUseCase() {
 
 void testWeCanInjectUseCase() {
     setUp();
-    UseCase* uc = Proxy::getInstance().getUseCase("UC1");
+    UseCase* uc = Proxy::getInstance().get<UseCase>("UC1");
     
     fillUseCase(uc);
         
@@ -178,27 +178,27 @@ void testWeCanInjectUseCase() {
 
 void testUseCasesMatchEachOther() {
     setUp();
-    UseCase* uc1 = Proxy::getInstance().getUseCase("UC1");
+    UseCase* uc1 = Proxy::getInstance().get<UseCase>("UC1");
     uc1->setSignature(
         (new Signature("${sud} validate ${photo}"))
-        ->explain("photo", new Signature::Explanation(Proxy::getInstance().getType("Photo")))
+        ->explain("photo", new Signature::Explanation(Proxy::getInstance().get<Type>("Photo")))
     );
     uc1->addFlow(
         1,
         new Flow("We check that it's either PNG or GIF")
     );
     
-    UseCase* uc2 = Proxy::getInstance().getUseCase("UC2");
+    UseCase* uc2 = Proxy::getInstance().get<UseCase>("UC2");
     uc2->setSignature(
         (new Signature("${user} upload ${photo}"))
-        ->explain("photo", new Signature::Explanation(Proxy::getInstance().getType("Photo")))
+        ->explain("photo", new Signature::Explanation(Proxy::getInstance().get<Type>("Photo")))
     );
     uc2->addFlow(
         1,
         new Flow(
             "We validate the photo",
             (new Signature("${sud} validate ${photo}"))
-            ->explain("photo", new Signature::Explanation(Proxy::getInstance().getType("Photo")))
+            ->explain("photo", new Signature::Explanation(Proxy::getInstance().get<Type>("Photo")))
         )
     );
     

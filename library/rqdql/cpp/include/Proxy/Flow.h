@@ -98,9 +98,9 @@ solm::Formula* Flow::getTarget() const {
     }
     
     // trying to find a UC which matches this call
-    vector<string> names = Proxy::getInstance().getAllUseCaseNames();
+    vector<string> names = Proxy::getInstance().getNames<UseCase>();
     for (vector<string>::const_iterator i = names.begin(); i != names.end(); ++i) {
-        UseCase* uc = Proxy::getInstance().getUseCase(*i);
+        UseCase* uc = Proxy::getInstance().get<UseCase>(*i);
         if (uc->getSignature()->match(signature)) {
             rqdql::Logger::getInstance().addLink(this, uc);
             return (new solm::Function(uc->getName()))->arg("x");

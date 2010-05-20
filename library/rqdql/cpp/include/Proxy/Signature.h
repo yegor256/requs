@@ -59,12 +59,19 @@ bool Signature::match(const Signature* s) const {
  * Convert one explanation to string
  */
 const string Signature::Explanation::toString() const {
+    // this is a type, like "ActorUser" or "PhotoFile"
     if (type) {
-        return type->getName();
+        if (type->hasName()) {
+            return type->getName();
+        } else {
+            throw rqdql::Exception("Nameless type inside signature, how come?");
+        }
     }
+    // this is a slot of an object, like "Name of ActorUser"
     if (!slot.empty() && !object.empty()) {
         return slot + " (the " + object + ")"; 
     }
+    // there is nothing, just ITSELF
     return "itself"; 
 }
 

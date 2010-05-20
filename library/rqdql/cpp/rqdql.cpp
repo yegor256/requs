@@ -67,8 +67,8 @@ int main(int argc, char** argv) {
             }
         }
         cout << front::Front::getInstance().asXml() << endl;
-    } catch (char* e) {
-        cerr << "Internal error: \"" << e << "\"" << endl;
+    } catch (rqdql::Exception e) {
+        cerr << "Internal error: \"" << e.getMessage() << "\"" << endl;
         return -1;
     } catch (...) {
         cerr << "Unknown internal error, please email your text to <bugs@rqdql.com>" << endl;

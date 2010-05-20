@@ -29,12 +29,12 @@ void Metrics::fillNode(pugi::xml_node& n) {
     n / "version" = RQDQL_VERSION;
 
     if (getParam<bool>("lists", true)) {
-        vector<string> v = proxy::Proxy::getInstance().getTypeNames();
+        vector<string> v = proxy::Proxy::getInstance().getNames<proxy::Type>();
         for (vector<string>::const_iterator i = v.begin(); i != v.end(); ++i) {
             n / "types" + "type" = *i;
         }
 
-        v = proxy::Proxy::getInstance().getAllUseCaseNames();
+        v = proxy::Proxy::getInstance().getNames<proxy::UseCase>();
         for (vector<string>::const_iterator i = v.begin(); i != v.end(); ++i) {
             n / "useCases" + "uc" = *i;
         }

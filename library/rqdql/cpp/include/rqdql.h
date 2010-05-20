@@ -31,6 +31,14 @@ using namespace std;
 #include "Logger.h"
 
 namespace rqdql {
+    
+    class Exception {
+    public:
+        Exception(const string& s) : message(s) { /* that's it */ }
+        const string& getMessage() { return message; }
+    private:
+        string message;
+    };
 
     /**
      * Different levels of logging

@@ -287,7 +287,7 @@ useCaseDeclaration:
 useCaseStarter:
     UC WHERE signature COLON 
         {
-            UseCase* uc = Proxy::getInstance().getUseCase(*$1);
+            UseCase* uc = Proxy::getInstance().get<UseCase>(*$1);
             brokers::SignatureHolder* sh = static_cast<brokers::SignatureHolder*>($3);
             if (sh->hasSignature()) {
                 uc->setSignature(sh->getSignature());
@@ -511,7 +511,7 @@ flow: /* brokers::FlowHolder* */
 useCaseAlternativeDeclaration:
     UC altId CLOSE_BRACE IF predicate COLON flows 
     {
-        Flows* flows = Proxy::getInstance().getUseCase(*$1);
+        Flows* flows = Proxy::getInstance().get<UseCase>(*$1);
         brokers::AltPairs* e = static_cast<brokers::AltPairs*>($2);
         Flow* dest = 0;
         for (brokers::AltPairs::const_iterator i = e->begin(); i != e->end(); ++i) {
@@ -598,25 +598,25 @@ separator:
 theClass:
     CAMEL 
         {
-            $$ = Proxy::getInstance().getType(*$1);
+            $$ = Proxy::getInstance().get<Type>(*$1);
             protocol(@1, $$);
         }
     |
     SUD 
         {
-            $$ = Proxy::getInstance().getType("SUD");
+            $$ = Proxy::getInstance().get<Type>("SUD");
             protocol(@1, $$);
         }
     |
     SOMEBODY
         {
-            $$ = Proxy::getInstance().getType("somebody");
+            $$ = Proxy::getInstance().get<Type>("somebody");
             protocol(@1, $$);
         }
     |
     SOMETHING
         {
-            $$ = Proxy::getInstance().getType("something");
+            $$ = Proxy::getInstance().get<Type>("something");
             protocol(@1, $$);
         }
     |
