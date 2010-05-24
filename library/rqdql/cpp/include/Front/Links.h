@@ -32,7 +32,9 @@ void Links::fillNode(pugi::xml_node& n) {
     }
 
     for (map<int, int>::const_iterator i = links.begin(); i != links.end(); ++i) {
-        ((n / "crosses" + "link") / "left" = (*i).first) / "right" = (*i).second;
+        pugi::xml_node x = n / "crosses" + "link";
+        x / "left" = (*i).first;
+        x / "right" = (*i).second;
     }
     
     addLocations<proxy::Type>(n, "type");
