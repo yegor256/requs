@@ -53,7 +53,7 @@ public:
         vector<int> leftLines;
         vector<int> rightLines;
     };
-    static Logger& getInstance();
+    Logger() : messages() { /* that's it */ }
     void addSubject(const void* s, int l) { subjects[s].push_back(l); }
     bool hasSubject(const void* s) const { return subjects.find(s) != subjects.end(); }
     void addLink(const void*, const void*);
@@ -71,7 +71,6 @@ private:
     Subjects subjects;
     vector<Link> links;
     vector<Message> messages;
-    Logger() : messages() { /* that's it */ }
 };
 
 #include "Logger/LoggerImpl.h"

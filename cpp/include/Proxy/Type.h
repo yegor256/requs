@@ -22,7 +22,7 @@
  * Validates whether the TYPE has static name.
  */
 bool Type::hasName() const {
-    return Proxy::getInstance().hasName(this);
+    return rqdql::get<Proxy>().hasName(this);
 }
 
 /**
@@ -32,7 +32,7 @@ bool Type::hasName() const {
  */
 const string Type::getName() const {
     try {
-        return Proxy::getInstance().findName(this);
+        return rqdql::get<Proxy>().findName(this);
     } catch (rqdql::Exception e) {
         throw rqdql::Exception("Type doesn't have a name, but getName() called");
     }
@@ -100,7 +100,7 @@ solm::Formula* Type::makeFormula(const string& x) const {
     // in text, but we anyway should work with this type. Thus,
     // we report about a problem here and continue.
     if (isEmpty() && hasName()) {
-        rqdql::Logger::getInstance().log(
+        rqdql::get<rqdql::Logger>().log(
             this, 
             (boost::format("Entity '%s' is empty, probably its name is misspelled") % getName()).str()
         );
@@ -114,7 +114,7 @@ solm::Formula* Type::makeFormula(const string& x) const {
         sequence = getPredicate();
     } else {
         if (hasName()) {
-            rqdql::Logger::getInstance().log(
+            rqdql::get<rqdql::Logger>().log(
                 this, 
                 (boost::format("Entity '%s' doesn't have any textual explanation") % getName()).str()
             );

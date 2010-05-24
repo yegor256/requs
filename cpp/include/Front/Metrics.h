@@ -20,21 +20,21 @@
 
 void Metrics::fillNode(pugi::xml_node& n) {
     // scope ambiguity
-    n / "ambiguity" = solm::Solm::getInstance().getAmbiguity();
+    n / "ambiguity" = rqdql::get<solm::Solm>().getAmbiguity();
     
     // total number of errors found
-    n / "errorsCount" = (int)rqdql::Logger::getInstance().size();
+    n / "errorsCount" = (int)rqdql::get<Logger>().size();
 
     // version of the RQDQL distribution
     n / "version" = RQDQL_VERSION;
 
     if (getParam<bool>("lists", true)) {
-        vector<string> v = proxy::Proxy::getInstance().getNames<proxy::Type>();
+        vector<string> v = rqdql::get<proxy::Proxy>().getNames<proxy::Type>();
         for (vector<string>::const_iterator i = v.begin(); i != v.end(); ++i) {
             n / "types" + "type" = *i;
         }
 
-        v = proxy::Proxy::getInstance().getNames<proxy::UseCase>();
+        v = rqdql::get<proxy::Proxy>().getNames<proxy::UseCase>();
         for (vector<string>::const_iterator i = v.begin(); i != v.end(); ++i) {
             n / "useCases" + "uc" = *i;
         }

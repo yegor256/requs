@@ -20,35 +20,35 @@
 
 void testSimpleParsing() {
     setUp();
-    rqdql::Scanner::getInstance().scan(getFile("sample1.txt"));
-    proxy::Proxy::getInstance().inject();
+    rqdql::get<rqdql::Scanner>().scan(getFile("sample1.txt"));
+    rqdql::get<proxy::Proxy>().inject();
     tearDown();
 
     // but the log should NOT be empty
-    BOOST_REQUIRE(!rqdql::Logger::getInstance().empty());
+    BOOST_REQUIRE(!rqdql::get<rqdql::Logger>().empty());
 }
 
 void testSimpleParsingWithErrors() {
     setUp();
-    rqdql::Scanner::getInstance().scan(
+    rqdql::get<rqdql::Scanner>().scan(
         "ActorUser is a human being with identity. Also it is our client.\n"
         "ActorUser is an ActorVisitor or something else.\n"
         "Name of InvestorApplication includes: first name and last name.\n"
     );
-    proxy::Proxy::getInstance().inject();
+    rqdql::get<Proxy>().inject();
     tearDown();
 
-    BOOST_REQUIRE(!rqdql::Logger::getInstance().empty());
+    BOOST_REQUIRE(!rqdql::get<rqdql::Logger>().empty());
 }
 
 void testCleanParsing() {
     setUp();
-    rqdql::Scanner::getInstance().scan(getFile("valid.txt"));
-    proxy::Proxy::getInstance().inject();
+    rqdql::get<rqdql::Scanner>().scan(getFile("valid.txt"));
+    rqdql::get<Proxy>().inject();
     tearDown();
 
-    BOOST_REQUIRE(rqdql::Logger::getInstance().empty());
-    BOOST_REQUIRE(solm::Solm::getInstance().getAmbiguity() > 0);
+    BOOST_REQUIRE(rqdql::get<rqdql::Logger>().empty());
+    BOOST_REQUIRE(rqdql::get<solm::Solm>().getAmbiguity() > 0);
 }
 
 int test_main(int, char *[]) {

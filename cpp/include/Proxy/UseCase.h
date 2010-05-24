@@ -27,7 +27,7 @@ const string UseCase::toString() const {
  * Validates whether the use case has static name
  */
 bool UseCase::hasName() const {
-    return Proxy::getInstance().hasName(this);
+    return rqdql::get<Proxy>().hasName(this);
 }
 
 /**
@@ -36,7 +36,7 @@ bool UseCase::hasName() const {
  */
 const string UseCase::getName() const {
     try {
-        return Proxy::getInstance().findName(this);
+        return rqdql::get<Proxy>().findName(this);
     } catch (rqdql::Exception e) {
         throw rqdql::Exception("Use case doesn't have a name, but getName() called");
     }

@@ -24,7 +24,7 @@
  * happen due to some error.
  */
 const string Formula::toString() const {
-    rqdql::Logger::getInstance().log(
+    rqdql::get<rqdql::Logger>().log(
         this, 
         "FORMULA is an abstract class, can't return toString()"
     );
@@ -48,7 +48,7 @@ void Formula::setFormula(Formula* f, size_t i = 0) {
  */
 Formula* Formula::getFormula(size_t i = 0) const {
     if (i > subs.size()-1) {
-        rqdql::Logger::getInstance().log(
+        rqdql::get<rqdql::Logger>().log(
             this, 
             (boost::format("Formula no.%d is absent, returning TRUE instead") % i).str()
         );

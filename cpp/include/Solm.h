@@ -238,13 +238,12 @@ private:
  */
 class Solm : public Sequence {
 public:
-    static Solm& getInstance(); // singleton pattern
+    Solm() : Sequence(Sequence::OP_SEMICOLON) { /* that's it */ }
     const double getAmbiguity() const; // calculate scope ambiguity
     template <typename T> const int countTypes() const; // count objects of given type
     template <typename T> const vector<T*> findTypes() const; // find all objects of given type
     const vector<string> getAllFunctions() const; // get list of all declared functions
 private:
-    Solm() : Sequence(Sequence::OP_SEMICOLON) { /* that's it */ }
     const Formulas _retrieve(Formulas) const; // get all formulas, including sub-formulas
 };
 

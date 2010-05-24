@@ -37,7 +37,7 @@ Flows* Flow::findAlternative(char c) {
     }
     if (!found) {
         string msg = (boost::format("'Alternative '%c' is not found") % c).str();
-        rqdql::Logger::getInstance().log(this, msg);
+        rqdql::get<rqdql::Logger>().log(this, msg);
         found = addAlternative(new solm::Err(msg));
     }
     return found;
@@ -75,7 +75,7 @@ solm::Formula* Flow::makeFormula() const {
             } else if (i->second->hasFormula()) {
                 s->addFormula(i->second->getFormula());
             } else {
-                rqdql::Logger::getInstance().log(
+                rqdql::get<rqdql::Logger>().log(
                     this, 
                     "Neither formula nor sequence found"
                 );
@@ -98,15 +98,15 @@ solm::Formula* Flow::getTarget() const {
     }
     
     // trying to find a UC which matches this call
-    vector<string> names = Proxy::getInstance().getNames<UseCase>();
+    vector<string> names = rqdql::get<Proxy>().getNames<UseCase>();
     for (vector<string>::const_iterator i = names.begin(); i != names.end(); ++i) {
-        UseCase* uc = Proxy::getInstance().get<UseCase>(*i);
+        UseCase* uc = rqdql::get<Proxy>().get<UseCase>(*i);
         if (uc->getSignature()->match(signature)) {
-            rqdql::Logger::getInstance().addLink(this, uc);
+            rqdql::get<rqdql::Logger>().addLink(this, uc);
             return (new solm::Function(uc->getName()))->arg("x");
         }
     }
-    rqdql::Logger::getInstance().log(
+    rqdql::get<rqdql::Logger>().log(
         this, 
         (boost::format("Signature '%s' is not recognized") % signature->toString()).str()
     );

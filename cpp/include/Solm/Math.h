@@ -20,7 +20,7 @@
 
 const string Math::toString() const {
     if (getVars().size() != 2) {
-        rqdql::Logger::getInstance().log(
+        rqdql::get<rqdql::Logger>().log(
             this, 
             (boost::format("MATH('%s') primitive shall have exactly two arguments") % operand).str()
         );

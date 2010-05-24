@@ -27,7 +27,7 @@ Flows::Flows() : flows(), formula(0) {
  */
 Flow* Flows::getFlow(int i) { 
     if (flows.find(i) == flows.end()) {
-        rqdql::Logger::getInstance().log(
+        rqdql::get<rqdql::Logger>().log(
             this, 
             (boost::format("Flow no.%d not found") % i).str()
         );
