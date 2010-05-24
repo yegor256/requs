@@ -20,7 +20,7 @@
 
 const string In::toString() const {
     if (getVars().size() != 2) {
-        rqdql::Logger::getInstance().log(
+        rqdql::get<rqdql::Logger>().log(
             this, 
             "IN() primitive shall have exactly two arguments"
         );

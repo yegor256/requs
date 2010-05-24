@@ -28,7 +28,7 @@ void Errors::fillNode(pugi::xml_node& n) {
 
     vector<Error> errors;
     typedef vector<rqdql::Logger::Message> Msgs;
-    Msgs v = rqdql::Logger::getInstance().getMessages();
+    Msgs v = rqdql::get<Logger>().getMessages();
     for (Msgs::const_iterator i = v.begin(); i != v.end(); ++i) {
         for (vector<int>::const_iterator k = (*i).getLines().begin(); k != (*i).getLines().end(); ++k) {
             errors.push_back(Error(*k, (*i).getMessage()));

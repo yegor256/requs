@@ -22,16 +22,18 @@ using namespace front;
 
 void testSimpleScenario() {
     setUp();
-    rqdql::Scanner::getInstance().scan(getFile("sample1.txt"));
-    proxy::Proxy::getInstance().inject();
+    rqdql::get<rqdql::Scanner>().scan(getFile("sample1.txt"));
+    rqdql::get<proxy::Proxy>().inject();
     tearDown();
     
-    front::Front::getInstance().require("svg:type=ActorUser,uc=UC8.1");
-    front::Front::getInstance().require("errors");
-    front::Front::getInstance().require("metrics");
-    front::Front::getInstance().require("links");
+    rqdql::get<front::Front>().require("svg:type=ActorUser,uc=UC8.1");
+    rqdql::get<front::Front>().require("errors");
+    rqdql::get<front::Front>().require("metrics");
+    rqdql::get<front::Front>().require("tc");
+    rqdql::get<front::Front>().require("uml");
+    rqdql::get<front::Front>().require("links");
     
-    cout << front::Front::getInstance().asXml() << endl;
+    cout << rqdql::get<front::Front>().asXml() << endl;
 }
 
 int test_main(int, char *[]) {

@@ -19,7 +19,7 @@
 const string Declaration::toString() const { 
     string f;
     if (Unary<Declaration>::getFormulas().size() != 1) {
-        rqdql::Logger::getInstance().log(
+        rqdql::get<rqdql::Logger>().log(
             this, 
             (boost::format("Declaration '%s' shall have exactly one formula inside") % name).str()
         );
@@ -30,7 +30,7 @@ const string Declaration::toString() const {
     
     Vars v = getVars();
     if (!getVars().size()) {
-        rqdql::Logger::getInstance().log(
+        rqdql::get<rqdql::Logger>().log(
             this, 
             (boost::format("Declaration '%s' shall have at least one argument") % name).str()
         );

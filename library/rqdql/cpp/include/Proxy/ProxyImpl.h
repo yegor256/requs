@@ -47,18 +47,6 @@ template<> const map<string, UseCase*>& Proxy::getConstArray<UseCase>() const {
 }
 
 /**
- * This is a singleton pattern. In order to get an instance
- * of this class you should call getInstance()
- */
-Proxy& Proxy::getInstance() {
-    static Proxy* proxy;
-    if (!proxy) {
-        proxy = new Proxy();
-    }
-    return *proxy;
-}
-
-/**
  * Inject all Types and Use Cases from PROXY into SOLM
  */
 void Proxy::inject() {
@@ -68,7 +56,7 @@ void Proxy::inject() {
     // of new functions (declaration)
     for (Types::const_iterator i = types.begin(); i != types.end(); ++i) {
         // add this declaration to SOLM
-        Solm::getInstance().addFormula(
+        rqdql::get<Solm>().addFormula(
             (new Declaration((*i).first))
             ->arg("x")
             ->setFormula((*i).second->makeFormula("x"))
@@ -79,7 +67,7 @@ void Proxy::inject() {
     for (UseCases::const_iterator i = useCases.begin(); i != useCases.end(); ++i) {
         UseCase* uc = (*i).second;
         // add this declaration to SOLM
-        Solm::getInstance().addFormula(
+        rqdql::get<Solm>().addFormula(
             (new Declaration((*i).first))
             ->setFormula(
                 uc->hasSequence() ? uc->makeSequence() : uc->getFormula()

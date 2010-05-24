@@ -175,7 +175,7 @@ private:
 
 class Proxy {
 public:
-    static Proxy& getInstance();
+    Proxy() : types(), useCases() { clear(); }
     void inject();
     void clear();
     template<typename T> size_t count() const; 
@@ -188,7 +188,6 @@ private:
     typedef map<string, UseCase*> UseCases;
     Types types;
     UseCases useCases;
-    Proxy() : types(), useCases() { clear(); }
     template<typename T> map<string, T*>& getArray();
     template<typename T> const map<string, T*>& getConstArray() const;
     template<typename T> void initialize(T* t);

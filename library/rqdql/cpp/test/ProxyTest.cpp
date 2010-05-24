@@ -22,35 +22,35 @@ using namespace proxy;
 
 void testGabrageCollectionWorksProperly() {
     setUp();
-    Proxy::getInstance().getNames<Type>();
-    Proxy::getInstance().get<Type>("User");
-    Proxy::getInstance().getNames<Type>();
-    Proxy::getInstance().clear();
+    rqdql::get<Proxy>().getNames<Type>();
+    rqdql::get<Proxy>().get<Type>("User");
+    rqdql::get<Proxy>().getNames<Type>();
+    rqdql::get<Proxy>().clear();
     tearDown();
 }
 
 void testContainerWorksProperly() {
     setUp();
-    Proxy::getInstance().get<Type>("User");
-    Proxy::getInstance().get<Type>("Photo");
-    Proxy::getInstance().get<Type>("File");
-    Proxy::getInstance().get<Type>("File");
-    BOOST_REQUIRE(Proxy::getInstance().count<Type>() > 3); // + text, numeric, etc.
+    rqdql::get<Proxy>().get<Type>("User");
+    rqdql::get<Proxy>().get<Type>("Photo");
+    rqdql::get<Proxy>().get<Type>("File");
+    rqdql::get<Proxy>().get<Type>("File");
+    BOOST_REQUIRE(rqdql::get<Proxy>().count<Type>() > 3); // + text, numeric, etc.
     cout <<
         boost::format("Types in container: %s") % 
-        boost::algorithm::join(Proxy::getInstance().getNames<Type>(), ", ") << endl;
+        boost::algorithm::join(rqdql::get<Proxy>().getNames<Type>(), ", ") << endl;
     tearDown();
 }
 
 void testWeCanBuildNewType() {
     setUp();
-    Type* t = Proxy::getInstance().get<Type>("User");
+    Type* t = rqdql::get<Proxy>().get<Type>("User");
     t->addSlot(
         new Slot(
             "email", 
             "1..n -> 1", 
             new solm::Info("email address"), 
-            Proxy::getInstance().get<Type>("text")
+            rqdql::get<Proxy>().get<Type>("text")
         )
     )
     ->addSlot(
@@ -58,7 +58,7 @@ void testWeCanBuildNewType() {
             "photos", 
             "1..n -> 0..n", 
             new solm::Info("a collection of photos"), 
-            Proxy::getInstance().get<Type>("Photo")
+            rqdql::get<Proxy>().get<Type>("Photo")
         )
     )
     ->addSlot(
@@ -66,7 +66,7 @@ void testWeCanBuildNewType() {
             "manager", 
             "1..n -> 1", 
             new solm::Info("user's manager, if any"), 
-            Proxy::getInstance().get<Type>("User")
+            rqdql::get<Proxy>().get<Type>("User")
         )
     )
     ->addSlot(
@@ -78,12 +78,12 @@ void testWeCanBuildNewType() {
         )
     );
     
-    Proxy::getInstance().inject();
+    rqdql::get<Proxy>().inject();
 
-    BOOST_REQUIRE(Proxy::getInstance().count<Type>() >= 3); // User, string, and Photo
+    BOOST_REQUIRE(rqdql::get<Proxy>().count<Type>() >= 3); // User, string, and Photo
     
     cout << "Definition of type 'User': " 
-    << Proxy::getInstance().get<Type>("User")->toString() << endl;
+    << rqdql::get<Proxy>().get<Type>("User")->toString() << endl;
     tearDown();
 }
 
@@ -91,7 +91,7 @@ void fillUseCase(UseCase* uc) {
     uc
     ->setSignature(
         (new Signature("${sud} validate ${photo}"))
-        ->explain("photo", new Signature::Explanation(Proxy::getInstance().get<Type>("Photo")))
+        ->explain("photo", new Signature::Explanation(rqdql::get<Proxy>().get<Type>("Photo")))
     )
     ->addFlow(
         1,
@@ -150,7 +150,7 @@ void fillUseCase(UseCase* uc) {
 
 void testWeCanBuildNewUseCase() {
     setUp();
-    UseCase* uc = Proxy::getInstance().get<UseCase>("UC1");
+    UseCase* uc = rqdql::get<Proxy>().get<UseCase>("UC1");
     fillUseCase(uc);
     cout << uc->toString() << endl;
     tearDown();
@@ -158,13 +158,13 @@ void testWeCanBuildNewUseCase() {
 
 void testWeCanInjectUseCase() {
     setUp();
-    UseCase* uc = Proxy::getInstance().get<UseCase>("UC1");
+    UseCase* uc = rqdql::get<Proxy>().get<UseCase>("UC1");
     
     fillUseCase(uc);
         
-    Proxy::getInstance().inject();
+    rqdql::get<Proxy>().inject();
 
-    vector<string> list = solm::Solm::getInstance().getAllFunctions();
+    vector<string> list = rqdql::get<solm::Solm>().getAllFunctions();
     BOOST_REQUIRE(list.size() >= 2);
     cout <<
         boost::format("Totally created %d functions: %s") % 
@@ -172,38 +172,38 @@ void testWeCanInjectUseCase() {
         boost::algorithm::join(list, ", ") << endl;
     
     // show it all as string
-    cout << solm::Solm::getInstance().toString() << endl;
+    cout << rqdql::get<solm::Solm>().toString() << endl;
     tearDown();
 }
 
 void testUseCasesMatchEachOther() {
     setUp();
-    UseCase* uc1 = Proxy::getInstance().get<UseCase>("UC1");
+    UseCase* uc1 = rqdql::get<Proxy>().get<UseCase>("UC1");
     uc1->setSignature(
         (new Signature("${sud} validate ${photo}"))
-        ->explain("photo", new Signature::Explanation(Proxy::getInstance().get<Type>("Photo")))
+        ->explain("photo", new Signature::Explanation(rqdql::get<Proxy>().get<Type>("Photo")))
     );
     uc1->addFlow(
         1,
         new Flow("We check that it's either PNG or GIF")
     );
     
-    UseCase* uc2 = Proxy::getInstance().get<UseCase>("UC2");
+    UseCase* uc2 = rqdql::get<Proxy>().get<UseCase>("UC2");
     uc2->setSignature(
         (new Signature("${user} upload ${photo}"))
-        ->explain("photo", new Signature::Explanation(Proxy::getInstance().get<Type>("Photo")))
+        ->explain("photo", new Signature::Explanation(rqdql::get<Proxy>().get<Type>("Photo")))
     );
     uc2->addFlow(
         1,
         new Flow(
             "We validate the photo",
             (new Signature("${sud} validate ${photo}"))
-            ->explain("photo", new Signature::Explanation(Proxy::getInstance().get<Type>("Photo")))
+            ->explain("photo", new Signature::Explanation(rqdql::get<Proxy>().get<Type>("Photo")))
         )
     );
     
-    Proxy::getInstance().inject();
-    cout << solm::Solm::getInstance().toString() << endl;
+    rqdql::get<Proxy>().inject();
+    cout << rqdql::get<solm::Solm>().toString() << endl;
     tearDown();
 }
 

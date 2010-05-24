@@ -17,18 +17,6 @@
  */
 
 /**
- * This is a singleton pattern. In order to get an instance
- * of this class you should call getInstance()
- */
-Scanner& Scanner::getInstance() {
-    static Scanner* scanner;
-    if (!scanner) {
-        scanner = new Scanner();
-    }
-    return *scanner;
-}
-
-/**
  * Run scanner
  */
 void Scanner::scan(const string& s) {

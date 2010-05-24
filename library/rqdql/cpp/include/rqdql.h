@@ -39,6 +39,17 @@ namespace rqdql {
     private:
         string message;
     };
+    
+    /**
+     * Get a singleton copy of a module/class
+     */
+    template <typename T> T& get() {
+        static T* t;
+        if (!t) {
+            t = new T();
+        }
+        return *t;
+    }
 
     /**
      * Different levels of logging
@@ -75,7 +86,7 @@ namespace rqdql {
                 break;
         }
         if (lvl >= level) {
-            rqdql::Logger::getInstance().log(0, "[" + label + "] " + line);
+            rqdql::get<rqdql::Logger>().log(0, "[" + label + "] " + line);
         }
     }
 

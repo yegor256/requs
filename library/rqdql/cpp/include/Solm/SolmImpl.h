@@ -19,18 +19,6 @@
  */
 
 /**
- * This is a singleton pattern. In order to get an instance
- * of this class you should call getInstance()
- */
-Solm& Solm::getInstance() {
-    static Solm* solm;
-    if (!solm) {
-        solm = new Solm();
-    }
-    return *solm;
-}
-
-/**
  * To calculate ambiguity of the SOLM, as a relation between
  * total number of silent elements and data manipulators, which
  * include CREATED(), DELETED() and READ(). This list of manipulators

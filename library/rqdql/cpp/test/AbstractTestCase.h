@@ -32,16 +32,16 @@ using namespace std;
 rqdql::LogLevel rqdql::level = L_ERROR;
 
 void setUp() {
-    rqdql::Logger::getInstance().clear();
-    proxy::Proxy::getInstance().clear();
-    solm::Solm::getInstance().clear();
+    rqdql::get<rqdql::Logger>().clear();
+    rqdql::get<proxy::Proxy>().clear();
+    rqdql::get<solm::Solm>().clear();
 }
 
 void tearDown() {
-    if (!rqdql::Logger::getInstance().empty()) {
-        cout << "Log report is not empty:" << endl << rqdql::Logger::getInstance().getReport() << endl;
+    if (!rqdql::get<rqdql::Logger>().empty()) {
+        cout << "Log report is not empty:" << endl << rqdql::get<rqdql::Logger>().getReport() << endl;
     }
-    cout << solm::Solm::getInstance().toString() << endl;
+    cout << rqdql::get<solm::Solm>().toString() << endl;
 }
 
 string getFile(const string& n) {

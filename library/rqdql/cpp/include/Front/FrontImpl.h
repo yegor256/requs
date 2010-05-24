@@ -19,18 +19,6 @@
  */
 
 /**
- * This is a singleton pattern. In order to get an instance
- * of this class you should call getInstance()
- */
-Front& Front::getInstance() {
-    static Front* front;
-    if (!front) {
-        front = new Front();
-    }
-    return *front;
-}
-
-/**
  * Require this report to appear in final XML
  */
 void Front::require(const string& s) {

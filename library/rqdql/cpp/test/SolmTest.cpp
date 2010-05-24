@@ -21,18 +21,18 @@
 using namespace solm;
 
 void testSimple() {
-    Solm::getInstance().clear();
+    rqdql::get<Solm>().clear();
     Math* math = new Math(">");
     math->arg("5")->arg("3");
-    Solm::getInstance().addFormula(math);
+    rqdql::get<Solm>().addFormula(math);
     
-    BOOST_REQUIRE(Solm::getInstance().countTypes<Math>() >= 1);
+    BOOST_REQUIRE(rqdql::get<Solm>().countTypes<Math>() >= 1);
 }
 
 void testMoreComplexStructure() {
-    Solm::getInstance().clear();
+    rqdql::get<Solm>().clear();
     
-    Solm::getInstance().addFormula(
+    rqdql::get<Solm>().addFormula(
         (new Declaration("UC8"))
         ->arg("x")
         ->setFormula(
@@ -42,7 +42,7 @@ void testMoreComplexStructure() {
         )
     );
     
-    Solm::getInstance().addFormula(
+    rqdql::get<Solm>().addFormula(
         (new Declaration("UC14"))
         ->arg("x")
         ->setFormula(
@@ -55,13 +55,13 @@ void testMoreComplexStructure() {
             )
         )
     );
-    BOOST_REQUIRE(Solm::getInstance().countTypes<Sequence>() == 1);
-    BOOST_REQUIRE(Solm::getInstance().countTypes<Function>() == 2);
+    BOOST_REQUIRE(rqdql::get<Solm>().countTypes<Sequence>() == 1);
+    BOOST_REQUIRE(rqdql::get<Solm>().countTypes<Function>() == 2);
 }
 
 void testComplex() {
-    Solm::getInstance().clear();
-    Solm::getInstance().addFormula(
+    rqdql::get<Solm>().clear();
+    rqdql::get<Solm>().addFormula(
         (new Declaration("UC1"))
         ->arg("x")
         ->setFormula(
@@ -127,35 +127,35 @@ void testComplex() {
         )
     );
         
-    int cntSilent = Solm::getInstance().countTypes<Silent>();
+    int cntSilent = rqdql::get<Solm>().countTypes<Silent>();
     BOOST_REQUIRE(cntSilent > 0);
     cout << boost::format("Totally %d SILENT() formulas") % cntSilent << endl;
 
     int cntManipulators = 
-        Solm::getInstance().countTypes<Created>()
-        + Solm::getInstance().countTypes<Deleted>()
-        + Solm::getInstance().countTypes<Read>();
+        rqdql::get<Solm>().countTypes<Created>()
+        + rqdql::get<Solm>().countTypes<Deleted>()
+        + rqdql::get<Solm>().countTypes<Read>();
     BOOST_REQUIRE(cntManipulators > 0);
     cout << boost::format("Totally %d manipulators") % cntManipulators << endl;
 
-    double ambiguity = Solm::getInstance().getAmbiguity();
+    double ambiguity = rqdql::get<Solm>().getAmbiguity();
     BOOST_REQUIRE(ambiguity == (double)cntSilent / (cntManipulators + cntSilent));
     
     cout << boost::format("scope ambiguity is: %0.2f") % ambiguity << endl;
 
     // show it all as string
-    cout << Solm::getInstance().toString() << endl;
+    cout << rqdql::get<Solm>().toString() << endl;
 }
 
 void testWeCanFindAllFunctionDeclarations() {
-    Solm::getInstance().clear();
-    Solm::getInstance()
+    rqdql::get<Solm>().clear();
+    rqdql::get<Solm>()
         .addFormula((new Declaration("User"))->arg("x")->setFormula(new Info("nothing to say")))
         ->addFormula((new Declaration("Photo"))->arg("x")->setFormula(new Info("nothing to say")))
         ->addFormula((new Declaration("File"))->arg("x")->setFormula(new Info("nothing to say")))
         ->addFormula((new Declaration("Image"))->arg("x")->setFormula(new Info("nothing to say")));
         
-    vector<string> list = Solm::getInstance().getAllFunctions();
+    vector<string> list = rqdql::get<Solm>().getAllFunctions();
     BOOST_REQUIRE(list.size() >= 4);
     cout <<
         boost::format("Totally found %d functions: %s") % 

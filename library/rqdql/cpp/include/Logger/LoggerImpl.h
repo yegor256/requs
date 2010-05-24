@@ -19,18 +19,6 @@
  */
 
 /**
- * This is a singleton pattern. In order to get an instance
- * of this class you should call getInstance()
- */
-Logger& Logger::getInstance() {
-    static Logger* logger;
-    if (!logger) {
-        logger = new Logger();
-    }
-    return *logger;
-}
-
-/**
  * Log one line
  */
 template <typename T> void Logger::log(const T* s, const string& m) {

@@ -59,14 +59,14 @@ int main(int argc, char** argv) {
     }
     
     try {
-        rqdql::Scanner::getInstance().scan(text);
-        proxy::Proxy::getInstance().inject();
+        rqdql::get<rqdql::Scanner>().scan(text);
+        rqdql::get<proxy::Proxy>().inject();
         for (int i = 1; i < argc; ++i) {
             if (argv[i][0] != '-') {
-                front::Front::getInstance().require(argv[i]);
+                rqdql::get<front::Front>().require(argv[i]);
             }
         }
-        cout << front::Front::getInstance().asXml() << endl;
+        cout << rqdql::get<front::Front>().asXml() << endl;
     } catch (rqdql::Exception e) {
         cerr << "Internal error: \"" << e.getMessage() << "\"" << endl;
         return -1;

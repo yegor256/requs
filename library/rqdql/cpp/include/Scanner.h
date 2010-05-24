@@ -43,7 +43,6 @@ extern int yylineno;
 namespace rqdql {
 class Scanner {
 public:
-    static Scanner& getInstance(); // singleton pattern
     void scan(const string&); // scan input string
 };
 #include "Scanner/ScannerImpl.h"

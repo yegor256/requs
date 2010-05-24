@@ -94,7 +94,6 @@ private:
     
 class Front {
 public:
-    static Front& getInstance(); // singleton pattern
     void require(const string&); // name of the report to require
     pugi::xml_document& getXml(); // get XML
     string asXml(); // get XML as string

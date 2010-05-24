@@ -31,7 +31,7 @@ void yyerror(const char *error, ...) {
     char s[1000];
     vsprintf(s, error, args);
     va_end(args);
-    rqdql::Logger::getInstance().log((int)yylloc.first_line, s);
+    rqdql::get<rqdql::Logger>().log((int)yylloc.first_line, s);
 }
     
 void lyyerror(YYLTYPE t, const char *error, ...) {
@@ -40,9 +40,9 @@ void lyyerror(YYLTYPE t, const char *error, ...) {
     char s[1000];
     vsprintf(s, error, args);
     va_end(args);
-    rqdql::Logger::getInstance().log((int)t.first_line, s);
+    rqdql::get<rqdql::Logger>().log((int)t.first_line, s);
 }
 
 inline void protocol(YYLTYPE t, void* x) {
-    rqdql::Logger::getInstance().addSubject(x, t.first_line);
+    rqdql::get<rqdql::Logger>().addSubject(x, t.first_line);
 }
