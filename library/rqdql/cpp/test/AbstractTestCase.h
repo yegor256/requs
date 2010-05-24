@@ -26,6 +26,7 @@
 #include "Solm.h"
 #include "Logger.h"
 #include "Front.h"
+#include "Analysts.h"
 
 using namespace std;
 
