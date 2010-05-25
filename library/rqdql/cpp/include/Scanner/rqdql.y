@@ -454,6 +454,11 @@ verb:
             $$ = $1;
         }
     |
+    PREPOSITION 
+        {
+            $$ = $1;
+        }
+    |
     WORD PREPOSITION 
         {
             string* s = new string((format("%s %s") % *$1 % *$2).str());
