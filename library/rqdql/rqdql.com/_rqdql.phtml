@@ -66,8 +66,8 @@
 
 <h1>1. Quick Start</h1>
 
-    <p>The scope definition document consists of <b>classes</b>
-        and <b>use cases</b>. For example, there are two classes
+    <p>The scope definition document consists of <b>types</b>
+        and <b>use cases</b>. For example, there are two types
         (<tt>ActorVisitor</tt> and <tt>ImageFile</tt>) and one
         use case (<tt>UC3.2</tt>) defined:</p>
     
@@ -85,7 +85,7 @@
         informal texts in any place of the document. They are ignored
         during formal analysis.</p>
     
-    <p>Let's consider a bit bigger example of a class <tt>ImageFile</tt>:</p>
+    <p>Let's consider a bit bigger example of a type <tt>ImageFile</tt>:</p>
     
     <p class="code">
         ImageFile includes:<br/>
@@ -94,7 +94,7 @@
         &nbsp;&nbsp;size: "total number of bytes in PNG content".
     </p>
     
-    <p>The semantic is the same &mdash; the class still contains three <b>slots</b>
+    <p>The semantic is the same &mdash; the type still contains three <b>slots</b>
         (<tt>PNG content</tt>, <tt>name</tt> and <tt>size</tt>). However
         in this example we've added an informal explanation to every one of them.
         A colon separates the name of the slot and its invariant.
@@ -109,7 +109,7 @@
         PNG content<b>;</b> name<b>;</b> size
     </p>
 
-    <p>A slot is a class itself and can be used outside of its parent class
+    <p>A slot is a type itself and can be used outside of its parent type
         by means of a preposition "<tt>of</tt>", for example:</p>
 
     <p class="code">
@@ -119,13 +119,13 @@
     </p>
     
     <p>By means of "<tt>is/is a</tt>" we enable a declaration of <b>invariants</b>
-        on classes. Invariant is a <b>predicate</b>, which is always true, no matter
+        on types. Invariant is a <b>predicate</b>, which is always true, no matter
         what happens with the system. In the example above it is always true
         that "<tt>PNG content</tt>" is a file with binary content (not a readable
         ASCII text). Nobody can break this invariant and put a textual information
         into this slot. Similarly, the "<tt>name of ImageFile</tt>" is 
-        always unique in its class. We won't be able to find two identical
-        slots in the class "<tt>name of ImageFile</tt>", never.
+        always unique in its type. We won't be able to find two identical
+        slots in the type "<tt>name of ImageFile</tt>", never.
         As you noticed, an invariant could be declared with an informal text, as we've
         done with "<tt>size of ImageFile</tt>". Such a declaration means 
         absolutely nothing and will be ignored. But it helps when you're starting
@@ -139,14 +139,14 @@
         you will replace them.</p>
 
     <p>As you've already noticed, RQDQL is a case-insensitive language in all places
-        except one &mdash; class names should use
+        except one &mdash; type names should use
         <a href="http://en.wikipedia.org/wiki/CamelCase">CamelCase Notation</a>. Thus
         "<tt>name of ImageFile</tt>" and "<tt>Name of ImageFile</tt>" point
-        us to the same class. However, <tt>ImageFile</tt> is a valid class
+        us to the same type. However, <tt>ImageFile</tt> is a valid type
         name, and <tt>imagefile</tt> is just an English word.</p>
 
-    <p>There is one special meta-class, which we should mention &mdash; Actors.
-        Every class that has <tt>Actor</tt> prefix is an instance of a meta-class
+    <p>There is one special meta-type, which we should mention &mdash; Actors.
+        Every type that has <tt>Actor</tt> prefix is an instance of a meta-type
         called "Actors". In the scope definition document actors represent people,
         machines, services, databases, etc. &mdash; anything and anyone
         who interacts with the <b>system under development (SUD)</b>,
@@ -160,18 +160,16 @@
         and <b>objects</b>, for example:</p>
     
     <p class="code">
-        UC8.1 where ActorUser (the user) shares ImageFile with ActorUser:<br/>
+        UC8.1 where ActorUser (the user) shares ImageFile with ActorUser (the friend):<br/>
         &nbsp;&nbsp;1. The user creates ImageFile (the photo).<br/>
-        &nbsp;&nbsp;2. The user "attaches this file to" photos of himself.<br/>
-        &nbsp;&nbsp;3. "The person confirms that he/she agrees with the terms of use".<br/>
-        &nbsp;&nbsp;4. The user "selects one of his friends, which is" ActorUser (the friend).<br/>
-        &nbsp;&nbsp;5. We convert the photo "to the right PNG format, 600x600 maximum".<br/>
-        &nbsp;&nbsp;6. We notify the friend by email.<br/>
-        &nbsp;&nbsp;7. The friend reads the photo "in his own web page".<br/>
-        UC8.1 1a) If "the user exceeds the maximum possible number of photos":<br/>
+        &nbsp;&nbsp;2. The user updates the friend "selecting one of his contacts".<br/>
+        &nbsp;&nbsp;3. We convert the photo "to the right PNG format, 600x600 maximum".<br/>
+        &nbsp;&nbsp;4. We notify the friend by email.<br/>
+        &nbsp;&nbsp;5. The friend reads the photo "in his own web page".<br/>
+        UC8.1 0a) If "the user exceeds the maximum possible number of photos":<br/>
         &nbsp;&nbsp;1. Failure "photos limit exceeded".<br/>
-        UC8 5a) If failed with "invalid format":<br/>
-        &nbsp;&nbsp;1. "we notify user about the problem".<br/>
+        UC8.1 3a) If failed with "invalid format":<br/>
+        &nbsp;&nbsp;1. "We notify user about the problem".<br/>
         &nbsp;&nbsp;2. Failure "can't convert photo".
     </p>
 
@@ -182,7 +180,7 @@
         concept is very similar to
         <a href="http://en.wikipedia.org/wiki/Signature_(computer_science)">function signature</a>
         in programming. The 
-        signature of this use case is (classes are in bold):</p>
+        signature of this use case is (types are in bold):</p>
 
     <p class="code">
         <b>ActorUser</b> shares <b>ImageFile</b> with <b>ActorUser</b><br/>
@@ -228,11 +226,12 @@
         <b>Somebody</b> reads <b>something</b><br/>
         <b>Somebody</b> updates <b>something</b><br/>
         <b>Somebody</b> deletes <b>something</b><br/>
+        <b>Something</b> is <b>something</b><br/>
         <b>Somebody</b> turns into <b>somebody</b><br/>
     </p>
     
     <p>As you understand, <tt>somebody</tt> means "any actor",
-        and <tt>something</tt> means "object of any class".
+        and <tt>something</tt> means "object of any type".
         <tt>create</tt> means to make a new object.
         <tt>read</tt> means to read all and any slots of an object, and all their slots, etc.
         <tt>update</tt> means to change values of slots of an object.
@@ -284,6 +283,98 @@
     <p>Possible predicates now are: <tt>text</tt> and <tt>number</tt>.</p>
 
     <p>to be continued...</p>
+
+<h1>4. More Details on Use Cases</h1>
+
+    <p>This section contains a detailed review of a use cases defined
+        above:</p>
+        
+    <p class="code">
+        UC4 where ActorUser (the user) communicates:<br/>
+        &nbsp;&nbsp;1. The user shares ImageFile with ActorUser.<br/>
+        &nbsp;&nbsp;2. "He can do other actions, not defined yet".<br/><br/>
+        UC8.1 where ActorUser (the user) shares ImageFile with ActorUser (the friend):<br/>
+        &nbsp;&nbsp;1. The user creates ImageFile (the photo).<br/>
+        &nbsp;&nbsp;2. The friend is friend of the user.<br/>
+        &nbsp;&nbsp;3. We convert the photo "to the right PNG format, 600x600 maximum".<br/>
+        &nbsp;&nbsp;4. We notify the friend by email.<br/>
+        &nbsp;&nbsp;5. The friend reads the photo "in his own web page".<br/><br/>
+        UC8.1 0a) If "the user exceeds the maximum possible number of photos":<br/>
+        &nbsp;&nbsp;1. Failure "photos limit exceeded".<br/><br/>
+        UC8.1 3a) If failed with "invalid format":<br/>
+        &nbsp;&nbsp;1. "We notify user about the problem".<br/>
+        &nbsp;&nbsp;2. Failure "can't convert photo".
+    </p>
+    
+    <p><tt>UC4 where ActorUser (the user) communicates:</tt></p>
+    <p style="padding-left: 5em;">
+        <tt>UC4</tt> is defined with a signature "<tt>{...} communicates</tt>", which
+        is unique in the scope and explicitly identifies the use case. This signature
+        has only one parameter that has to be of type <tt>ActorUser</tt>.
+    </p>
+
+    <p><tt>1. The user shares ImageFile with ActorUser.</tt></p>
+    <p style="padding-left: 5em;">
+        First flow of the use case <tt>UC4</tt> points to another use
+        case, which has to be found by signature "<tt>{...} shares {...} with {...}</tt>",
+        and types of parameters are <tt>ActorUser</tt>, <tt>ImageFile</tt> and <tt>ActorUser</tt>.
+        This signature matches the signature of use case <tt>UC8.1</tt>.
+    </p>
+
+    <p><tt>2. "He can do other actions, not defined yet".</tt></p>
+    <p style="padding-left: 5em;">
+        This flow is informal and doesn't mean anything for the RQDQL parser. It might
+        mean something for the reader, but not for the software.
+    </p>
+
+    <p><tt>UC8.1 where ActorUser (the user) shares ImageFile with ActorUser (the friend):</tt></p>
+    <p style="padding-left: 5em;">
+        The declaration of another use case <tt>UC8.1</tt> with a signature
+        "<tt>{...} shares {...} with {...}</tt>" that exactly matches the first
+        flow of <tt>UC4</tt>. The use case instantiates two objects: 
+        "<tt>the user</tt>" of type <tt>ActorUser</tt> and 
+        "<tt>the friend</tt>" of the same type. <tt>ImageFile</tt> (the 
+        second parameter of the use case) does not instantiate anything, and
+        it means that <tt>UC4</tt>, which is calling <tt>UC8.1</tt>, won't be able
+        to retrieve the <tt>ImageFile</tt> created/managed here.
+    </p>
+
+    <p><tt>1. The user creates ImageFile (the photo).</tt></p>
+    <p style="padding-left: 5em;">
+        The first flow of this use case points to an elementary use case
+        "<tt>{...} creates {...}</tt>". Two parameters of this elementary
+        use case have to be provided, and they are: 
+        "<tt>the user</tt>" and "<tt>the photo</tt>". It is assumed that
+        "<tt>the user</tt>" was instantiated before and is not <tt>NULL</tt>, and "<tt>the photo</tt>" will
+        be instantiated in this elementary use case. "<tt>The photo</tt>"
+        was just declared in this flow and it means that it's <tt>NULL</tt> so far.
+        "<tt>The user</tt>" was passed as a parameter to this use case
+        and there is no information about its status, whether it is <tt>NULL</tt> or not.
+        If it is <tt>NULL</tt> (not instantiated yet) &mdash; it is an error
+        and it will be found by RQDQL parser and reported.
+    </p>
+
+    <p><tt>2. The friend is one of friend of the user.</tt></p>
+    <p style="padding-left: 5em;">
+        Explicit instantiation of the variable happens here. "<tt>Friend of the user</tt>"
+        is a slot in "<tt>the user</tt>" and 
+    </p>
+
+    <p><tt></tt></p>
+    <p style="padding-left: 5em;">
+    </p>
+
+    <p><tt></tt></p>
+    <p style="padding-left: 5em;">
+    </p>
+
+    <p><tt></tt></p>
+    <p style="padding-left: 5em;">
+    </p>
+
+    <p><tt></tt></p>
+    <p style="padding-left: 5em;">
+    </p>
 
 <h1>Appendix A. Formal Grammar</h1>
 
