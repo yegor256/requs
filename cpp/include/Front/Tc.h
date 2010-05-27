@@ -27,8 +27,17 @@ void Tc::fillNode(pugi::xml_node& n) {
         PugiNodeWrapper tc = (n / "cases" + "tc");
         tc["name"] = (*i)->getName();
         
-        tc = (*i)->toString();
-        // for (vector<TestCase*>::const_iterator i = v.begin(); i != v.end(); ++i) {
+        // list predecessors
+        vector<TestCase*> preds = (*i)->getPredecessors();
+        for (vector<TestCase*>::const_iterator p = preds.begin(); p != preds.end(); ++p) {
+            tc / "predecessors" + "tc" = (*p)->getName();
+        }
+        
+        // list facts
+        solm::FactPath fp = **i;
+        for (solm::FactPath::const_iterator f = fp.begin(); f != fp.end(); ++f) {
+            tc / "facts" + "fact" = (*f).getText();
+        }
     }
 }
 
