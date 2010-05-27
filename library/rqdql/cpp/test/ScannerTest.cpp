@@ -23,9 +23,7 @@ void testSimpleParsing() {
     rqdql::get<rqdql::Scanner>().scan(getFile("sample1.txt"));
     rqdql::get<proxy::Proxy>().inject();
     tearDown();
-
-    // but the log should NOT be empty
-    BOOST_REQUIRE(!rqdql::get<rqdql::Logger>().empty());
+    BOOST_REQUIRE(rqdql::get<rqdql::Logger>().empty());
 }
 
 void testSimpleParsingWithErrors() {
@@ -52,8 +50,8 @@ void testCleanParsing() {
 }
 
 int test_main(int, char *[]) {
-    // testSimpleParsing();
-    // testSimpleParsingWithErrors();
+    testSimpleParsing();
+    testSimpleParsingWithErrors();
     testCleanParsing();
     
     return 0;

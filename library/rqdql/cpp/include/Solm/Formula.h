@@ -19,16 +19,10 @@
  */
 
 /**
- * Convert it to string, if possible. Actually, we should NEVER
- * reach this point, since FORMULA is an abstract class. But it might
- * happen due to some error.
+ * Create an outcome of this formula, list of facts
  */
-const string Formula::toString() const {
-    rqdql::get<rqdql::Logger>().log(
-        this, 
-        "FORMULA is an abstract class, can't return toString()"
-    );
-    return Err("'Formula::toString()").toString();
+Outcome Formula::getOutcome() const { 
+    return Outcome(); 
 }
 
 /**
@@ -50,9 +44,9 @@ Formula* Formula::getFormula(size_t i = 0) const {
     if (i > subs.size()-1) {
         rqdql::get<rqdql::Logger>().log(
             this, 
-            (boost::format("Formula no.%d is absent, returning TRUE instead") % i).str()
+            (boost::format(rqdql::_t("Formula no.%d is absent, returning TRUE instead")) % i).str()
         );
-        return new Err((boost::format("'absent formula no.%d") % i).str());
+        return new Err((boost::format(rqdql::_t("'absent formula no.%d")) % i).str());
     }
     return subs.at(i);
 }

@@ -29,9 +29,9 @@ Flow* Flows::getFlow(int i) {
     if (flows.find(i) == flows.end()) {
         rqdql::get<rqdql::Logger>().log(
             this, 
-            (boost::format("Flow no.%d not found") % i).str()
+            (boost::format(rqdql::_t("Flow no.%d not found")) % i).str()
         );
-        addFlow(i, new Flow("some action..."));
+        addFlow(i, new Flow(rqdql::_t("some action...")));
     }
     return flows[i]; 
 }
@@ -51,7 +51,7 @@ const string Flows::toString() const {
 solm::Sequence* Flows::makeSequence() const {
     using namespace solm;
     if (!hasSequence()) {
-        throw "There is no sequence here!";
+        throw rqdql::Exception(rqdql::_t("There is no sequence here!"));
     }
     Sequence* s = new Sequence();
     for (map<int, Flow*>::const_iterator i = flows.begin(); i != flows.end(); ++i) {

@@ -28,8 +28,8 @@ UC8.1 where somebody speculates:
     4. "The user buys specific units in the project".
     5. "We do something strange".
     6. ActorOperator "when he wants" pays to us "when necessary".
-    7. "Every week we payearnings to the user".
-    8. "The user transfersunits to ActorUser".
+    7. "Every week we pay earnings to the user".
+    8. "The user transfers units to ActorUser".
 
 UC8.1 4a) if "ticket is rejected":
     1. "SUD sends rejection email of the application".

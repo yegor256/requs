@@ -54,6 +54,7 @@ template<typename T> void Links::addLocations(pugi::xml_node& n, const string& l
 
         // leave only unique lines
         lines.resize(unique(lines.begin(), lines.end()) - lines.begin());
+        
         PugiNodeWrapper t = n / "locations" + "loc";
         t["name"] = *i;
         t["what"] = label;

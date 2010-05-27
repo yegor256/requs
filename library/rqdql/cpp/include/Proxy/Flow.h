@@ -36,7 +36,7 @@ Flows* Flow::findAlternative(char c) {
         now++;
     }
     if (!found) {
-        string msg = (boost::format("'Alternative '%c' is not found") % c).str();
+        string msg = (boost::format(rqdql::_t("'Alternative '%c' is not found")) % c).str();
         rqdql::get<rqdql::Logger>().log(this, msg);
         found = addAlternative(new solm::Err(msg));
     }
@@ -77,9 +77,9 @@ solm::Formula* Flow::makeFormula() const {
             } else {
                 rqdql::get<rqdql::Logger>().log(
                     this, 
-                    "Neither formula nor sequence found"
+                    rqdql::_t("Neither formula nor sequence found")
                 );
-                s->addFormula(new Err("'neither formula nor sequence found"));
+                s->addFormula(new Err(rqdql::_t("'neither formula nor sequence found")));
             }
             f->addFormula(s);
         }
@@ -108,7 +108,7 @@ solm::Formula* Flow::getTarget() const {
     }
     rqdql::get<rqdql::Logger>().log(
         this, 
-        (boost::format("Signature '%s' is not recognized") % signature->toString()).str()
+        (boost::format(rqdql::_t("Signature '%s' is not recognized")) % signature->toString()).str()
     );
     return new solm::Err("'" + signature->toString());
 }

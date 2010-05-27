@@ -34,7 +34,7 @@ const string Type::getName() const {
     try {
         return rqdql::get<Proxy>().findName(this);
     } catch (rqdql::Exception e) {
-        throw rqdql::Exception("Type doesn't have a name, but getName() called");
+        throw rqdql::Exception(rqdql::_t("Type doesn't have a name, but getName() called"));
     }
 }
 
@@ -102,9 +102,9 @@ solm::Formula* Type::makeFormula(const string& x) const {
     if (isEmpty() && hasName()) {
         rqdql::get<rqdql::Logger>().log(
             this, 
-            (boost::format("Entity '%s' is empty, probably its name is misspelled") % getName()).str()
+            (boost::format(rqdql::_t("Entity '%s' is empty, probably its name is misspelled")) % getName()).str()
         );
-        return new Err("'entity is empty");
+        return new Err(rqdql::_t("'entity is empty"));
     }
     
     // This is a new declaration of a type. Again, if the TYPE doesn't
@@ -116,7 +116,7 @@ solm::Formula* Type::makeFormula(const string& x) const {
         if (hasName()) {
             rqdql::get<rqdql::Logger>().log(
                 this, 
-                (boost::format("Entity '%s' doesn't have any textual explanation") % getName()).str()
+                (boost::format(rqdql::_t("Entity '%s' doesn't have any textual explanation")) % getName()).str()
             );
         }
         sequence = new Sequence();

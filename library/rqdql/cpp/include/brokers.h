@@ -29,10 +29,10 @@ class De { // data element
 public:
     De() : name(""), explanation(0) { /* that's it */ }
     void setName(const string& n) { name = n; }
-    const string getName() const { if (!hasName()) throw "no NAME in this DE"; return name; }
+    const string getName() const { if (!hasName()) throw rqdql::Exception(rqdql::_t("no NAME in this DE")); return name; }
     bool hasName() const { return !name.empty(); }
     void setExplanation(proxy::Signature::Explanation* e) { explanation = e; }
-    proxy::Signature::Explanation* getExplanation() const { if (!hasExplanation()) throw "no EXPLANATION here"; return explanation; }
+    proxy::Signature::Explanation* getExplanation() const { if (!hasExplanation()) throw rqdql::Exception(rqdql::_t("no EXPLANATION here")); return explanation; }
     bool hasExplanation() const { return explanation; }
 private:
     string name;
@@ -44,12 +44,12 @@ public:
     SigElement() : de(0), informal(""), verb("") { /* that's it */ }
     void setInformal(const string& s) { informal = s; }
     bool hasInformal() const { return !informal.empty(); }
-    const string getInformal() const { if (!hasInformal()) throw "no INFORMAL here"; return informal; }
+    const string getInformal() const { if (!hasInformal()) throw rqdql::Exception(rqdql::_t("no INFORMAL here")); return informal; }
     void setDe(De* d) { de = d; }
-    De* getDe() const { if (!hasDe()) throw "no DE here"; return de; }
+    De* getDe() const { if (!hasDe()) throw rqdql::Exception(rqdql::_t("no DE here")); return de; }
     bool hasDe() const { return de; }
     void setVerb(const string& v) { verb = v; }
-    const string getVerb() const { if (!hasVerb()) throw "no VERB here"; return verb; }
+    const string getVerb() const { if (!hasVerb()) throw rqdql::Exception(rqdql::_t("no VERB here")); return verb; }
     bool hasVerb() const { return !verb.empty(); }
     const string toFormalString() const; // like "${user}"
     const string toInformalString() const; // like "\"some\" ActorUser (the user)"
@@ -66,7 +66,7 @@ public:
     FlowHolder() : flow(0), id(0) { /* that's it */ }
     void setFlow(proxy::Flow* f) { flow = f; }
     bool hasFlow() const { return flow; }
-    proxy::Flow* getFlow() const { if (!hasFlow()) throw "no FLOW here"; return flow; }
+    proxy::Flow* getFlow() const { if (!hasFlow()) throw rqdql::Exception(rqdql::_t("no FLOW here")); return flow; }
     void setId(int i) { id = i; }
     int getId() const { return id; }
 private:
@@ -79,10 +79,10 @@ public:
     SignatureHolder() : signature(0), text("") { /* that's it */ }
     void setSignature(proxy::Signature* s) { signature = s; }
     void setSignature(const SigElements*);
-    proxy::Signature* getSignature() const { if (!hasSignature()) throw "no signature here"; return signature; }
+    proxy::Signature* getSignature() const { if (!hasSignature()) throw rqdql::Exception(rqdql::_t("no signature here")); return signature; }
     bool hasSignature() const { return signature; }
     void setText(const string& t) { text = t; }
-    const string getText() const { if (!hasText()) throw "no TEXT in this SignatureHolder"; return text; }
+    const string getText() const { if (!hasText()) throw rqdql::Exception(rqdql::_t("no TEXT in this SignatureHolder")); return text; }
     bool hasText() const { return !text.empty(); }
 private:
     proxy::Signature* signature;

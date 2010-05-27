@@ -23,6 +23,7 @@
 #include <pugixml/pugixml.hpp>
 #include <boost/algorithm/string/regex.hpp>
 #include <boost/algorithm/string/case_conv.hpp> // to_lower_copy()
+#include "Analysts.h"
 
 namespace front {
     

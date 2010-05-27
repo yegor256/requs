@@ -38,7 +38,7 @@ const string UseCase::getName() const {
     try {
         return rqdql::get<Proxy>().findName(this);
     } catch (rqdql::Exception e) {
-        throw rqdql::Exception("Use case doesn't have a name, but getName() called");
+        throw rqdql::Exception(rqdql::_t("Use case doesn't have a name, but getName() called"));
     }
 }
 

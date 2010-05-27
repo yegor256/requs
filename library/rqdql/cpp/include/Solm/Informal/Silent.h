@@ -13,23 +13,15 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
- *
- * This file is included ONLY from Front.h
+ * @version $Id$
  */
 
-void Tc::fillNode(pugi::xml_node& n) {
-    using namespace pugi;
-    using namespace analysts::tc;
-    vector<TestCase*> v = rqdql::get<Analyst>().retrieve();
-
-    for (vector<TestCase*>::const_iterator i = v.begin(); i != v.end(); ++i) {
-        PugiNodeWrapper tc = (n / "cases" + "tc");
-        tc["name"] = (*i)->getName();
-        
-        tc = (*i)->toString();
-        // for (vector<TestCase*>::const_iterator i = v.begin(); i != v.end(); ++i) {
-    }
+/**
+ * Create an outcome of this formula, list of facts
+ */
+Outcome Silent::getOutcome() const { 
+    Outcome out;
+    out.push_back(Fact(this, true, getVar().substr(1)));
+    out.push_back(Fact(this, false, "FAILURE in: " + getVar().substr(1)));
+    return out; 
 }
-
-
