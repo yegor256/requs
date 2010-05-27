@@ -59,7 +59,7 @@ solm::Formula* Flow::makeFormula() const {
     using namespace solm;
     
     // empty FLOW produces NO formula
-    if (!text) {
+    if (!text.length()) {
         return 0;
     }
     
