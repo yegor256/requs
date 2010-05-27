@@ -131,6 +131,7 @@ class Flow {
 public:
     Flow(const string& t, Signature* s) : text(t), signature(s) { /* that's it */ }
     Flow(const string& t) : text(t), signature(0) { /* that's it */ }
+    Flow() : text(), signature(0) { /* that's it */ }
     Flows* addAlternative(solm::Formula*);
     Flows* findAlternative(char); // find alternative by letter or add it if not found
     const string toString() const;

@@ -19,7 +19,7 @@
  */
 
 Flows::Flows() : flows(), formula(0) {
-    addFlow(0, new Flow("start"));
+    addFlow(0, new Flow());
 }
 
 /**
@@ -55,7 +55,10 @@ solm::Sequence* Flows::makeSequence() const {
     }
     Sequence* s = new Sequence();
     for (map<int, Flow*>::const_iterator i = flows.begin(); i != flows.end(); ++i) {
-        s->addFormula((*i).second->makeFormula());
+        Formula* f = (*i).second->makeFormula();
+        if (f) {
+            s->addFormula(f);
+        }
     }
     return s;
 }
