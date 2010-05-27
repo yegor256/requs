@@ -57,6 +57,12 @@ const string Flow::toString() const {
  */
 solm::Formula* Flow::makeFormula() const {
     using namespace solm;
+    
+    // empty FLOW produces NO formula
+    if (!text) {
+        return 0;
+    }
+    
     Formula* f;
     string mnemo = (boost::format("'%s") % text).str();
     if (!signature) {
