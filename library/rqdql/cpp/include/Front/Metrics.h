@@ -19,9 +19,19 @@
  */
 
 void Metrics::fillNode(pugi::xml_node& n) {
+    using namespace solm;
     // scope ambiguity
-    n / "ambiguity" = rqdql::get<solm::Solm>().getAmbiguity();
-    
+    n / "ambiguity" = rqdql::get<Solm>().getAmbiguity();
+
+    // manipulators to calculate
+    n / "manipulatorsCount" = 
+        rqdql::get<Solm>().countTypes<Created>()
+        + rqdql::get<Solm>().countTypes<Deleted>()
+        + rqdql::get<Solm>().countTypes<Read>();
+
+    // silent to calculate
+    n / "silentCount" = rqdql::get<Solm>().countTypes<Silent>();
+
     // total number of errors found
     n / "errorsCount" = (int)rqdql::get<Logger>().size();
 
