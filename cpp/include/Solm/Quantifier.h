@@ -22,7 +22,7 @@ template <typename T> const string Quantifier<T>::_toString(const string& t) con
     if (Unary<T>::getFormulas().size() != 1) {
         rqdql::get<rqdql::Logger>().log(
             this, 
-            "Quantifier shall have exactly one formula inside"
+            rqdql::_t("Quantifier shall have exactly one formula inside")
         );
         return "TRUE";
     }

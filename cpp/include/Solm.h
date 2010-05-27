@@ -31,6 +31,9 @@ namespace solm {
 
 /* forward declaration, and class hierarchy */
 template<typename T> class Parametrized;
+class Fact;
+    class FactPath;
+    class Outcome;
 class Formula;
     class Constant;
     template<typename T> class Unary;
@@ -64,12 +67,13 @@ class Formula {
 public:
     typedef vector<Formula*> Formulas;
     virtual ~Formula() { /* nothing, just to make this class polymorphic */ };
-    virtual const string toString() const;
+    virtual const string toString() const = 0;
     void clear() { subs.clear(); } // remove everything from the collection
     Formula* getFormula(size_t) const; // get formula by index
     void setFormula(Formula*, size_t);
     void addFormula(Formula* f) { subs.push_back(f); }
     const Formulas& getFormulas() const { return subs; }
+    virtual Outcome getOutcome() const;
 private:
     Formulas subs;
 };
@@ -87,6 +91,7 @@ public:
     typedef vector<string> Vars;
     T* arg(const string& s) { vars.push_back(s); return static_cast<T*>(this); }
     const Vars& getVars() const { return vars; }
+    const string& getVar(size_t i = 0) const { return vars[i]; }
 private:
     Vars vars;
 };
@@ -116,6 +121,7 @@ public:
     Sequence* addFormula(Formula* f) { Formula::addFormula(f); return this; }
     virtual const string toString() const;
     void append(const Sequence* s);
+    virtual Outcome getOutcome() const;
 private:
     Operand operand;
 };
@@ -132,6 +138,7 @@ public:
     Declaration(const string& n) : Unary<Declaration>(), Parametrized<Declaration>(), name(n) { /* that's it */ }
     const string& getName() const { return name; }
     virtual const string toString() const;
+    virtual Outcome getOutcome() const;
 private:
     string name;
 };
@@ -196,6 +203,7 @@ class Silent : public Informal<Silent> {
 public:
     Silent(const string& s) : Informal<Silent>() { arg(s); }
     virtual const string toString() const { return _toString("silent"); }
+    virtual Outcome getOutcome() const;
 };
 class Err : public Informal<Err> {
 public:
@@ -232,6 +240,55 @@ private:
 };
 
 /**
+ * Result of any formula from SOLM. Outcome is a collection of
+ * facts (where only one is positive).
+ */
+class Outcome : public vector<Fact> {
+public:
+    Outcome() : vector<Fact>() { /* that's it */ }
+    Outcome operator+(const Outcome&) const;
+    vector<FactPath> getPaths() const;
+    Fact& getPositiveEnd();
+    bool hasPositiveEnd() const;
+private:
+    class AbsentPositiveEndException : public rqdql::Exception {};
+};
+
+/**
+ * One fact, positive or negative, with a text explanation.
+ */
+class Fact {
+public:
+    Fact() : positive(true), text("I don't know") { /* that's it */ }
+    Fact(const Formula* f, bool p, string t) : formula(f), positive(p), text(t) { /* that's it */ }
+    operator bool() const { return positive && (!hasOutcome() || getOutcome().hasPositiveEnd()); }
+    const string& getText() const { return text; }
+    bool operator==(const Fact&) const;
+    void setOutcome(const Outcome& o) { outcome = o; }
+    bool hasOutcome() const { return outcome.size(); }
+    Outcome& getOutcome() { return outcome; }
+    const Outcome& getOutcome() const { return outcome; }
+private:
+    bool positive;
+    string text;
+    Outcome outcome;
+    const Formula* formula;
+};
+
+/**
+ * Serie of facts, ordered
+ */
+class FactPath : public vector<Fact> {
+public:
+    FactPath operator+(const FactPath&) const;
+    bool operator==(const FactPath&) const;
+    bool operator<(const FactPath&) const;
+    FactPath distance(const FactPath&) const;
+    string toString() const;
+private:
+};
+
+/**
  * Second-Order Logic Model (SOLM)
  * This is a collection of formulas, and some nice methods
  * to manipulate with the collection.
@@ -254,6 +311,11 @@ private:
 #include "Solm/Math.h"
 #include "Solm/Quantifier.h"
 #include "Solm/Primitive.h"
+#include "Solm/Informal.h"
+
+#include "Solm/Fact.h"
+#include "Solm/FactPath.h"
+#include "Solm/Outcome.h"
 
 }
 

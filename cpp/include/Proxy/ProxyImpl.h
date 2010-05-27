@@ -170,7 +170,7 @@ template<typename T> const string Proxy::findName(const T* t) const {
             return i->first;
         }
     }
-    throw rqdql::Exception("Element doesn't have a system-wide name");
+    throw rqdql::Exception(rqdql::_t("Element doesn't have a system-wide name"));
 }
 
 

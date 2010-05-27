@@ -115,7 +115,7 @@ solm::Formula* Signature::makeFormula() const {
     if (regex_match(t, regex("if failure"))) {
         return (new Caught())->arg("'not implemented yet");
     }
-    throw (format("Signature '%s' is not a formula") % text).str();
+    throw rqdql::Exception(format(rqdql::_t("Signature '%s' is not a formula")) % text);
 }
 
 /**
@@ -123,10 +123,10 @@ solm::Formula* Signature::makeFormula() const {
  */
 string Signature::getPlaceName(size_t i) const {
     if (!hasPlaces()) {
-        throw (boost::format("No places found in signature '%s'") % text).str();
+        throw rqdql::Exception(boost::format(rqdql::_t("No places found in signature '%s'")) % text);
     }
     if (i >= getPlaces().size()) {
-        throw (boost::format("Places no.%d is absent in signature '%s'") % i % text).str();
+        throw rqdql::Exception(boost::format(rqdql::_t("Places no.%d is absent in signature '%s'")) % i % text);
     }
     return getPlaces().at(i);
 }

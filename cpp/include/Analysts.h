@@ -19,6 +19,11 @@
 #ifndef __INCLUDE_SCOPE_ANALYSTS_H
 #define __INCLUDE_SCOPE_ANALYSTS_H
 
+#include <vector>
+#include <boost/algorithm/string/join.hpp> // join()
+#include "Solm.h"
+#include "Proxy.h"
+
 namespace analysts {
 
 #include "Analysts/Tc.h"

@@ -163,11 +163,88 @@ void testWeCanFindAllFunctionDeclarations() {
         boost::algorithm::join(list, ", ") << endl;
 }
 
+void testFactsOperatorsWork() {
+    Silent* f = new Silent("'just test");
+    FactPath fp1;
+    fp1.push_back(Fact(f, true, "test me"));
+    fp1.push_back(Fact(f, true, "good one"));
+
+    FactPath fp2;
+    fp2.push_back(Fact(f, true, "test me"));
+    
+    BOOST_REQUIRE((fp1 + fp2).size() == 3);
+    
+    // distance between them
+    FactPath fp3;
+    try {
+        fp3 = fp1.distance(fp2);
+    } catch (rqdql::Exception e) {
+        cout << "exception: " << e.getMessage() << endl;
+        BOOST_REQUIRE(false);
+    }
+    BOOST_REQUIRE(fp3.size() == 1);
+
+    // another critical situations with factpath:
+    FactPath fpX;
+    fpX.push_back(Fact(f, true, "A"));
+    fpX.push_back(Fact(f, true, "B"));
+    FactPath fpY;
+    fpY.push_back(Fact(f, false, "A"));
+    fpY.push_back(Fact(f, true, "D"));
+    BOOST_REQUIRE(fpX.distance(fpY).size() == 2);
+
+    // another critical situations with factpath:
+    FactPath fpW;
+    fpW.push_back(Fact(f, true, "A"));
+    fpW.push_back(Fact(f, true, "B"));
+    FactPath fpZ;
+    fpZ.push_back(Fact(f, true, "A"));
+    fpZ.push_back(Fact(f, true, "B"));
+    BOOST_REQUIRE(fpW.distance(fpZ).size() == 0);
+
+}
+
+void testOutcomesAreProperlyReturned() {
+    Formula* f = 
+    (new Declaration("UC1"))
+        ->arg("x")
+        ->setFormula(
+            (new Sequence())
+            ->addFormula(new Silent("'We receive new file by mail"))
+            ->addFormula(
+                (new Sequence())
+                ->addFormula(new Silent("'File is being validated"))
+                ->addFormula(
+                    (new Sequence())
+                    ->addFormula(new Silent("'What if not?"))
+                )
+            )
+            ->addFormula(new Silent("'We protocol this operation"))
+        );
+
+    Outcome out;
+    try {
+        out = f->getOutcome();
+    } catch (rqdql::Exception e) {
+        cout << "exception: " << e.getMessage() << endl;
+        BOOST_REQUIRE(false);
+    }
+    BOOST_REQUIRE(out.size() > 0);
+    
+    vector<FactPath> fp = out.getPaths();
+    BOOST_REQUIRE(fp.size() == 5);
+    for (vector<FactPath>::const_iterator i = fp.begin(); i != fp.end(); ++i) {
+        cout << "new path:\n" << (*i).toString() << endl;
+    }
+}
+
 int test_main(int, char *[]) {
     testSimple();
     testMoreComplexStructure();
     testComplex();
     testWeCanFindAllFunctionDeclarations();
+    testFactsOperatorsWork();
+    testOutcomesAreProperlyReturned();
     
     return 0;
 }

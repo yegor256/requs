@@ -13,23 +13,21 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
+ * @version $Id: Formula.h 2070 2010-05-24 14:19:35Z yegor256@yahoo.com $
  *
- * This file is included ONLY from Front.h
+ * This file is included ONLY from Solm.h
  */
 
-void Tc::fillNode(pugi::xml_node& n) {
-    using namespace pugi;
-    using namespace analysts::tc;
-    vector<TestCase*> v = rqdql::get<Analyst>().retrieve();
-
-    for (vector<TestCase*>::const_iterator i = v.begin(); i != v.end(); ++i) {
-        PugiNodeWrapper tc = (n / "cases" + "tc");
-        tc["name"] = (*i)->getName();
-        
-        tc = (*i)->toString();
-        // for (vector<TestCase*>::const_iterator i = v.begin(); i != v.end(); ++i) {
+/**
+ * Two facts are equal?
+ */
+bool Fact::operator==(const Fact& f) const {
+    if (getText() != f.getText()) {
+        return false;
     }
+    if ((bool)*this != (bool)f) {
+        return false;
+    }
+    return true;
 }
-
 

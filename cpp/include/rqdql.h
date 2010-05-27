@@ -34,11 +34,20 @@ namespace rqdql {
     
     class Exception {
     public:
+        Exception() : message("no details") { /* that's it */ }
         Exception(const string& s) : message(s) { /* that's it */ }
+        Exception(const boost::format& s) : message(s.str()) { /* that's it */ }
         const string& getMessage() { return message; }
     private:
         string message;
     };
+    
+    /**
+     * Get LOCALIZED string
+     */
+    const string _t(const string& s) {
+        return s;
+    }
     
     /**
      * Get a singleton copy of a module/class

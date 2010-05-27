@@ -16,6 +16,16 @@
  * @version $Id$
  */
 
+/**
+ * Create an outcome of this formula, list of facts
+ */
+Outcome Declaration::getOutcome() const { 
+    return getFormula()->getOutcome(); 
+}
+
+/**
+ * Convert this declaration to the LaTeX text
+ */
 const string Declaration::toString() const { 
     string f;
     if (Unary<Declaration>::getFormulas().size() != 1) {

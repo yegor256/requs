@@ -21,40 +21,23 @@
 namespace tc {
     
 /**
- * One fact, positive or negative, with a text explanation.
- */
-class Fact {
-public:
-    Fact(bool p, string t) : positive(p), text(t) { /* that's it */ }
-    bool isPositive() const { return positive; }
-private:
-    bool positive;
-    string text;
-};
-
-/**
- * Result of any formula from SOLM. Outcome is a collection of
- * facts (where only one is positive).
- */
-class Outcome {
-public:
-    Outcome() : facts() { /* that's it */ }
-    bool hasPositive() const;
-private:
-    vector<Fact*> facts;
-};
-
-/**
  * One Test Case, as an instruction to a tester
  */
 class TestCase {
 public:
-    bool isPositive() const;
+    TestCase(const solm::FactPath& a) : predecessors(), after(a), name() { /* that's it */ }
+    TestCase() : predecessors(), after(), name() { /* that's it */ }
+    operator solm::FactPath() const;
+    bool operator==(const TestCase&) const;
+    const string toString() const;
+    void setName(const string& s) { name = s; }
+    const string getName() const { return name; }
+    void addPredecessor(TestCase* p) { predecessors.push_back(p); }
+    const vector<TestCase*>& getPredecessors() const { return predecessors; }
 private:
+    vector<TestCase*> predecessors;
+    solm::FactPath after;
     string name;
-    TestCase* predecessor;
-    vector<Fact*> before;
-    vector<Fact*> after;
 };
 
 /**
@@ -67,5 +50,6 @@ private:
 };
 
 #include "Analysts/Tc/AnalystImpl.h"
+#include "Analysts/Tc/TestCase.h"
 
 }

@@ -16,6 +16,20 @@
  * @version $Id$
  */
 
+/**
+ * Create an outcome of this formula, list of facts
+ */
+Outcome Sequence::getOutcome() const { 
+    Outcome out;
+    for (Formulas::const_iterator i = getFormulas().begin(); i != getFormulas().end(); ++i) {
+        out = out + (*i)->getOutcome();
+    }
+    return out;
+}
+
+/**
+ * Convert the sequence to PREDICATES in LaTeX
+ */
 const string Sequence::toString() const {
     vector<string> lines;
     for (Formulas::const_iterator i = getFormulas().begin(); i != getFormulas().end(); ++i) {
@@ -43,6 +57,9 @@ const string Sequence::toString() const {
     ) + "\n)";
 }
 
+/**
+ * Append sequence to sequence
+ */
 void Sequence::append(const Sequence* s) {
     for (Formulas::const_iterator i = s->getFormulas().begin(); i != s->getFormulas().end(); ++i) {
         addFormula(*i);
