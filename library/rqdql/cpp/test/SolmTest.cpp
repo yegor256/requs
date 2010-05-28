@@ -173,35 +173,6 @@ void testFactsOperatorsWork() {
     fp2.push_back(Fact(f, true, "test me"));
     
     BOOST_REQUIRE((fp1 + fp2).size() == 3);
-    
-    // distance between them
-    FactPath fp3;
-    try {
-        fp3 = fp1.distance(fp2);
-    } catch (rqdql::Exception e) {
-        cout << "exception: " << e.getMessage() << endl;
-        BOOST_REQUIRE(false);
-    }
-    BOOST_REQUIRE(fp3.size() == 1);
-
-    // another critical situations with factpath:
-    FactPath fpX;
-    fpX.push_back(Fact(f, true, "A"));
-    fpX.push_back(Fact(f, true, "B"));
-    FactPath fpY;
-    fpY.push_back(Fact(f, false, "A"));
-    fpY.push_back(Fact(f, true, "D"));
-    BOOST_REQUIRE(fpX.distance(fpY).size() == 2);
-
-    // another critical situations with factpath:
-    FactPath fpW;
-    fpW.push_back(Fact(f, true, "A"));
-    fpW.push_back(Fact(f, true, "B"));
-    FactPath fpZ;
-    fpZ.push_back(Fact(f, true, "A"));
-    fpZ.push_back(Fact(f, true, "B"));
-    BOOST_REQUIRE(fpW.distance(fpZ).size() == 0);
-
 }
 
 void testOutcomesAreProperlyReturned() {

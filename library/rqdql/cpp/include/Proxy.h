@@ -154,7 +154,7 @@ public:
     bool hasSequence() const { return !formula && !flows.empty(); }
     void setFlows(Flows* f) { flows = f->flows; }
     map<int, Flow*> getFlows() const { return flows; }
-    void setFormula(solm::Formula* f) { formula = f; } // instead of sequence, just one formula
+    void setFormula(solm::Formula*); // instead of sequence, just one formula
     bool hasFormula() const { return formula; }
     solm::Formula* getFormula() { return formula; }
 private:

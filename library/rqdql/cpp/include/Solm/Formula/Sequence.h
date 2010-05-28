@@ -24,12 +24,10 @@ Outcome Sequence::getOutcome() const {
     switch (operand) {
         case OP_TO:
         case OP_SEMICOLON:
+        case OP_AND:
             for (Formulas::const_iterator i = getFormulas().begin(); i != getFormulas().end(); ++i) {
                 out = out + (*i)->getOutcome();
             }
-            break;
-            
-        case OP_AND:
             break;
             
         case OP_OR:

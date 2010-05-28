@@ -271,6 +271,7 @@ public:
     bool hasOutcome() const { return outcome.size(); }
     Outcome& getOutcome() { return outcome; }
     const Outcome& getOutcome() const { return outcome; }
+    const Formula* getFormula() const { return formula; }
 private:
     bool positive;
     string text;
