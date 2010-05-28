@@ -27,13 +27,20 @@ Outcome Outcome::operator+(const Outcome& out) const {
         return out;
     }
     Outcome n = *this;
-    if (!n.hasPositiveEnd()) {
+    if (!n) {
         throw rqdql::Exception(
             boost::format("Outcome (%d facts) is negative, we can't append next step to it") % size()
         );
     }
     n.getPositiveEnd().setOutcome(out);
     return n;
+}
+
+Outcome& Outcome::operator<<(const Outcome& out) {
+    for (Outcome::const_iterator i = out.begin(); i != out.end(); ++i) {
+        push_back(*i);
+    }
+    return *this;
 }
 
 /**
@@ -60,7 +67,7 @@ vector<FactPath> Outcome::getPaths() const {
 /**
  * This outcome has a positive end?
  */
-bool Outcome::hasPositiveEnd() const {
+Outcome::operator bool() const {
     try {
         const_cast<Outcome*>(this)->getPositiveEnd();
         return true;

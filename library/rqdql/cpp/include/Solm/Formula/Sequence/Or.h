@@ -13,16 +13,6 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: Silent.h 2095 2010-05-28 07:26:19Z yegor256@yahoo.com $
  */
 
-/**
- * Create an outcome of this formula, list of facts
- */
-Outcome Function::getOutcome() const { 
-    // if it's not a UC -- don't do anything
-    if (!boost::regex_match(name, boost::regex("^UC[0-9].*"))) {
-        return Outcome();
-    }
-    return rqdql::get<Solm>().getDeclaration(name)->getFormula()->getOutcome();
-}

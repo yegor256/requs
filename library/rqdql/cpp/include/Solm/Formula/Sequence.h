@@ -21,8 +21,29 @@
  */
 Outcome Sequence::getOutcome() const { 
     Outcome out;
-    for (Formulas::const_iterator i = getFormulas().begin(); i != getFormulas().end(); ++i) {
-        out = out + (*i)->getOutcome();
+    switch (operand) {
+        case OP_TO:
+        case OP_SEMICOLON:
+            for (Formulas::const_iterator i = getFormulas().begin(); i != getFormulas().end(); ++i) {
+                out = out + (*i)->getOutcome();
+            }
+            break;
+            
+        case OP_AND:
+            break;
+            
+        case OP_OR:
+            Outcome totalFalse;
+            for (Formulas::const_iterator i = getFormulas().begin(); i != getFormulas().end(); ++i) {
+                Outcome t = (*i)->getOutcome();
+                if (t) {
+                    out << t;
+                } else {
+                    totalFalse = totalFalse + t;
+                }
+            }
+            out << totalFalse;
+            break;
     }
     return out;
 }
@@ -66,3 +87,5 @@ void Sequence::append(const Sequence* s) {
     }
 }
 
+#include "Solm/Formula/Sequence/And.h"
+#include "Solm/Formula/Sequence/Or.h"
