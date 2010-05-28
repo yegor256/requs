@@ -17,3 +17,6 @@
  */
 
 #include "Solm/Formula/Predicate/Function.h"
+#include "Solm/Formula/Predicate/Math.h"
+#include "Solm/Formula/Predicate/Primitive.h"
+

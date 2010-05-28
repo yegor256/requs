@@ -308,7 +308,6 @@ private:
 
 #include "Solm/SolmImpl.h"
 #include "Solm/Formula.h"
-
 #include "Solm/Fact.h"
 #include "Solm/FactPath.h"
 #include "Solm/Outcome.h"

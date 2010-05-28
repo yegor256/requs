@@ -18,8 +18,6 @@
  * This file is included ONLY from Solm.h
  */
 
-#include "Solm/Formula/Predicate.h"
-
 /**
  * Create an outcome of this formula, list of facts
  */
@@ -52,4 +50,9 @@ Formula* Formula::getFormula(size_t i = 0) const {
     }
     return subs.at(i);
 }
+
+#include "Solm/Formula/Declaration.h"
+#include "Solm/Formula/Quantifier.h"
+#include "Solm/Formula/Predicate.h"
+#include "Solm/Formula/Sequence.h"
 
