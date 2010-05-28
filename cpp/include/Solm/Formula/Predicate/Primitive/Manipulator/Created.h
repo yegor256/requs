@@ -13,11 +13,14 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
- *
- * This file is included ONLY from Solm/Primitive.h
+ * @version $Id: Silent.h 2098 2010-05-28 09:50:32Z yegor256@yahoo.com $
  */
 
-#include "Solm/Formula/Predicate/Primitive/In.h"
-#include "Solm/Formula/Predicate/Primitive/Informal.h"
-#include "Solm/Formula/Predicate/Primitive/Manipulator.h"
+/**
+ * Create an outcome of this formula, list of facts
+ */
+Outcome Created::getOutcome() const { 
+    Outcome out;
+    out.push_back(Fact(this, true, "just created..."));
+    return out; 
+}
