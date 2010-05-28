@@ -172,6 +172,7 @@ class Function : public Predicate<Function> {
 public:
     Function(const string& n) : Predicate<Function>(), name(n) { /* that's it */ }
     virtual const string toString() const { return _toString(name); }
+    virtual Outcome getOutcome() const;
 private:
     string name;
 };
@@ -263,6 +264,7 @@ public:
     Fact(const Formula* f, bool p, string t) : formula(f), positive(p), text(t) { /* that's it */ }
     operator bool() const { return positive && (!hasOutcome() || getOutcome().hasPositiveEnd()); }
     const string& getText() const { return text; }
+    virtual const string toString() const { return text; }
     bool operator==(const Fact&) const;
     void setOutcome(const Outcome& o) { outcome = o; }
     bool hasOutcome() const { return outcome.size(); }
@@ -278,13 +280,12 @@ private:
 /**
  * Serie of facts, ordered
  */
-class FactPath : public vector<Fact> {
+class FactPath : public Fact, public vector<Fact> {
 public:
     FactPath operator+(const FactPath&) const;
     bool operator==(const FactPath&) const;
     bool operator<(const FactPath&) const;
-    FactPath distance(const FactPath&) const;
-    string toString() const;
+    const string toString() const;
 private:
 };
 
@@ -300,18 +301,13 @@ public:
     template <typename T> const int countTypes() const; // count objects of given type
     template <typename T> const vector<T*> findTypes() const; // find all objects of given type
     const vector<string> getAllFunctions() const; // get list of all declared functions
+    Declaration* getDeclaration(const string&) const; // get this particular declaration
 private:
     const Formulas _retrieve(Formulas) const; // get all formulas, including sub-formulas
 };
 
 #include "Solm/SolmImpl.h"
 #include "Solm/Formula.h"
-#include "Solm/Declaration.h"
-#include "Solm/Sequence.h"
-#include "Solm/Math.h"
-#include "Solm/Quantifier.h"
-#include "Solm/Primitive.h"
-#include "Solm/Informal.h"
 
 #include "Solm/Fact.h"
 #include "Solm/FactPath.h"

@@ -37,13 +37,7 @@ namespace rqdql {
     private:
         string message;
     };
-}
     
-// logger
-#include "Logger.h"
-
-namespace rqdql {
-
     /**
      * Get LOCALIZED string
      */
@@ -61,6 +55,12 @@ namespace rqdql {
         }
         return *t;
     }
+}
+
+// logger
+#include "Logger.h"
+
+namespace rqdql {
 
     /**
      * Different levels of logging

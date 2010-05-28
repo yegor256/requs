@@ -91,10 +91,10 @@ const vector<Logger::Link>& Logger::getLinks() {
         const void* left = (*i).getLeft();
         const void* right = (*i).getRight();
         if (!hasSubject(left)) {
-            throw rqdql::Exception("LEFT subject not found when reporting links");
+            throw rqdql::Exception(rqdql::_t("LEFT subject not found when reporting links"));
         }
         if (!hasSubject(right)) {
-            throw rqdql::Exception("RIGHT subject not found when reporting links");
+            throw rqdql::Exception(rqdql::_t("RIGHT subject not found when reporting links"));
         }
         (*i).setLeftLines(subjects[left]);
         (*i).setRightLines(subjects[right]);
@@ -118,10 +118,10 @@ void Logger::addLink(const void* l, const void* r) {
  */
 void Logger::addClone(const void* existing, const void* n) {
     if (!hasSubject(existing)) {
-        throw rqdql::Exception("EXISTING subject not found when cloning");
+        throw rqdql::Exception(rqdql::_t("EXISTING subject not found when cloning"));
     }
     if (!subjects[existing].size()) {
-        throw rqdql::Exception("No lines were reported yet for EXISTING subject");
+        throw rqdql::Exception(rqdql::_t("No lines were reported yet for EXISTING subject"));
     }
     addSubject(n, *(subjects[existing].end()-1));
 }

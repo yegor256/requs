@@ -43,31 +43,19 @@ bool FactPath::operator<(const FactPath& p) const {
 }
 
 /**
- * Distance between two fact pathes, from BIGGER to SMALLER
- * THIS: {A, B, C}    P: {A, B}   RESULT: {C}
- * THIS: {A, B, C}    P: {C, D}   RESULT: {A, B, C}
- * THIS: {A, B}       P: {A, B}   RESULT: {}
- */
-FactPath FactPath::distance(const FactPath& p) const {
-    if (p.size() > size()) {
-        throw rqdql::Exception("distance() argument is LARGER than subject");
-    }
-    pair<FactPath::const_iterator, FactPath::const_iterator> found 
-        = mismatch(p.begin(), p.end(), begin());
-
-    // copy everything that we have in THIS serie, after the first mismatch
-    FactPath path;
-    path.insert(path.end(), found.second, end());
-    return path;
-}
-
-/**
  * Convert to string
  */
-string FactPath::toString() const {
+const string FactPath::toString() const {
     vector<string> lines;
+    lines.push_back(Fact::toString());
     for (FactPath::const_iterator f = begin(); f != end(); ++f) {
-        lines.push_back((*f).getText());
+        lines.push_back(
+            boost::algorithm::replace_all_copy(
+                (*f).toString(),
+                "\n",
+                "\t\n"
+            )
+        );
     }
     return boost::algorithm::join(lines, "\n");
 }

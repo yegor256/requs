@@ -13,35 +13,12 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
- *
- * This file has to be included ONLY from Analytics.h
+ * @version $Id$
  */
-
-namespace tc {
-    
-/**
- * One Test Case, as an instruction to a tester
- */
-class TestCase : public solm::FactPath {
-public:
-    TestCase(const solm::FactPath& fp) : solm::FactPath(fp), name() { /* that's it */ }
-    void setName(const string& s) { name = s; }
-    const string getName() const { return name; }
-private:
-    string name;
-};
 
 /**
- * Builder of Test Cases
+ * Create an outcome of this formula, list of facts
  */
-class Analyst {
-public:
-    vector<TestCase*> retrieve() const;
-private:
-};
-
-#include "Analysts/Tc/AnalystImpl.h"
-#include "Analysts/Tc/TestCase.h"
-
+Outcome Function::getOutcome() const { 
+    return rqdql::get<Solm>().getDeclaration(name)->getFormula()->getOutcome();
 }
