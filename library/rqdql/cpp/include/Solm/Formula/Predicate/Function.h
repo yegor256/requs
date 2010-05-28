@@ -20,5 +20,9 @@
  * Create an outcome of this formula, list of facts
  */
 Outcome Function::getOutcome() const { 
+    // if it's not a UC -- don't do anything
+    if (!regex_match(name, regex("UC\\d.*"))) {
+        return Outcome();
+    }
     return rqdql::get<Solm>().getDeclaration(name)->getFormula()->getOutcome();
 }
