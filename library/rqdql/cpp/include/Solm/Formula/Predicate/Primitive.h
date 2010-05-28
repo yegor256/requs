@@ -18,4 +18,5 @@
  * This file is included ONLY from Solm/Primitive.h
  */
 
-#include "Solm/Primitive/In.h"
+#include "Solm/Formula/Predicate/Primitive/In.h"
+#include "Solm/Formula/Predicate/Primitive/Informal.h"

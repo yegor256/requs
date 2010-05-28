@@ -16,4 +16,4 @@
  * @version $Id: Sequence.h 1819 2010-05-11 10:37:15Z yegor256@yahoo.com $
  */
 
-#include "Solm/Informal/Silent.h"
+#include "Solm/Formula/Predicate/Primitive/Informal/Silent.h"
