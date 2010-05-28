@@ -27,11 +27,7 @@ using namespace std;
 // boost libraries
 #include "boost/format.hpp"
 
-// logger
-#include "Logger.h"
-
 namespace rqdql {
-    
     class Exception {
     public:
         Exception() : message("no details") { /* that's it */ }
@@ -41,7 +37,13 @@ namespace rqdql {
     private:
         string message;
     };
+}
     
+// logger
+#include "Logger.h"
+
+namespace rqdql {
+
     /**
      * Get LOCALIZED string
      */
