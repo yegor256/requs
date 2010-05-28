@@ -45,6 +45,16 @@ const string Flows::toString() const {
 }
 
 /**
+ * Instead of a sequence there is just a simple formula
+ */
+void Flows::setFormula(solm::Formula* f) { 
+    formula = f; 
+
+    // Now we should like this NEW formula with the FLOWS
+    rqdql::get<rqdql::Logger>().addClone(this, f);
+}
+
+/**
  * Convert a list of Flows into a sequence of Formulas
  * @see Proxy::inject()
  */

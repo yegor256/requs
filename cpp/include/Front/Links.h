@@ -20,7 +20,7 @@
 
 void Links::fillNode(pugi::xml_node& n) {
     typedef vector<rqdql::Logger::Link> Links;
-    Links v = rqdql::get<Logger>().getLinks();
+    Links v = rqdql::get<rqdql::Logger>().getLinks();
     
     map<int, int> links;
     for (Links::const_iterator i = v.begin(); i != v.end(); ++i) {
@@ -47,7 +47,7 @@ void Links::fillNode(pugi::xml_node& n) {
 template<typename T> void Links::addLocations(pugi::xml_node& n, const string& label) const {
     vector<string> types = rqdql::get<Proxy>().getNames<T>();
     for (vector<string>::const_iterator i = types.begin(); i != types.end(); ++i) {
-        vector<int> lines = rqdql::get<Logger>().getLinesFor(rqdql::get<Proxy>().get<T>(*i));
+        vector<int> lines = rqdql::get<rqdql::Logger>().getLinesFor(rqdql::get<Proxy>().get<T>(*i));
         if (lines.empty()) {
             continue;
         }
