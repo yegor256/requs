@@ -31,3 +31,9 @@ bool Fact::operator==(const Fact& f) const {
     return true;
 }
 
+/**
+ * The fact is positive?
+ */
+Fact::operator bool() const { 
+    return positive && (!hasOutcome() || getOutcome()); 
+}

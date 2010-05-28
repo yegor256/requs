@@ -41,11 +41,10 @@ class Formula;
         template<typename T> class Quantifier; // extends Parametrized
             class Forall;
             class Exists;
-        class Braces;
-    template<typename T> class Binary;
-        class And;
-        class Or;
     class Sequence;
+        // template<typename T, Sequence::Operand op> class Binary;
+            class And;
+            class Or;
     template<typename T> class Predicate; // extends Parametrized
         class Function;
         template<typename T> class Primitive;
@@ -101,19 +100,6 @@ public:
     T* setFormula(Formula* f) { Formula::setFormula(f); return static_cast<T*>(this); }
 };
 
-template <typename T> class Binary : public Formula {
-public:
-    T* setLhs(Formula* f) { Formula::setFormula(f); return static_cast<T*>(this); }
-    T* setRhs(Formula* f) { Formula::setFormula(f, 1); return static_cast<T*>(this); }
-protected:
-    const string _toString(const string& op) const {
-        if (getFormulas().size() != 2) {
-            throw "BINARY shall have exactly two formulas inside";
-        }
-        return getFormula(0)->toString() + " " + op + " " + getFormula(1)->toString();
-    }
-};
-
 class Sequence : public Formula {
 public:
     typedef enum {OP_TO, OP_AND, OP_OR, OP_SEMICOLON} Operand;
@@ -124,6 +110,20 @@ public:
     virtual Outcome getOutcome() const;
 private:
     Operand operand;
+};
+
+template <typename T, Sequence::Operand op> class Binary : public Sequence {
+public:
+    Binary() : Sequence(op) { /* that's it */ }
+    T* setLhs(Formula* f) { Formula::setFormula(f); return static_cast<T*>(this); }
+    T* setRhs(Formula* f) { Formula::setFormula(f, 1); return static_cast<T*>(this); }
+protected:
+    const string _toString(const string& o) const {
+        if (getFormulas().size() != 2) {
+            throw "BINARY shall have exactly two formulas inside";
+        }
+        return getFormula(0)->toString() + " " + o + " " + getFormula(1)->toString();
+    }
 };
 
 template <typename T> class Predicate : public Formula, public Parametrized<T> {
@@ -158,14 +158,14 @@ public:
     virtual const string toString() const { return _toString("\\exists"); }
 };
 
-class And : public Binary<And> {
+class And : public Binary<And, Sequence::OP_AND> {
 public:
-    virtual const string toString() const { return Binary<And>::_toString("\\vee"); }
+    virtual const string toString() const { return Binary<And, Sequence::OP_AND>::_toString("\\vee"); }
 };
 
-class Or : public Binary<Or> {
+class Or : public Binary<Or, Sequence::OP_OR> {
 public:
-    virtual const string toString() const { return Binary<Or>::_toString("\\wedge"); }
+    virtual const string toString() const { return Binary<Or, Sequence::OP_OR>::_toString("\\wedge"); }
 };
 
 class Function : public Predicate<Function> {
@@ -248,9 +248,10 @@ class Outcome : public vector<Fact> {
 public:
     Outcome() : vector<Fact>() { /* that's it */ }
     Outcome operator+(const Outcome&) const;
+    Outcome& operator<<(const Outcome&);
+    operator bool() const;
     vector<FactPath> getPaths() const;
     Fact& getPositiveEnd();
-    bool hasPositiveEnd() const;
 private:
     class AbsentPositiveEndException : public rqdql::Exception {};
 };
@@ -262,7 +263,7 @@ class Fact {
 public:
     Fact() : positive(true), text("I don't know") { /* that's it */ }
     Fact(const Formula* f, bool p, string t) : formula(f), positive(p), text(t) { /* that's it */ }
-    operator bool() const { return positive && (!hasOutcome() || getOutcome().hasPositiveEnd()); }
+    operator bool() const;
     const string& getText() const { return text; }
     virtual const string toString() const { return text; }
     bool operator==(const Fact&) const;

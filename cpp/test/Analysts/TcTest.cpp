@@ -27,11 +27,6 @@ void testSimpleOperationsWithTestCases() {
     TestCase tc(fp);
     TestCase tc2 = tc;
     BOOST_REQUIRE(tc == tc2);
-    
-    // now we should calculate the LENGTH of a composite TC
-    // tc2 = TestCase(fp);
-    // tc2.addPredecessor(&tc);
-    // BOOST_REQUIRE(((solm::FactPath)tc2).size() == 4);
 }
 
 void testFactsRetrievalWorks() {
@@ -46,7 +41,7 @@ void testFactsRetrievalWorks() {
         cout << "exception: " << e.getMessage() << endl;
         BOOST_REQUIRE(false);
     }
-    // tearDown();
+    tearDown();
     
     BOOST_REQUIRE(v.size() > 0);
     cout << v.size() << " test cases found" << endl;
