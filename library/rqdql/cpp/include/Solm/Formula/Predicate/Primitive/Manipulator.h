@@ -13,11 +13,10 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
- *
- * This file is included ONLY from Solm/Primitive.h
+ * @version $Id: Sequence.h 1819 2010-05-11 10:37:15Z yegor256@yahoo.com $
  */
 
-#include "Solm/Formula/Predicate/Primitive/In.h"
-#include "Solm/Formula/Predicate/Primitive/Informal.h"
-#include "Solm/Formula/Predicate/Primitive/Manipulator.h"
+#include "Solm/Formula/Predicate/Primitive/Manipulator/Read.h"
+#include "Solm/Formula/Predicate/Primitive/Manipulator/Created.h"
+#include "Solm/Formula/Predicate/Primitive/Manipulator/Deleted.h"
+#include "Solm/Formula/Predicate/Primitive/Manipulator/Updated.h"

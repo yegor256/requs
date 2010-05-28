@@ -218,18 +218,22 @@ template <typename T> class Manipulator : public Primitive<T> {
 class Created : public Manipulator<Created> {
 public:
     virtual const string toString() const { return _toString("created"); }
+    virtual Outcome getOutcome() const;
 };
 class Read : public Manipulator<Read> {
 public:
     virtual const string toString() const { return _toString("read"); }
+    virtual Outcome getOutcome() const;
 };
 class Deleted : public Manipulator<Deleted> {
 public:
     virtual const string toString() const { return _toString("deleted"); }
+    virtual Outcome getOutcome() const;
 };
 class Updated : public Manipulator<Updated> {
 public:
     virtual const string toString() const { return _toString("updated"); }
+    virtual Outcome getOutcome() const;
 };
 
 class Math : public Predicate<Math> {

@@ -14,10 +14,13 @@
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
  * @version $Id$
- *
- * This file is included ONLY from Solm/Primitive.h
  */
 
-#include "Solm/Formula/Predicate/Primitive/In.h"
-#include "Solm/Formula/Predicate/Primitive/Informal.h"
-#include "Solm/Formula/Predicate/Primitive/Manipulator.h"
+/**
+ * Create an outcome of this formula, list of facts
+ */
+Outcome Read::getOutcome() const { 
+    Outcome out;
+    out.push_back(Fact(this, true, "reading..."));
+    return out; 
+}
