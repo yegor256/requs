@@ -1,4 +1,17 @@
 \documentclass{article}
+\usepackage{listings} % listings
+    \lstset{
+        basicstyle=\small\ttfamily,
+        numbers=left,
+        numberstyle=\scriptsize,
+        firstnumber=1,
+        stepnumber=4,
+        numbersep=1em,
+        aboveskip=2em,
+        belowskip=1em,
+        lineskip=-0.3em,
+        frame=leftline,
+    }
 \usepackage{tikz}
 	\usetikzlibrary{shapes,arrows,shadows}
 	\usetikzlibrary{decorations.pathmorphing}
@@ -20,8 +33,11 @@
     \vspace*{1em}
 }
 
-\title{Use Cases to Predicates}
-\author{Yegor Bugayenko\\\texttt{yegor@tpc2.com}}
+\title{RQDQL: White Paper}
+\author{
+    Yegor Bugayenko\\
+    \texttt{yegor@tpc2.com}
+}
 \maketitle
 
 \newpage
@@ -147,21 +163,29 @@ User includes:
 \section{Parser, Validator, Metric Collector, etc.}
 
     \begin{tikzpicture}
-        [node distance=8em]
+        [node distance=8em, thick]
         \node [draw] (yacc) {YACC};
         \node [draw, right of=yacc] (brokers) {C++ brokers};
         \node [draw, right of=brokers] (proxy) {Proxy};
         \node [draw, right of=proxy] (solm) {SOLM};
-        \node [above right of=solm] (uml) {UML};
-        \node [right of=solm] (lisp) {Lisp};
-        \node [below right of=solm] (metrics) {Metrics};
+
+        \node [draw, below of=proxy] (logger) {Logger};
+        \node [draw, right of=logger] (front) {Front};
+        \node [draw, right of=front] (main) {\texttt{main()}};
+        \node [draw, below of=main] (plugin) {RqdqlPlugin};
         
-        \draw [thick, ->] (yacc) -- (brokers);
-        \draw [thick, ->] (brokers) -- (proxy);
-        \draw [thick, ->] (proxy) -- (solm);
-        \draw [dashed, ->] (solm) -- (uml);
-        \draw [dashed, ->] (solm) -- (lisp);
-        \draw [dashed, ->] (solm) -- (metrics);
+        \draw [->] (yacc) -- (brokers);
+        \draw [->] (brokers) -- (proxy);
+        \draw [->] (proxy) -- (solm);
+        \draw [->] (main) -- (front);
+        \draw [->] (front) -- (logger);
+        \draw [->] (front) -- (solm);
+        \draw [->] (plugin) -- (main);
+        
+        \draw [dashed, ->] (yacc) -- (logger);
+        \draw [dashed, ->] (brokers) -- (logger);
+        \draw [dashed, ->] (proxy) -- (logger);
+        \draw [dashed, ->] (solm) -- (logger);
     \end{tikzpicture}
     
 
@@ -198,7 +222,7 @@ User includes:
     \clearpage
     Proxy is a collection of C++ classes:
     
-    \begin{verbatim}
+    \begin{lstlisting}[language=C++]
 class Type {
   vector<solm::Formula*> predicates;
   vector<Slot> slots;
@@ -223,6 +247,103 @@ class UseCase {
     map<solm::Formula*, Flows&> alternatives;
   };
 };
-\end{verbatim}
+\end{lstlisting}
+
+    Front is a collection of components. Every component gets
+    an associative array of configuration parameters 
+    and returns an XML element. The element is named \texttt{<report>}
+    and has attributes equivalent to the configuration
+    params provided.
+    
+    \texttt{main()} returns an XML document that integrates
+    all reports retrieved:
+    
+    \begin{lstlisting}[language=XML]
+<?xml version="1.0" ?>
+<rqdql>
+  <errors>
+    <report>
+      <error>
+        <lines>
+          <line>23</line>
+        </lines>
+        <msg>
+          This is an error
+        </msg>
+      </error>
+    </report>
+  </errors>
+  <metrics>
+    <report>
+      <ambiguity>0.765</ambiguity>
+    </report>
+  </metrics>
+  <uml>
+    <report uc="UC6.5">
+      <uml><[CDATA[....]]></uml>
+    </report>
+  </uml>
+</rqdql>
+    \end{lstlisting}
+
+    The script shall be called from command line like this:
+    
+    \begin{lstlisting}[language=bash]
+$ rqdql errors uml:uc=UC6.5 metrics < myscope.txt
+    \end{lstlisting}
+    
+    Possible reports are:
+    
+    \begin{itemize}
+        \item \texttt{errors}: full list of errors
+        \item \texttt{metrics}: full analysis of the scope ambiguity, size, intensity, etc.
+        \item \texttt{links}: report links between objects (line to line)
+        \item \texttt{uml:uc=UC5,type=ActorUser,...}: description of types and use cases in UML
+        \item \texttt{svg:uc=UC5,type=ActorUser,...}: description of types and use cases in SVG
+        \item \texttt{tc:uc=UC5,...}: Test Cases for the given UC-s (or all)
+    \end{itemize}
+    
+\newpage
+\section{Test Cases}
+
+    Every formula produces a number of ``fact sequences''. Every fact sequence
+    is a vector of ``facts'', and every fact is either a positive or negative:
+    
+    \begin{tikzpicture}[
+        node distance=4em,
+        every node/.style={circle, draw},
+        level 1/.style={},
+        level 2/.style={},
+        -triangle 60
+        ]
+        \tikzstyle{true} = [thick, font=\bfseries];
+        \node[true] (t1) {t}
+            child {node[true] (t2-1) {t}
+                child {node[true] (t2-1-1) {t}
+                    child {node[true] {t}
+                        child {node[true] {t}}
+                        child {node {f}}
+                        child {node {f}}
+                        child {node {f}}
+                    }
+                    child {node {f}}
+                }
+                child {node (t2-1-2) {f}}
+                child {node (t2-1-3) {f}}
+            }
+            child {node (t2-2) {f}}
+            child {node (t2-3) {f}}
+        ;
+        \node [right of=t1] (t2) {f};
+        \node [right of=t2] (t3) {f};
+        
+        \node [draw=black, rectangle, rounded corners, fit=(t1) (t2) (t3)] (f1) {};
+            \node [draw=none, anchor=east] at (f1.west) {formula 1};
+
+        \node [draw=black, rectangle, rounded corners, fit=(t2-1) (t2-1-1) (t2-1-2) (t2-1-3) (t2-2) (t2-3)] (f2) {};
+            \node [draw=none, anchor=east] at (f2.west) {formula 2};
+    \end{tikzpicture}
+    
+    
 
 \end{document}
