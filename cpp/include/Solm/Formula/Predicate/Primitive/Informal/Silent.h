@@ -21,6 +21,6 @@
  */
 Outcome Silent::getOutcome() const { 
     Outcome out;
-    out.push_back(Fact(this, true, getVar().substr(1)));
+    out.push_back(Fact(this, true, "\"" + getVar().substr(1) + "\""));
     return out; 
 }
