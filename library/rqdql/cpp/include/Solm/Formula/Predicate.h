@@ -13,19 +13,7 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
- *
- * This file has to be included ONLY from Analytics.h
+ * @version $Id: Silent.h 2095 2010-05-28 07:26:19Z yegor256@yahoo.com $
  */
 
-/**
- * Show it as string
- */
-// const string TestCase::toString() const {
-//     vector<string> lines;
-//     for (vector<TestCase*>::const_iterator i = predecessors.begin(); i != predecessors.end(); ++i) {
-//         lines.push_back("gain success in " + (*i)->getName());
-//     }
-//     lines.push_back(after.toString());
-//     return boost::algorithm::join(lines, "\n");
-// }
+#include "Solm/Formula/Predicate/Function.h"

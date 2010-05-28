@@ -18,6 +18,8 @@
  * This file is included ONLY from Solm.h
  */
 
+#include "Solm/Formula/Predicate.h"
+
 /**
  * Create an outcome of this formula, list of facts
  */

@@ -163,5 +163,6 @@ solm::Formula* Type::makeFormula(const string& x) const {
         sequence->addFormula(e);
         propertyCounter++;
     }
+    
     return sequence;
 }
