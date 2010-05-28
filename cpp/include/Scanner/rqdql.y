@@ -201,7 +201,7 @@ slotsDeclaration:
         }
     ;
     
-classPath:
+classPath: /* Type */
     theClass 
         {
             if (!$1) {
@@ -221,7 +221,7 @@ classPath:
         }
     ;
     
-slots:
+slots: /* vector<Slot*> */
     slot
         {
             Type::Slots* v = new Type::Slots();
@@ -248,7 +248,7 @@ slots:
         }
     ;
     
-slot:
+slot: /* Slot */
     slotName
         {
             $$ = new Slot(*$1);
@@ -417,7 +417,7 @@ de: /* brokers::De* */
     ;
     
 deType: /* Signature::Explanation* */
-    theClass 
+    theClass
         {
             Signature::Explanation* e;
             Type* t = static_cast<Type*>($1);

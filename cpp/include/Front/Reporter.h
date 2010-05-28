@@ -38,7 +38,7 @@ Reporter* Reporter::factory(const string& n, const Params& p) {
     } else if (name == "links") {
         r = new Links(p);
     } else {
-        throw (boost::format("Reporter '%s' is not supported") % n).str();
+        throw rqdql::Exception(boost::format("Reporter '%s' is not supported") % n);
     }
     r->name = n;
     return r;

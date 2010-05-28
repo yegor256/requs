@@ -90,6 +90,10 @@ solm::Formula* Flow::makeFormula() const {
             f->addFormula(s);
         }
     }
+    
+    // Now we should like this NEW formula with the flow
+    rqdql::get<rqdql::Logger>().addClone(this, f);
+    
     return f;
 }
 
