@@ -17,7 +17,8 @@
 # 0.3.2: added signature matching to find manipulators
 # 0.3.3: TURNS INTO is parseable
 # 0.3.4: Plurality introduced into BISON
-VERSION = 0.3.4
+# 0.4: Test cases are generated
+VERSION = 0.4
 
 MAKEFLAGS = -r
 SELF = Makefile

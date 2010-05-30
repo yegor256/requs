@@ -36,6 +36,7 @@ int main(int argc, char** argv) {
     while ((c = getopt(argc, argv, "v?")) != -1) {
         switch (c) {
             case 'v':
+                // this constant is defined in Makefile!
                 cout << RQDQL_VERSION << endl;
                 return 0;
             case '?':
