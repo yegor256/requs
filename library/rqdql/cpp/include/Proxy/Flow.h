@@ -68,7 +68,9 @@ solm::Formula* Flow::makeFormula() const {
     if (!signature) {
         f = new Silent(mnemo);
     } else {
-        f = (new And())->setLhs(getTarget())->setRhs(new Info(mnemo));
+        Formula* t = getTarget();
+        rqdql::get<rqdql::Logger>().addClone(this, t);
+        f = (new And())->setLhs(t)->setRhs(new Info(mnemo));
     }
     
     if (alternatives.size()) {
@@ -100,6 +102,7 @@ solm::Formula* Flow::makeFormula() const {
 /**
  * Try to find a formula which is targeted by this signature,
  * if it's possible at all.
+ * @see Flow::makeFormula()
  */
 solm::Formula* Flow::getTarget() const {
     // maybe it's a formula already?

@@ -77,6 +77,7 @@ const string Signature::Explanation::toString() const {
 
 /**
  * This signature is already a formula ready-to-go into SOLM?
+ * @see Flow::getTarget()
  */
 bool Signature::isFormula() const {
     try {
