@@ -12,6 +12,7 @@
         lineskip=-0.3em,
         frame=leftline,
     }
+\usepackage{color}
 \usepackage{tikz}
 	\usetikzlibrary{shapes,arrows,shadows}
 	\usetikzlibrary{decorations.pathmorphing}
@@ -48,7 +49,7 @@
     \begin{verbatim}
 User includes:
   email: "email address";
-  photos: Photo-s "a collection of photos";
+  photo-s: Photo "a collection of photos";
   manager: User "user's manager, if any";
   address includes: city, country, street.\end{verbatim}
 
@@ -115,7 +116,7 @@ User includes:
     \begin{maths}
     $\type{UC}_1(x) : $ \\
     $\quad \type{User}(x) \to$ \\
-    $\quad \exists \Pi(\type{User.photos}(x, \Pi)) \to$ \\
+    $\quad \exists \Pi(\type{User.photo}(x, \Pi)) \to$ \\
     $\quad ($ \\
     $\quad\quad |\Pi| > 5 \wedge \type{info}(\mbox{``If number of photos of the user is greater than 5''})\to$ \\
     $\quad\quad \exists y(y \in \Pi) \to$ \\
@@ -206,11 +207,12 @@ User includes:
                 }
                 child {node {declaration\br name\linebreak var[]}} 
             }
-            child {node [dashed] {binary\br}
-                child {node {and\br}} 
-                child {node {or\br}} 
-            }
-            child {node {sequence\br operand}} 
+            child {node {sequence\br operand}
+                child {node [dashed] {binary\br}
+                    child {node {and\br}} 
+                    child {node {or\br}} 
+                }
+            } 
             child {node [dashed] {predicate\br var[]}
                 child {node {math\br operand}}
                 child {node {function\br name}}
@@ -344,6 +346,95 @@ $ rqdql errors uml:uc=UC6.5 metrics < myscope.txt
             \node [draw=none, anchor=east] at (f2.west) {formula 2};
     \end{tikzpicture}
     
+    Every fact includes a ``snapshot'' of persistent data. Snapshot includes:
+    objects. Every object
+    has a name, value, type, 
+    and may have a number of changes made by other objects:
+    
+    \begin{lstlisting}[language=C++]
+struct Object {
+    string value; // e.g. "binary GIF file"
+    string type; // e.g. "PhotoFile"
+    vector<Change> changes; // could be empty!
+};
+struct Change {
+    enum {CREATED, READ, UPDATED, DELETED} operator;
+    int moment;
+    Object* author;
+};
+map<string, Object> snapshot;
+\end{lstlisting}
+
+    Consider this example:
+
+    \begin{tabular}[t]{l|llll}
+        SOLM formula & \multicolumn{4}{l}{Snapshots} \\
+        & ID & Type & Value & Changes \\
+        \hline
+
+        $\type{UC}_1(x) : $ \\
+        $\quad \type{User}(x) \to$ 
+            & \colorbox{lightgray}{$x$} & \colorbox{lightgray}{\texttt{User}} & \colorbox{lightgray}{\texttt{1}} \\
+        
+        \hline
+        $\quad \exists \Pi(\type{User.photo}(x, \Pi)) \to$ 
+            & $x$ & \texttt{User} & \texttt{1} \\
+            & \colorbox{lightgray}{$\Pi$} & \colorbox{lightgray}{\texttt{Photo}} & \colorbox{lightgray}{\texttt{[?]}} \\
+            &  & \colorbox{lightgray}{\texttt{User.photo}} & \colorbox{lightgray}{\texttt{1:$\Pi$}} \\
+        
+        \hline
+        $\quad ($ \\
+        $\quad\quad |\Pi| > 5 \to$ 
+            & $x$ & \texttt{User} & \texttt{1} \\
+            & $\Pi$ & \texttt{Photo} & \texttt{[\colorbox{lightgray}{2}]} \\
+            &  & \colorbox{lightgray}{\texttt{Photo}} & \colorbox{lightgray}{\texttt{2}} \\
+            & & \texttt{User.photo} & \colorbox{lightgray}{\texttt{1:2}} \\
+            
+        \hline
+        $\quad\quad \exists y(y \in \Pi) \to$ \\
+        $\quad\quad \type{deleted}(y) $ \\
+        $\quad ) \to$
+            & \multicolumn{4}{l}{\textit{skipped}} \\
+            
+        \hline
+        $\quad \exists p(p \in \Pi) \to$ 
+            & $x$ & \texttt{User} & \texttt{1} \\
+            & $\Pi$ & \texttt{Photo} & \texttt{[2]} \\
+            & \colorbox{lightgray}{$p$} & \texttt{Photo} & \texttt{2} \\
+            &  & \texttt{User.photo} & \texttt{1:2} \\
+            
+        \hline
+        $\quad \type{created}(p, x) \to$
+            & $x$ & \texttt{User} & \texttt{1} \\
+            & $\Pi$ & \texttt{Photo} & \texttt{[2\colorbox{lightgray}{,3}]} \\
+            & \colorbox{lightgray}{---} & \texttt{Photo} & \texttt{2} \\
+            & \colorbox{lightgray}{$p$} & \colorbox{lightgray}{\texttt{Photo}} & \colorbox{lightgray}{\texttt{3}} & \colorbox{lightgray}{\texttt{CREATE:1}} \\
+            & & \texttt{User.photo} & \texttt{1:2} \\
+            & & \colorbox{lightgray}{\texttt{User.photo}} & \colorbox{lightgray}{\texttt{1:3}} \\
+            
+        \hline
+        $\quad \type{UC}_2(p) \vee$ \\
+        $\quad ($ \\
+        $\quad\quad \type{exception}(\mbox{``file format is not valid''}) \to$ \\
+        $\quad\quad \type{deleted}(p) \to$ \\
+        $\quad\quad \type{throw}(\mbox{``only PNG images are accepted''})$ \\
+        $\quad ) \to$
+            & \multicolumn{4}{l}{\textit{skipped}} \\
+        
+        \hline
+        $\quad \type{silent}(\mbox{``We protocol the operation in backlog''})$ \\
+        $\quad \type{read}(p, x) $
+            & $x$ & \texttt{User} & \texttt{1} \\
+            & $\Pi$ & \texttt{Photo} & \texttt{[2,3]} \\
+            &  & \texttt{Photo} & \texttt{2} \\
+            & $p$ & \texttt{Photo} & \texttt{3} & \texttt{CREATE:1} \\
+            &     &                &            & \colorbox{lightgray}{\texttt{READ:1}} \\
+            & & \texttt{User.photo} & \texttt{1:2} \\
+            & & \texttt{User.photo} & \texttt{1:3} \\
+            & & \colorbox{lightgray}{\texttt{silent}} & 
+                \multicolumn{2}{l}{\colorbox{lightgray}{\parbox[t]{10em}{\raggedright``We protocol the operation in backlog''}}} \\
+        
+    \end{tabular}
     
 
 \end{document}
