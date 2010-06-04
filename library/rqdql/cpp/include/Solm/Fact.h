@@ -22,7 +22,7 @@
  * Two facts are equal?
  */
 bool Fact::operator==(const Fact& f) const {
-    if (getText() != f.getText()) {
+    if (!(snapshot == f.snapshot)) {
         return false;
     }
     if ((bool)*this != (bool)f) {

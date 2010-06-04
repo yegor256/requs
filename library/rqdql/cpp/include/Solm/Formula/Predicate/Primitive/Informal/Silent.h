@@ -19,8 +19,10 @@
 /**
  * Create an outcome of this formula, list of facts
  */
-Outcome Silent::getOutcome() const { 
+Outcome Silent::getOutcome(const Fact& f) const { 
     Outcome out;
-    out.push_back(Fact(this, true, "\"" + getVar().substr(1) + "\""));
+    Fact fact(this, true);
+    // , "\"" + getVar().substr(1) + "\"")
+    out.push_back(fact);
     return out; 
 }

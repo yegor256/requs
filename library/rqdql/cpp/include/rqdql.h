@@ -26,6 +26,7 @@ using namespace std;
 
 // boost libraries
 #include "boost/format.hpp"
+#include "boost/shared_ptr.hpp"
 
 namespace rqdql {
     class Exception {

@@ -19,21 +19,26 @@
 /**
  * Create an outcome of this formula, list of facts
  */
-Outcome Sequence::getOutcome() const { 
+Outcome Sequence::getOutcome(const Fact& f) const { 
     Outcome out;
     switch (operand) {
         case OP_TO:
         case OP_SEMICOLON:
         case OP_AND:
             for (Formulas::const_iterator i = getFormulas().begin(); i != getFormulas().end(); ++i) {
-                out = out + (*i)->getOutcome();
+                out = out + (out ? (*i)->getOutcome(out.getPositiveEnd()) : (*i)->getOutcome(f));
             }
             break;
             
+        /**
+         * Positive final of any formula, or a total false final of
+         * all formulas together.
+         * @todo make sure it works, I'm not sure for now... :(
+         */
         case OP_OR:
             Outcome totalFalse;
             for (Formulas::const_iterator i = getFormulas().begin(); i != getFormulas().end(); ++i) {
-                Outcome t = (*i)->getOutcome();
+                Outcome t = (*i)->getOutcome(f);
                 if (t) {
                     out << t;
                 } else {

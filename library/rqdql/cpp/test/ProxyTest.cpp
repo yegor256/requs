@@ -167,9 +167,10 @@ void testWeCanInjectUseCase() {
     vector<string> list = rqdql::get<solm::Solm>().getAllFunctions();
     BOOST_REQUIRE(list.size() >= 2);
     cout <<
-        boost::format("Totally created %d functions: %s") % 
+        (boost::format("Totally created %d functions: %s") % 
         list.size() %
-        boost::algorithm::join(list, ", ") << endl;
+        boost::algorithm::join(list, ", ")) 
+    << endl;
     
     // show it all as string
     cout << rqdql::get<solm::Solm>().toString() << endl;

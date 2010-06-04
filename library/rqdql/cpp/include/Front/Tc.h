@@ -27,11 +27,12 @@ void Tc::fillNode(pugi::xml_node& n) {
         PugiNodeWrapper tc = (n / "cases" + "tc");
         tc["name"] = (*i)->getName();
         
-        // list facts
-        for (TestCase::const_iterator f = (*i)->begin(); f != (*i)->end(); ++f) {
+        // list test case steps
+        vector<TestStep> steps = (*i)->computeSteps();
+        for (vector<TestStep>::const_iterator step = steps.begin(); step != steps.end(); ++step) {
             xml_node fact = tc / "facts" + "fact";
-            fact / "text" = (*f).getText();
-            vector<int> lines = rqdql::get<rqdql::Logger>().getLinesFor((*f).getFormula());
+            fact / "text" = (*step).getText();
+            vector<int> lines = (*step).getLines();
             for (vector<int>::const_iterator j = lines.begin(); j != lines.end(); ++j) {
                 fact / "lines" + "line" = *j;
             }

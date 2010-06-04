@@ -19,7 +19,7 @@
 /**
  * Create an outcome of this formula, list of facts
  */
-Outcome Declaration::getOutcome() const { 
+Outcome Declaration::getOutcome(const Fact& f) const { 
     return getFormula()->getOutcome(); 
 }
 
