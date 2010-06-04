@@ -19,7 +19,7 @@
 /**
  * Create an outcome of this formula, list of facts
  */
-Outcome Function::getOutcome() const { 
+Outcome Function::getOutcome(const Fact& f) const { 
     // if it's not a UC -- don't do anything
     if (!boost::regex_match(name, boost::regex("^UC[0-9].*"))) {
         return Outcome();

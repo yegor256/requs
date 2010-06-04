@@ -72,7 +72,8 @@ public:
     void setFormula(Formula*, size_t);
     void addFormula(Formula* f) { subs.push_back(f); }
     const Formulas& getFormulas() const { return subs; }
-    virtual Outcome getOutcome() const;
+    Outcome getOutcome() const;
+    virtual Outcome getOutcome(const Fact&) const;
 private:
     Formulas subs;
 };
@@ -107,7 +108,7 @@ public:
     Sequence* addFormula(Formula* f) { Formula::addFormula(f); return this; }
     virtual const string toString() const;
     void append(const Sequence* s);
-    virtual Outcome getOutcome() const;
+    virtual Outcome getOutcome(const Fact&) const;
 private:
     Operand operand;
 };
@@ -138,7 +139,7 @@ public:
     Declaration(const string& n) : Unary<Declaration>(), Parametrized<Declaration>(), name(n) { /* that's it */ }
     const string& getName() const { return name; }
     virtual const string toString() const;
-    virtual Outcome getOutcome() const;
+    virtual Outcome getOutcome(const Fact&) const;
 private:
     string name;
 };
@@ -172,7 +173,7 @@ class Function : public Predicate<Function> {
 public:
     Function(const string& n) : Predicate<Function>(), name(n) { /* that's it */ }
     virtual const string toString() const { return _toString(name); }
-    virtual Outcome getOutcome() const;
+    virtual Outcome getOutcome(const Fact&) const;
 private:
     string name;
 };
@@ -204,7 +205,7 @@ class Silent : public Informal<Silent> {
 public:
     Silent(const string& s) : Informal<Silent>() { arg(s); }
     virtual const string toString() const { return _toString("silent"); }
-    virtual Outcome getOutcome() const;
+    virtual Outcome getOutcome(const Fact&) const;
 };
 class Err : public Informal<Err> {
 public:
@@ -218,22 +219,22 @@ template <typename T> class Manipulator : public Primitive<T> {
 class Created : public Manipulator<Created> {
 public:
     virtual const string toString() const { return _toString("created"); }
-    virtual Outcome getOutcome() const;
+    virtual Outcome getOutcome(const Fact&) const;
 };
 class Read : public Manipulator<Read> {
 public:
     virtual const string toString() const { return _toString("read"); }
-    virtual Outcome getOutcome() const;
+    virtual Outcome getOutcome(const Fact&) const;
 };
 class Deleted : public Manipulator<Deleted> {
 public:
     virtual const string toString() const { return _toString("deleted"); }
-    virtual Outcome getOutcome() const;
+    virtual Outcome getOutcome(const Fact&) const;
 };
 class Updated : public Manipulator<Updated> {
 public:
     virtual const string toString() const { return _toString("updated"); }
-    virtual Outcome getOutcome() const;
+    virtual Outcome getOutcome(const Fact&) const;
 };
 
 class Math : public Predicate<Math> {
@@ -261,26 +262,95 @@ private:
 };
 
 /**
+ * A snapshot inside a fact
+ */
+class Snapshot {
+public:
+    class Object {
+    public:
+        class Val {
+        public:
+            virtual const string toString() const = 0;
+        };
+        class ValString : public Val {
+        public:
+            const string toString() const { return value; }
+        private:
+            string value;
+        };
+        class ValSet : public Val {
+        public:
+            const string toString() const { return "... set ..."; }
+        private:
+            vector<int> ids;
+        };
+        class AssocMember {
+        public:
+            virtual const string toString() const = 0;
+        };
+        class AssocMemberId : public AssocMember {
+        public:
+            const string toString() const { return (boost::format("%d") % id).str(); }
+        private:
+            int id;
+        };
+        class AssocMemberName : public AssocMember {
+        public:
+            const string toString() const { return name; }
+        private:
+            string name;
+        };
+        class ValAssoc : public Val, 
+            public pair<boost::shared_ptr<AssocMember>, boost::shared_ptr<AssocMember> > {
+        public:    
+            const string toString() const { first->toString() + ":" + second->toString(); }
+        };
+        class AclRule {
+        public:
+            enum {CREATE, READ, UPDATE, DELETE} operation;
+            const string toString() const;
+        private:
+            int id;
+        };
+        int getId() const { return id; }
+        const string& getName() const { return name; }
+        const string& getType() const { return type; }
+        const boost::shared_ptr<Val> getVal() const { return val; }
+        const vector<AclRule>& getRules() const { return rules; }
+    private:
+        int id;
+        string name;
+        string type;
+        boost::shared_ptr<Val> val; 
+        vector<AclRule> rules;
+    };
+    bool operator==(const Snapshot&) const;
+    const string toString() const;
+private:
+    vector<Object> objects;
+};
+
+/**
  * One fact, positive or negative, with a text explanation.
  */
 class Fact {
 public:
-    Fact() : positive(true), text("I don't know") { /* that's it */ }
-    Fact(const Formula* f, bool p, string t) : formula(f), positive(p), text(t) { /* that's it */ }
+    Fact() : positive(true), outcome(), formula(0), snapshot() { /* that's it */ }
+    Fact(const Formula* f, bool p) : positive(p), outcome(), formula(f), snapshot() { /* that's it */ }
     operator bool() const;
-    const string& getText() const { return text; }
-    virtual const string toString() const { return text; }
+    virtual const string toString() const { return snapshot.toString(); }
     bool operator==(const Fact&) const;
     void setOutcome(const Outcome& o) { outcome = o; }
     bool hasOutcome() const { return outcome.size(); }
     Outcome& getOutcome() { return outcome; }
     const Outcome& getOutcome() const { return outcome; }
     const Formula* getFormula() const { return formula; }
+    Snapshot& getSnapshot() { return snapshot; }
 private:
     bool positive;
-    string text;
     Outcome outcome;
     const Formula* formula;
+    Snapshot snapshot;
 };
 
 /**
@@ -314,6 +384,7 @@ private:
 
 #include "Solm/SolmImpl.h"
 #include "Solm/Formula.h"
+#include "Solm/Snapshot.h"
 #include "Solm/Fact.h"
 #include "Solm/FactPath.h"
 #include "Solm/Outcome.h"

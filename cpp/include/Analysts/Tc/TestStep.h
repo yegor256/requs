@@ -13,16 +13,15 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Silent.h 2098 2010-05-28 09:50:32Z yegor256@yahoo.com $
+ * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
+ *
+ * This file has to be included ONLY from Analytics.h
  */
 
 /**
- * Create an outcome of this formula, list of facts
+ * Get all lines related to this step
  */
-Outcome Deleted::getOutcome(const Fact& f) const { 
-    Fact fact(this, true);
-    
-    Outcome out;
-    out.push_back(fact);
-    return out; 
+const vector<int> TestStep::getLines() const {
+    // return rqdql::get<rqdql::Logger>().getLinesFor((*f).getFormula())
+    return vector<int>();
 }

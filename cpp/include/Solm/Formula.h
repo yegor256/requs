@@ -19,13 +19,6 @@
  */
 
 /**
- * Create an outcome of this formula, list of facts
- */
-Outcome Formula::getOutcome() const { 
-    return Outcome(); 
-}
-
-/**
  * Set formula to the absolute position in the collection,
  * if this position is busy, this method will OVERWRITE it
  */
@@ -49,6 +42,20 @@ Formula* Formula::getFormula(size_t i = 0) const {
         return new Err((boost::format(rqdql::_t("'absent formula no.%d")) % i).str());
     }
     return subs.at(i);
+}
+
+/**
+ * Generate an outcome
+ */
+Outcome Formula::getOutcome() const { 
+    return getOutcome(Fact()); 
+}
+
+/**
+ * Generate an outcome
+ */
+Outcome Formula::getOutcome(const Fact& f) const { 
+    return Outcome(); 
 }
 
 #include "Solm/Formula/Declaration.h"

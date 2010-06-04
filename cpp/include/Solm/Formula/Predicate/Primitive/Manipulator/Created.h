@@ -19,8 +19,10 @@
 /**
  * Create an outcome of this formula, list of facts
  */
-Outcome Created::getOutcome() const { 
+Outcome Created::getOutcome(const Fact& f) const { 
+    Fact fact(this, true);
+    
     Outcome out;
-    out.push_back(Fact(this, true, "just created..."));
+    out.push_back(fact);
     return out; 
 }

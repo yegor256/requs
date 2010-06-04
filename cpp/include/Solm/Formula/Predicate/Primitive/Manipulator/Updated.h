@@ -19,8 +19,10 @@
 /**
  * Create an outcome of this formula, list of facts
  */
-Outcome Updated::getOutcome() const { 
+Outcome Updated::getOutcome(const Fact& f) const { 
+    Fact fact(this, true);
+    
     Outcome out;
-    out.push_back(Fact(this, true, "just updated..."));
+    out.push_back(fact);
     return out; 
 }
