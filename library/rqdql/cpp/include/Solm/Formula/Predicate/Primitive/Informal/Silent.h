@@ -17,12 +17,29 @@
  */
 
 /**
+ * Constructor
+ */
+Silent::Silent(const string& s) : Informal<Silent>() { 
+    if (s.empty()) {
+        throw rqdql::Exception(rqdql::_t("Empty arg for SILENT()"));
+    }
+    arg(s); 
+}
+
+/**
  * Create an outcome of this formula, list of facts
  */
 Outcome Silent::getOutcome(const Fact& f) const { 
+    Fact fact;
+    fact.setFormula(this);
+    
+    Snapshot s = f.getSnapshot();
+    Snapshot::Object& obj = s.create("silent", "");
+    s.assignId(obj);
+    obj.setValue("\"" + getVar().substr(1) + "\"");
+    fact.setSnapshot(s);
+    
     Outcome out;
-    Fact fact(this, true);
-    // , "\"" + getVar().substr(1) + "\"")
     out.push_back(fact);
     return out; 
 }

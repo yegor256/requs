@@ -86,6 +86,19 @@ const Formula::Formulas Solm::_retrieve(Formulas v) const {
 }
 
 /**
+ * Do we have this particular declaration?
+ */
+bool Solm::hasDeclaration(const string& n) const {
+    vector<Declaration*> v = findTypes<Declaration>();
+    for (vector<Declaration*>::const_iterator i = v.begin(); i != v.end(); ++i) {
+        if ((*i)->getName() == n) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
  * Find and return this particular declaration, if it exists
  */
 Declaration* Solm::getDeclaration(const string& n) const {
@@ -95,6 +108,6 @@ Declaration* Solm::getDeclaration(const string& n) const {
             return *i;
         }
     }
-    throw rqdql::Exception(boost::format(rqdql::_t("Declaration '%s' not found")) % n);
+    throw rqdql::Exception(boost::format(rqdql::_t("Declaration '%s' not found in SOLM")) % n);
 }
 

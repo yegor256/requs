@@ -21,10 +21,8 @@
 using namespace front;
 
 void testSimpleScenario() {
-    setUp();
     rqdql::get<rqdql::Scanner>().scan(getFile("sample1.txt"));
     rqdql::get<proxy::Proxy>().inject();
-    tearDown();
     
     rqdql::get<front::Front>().require("svg:type=ActorUser,uc=UC8.1");
     rqdql::get<front::Front>().require("errors");
@@ -36,8 +34,8 @@ void testSimpleScenario() {
     cout << rqdql::get<front::Front>().asXml() << endl;
 }
 
-int test_main(int, char *[]) {
-    testSimpleScenario();
-    
-    return 0;
+vector<testMethod> suite() {
+    vector<testMethod> v;
+    v.push_back(&testSimpleScenario);
+    return v;
 }

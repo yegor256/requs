@@ -21,16 +21,13 @@
 using namespace proxy;
 
 void testGabrageCollectionWorksProperly() {
-    setUp();
     rqdql::get<Proxy>().getNames<Type>();
     rqdql::get<Proxy>().get<Type>("User");
     rqdql::get<Proxy>().getNames<Type>();
     rqdql::get<Proxy>().clear();
-    tearDown();
 }
 
 void testContainerWorksProperly() {
-    setUp();
     rqdql::get<Proxy>().get<Type>("User");
     rqdql::get<Proxy>().get<Type>("Photo");
     rqdql::get<Proxy>().get<Type>("File");
@@ -39,11 +36,9 @@ void testContainerWorksProperly() {
     cout <<
         boost::format("Types in container: %s") % 
         boost::algorithm::join(rqdql::get<Proxy>().getNames<Type>(), ", ") << endl;
-    tearDown();
 }
 
 void testWeCanBuildNewType() {
-    setUp();
     Type* t = rqdql::get<Proxy>().get<Type>("User");
     t->addSlot(
         new Slot(
@@ -84,7 +79,6 @@ void testWeCanBuildNewType() {
     
     cout << "Definition of type 'User': " 
     << rqdql::get<Proxy>().get<Type>("User")->toString() << endl;
-    tearDown();
 }
 
 void fillUseCase(UseCase* uc) {
@@ -149,15 +143,12 @@ void fillUseCase(UseCase* uc) {
 }
 
 void testWeCanBuildNewUseCase() {
-    setUp();
     UseCase* uc = rqdql::get<Proxy>().get<UseCase>("UC1");
     fillUseCase(uc);
     cout << uc->toString() << endl;
-    tearDown();
 }
 
 void testWeCanInjectUseCase() {
-    setUp();
     UseCase* uc = rqdql::get<Proxy>().get<UseCase>("UC1");
     
     fillUseCase(uc);
@@ -174,11 +165,9 @@ void testWeCanInjectUseCase() {
     
     // show it all as string
     cout << rqdql::get<solm::Solm>().toString() << endl;
-    tearDown();
 }
 
 void testUseCasesMatchEachOther() {
-    setUp();
     UseCase* uc1 = rqdql::get<Proxy>().get<UseCase>("UC1");
     uc1->setSignature(
         (new Signature("${sud} validate ${photo}"))
@@ -205,16 +194,15 @@ void testUseCasesMatchEachOther() {
     
     rqdql::get<Proxy>().inject();
     cout << rqdql::get<solm::Solm>().toString() << endl;
-    tearDown();
 }
 
-int test_main(int, char *[]) {
-    testGabrageCollectionWorksProperly();
-    testContainerWorksProperly();
-    testWeCanBuildNewType();
-    testWeCanBuildNewUseCase();
-    testWeCanInjectUseCase();
-    testUseCasesMatchEachOther();
-    
-    return 0;
+vector<testMethod> suite() {
+    vector<testMethod> v;
+    v.push_back(&testGabrageCollectionWorksProperly);
+    v.push_back(&testContainerWorksProperly);
+    v.push_back(&testWeCanBuildNewType);
+    v.push_back(&testWeCanBuildNewUseCase);
+    v.push_back(&testWeCanInjectUseCase);
+    v.push_back(&testUseCasesMatchEachOther);
+    return v;
 }

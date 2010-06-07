@@ -157,6 +157,7 @@ public:
 class Exists : public Quantifier<Exists> {
 public:
     virtual const string toString() const { return _toString("\\exists"); }
+    virtual Outcome getOutcome(const Fact&) const;
 };
 
 class And : public Binary<And, Sequence::OP_AND> {
@@ -203,7 +204,7 @@ public:
 };
 class Silent : public Informal<Silent> {
 public:
-    Silent(const string& s) : Informal<Silent>() { arg(s); }
+    Silent(const string&);
     virtual const string toString() const { return _toString("silent"); }
     virtual Outcome getOutcome(const Fact&) const;
 };
@@ -268,18 +269,20 @@ class Snapshot {
 public:
     class Object {
     public:
-        class Val {
+        class Value {
         public:
             virtual const string toString() const = 0;
         };
-        class ValString : public Val {
+        class ValueString : public Value {
         public:
+            ValueString(const string& s) : value(s) { /* that's it */ }
             const string toString() const { return value; }
         private:
             string value;
         };
-        class ValSet : public Val {
+        class ValueSet : public Value {
         public:
+            ValueSet(const vector<int>& v) : ids(v) { /* that's it */ }
             const string toString() const { return "... set ..."; }
         private:
             vector<int> ids;
@@ -300,7 +303,7 @@ public:
         private:
             string name;
         };
-        class ValAssoc : public Val, 
+        class ValueAssoc : public Value, 
             public pair<boost::shared_ptr<AssocMember>, boost::shared_ptr<AssocMember> > {
         public:    
             const string toString() const { first->toString() + ":" + second->toString(); }
@@ -312,22 +315,40 @@ public:
         private:
             int id;
         };
+        Object(const string& t) : id(0), name(""), type(t), value(), rules() { /* that's it */ }
         int getId() const { return id; }
+        bool hasId() const { return (bool)id; }
         const string& getName() const { return name; }
+        bool hasName() const { return !name.empty(); }
         const string& getType() const { return type; }
-        const boost::shared_ptr<Val> getVal() const { return val; }
+        bool hasType() const { return !type.empty(); }
+        const boost::shared_ptr<const Value>& getValue() const { return value; }
+        bool hasValue() const { return (bool)value; }
+        void setValue(const boost::shared_ptr<const Value>& v) { value = v; }
+        void setValue(const string&);
+        void setValue(const vector<int>&);
         const vector<AclRule>& getRules() const { return rules; }
     private:
         int id;
         string name;
         string type;
-        boost::shared_ptr<Val> val; 
+        boost::shared_ptr<const Value> value; 
         vector<AclRule> rules;
+
+        friend class Snapshot;
+        void setName(const string& n) { name = n; }
+        void setId(int i) { id = i; }
+        void setType(const string& t) { type = t; }
     };
     bool operator==(const Snapshot&) const;
     const string toString() const;
+    Object& create(const string&, const string&);
+    void assignId(Object&) const;
+    void assignName(Object&, const string&) const;
 private:
     vector<Object> objects;
+    int computeNextId() const;
+    void isMine(Object&) const;
 };
 
 /**
@@ -335,19 +356,20 @@ private:
  */
 class Fact {
 public:
-    Fact() : positive(true), outcome(), formula(0), snapshot() { /* that's it */ }
-    Fact(const Formula* f, bool p) : positive(p), outcome(), formula(f), snapshot() { /* that's it */ }
     operator bool() const;
     virtual const string toString() const { return snapshot.toString(); }
     bool operator==(const Fact&) const;
+    void setFormula(const Formula* f) { formula = f; }
+    void setException(const string& e) { exception = e; }
     void setOutcome(const Outcome& o) { outcome = o; }
     bool hasOutcome() const { return outcome.size(); }
     Outcome& getOutcome() { return outcome; }
     const Outcome& getOutcome() const { return outcome; }
     const Formula* getFormula() const { return formula; }
-    Snapshot& getSnapshot() { return snapshot; }
+    Snapshot getSnapshot() const { return snapshot; }
+    void setSnapshot(const Snapshot& s) { snapshot = s; }
 private:
-    bool positive;
+    string exception;
     Outcome outcome;
     const Formula* formula;
     Snapshot snapshot;
@@ -377,6 +399,7 @@ public:
     template <typename T> const int countTypes() const; // count objects of given type
     template <typename T> const vector<T*> findTypes() const; // find all objects of given type
     const vector<string> getAllFunctions() const; // get list of all declared functions
+    bool hasDeclaration(const string&) const; // do we have this particular declaration?
     Declaration* getDeclaration(const string&) const; // get this particular declaration
 private:
     const Formulas _retrieve(Formulas) const; // get all formulas, including sub-formulas

@@ -35,5 +35,5 @@ bool Fact::operator==(const Fact& f) const {
  * The fact is positive?
  */
 Fact::operator bool() const { 
-    return positive && (!hasOutcome() || getOutcome()); 
+    return exception.empty() && (!hasOutcome() || getOutcome()); 
 }

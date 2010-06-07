@@ -166,56 +166,24 @@ void testWeCanFindAllFunctionDeclarations() {
 void testFactsOperatorsWork() {
     Silent* f = new Silent("'just test");
     FactPath fp1;
-    fp1.push_back(Fact(f, true));
-    fp1.push_back(Fact(f, true));
+    Fact fact;
+    fact.setFormula(f);
+    fp1.push_back(fact);
+    fp1.push_back(fact);
 
     FactPath fp2;
-    fp2.push_back(Fact(f, true));
+    fp2.push_back(fact);
     
     BOOST_REQUIRE((fp1 + fp2).size() == 3);
 }
 
-void testOutcomesAreProperlyReturned() {
-    Formula* f = 
-    (new Declaration("UC1"))
-        ->arg("x")
-        ->setFormula(
-            (new Sequence())
-            ->addFormula(new Silent("'We receive new file by mail"))
-            ->addFormula(
-                (new Sequence())
-                ->addFormula(new Silent("'File is being validated"))
-                ->addFormula(
-                    (new Sequence())
-                    ->addFormula(new Silent("'What if not?"))
-                )
-            )
-            ->addFormula(new Silent("'We protocol this operation"))
-        );
-
-    Outcome out;
-    try {
-        out = f->getOutcome();
-    } catch (rqdql::Exception e) {
-        cout << "exception: " << e.getMessage() << endl;
-        BOOST_REQUIRE(false);
-    }
-    BOOST_REQUIRE(out.size() > 0);
-    
-    vector<FactPath> fp = out.getPaths();
-    // BOOST_REQUIRE(fp.size() == 5);
-    for (vector<FactPath>::const_iterator i = fp.begin(); i != fp.end(); ++i) {
-        cout << "new path:\n" << (*i).toString() << endl;
-    }
+vector<testMethod> suite() {
+    vector<testMethod> v;
+    v.push_back(&testSimple);
+    v.push_back(&testMoreComplexStructure);
+    v.push_back(&testComplex);
+    v.push_back(&testWeCanFindAllFunctionDeclarations);
+    v.push_back(&testFactsOperatorsWork);
+    return v;
 }
 
-int test_main(int, char *[]) {
-    testSimple();
-    testMoreComplexStructure();
-    testComplex();
-    testWeCanFindAllFunctionDeclarations();
-    testFactsOperatorsWork();
-    testOutcomesAreProperlyReturned();
-    
-    return 0;
-}

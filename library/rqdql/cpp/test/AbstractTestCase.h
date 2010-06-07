@@ -39,10 +39,10 @@ void setUp() {
 }
 
 void tearDown() {
-    if (!rqdql::get<rqdql::Logger>().empty()) {
-        cout << "Log report is not empty:" << endl << rqdql::get<rqdql::Logger>().getReport() << endl;
-    }
-    cout << rqdql::get<solm::Solm>().toString() << endl;
+    // if (!rqdql::get<rqdql::Logger>().empty()) {
+    //     cout << "Log report is not empty:" << endl << rqdql::get<rqdql::Logger>().getReport() << endl;
+    // }
+    // cout << rqdql::get<solm::Solm>().toString() << endl;
 }
 
 string getFile(const string& n) {
@@ -61,3 +61,20 @@ string getFile(const string& n) {
     return buffer;
 }
 
+typedef void(*testMethod)();
+extern vector<testMethod> suite();
+
+int test_main(int, char*[]) {
+    vector<testMethod> v = suite();
+    for (vector<testMethod>::const_iterator i = v.begin(); i != v.end(); ++i) {
+        try {
+            setUp();
+            (*(*i))();
+            tearDown();
+        } catch (rqdql::Exception ex) {
+            cout << ex.getMessage() << endl;
+            BOOST_REQUIRE(false);
+        }
+    }
+    return 0;
+}
