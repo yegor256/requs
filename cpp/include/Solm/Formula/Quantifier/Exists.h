@@ -13,15 +13,20 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Silent.h 2098 2010-05-28 09:50:32Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
 /**
  * Create an outcome of this formula, list of facts
  */
-Outcome Updated::getOutcome(const Fact& f) const { 
+Outcome Exists::getOutcome(const Fact& f) const { 
     Fact fact;
     fact.setFormula(this);
+    
+    Snapshot s = f.getSnapshot();
+    Snapshot::Object& obj = s.create("", ""); // no type, no name
+    s.assignName(obj, getVar());
+    fact.setSnapshot(s);
     
     Outcome out;
     out.push_back(fact);

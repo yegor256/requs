@@ -20,7 +20,8 @@
  * Create an outcome of this formula, list of facts
  */
 Outcome Read::getOutcome(const Fact& f) const { 
-    Fact fact(this, true);
+    Fact fact;
+    fact.setFormula(this);
     
     Outcome out;
     out.push_back(fact);

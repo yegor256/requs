@@ -19,40 +19,34 @@
 #include "AbstractTestCase.h"
 
 void testSimpleParsing() {
-    setUp();
     rqdql::get<rqdql::Scanner>().scan(getFile("sample1.txt"));
     rqdql::get<proxy::Proxy>().inject();
-    tearDown();
     BOOST_REQUIRE(rqdql::get<rqdql::Logger>().empty());
 }
 
 void testSimpleParsingWithErrors() {
-    setUp();
     rqdql::get<rqdql::Scanner>().scan(
         "ActorUser is a human being with identity. Also it is our client.\n"
         "ActorUser is an ActorVisitor or something else.\n"
         "Name of InvestorApplication includes: first name and last name.\n"
     );
     rqdql::get<Proxy>().inject();
-    tearDown();
 
     BOOST_REQUIRE(!rqdql::get<rqdql::Logger>().empty());
 }
 
 void testCleanParsing() {
-    setUp();
     rqdql::get<rqdql::Scanner>().scan(getFile("valid.txt"));
     rqdql::get<Proxy>().inject();
-    tearDown();
 
     BOOST_REQUIRE(rqdql::get<rqdql::Logger>().empty());
     BOOST_REQUIRE(rqdql::get<solm::Solm>().getAmbiguity() > 0);
 }
 
-int test_main(int, char *[]) {
-    testSimpleParsing();
-    testSimpleParsingWithErrors();
-    testCleanParsing();
-    
-    return 0;
+vector<testMethod> suite() {
+    vector<testMethod> v;
+    v.push_back(&testSimpleParsing);
+    v.push_back(&testSimpleParsingWithErrors);
+    v.push_back(&testCleanParsing);
+    return v;
 }

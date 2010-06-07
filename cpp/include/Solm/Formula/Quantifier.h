@@ -30,3 +30,5 @@ template <typename T> const string Quantifier<T>::_toString(const string& t) con
     + boost::algorithm::join(Parametrized<T>::getVars(), ", ") 
     + "(" + Unary<T>::getFormula()->toString() + ")";
 }
+
+#include "Solm/Formula/Quantifier/Exists.h"

@@ -26,11 +26,21 @@ bool Snapshot::operator==(const Snapshot& s) const {
 }
 
 /**
+ * Create new object and return a reference to it
+ */
+Snapshot::Object& Snapshot::create(const string& t, const string& n = "") {
+    Object obj(t);
+    obj.setName(n);
+    objects.push_back(obj);
+    return *(objects.end() - 1);
+}
+
+/**
  * Convert snapshot to a user-friendly text
  */
 const string Snapshot::toString() const {
     vector<string> lines;
-    const string format = "%-10s %-15s %-3s %-6s %-20s";
+    const string format = "%-10s %-15s %-3s %-20s %-20s";
     lines.push_back((boost::format(format) % "Name" % "Type" % "ID" % "Value" % "ACL rules").str());
     for (vector<Object>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
         const vector<Object::AclRule>& rules = (*i).getRules();
@@ -41,15 +51,81 @@ const string Snapshot::toString() const {
         lines.push_back(
             (
                 boost::format(format)
-                % (*i).getName()
-                % (*i).getType()
-                % (*i).getId()
-                % (*i).getVal()->toString()
+                % ((*i).hasName() ? (*i).getName() : "")
+                % ((*i).hasType() ? (*i).getType() : "?")
+                % ((*i).hasId() ? (boost::format("%d") % (*i).getId()).str() : "-")
+                % ((*i).hasValue() ? (*i).getValue()->toString() : "-")
                 % boost::algorithm::join(ruleLines, ", ")
             ).str()
         );
     }
     return boost::algorithm::join(lines, "\n");
+}
+
+/**
+ * Assign ID to the object
+ */
+void Snapshot::assignId(Snapshot::Object& obj) const {
+    isMine(obj); // thows if NOT
+    if (obj.hasId()) {
+        throw rqdql::Exception(boost::format(rqdql::_t("ID '%d' already assigned")) % obj.getId());
+    }
+    obj.setId(computeNextId());
+}
+
+/**
+ * Assign name to the object
+ */
+void Snapshot::assignName(Snapshot::Object& obj, const string& n) const {
+    isMine(obj); // thows if NOT
+    if (obj.hasName()) {
+        throw rqdql::Exception(boost::format(rqdql::_t("Object '%s' already has name")) % obj.getName());
+    }
+    for (vector<Object>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+        if ((*i).getName() == n) {
+            throw rqdql::Exception(boost::format(rqdql::_t("Object with name '%s' already is in snapshot")) % n);
+        }
+    }
+    obj.setName(n);
+}
+
+/**
+ * Validates whether this object is in collection
+ */
+void Snapshot::isMine(Snapshot::Object& obj) const {
+    for (vector<Object>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+        if (&(*i) == &obj) {
+            return;
+        }
+    }
+    throw rqdql::Exception(rqdql::_t("Object is not in snapshot"));
+}
+
+/**
+ * Finds next available ID
+ */
+int Snapshot::computeNextId() const {
+    int found = 0;
+    for (vector<Object>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+        if ((*i).getId() > found) {
+            found = (*i).getId();
+        }
+    }
+    return found + 1;
+}
+
+/**
+ * Set value, wrapper
+ */
+void Snapshot::Object::setValue(const string& s) {
+    setValue(boost::shared_ptr<Snapshot::Object::Value>(new Snapshot::Object::ValueString(s)));
+}
+
+/**
+ * Set value, wrapper
+ */
+void Snapshot::Object::setValue(const vector<int>& v) {
+    setValue(boost::shared_ptr<Snapshot::Object::Value>(new Snapshot::Object::ValueSet(v)));
 }
 
 /**

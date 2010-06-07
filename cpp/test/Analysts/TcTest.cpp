@@ -21,27 +21,20 @@
 void testSimpleOperationsWithTestCases() {
     using namespace analysts::tc;
     
-    solm::FactPath fp;
-    fp.push_back(solm::Fact(new solm::Silent("'test"), true));
-    fp.push_back(solm::Fact(new solm::Silent("'test"), true));
-    TestCase tc(fp);
-    TestCase tc2 = tc;
+    // solm::FactPath fp;
+    // fp.push_back(solm::Fact(new solm::Silent("'test"), true));
+    // fp.push_back(solm::Fact(new solm::Silent("'test"), true));
+    // TestCase tc(fp);
+    // TestCase tc2 = tc;
     // BOOST_REQUIRE(tc == tc2);
 }
 
 void testFactsRetrievalWorks() {
     using namespace analysts::tc;
-    setUp();
     rqdql::get<rqdql::Scanner>().scan(getFile("sample1.txt"));
     rqdql::get<proxy::Proxy>().inject();
     vector<TestCase*> v;
-    try {
-        v = rqdql::get<Analyst>().retrieve();
-    } catch (rqdql::Exception e) {
-        cout << "exception: " << e.getMessage() << endl;
-        BOOST_REQUIRE(false);
-    }
-    tearDown();
+    v = rqdql::get<Analyst>().retrieve();
     
     BOOST_REQUIRE(v.size() > 0);
     cout << v.size() << " test cases found" << endl;
@@ -50,9 +43,9 @@ void testFactsRetrievalWorks() {
     }
 }
 
-int test_main(int, char *[]) {
-    testSimpleOperationsWithTestCases();
-    testFactsRetrievalWorks();
-    
-    return 0;
+vector<testMethod> suite() {
+    vector<testMethod> v;
+    v.push_back(&testSimpleOperationsWithTestCases);
+    v.push_back(&testFactsRetrievalWorks);
+    return v;
 }

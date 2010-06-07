@@ -36,6 +36,7 @@ FLEX_DEST = include/Scanner/rqdql.l.c
 BISON_SRC = include/Scanner/rqdql.y
 BISON_DEST = include/Scanner/rqdql.y.c
 
+LIB = library/all-externals.so
 LIB_DIRS = library/pugixml library/boost-libs
 LIB_SOURCES = $(shell find $(LIB_DIRS) -name "*.cpp")
 LIB_OBJS := $(LIB_SOURCES:.cpp=.obj)
@@ -67,7 +68,10 @@ $(BISON_DEST): $(BISON_SRC) $(HEADERS) $(SELF)
 
 # library objects, we just compile them, NO linking
 %.obj: %.cpp
-	$(CPP) $(CPPFLAGS) -o $@ -c $<
+	$(CPP) $(CPPFLAGS) -fPIC -o $@ -g -c $<
+
+$(LIB): $(LIB_OBJS)
+	$(CPP) -shared -o $(LIB) $(LIB_OBJS)
 
 # test everything
 test: $(TESTS)
@@ -77,8 +81,8 @@ test: $(TESTS)
 	$<
 
 # compilation of unit tests and any other CPP file AND linking with all libs
-%.o: %.cpp $(HEADERS) $(BISON_DEST) $(FLEX_DEST) $(LIB_OBJS)
-	$(CPP) $(CPPFLAGS) -o $@ $< $(LIB_OBJS) \
+%.o: %.cpp $(HEADERS) $(BISON_DEST) $(FLEX_DEST) $(LIB)
+	$(CPP) $(CPPFLAGS) -o $@ $< $(LIB) \
 	-D RQDQL_VERSION="\"$(VERSION)$(shell $(SVN) info | grep "Revision:" | sed "s/Revision: /r/g")\""
 
 # clean everything!
@@ -89,6 +93,7 @@ clean:
 	$(FLEX_DEST) \
 	$(EXEC) \
 	$(LIB_OBJS) \
+	$(LIB) \
 	$(TESTS) \
 	$(SYMBOLS)
 
