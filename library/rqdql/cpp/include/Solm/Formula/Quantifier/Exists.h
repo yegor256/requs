@@ -19,16 +19,18 @@
 /**
  * Create an outcome of this formula, list of facts
  */
-Outcome Exists::getOutcome(const Fact& f) const { 
+Outcome Exists::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const { 
     Fact fact;
     fact.setFormula(this);
     
     Snapshot s = f.getSnapshot();
-    Snapshot::Object& obj = s.create("", ""); // no type, no name
+    Snapshot::Object& obj = s.create(""); // no type
     s.assignName(obj, getVar());
     fact.setSnapshot(s);
     
     Outcome out;
-    out.push_back(fact);
+    out << fact;
+    // cout << getFormula()->toString() << endl; terminate();
+    out += getFormula()->getOutcome(fact);
     return out; 
 }

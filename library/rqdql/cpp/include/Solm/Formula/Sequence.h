@@ -19,7 +19,7 @@
 /**
  * Create an outcome of this formula, list of facts
  */
-Outcome Sequence::getOutcome(const Fact& f) const { 
+Outcome Sequence::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const { 
     Outcome out;
     switch (operand) {
         case OP_TO:

@@ -29,17 +29,17 @@ Silent::Silent(const string& s) : Informal<Silent>() {
 /**
  * Create an outcome of this formula, list of facts
  */
-Outcome Silent::getOutcome(const Fact& f) const { 
+Outcome Silent::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const { 
     Fact fact;
     fact.setFormula(this);
     
     Snapshot s = f.getSnapshot();
-    Snapshot::Object& obj = s.create("silent", "");
+    Snapshot::Object& obj = s.create("silent");
     s.assignId(obj);
     obj.setValue("\"" + getVar().substr(1) + "\"");
     fact.setSnapshot(s);
     
     Outcome out;
-    out.push_back(fact);
+    out << fact;
     return out; 
 }

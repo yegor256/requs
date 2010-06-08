@@ -47,15 +47,15 @@ Formula* Formula::getFormula(size_t i = 0) const {
 /**
  * Generate an outcome
  */
-Outcome Formula::getOutcome() const { 
-    return getOutcome(Fact()); 
+Outcome Formula::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const {
+    return Outcome(); 
 }
 
 /**
  * Generate an outcome
  */
-Outcome Formula::getOutcome(const Fact& f) const { 
-    return Outcome(); 
+Outcome Formula::getOutcome() const { 
+    return getOutcome(Fact()); 
 }
 
 #include "Solm/Formula/Declaration.h"

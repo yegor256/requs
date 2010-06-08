@@ -19,7 +19,7 @@
 /**
  * Create an outcome of this formula, list of facts
  */
-Outcome Read::getOutcome(const Fact& f) const { 
+Outcome Read::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const { 
     Fact fact;
     fact.setFormula(this);
     

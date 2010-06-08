@@ -19,8 +19,19 @@
 /**
  * Create an outcome of this formula, list of facts
  */
-Outcome Declaration::getOutcome(const Fact& f) const { 
-    return getFormula()->getOutcome(); 
+Outcome Declaration::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const { 
+    Fact fact;
+    fact.setFormula(this);
+    
+    Snapshot s = f.getSnapshot();
+    for (Vars::const_iterator i = getVars().begin(); i != getVars().end(); ++i) {
+        Snapshot::Object& obj = s.create("");
+        s.assignName(obj, *i);
+        s.assignId(obj);
+    }
+    fact.setSnapshot(s);
+    
+    return (Outcome() << fact) + getFormula()->getOutcome(fact); 
 }
 
 /**
