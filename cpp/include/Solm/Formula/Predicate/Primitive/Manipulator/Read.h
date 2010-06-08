@@ -22,6 +22,7 @@
 Outcome Read::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const { 
     Fact fact;
     fact.setFormula(this);
+    fact.setSnapshot(f.getSnapshot());
     
     Outcome out;
     out.push_back(fact);
