@@ -39,9 +39,9 @@ void setUp() {
 }
 
 void tearDown() {
-    // if (!rqdql::get<rqdql::Logger>().empty()) {
-    //     cout << "Log report is not empty:" << endl << rqdql::get<rqdql::Logger>().getReport() << endl;
-    // }
+    if (!rqdql::get<rqdql::Logger>().empty()) {
+        cout << "Log report is not empty:" << endl << rqdql::get<rqdql::Logger>().getReport() << endl;
+    }
     // cout << rqdql::get<solm::Solm>().toString() << endl;
 }
 

@@ -21,6 +21,12 @@
 using namespace solm;
 
 void testSimple() {
+    rqdql::get<Solm>().addFormula(
+        (new Declaration("User"))
+        ->arg("u")
+        ->setFormula((new Function("number"))->arg("u"))
+    );
+    
     Formula* f = 
         (new Declaration("UC1"))
         ->arg("x")
@@ -32,6 +38,7 @@ void testSimple() {
                 ->arg("P")
                 ->setFormula((new Function("User.photo"))->arg("x")->arg("P"))
             )
+            ->addFormula(new Silent("'oops 1"))
             );
 
             // ->addFormula(new Silent("'oops 1"))

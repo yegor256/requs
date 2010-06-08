@@ -19,7 +19,43 @@
 /**
  * Create an outcome of this formula, list of facts
  */
-Outcome Function::getOutcome(const Fact& f) const { 
+Outcome Function::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const { 
+    // we are asserting the the arg is NUMBER
+    if (name == F_NUMBER) {
+        if (countVars() != 1) {
+            throw rqdql::Exception(
+                boost::format("Exactly one arg expected by %s(), but %d provided") % name % countVars()
+            );
+        }
+        Snapshot s = f.getSnapshot();
+        string var = m.map(getVar());
+        if (!s.hasName(var)) {
+            throw rqdql::Exception(
+                boost::format("Variable '%s' (globally '%s') is not found in snapshot (%s)") 
+                    % getVar() 
+                    % var
+                    % (s.getNames().size() ? boost::algorithm::join(s.getNames(), ", ") : "empty")
+            );
+        }
+        
+        // everything goes fine and the variable is set to NUMBER
+        Fact positive;
+        positive.setFormula(this);
+        Snapshot positiveSnapshot = s;
+        positiveSnapshot.getByName(var).setValue("123");
+        positive.setSnapshot(positiveSnapshot);
+        
+        // invalid value trying to save into NUMBER
+        Fact negative;
+        negative.setFormula(this);
+        negative.setException("Invalid value for NUMBER");
+        Snapshot negativeSnapshot = s;
+        negativeSnapshot.getByName(var).setValue("\"test\"");
+        negative.setSnapshot(negativeSnapshot);
+        
+        return Outcome() << positive;
+    }
+    
     if (!rqdql::get<Solm>().hasDeclaration(name)) {
         rqdql::get<rqdql::Logger>().log(
             this, 
@@ -27,5 +63,12 @@ Outcome Function::getOutcome(const Fact& f) const {
         );
         return Outcome();
     }
-    return rqdql::get<Solm>().getDeclaration(name)->getFormula()->getOutcome();
+    
+    return rqdql::get<Solm>().getDeclaration(name)->getFormula()->getOutcome(
+        f, 
+        Snapshot::makeMapping(
+            this, 
+            rqdql::get<Solm>().getDeclaration(name)
+        )
+    );
 }

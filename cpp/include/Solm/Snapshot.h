@@ -28,10 +28,8 @@ bool Snapshot::operator==(const Snapshot& s) const {
 /**
  * Create new object and return a reference to it
  */
-Snapshot::Object& Snapshot::create(const string& t, const string& n = "") {
-    Object obj(t);
-    obj.setName(n);
-    objects.push_back(obj);
+Snapshot::Object& Snapshot::create(const string& t) {
+    objects.push_back(Object(t));
     return *(objects.end() - 1);
 }
 
@@ -68,7 +66,9 @@ const string Snapshot::toString() const {
 void Snapshot::assignId(Snapshot::Object& obj) const {
     isMine(obj); // thows if NOT
     if (obj.hasId()) {
-        throw rqdql::Exception(boost::format(rqdql::_t("ID '%d' already assigned")) % obj.getId());
+        throw rqdql::Exception(
+            boost::format(rqdql::_t("ID '%d' already assigned")) % obj.getId()
+        );
     }
     obj.setId(computeNextId());
 }
@@ -79,14 +79,37 @@ void Snapshot::assignId(Snapshot::Object& obj) const {
 void Snapshot::assignName(Snapshot::Object& obj, const string& n) const {
     isMine(obj); // thows if NOT
     if (obj.hasName()) {
-        throw rqdql::Exception(boost::format(rqdql::_t("Object '%s' already has name")) % obj.getName());
+        throw rqdql::Exception(
+            boost::format(rqdql::_t("Object '%s' already has name")) % obj.getName()
+        );
     }
-    for (vector<Object>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
-        if ((*i).getName() == n) {
-            throw rqdql::Exception(boost::format(rqdql::_t("Object with name '%s' already is in snapshot")) % n);
-        }
+    if (hasName(n)) {
+        throw rqdql::Exception(
+            boost::format(rqdql::_t("Object with name '%s' already is in snapshot")) % n
+        );
     }
     obj.setName(n);
+}
+
+/**
+ * Build mapping between a caller and a destination
+ */
+Snapshot::Mapping Snapshot::makeMapping(const Function* src, const Declaration* dest) {
+    Mapping mapping;
+    if (src->countVars() != dest->countVars()) {
+        throw rqdql::Exception(
+            boost::format(rqdql::_t("Params mismatch for '%s': %d to %d")) 
+                % src->getName() 
+                % src->countVars()
+                % dest->countVars()
+        );
+    }
+    Function::Vars::const_iterator i = src->getVars().begin();
+    Declaration::Vars::const_iterator j = dest->getVars().begin();
+    while (i != src->getVars().end()) {
+        mapping[*j++] = *i++;
+    }
+    return mapping;
 }
 
 /**
@@ -98,7 +121,9 @@ void Snapshot::isMine(Snapshot::Object& obj) const {
             return;
         }
     }
-    throw rqdql::Exception(rqdql::_t("Object is not in snapshot"));
+    throw rqdql::Exception(
+        rqdql::_t("Object is not in snapshot")
+    );
 }
 
 /**
@@ -107,7 +132,7 @@ void Snapshot::isMine(Snapshot::Object& obj) const {
 int Snapshot::computeNextId() const {
     int found = 0;
     for (vector<Object>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
-        if ((*i).getId() > found) {
+        if ((*i).hasId() && ((*i).getId() > found)) {
             found = (*i).getId();
         }
     }
@@ -115,39 +140,61 @@ int Snapshot::computeNextId() const {
 }
 
 /**
- * Set value, wrapper
+ * Do we have an object with this name?
  */
-void Snapshot::Object::setValue(const string& s) {
-    setValue(boost::shared_ptr<Snapshot::Object::Value>(new Snapshot::Object::ValueString(s)));
-}
-
-/**
- * Set value, wrapper
- */
-void Snapshot::Object::setValue(const vector<int>& v) {
-    setValue(boost::shared_ptr<Snapshot::Object::Value>(new Snapshot::Object::ValueSet(v)));
-}
-
-/**
- * Convert ACL rule to a user-friendly text
- */
-const string Snapshot::Object::AclRule::toString() const {
-    string s;
-    switch (operation) {
-        case CREATE:
-            s = "CREATE";
-            break;
-        case UPDATE:
-            s = "UPDATE";
-            break;
-        case READ:
-            s = "READ";
-            break;
-        case DELETE:
-            s = "DELETE";
-            break;
+bool Snapshot::hasName(const string& n) const {
+    for (vector<Object>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+        if ((*i).hasName() && ((*i).getName() == n)) {
+            return true;
+        }
     }
-    return (boost::format("%s:%d") % s % id).str();
+    return false;
 }
 
+/**
+ * Get a link to an object with this name
+ */
+Snapshot::Object& Snapshot::getByName(const string& n) {
+    for (vector<Object>::iterator i = objects.begin(); i != objects.end(); ++i) {
+        if ((*i).hasName() && ((*i).getName() == n)) {
+            return *i;
+        }
+    }
+    throw rqdql::Exception(
+        boost::format("Object '%s' is not found in snapshot") % n
+    );
+}
 
+/**
+ * Get all known names in the snapshot
+ */
+const vector<string> Snapshot::getNames() const {
+    vector<string> v;
+    for (vector<Object>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+        if ((*i).hasName()) {
+            v.push_back((*i).getName());
+        }
+    }
+    return v;
+}
+
+/**
+ * Map from one local variable to global
+ */
+const string& Snapshot::Mapping::map(const string& s) const {
+    if (!has(s)) {
+        throw rqdql::Exception(
+            boost::format("Can't find a global equivalent of '%s'") % s
+        );
+    }
+    return this->find(s)->second;
+}
+
+/**
+ * Global scope has an equivalent to this local var?
+ */
+bool Snapshot::Mapping::has(const string& s) const {
+    return (this->find(s) != this->end());
+}
+
+#include "Solm/Snapshot/Object.h"

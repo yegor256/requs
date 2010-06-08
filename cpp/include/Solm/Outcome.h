@@ -36,10 +36,29 @@ Outcome Outcome::operator+(const Outcome& out) const {
     return n;
 }
 
+/**
+ * Concatenate them vertically
+ */
+Outcome& Outcome::operator+=(const Outcome& out) {
+    getPositiveEnd().setOutcome(out);
+    return *this;
+}
+
+/**
+ * Concatenate them horizontally
+ */
 Outcome& Outcome::operator<<(const Outcome& out) {
     for (Outcome::const_iterator i = out.begin(); i != out.end(); ++i) {
         push_back(*i);
     }
+    return *this;
+}
+
+/**
+ * Concatenate them horizontally
+ */
+Outcome& Outcome::operator<<(const Fact& f) {
+    push_back(f);
     return *this;
 }
 

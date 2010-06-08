@@ -34,6 +34,7 @@ template<typename T> class Parametrized;
 class Fact;
     class FactPath;
     class Outcome;
+class Snapshot;
 class Formula;
     class Constant;
     template<typename T> class Unary;
@@ -61,206 +62,6 @@ class Formula;
             class Throw;
             class Caught;
         class Math;
-
-class Formula {
-public:
-    typedef vector<Formula*> Formulas;
-    virtual ~Formula() { /* nothing, just to make this class polymorphic */ };
-    virtual const string toString() const = 0;
-    void clear() { subs.clear(); } // remove everything from the collection
-    Formula* getFormula(size_t) const; // get formula by index
-    void setFormula(Formula*, size_t);
-    void addFormula(Formula* f) { subs.push_back(f); }
-    const Formulas& getFormulas() const { return subs; }
-    Outcome getOutcome() const;
-    virtual Outcome getOutcome(const Fact&) const;
-private:
-    Formulas subs;
-};
-
-class Constant : public Formula {
-public:
-    Constant(bool v = true) : Formula(), value(v) { /* that's it */ }
-    virtual const string toString() const { return value ? "true" : "false"; }
-private:
-    bool value;
-};
-
-template <typename T> class Parametrized {
-public:
-    typedef vector<string> Vars;
-    T* arg(const string& s) { vars.push_back(s); return static_cast<T*>(this); }
-    const Vars& getVars() const { return vars; }
-    const string& getVar(size_t i = 0) const { return vars[i]; }
-private:
-    Vars vars;
-};
-
-template <typename T> class Unary : public Formula {
-public:
-    T* setFormula(Formula* f) { Formula::setFormula(f); return static_cast<T*>(this); }
-};
-
-class Sequence : public Formula {
-public:
-    typedef enum {OP_TO, OP_AND, OP_OR, OP_SEMICOLON} Operand;
-    Sequence(Operand op = OP_TO) : Formula(), operand(op) { /* that's it */ }
-    Sequence* addFormula(Formula* f) { Formula::addFormula(f); return this; }
-    virtual const string toString() const;
-    void append(const Sequence* s);
-    virtual Outcome getOutcome(const Fact&) const;
-private:
-    Operand operand;
-};
-
-template <typename T, Sequence::Operand op> class Binary : public Sequence {
-public:
-    Binary() : Sequence(op) { /* that's it */ }
-    T* setLhs(Formula* f) { Formula::setFormula(f); return static_cast<T*>(this); }
-    T* setRhs(Formula* f) { Formula::setFormula(f, 1); return static_cast<T*>(this); }
-protected:
-    const string _toString(const string& o) const {
-        if (getFormulas().size() != 2) {
-            throw "BINARY shall have exactly two formulas inside";
-        }
-        return getFormula(0)->toString() + " " + o + " " + getFormula(1)->toString();
-    }
-};
-
-template <typename T> class Predicate : public Formula, public Parametrized<T> {
-protected:
-    const string _toString(const string& t) const {
-        return t + "(" + boost::algorithm::join(Parametrized<T>::getVars(), ", ") + ")";
-    }
-};
-
-class Declaration : public Unary<Declaration>, public Parametrized<Declaration> {
-public:
-    Declaration(const string& n) : Unary<Declaration>(), Parametrized<Declaration>(), name(n) { /* that's it */ }
-    const string& getName() const { return name; }
-    virtual const string toString() const;
-    virtual Outcome getOutcome(const Fact&) const;
-private:
-    string name;
-};
-
-template <typename T> class Quantifier : public Unary<T>, public Parametrized<T> {
-public:
-    const string _toString(const string& t) const;
-};
-
-class Forall : public Quantifier<Forall> {
-public:
-    virtual const string toString() const { return Quantifier<Forall>::_toString("\\forall"); }
-};
-
-class Exists : public Quantifier<Exists> {
-public:
-    virtual const string toString() const { return _toString("\\exists"); }
-    virtual Outcome getOutcome(const Fact&) const;
-};
-
-class And : public Binary<And, Sequence::OP_AND> {
-public:
-    virtual const string toString() const { return Binary<And, Sequence::OP_AND>::_toString("\\vee"); }
-};
-
-class Or : public Binary<Or, Sequence::OP_OR> {
-public:
-    virtual const string toString() const { return Binary<Or, Sequence::OP_OR>::_toString("\\wedge"); }
-};
-
-class Function : public Predicate<Function> {
-public:
-    Function(const string& n) : Predicate<Function>(), name(n) { /* that's it */ }
-    virtual const string toString() const { return _toString(name); }
-    virtual Outcome getOutcome(const Fact&) const;
-private:
-    string name;
-};
-
-template <typename T> class Primitive : public Predicate<T> { /* ... */ };
-
-class In : public Primitive<In> {
-public:
-    virtual const string toString() const;
-};
-class Caught : public Primitive<Caught> {
-public:
-    virtual const string toString() const { return _toString("caught"); }
-};
-class Throw : public Primitive<Throw> {
-public:
-    virtual const string toString() const { return _toString("throw"); }
-};
-
-template <typename T> class Informal : public Primitive<T> {
-};
-
-class Info : public Informal<Info> {
-public:
-    Info(const string& s) : Informal<Info>() { arg(s); }
-    virtual const string toString() const { return _toString("info"); }
-};
-class Silent : public Informal<Silent> {
-public:
-    Silent(const string&);
-    virtual const string toString() const { return _toString("silent"); }
-    virtual Outcome getOutcome(const Fact&) const;
-};
-class Err : public Informal<Err> {
-public:
-    Err(const string& s) : Informal<Err>() { arg(s); }
-    virtual const string toString() const { return _toString("err"); }
-};
-
-template <typename T> class Manipulator : public Primitive<T> {
-};
-
-class Created : public Manipulator<Created> {
-public:
-    virtual const string toString() const { return _toString("created"); }
-    virtual Outcome getOutcome(const Fact&) const;
-};
-class Read : public Manipulator<Read> {
-public:
-    virtual const string toString() const { return _toString("read"); }
-    virtual Outcome getOutcome(const Fact&) const;
-};
-class Deleted : public Manipulator<Deleted> {
-public:
-    virtual const string toString() const { return _toString("deleted"); }
-    virtual Outcome getOutcome(const Fact&) const;
-};
-class Updated : public Manipulator<Updated> {
-public:
-    virtual const string toString() const { return _toString("updated"); }
-    virtual Outcome getOutcome(const Fact&) const;
-};
-
-class Math : public Predicate<Math> {
-public:
-    Math(const string& op) : Predicate<Math>(), operand(op) { /* that's it */ }
-    virtual const string toString() const;
-private:
-    string operand;
-};
-
-/**
- * Result of any formula from SOLM. Outcome is a collection of
- * facts (where only one is positive).
- */
-class Outcome : public vector<Fact> {
-public:
-    Outcome() : vector<Fact>() { /* that's it */ }
-    Outcome operator+(const Outcome&) const;
-    Outcome& operator<<(const Outcome&);
-    operator bool() const;
-    vector<FactPath> getPaths() const;
-    Fact& getPositiveEnd();
-private:
-    class AbsentPositiveEndException : public rqdql::Exception {};
-};
 
 /**
  * A snapshot inside a fact
@@ -316,13 +117,13 @@ public:
             int id;
         };
         Object(const string& t) : id(0), name(""), type(t), value(), rules() { /* that's it */ }
-        int getId() const { return id; }
+        int getId() const;
         bool hasId() const { return (bool)id; }
-        const string& getName() const { return name; }
+        const string& getName() const;
         bool hasName() const { return !name.empty(); }
-        const string& getType() const { return type; }
+        const string& getType() const;
         bool hasType() const { return !type.empty(); }
-        const boost::shared_ptr<const Value>& getValue() const { return value; }
+        const boost::shared_ptr<const Value>& getValue() const;
         bool hasValue() const { return (bool)value; }
         void setValue(const boost::shared_ptr<const Value>& v) { value = v; }
         void setValue(const string&);
@@ -340,15 +141,237 @@ public:
         void setId(int i) { id = i; }
         void setType(const string& t) { type = t; }
     };
+    class Mapping : public map<string, string> {
+    public:
+        const string& map(const string& s) const;
+        bool has(const string& s) const;
+    };
+    static const Mapping NullMapping;
     bool operator==(const Snapshot&) const;
     const string toString() const;
-    Object& create(const string&, const string&);
+    Object& create(const string&);
     void assignId(Object&) const;
     void assignName(Object&, const string&) const;
+    bool hasName(const string&) const;
+    const vector<string> getNames() const;
+    Object& getByName(const string&);
+    static Mapping makeMapping(const Function*, const Declaration*);
 private:
     vector<Object> objects;
     int computeNextId() const;
     void isMine(Object&) const;
+};
+const Snapshot::Mapping Snapshot::NullMapping = Snapshot::Mapping();
+
+class Formula {
+public:
+    typedef vector<Formula*> Formulas;
+    virtual ~Formula() { /* nothing, just to make this class polymorphic */ };
+    virtual const string toString() const = 0;
+    void clear() { subs.clear(); } // remove everything from the collection
+    Formula* getFormula(size_t) const; // get formula by index
+    void setFormula(Formula*, size_t);
+    void addFormula(Formula* f) { subs.push_back(f); }
+    const Formulas& getFormulas() const { return subs; }
+    Outcome getOutcome() const;
+    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
+private:
+    Formulas subs;
+};
+
+class Constant : public Formula {
+public:
+    Constant(bool v = true) : Formula(), value(v) { /* that's it */ }
+    virtual const string toString() const { return value ? "true" : "false"; }
+private:
+    bool value;
+};
+
+template <typename T> class Parametrized {
+public:
+    typedef vector<string> Vars;
+    T* arg(const string& s) { vars.push_back(s); return static_cast<T*>(this); }
+    const Vars& getVars() const { return vars; }
+    const string& getVar(size_t i = 0) const { return vars[i]; }
+    size_t countVars() const { return vars.size(); }
+private:
+    Vars vars;
+};
+
+template <typename T> class Unary : public Formula {
+public:
+    T* setFormula(Formula* f) { Formula::setFormula(f); return static_cast<T*>(this); }
+};
+
+class Sequence : public Formula {
+public:
+    typedef enum {OP_TO, OP_AND, OP_OR, OP_SEMICOLON} Operand;
+    Sequence(Operand op = OP_TO) : Formula(), operand(op) { /* that's it */ }
+    Sequence* addFormula(Formula* f) { Formula::addFormula(f); return this; }
+    virtual const string toString() const;
+    void append(const Sequence* s);
+    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
+private:
+    Operand operand;
+};
+
+template <typename T, Sequence::Operand op> class Binary : public Sequence {
+public:
+    Binary() : Sequence(op) { /* that's it */ }
+    T* setLhs(Formula* f) { Formula::setFormula(f); return static_cast<T*>(this); }
+    T* setRhs(Formula* f) { Formula::setFormula(f, 1); return static_cast<T*>(this); }
+protected:
+    const string _toString(const string& o) const {
+        if (getFormulas().size() != 2) {
+            throw "BINARY shall have exactly two formulas inside";
+        }
+        return getFormula(0)->toString() + " " + o + " " + getFormula(1)->toString();
+    }
+};
+
+template <typename T> class Predicate : public Formula, public Parametrized<T> {
+protected:
+    const string _toString(const string& t) const {
+        return t + "(" + boost::algorithm::join(Parametrized<T>::getVars(), ", ") + ")";
+    }
+};
+
+class Declaration : public Unary<Declaration>, public Parametrized<Declaration> {
+public:
+    Declaration(const string& n) : Unary<Declaration>(), Parametrized<Declaration>(), name(n) { /* that's it */ }
+    const string& getName() const { return name; }
+    virtual const string toString() const;
+    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
+private:
+    string name;
+};
+
+template <typename T> class Quantifier : public Unary<T>, public Parametrized<T> {
+public:
+    const string _toString(const string& t) const;
+};
+
+class Forall : public Quantifier<Forall> {
+public:
+    virtual const string toString() const { return Quantifier<Forall>::_toString("\\forall"); }
+};
+
+class Exists : public Quantifier<Exists> {
+public:
+    virtual const string toString() const { return _toString("\\exists"); }
+    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
+};
+
+class And : public Binary<And, Sequence::OP_AND> {
+public:
+    virtual const string toString() const { return Binary<And, Sequence::OP_AND>::_toString("\\vee"); }
+};
+
+class Or : public Binary<Or, Sequence::OP_OR> {
+public:
+    virtual const string toString() const { return Binary<Or, Sequence::OP_OR>::_toString("\\wedge"); }
+};
+
+class Function : public Predicate<Function> {
+public:
+    static const string F_NUMBER;
+    static const string F_TEXT;
+    static const string F_SUD;
+    
+    Function(const string& n) : Predicate<Function>(), name(n) { /* that's it */ }
+    virtual const string toString() const { return _toString(name); }
+    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
+    const string& getName() const { return name; }
+private:
+    string name;
+};
+const string Function::F_NUMBER = "number";
+const string Function::F_TEXT = "text";
+const string Function::F_SUD = "SUD";
+
+template <typename T> class Primitive : public Predicate<T> { /* ... */ };
+
+class In : public Primitive<In> {
+public:
+    virtual const string toString() const;
+};
+class Caught : public Primitive<Caught> {
+public:
+    virtual const string toString() const { return _toString("caught"); }
+};
+class Throw : public Primitive<Throw> {
+public:
+    virtual const string toString() const { return _toString("throw"); }
+};
+
+template <typename T> class Informal : public Primitive<T> {
+};
+
+class Info : public Informal<Info> {
+public:
+    Info(const string& s) : Informal<Info>() { arg(s); }
+    virtual const string toString() const { return _toString("info"); }
+};
+class Silent : public Informal<Silent> {
+public:
+    Silent(const string&);
+    virtual const string toString() const { return _toString("silent"); }
+    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
+};
+class Err : public Informal<Err> {
+public:
+    Err(const string& s) : Informal<Err>() { arg(s); }
+    virtual const string toString() const { return _toString("err"); }
+};
+
+template <typename T> class Manipulator : public Primitive<T> {
+};
+
+class Created : public Manipulator<Created> {
+public:
+    virtual const string toString() const { return _toString("created"); }
+    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
+};
+class Read : public Manipulator<Read> {
+public:
+    virtual const string toString() const { return _toString("read"); }
+    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
+};
+class Deleted : public Manipulator<Deleted> {
+public:
+    virtual const string toString() const { return _toString("deleted"); }
+    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
+};
+class Updated : public Manipulator<Updated> {
+public:
+    virtual const string toString() const { return _toString("updated"); }
+    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
+};
+
+class Math : public Predicate<Math> {
+public:
+    Math(const string& op) : Predicate<Math>(), operand(op) { /* that's it */ }
+    virtual const string toString() const;
+private:
+    string operand;
+};
+
+/**
+ * Result of any formula from SOLM. Outcome is a collection of
+ * facts (where only one is positive).
+ */
+class Outcome : public vector<Fact> {
+public:
+    Outcome() : vector<Fact>() { /* that's it */ }
+    Outcome operator+(const Outcome&) const;
+    Outcome& operator+=(const Outcome&);
+    Outcome& operator<<(const Outcome&);
+    Outcome& operator<<(const Fact&);
+    operator bool() const;
+    vector<FactPath> getPaths() const;
+    Fact& getPositiveEnd();
+private:
+    class AbsentPositiveEndException : public rqdql::Exception {};
 };
 
 /**
