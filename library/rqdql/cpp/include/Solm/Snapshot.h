@@ -52,7 +52,7 @@ const string Snapshot::toString() const {
                 % ((*i).hasName() ? (*i).getName() : "")
                 % ((*i).hasType() ? (*i).getType() : "?")
                 % ((*i).hasId() ? (boost::format("%d") % (*i).getId()).str() : "-")
-                % ((*i).hasValue() ? (*i).getValue()->toString() : "-")
+                % rqdql::cutLongLine(((*i).hasValue() ? (*i).getValue()->toString() : "-"), 20)
                 % boost::algorithm::join(ruleLines, ", ")
             ).str()
         );
@@ -66,11 +66,20 @@ const string Snapshot::toString() const {
 void Snapshot::assignId(Snapshot::Object& obj) const {
     isMine(obj); // thows if NOT
     if (obj.hasId()) {
-        throw rqdql::Exception(
-            boost::format(rqdql::_t("ID '%d' already assigned")) % obj.getId()
-        );
+        return;
     }
     obj.setId(computeNextId());
+}
+
+/**
+ * De-Assign ID of the object
+ */
+void Snapshot::deassignId(Snapshot::Object& obj) const {
+    isMine(obj); // thows if NOT
+    if (!obj.hasId()) {
+        return;
+    }
+    obj.removeId();
 }
 
 /**
@@ -152,7 +161,8 @@ bool Snapshot::hasName(const string& n) const {
 }
 
 /**
- * Get a link to an object with this name
+ * Get a link to an object with this name. It is not const becase a link to 
+ * the object is returned.
  */
 Snapshot::Object& Snapshot::getByName(const string& n) {
     for (vector<Object>::iterator i = objects.begin(); i != objects.end(); ++i) {

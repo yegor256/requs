@@ -39,7 +39,5 @@ Outcome Silent::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot:
     obj.setValue("\"" + getVar().substr(1) + "\"");
     fact.setSnapshot(s);
     
-    Outcome out;
-    out << fact;
-    return out; 
+    return Outcome() << fact; 
 }

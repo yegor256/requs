@@ -18,13 +18,20 @@
 
 /**
  * Create an outcome of this formula, list of facts
+ *
+ * arg#0: what is created
+ * arg#1: who just did it, actor
  */
 Outcome Created::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const { 
     Fact fact;
     fact.setFormula(this);
-    fact.setSnapshot(f.getSnapshot());
-    
-    Outcome out;
-    out << fact;
-    return out; 
+    Snapshot s = f.getSnapshot();
+
+    string var = getVar();
+    Snapshot::Object& obj = s.hasName(var) ? s.getByName(var) : s.create(var);
+    s.assignId(obj);
+    obj.addRule(Snapshot::Object::AclRule(Snapshot::Object::AclRule::CREATE, findActor(s)));
+
+    fact.setSnapshot(s);
+    return Outcome() << fact; 
 }

@@ -13,8 +13,16 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Sequence.h 1819 2010-05-11 10:37:15Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
-#include "Solm/Formula/Predicate/Primitive/Informal/Silent.h"
-#include "Solm/Formula/Predicate/Primitive/Informal/Info.h"
+/**
+ * Convert value to a user-friendly text
+ */
+const string Snapshot::Object::ValueSet::toString() const {
+    vector<string> v;
+    for (vector<int>::const_iterator i = ids.begin(); i != ids.end(); ++i) {
+        v.push_back((boost::format("%d") % *i).str());
+    }
+    return "[" + boost::algorithm::join(v, ", ") + "]";
+}

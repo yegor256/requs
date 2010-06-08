@@ -13,29 +13,20 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: Silent.h 2142 2010-06-08 10:57:56Z yegor256@yahoo.com $
  */
 
 /**
  * Create an outcome of this formula, list of facts
  */
-Outcome Read::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const { 
+Outcome Info::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const { 
     Fact fact;
     fact.setFormula(this);
+    
     Snapshot s = f.getSnapshot();
-
-    string var = getVar();
-    if (!s.hasName(var)) {
-        rqdql::get<rqdql::Logger>().log(
-            this, 
-            (boost::format(rqdql::_t("Can't READ '%s' since it's absent yet")) % var).str()
-        );
-        return Outcome();
-    }
-    Snapshot::Object& obj = s.getByName(var);
-    s.assignId(obj);
-    obj.addRule(Snapshot::Object::AclRule(Snapshot::Object::AclRule::READ, findActor(s)));
-
+    Snapshot::Object& obj = s.create("info");
+    obj.setValue("\"" + getVar().substr(1) + "\"");
     fact.setSnapshot(s);
+    
     return Outcome() << fact; 
 }

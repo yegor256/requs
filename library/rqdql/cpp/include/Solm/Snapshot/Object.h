@@ -57,6 +57,18 @@ const string& Snapshot::Object::getType() const {
 }
 
 /**
+ * Try to set a type, if not set before
+ */
+void Snapshot::Object::setType(const string& t) {
+    if (hasType()) {
+        throw rqdql::Exception(
+            boost::format("Object already has a type: '%s', use hasType() first") % getType()
+        );
+    }
+    type = t; 
+}
+
+/**
  * Get name
  */
 const string& Snapshot::Object::getName() const { 
@@ -102,4 +114,4 @@ const string Snapshot::Object::AclRule::toString() const {
     return (boost::format("%s:%d") % s % id).str();
 }
 
-
+#include "Solm/Snapshot/Object/Value.h"

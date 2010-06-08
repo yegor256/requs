@@ -122,6 +122,13 @@ namespace rqdql {
     inline void yySet(string*& lhs, char*& rhs) {
         lhs = new string(rhs);
     }
+    
+    string cutLongLine(const string& s, size_t len = 50) {
+        if (s.length() < len) {
+            return s;
+        }
+        return s.substr(0, len - 3) + "..."; 
+    }
 
 }
 
