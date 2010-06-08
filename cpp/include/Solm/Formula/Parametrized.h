@@ -13,8 +13,18 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Sequence.h 1819 2010-05-11 10:37:15Z yegor256@yahoo.com $
+ * @version $Id: Silent.h 2095 2010-05-28 07:26:19Z yegor256@yahoo.com $
  */
 
-#include "Solm/Formula/Predicate/Primitive/Informal/Silent.h"
-#include "Solm/Formula/Predicate/Primitive/Informal/Info.h"
+/**
+ * Get argument and validate its existense, beforehand
+ */
+template <typename T> const string& Parametrized<T>::getVar(size_t i) const {
+    if (i >= vars.size()) {
+        throw rqdql::Exception(
+            boost::format(rqdql::_t("Var[%d] is out of range")) % i
+        );
+    }
+    return vars[i];
+}
+

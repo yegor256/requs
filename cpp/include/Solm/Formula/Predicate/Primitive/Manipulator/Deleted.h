@@ -22,9 +22,20 @@
 Outcome Deleted::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const { 
     Fact fact;
     fact.setFormula(this);
-    fact.setSnapshot(f.getSnapshot());
-    
-    Outcome out;
-    out.push_back(fact);
-    return out; 
+    Snapshot s = f.getSnapshot();
+
+    string var = getVar();
+    if (!s.hasName(var)) {
+        rqdql::get<rqdql::Logger>().log(
+            this, 
+            (boost::format(rqdql::_t("Can't DELETE '%s' since it's absent yet")) % var).str()
+        );
+        return Outcome();
+    }
+    Snapshot::Object& obj = s.getByName(var);
+    s.deassignId(obj);
+    obj.addRule(Snapshot::Object::AclRule(Snapshot::Object::AclRule::DELETE, findActor(s)));
+
+    fact.setSnapshot(s);
+    return Outcome() << fact; 
 }

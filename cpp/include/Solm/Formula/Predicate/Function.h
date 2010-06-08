@@ -43,6 +43,7 @@ Outcome Function::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapsho
         positive.setFormula(this);
         Snapshot positiveSnapshot = s;
         positiveSnapshot.getByName(var).setValue("123");
+        positiveSnapshot.getByName(var).setType(F_NUMBER);
         positive.setSnapshot(positiveSnapshot);
         
         // invalid value trying to save into NUMBER

@@ -16,6 +16,21 @@
  * @version $Id: Sequence.h 1819 2010-05-11 10:37:15Z yegor256@yahoo.com $
  */
 
+/**
+ * Find an actor, originator of this manipulation (arg#1)
+ */
+template <typename T> int Manipulator<T>::findActor(Snapshot& s) const {
+    if (Primitive<T>::countVars() < 2) {
+        if (!s.hasName(Function::F_SUD)) {
+            Snapshot::Object& sud = s.create(Function::F_SUD);
+            s.assignId(sud);
+            s.assignName(sud, Function::F_SUD);
+        }
+        return s.getByName(Function::F_SUD).getId();
+    }
+    return s.getByName(Primitive<T>::getVar(1)).getId();
+}
+
 #include "Solm/Formula/Predicate/Primitive/Manipulator/Read.h"
 #include "Solm/Formula/Predicate/Primitive/Manipulator/Created.h"
 #include "Solm/Formula/Predicate/Primitive/Manipulator/Deleted.h"

@@ -26,6 +26,9 @@ Outcome Exists::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot:
     Snapshot s = f.getSnapshot();
     Snapshot::Object& obj = s.create(""); // no type
     s.assignName(obj, getVar());
+    if (isupper(getVar().at(0))) {
+        obj.setValue(vector<int>());
+    }
     fact.setSnapshot(s);
     
     Outcome out;

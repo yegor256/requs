@@ -58,6 +58,7 @@ Outcome Formula::getOutcome() const {
     return getOutcome(Fact()); 
 }
 
+#include "Solm/Formula/Parametrized.h"
 #include "Solm/Formula/Declaration.h"
 #include "Solm/Formula/Quantifier.h"
 #include "Solm/Formula/Predicate.h"

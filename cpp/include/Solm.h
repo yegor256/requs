@@ -84,7 +84,7 @@ public:
         class ValueSet : public Value {
         public:
             ValueSet(const vector<int>& v) : ids(v) { /* that's it */ }
-            const string toString() const { return "... set ..."; }
+            const string toString() const;
         private:
             vector<int> ids;
         };
@@ -111,23 +111,27 @@ public:
         };
         class AclRule {
         public:
-            enum {CREATE, READ, UPDATE, DELETE} operation;
+            typedef enum {CREATE, READ, UPDATE, DELETE} Operation;
+            AclRule(Operation op, int i) : operation(op), id(i) { /* that's it */ }
             const string toString() const;
         private:
+            Operation operation;
             int id;
         };
         Object(const string& t) : id(0), name(""), type(t), value(), rules() { /* that's it */ }
         int getId() const;
-        bool hasId() const { return (bool)id; }
+        bool hasId() const { return id > 0; }
         const string& getName() const;
         bool hasName() const { return !name.empty(); }
         const string& getType() const;
+        void setType(const string&);
         bool hasType() const { return !type.empty(); }
         const boost::shared_ptr<const Value>& getValue() const;
         bool hasValue() const { return (bool)value; }
         void setValue(const boost::shared_ptr<const Value>& v) { value = v; }
         void setValue(const string&);
         void setValue(const vector<int>&);
+        void addRule(const AclRule& r) { rules.push_back(r); }
         const vector<AclRule>& getRules() const { return rules; }
     private:
         int id;
@@ -139,7 +143,7 @@ public:
         friend class Snapshot;
         void setName(const string& n) { name = n; }
         void setId(int i) { id = i; }
-        void setType(const string& t) { type = t; }
+        void removeId() { id = -1; }
     };
     class Mapping : public map<string, string> {
     public:
@@ -151,10 +155,11 @@ public:
     const string toString() const;
     Object& create(const string&);
     void assignId(Object&) const;
+    void deassignId(Object&) const;
     void assignName(Object&, const string&) const;
     bool hasName(const string&) const;
     const vector<string> getNames() const;
-    Object& getByName(const string&);
+    Object& getByName(const string&); // non-const intentionally
     static Mapping makeMapping(const Function*, const Declaration*);
 private:
     vector<Object> objects;
@@ -192,7 +197,7 @@ public:
     typedef vector<string> Vars;
     T* arg(const string& s) { vars.push_back(s); return static_cast<T*>(this); }
     const Vars& getVars() const { return vars; }
-    const string& getVar(size_t i = 0) const { return vars[i]; }
+    const string& getVar(size_t i = 0) const;
     size_t countVars() const { return vars.size(); }
 private:
     Vars vars;
@@ -311,6 +316,7 @@ class Info : public Informal<Info> {
 public:
     Info(const string& s) : Informal<Info>() { arg(s); }
     virtual const string toString() const { return _toString("info"); }
+    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
 };
 class Silent : public Informal<Silent> {
 public:
@@ -325,6 +331,8 @@ public:
 };
 
 template <typename T> class Manipulator : public Primitive<T> {
+protected:
+    int findActor(Snapshot&) const;
 };
 
 class Created : public Manipulator<Created> {

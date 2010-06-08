@@ -38,7 +38,6 @@ void testSimple() {
                 ->arg("P")
                 ->setFormula((new Function("User.photo"))->arg("x")->arg("P"))
             )
-            ->addFormula(new Silent("'oops"))
             ->addFormula(
                 (new Sequence())
                 ->addFormula(
