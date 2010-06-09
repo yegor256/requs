@@ -352,43 +352,61 @@ $ rqdql errors uml:uc=UC6.5 metrics < myscope.txt
     and may have a number of changes made by other objects:
     
     \begin{lstlisting}[language=C++]
-struct Object {
-    string value; // e.g. "binary GIF file"
-    string type; // e.g. "PhotoFile"
-    vector<Change> changes; // could be empty!
+class Object {
+    int id; // could be zero
+    string name; // could be empty
+    string type; // mandatory
+    Value* value; 
+    vector<AclRule> rules;
 };
-struct Change {
-    enum {CREATED, READ, UPDATED, DELETED} operator;
-    int moment;
-    Object* author;
+class Value {};
+    class ValueString : public Value {
+        string value;
+    };
+    class ValueSet : public Value {
+        vector<int> ids;
+    };
+    class ValueAssociation : public Value, 
+        public pair<AssociationMember, AssociationMember> {};
+        class AssociationMember {};
+            class AssociationMemberId : public AssociationMember {
+                int id;
+            };
+            class AssociationMemberName : public AssociationMember {
+                string name;
+            };
+class AclRule {
+    enum {CREATE, READ, UPDATE, DELETE} operation;
+    int id;
 };
-map<string, Object> snapshot;
+vector<Object> snapshot;
 \end{lstlisting}
 
     Consider this example:
 
-    \begin{tabular}[t]{l|llll}
-        SOLM formula & \multicolumn{4}{l}{Snapshots} \\
-        & ID & Type & Value & Changes \\
+    \def\chng#1{\colorbox{lightgray}{#1}}
+    \begin{tabular}[t]{l|lllll}
+        SOLM formula & \multicolumn{5}{l}{Snapshots} \\
+        & Name & Type & ID & Value & ACL Rules \\
         \hline
 
         $\type{UC}_1(x) : $ \\
         $\quad \type{User}(x) \to$ 
-            & \colorbox{lightgray}{$x$} & \colorbox{lightgray}{\texttt{User}} & \colorbox{lightgray}{\texttt{1}} \\
+            & \chng{$x$} & \chng{\texttt{User}} & \chng{\texttt{1}} \\
         
         \hline
         $\quad \exists \Pi(\type{User.photo}(x, \Pi)) \to$ 
             & $x$ & \texttt{User} & \texttt{1} \\
-            & \colorbox{lightgray}{$\Pi$} & \colorbox{lightgray}{\texttt{Photo}} & \colorbox{lightgray}{\texttt{[?]}} \\
-            &  & \colorbox{lightgray}{\texttt{User.photo}} & \colorbox{lightgray}{\texttt{1:$\Pi$}} \\
+            & \chng{$\Pi$} & \chng{\texttt{Photo}} & & \chng{\texttt{[?]}} \\
+            &  & \chng{\texttt{User.photo}} & & \chng{\texttt{1:$\Pi$}} \\
         
         \hline
         $\quad ($ \\
         $\quad\quad |\Pi| > 5 \to$ 
             & $x$ & \texttt{User} & \texttt{1} \\
-            & $\Pi$ & \texttt{Photo} & \texttt{[\colorbox{lightgray}{2}]} \\
-            &  & \colorbox{lightgray}{\texttt{Photo}} & \colorbox{lightgray}{\texttt{2}} \\
-            & & \texttt{User.photo} & \colorbox{lightgray}{\texttt{1:2}} \\
+            & $\Pi$ & \texttt{Photo} & & \texttt{[\chng{2}]} \\
+            &  & \chng{\texttt{Photo}} & \chng{\texttt{2}} \\
+            & & \texttt{User.photo} & & \chng{\texttt{1:2}} \\
             
         \hline
         $\quad\quad \exists y(y \in \Pi) \to$ \\
@@ -399,42 +417,44 @@ map<string, Object> snapshot;
         \hline
         $\quad \exists p(p \in \Pi) \to$ 
             & $x$ & \texttt{User} & \texttt{1} \\
-            & $\Pi$ & \texttt{Photo} & \texttt{[2]} \\
-            & \colorbox{lightgray}{$p$} & \texttt{Photo} & \texttt{2} \\
-            &  & \texttt{User.photo} & \texttt{1:2} \\
+            & $\Pi$ & \texttt{Photo} & & \texttt{[2]} \\
+            & \chng{$p$} & \texttt{Photo} & \texttt{2} \\
+            &  & \texttt{User.photo} & & \texttt{1:2} \\
             
         \hline
         $\quad \type{created}(p, x) \to$
             & $x$ & \texttt{User} & \texttt{1} \\
-            & $\Pi$ & \texttt{Photo} & \texttt{[2\colorbox{lightgray}{,3}]} \\
-            & \colorbox{lightgray}{---} & \texttt{Photo} & \texttt{2} \\
-            & \colorbox{lightgray}{$p$} & \colorbox{lightgray}{\texttt{Photo}} & \colorbox{lightgray}{\texttt{3}} & \colorbox{lightgray}{\texttt{CREATE:1}} \\
-            & & \texttt{User.photo} & \texttt{1:2} \\
-            & & \colorbox{lightgray}{\texttt{User.photo}} & \colorbox{lightgray}{\texttt{1:3}} \\
+            & $\Pi$ & \texttt{Photo} & & \texttt{[2\chng{,3}]} \\
+            & \chng{---} & \texttt{Photo} & \texttt{2} \\
+            & \chng{$p$} & \chng{\texttt{Photo}} & \chng{\texttt{3}} & & \chng{\texttt{CREATE:1}} \\
+            & & \texttt{User.photo} & & \texttt{1:2} \\
+            & & \chng{\texttt{User.photo}} & & \chng{\texttt{1:3}} \\
             
         \hline
         $\quad \type{UC}_2(p) \vee$ \\
         $\quad ($ \\
-        $\quad\quad \type{exception}(\mbox{``file format is not valid''}) \to$ \\
+        $\quad\quad \type{exception}(\mbox{``file format...''}) \to$ \\
         $\quad\quad \type{deleted}(p) \to$ \\
-        $\quad\quad \type{throw}(\mbox{``only PNG images are accepted''})$ \\
+        $\quad\quad \type{throw}(\mbox{``only PNG...''})$ \\
         $\quad ) \to$
-            & \multicolumn{4}{l}{\textit{skipped}} \\
+            & \multicolumn{5}{l}{\textit{skipped}} \\
         
         \hline
-        $\quad \type{silent}(\mbox{``We protocol the operation in backlog''})$ \\
+        $\quad \type{silent}(\mbox{``We protocol...''})$ \\
         $\quad \type{read}(p, x) $
             & $x$ & \texttt{User} & \texttt{1} \\
-            & $\Pi$ & \texttt{Photo} & \texttt{[2,3]} \\
+            & $\Pi$ & \texttt{Photo} & & \texttt{[2,3]} \\
             &  & \texttt{Photo} & \texttt{2} \\
-            & $p$ & \texttt{Photo} & \texttt{3} & \texttt{CREATE:1} \\
-            &     &                &            & \colorbox{lightgray}{\texttt{READ:1}} \\
-            & & \texttt{User.photo} & \texttt{1:2} \\
-            & & \texttt{User.photo} & \texttt{1:3} \\
-            & & \colorbox{lightgray}{\texttt{silent}} & 
-                \multicolumn{2}{l}{\colorbox{lightgray}{\parbox[t]{10em}{\raggedright``We protocol the operation in backlog''}}} \\
+            & $p$ & \texttt{Photo} & \texttt{3} & & \texttt{CREATE:1}\chng{,} \\
+            &     &                &            & & \chng{\texttt{READ:1}} \\
+            & & \texttt{User.photo} & & \texttt{1:2} \\
+            & & \texttt{User.photo} & & \texttt{1:3} \\
+            & & \chng{\texttt{silent}} & \chng{\texttt{4}} &
+                \chng{\parbox[t]{5em}{\raggedright``We protocol...''}} \\
         
     \end{tabular}
-    
+
+    Next, we can calculate the difference between two snapshots. This difference
+    will become a single step in a ``test case''.
 
 \end{document}
