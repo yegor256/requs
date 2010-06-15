@@ -71,7 +71,7 @@ $(BISON_DEST): $(BISON_SRC) $(HEADERS) $(SELF)
 	$(CPP) $(CPPFLAGS) -fPIC -o $@ -g -c $<
 
 $(LIB): $(LIB_OBJS)
-	$(CPP) -shared -o $(LIB) $(LIB_OBJS)
+	ar -r $(LIB) $(LIB_OBJS)
 
 # test everything
 test: $(TESTS)
