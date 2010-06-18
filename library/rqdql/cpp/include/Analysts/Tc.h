@@ -38,7 +38,7 @@ public:
     TestCase(const solm::FactPath& fp) : name() { /* that's it */ }
     void setName(const string& s) { name = s; }
     const string getName() const { return name; }
-    const vector<TestStep> computeSteps() const { return vector<TestStep>(); }
+    const vector<TestStep> computeSteps() const;
 private:
     string name;
 };

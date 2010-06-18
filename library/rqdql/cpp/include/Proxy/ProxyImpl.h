@@ -84,9 +84,17 @@ void Proxy::clear() {
     getArray<Type>().clear();
     getArray<UseCase>().clear();
     
-    get<Type>("text")->addPredicate((new solm::Function("string"))->arg("x"));
-    get<Type>("number")->addPredicate((new solm::Function("integer"))->arg("x"));
-    get<Type>("SUD")->addPredicate(new solm::Constant(true));
+    get<Type>("text")->addPredicate(
+        (new solm::Function(solm::Function::F_TEXT))
+        ->arg("x")
+    );
+    get<Type>("number")->addPredicate(
+        (new solm::Function(solm::Function::F_NUMBER))
+        ->arg("x")
+    );
+    get<Type>("SUD")->addPredicate(
+        new solm::Constant(true)
+    );
     get<Type>("somebody")->addPredicate(new solm::Constant(true));
     get<Type>("something")->addPredicate(new solm::Constant(true));
 }
@@ -116,7 +124,10 @@ template<typename T> size_t Proxy::count() const {
 template<> void Proxy::initialize<Type>(Type* t) {
     // automatically add a predicate, that this type inherits from "actor"
     if (boost::regex_match(findName(t), boost::regex("Actor.*"))) {
-        t->addPredicate((new solm::Function("actor"))->arg("x"));
+        t->addPredicate(
+            (new solm::Function(solm::Function::F_ACTOR))
+            ->arg("x")
+        );
     }
 }
 
@@ -170,7 +181,7 @@ template<typename T> const string Proxy::findName(const T* t) const {
             return i->first;
         }
     }
-    throw rqdql::Exception(rqdql::_t("Element doesn't have a system-wide name"));
+    throw rqdql::Exception(rqdql::_t("Element doesn't have a system-wide name, use hasName() first"));
 }
 
 
