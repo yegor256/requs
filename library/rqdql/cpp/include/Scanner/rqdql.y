@@ -109,7 +109,7 @@ statement:
     | 
     qosDefinition 
     |
-    informal
+    informal DOT
     |
     error DOT
         {
