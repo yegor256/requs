@@ -29,3 +29,11 @@
 //     lines.push_back(after.toString());
 //     return boost::algorithm::join(lines, "\n");
 // }
+
+/**
+ * Find and return a list of test steps
+ * @todo Implement it, it's a stub now
+ */
+const vector<TestStep> TestCase::computeSteps() const {
+    return vector<TestStep>();
+}

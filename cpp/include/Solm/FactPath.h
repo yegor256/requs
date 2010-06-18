@@ -43,6 +43,18 @@ bool FactPath::operator<(const FactPath& p) const {
 }
 
 /**
+ * This path ends with a positive result?
+ */
+FactPath::operator bool() const {
+    for (FactPath::const_iterator f = begin(); f != end(); ++f) {
+        if (!(*f)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
  * Convert to string
  */
 const string FactPath::toString() const {

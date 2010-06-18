@@ -94,8 +94,13 @@ void testSimple() {
         );
 
     Outcome out = f->getOutcome();
-    cout << "snapshot in the end:\n" << out.getPositiveEnd().getSnapshot().toString() << endl;
-    // BOOST_REQUIRE(true);
+    vector<FactPath> paths = out.getPaths();
+    cout << paths.size() << " paths found: ";
+    for (vector<FactPath>::const_iterator i = paths.begin(); i != paths.end(); ++i) {
+        cout << (i == paths.begin() ? "" : ", ") << (*i).size() << ((*i) ? "+" : "-");
+    }
+    cout << endl << "snapshot in the end:\n" << out.getPositiveEnd().getSnapshot().toString() << endl;
+    BOOST_REQUIRE(paths.size() > 0);
 }
 
 vector<testMethod> suite() {

@@ -308,7 +308,7 @@ $ rqdql errors uml:uc=UC6.5 metrics < myscope.txt
 \newpage
 \section{Test Cases}
 
-    Every formula produces a number of ``fact sequences''. Every fact sequence
+    Every formula produces a number of ``fact paths''. Every fact path
     is a vector of ``facts'', and every fact is either a positive or negative:
     
     \begin{tikzpicture}[
@@ -455,6 +455,19 @@ vector<Object> snapshot;
     \end{tabular}
 
     Next, we can calculate the difference between two snapshots. This difference
-    will become a single step in a ``test case''.
+    will become a single step in a ``test case''. The process looks like this:
+    
+    \begin{tikzpicture}[node distance=8em, -triangle 60, thick, font=\ttfamily]
+        \node [draw] (declarations) {Declaration[]};
+        \node [draw, right of=declarations] (outcomes) {Outcome[]};
+        \node [draw, right of=outcomes] (paths) {FactPath[]};
+        \node [draw, dashed, below of=paths] (optimization) {optimization};
+        \node [draw, below of=optimization] (tcs) {TestCase[]};
+        
+        \draw (declarations) -- (outcomes);
+        \draw (outcomes) -- (paths);
+        \draw (paths) -- (optimization);
+        \draw (optimization) -- (tcs);
+    \end{tikzpicture}
 
 \end{document}

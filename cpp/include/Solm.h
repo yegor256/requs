@@ -282,6 +282,7 @@ public:
     static const string F_NUMBER;
     static const string F_TEXT;
     static const string F_SUD;
+    static const string F_ACTOR;
     
     Function(const string& n) : Predicate<Function>(), name(n) { /* that's it */ }
     virtual const string toString() const { return _toString(name); }
@@ -292,6 +293,7 @@ private:
 };
 const string Function::F_NUMBER = "number";
 const string Function::F_TEXT = "text";
+const string Function::F_ACTOR = "actor";
 const string Function::F_SUD = "SUD";
 
 template <typename T> class Primitive : public Predicate<T> { /* ... */ };
@@ -387,7 +389,7 @@ private:
  */
 class Fact {
 public:
-    operator bool() const;
+    virtual operator bool() const;
     virtual const string toString() const { return snapshot.toString(); }
     bool operator==(const Fact&) const;
     void setFormula(const Formula* f) { formula = f; }
@@ -411,6 +413,7 @@ private:
  */
 class FactPath : public Fact, public vector<Fact> {
 public:
+    operator bool() const;
     FactPath operator+(const FactPath&) const;
     bool operator==(const FactPath&) const;
     bool operator<(const FactPath&) const;
