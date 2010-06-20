@@ -50,7 +50,7 @@ const string Flows::toString() const {
 void Flows::setFormula(solm::Formula* f) { 
     formula = f; 
 
-    // Now we should like this NEW formula with the FLOWS
+    // Now we should link this NEW formula with the FLOWS
     rqdql::get<rqdql::Logger>().addClone(this, f);
 }
 

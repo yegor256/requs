@@ -54,9 +54,9 @@ public:
         vector<int> rightLines;
     };
     Logger() : messages() { /* that's it */ }
-    void addSubject(const void* s, int l) { subjects[s].push_back(l); }
+    void addSubject(const void*, int);
     void addClone(const void*, const void*);
-    bool hasSubject(const void* s) const { return subjects.find(s) != subjects.end(); }
+    bool hasSubject(const void*) const;
     void addLink(const void*, const void*);
     template <typename T> void log(const T*, const string&); // we know a link to an object
     void log(int, const string&); // we know exact line number

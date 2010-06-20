@@ -43,6 +43,10 @@ void lyyerror(YYLTYPE t, const char *error, ...) {
     rqdql::get<rqdql::Logger>().log((int)t.first_line, s);
 }
 
+/**
+ * Protocol the appearance of an object in input stream
+ * @see rqdql.y
+ */
 inline void protocol(YYLTYPE t, void* x) {
     rqdql::get<rqdql::Logger>().addSubject(x, t.first_line);
 }
