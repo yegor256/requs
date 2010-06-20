@@ -472,9 +472,7 @@ flows: /* Flows* */
             Flows* v = new Flows();
             brokers::FlowHolder* f = static_cast<brokers::FlowHolder*>($1);
             v->addFlow(f->getId(), f->getFlow());
-            $$ = v;
-            protocol(@1, $$);
-            protocol(@1, f->getFlow());
+            protocol(@1, $$ = v);
         }
     |
     flows flow
@@ -487,9 +485,7 @@ flows: /* Flows* */
             }
             brokers::FlowHolder* f = static_cast<brokers::FlowHolder*>($2);
             v->addFlow(f->getId(), f->getFlow());
-            $$ = v;
-            protocol(@1, $$);
-            protocol(@2, f->getFlow());
+            protocol(@1, $$ = v);
         }
     ;
     
@@ -506,7 +502,7 @@ flow: /* brokers::FlowHolder* */
             }
             f->setId($1);
             $$ = f;
-            protocol(@1, $$);
+            protocol(@1, f->getFlow());
         }
     ;
     
@@ -533,6 +529,7 @@ useCaseAlternativeDeclaration:
         }
         if (dest) {
             // it's found, inject flows there!
+            protocol(@1, dest);
             Flows* alt = dest->addAlternative(static_cast<solm::Formula*>($5));
             alt->setFlows(static_cast<Flows*>($7));
         }

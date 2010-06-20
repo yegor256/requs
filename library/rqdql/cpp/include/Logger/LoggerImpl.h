@@ -103,6 +103,22 @@ const vector<Logger::Link>& Logger::getLinks() {
 }
 
 /**
+ * Add a new subject
+ * @see protocol()
+ */
+void Logger::addSubject(const void* s, int l) { 
+    subjects[s].push_back(l);
+}
+
+/**
+ * We already have this subject attached to some lines?
+ * @see Logger::addClone()
+ */
+bool Logger::hasSubject(const void* s) const { 
+    return subjects.find(s) != subjects.end(); 
+}
+
+/**
  * Add one link between two subjects
  * Left object is the source of the link, and the right is
  * the destination
@@ -115,6 +131,8 @@ void Logger::addLink(const void* l, const void* r) {
 /**
  * Add object location, which is the same as the latest location of
  * another object.
+ * @see Flow::makeFormula()
+ * @see Flows::setFormula()
  */
 void Logger::addClone(const void* existing, const void* n) {
     if (!hasSubject(existing)) {
