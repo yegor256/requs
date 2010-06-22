@@ -406,7 +406,7 @@ vector<Object> snapshot;
             & $x$ & \texttt{User} & \texttt{1} \\
             & $\Pi$ & \texttt{Photo} & & \texttt{[\chng{2}]} \\
             &  & \chng{\texttt{Photo}} & \chng{\texttt{2}} \\
-            & & \texttt{User.photo} & & \chng{\texttt{1:2}} \\
+            & & \texttt{User.photo} & \texttt{\chng{3}} & \chng{\texttt{1:2}} \\
             
         \hline
         $\quad\quad \exists y(y \in \Pi) \to$ \\
@@ -419,16 +419,16 @@ vector<Object> snapshot;
             & $x$ & \texttt{User} & \texttt{1} \\
             & $\Pi$ & \texttt{Photo} & & \texttt{[2]} \\
             & \chng{$p$} & \texttt{Photo} & \texttt{2} \\
-            &  & \texttt{User.photo} & & \texttt{1:2} \\
+            &  & \texttt{User.photo} & \texttt{3} & \texttt{1:2} \\
             
         \hline
         $\quad \type{created}(p, x) \to$
             & $x$ & \texttt{User} & \texttt{1} \\
-            & $\Pi$ & \texttt{Photo} & & \texttt{[2\chng{,3}]} \\
+            & $\Pi$ & \texttt{Photo} & & \texttt{[2\chng{,4}]} \\
             & \chng{---} & \texttt{Photo} & \texttt{2} \\
-            & \chng{$p$} & \chng{\texttt{Photo}} & \chng{\texttt{3}} & & \chng{\texttt{CREATE:1}} \\
+            & \chng{$p$} & \chng{\texttt{Photo}} & \chng{\texttt{4}} & & \chng{\texttt{CREATE:1}} \\
             & & \texttt{User.photo} & & \texttt{1:2} \\
-            & & \chng{\texttt{User.photo}} & & \chng{\texttt{1:3}} \\
+            & & \chng{\texttt{User.photo}} & \chng{\texttt{5}} & \chng{\texttt{1:4}} \\
             
         \hline
         $\quad \type{UC}_2(p) \vee$ \\
@@ -443,19 +443,21 @@ vector<Object> snapshot;
         $\quad \type{silent}(\mbox{``We protocol...''})$ \\
         $\quad \type{read}(p, x) $
             & $x$ & \texttt{User} & \texttt{1} \\
-            & $\Pi$ & \texttt{Photo} & & \texttt{[2,3]} \\
+            & $\Pi$ & \texttt{Photo} & & \texttt{[2,4]} \\
             &  & \texttt{Photo} & \texttt{2} \\
-            & $p$ & \texttt{Photo} & \texttt{3} & & \texttt{CREATE:1}\chng{,} \\
+            & $p$ & \texttt{Photo} & \texttt{4} & & \texttt{CREATE:1}\chng{,} \\
             &     &                &            & & \chng{\texttt{READ:1}} \\
             & & \texttt{User.photo} & & \texttt{1:2} \\
-            & & \texttt{User.photo} & & \texttt{1:3} \\
-            & & \chng{\texttt{silent}} & \chng{\texttt{4}} &
+            & & \texttt{User.photo} & & \texttt{1:4} \\
+            & & \chng{\texttt{silent}} & \chng{\texttt{6}} &
                 \chng{\parbox[t]{5em}{\raggedright``We protocol...''}} \\
         
     \end{tabular}
 
-    Next, we can calculate the difference between two snapshots. This difference
-    will become a single step in a ``test case''. The process looks like this:
+    Next, we optimize the retrieved vectors of snapshots, in order
+    to produce the smallest collection. 
+    Then, we convert a vector of snapshots into MOF meta-model.
+    The process looks like this:
     
     \begin{tikzpicture}[node distance=8em, -triangle 60, thick, font=\ttfamily]
         \node [draw] (declarations) {Declaration[]};
@@ -463,11 +465,19 @@ vector<Object> snapshot;
         \node [draw, right of=outcomes] (paths) {FactPath[]};
         \node [draw, dashed, below of=paths] (optimization) {optimization};
         \node [draw, below of=optimization] (tcs) {TestCase[]};
+        \node [draw, left of=tcs] (mof) {MOF};
+        \node [draw, left of=mof] (xmi) {XMI};
+        \node [draw, left of=xmi] (uml) {UML};
+        \node [draw, above left of=xmi] (code) {code};
         
         \draw (declarations) -- (outcomes);
         \draw (outcomes) -- (paths);
         \draw (paths) -- (optimization);
         \draw (optimization) -- (tcs);
+        \draw (tcs) -- (mof);
+        \draw (mof) -- (xmi);
+        \draw (xmi) -- (uml);
+        \draw (xmi) -- (code);
     \end{tikzpicture}
 
 \end{document}
