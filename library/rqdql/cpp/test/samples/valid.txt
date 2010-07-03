@@ -1,0 +1,8 @@
+ActorUser is a "human".
+ActorUser includes: name, email, address, balance.
+PhotoFile is a "file".
+UC14.78 where ActorUser (the user) uploads PhotoFile (the new-file):
+1. "The user uploads the new-file".
+2. The user reads the new-file.
+3. We seriously validate name of the new-file when we want it.
+UC25.4 where we seriously validate PhotoFile (the file) when we want it: "we will define it later".

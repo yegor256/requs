@@ -1,0 +1,49 @@
+ActorUser is a "human being with identity. Also it is our client.".
+
+"just some informal text..."
+
+ActorUser is an ActorVisitor.
+
+ActorUser includes: email and name.
+Email of ActorUser is unique.
+
+InvestorApplication includes:
+    ticket: OnlineTicket "where this application is discussed and approved"; 
+    email: text, 
+    agent: ActorAgent-s; 
+    phone: "a telephone number"; and 
+    name; 
+    introduction email: "text message when account is registered".
+
+Name of InvestorApplication includes: first name and last name.
+
+UC8.3 where we invest into InvestmentProject: "something for the future".
+
+UC8.4 where ActorOperator pays to us: "we will talk later about it...".
+
+UC8.1 where somebody speculates:
+    1. "We download from ActorLegacy".
+    2. We invest into InvestmentProject (the project).
+    3. Somebody turns into ActorUser (the user).
+    4. "The user buys specific units in the project".
+    5. "We do something strange".
+    6. ActorOperator "when he wants" pays to us "when necessary".
+    7. "Every week we pay earnings to the user".
+    8. "The user transfers units to ActorUser".
+
+UC8.1 4a) if "ticket is rejected":
+    1. "SUD sends rejection email of the application".
+    2. Failure "application rejected".
+
+UC8.1 4a1a) if "email of the application is empty":
+    1. Failure "anonymous application rejected".
+
+ActorAgent is an "unknown something".
+ActorLegacy is "unknown yet".
+ActorOperator is an "unknown something".
+ActorVisitor is an "unknown something".
+InvestmentProject is an "unknown something".
+InvestorApplication is an "unknown something".
+OnlineTicket is an "unknown something".
+
+
