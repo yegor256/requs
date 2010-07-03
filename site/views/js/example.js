@@ -18,6 +18,12 @@ function render()
             'success': function(data)
             {
                 var xml = (new DOMParser()).parseFromString(data, "text/xml");
+                
+                $("#result").removeClass().addClass(
+                    xml.getElementsByTagName("errorsCount")[0].value > 0 ?
+                    'error' : 'success'
+                );
+                
                 $("#xml").html(data.replace(/</g, '&lt;'));
             }
         }
