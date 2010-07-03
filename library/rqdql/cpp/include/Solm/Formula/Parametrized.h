@@ -13,18 +13,28 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Silent.h 2095 2010-05-28 07:26:19Z yegor256@yahoo.com $
+ * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
  */
 
-/**
- * Get argument and validate its existense, beforehand
- */
-template <typename T> const string& Parametrized<T>::getVar(size_t i) const {
-    if (i >= vars.size()) {
-        throw rqdql::Exception(
-            boost::format(rqdql::_t("Var[%d] is out of range")) % i
-        );
-    }
-    return vars[i];
+#ifndef __INCLUDE_SOLM_FORMULA_PARAMETRIZED_H
+#define __INCLUDE_SOLM_FORMULA_PARAMETRIZED_H
+
+#include <vector>
+#include <string>
+
+namespace solm {
+
+template <typename T> class Parametrized {
+public:
+    typedef std::vector<std::string> Vars;
+    T* arg(const std::string& s) { vars.push_back(s); return static_cast<T*>(this); }
+    const Vars& getVars() const { return vars; }
+    const std::string& getVar(size_t i = 0) const;
+    size_t countVars() const { return vars.size(); }
+private:
+    Vars vars;
+};
+
 }
 
+#endif

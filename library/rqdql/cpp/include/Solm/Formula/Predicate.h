@@ -16,7 +16,29 @@
  * @version $Id: Silent.h 2095 2010-05-28 07:26:19Z yegor256@yahoo.com $
  */
 
-#include "Solm/Formula/Predicate/Function.h"
-#include "Solm/Formula/Predicate/Math.h"
-#include "Solm/Formula/Predicate/Primitive.h"
+#ifndef __INCLUDE_SOLM_FORMULA_PREDICATE_H
+#define __INCLUDE_SOLM_FORMULA_PREDICATE_H
+
+#include <vector>
+
+#include "Solm/Formula.h"
+#include "Solm/Formula/Parametrized.h"
+#include "Solm/Fact.h"
+#include "Solm/Snapshot.h"
+
+namespace solm {
+
+class Predicate : public Formula, public Parametrized<Predicate> {
+public:
+    Predicate(const std::string& n) : Parametrized<Predicate>(), name(n) { /* that's it */ }
+    const std::string toString() const;
+    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
+    const std::string& getName() const { return name; }
+private:
+    std::string name;
+};
+
+}
+
+#endif
 

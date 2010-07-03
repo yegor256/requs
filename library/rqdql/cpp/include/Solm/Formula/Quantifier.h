@@ -13,22 +13,23 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Solm.h 1811 2010-05-10 14:36:27Z yegor256@yahoo.com $
- *
- * This file is included ONLY from Solm.h
+ * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
  */
 
-template <typename T> const string Quantifier<T>::_toString(const string& t) const {
-    if (Unary<T>::getFormulas().size() != 1) {
-        rqdql::get<rqdql::Logger>().log(
-            this, 
-            rqdql::_t("Quantifier shall have exactly one formula inside")
-        );
-        return "TRUE";
-    }
-    return t + " " 
-    + boost::algorithm::join(Parametrized<T>::getVars(), ", ") 
-    + "(" + Unary<T>::getFormula()->toString() + ")";
+#ifndef __INCLUDE_SOLM_FORMULA_QUANTIFIER_H
+#define __INCLUDE_SOLM_FORMULA_QUANTIFIER_H
+
+#include <string>
+#include "Solm/Formula/Unary.h"
+#include "Solm/Formula/Parametrized.h"
+
+namespace solm {
+
+template <typename T> class Quantifier : public Unary<T>, public Parametrized<T> {
+public:
+    const std::string _toString(const std::string& t) const;
+};
+
 }
 
-#include "Solm/Formula/Quantifier/Exists.h"
+#endif

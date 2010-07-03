@@ -27,6 +27,12 @@ void testSimple() {
         ->setFormula((new Function("number"))->arg("u"))
     );
     
+    rqdql::get<Solm>().addFormula(
+        (new Declaration("UC2"))
+        ->arg("photo")
+        ->setFormula((new Read())->arg("photo")->arg("SUD"))
+    );
+
     Formula* f = 
         (new Declaration("UC1"))
         ->arg("x")
@@ -56,7 +62,6 @@ void testSimple() {
                     ->setRhs(new Info("'The user deletes photo of himself"))
                 )
             )    
-            // ->addFormula(new Silent("'oops"))
             ->addFormula(
                 (new Exists())
                 ->arg("p")
@@ -101,6 +106,12 @@ void testSimple() {
     }
     cout << endl << "snapshot in the end:\n" << out.getPositiveEnd().getSnapshot().toString() << endl;
     BOOST_REQUIRE(paths.size() > 0);
+
+    FactPath fp = paths.at(0);
+    int k = 1;
+    for (FactPath::const_iterator i = fp.begin(); i != fp.end(); ++i, ++k) {
+        cout << endl << "snapshot #" << k << ":" << endl << (*i).getSnapshot().toString() << endl;
+    }
 }
 
 vector<testMethod> suite() {

@@ -14,155 +14,195 @@
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
  * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
- *
- * This file is included ONLY from Proxy.h
  */
+
+#ifndef __INCLUDE_SCOPE_PROXY_H
+#define __INCLUDE_SCOPE_PROXY_H
+
+#include <vector>
+#include <map>
+#include <typeinfo>
+#include <iostream>
+#include <boost/format.hpp>
+#include <boost/algorithm/string/join.hpp> // join()
+#include <boost/algorithm/string/replace.hpp> // replace_all_copy()
+#include <boost/algorithm/string/regex.hpp> // replace_regex_copy()
+#include <boost/algorithm/string/case_conv.hpp> // to_lower_copy()
+#include "Solm.h"
+#include "Logger.h"
+using namespace std;
+
+namespace proxy {
+
+class Type;
+class Slot;
+class Signature;
+class Flow;
+class Flows;
+class UseCase;
+class Proxy;
 
 /**
- * Validates whether the TYPE has static name.
+ * One individual TYPE, like ActorUser, UserPhoto, etc.
  */
-bool Type::hasName() const {
-    return rqdql::get<Proxy>().hasName(this);
-}
+class Type {
+public:
+    typedef vector<Slot*> Slots;
+    Type() : slots(), predicate(0) { /* that's it */ }
+    bool isEmpty() const { return !slots.size() && !predicate; }
+    bool hasPredicate() const { return predicate; }
+    solm::Sequence* getPredicate() const { return predicate; }
+    Slot* getSlot(const string&); // get slot of CREATE it, if absent
+    Slots getSlots() const { return slots; }
+    Type* addSlot(Slot*);
+    Type* addSlot(const string&);
+    Type* addPredicate(solm::Formula*);
+    const string toString() const;
+    const string getName() const; 
+    bool hasName() const; 
+    solm::Formula* makeFormula(const string&) const;
+private:
+    Slots slots;
+    solm::Sequence* predicate;
+};
 
 /**
- * Returns a name of the TYPE if it is in the static
- * holder now. Otherwise will throw an exception. You should use
- * hasName() in order to validate before.
+ * Slot that interconnects one TYPE with another TYPE, 
+ * using cardinality and predicates.
  */
-const string Type::getName() const {
-    try {
-        return rqdql::get<Proxy>().findName(this);
-    } catch (rqdql::Exception e) {
-        throw rqdql::Exception(rqdql::_t("Type doesn't have a name, but getName() called"));
-    }
+class Slot : public Type {
+public:
+    class Cardinality {
+    public:
+        Cardinality(const string& s) : mnemo(s) { /* later */ }
+        Cardinality(const char* s) : mnemo(s) { /* later */ }
+        const string toString() const { return mnemo; }
+    private:
+        string mnemo;
+    };
+    Slot(const string&, const Cardinality&, solm::Formula*, Type*);
+    Slot(const string&);
+    const string& getName() const { return name; }
+    bool hasName() const { return true; } 
+    Type* getType() const { return type; }
+    solm::Formula* getFormula() const { return formula; }
+    const Cardinality& getCardinality() const { return cardinality; }
+private:
+    string name;
+    Cardinality cardinality;
+    solm::Formula* formula;
+    Type* type;
+};
+
+class Signature {
+public:
+    class Explanation {
+    public:
+        Explanation() : type(0), slot(""), object("") { /* that's it */ }
+        Explanation(Type* t) : type(t), slot(""), object("") { /* that's it */ }
+        Explanation(const string& s, const string& o) : type(0), slot(s), object(o) { /* that's it */ }
+        const string toString() const;
+    private:
+        Type* type;
+        string slot;
+        string object;
+    };
+    typedef map<string, Explanation*> Explanations;
+    Signature() : text(""), explanations() { /* that's it */ }
+    Signature(const string& t) : text(t), explanations() { /* that's it */ }
+    void setText(const string& t) { text = t; }
+    string getText() const { return text; }
+    Signature* explain(const string&, Explanation*);
+    const string toString() const { return text; }
+    bool match(const Signature*) const;
+    bool isFormula() const;
+    solm::Formula* makeFormula() const;
+private:
+    string text;
+    Explanations explanations;
+    const string simplify(const string&) const;
+    string getPlaceName(size_t) const;
+    bool hasPlaces() const;
+    bool hasPlace(const string&) const;
+    vector<string> getPlaces() const;
+};
+
+class Flow {
+public:
+    Flow(const string& t, Signature* s) : text(t), signature(s) { /* that's it */ }
+    Flow(const string& t) : text(t), signature(0) { /* that's it */ }
+    Flow() : text(), signature(0) { /* that's it */ }
+    Flows* addAlternative(solm::Formula*);
+    Flows* findAlternative(char); // find alternative by letter or add it if not found
+    const string toString() const;
+    solm::Formula* makeFormula() const;
+private:
+    typedef map<solm::Formula*, Flows*> Alternatives;
+    string text;
+    Signature* signature;
+    Alternatives alternatives;
+    solm::Formula* getTarget() const; // get Formula which is called by this signature
+};
+
+class Flows {
+public:
+    Flows();
+    Flows* addFlow(int i, Flow* f) { flows[i] = f; return this; }
+    Flow* getFlow(int);
+    const string toString() const;
+    solm::Sequence* makeSequence() const;
+    bool hasSequence() const { return !formula && !flows.empty(); }
+    void setFlows(Flows* f) { flows = f->flows; }
+    map<int, Flow*> getFlows() const { return flows; }
+    void setFormula(solm::Formula*); // instead of sequence, just one formula
+    bool hasFormula() const { return formula; }
+    solm::Formula* getFormula() { return formula; }
+private:
+    map<int, Flow*> flows;
+    solm::Formula* formula;
+};
+
+class UseCase : public Flows {
+public:
+    UseCase() : Flows(), signature(0) { /* that's it */ }
+    UseCase* setSignature(Signature* s) { signature = s; return this; }
+    const string toString() const;
+    const string getName() const;
+    bool hasName() const; 
+    Signature* getSignature() const { return signature; }
+private:
+    Signature* signature;
+};
+
+class Proxy {
+public:
+    Proxy() : types(), useCases() { clear(); }
+    void inject();
+    void clear();
+    template<typename T> size_t count() const; 
+    template<typename T> const vector<string> getNames() const;
+    template<typename T> T* get(const string&);
+    template<typename T> bool hasName(const T*) const;
+    template<typename T> const string findName(const T*) const;
+private:
+    typedef map<string, Type*> Types;
+    typedef map<string, UseCase*> UseCases;
+    Types types;
+    UseCases useCases;
+    template<typename T> map<string, T*>& getArray();
+    template<typename T> const map<string, T*>& getConstArray() const;
+    template<typename T> void initialize(T* t);
+};
+
+
+#include "Proxy/ProxyImpl.h"
+#include "Proxy/Type.h"
+#include "Proxy/Flow.h"
+#include "Proxy/Slot.h"
+#include "Proxy/Flows.h"
+#include "Proxy/UseCase.h"
+#include "Proxy/Signature.h"
+
 }
 
-/**
- * Find slot by name or create it if not found
- */
-Slot* Type::getSlot(const string& s) {
-    for (Slots::const_iterator i = slots.begin(); i != slots.end(); ++i) {
-        if ((*i)->getName() == s) {
-            return (*i);
-        }
-    }
-    addSlot(s);
-    return getSlot(s);
-}
-
-/**
- * Explicitly add new slot to the type
- */
-Type* Type::addSlot(Slot* s) { 
-    slots.push_back(s); 
-    return this;
-}
-
-Type* Type::addPredicate(solm::Formula* f) {
-    if (!predicate) {
-        predicate = new solm::Sequence(solm::Sequence::OP_AND);
-    }
-    predicate->addFormula(f);
-    return this;
-}
-
-Type* Type::addSlot(const string& s) {
-    return addSlot(new Slot(s));
-}
-
-/**
- * To convert type into string detailed presentation
- */
-const string Type::toString() const {
-    if (slots.empty()) {
-        return "{}";
-    }
-    
-    string s = "{\n";
-    for (Slots::const_iterator i = slots.begin(); i != slots.end(); ++i) {
-        if (i != slots.begin()) {
-            s = s + ";\n";
-        }
-        s = s + "\t" + (*i)->getName() + "[" + (*i)->getCardinality().toString() + "]: ";
-        if ((*i)->getType()->hasName()) {
-            s = s + (*i)->getType()->getName();
-        } else {
-            s = s + boost::algorithm::replace_all_copy((*i)->getType()->toString(), "\n", "\n\t");
-        }
-    }
-    return s + "\n}";
-}
-
-solm::Formula* Type::makeFormula(const string& x) const {
-    using namespace solm;
-    // This TYPE is empty and it's definitely an error
-    // in text, but we anyway should work with this type. Thus,
-    // we report about a problem here and continue.
-    if (isEmpty() && hasName()) {
-        rqdql::get<rqdql::Logger>().log(
-            this, 
-            (boost::format(rqdql::_t("Entity '%s' is empty, probably its name is misspelled")) % getName()).str()
-        );
-        return new Err(rqdql::_t("'entity is empty"));
-    }
-    
-    // This is a new declaration of a type. Again, if the TYPE doesn't
-    // have a predicated, we don't skip it, but work with it.
-    Sequence* sequence;
-    if (hasPredicate()) {
-        sequence = getPredicate();
-    } else {
-        if (hasName()) {
-            rqdql::get<rqdql::Logger>().log(
-                this, 
-                (boost::format(rqdql::_t("Entity '%s' doesn't have any textual explanation")) % getName()).str()
-            );
-        }
-        sequence = new Sequence();
-    }
-    
-    // Here we should add slots to the TYPE
-    int propertyCounter = 1;
-    for (Slots::const_iterator j = slots.begin(); j != slots.end(); ++j) {
-        Slot* slot = *j;
-        string propertyName = (boost::format("P%d") % propertyCounter).str();
-        
-        Sequence* sq = new Sequence(Sequence::OP_AND);
-        if (slot->getType()->hasName()) {
-            sq->addFormula((new Function(slot->getType()->getName()))->arg("p"));
-        } else {
-            sq->addFormula(slot->getType()->makeFormula("p"));
-        }
-        sq->addFormula((new Function("composition"))->arg(x)->arg("p"));
-        sq->addFormula(slot->getFormula());
-        
-        Exists* e = (new Exists())
-            ->arg(propertyName)
-            ->setFormula(
-                (new And())
-                ->setLhs(
-                    (new Math("="))
-                    ->arg("|" + propertyName + "|")
-                    ->arg("1")
-                )
-                ->setRhs(
-                    (new Forall())
-                    ->arg("p")
-                    ->setFormula(
-                        (new Sequence())
-                        ->addFormula(
-                            (new In())
-                            ->arg("p")
-                            ->arg(propertyName)
-                        )
-                        ->addFormula(sq)
-                    )
-                )
-            );
-        sequence->addFormula(e);
-        propertyCounter++;
-    }
-    
-    return sequence;
-}
+#endif

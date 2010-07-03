@@ -13,27 +13,49 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Formula.h 2070 2010-05-24 14:19:35Z yegor256@yahoo.com $
- *
- * This file is included ONLY from Solm.h
+ * @version $Id$
  */
 
-/**
- * Two facts are equal?
- */
-bool Fact::operator==(const Fact& f) const {
-    if (!(snapshot == f.snapshot)) {
-        return false;
-    }
-    if ((bool)*this != (bool)f) {
-        return false;
-    }
-    return true;
-}
+#ifndef __INCLUDE_SOLM_FACT_H
+#define __INCLUDE_SOLM_FACT_H
+
+#include <vector>
+#include <string>
+
+#include "Solm/Snapshot.h"
+#include "Solm/Outcome.h"
+
+namespace solm {
 
 /**
- * The fact is positive?
+ * Forward declarations
  */
-Fact::operator bool() const { 
-    return exception.empty() && (!hasOutcome() || getOutcome()); 
+class Formula;
+
+/**
+ * One fact, positive or negative, with a text explanation.
+ */
+class Fact {
+public:
+    virtual operator bool() const;
+    virtual const std::string toString() const { return snapshot.toString(); }
+    bool operator==(const Fact&) const;
+    Fact& setFormula(const Formula* f) { formula = f; return *this; }
+    Fact& setException(const std::string& e) { exception = e; return *this; }
+    Fact& setOutcome(const Outcome& o) { outcome = o; return *this; }
+    bool hasOutcome() const { return outcome.size(); }
+    Outcome& getOutcome() { return outcome; }
+    const Outcome& getOutcome() const { return outcome; }
+    const Formula* getFormula() const { return formula; }
+    Snapshot getSnapshot() const { return snapshot; }
+    Fact& setSnapshot(const Snapshot& s) { snapshot = s; return *this; }
+private:
+    std::string exception;
+    Outcome outcome;
+    const Formula* formula;
+    Snapshot snapshot;
+};
+
 }
+
+#endif

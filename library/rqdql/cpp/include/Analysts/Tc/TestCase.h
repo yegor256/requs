@@ -31,9 +31,24 @@
 // }
 
 /**
- * Find and return a list of test steps
+ * Parse the fact path and produce the MOF
  * @todo Implement it, it's a stub now
  */
-const vector<TestStep> TestCase::computeSteps() const {
-    return vector<TestStep>();
+const string TestCase::getXmi() const {
+    // initialize the libraries (I don't know what is it for...)
+    // OMF::init();
+    // Model::init();
+    
+    // create new model to fill with data
+    OMF::Model model;
+
+    // create new UML class to add
+    UML::Class p;
+    
+    // add this element to the model
+    model.addElement(&p);
+    
+    OMF::XmiWriter writer;
+    writer.write(&model, "-");
+    return "...";
 }

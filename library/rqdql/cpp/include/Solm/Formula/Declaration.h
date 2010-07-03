@@ -13,50 +13,31 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
  */
 
-/**
- * Create an outcome of this formula, list of facts
- */
-Outcome Declaration::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const { 
-    Fact fact;
-    fact.setFormula(this);
-    
-    Snapshot s = f.getSnapshot();
-    for (Vars::const_iterator i = getVars().begin(); i != getVars().end(); ++i) {
-        Snapshot::Object& obj = s.create("");
-        s.assignName(obj, *i);
-        s.assignId(obj);
-    }
-    fact.setSnapshot(s);
-    
-    return (Outcome() << fact) + getFormula()->getOutcome(fact); 
+#ifndef __INCLUDE_SOLM_FORMULA_DECLARATION_H
+#define __INCLUDE_SOLM_FORMULA_DECLARATION_H
+
+#include <string>
+#include "Solm/Formula/Unary.h"
+#include "Solm/Formula/Parametrized.h"
+#include "Solm/Outcome.h"
+#include "Solm/Fact.h"
+#include "Solm/Snapshot.h"
+
+namespace solm {
+
+class Declaration : public Unary<Declaration>, public Parametrized<Declaration> {
+public:
+    Declaration(const std::string&);
+    const std::string& getName() const { return name; }
+    virtual const std::string toString() const;
+    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
+private:
+    std::string name;
+};
+
 }
 
-/**
- * Convert this declaration to the LaTeX text
- */
-const string Declaration::toString() const { 
-    string f;
-    if (Unary<Declaration>::getFormulas().size() != 1) {
-        rqdql::get<rqdql::Logger>().log(
-            this, 
-            (boost::format("Declaration '%s' shall have exactly one formula inside") % name).str()
-        );
-        f = Err("'missed formula").toString();
-    } else {
-        f = getFormula()->toString();
-    }
-    
-    Vars v = getVars();
-    if (!getVars().size()) {
-        rqdql::get<rqdql::Logger>().log(
-            this, 
-            (boost::format("Declaration '%s' shall have at least one argument") % name).str()
-        );
-        v.push_back("x");
-    }
-    
-    return name + "(" + boost::algorithm::join(v, ", ") + "): " + f;
-}
+#endif

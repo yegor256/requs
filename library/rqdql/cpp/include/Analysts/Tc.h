@@ -21,26 +21,17 @@
 namespace tc {
     
 /**
- * One step in a Test Case
- */
-class TestStep {
-public:
-    const string getText() const { return "step"; }
-    const vector<int> getLines() const;
-private:
-};    
-
-/**
  * One Test Case, as an instruction to a tester
  */
 class TestCase {
 public:
-    TestCase(const solm::FactPath& fp) : name() { /* that's it */ }
+    TestCase(const solm::FactPath& fp) : name(), factPath(fp) { /* that's it */ }
     void setName(const string& s) { name = s; }
-    const string getName() const { return name; }
-    const vector<TestStep> computeSteps() const;
+    const string& getName() const { return name; }
+    const string getXmi() const;
 private:
     string name;
+    solm::FactPath factPath;
 };
 
 /**
@@ -53,7 +44,6 @@ private:
 };
 
 #include "Analysts/Tc/AnalystImpl.h"
-#include "Analysts/Tc/TestStep.h"
 #include "Analysts/Tc/TestCase.h"
 
 }

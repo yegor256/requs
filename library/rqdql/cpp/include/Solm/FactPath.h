@@ -13,61 +13,32 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Formula.h 2070 2010-05-24 14:19:35Z yegor256@yahoo.com $
- *
- * This file is included ONLY from Solm.h
+ * @version $Id$
  */
 
-/**
- * Concatenator of fact vectors
- */
-FactPath FactPath::operator+(const FactPath& v) const {
-    FactPath res;
-    res.insert(res.end(), begin(), end());
-    res.insert(res.end(), v.begin(), v.end());
-    return res;
-}
+#ifndef __INCLUDE_SOLM_FACTPATH_H
+#define __INCLUDE_SOLM_FACTPATH_H
+
+#include <vector>
+#include <string>
+
+#include "Solm/Fact.h"
+
+namespace solm {
 
 /**
- * Compare two vectors of facts
+ * Serie of facts, ordered
  */
-bool FactPath::operator==(const FactPath& v) const {
-    return equal(begin(), end(), v.begin());
+class FactPath : public Fact, public std::vector<Fact> {
+public:
+    operator bool() const; // the path ends positively?
+    FactPath operator+(const FactPath&) const; // concatenate two paths
+    bool operator==(const FactPath&) const; // these two paths are equivalent?
+    bool operator<(const FactPath&) const; // one path is shorter than the other?
+    const std::string toString() const; // convert this path to a user-friendly string
+private:
+};
+
 }
 
-/**
- * Compare lengths
- */
-bool FactPath::operator<(const FactPath& p) const {
-    return size() < p.size();
-}
-
-/**
- * This path ends with a positive result?
- */
-FactPath::operator bool() const {
-    for (FactPath::const_iterator f = begin(); f != end(); ++f) {
-        if (!(*f)) {
-            return false;
-        }
-    }
-    return true;
-}
-
-/**
- * Convert to string
- */
-const string FactPath::toString() const {
-    vector<string> lines;
-    lines.push_back(Fact::toString());
-    for (FactPath::const_iterator f = begin(); f != end(); ++f) {
-        lines.push_back(
-            boost::algorithm::replace_all_copy(
-                (*f).toString(),
-                "\n",
-                "\t\n"
-            )
-        );
-    }
-    return boost::algorithm::join(lines, "\n");
-}
+#endif

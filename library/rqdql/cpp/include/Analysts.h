@@ -13,7 +13,7 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
 #ifndef __INCLUDE_SCOPE_ANALYSTS_H
@@ -23,6 +23,10 @@
 #include <boost/algorithm/string/join.hpp> // join()
 #include "Solm.h"
 #include "Proxy.h"
+
+#include <OMF/Model.hpp>
+#include <UML/Class.hpp>
+#include <OMF/XmiWriter.hpp>
 
 namespace analysts {
 

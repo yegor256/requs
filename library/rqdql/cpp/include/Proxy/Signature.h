@@ -14,155 +14,195 @@
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
  * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
- *
- * This file is included ONLY from Proxy.h
  */
 
-Signature* Signature::explain(const string& n, Explanation* e) { 
-    if (!hasPlace(n)) {
-        throw (boost::format("There is no place '%s' in '%s', can't explain") % n % text).str();
-    }
-    explanations[n] = e;
-    return this; 
-}
+#ifndef __INCLUDE_SCOPE_PROXY_H
+#define __INCLUDE_SCOPE_PROXY_H
+
+#include <vector>
+#include <map>
+#include <typeinfo>
+#include <iostream>
+#include <boost/format.hpp>
+#include <boost/algorithm/string/join.hpp> // join()
+#include <boost/algorithm/string/replace.hpp> // replace_all_copy()
+#include <boost/algorithm/string/regex.hpp> // replace_regex_copy()
+#include <boost/algorithm/string/case_conv.hpp> // to_lower_copy()
+#include "Solm.h"
+#include "Logger.h"
+using namespace std;
+
+namespace proxy {
+
+class Type;
+class Slot;
+class Signature;
+class Flow;
+class Flows;
+class UseCase;
+class Proxy;
 
 /**
- * Simplify the signature before matching
- * @see match()
+ * One individual TYPE, like ActorUser, UserPhoto, etc.
  */
-const string Signature::simplify(const string& s) const {
-    typedef map<string, string> Reps;
-    Reps reps;
-    reps["\\{.*?\\}"] = "{...}";
-    reps["[ \\t\\n\\r]+"] = " ";
-
-    string n = boost::algorithm::to_lower_copy(s);
-    for (Reps::const_iterator i = reps.begin(); i != reps.end(); ++i) {
-        n = boost::algorithm::replace_all_regex_copy(
-            n, // source string
-            boost::regex((*i).first), // what to find
-            (*i).second // what to replace to
-        );
-    }
-    return n;
-}
+class Type {
+public:
+    typedef vector<Slot*> Slots;
+    Type() : slots(), predicate(0) { /* that's it */ }
+    bool isEmpty() const { return !slots.size() && !predicate; }
+    bool hasPredicate() const { return predicate; }
+    solm::Sequence* getPredicate() const { return predicate; }
+    Slot* getSlot(const string&); // get slot of CREATE it, if absent
+    Slots getSlots() const { return slots; }
+    Type* addSlot(Slot*);
+    Type* addSlot(const string&);
+    Type* addPredicate(solm::Formula*);
+    const string toString() const;
+    const string getName() const; 
+    bool hasName() const; 
+    solm::Formula* makeFormula(const string&) const;
+private:
+    Slots slots;
+    solm::Sequence* predicate;
+};
 
 /**
- * Compare two signatures and match them. Returns TRUE if
- * two signatures look identical or very similar.
+ * Slot that interconnects one TYPE with another TYPE, 
+ * using cardinality and predicates.
  */
-bool Signature::match(const Signature* s) const {
-    return simplify(text) == simplify(s->text);
+class Slot : public Type {
+public:
+    class Cardinality {
+    public:
+        Cardinality(const string& s) : mnemo(s) { /* later */ }
+        Cardinality(const char* s) : mnemo(s) { /* later */ }
+        const string toString() const { return mnemo; }
+    private:
+        string mnemo;
+    };
+    Slot(const string&, const Cardinality&, solm::Formula*, Type*);
+    Slot(const string&);
+    const string& getName() const { return name; }
+    bool hasName() const { return true; } 
+    Type* getType() const { return type; }
+    solm::Formula* getFormula() const { return formula; }
+    const Cardinality& getCardinality() const { return cardinality; }
+private:
+    string name;
+    Cardinality cardinality;
+    solm::Formula* formula;
+    Type* type;
+};
+
+class Signature {
+public:
+    class Explanation {
+    public:
+        Explanation() : type(0), slot(""), object("") { /* that's it */ }
+        Explanation(Type* t) : type(t), slot(""), object("") { /* that's it */ }
+        Explanation(const string& s, const string& o) : type(0), slot(s), object(o) { /* that's it */ }
+        const string toString() const;
+    private:
+        Type* type;
+        string slot;
+        string object;
+    };
+    typedef map<string, Explanation*> Explanations;
+    Signature() : text(""), explanations() { /* that's it */ }
+    Signature(const string& t) : text(t), explanations() { /* that's it */ }
+    void setText(const string& t) { text = t; }
+    string getText() const { return text; }
+    Signature* explain(const string&, Explanation*);
+    const string toString() const { return text; }
+    bool match(const Signature*) const;
+    bool isFormula() const;
+    solm::Formula* makeFormula() const;
+private:
+    string text;
+    Explanations explanations;
+    const string simplify(const string&) const;
+    string getPlaceName(size_t) const;
+    bool hasPlaces() const;
+    bool hasPlace(const string&) const;
+    vector<string> getPlaces() const;
+};
+
+class Flow {
+public:
+    Flow(const string& t, Signature* s) : text(t), signature(s) { /* that's it */ }
+    Flow(const string& t) : text(t), signature(0) { /* that's it */ }
+    Flow() : text(), signature(0) { /* that's it */ }
+    Flows* addAlternative(solm::Formula*);
+    Flows* findAlternative(char); // find alternative by letter or add it if not found
+    const string toString() const;
+    solm::Formula* makeFormula() const;
+private:
+    typedef map<solm::Formula*, Flows*> Alternatives;
+    string text;
+    Signature* signature;
+    Alternatives alternatives;
+    solm::Formula* getTarget() const; // get Formula which is called by this signature
+};
+
+class Flows {
+public:
+    Flows();
+    Flows* addFlow(int i, Flow* f) { flows[i] = f; return this; }
+    Flow* getFlow(int);
+    const string toString() const;
+    solm::Sequence* makeSequence() const;
+    bool hasSequence() const { return !formula && !flows.empty(); }
+    void setFlows(Flows* f) { flows = f->flows; }
+    map<int, Flow*> getFlows() const { return flows; }
+    void setFormula(solm::Formula*); // instead of sequence, just one formula
+    bool hasFormula() const { return formula; }
+    solm::Formula* getFormula() { return formula; }
+private:
+    map<int, Flow*> flows;
+    solm::Formula* formula;
+};
+
+class UseCase : public Flows {
+public:
+    UseCase() : Flows(), signature(0) { /* that's it */ }
+    UseCase* setSignature(Signature* s) { signature = s; return this; }
+    const string toString() const;
+    const string getName() const;
+    bool hasName() const; 
+    Signature* getSignature() const { return signature; }
+private:
+    Signature* signature;
+};
+
+class Proxy {
+public:
+    Proxy() : types(), useCases() { clear(); }
+    void inject();
+    void clear();
+    template<typename T> size_t count() const; 
+    template<typename T> const vector<string> getNames() const;
+    template<typename T> T* get(const string&);
+    template<typename T> bool hasName(const T*) const;
+    template<typename T> const string findName(const T*) const;
+private:
+    typedef map<string, Type*> Types;
+    typedef map<string, UseCase*> UseCases;
+    Types types;
+    UseCases useCases;
+    template<typename T> map<string, T*>& getArray();
+    template<typename T> const map<string, T*>& getConstArray() const;
+    template<typename T> void initialize(T* t);
+};
+
+
+#include "Proxy/ProxyImpl.h"
+#include "Proxy/Type.h"
+#include "Proxy/Flow.h"
+#include "Proxy/Slot.h"
+#include "Proxy/Flows.h"
+#include "Proxy/UseCase.h"
+#include "Proxy/Signature.h"
+
 }
 
-/**
- * Convert one explanation to string
- */
-const string Signature::Explanation::toString() const {
-    // this is a type, like "ActorUser" or "PhotoFile"
-    if (type) {
-        if (type->hasName()) {
-            return type->getName();
-        } else {
-            throw rqdql::Exception("Nameless type inside signature, how come?");
-        }
-    }
-    // this is a slot of an object, like "Name of ActorUser"
-    if (!slot.empty() && !object.empty()) {
-        return slot + " (the " + object + ")"; 
-    }
-    // there is nothing, just ITSELF
-    return "itself"; 
-}
-
-/**
- * This signature is already a formula ready-to-go into SOLM?
- * @see Flow::getTarget()
- */
-bool Signature::isFormula() const {
-    try {
-        makeFormula();
-    } catch (...) {
-        return false;
-    }
-    return true;
-}
-
-/**
- * Get the formula ready-to-go into SOLM
- */
-solm::Formula* Signature::makeFormula() const {
-    using namespace solm;
-    using namespace boost;
-    string t = simplify(text);
-    if (regex_match(t, regex("\\{...\\} reads? \\{...\\}"))) {
-        return (new Read())->arg(getPlaceName(0))->arg(getPlaceName(1));
-    }
-    if (regex_match(t, regex("\\{...\\} creates? \\{...\\}"))) {
-        return (new Created())->arg(getPlaceName(0))->arg(getPlaceName(1));
-    }
-    if (regex_match(t, regex("\\{...\\} deletes? \\{...\\}"))) {
-        return (new Deleted())->arg(getPlaceName(0))->arg(getPlaceName(1));
-    }
-    if (regex_match(t, regex("\\{...\\} updates? \\{...\\}"))) {
-        return (new Updated())->arg(getPlaceName(0))->arg(getPlaceName(1));
-    }
-    if (regex_match(t, regex("\\{...\\} turns? into \\{...\\}"))) {
-        return new Info("'not implemented yet: " + t);
-    }
-    if (regex_match(t, regex("failure"))) {
-        return (new Throw())->arg("'not implemented yet");
-    }
-    if (regex_match(t, regex("if failure"))) {
-        return (new Caught())->arg("'not implemented yet");
-    }
-    throw rqdql::Exception(format(rqdql::_t("Signature '%s' is not a formula")) % text);
-}
-
-/**
- * Get name of the element located at i-th position
- */
-string Signature::getPlaceName(size_t i) const {
-    if (!hasPlaces()) {
-        throw rqdql::Exception(boost::format(rqdql::_t("No places found in signature '%s'")) % text);
-    }
-    if (i >= getPlaces().size()) {
-        throw rqdql::Exception(boost::format(rqdql::_t("Places no.%d is absent in signature '%s'")) % i % text);
-    }
-    return getPlaces().at(i);
-}
-
-/**
- * This signature has any places to explain?
- */
-bool Signature::hasPlaces() const {
-    return !getPlaces().empty();
-}
-
-/**
- * This signature has this place?
- */
-bool Signature::hasPlace(const string& n) const {
-    vector<string> places = getPlaces();
-    return (places.end() != find(places.begin(), places.end(), n));
-}
-
-/**
- * Get full list of places
- */
-vector<string> Signature::getPlaces() const {
-    vector<string> places;
-    string::const_iterator begin = text.begin();
-    string::const_iterator end = text.end();
-    boost::match_results<string::const_iterator> what;
-    while (regex_search(begin, end, what, boost::regex("\\{(.*?)\\}"))) {
-        places.push_back(string(what[1].first, what[2].second-1));
-        begin = what[0].second;
-    }
-    // for (vector<string>::const_iterator i = places.begin(); i != places.end(); ++i) {
-    //     cout << *i << endl;
-    // }
-    // terminate();
-    return places;
-}
-
+#endif

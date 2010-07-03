@@ -22,46 +22,22 @@
 // system libraries
 #include <iostream>
 #include <string>
-using namespace std;
 
 // boost libraries
 #include "boost/format.hpp"
 #include "boost/shared_ptr.hpp"
 
 namespace rqdql {
-    class Exception {
-    public:
-        Exception() : message("no details") { /* that's it */ }
-        Exception(const string& s) : message(s) { /* that's it */ }
-        Exception(const boost::format& s) : message(s.str()) { /* that's it */ }
-        const string& getMessage() { return message; }
-    private:
-        string message;
-    };
-    
+
     /**
-     * Get LOCALIZED string
+     * Get LOCALIZED std::string
      */
-    const string _t(const string& s) {
-        return s;
-    }
+    extern const std::string _t(const std::string& s);
     
     /**
      * Get a singleton copy of a module/class
      */
-    template <typename T> T& get() {
-        static T* t;
-        if (!t) {
-            t = new T();
-        }
-        return *t;
-    }
-}
-
-// logger
-#include "Logger.h"
-
-namespace rqdql {
+    template <typename T> T& get();
 
     /**
      * Different levels of logging
@@ -78,57 +54,15 @@ namespace rqdql {
     /**
      * To log a line
      */
-    inline void log(const LogLevel lvl, const string& line) {   
-        string label;
-        switch (lvl) {
-            case L_DEBUG:
-                label = "DEBUG";
-                break;
-            case L_VERBOSE:
-                label = "VERB";
-                break;
-            case L_INFO:
-                label = "INFO";
-                break;
-            case L_WARNING:
-                label = "WARN";
-                break;
-            case L_ERROR:
-                label = "ERR";
-                break;
-        }
-        if (lvl >= level) {
-            rqdql::get<rqdql::Logger>().log(0, "[" + label + "] " + line);
-        }
-    }
-
+    void log(const LogLevel lvl, const std::string& line);
+    void log(const std::string& line);
+    void log(const boost::format& line);
+    void log(const LogLevel lvl, const boost::format& line);
     
-    inline void log(const string& line) {
-        return log(L_DEBUG, line);
-    }
-
-    inline void log(const boost::format& line) {
-        return log(L_DEBUG, line.str());
-    }
-
-    inline void log(const LogLevel lvl, const boost::format& line) {
-        return log(lvl, line.str());
-    }
-
-    inline void yySet(string*& lhs, boost::format rhs) {
-        lhs = new string(rhs.str());
-    }
-
-    inline void yySet(string*& lhs, char*& rhs) {
-        lhs = new string(rhs);
-    }
+    void yySet(std::string*& lhs, boost::format rhs);
+    void yySet(std::string*& lhs, char*& rhs);
     
-    string cutLongLine(const string& s, size_t len = 50) {
-        if (s.length() < len) {
-            return s;
-        }
-        return s.substr(0, len - 3) + "..."; 
-    }
+    std::string cutLongLine(const std::string& s, size_t len);
 
 }
 

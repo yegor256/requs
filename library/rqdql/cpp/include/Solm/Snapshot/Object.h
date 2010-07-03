@@ -81,6 +81,13 @@ const string& Snapshot::Object::getName() const {
 }
 
 /**
+ * The object has ID set?
+ */
+bool Snapshot::Object::hasId() const { 
+    return id > 0; 
+}
+
+/**
  * Get ID
  */
 int Snapshot::Object::getId() const { 
@@ -90,6 +97,27 @@ int Snapshot::Object::getId() const {
         );
     }
     return id; 
+}
+
+/**
+ * Remove ID from this object
+ * @see Snapshot::deassignId()
+ */
+void Snapshot::Object::removeId() { 
+    if (!hasId()) {
+        throw rqdql::Exception(
+            "Object doesn't have an ID and we can't removeId(), use hasID() first"
+        );
+    }
+    id = -id; 
+}
+
+/**
+ * Compute next available ID after this object
+ * @see Snapshot::computeNextId()
+ */
+int Snapshot::Object::computeNextId() const { 
+    return abs(id) + 1;
 }
 
 /**

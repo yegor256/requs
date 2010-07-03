@@ -13,7 +13,7 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
 #ifndef __INCLUDE_SCOPE_FRONT_H
@@ -24,6 +24,7 @@
 #include <boost/algorithm/string/regex.hpp>
 #include <boost/algorithm/string/case_conv.hpp> // to_lower_copy()
 #include "Analysts.h"
+#include "Xml.h"
 
 namespace front {
     
@@ -39,11 +40,11 @@ class Reporter {
 public:
     typedef map<string, string> Params;
     static Reporter* factory(const string&, const Params&);
-    void appendNode(pugi::xml_node&);
+    void append(Xml::Node&);
     const string& getName() const { return name; }
 protected:
     Reporter(const Params& p) : params(p) { /* it's private, use factory() instead */ };
-    virtual void fillNode(pugi::xml_node&) = 0;
+    virtual void fill(Xml::Node&) = 0;
     template <typename T> T getParam(const string& n, const T&);
 private:
     string name;
@@ -53,7 +54,7 @@ private:
 class Errors : public Reporter {
 public:
     Errors(const Params& p) : Reporter(p) { /* that's it */ }
-    void fillNode(pugi::xml_node&);
+    void fill(Xml::Node&);
 private:
     class Error {
     public:
@@ -68,61 +69,40 @@ private:
 class Metrics : public Reporter {
 public:
     Metrics(const Params& p) : Reporter(p) { /* that's it */ }
-    void fillNode(pugi::xml_node&);
+    void fill(Xml::Node&);
 };
 class Uml : public Reporter {
 public:
     Uml(const Params& p) : Reporter(p) { /* that's it */ }
-    void fillNode(pugi::xml_node&);
+    void fill(Xml::Node&);
 };
 class Svg : public Reporter {
 public:
     Svg(const Params& p) : Reporter(p) { /* that's it */ }
-    void fillNode(pugi::xml_node&);
+    void fill(Xml::Node&);
 };
 class Tc : public Reporter {
 public:
     Tc(const Params& p) : Reporter(p) { /* that's it */ }
-    void fillNode(pugi::xml_node&);
+    void fill(Xml::Node&);
 };
 class Links : public Reporter {
 public:
     Links(const Params& p) : Reporter(p) { /* that's it */ }
-    void fillNode(pugi::xml_node&);
+    void fill(Xml::Node&);
 private:
-    template<typename T> void addLocations(pugi::xml_node&, const string&) const;
+    template<typename T> void addLocations(Xml::Node&, const string&) const;
 };
     
 class Front {
 public:
     void require(const string&); // name of the report to require
-    pugi::xml_document& getXml(); // get XML
-    string asXml(); // get XML as string
+    Xml::Document& getXml(); // get XML
+    const string asXml(); // get XML as string
 private:
     vector<Reporter*> reporters;
 };
 
-class PugiNodeWrapper;
-class PugiAttributeWrapper : public pugi::xml_attribute {
-public:
-    PugiAttributeWrapper(pugi::xml_attribute& a) : pugi::xml_attribute(a) { /* that's it */ }
-    // PugiNodeWrapper operator=(const string&);
-    // PugiNodeWrapper operator=(int);
-    void operator=(const string&);
-    void operator=(int);
-};
-
-class PugiNodeWrapper : public pugi::xml_node {
-public:
-    PugiNodeWrapper(pugi::xml_node& n) : pugi::xml_node(n) { /* that's it */ }
-    PugiNodeWrapper operator+(const string&);
-    PugiNodeWrapper& operator=(const string&);
-    PugiNodeWrapper& operator=(double);
-    PugiNodeWrapper& operator=(int);
-    PugiAttributeWrapper operator[](const string&);
-};
-
-#include "Front/PugiWrapper.h"
 #include "Front/FrontImpl.h"
 #include "Front/Reporter.h"
 #include "Front/Errors.h"

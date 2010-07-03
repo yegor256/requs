@@ -13,27 +13,27 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
  */
 
-/**
- * Create an outcome of this formula, list of facts
- */
-Outcome Exists::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const { 
-    Fact fact;
-    fact.setFormula(this);
-    
-    Snapshot s = f.getSnapshot();
-    Snapshot::Object& obj = s.create(""); // no type
-    s.assignName(obj, getVar());
-    if (isupper(getVar().at(0))) {
-        obj.setValue(vector<int>());
-    }
-    fact.setSnapshot(s);
-    
-    Outcome out;
-    out << fact;
-    // cout << getFormula()->toString() << endl; terminate();
-    out += getFormula()->getOutcome(fact);
-    return out; 
+#ifndef __INCLUDE_SOLM_FORMULA_QUANTIFIER_EXISTS_H
+#define __INCLUDE_SOLM_FORMULA_QUANTIFIER_EXISTS_H
+
+#include <string>
+
+#include "Solm/Formula/Quantifier.h"
+#include "Solm/Outcome.h"
+#include "Solm/Fact.h"
+#include "Solm/Snapshot.h"
+
+namespace solm {
+
+class Exists : public Quantifier<Exists> {
+public:
+    virtual const std::string toString() const { return _toString("\\exists"); }
+    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
+};
+
 }
+
+#endif

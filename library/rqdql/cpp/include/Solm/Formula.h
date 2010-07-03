@@ -14,53 +14,43 @@
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
  * @version $Id$
- *
- * This file is included ONLY from Solm.h
  */
+
+#ifndef __INCLUDE_SOLM_FORMULA_H
+#define __INCLUDE_SOLM_FORMULA_H
+
+#include <vector>
+#include <string>
+
+#include "Solm/Snapshot.h"
+
+namespace solm {
 
 /**
- * Set formula to the absolute position in the collection,
- * if this position is busy, this method will OVERWRITE it
+ * Forward declarations
  */
-void Formula::setFormula(Formula* f, size_t i = 0) {
-    if (subs.size() < i+1) {
-        subs.resize(i+1);
-    }
-    subs[i] = f;
-}
+class Outcome;
+class Fact;
 
 /**
- * Get formula by index. If it is absent, this situation will be logged
- * and TRUE constant will be returned.
+ * ...
  */
-Formula* Formula::getFormula(size_t i = 0) const {
-    if (i > subs.size()-1) {
-        rqdql::get<rqdql::Logger>().log(
-            this, 
-            (boost::format(rqdql::_t("Formula no.%d is absent, returning TRUE instead")) % i).str()
-        );
-        return new Err((boost::format(rqdql::_t("'absent formula no.%d")) % i).str());
-    }
-    return subs.at(i);
+class Formula {
+public:
+    typedef std::vector<Formula*> Formulas;
+    virtual ~Formula() { /* nothing, just to make this class polymorphic */ };
+    virtual const std::string toString() const = 0;
+    void clear() { subs.clear(); } // remove everything from the collection
+    Formula* getFormula(size_t) const; // get formula by index
+    void setFormula(Formula*, size_t);
+    void addFormula(Formula* f) { subs.push_back(f); }
+    const Formulas& getFormulas() const { return subs; }
+    Outcome getOutcome() const;
+    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
+private:
+    Formulas subs;
+};
+
 }
 
-/**
- * Generate an outcome
- */
-Outcome Formula::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const {
-    return Outcome(); 
-}
-
-/**
- * Generate an outcome
- */
-Outcome Formula::getOutcome() const { 
-    return getOutcome(Fact()); 
-}
-
-#include "Solm/Formula/Parametrized.h"
-#include "Solm/Formula/Declaration.h"
-#include "Solm/Formula/Quantifier.h"
-#include "Solm/Formula/Predicate.h"
-#include "Solm/Formula/Sequence.h"
-
+#endif

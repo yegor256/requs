@@ -18,7 +18,8 @@
 # 0.3.3: TURNS INTO is parseable
 # 0.3.4: Plurality introduced into BISON
 # 0.4: Test cases are generated
-VERSION = 0.4
+# 0.5: OMF library injected, MOF/XMI started to be used for test cases
+VERSION = 0.5
 
 MAKEFLAGS = -r
 SELF = Makefile
@@ -26,9 +27,16 @@ PATH := $(PATH):/usr/local/bin:/usr/bin
 CPP = c++
 BISON = bison
 FLEX = flex
-CPPFLAGS = -I./include -I./library
+INCLUDE = ./include
+TESTS = ./test
+CPPFLAGS = -I$(INCLUDE) -I./library -I/usr/include/libxml2 $(shell xml2-config --cflags)
+LDFLAGS = $(shell xml2-config --libs)
 EXEC = ./rqdql
 SVN = /usr/local/bin/svn
+
+SOURCES = $(shell find $(INCLUDE) -name "*.cpp")
+HEADERS := $(shell find $(INCLUDE) -name "*.h")
+OBJS := $(SOURCES:.cpp=.obj)
 
 SYMBOLS = include/Scanner/symbols.h
 FLEX_SRC = include/Scanner/rqdql.l
@@ -37,13 +45,11 @@ BISON_SRC = include/Scanner/rqdql.y
 BISON_DEST = include/Scanner/rqdql.y.c
 
 LIB = library/all-externals.so
-LIB_DIRS = library/pugixml library/boost-libs
+LIB_DIRS = library/boost-libs
 LIB_SOURCES = $(shell find $(LIB_DIRS) -name "*.cpp")
 LIB_OBJS := $(LIB_SOURCES:.cpp=.obj)
 
-HEADERS := $(shell find include -name "*.h")
-
-TEST_SOURCES := $(shell find test -name "*Test.cpp")
+TEST_SOURCES := $(shell find $(TESTS) -name "*Test.cpp")
 TESTS := $(TEST_SOURCES:.cpp=.test)
 VALID_EXAMPLES = $(shell find examples/valid -name "*.txt")
 
@@ -80,9 +86,9 @@ test: $(TESTS)
 %.test: %.o
 	$<
 
-# compilation of unit tests and any other CPP file AND linking with all libs
+# compilation of any other CPP file AND linking with all libs
 %.o: %.cpp $(HEADERS) $(BISON_DEST) $(FLEX_DEST) $(LIB)
-	$(CPP) $(CPPFLAGS) -o $@ $< $(LIB) \
+	$(CPP) $(CPPFLAGS) $(LDFLAGS) -o $@ $< $(LIB) \
 	-D RQDQL_VERSION="\"$(VERSION)$(shell $(SVN) info | grep "Revision:" | sed "s/Revision: /r/g")\""
 
 # clean everything!
@@ -93,6 +99,7 @@ clean:
 	$(FLEX_DEST) \
 	$(EXEC) \
 	$(LIB_OBJS) \
+	$(OBJS) \
 	$(LIB) \
 	$(TESTS) \
 	$(SYMBOLS)
