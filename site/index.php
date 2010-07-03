@@ -19,5 +19,5 @@
 
 $script = preg_replace('/\.html$/', '', substr(strrchr($_SERVER['REQUEST_URI'], '/'), 1));
 
-$file = "scripts/{$script}.phtml";
-include 'layout.phtml';
+$file = "views/scripts/{$script}.phtml";
+include 'views/layouts/layout.phtml';
