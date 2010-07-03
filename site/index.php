@@ -17,8 +17,7 @@
  * @version $Id$
  */
 
-header('Content-type: application/xhtml+xml');
-echo '<?xml version="1.0" encoding="utf-8" ?>' . "\n";
+$script = preg_replace('/\.html$/', '', substr(strrchr($_SERVER['REQUEST_URI'], '/'), 1));
 
-$script = substr(strrchr($_SERVER['REQUEST_URI'], '/'), 1);
-include dirname(__FILE__) . '/scripts/' . $script . '.phtml';
+$file = "scripts/{$script}.phtml";
+include 'layout.phtml';
