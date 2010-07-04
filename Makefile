@@ -14,8 +14,8 @@
 # @copyright Copyright (c) rqdql.com, 2010
 # @version $Id: Makefile 1465 2010-03-26 16:01:31Z yegor256@yahoo.com $
 
-FILES = $(shell cd rqdql.com; find . -type f | grep -v ".svn")
+FILES = $(shell cd site; find . -type f | grep -v ".svn")
 
 # deploy the HTML to the target hosting platform
 deploy:
-	cd rqdql.com; ftp -u ftp://rqdql_deploy%40caybo.ru:uf8Klp7Y2Et4@rqdql.com/public/ $(FILES)
+	cd site; ftp -u ftp://rqdql_deploy%40caybo.ru:uf8Klp7Y2Et4@rqdql.com/public/ $(FILES)

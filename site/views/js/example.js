@@ -73,6 +73,7 @@ function render()
             // clean the table
             $('#lines tbody').empty();
             var lines = render.rendered.split("\n");
+            lines[lines.length] = '';
             for (i in lines) {
                 var line = parseInt(i) + 1;
                 $('#lines tbody')
