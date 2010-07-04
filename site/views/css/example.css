@@ -35,3 +35,36 @@ div#front {
             color: gray;
             margin-right: 0.3em;
         }
+
+table#lines {
+    table-layout: fixed;
+}
+
+    table#lines tbody {
+        font-family: Courier;
+    }
+
+    col#line {
+        width: 2em;
+    }
+    
+    col#text {
+        width: 30em;
+    }
+    
+    col#comment {
+        width: 20em;
+    }
+    
+        table#lines tbody span.marker {
+            font-weight: bold;
+            color: red;
+            cursor: default;
+            margin-right: 0.25em;
+        }
+
+        table#lines tbody span.ref {
+            margin-right: 0.5em;
+        }
+
+    

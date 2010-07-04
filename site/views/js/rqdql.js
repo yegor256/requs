@@ -138,5 +138,35 @@ rqdql.Scope = function(input)
             return parseInt(this.xml.find('metrics errorsCount').text());
         },
         
+        /**
+         * Get full list of errors for the given line
+         */
+        getErrorsByLine: function(line)
+        {
+            var result = new Array();
+            this.xml.find('errors error[line=' + line + ']').each(
+                function(index, element) 
+                {
+                    result[index] = $(element).text();
+                }
+            );
+            return result;
+        },
+        
+        /**
+         * Get full list of objects found at this line
+         */
+        getObjectsByLine: function(line)
+        {
+            var result = new Array();
+            this.xml.find('links loc:has(line:contains(' + line + '))').each(
+                function(index, element) 
+                {
+                    result[index] = $(element).attr('name').toString();
+                }
+            );
+            return result;
+        },
+        
     };
 };

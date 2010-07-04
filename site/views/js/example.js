@@ -30,7 +30,7 @@ function render()
         render.rendered,
         function(scope)
         {
-            $("#xml").text(scope.toString());
+            // $("#xml").text(scope.toString());
             $('#status')
                 .empty()
                 .append('<span/>')
@@ -69,6 +69,44 @@ function render()
                     .find(':last')
                     .text(scope.getErrorsCount())
                     .parent();
+                    
+            // clean the table
+            $('#lines tbody').empty();
+            var lines = render.rendered.split("\n");
+            for (i in lines) {
+                var line = parseInt(i) + 1;
+                $('#lines tbody')
+                    .append('<tr/>')
+                        .find(':last')
+                        .append('<td/>')
+                            .find(':last')
+                            .text(line.toString())
+                            .parent()
+                        .append('<td/>')
+                            .find(':last')
+                            .text(lines[i])
+                            .parent()
+                        .append('<td/>');
+                
+                var errors = scope.getErrorsByLine(line);
+                for (err in errors) {
+                    $('#lines tbody tr:last td:last')
+                        .append('<span/>')
+                        .find(':last')
+                        .html('&#x24ba;')
+                        .addClass('marker')
+                        .attr('title', errors[err]);
+                }
+                
+                var objects = scope.getObjectsByLine(line);
+                for (obj in objects) {
+                    $('#lines tbody tr:last td:last')
+                        .append('<span/>')
+                        .find(':last')
+                        .addClass('ref')
+                        .text(objects[obj]);
+                }
+            }
         }
     );
 };
