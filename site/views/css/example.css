@@ -8,19 +8,3 @@ div#status {
     vertical-align: top;
 }
 
-    div#result{
-        display: inline; 
-        font-weight: bold;
-        font-size: 3em;
-    }
-    
-        div#result.error{
-            content: "A";
-            color: red;
-        }
-
-        div#result.success{
-            content: "OK";
-            color: green;
-        }
-    
