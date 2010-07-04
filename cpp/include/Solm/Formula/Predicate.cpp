@@ -1,7 +1,5 @@
 /**
- *
-
- * RQDQL.com, Requirements Definition and Query Language
+ * * RQDQL.com, Requirements Definition and Query Language
  *
  * Redistribution and use in source and binary forms, with or 
  * without modification, are PROHIBITED without prior written 
@@ -25,9 +23,7 @@ const string Predicate::_toString() const {
 }
 
 /**
- *
-
- * RQDQL.com, Requirements Definition and Query Language
+ * * RQDQL.com, Requirements Definition and Query Language
  *
  * Redistribution and use in source and binary forms, with or 
  * without modification, are PROHIBITED without prior written 
