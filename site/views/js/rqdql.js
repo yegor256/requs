@@ -14,41 +14,129 @@
  * @version $Id: index.php 2236 2010-07-03 17:26:54Z yegor256@yahoo.com $
  */
 
-function render()
+/**
+ * Globally-defined object that you can use in order to convert
+ * any text to RQDQL XML report, and in order to render the report
+ * received and use certain properties of it.
+ */
+var rqdql = {};
+
+/**
+ * Convert any text to RQDQL object, that can be used later
+ *
+ * Should be used like this:
+ * <code>
+ * rqdql.parse(
+ *   'User is a "human being"', // text to parse
+ *   function(scope) { // function to be called when the RQDQL scope object is ready
+ *     if (!scope.isValid()) {
+ *       alert('the text is not valid');
+ *     }
+ *   }
+ * );
+ * </code>
+ *
+ * @param string Text to validate
+ * @param function Callback to use when the scope document is ready
+ * @return void
+ */
+rqdql.parse = function(text, callback)
 {
-    // we already rendered it
-    if ((render.rendered != undefined) && render.rendered == this.value) {
-        return;
+    // sanity check
+    if (typeof jQuery == 'undefined') {
+        throw new Error('jQuery is NOT loaded');
     }
-    // save it for the future, to avoid double renderings
-    render.rendered = this.value;
     
     $.ajax(
         {
-            'url': "http://tracfacade.fazend.com/rqdql",
-            'data': { 'text': this.value },
-            'dataType': 'jsonp',
-            'success': function(data)
+            url: "http://tracfacade.fazend.com/rqdql",
+            data: { 'text': text },
+            dataType: "jsonp",
+            success: function(data)
             {
                 var xml = (new DOMParser()).parseFromString(data, "text/xml");
-                
-                $("#result").removeClass().addClass(
-                    xml.getElementsByTagName("errorsCount")[0].value > 0 ?
-                    'error' : 'success'
+                var scope = new rqdql.Scope(xml);
+                callback(scope);
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown)
+            {
+                var xml = (new DOMParser()).parseFromString(
+                    '<?xml version="1.0"?><rqdql/>', 
+                    "text/xml"
                 );
-                
-                $("#xml").html(data.replace(/</g, '&lt;'));
+                $('<fatal/>').text(textStatus).appendTo(xml);
+                var scope = new rqdql.Scope(xml);
+                callback(scope);
             }
         }
     );
-}
+};
 
 /**
- * Run this method when the document is loaded
+ * Constructor of Scope object
  */
-$(document).ready(
-    function()
-    {
-        $("#example").keyup(render);
-    }
-);
+rqdql.Scope = function(input)
+{
+    return {
+        /**
+         * RQDQL XML response
+         */
+        xml: $(input),
+    
+        /**
+         * Convert the scope to the plain XML
+         */
+        toString: function()
+        {
+            return (new XMLSerializer()).serializeToString(input);
+        },
+        
+        /**
+         * The scope is valid, and was processed properly
+         */
+        isValid: function()
+        {
+            if (this.xml.children().find('fatal').length) {
+                return false;
+            }
+            if (this.xml.find('errorsCount').text() > 0) {
+                return false;
+            }
+            return true;
+        },
+        
+        /**
+         * Get version of RQDQL parser
+         */
+        getRqdqlVersion: function()
+        {
+            if (!this.xml.find('metrics version').length) {
+                return 'unknown';
+            }
+            return this.xml.find('metrics version').text();
+        },
+        
+        /**
+         * Get ambiguity, as float number
+         */
+        getAmbiguity: function()
+        {
+            if (!this.xml.find('metrics ambiguity').length) {
+                return '?';
+            }
+            return parseFloat(this.xml.find('metrics ambiguity').text());
+        },
+        
+        /**
+         * Get total number of errors
+         */
+        getErrorsCount: function()
+        {
+            if (!this.xml.find('metrics errorsCount').length) {
+                return '?';
+            }
+            return parseInt(this.xml.find('metrics errorsCount').text());
+        },
+        
+    };
+};
