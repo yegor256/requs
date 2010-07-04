@@ -73,7 +73,7 @@ $(BISON_DEST): $(BISON_SRC) $(HEADERS) $(SELF)
 	$(BISON) --no-lines --report=all --defines=$(SYMBOLS) --output=$(BISON_DEST) $(BISON_SRC)
 
 # library objects, we just compile them, NO linking
-%.obj: %.cpp
+%.obj: %.cpp $(FLEX_DEST) $(BISON_DEST)
 	$(CPP) $(CPPFLAGS) -fPIC -o $@ -g -c $<
 
 $(LIB): $(LIB_OBJS)

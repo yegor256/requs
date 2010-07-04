@@ -33,17 +33,16 @@ extern int yyparse();
 extern int yylex(void);
 extern int yylineno;
 
-#include "Logger.h"
-#include "Scanner/supplementary.h"
-#include "Scanner/rqdql.y.c"
-#include "Scanner/rqdql.l.c"
-
 namespace rqdql {
+
+/**
+ * Wrapper around BISON/FLEX functionality
+ */
 class Scanner {
 public:
     void scan(const string&); // scan input string
 };
-#include "Scanner/ScannerImpl.h"
+
 }
 
 #endif

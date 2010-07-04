@@ -16,31 +16,49 @@
  * This file is included ONLY from Proxy.h
  */
 
+#include <vector>
+#include <map>
+#include <typeinfo>
+#include <iostream>
+#include <boost/format.hpp>
+#include <boost/algorithm/string/join.hpp> // join()
+#include <boost/algorithm/string/replace.hpp> // replace_all_copy()
+#include <boost/algorithm/string/regex.hpp> // replace_regex_copy()
+#include <boost/algorithm/string/case_conv.hpp> // to_lower_copy()
+#include "Proxy.h"
+#include "Proxy/Type.h"
+#include "Proxy/UseCase.h"
+#include "rqdql.h"
+#include "rqdql/Exception.h"
+#include "Solm.h"
+#include "Logger.h"
+using namespace std;
+
 /**
  * Get reference to the list of types
  */
-template<> map<string, Type*>& Proxy::getArray<Type>() {
+template<> std::map<std::string, Type*>& Proxy::getArray<Type>() {
     return types;
 }
 
 /**
  * Get reference to the list of use cases
  */
-template<> map<string, UseCase*>& Proxy::getArray<UseCase>() {
+template<> std::map<std::string, UseCase*>& Proxy::getArray<UseCase>() {
     return useCases;
 }
 
 /**
  * Get reference to the list of types
  */
-template<> const map<string, Type*>& Proxy::getConstArray<Type>() const {
+template<> const std::map<std::string, Type*>& Proxy::getConstArray<Type>() const {
     return types;
 }
 
 /**
  * Get reference to the list of use cases
  */
-template<> const map<string, UseCase*>& Proxy::getConstArray<UseCase>() const {
+template<> const std::map<std::string, UseCase*>& Proxy::getConstArray<UseCase>() const {
     return useCases;
 }
 
@@ -179,7 +197,9 @@ template<typename T> const string Proxy::findName(const T* t) const {
             return i->first;
         }
     }
-    throw rqdql::Exception(rqdql::_t("Element doesn't have a system-wide name, use hasName() first"));
+    throw rqdql::Exception(
+        rqdql::_t("Element doesn't have a system-wide name, use hasName() first")
+    );
 }
 
 

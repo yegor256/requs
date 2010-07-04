@@ -18,188 +18,105 @@
 #define __INCLUDE_SCOPE_PROXY_H
 
 #include <vector>
+#include <string>
 #include <map>
-#include <typeinfo>
-#include <iostream>
-#include <boost/format.hpp>
-#include <boost/algorithm/string/join.hpp> // join()
-#include <boost/algorithm/string/replace.hpp> // replace_all_copy()
-#include <boost/algorithm/string/regex.hpp> // replace_regex_copy()
-#include <boost/algorithm/string/case_conv.hpp> // to_lower_copy()
-#include "Solm.h"
-#include "Logger.h"
-using namespace std;
+#include <boost/shared_ptr.hpp>
 
 namespace proxy {
 
+/**
+ * Forward declarations
+ */
 class Type;
-class Slot;
-class Signature;
-class Flow;
-class Flows;
 class UseCase;
-class Proxy;
 
 /**
- * One individual TYPE, like ActorUser, UserPhoto, etc.
+ * Proxy between English and OOP
+ *
+ * The class is used in "brokers" and in Scanner, to convert English constructs
+ * to object-oriented entities and then inject them into SOLM.
  */
-class Type {
-public:
-    typedef vector<Slot*> Slots;
-    Type() : slots(), predicate(0) { /* that's it */ }
-    bool isEmpty() const { return !slots.size() && !predicate; }
-    bool hasPredicate() const { return predicate; }
-    solm::Sequence* getPredicate() const { return predicate; }
-    Slot* getSlot(const string&); // get slot of CREATE it, if absent
-    Slots getSlots() const { return slots; }
-    Type* addSlot(Slot*);
-    Type* addSlot(const string&);
-    Type* addPredicate(solm::Formula*);
-    const string toString() const;
-    const string getName() const; 
-    bool hasName() const; 
-    solm::Formula* makeFormula(const string&) const;
-private:
-    Slots slots;
-    solm::Sequence* predicate;
-};
-
-/**
- * Slot that interconnects one TYPE with another TYPE, 
- * using cardinality and predicates.
- */
-class Slot : public Type {
-public:
-    class Cardinality {
-    public:
-        Cardinality(const string& s) : mnemo(s) { /* later */ }
-        Cardinality(const char* s) : mnemo(s) { /* later */ }
-        const string toString() const { return mnemo; }
-    private:
-        string mnemo;
-    };
-    Slot(const string&, const Cardinality&, solm::Formula*, Type*);
-    Slot(const string&);
-    const string& getName() const { return name; }
-    bool hasName() const { return true; } 
-    Type* getType() const { return type; }
-    solm::Formula* getFormula() const { return formula; }
-    const Cardinality& getCardinality() const { return cardinality; }
-private:
-    string name;
-    Cardinality cardinality;
-    solm::Formula* formula;
-    Type* type;
-};
-
-class Signature {
-public:
-    class Explanation {
-    public:
-        Explanation() : type(0), slot(""), object("") { /* that's it */ }
-        Explanation(Type* t) : type(t), slot(""), object("") { /* that's it */ }
-        Explanation(const string& s, const string& o) : type(0), slot(s), object(o) { /* that's it */ }
-        const string toString() const;
-    private:
-        Type* type;
-        string slot;
-        string object;
-    };
-    typedef map<string, Explanation*> Explanations;
-    Signature() : text(""), explanations() { /* that's it */ }
-    Signature(const string& t) : text(t), explanations() { /* that's it */ }
-    void setText(const string& t) { text = t; }
-    string getText() const { return text; }
-    Signature* explain(const string&, Explanation*);
-    const string toString() const { return text; }
-    bool match(const Signature*) const;
-    bool isFormula() const;
-    solm::Formula* makeFormula() const;
-private:
-    string text;
-    Explanations explanations;
-    const string simplify(const string&) const;
-    string getPlaceName(size_t) const;
-    bool hasPlaces() const;
-    bool hasPlace(const string&) const;
-    vector<string> getPlaces() const;
-};
-
-class Flow {
-public:
-    Flow(const string& t, Signature* s) : text(t), signature(s) { /* that's it */ }
-    Flow(const string& t) : text(t), signature(0) { /* that's it */ }
-    Flow() : text(), signature(0) { /* that's it */ }
-    Flows* addAlternative(solm::Formula*);
-    Flows* findAlternative(char); // find alternative by letter or add it if not found
-    const string toString() const;
-    solm::Formula* makeFormula() const;
-private:
-    typedef map<solm::Formula*, Flows*> Alternatives;
-    string text;
-    Signature* signature;
-    Alternatives alternatives;
-    solm::Formula* getTarget() const; // get Formula which is called by this signature
-};
-
-class Flows {
-public:
-    Flows();
-    Flows* addFlow(int i, Flow* f) { flows[i] = f; return this; }
-    Flow* getFlow(int);
-    const string toString() const;
-    solm::Sequence* makeSequence() const;
-    bool hasSequence() const { return !formula && !flows.empty(); }
-    void setFlows(Flows* f) { flows = f->flows; }
-    map<int, Flow*> getFlows() const { return flows; }
-    void setFormula(solm::Formula*); // instead of sequence, just one formula
-    bool hasFormula() const { return formula; }
-    solm::Formula* getFormula() { return formula; }
-private:
-    map<int, Flow*> flows;
-    solm::Formula* formula;
-};
-
-class UseCase : public Flows {
-public:
-    UseCase() : Flows(), signature(0) { /* that's it */ }
-    UseCase* setSignature(Signature* s) { signature = s; return this; }
-    const string toString() const;
-    const string getName() const;
-    bool hasName() const; 
-    Signature* getSignature() const { return signature; }
-private:
-    Signature* signature;
-};
-
 class Proxy {
 public:
+    /**
+     * Public constructor
+     */
     Proxy() : types(), useCases() { clear(); }
+
+    /**
+     * Inject PROXY objects into SOLM
+     * @see rqdql.cpp
+     */
     void inject();
+
+    /**
+     * Remove all objects from the PROXY scope, used mostly for 
+     * unit testing in order to refresh the structure and start
+     * a new test.
+     */
     void clear();
+    
+    /**
+     * How many elements of type T we have in PROXY?
+     * <code>
+     * int typesTotalCount = rqdql::get<proxy::Proxy>().count<proxy::Type>();
+     * </code>
+     */
     template<typename T> size_t count() const; 
-    template<typename T> const vector<string> getNames() const;
-    template<typename T> T* get(const string&);
-    template<typename T> bool hasName(const T*) const;
-    template<typename T> const string findName(const T*) const;
+    
+    /**
+     * Get an array of all names in PROXY with certain type
+     * <code>
+     * vector<string> typeNames = rqdql::get<proxy::Proxy>().getNames<proxy::Type>();
+     * </code>
+     */
+    template<typename T> const std::vector<std::string> getNames() const;
+    
+    /**
+     * Get an object by name
+     * <code>
+     * boost::shared_ptr<proxy::Type> t = rqdql::get<proxy::Proxy>().get<proxy::Type>("ActorUser");
+     * </code>
+     */
+    template<typename T> boost::shared_ptr<T>& get(const std::string&);
+    
+    /**
+     * Given object has a name in PROXY?
+     * <code>
+     * boost::shared_ptr<proxy::Type> t;
+     * bool has = rqdql::get<proxy::Proxy>().hasName(t);
+     * </code>
+     */
+    template<typename T> bool hasName(const boost::shared_ptr<T>&) const;
+    
+    /**
+     * Find and return a name of the object, if such a name exists. Otherwise
+     * the method will throw an exception.
+     */
+    template<typename T> const std::string& findName(const boost::shared_ptr<T>&) const;
+    
 private:
-    typedef map<string, Type*> Types;
-    typedef map<string, UseCase*> UseCases;
+    typedef map<std::string, boost::shared_ptr<Type>> Types;
+    typedef map<std::string, boost::shared_ptr<UseCase>> UseCases;
+
     Types types;
     UseCases useCases;
-    template<typename T> map<string, T*>& getArray();
-    template<typename T> const map<string, T*>& getConstArray() const;
-    template<typename T> void initialize(T* t);
+    
+    /**
+     *
+     */
+    template<typename T> std::map<std::string, boost::shared_ptr<T> >& getArray();
+    
+    /**
+     *
+     */
+    template<typename T> const std::map<std::string, boost::shared_ptr<T> >& getConstArray() const;
+    
+    /**
+     *
+     */
+    template<typename T> void initialize(const boost::shared_ptr<T>& t);
 };
-
-
-#include "Proxy/ProxyImpl.h"
-#include "Proxy/Type.h"
-#include "Proxy/Flow.h"
-#include "Proxy/Slot.h"
-#include "Proxy/Flows.h"
-#include "Proxy/UseCase.h"
-#include "Proxy/Signature.h"
 
 }
 

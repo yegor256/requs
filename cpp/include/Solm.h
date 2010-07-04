@@ -20,11 +20,17 @@
 #include <vector>
 #include <string>
 
-#include "Solm/Formula.h"
+/**
+ * @see solm::Variadic
+ */
 #include "Solm/Formula/Variadic.h"
-#include "Solm/Formula/Declaration.h"
 
 namespace solm {
+
+/**
+ * Forward declaration
+ */
+class Declaration;
 
 /**
  * Second-Order Logic Model (SOLM)
@@ -35,9 +41,9 @@ class Solm : public Variadic {
 public:
     Solm() : Variadic(Variadic::OP_SEMICOLON) { /* that's it */ }
     const double getAmbiguity() const; // calculate scope ambiguity
-    template <typename T> const int countTypes() const; // count objects of given type
-    template <typename T> const vector<T*> findTypes() const; // find all objects of given type
-    const vector<string> getAllFunctions() const; // get list of all declared functions
+    template <typename T> const int count() const; // count objects of given type
+    template <typename T> const vector<T*> find() const; // find all objects of given type
+    const vector<string> getFunctions() const; // get list of all declared functions
     bool hasDeclaration(const string&) const; // do we have this particular declaration?
     Declaration* getDeclaration(const string&) const; // get this particular declaration
 private:

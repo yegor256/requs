@@ -14,6 +14,12 @@
  * @version $Id$
  */
 
+#include "Scanner.h"
+#include "Logger.h"
+#include "Scanner/supplementary.h"
+#include "Scanner/rqdql.y.c"
+#include "Scanner/rqdql.l.c"
+
 /**
  * Run scanner
  */

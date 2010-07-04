@@ -14,22 +14,31 @@
  * @version $Id$
  */
 
+#include <string>
+#include <boost/shared_ptr.hpp>
+#include "Proxy/Slot.h"
+#include "Solm/Formula/True.h"
+
 /**
  * Creates a new slot when all params are provided
  */
-Slot::Slot(const string& n, const Cardinality& c, solm::Formula* f, Type* t) :
-    name(n), cardinality(c), formula(f), type(t) {
+proxy::Slot::Slot(
+    const std::string& n, 
+    const proxy::Slot::Cardinality& c, 
+    const boost::shared_ptr<solm::Formula>& f, 
+    const boost::shared_ptr<proxy::Type>& t) :
+    _name(n), _cardinality(c), _formula(f), _type(t) {
     /* nothing for now */
 }
 
 /**
  * Creates a new slot with just one name provided
  */
-Slot::Slot(const string& n) :
-    name(n), 
-    cardinality("1..n -> 1"), 
-    formula(new solm::Constant(true)), 
-    type(new Type())
+proxy::Slot::Slot(const std::string& n) :
+    _name(n), 
+    _cardinality("1..n -> 1"), 
+    _formula(new solm::True()), 
+    _type(new proxy::Type())
 {
     /* nothing for now */
 }

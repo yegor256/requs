@@ -16,6 +16,16 @@
  * This file is included ONLY from Proxy.h
  */
 
+#include <string>
+#include <vector>
+#include <boost/format.hpp>
+#include <boost/algorithm/string/replace.hpp> // replace_all_copy()
+#include "rqdql.h"
+#include "rqdql/Exception.h"
+#include "Logger.h"
+#include "Proxy.h"
+#include "Proxy/Type.h"
+
 /**
  * Validates whether the TYPE has static name.
  */
@@ -32,7 +42,9 @@ const string Type::getName() const {
     try {
         return rqdql::get<Proxy>().findName(this);
     } catch (rqdql::Exception e) {
-        throw rqdql::Exception(rqdql::_t("Type doesn't have a name, but getName() called"));
+        throw rqdql::Exception(
+            rqdql::_t("Type doesn't have a name, but getName() called")
+        );
     }
 }
 

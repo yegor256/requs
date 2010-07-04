@@ -12,15 +12,13 @@
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
  * @version $Id$
- *
- * This file is included ONLY from Solm.h
  */
 
+#include <boost/format.hpp>
 #include "rqdql.h"
+#include "rqdql/Exception.h"
 #include "Solm.h"
 #include "Solm/Formula/Declaration.h"
-
-#include <boost/format.hpp>
 
 using namespace std;
 
@@ -31,8 +29,8 @@ using namespace std;
  * is fixed and won't be changed ever.
  */
 const double solm::Solm::getAmbiguity() const {
-    // int x = countTypes<Silent>();
-    // int y = countTypes<Created>() + countTypes<Deleted>() + countTypes<Read>();
+    // int x = count<Silent>();
+    // int y = count<Created>() + count<Deleted>() + count<Read>();
     // if (x + y == 0) {
     //     return 1;
     // }
@@ -45,14 +43,14 @@ const double solm::Solm::getAmbiguity() const {
  * we have in the collection. For example:
  * Solm::getInstance().countTypes<Function>() will return integer
  */
-template <typename T> const int solm::Solm::countTypes() const {
-    return findTypes<T>().size();
+template <typename T> const int solm::Solm::count() const {
+    return find<T>().size();
 }
 
 /**
  * Find formulas with given type
  */
-template <typename T> const vector<T*> solm::Solm::findTypes() const {
+template <typename T> const vector<T*> solm::Solm::find() const {
     vector<T*> list;
     Formulas v = _retrieve(getFormulas());
     for (Formulas::const_iterator i = v.begin(); i != v.end(); ++i) {
@@ -67,9 +65,9 @@ template <typename T> const vector<T*> solm::Solm::findTypes() const {
  * Get names of all declared functions, which are inside
  * declarations.
  */
-const vector<string> solm::Solm::getAllFunctions() const {
+const vector<string> solm::Solm::getFunctions() const {
     vector<string> list;
-    vector<Declaration*> v = findTypes<Declaration>();
+    vector<Declaration*> v = find<Declaration>();
     for (vector<Declaration*>::const_iterator i = v.begin(); i != v.end(); ++i) {
         list.push_back((*i)->getName());
     }
@@ -96,7 +94,7 @@ const solm::Formula::Formulas solm::Solm::_retrieve(Formulas v) const {
  * Do we have this particular declaration?
  */
 bool solm::Solm::hasDeclaration(const string& n) const {
-    vector<Declaration*> v = findTypes<Declaration>();
+    vector<Declaration*> v = find<Declaration>();
     for (vector<Declaration*>::const_iterator i = v.begin(); i != v.end(); ++i) {
         if ((*i)->getName() == n) {
             return true;
@@ -109,12 +107,14 @@ bool solm::Solm::hasDeclaration(const string& n) const {
  * Find and return this particular declaration, if it exists
  */
 solm::Declaration* solm::Solm::getDeclaration(const string& n) const {
-    vector<Declaration*> v = findTypes<Declaration>();
+    vector<Declaration*> v = find<Declaration>();
     for (vector<Declaration*>::const_iterator i = v.begin(); i != v.end(); ++i) {
         if ((*i)->getName() == n) {
             return *i;
         }
     }
-    throw rqdql::Exception(boost::format(rqdql::_t("Declaration '%s' not found in SOLM")) % n);
+    throw rqdql::Exception(
+        boost::format(rqdql::_t("Declaration '%s' not found in SOLM")) % n
+    );
 }
 

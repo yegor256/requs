@@ -14,55 +14,15 @@
  * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SCOPE_PROXY_H
-#define __INCLUDE_SCOPE_PROXY_H
+#ifndef __INCLUDE_SCOPE_PROXY_SLOT_H
+#define __INCLUDE_SCOPE_PROXY_SLOT_H
 
-#include <vector>
-#include <map>
-#include <typeinfo>
-#include <iostream>
-#include <boost/format.hpp>
-#include <boost/algorithm/string/join.hpp> // join()
-#include <boost/algorithm/string/replace.hpp> // replace_all_copy()
-#include <boost/algorithm/string/regex.hpp> // replace_regex_copy()
-#include <boost/algorithm/string/case_conv.hpp> // to_lower_copy()
-#include "Solm.h"
-#include "Logger.h"
-using namespace std;
+#include <string>
+#include <boost/shared_ptr.hpp>
+#include "Proxy/Type.h"
+#include "Solm/Formula.h"
 
 namespace proxy {
-
-class Type;
-class Slot;
-class Signature;
-class Flow;
-class Flows;
-class UseCase;
-class Proxy;
-
-/**
- * One individual TYPE, like ActorUser, UserPhoto, etc.
- */
-class Type {
-public:
-    typedef vector<Slot*> Slots;
-    Type() : slots(), predicate(0) { /* that's it */ }
-    bool isEmpty() const { return !slots.size() && !predicate; }
-    bool hasPredicate() const { return predicate; }
-    solm::Sequence* getPredicate() const { return predicate; }
-    Slot* getSlot(const string&); // get slot of CREATE it, if absent
-    Slots getSlots() const { return slots; }
-    Type* addSlot(Slot*);
-    Type* addSlot(const string&);
-    Type* addPredicate(solm::Formula*);
-    const string toString() const;
-    const string getName() const; 
-    bool hasName() const; 
-    solm::Formula* makeFormula(const string&) const;
-private:
-    Slots slots;
-    solm::Sequence* predicate;
-};
 
 /**
  * Slot that interconnects one TYPE with another TYPE, 
@@ -70,136 +30,67 @@ private:
  */
 class Slot : public Type {
 public:
+
+    /**
+     * Supplementary class to represent cardinality between two 
+     * entities. This class is to be re-factored later.
+     */
     class Cardinality {
     public:
-        Cardinality(const string& s) : mnemo(s) { /* later */ }
+        Cardinality(const std::string& s) : mnemo(s) { /* later */ }
         Cardinality(const char* s) : mnemo(s) { /* later */ }
-        const string toString() const { return mnemo; }
+        const std::string toString() const { return mnemo; }
     private:
-        string mnemo;
+        std::string mnemo;
     };
-    Slot(const string&, const Cardinality&, solm::Formula*, Type*);
-    Slot(const string&);
-    const string& getName() const { return name; }
+
+    /**
+     * Public constructor
+     */
+    Slot(
+        const std::string&, 
+        const Cardinality&, 
+        const boost::shared_ptr<solm::Formula>&, 
+        const boost::shared_ptr<Type>&
+    );
+
+    /**
+     * Public constructor
+     */
+    Slot(const std::string&);
+
+    /**
+     * Get name of this SLOT
+     */
+    const std::string& getName() const { return _name; }
+    
+    /**
+     * The slot has name?
+     */
     bool hasName() const { return true; } 
-    Type* getType() const { return type; }
-    solm::Formula* getFormula() const { return formula; }
-    const Cardinality& getCardinality() const { return cardinality; }
+    
+    /**
+     * The slot has name?
+     */
+    boost::shared_ptr<Type>& type() { return _type; }
+    
+    /**
+     * Get formula attached
+     */
+    boost::shared_ptr<solm::Formula>& formula() { return _formula; }
+    
+    /**
+     * Get slot cardinality
+     */
+    const Cardinality& getCardinality() const { return _cardinality; }
+    
 private:
-    string name;
-    Cardinality cardinality;
-    solm::Formula* formula;
-    Type* type;
+    std::string _name;
+    Cardinality _cardinality;
+    
+    boost::shared_ptr<solm::Formula> _formula;
+    boost::shared_ptr<Type> _type;
 };
-
-class Signature {
-public:
-    class Explanation {
-    public:
-        Explanation() : type(0), slot(""), object("") { /* that's it */ }
-        Explanation(Type* t) : type(t), slot(""), object("") { /* that's it */ }
-        Explanation(const string& s, const string& o) : type(0), slot(s), object(o) { /* that's it */ }
-        const string toString() const;
-    private:
-        Type* type;
-        string slot;
-        string object;
-    };
-    typedef map<string, Explanation*> Explanations;
-    Signature() : text(""), explanations() { /* that's it */ }
-    Signature(const string& t) : text(t), explanations() { /* that's it */ }
-    void setText(const string& t) { text = t; }
-    string getText() const { return text; }
-    Signature* explain(const string&, Explanation*);
-    const string toString() const { return text; }
-    bool match(const Signature*) const;
-    bool isFormula() const;
-    solm::Formula* makeFormula() const;
-private:
-    string text;
-    Explanations explanations;
-    const string simplify(const string&) const;
-    string getPlaceName(size_t) const;
-    bool hasPlaces() const;
-    bool hasPlace(const string&) const;
-    vector<string> getPlaces() const;
-};
-
-class Flow {
-public:
-    Flow(const string& t, Signature* s) : text(t), signature(s) { /* that's it */ }
-    Flow(const string& t) : text(t), signature(0) { /* that's it */ }
-    Flow() : text(), signature(0) { /* that's it */ }
-    Flows* addAlternative(solm::Formula*);
-    Flows* findAlternative(char); // find alternative by letter or add it if not found
-    const string toString() const;
-    solm::Formula* makeFormula() const;
-private:
-    typedef map<solm::Formula*, Flows*> Alternatives;
-    string text;
-    Signature* signature;
-    Alternatives alternatives;
-    solm::Formula* getTarget() const; // get Formula which is called by this signature
-};
-
-class Flows {
-public:
-    Flows();
-    Flows* addFlow(int i, Flow* f) { flows[i] = f; return this; }
-    Flow* getFlow(int);
-    const string toString() const;
-    solm::Sequence* makeSequence() const;
-    bool hasSequence() const { return !formula && !flows.empty(); }
-    void setFlows(Flows* f) { flows = f->flows; }
-    map<int, Flow*> getFlows() const { return flows; }
-    void setFormula(solm::Formula*); // instead of sequence, just one formula
-    bool hasFormula() const { return formula; }
-    solm::Formula* getFormula() { return formula; }
-private:
-    map<int, Flow*> flows;
-    solm::Formula* formula;
-};
-
-class UseCase : public Flows {
-public:
-    UseCase() : Flows(), signature(0) { /* that's it */ }
-    UseCase* setSignature(Signature* s) { signature = s; return this; }
-    const string toString() const;
-    const string getName() const;
-    bool hasName() const; 
-    Signature* getSignature() const { return signature; }
-private:
-    Signature* signature;
-};
-
-class Proxy {
-public:
-    Proxy() : types(), useCases() { clear(); }
-    void inject();
-    void clear();
-    template<typename T> size_t count() const; 
-    template<typename T> const vector<string> getNames() const;
-    template<typename T> T* get(const string&);
-    template<typename T> bool hasName(const T*) const;
-    template<typename T> const string findName(const T*) const;
-private:
-    typedef map<string, Type*> Types;
-    typedef map<string, UseCase*> UseCases;
-    Types types;
-    UseCases useCases;
-    template<typename T> map<string, T*>& getArray();
-    template<typename T> const map<string, T*>& getConstArray() const;
-    template<typename T> void initialize(T* t);
-};
-
-
-#include "Proxy/ProxyImpl.h"
-#include "Proxy/Type.h"
-#include "Proxy/Flow.h"
-#include "Proxy/Slot.h"
-#include "Proxy/Flows.h"
-#include "Proxy/UseCase.h"
-#include "Proxy/Signature.h"
 
 }
 
