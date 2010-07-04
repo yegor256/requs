@@ -1,5 +1,4 @@
 /**
- *
  * RQDQL.com, Requirements Definition and Query Language
  *
  * Redistribution and use in source and binary forms, with or 
