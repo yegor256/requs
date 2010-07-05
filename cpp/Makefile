@@ -14,12 +14,7 @@
 # @copyright Copyright (c) rqdql.com, 2010
 # @version $Id$
 
-# 0.3.2: added signature matching to find manipulators
-# 0.3.3: TURNS INTO is parseable
-# 0.3.4: Plurality introduced into BISON
-# 0.4: Test cases are generated
-# 0.5: OMF library injected, MOF/XMI started to be used for test cases
-VERSION = 0.5
+VERSION = 0.6
 
 MAKEFLAGS = -r
 SELF = Makefile
@@ -28,7 +23,6 @@ CPP = c++
 BISON = bison
 FLEX = flex
 INCLUDE = ./include
-TESTS = ./test
 CPPFLAGS = -I$(INCLUDE) -I./library -I/usr/include/libxml2 $(shell xml2-config --cflags)
 LDFLAGS = $(shell xml2-config --libs)
 EXEC = ./rqdql
@@ -49,9 +43,10 @@ LIB_DIRS = library/boost-libs
 LIB_SOURCES = $(shell find $(LIB_DIRS) -name "*.cpp")
 LIB_OBJS := $(LIB_SOURCES:.cpp=.obj)
 
-TEST_SOURCES := $(shell find $(TESTS) -name "*Test.cpp")
-TESTS := $(TEST_SOURCES:.cpp=.test)
-VALID_EXAMPLES = $(shell find examples/valid -name "*.txt")
+TEST_DIR = ./test
+TEST_RUNNER = $(TEST_DIR)/runner
+TEST_SOURCES := $(shell find $(TEST_DIR) -name "*.cpp")
+TEST_OBJS := $(TEST_SOURCES:.cpp=.obj)
 
 # compile the product and run all tests
 all: $(EXEC) test
@@ -63,8 +58,9 @@ all: $(EXEC) test
 %.o: %.cpp
 
 # compile/build the product
-$(EXEC): $(EXEC).o
-	mv $(EXEC).o $(EXEC)
+$(EXEC): $(HEADERS) $(BISON_DEST) $(FLEX_DEST) $(LIB)
+	$(CPP) $(LDFLAGS) -o $(EXEC) $(OBJS) $(LIB) \
+	-D RQDQL_VERSION="\"$(VERSION)$(shell $(SVN) info | grep "Revision:" | sed "s/Revision: /r/g")\""
 
 $(FLEX_DEST): $(FLEX_SRC) $(HEADERS) $(SELF)
 	$(FLEX) -o$(FLEX_DEST) $(FLEX_SRC)
@@ -80,16 +76,11 @@ $(LIB): $(LIB_OBJS)
 	ar -r $(LIB) $(LIB_OBJS)
 
 # test everything
-test: $(TESTS)
-	echo "Testing finished, everything OK"
+test: $(TEST_RUNNER)
+	$(TEST_RUNNER)
 
-%.test: %.o
-	$<
-
-# compilation of any other CPP file AND linking with all libs
-%.o: %.cpp $(HEADERS) $(BISON_DEST) $(FLEX_DEST) $(LIB)
-	$(CPP) $(CPPFLAGS) $(LDFLAGS) -o $@ $< $(LIB) \
-	-D RQDQL_VERSION="\"$(VERSION)$(shell $(SVN) info | grep "Revision:" | sed "s/Revision: /r/g")\""
+$(TEST_RUNNER): $(LIB) $(TEST_OBJS)
+	$(CPP) $(LDFLAGS) -o $(TEST_RUNNER) $(TEST_OBJS) $(LIB)
 
 # clean everything!
 clean:
