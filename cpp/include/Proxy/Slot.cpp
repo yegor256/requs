@@ -19,9 +19,6 @@
 #include "Proxy/Slot.h"
 #include "Solm/Formula/True.h"
 
-/**
- * Creates a new slot when all params are provided
- */
 proxy::Slot::Slot(
     const std::string& n, 
     const proxy::Slot::Cardinality& c, 
@@ -31,9 +28,6 @@ proxy::Slot::Slot(
     /* nothing for now */
 }
 
-/**
- * Creates a new slot with just one name provided
- */
 proxy::Slot::Slot(const std::string& n) :
     _name(n), 
     _cardinality("1..n -> 1"), 

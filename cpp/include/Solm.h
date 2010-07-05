@@ -19,14 +19,10 @@
 
 #include <vector>
 #include <string>
-
-/**
- * @see solm::Variadic
- */
 #include "Solm/Formula/Variadic.h"
 
 namespace solm {
-
+    
 /**
  * Forward declaration
  */
@@ -39,15 +35,56 @@ class Declaration;
  */
 class Solm : public Variadic {
 public:
+
+    /**
+     * Public constructor
+     */
     Solm() : Variadic(Variadic::OP_SEMICOLON) { /* that's it */ }
-    const double getAmbiguity() const; // calculate scope ambiguity
-    template <typename T> const int count() const; // count objects of given type
-    template <typename T> const vector<T*> find() const; // find all objects of given type
-    const vector<string> getFunctions() const; // get list of all declared functions
-    bool hasDeclaration(const string&) const; // do we have this particular declaration?
-    Declaration* getDeclaration(const string&) const; // get this particular declaration
+
+    /**
+     * To calculate ambiguity of the SOLM, as a relation between
+     * total number of silent elements and data manipulators, which
+     * include CREATED(), DELETED() and READ(). This list of manipulators
+     * is fixed and won't be changed ever.
+     */
+    const double getAmbiguity() const;
+
+    /**
+     * To calculate how many formulas of a given type
+     * we have in the collection. For example:
+     * Solm::getInstance().countTypes<Function>() will return integer
+     */
+    template <typename T> const int count() const;
+
+    /**
+     * Return full list of formulas of given type
+     */
+    template <typename T> const std::vector<boost::shared_ptr<T> > find() const;
+
+    /**
+     * Get names of all declared functions, which are inside
+     * declarations.
+     */
+    const std::vector<std::string> getDeclared() const;
+
+    /**
+     * Do we have this particular declaration
+     */
+    bool hasDeclaration(const string&) const;
+
+    /**
+     * Get the particular formula (declaration)
+     */
+    boost::shared_ptr<Declaration>& getDeclaration(const string&) const;
+
 private:
-    const Formulas _retrieve(Formulas) const; // get all formulas, including sub-formulas
+
+    /**
+     * Recursively collects all formulas in the collection into
+     * a flat vector
+     */
+    const Formulas _retrieve(Formulas) const;
+
 };
 
 }

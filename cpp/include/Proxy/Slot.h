@@ -37,11 +37,11 @@ public:
      */
     class Cardinality {
     public:
-        Cardinality(const std::string& s) : mnemo(s) { /* later */ }
-        Cardinality(const char* s) : mnemo(s) { /* later */ }
-        const std::string toString() const { return mnemo; }
+        Cardinality(const std::string& s) : _mnemo(s) { /* later */ }
+        Cardinality(const char* s) : _mnemo(s) { /* later */ }
+        const std::string toString() const { return _mnemo; }
     private:
-        std::string mnemo;
+        std::string _mnemo;
     };
 
     /**
@@ -85,10 +85,25 @@ public:
     const Cardinality& getCardinality() const { return _cardinality; }
     
 private:
+    
+    /**
+     * Unique name of the slot inside a type
+     */
     std::string _name;
+
+    /**
+     * Slot cardinality
+     */
     Cardinality _cardinality;
     
+    /**
+     * The fomula attached to the slot
+     */
     boost::shared_ptr<solm::Formula> _formula;
+
+    /**
+     * Type attached to the slot
+     */
     boost::shared_ptr<Type> _type;
 };
 

@@ -26,14 +26,39 @@
 
 namespace solm {
 
+/**
+ * Declaration of a new predicate
+ */
 class Declaration : public Unary<Declaration>, public Parametrized<Declaration> {
 public:
+    
+    /**
+     * Declaration of a new predicate
+     */
     Declaration(const std::string&);
-    const std::string& getName() const { return name; }
+
+    /**
+     * Return a ref to the name of this declaration
+     */
+    std::string& name() { return _name; }
+
+    /**
+     * Convert it to the user-friendly text
+     */
     virtual const std::string toString() const;
+
+    /**
+     * Get an outcome of this declaration
+     */
     virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
+
 private:
-    std::string name;
+
+    /**
+     * Name of the predicate declared
+     */
+    std::string _name;
+    
 };
 
 }

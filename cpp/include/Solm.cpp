@@ -14,20 +14,15 @@
  * @version $Id$
  */
 
+#include <string>
+#include <vector>
+#include <typeinfo>
 #include <boost/format.hpp>
 #include "rqdql.h"
 #include "rqdql/Exception.h"
 #include "Solm.h"
 #include "Solm/Formula/Declaration.h"
 
-using namespace std;
-
-/**
- * To calculate ambiguity of the SOLM, as a relation between
- * total number of silent elements and data manipulators, which
- * include CREATED(), DELETED() and READ(). This list of manipulators
- * is fixed and won't be changed ever.
- */
 const double solm::Solm::getAmbiguity() const {
     // int x = count<Silent>();
     // int y = count<Created>() + count<Deleted>() + count<Read>();
@@ -38,20 +33,13 @@ const double solm::Solm::getAmbiguity() const {
     return 0.5; // just a stub
 }
 
-/**
- * To calculate how many formulas of a given type
- * we have in the collection. For example:
- * Solm::getInstance().countTypes<Function>() will return integer
- */
 template <typename T> const int solm::Solm::count() const {
     return find<T>().size();
 }
 
-/**
- * Find formulas with given type
- */
-template <typename T> const vector<T*> solm::Solm::find() const {
-    vector<T*> list;
+template <typename T> const std::vector<boost::shared_ptr<T> > solm::Solm::find() const {
+    using namespace std;
+    vector<boost::shared_ptr<T> > list;
     Formulas v = _retrieve(getFormulas());
     for (Formulas::const_iterator i = v.begin(); i != v.end(); ++i) {
         if (typeid(**i) == typeid(T)) {
@@ -61,23 +49,40 @@ template <typename T> const vector<T*> solm::Solm::find() const {
     return list;
 }
 
-/**
- * Get names of all declared functions, which are inside
- * declarations.
- */
-const vector<string> solm::Solm::getFunctions() const {
+const std::vector<std::string> solm::Solm::getDeclared() const {
+    using namespace std;
     vector<string> list;
-    vector<Declaration*> v = find<Declaration>();
-    for (vector<Declaration*>::const_iterator i = v.begin(); i != v.end(); ++i) {
+    vector<boost::shared_ptr<Declaration> > v = find<Declaration>();
+    for (vector<boost::shared_ptr<Declaration> >::const_iterator i = v.begin(); i != v.end(); ++i) {
         list.push_back((*i)->getName());
     }
     return list;
 }
 
-/**
- * Recursively collects all formulas in the collection into
- * a flat vector
- */
+bool solm::Solm::hasDeclaration(const std::string& n) const {
+    using namespace std;
+    vector<boost::shared_ptr<Declaration> > v = find<Declaration>();
+    for (vector<boost::shared_ptr<Declaration> >::const_iterator i = v.begin(); i != v.end(); ++i) {
+        if ((*i)->name() == n) {
+            return true;
+        }
+    }
+    return false;
+}
+
+boost::shared_ptr<solm::Declaration>& solm::Solm::getDeclaration(const std::string& n) const {
+    using namespace std;
+    vector<boost::shared_ptr<Declaration> > v = find<Declaration>();
+    for (vector<boost::shared_ptr<Declaration> >::const_iterator i = v.begin(); i != v.end(); ++i) {
+        if ((*i)->name() == n) {
+            return *i;
+        }
+    }
+    throw rqdql::Exception(
+        boost::format(rqdql::_t("Declaration '%s' not found in SOLM")) % n
+    );
+}
+
 const solm::Formula::Formulas solm::Solm::_retrieve(Formulas v) const {
     Formulas result;
     for (Formulas::const_iterator i = v.begin(); i != v.end(); ++i) {
@@ -88,33 +93,5 @@ const solm::Formula::Formulas solm::Solm::_retrieve(Formulas v) const {
         }
     }
     return result;
-}
-
-/**
- * Do we have this particular declaration?
- */
-bool solm::Solm::hasDeclaration(const string& n) const {
-    vector<Declaration*> v = find<Declaration>();
-    for (vector<Declaration*>::const_iterator i = v.begin(); i != v.end(); ++i) {
-        if ((*i)->getName() == n) {
-            return true;
-        }
-    }
-    return false;
-}
-
-/**
- * Find and return this particular declaration, if it exists
- */
-solm::Declaration* solm::Solm::getDeclaration(const string& n) const {
-    vector<Declaration*> v = find<Declaration>();
-    for (vector<Declaration*>::const_iterator i = v.begin(); i != v.end(); ++i) {
-        if ((*i)->getName() == n) {
-            return *i;
-        }
-    }
-    throw rqdql::Exception(
-        boost::format(rqdql::_t("Declaration '%s' not found in SOLM")) % n
-    );
 }
 

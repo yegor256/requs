@@ -12,8 +12,6 @@
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
  * @version $Id$
- *
- * This file is included ONLY from Proxy.h
  */
 
 #include <string>
@@ -124,10 +122,6 @@ std::vector<std::string> proxy::Signature::_getPlaces() const {
         places.push_back(string(what[1].first, what[2].second-1));
         begin = what[0].second;
     }
-    // for (vector<string>::const_iterator i = places.begin(); i != places.end(); ++i) {
-    //     cout << *i << endl;
-    // }
-    // terminate();
     return places;
 }
 

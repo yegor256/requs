@@ -12,7 +12,6 @@
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
  * @version $Id$
- *
  */
 
 #include "Proxy/Flow.h"

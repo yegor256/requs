@@ -12,31 +12,26 @@
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
  * @version $Id$
- *
- * This file is included ONLY from Proxy.h
  */
-
-#include "Proxy/Flow.h"
-#include "rqdql.h"
-#include "Logger.h"
 
 #include <vector>
 #include <string>
 #include <boost/format.hpp>
 #include <boost/algorithm/string/replace.hpp>
+#include "Proxy/Flow.h"
+#include "rqdql.h"
+#include "Logger.h"
 
-proxy::Flows* proxy::Flow::addAlternative(solm::Formula* f) { 
+boost::shared_ptr<proxy::Flows>& proxy::Flow::add(const boost::shared_ptr<solm::Formula>& f) { 
     return alternatives[f] = new Flows; 
 }
 
-/**
- * Find alternative by letter or add it there if not found
- */
-proxy::Flows* proxy::Flow::findAlternative(char c) {
+boost::shared_ptr<proxy::Flows>& proxy::Flow::find(char c) {
     using namespace std;
-    Flows* found = 0;
+    
+    boost::shared_ptr<proxy::Flows> found = 0;
     char now = 'a';
-    for (Alternatives::const_iterator i = alternatives.begin(); i != alternatives.end(); ++i) {
+    for (Alternatives::const_iterator i = _alternatives.begin(); i != _alternatives.end(); ++i) {
         if (now == c) {
             found = (*i).second;
             break;
@@ -46,7 +41,7 @@ proxy::Flows* proxy::Flow::findAlternative(char c) {
     if (!found) {
         string msg = (boost::format(rqdql::_t("'Alternative '%c' is not found")) % c).str();
         rqdql::get<rqdql::Logger>().log(this, msg);
-        found = addAlternative(new solm::Err(msg));
+        found = add(new solm::Err(msg));
     }
     return found;
 }

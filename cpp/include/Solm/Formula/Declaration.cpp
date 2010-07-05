@@ -15,25 +15,19 @@
  */
 
 #include <string>
+#include <boost/regex.hpp> // boost::regex_match
+#include <boost/algorithm/string/join.hpp> // boost::algorithm::join()
 #include "Solm/Formula/Declaration.h"
 
-using namespace std;
-
-/**
- * Constructor of the class
- */
-Declaration::Declaration(const string& n) : Unary<Declaration>(), Parametrized<Declaration>() {
+Declaration::Declaration(const std::string& n) : Unary<Declaration>(), Parametrized<Declaration>() {
     if (!boost::regex_match(n, boost::regex("[a-zA-Z][a-zA-Z0-9\\.]+"))) {
         throw rqdql::Exception(
             boost::format("Invalid name for a function: '%s'") % n
         );
     }
-    name = n;
+    _name = n;
 }
 
-/**
- * Create an outcome of this formula, list of facts
- */
 Outcome Declaration::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const { 
     Fact fact;
     fact.setFormula(this);
@@ -49,15 +43,13 @@ Outcome Declaration::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snap
     return (Outcome() << fact) + getFormula()->getOutcome(fact); 
 }
 
-/**
- * Convert this declaration to the LaTeX text
- */
-const string Declaration::toString() const { 
+const std::string Declaration::toString() const { 
+    using namespace std;
     string f;
     if (Unary<Declaration>::getFormulas().size() != 1) {
         rqdql::get<rqdql::Logger>().log(
             this, 
-            (boost::format("Declaration '%s' shall have exactly one formula inside") % name).str()
+            boost::format("Declaration '%s' shall have exactly one formula inside") % name
         );
         f = Err("'missed formula").toString();
     } else {
@@ -68,7 +60,7 @@ const string Declaration::toString() const {
     if (!getVars().size()) {
         rqdql::get<rqdql::Logger>().log(
             this, 
-            (boost::format("Declaration '%s' shall have at least one argument") % name).str()
+            boost::format("Declaration '%s' shall have at least one argument") % name
         );
         v.push_back("x");
     }

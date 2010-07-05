@@ -15,6 +15,7 @@
  */
 
 #include <map>
+#include <boost/shared_ptr.hpp>
 #include "Solm/Formula.h"
 
 namespace proxy {
@@ -25,21 +26,74 @@ namespace proxy {
 class Flows;
 class Signature;
 
+/** 
+ * One action-flow in a list of flows
+ */
 class Flow {
 public:
-    Flow(const std::string& t, Signature* s) : text(t), signature(s) { /* that's it */ }
-    Flow(const std::string& t) : text(t), signature(0) { /* that's it */ }
-    Flow() : text(), signature(0) { /* that's it */ }
-    Flows* addAlternative(solm::Formula*);
-    Flows* findAlternative(char); // find alternative by letter or add it if not found
+
+    /** 
+     * Public constructor
+     */
+    Flow(const std::string& t, const boost::shared_ptr<Signature>& s) : _text(t), _signature(s) { /* that's it */ }
+
+    /** 
+     * Public constructor
+     */
+    Flow(const std::string& t) : _text(t), _signature() { /* that's it */ }
+
+    /** 
+     * Public constructor
+     */
+    Flow() : _text(), _signature() { /* that's it */ }
+
+    /** 
+     * Add new alternative to the flow
+     */
+    boost::shared_ptr<Flows>& add(const boost::shared_ptr<solm::Formula>&);
+
+    /** 
+     * Find an alternative by an indexed char, or add it if not found
+     */
+    boost::shared_ptr<Flows>& find(char);
+
+    /** 
+     * Convert this flow to a user-friendly string
+     */
     const std::string toString() const;
-    solm::Formula* makeFormula() const;
+
+    /** 
+     * Convert the flow to the SOLM formula
+     */
+    boost::shared_ptr<solm::Formula> makeFormula() const;
+
 private:
-    typedef std::map<solm::Formula*, Flows*> Alternatives;
-    std::string text;
-    Signature* signature;
-    Alternatives alternatives;
-    solm::Formula* getTarget() const; // get Formula which is called by this signature
+
+    /** 
+     * Public constructor
+     */
+    typedef std::map<boost::shared_ptr<solm::Formula>, boost::shared_ptr<Flows> > Alternatives;
+
+    /** 
+     * Textual image of the flow
+     */
+    std::string _text;
+
+    /** 
+     * Public constructor
+     */
+    boost::shared_ptr<Signature> signature;
+
+    /** 
+     * List of named alternatives
+     */
+    Alternatives _alternatives;
+
+    /** 
+     * get Formula which is called by this signature
+     */
+    boost::shared_ptr<solm::Formula>& target() const;
+
 };
 
 }
