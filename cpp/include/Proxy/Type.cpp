@@ -24,13 +24,14 @@
 #include "rqdql/Exception.h"
 #include "Logger.h"
 #include "Proxy.h"
-#include "Proxy/Type.h"
+#include "Proxy/Slot.h"
+#include "Solm/Formula.h"
 
 /**
  * Validates whether the TYPE has static name.
  */
-bool Type::hasName() const {
-    return rqdql::get<Proxy>().hasName(this);
+bool proxy::Type::hasName() const {
+    return rqdql::get<Proxy>().hasName(boost::shared_ptr<Type>(this));
 }
 
 /**
@@ -38,12 +39,12 @@ bool Type::hasName() const {
  * holder now. Otherwise will throw an exception. You should use
  * hasName() in order to validate before.
  */
-const string Type::getName() const {
+std::string& proxy::Type::name() {
     try {
-        return rqdql::get<Proxy>().findName(this);
+        return rqdql::get<Proxy>().name(boost::shared_ptr<Type>(this));
     } catch (rqdql::Exception e) {
         throw rqdql::Exception(
-            rqdql::_t("Type doesn't have a name, but getName() called")
+            rqdql::_t("Type doesn't have a name, use hasName() first")
         );
     }
 }
@@ -51,60 +52,68 @@ const string Type::getName() const {
 /**
  * Find slot by name or create it if not found
  */
-Slot* Type::getSlot(const string& s) {
-    for (Slots::const_iterator i = slots.begin(); i != slots.end(); ++i) {
+boost::shared_ptr<proxy::Slot>& proxy::Type::slot(const std::string& s) {
+    for (Slots::iterator i = _slots.begin(); i != _slots.end(); ++i) {
         if ((*i)->getName() == s) {
             return (*i);
         }
     }
-    addSlot(s);
-    return getSlot(s);
+    add(s);
+    return slot(s);
 }
 
 /**
  * Explicitly add new slot to the type
  */
-Type* Type::addSlot(Slot* s) { 
-    slots.push_back(s); 
-    return this;
+void proxy::Type::add(const boost::shared_ptr<proxy::Slot>& s) { 
+    _slots.push_back(s); 
 }
 
-Type* Type::addPredicate(solm::Formula* f) {
-    if (!predicate) {
-        predicate = new solm::Sequence(solm::Sequence::OP_AND);
+/**
+ * Add new formula to predicate
+ */
+void proxy::Type::add(const boost::shared_ptr<solm::Formula>& f) {
+    if (!_predicate) {
+        _predicate = new solm::Variadic(solm::Variadic::OP_AND);
     }
-    predicate->addFormula(f);
-    return this;
+    _predicate->add(f);
 }
 
-Type* Type::addSlot(const string& s) {
-    return addSlot(new Slot(s));
+/**
+ * Explicitly add new slot to the type
+ */
+void proxy::Type::add(const string& s) {
+    return add(new Slot(s));
 }
 
 /**
  * To convert type into string detailed presentation
  */
-const string Type::toString() const {
-    if (slots.empty()) {
+const std::string proxy::Type::toString() const {
+    if (_slots.empty()) {
         return "{}";
     }
     
     string s = "{\n";
-    for (Slots::const_iterator i = slots.begin(); i != slots.end(); ++i) {
-        if (i != slots.begin()) {
+    for (Slots::const_iterator i = _slots.begin(); i != _slots.end(); ++i) {
+        if (i != _slots.begin()) {
             s = s + ";\n";
         }
-        s = s + "\t" + (*i)->getName() + "[" + (*i)->getCardinality().toString() + "]: ";
-        if ((*i)->getType()->hasName()) {
-            s = s + (*i)->getType()->getName();
+        s = s + "\t" + (*i)->name() + "[" + (*i)->getCardinality().toString() + "]: ";
+        if ((*i)->type()->hasName()) {
+            s = s + (*i)->type()->name();
         } else {
-            s = s + boost::algorithm::replace_all_copy((*i)->getType()->toString(), "\n", "\n\t");
+            s = s + boost::algorithm::replace_all_copy(
+                (*i)->type()->toString(), 
+                "\n", 
+                "\n\t"
+            );
         }
     }
     return s + "\n}";
 }
 
-solm::Formula* Type::makeFormula(const string& x) const {
+boost::shred_ptr<solm::Formula> proxy::Type::makeFormula(const std::string& x) const {
     using namespace solm;
     // This TYPE is empty and it's definitely an error
     // in text, but we anyway should work with this type. Thus,

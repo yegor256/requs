@@ -93,11 +93,11 @@ public:
      * Find and return a name of the object, if such a name exists. Otherwise
      * the method will throw an exception.
      */
-    template<typename T> const std::string& findName(const boost::shared_ptr<T>&) const;
+    template<typename T> std::string& name(const boost::shared_ptr<T>&);
     
 private:
-    typedef map<std::string, boost::shared_ptr<Type>> Types;
-    typedef map<std::string, boost::shared_ptr<UseCase>> UseCases;
+    typedef std::map<std::string, boost::shared_ptr<Type> > Types;
+    typedef std::map<std::string, boost::shared_ptr<UseCase> > UseCases;
 
     Types types;
     UseCases useCases;

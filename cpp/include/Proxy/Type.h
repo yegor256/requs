@@ -44,13 +44,13 @@ public:
     /**
      * Public constructor
      */
-    Type() : slots(), predicate() { /* that's it */ }
+    Type() : _slots(), _predicate() { /* that's it */ }
     
     /**
      * The class is empty and doesn't have any slots and any predicates
      * @see makeFormula()
      */
-    bool isEmpty() const { return !slots.size() && !predicate; }
+    bool isEmpty() const { return !_slots.size() && !_predicate; }
 
     /**
      * This type has name?
@@ -62,44 +62,44 @@ public:
      * an exception (if the type has no name yet). Use hasName() first, to
      * validate the existence of the name.
      */
-    const std::string& getName() const; 
+    std::string& name(); 
 
     /**
      * The type has some predicate set
      * @see makeFormula()
      */
-    bool hasPredicate() const { return (bool)predicate; }
+    bool hasPredicate() const { return (bool)_predicate; }
 
     /**
      * The type has some predicate set
      * @see makeFormula()
      */
-    boost::shared_ptr<solm::Variadic> getPredicate() const { return predicate; }
+    boost::shared_ptr<solm::Variadic>& predicate() { return _predicate; }
 
     /**
      * Find and get slot by name, or create it if it's absent
      */
-    boost::shared_ptr<Slot> getSlot(const std::string&);
+    boost::shared_ptr<Slot>& slot(const std::string&);
     
     /**
      * Get a list of slots
      */
-    const Slots getSlots() const { return slots; }
+    const Slots getSlots() const { return _slots; }
     
     /**
      * Add new slot to the type
      */
-    Type& add(const boost::shared_ptr<Slot>&);
+    void add(const boost::shared_ptr<Slot>&);
     
     /**
      * Add new slot to the type, with just a name
      */
-    Type& add(const std::string&);
+    void add(const std::string&);
     
     /**
      * Add new predicate to the type
      */
-    Type& add(const boost::shared_ptr<solm::Formula>&);
+    void add(const boost::shared_ptr<solm::Formula>&);
     
     /**
      * Convert this type to a user-friendly string
@@ -112,8 +112,8 @@ public:
     boost::shared_ptr<solm::Formula> makeFormula(const std::string&) const;
     
 private:
-    Slots slots;
-    boost::shared_ptr<solm::Variadic> predicate;
+    Slots _slots;
+    boost::shared_ptr<solm::Variadic> _predicate;
 };
 
 }

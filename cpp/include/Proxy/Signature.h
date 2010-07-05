@@ -14,192 +14,136 @@
  * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SCOPE_PROXY_H
-#define __INCLUDE_SCOPE_PROXY_H
+#ifndef __INCLUDE_SCOPE_PROXY_SIGNATURE_H
+#define __INCLUDE_SCOPE_PROXY_SIGNATURE_H
 
 #include <vector>
 #include <map>
-#include <typeinfo>
-#include <iostream>
-#include <boost/format.hpp>
-#include <boost/algorithm/string/join.hpp> // join()
-#include <boost/algorithm/string/replace.hpp> // replace_all_copy()
-#include <boost/algorithm/string/regex.hpp> // replace_regex_copy()
-#include <boost/algorithm/string/case_conv.hpp> // to_lower_copy()
-#include "Solm.h"
-#include "Logger.h"
-using namespace std;
+#include <boost/shared_ptr.hpp>
+#include "Solm/Formula.h"
 
 namespace proxy {
 
+/**
+ * Forward declarations
+ */
 class Type;
-class Slot;
-class Signature;
-class Flow;
-class Flows;
-class UseCase;
-class Proxy;
 
 /**
- * One individual TYPE, like ActorUser, UserPhoto, etc.
+ * Signature of a use case
  */
-class Type {
-public:
-    typedef vector<Slot*> Slots;
-    Type() : slots(), predicate(0) { /* that's it */ }
-    bool isEmpty() const { return !slots.size() && !predicate; }
-    bool hasPredicate() const { return predicate; }
-    solm::Sequence* getPredicate() const { return predicate; }
-    Slot* getSlot(const string&); // get slot of CREATE it, if absent
-    Slots getSlots() const { return slots; }
-    Type* addSlot(Slot*);
-    Type* addSlot(const string&);
-    Type* addPredicate(solm::Formula*);
-    const string toString() const;
-    const string getName() const; 
-    bool hasName() const; 
-    solm::Formula* makeFormula(const string&) const;
-private:
-    Slots slots;
-    solm::Sequence* predicate;
-};
-
-/**
- * Slot that interconnects one TYPE with another TYPE, 
- * using cardinality and predicates.
- */
-class Slot : public Type {
-public:
-    class Cardinality {
-    public:
-        Cardinality(const string& s) : mnemo(s) { /* later */ }
-        Cardinality(const char* s) : mnemo(s) { /* later */ }
-        const string toString() const { return mnemo; }
-    private:
-        string mnemo;
-    };
-    Slot(const string&, const Cardinality&, solm::Formula*, Type*);
-    Slot(const string&);
-    const string& getName() const { return name; }
-    bool hasName() const { return true; } 
-    Type* getType() const { return type; }
-    solm::Formula* getFormula() const { return formula; }
-    const Cardinality& getCardinality() const { return cardinality; }
-private:
-    string name;
-    Cardinality cardinality;
-    solm::Formula* formula;
-    Type* type;
-};
-
 class Signature {
 public:
+
+    /**
+     * Explanation of one position inside signature
+     */
     class Explanation {
     public:
-        Explanation() : type(0), slot(""), object("") { /* that's it */ }
-        Explanation(Type* t) : type(t), slot(""), object("") { /* that's it */ }
-        Explanation(const string& s, const string& o) : type(0), slot(s), object(o) { /* that's it */ }
-        const string toString() const;
+        Explanation() : _type(), _slot(), _object() { /* that's it */ }
+        Explanation(const boost::shared_ptr<Type>& t) : _type(t), _slot(), _object() { /* that's it */ }
+        Explanation(const std::string& s, const std::string& o) : _type(), _slot(s), _object(o) { /* that's it */ }
+        const std::string toString() const;
     private:
-        Type* type;
-        string slot;
-        string object;
+        boost::shared_ptr<Type> _type;
+        std::string _slot;
+        std::string _object;
     };
-    typedef map<string, Explanation*> Explanations;
-    Signature() : text(""), explanations() { /* that's it */ }
-    Signature(const string& t) : text(t), explanations() { /* that's it */ }
-    void setText(const string& t) { text = t; }
-    string getText() const { return text; }
-    Signature* explain(const string&, Explanation*);
-    const string toString() const { return text; }
-    bool match(const Signature*) const;
+
+    /**
+     * Named list of explanations
+     */
+    typedef std::map<std::string, boost::shared_ptr<Explanation> > Explanations;
+
+    /**
+     * Public constructor
+     */
+    Signature() : _text(), _explanations() { /* that's it */ }
+
+    /**
+     * Public constructor
+     */
+    Signature(const std::string& t) : _text(t), _explanations() { /* that's it */ }
+
+    /**
+     * Set text of the signature
+     */
+    void setText(const std::string& t) { _text = t; }
+
+    /**
+     * Get a reference to the text inside signature
+     */
+    std::string& text() { return _text; }
+
+    /**
+     * Explain the position, inside the signature. If the position exists, it
+     * will explained, otherwise the method will throw an exception. If this
+     * position is already explained, we will have an exception also.
+     *
+     * @see brokers::SignatureHolder::setSignature()
+     */
+    void explain(const std::string&, const boost::shared_ptr<Explanation>&);
+
+    /**
+     * Convert this signature to a user-friendly string
+     */
+    const std::string toString() const { return _text; }
+
+    /**
+     * Compare two signatures and match them. Returns TRUE if
+     * two signatures look identical or very similar.
+     */
+    bool operator==(const Signature&) const;
+
+    /**
+     * This signature is already a formula ready-to-go into SOLM?
+     * @see Flow::getTarget()
+     */
     bool isFormula() const;
-    solm::Formula* makeFormula() const;
+
+    /**
+     * Get the formula ready-to-go into SOLM
+     */
+    boost::shared_ptr<solm::Formula> makeFormula() const;
+
 private:
-    string text;
-    Explanations explanations;
-    const string simplify(const string&) const;
-    string getPlaceName(size_t) const;
-    bool hasPlaces() const;
-    bool hasPlace(const string&) const;
-    vector<string> getPlaces() const;
+    
+    /**
+     * Text of the signature
+     */
+    std::string _text;
+    
+    /**
+     * Collection of explanations
+     */
+    Explanations _explanations;
+
+    /**
+     * Simplify the signature before matching
+     * @see operator==()
+     */
+    const std::string _simplified() const;
+
+    /**
+     * Get name of the element located at i-th position
+     */
+    std::string _getPlaceName(size_t) const;
+
+    /**
+     * This signature has any places at all?
+     */
+    bool _hasPlaces() const;
+
+    /**
+     * The signature has the named place?
+     */
+    bool _hasPlace(const std::string&) const;
+
+    /**
+     * Get full list of places
+     */
+    std::vector<std::string> _getPlaces() const;
 };
-
-class Flow {
-public:
-    Flow(const string& t, Signature* s) : text(t), signature(s) { /* that's it */ }
-    Flow(const string& t) : text(t), signature(0) { /* that's it */ }
-    Flow() : text(), signature(0) { /* that's it */ }
-    Flows* addAlternative(solm::Formula*);
-    Flows* findAlternative(char); // find alternative by letter or add it if not found
-    const string toString() const;
-    solm::Formula* makeFormula() const;
-private:
-    typedef map<solm::Formula*, Flows*> Alternatives;
-    string text;
-    Signature* signature;
-    Alternatives alternatives;
-    solm::Formula* getTarget() const; // get Formula which is called by this signature
-};
-
-class Flows {
-public:
-    Flows();
-    Flows* addFlow(int i, Flow* f) { flows[i] = f; return this; }
-    Flow* getFlow(int);
-    const string toString() const;
-    solm::Sequence* makeSequence() const;
-    bool hasSequence() const { return !formula && !flows.empty(); }
-    void setFlows(Flows* f) { flows = f->flows; }
-    map<int, Flow*> getFlows() const { return flows; }
-    void setFormula(solm::Formula*); // instead of sequence, just one formula
-    bool hasFormula() const { return formula; }
-    solm::Formula* getFormula() { return formula; }
-private:
-    map<int, Flow*> flows;
-    solm::Formula* formula;
-};
-
-class UseCase : public Flows {
-public:
-    UseCase() : Flows(), signature(0) { /* that's it */ }
-    UseCase* setSignature(Signature* s) { signature = s; return this; }
-    const string toString() const;
-    const string getName() const;
-    bool hasName() const; 
-    Signature* getSignature() const { return signature; }
-private:
-    Signature* signature;
-};
-
-class Proxy {
-public:
-    Proxy() : types(), useCases() { clear(); }
-    void inject();
-    void clear();
-    template<typename T> size_t count() const; 
-    template<typename T> const vector<string> getNames() const;
-    template<typename T> T* get(const string&);
-    template<typename T> bool hasName(const T*) const;
-    template<typename T> const string findName(const T*) const;
-private:
-    typedef map<string, Type*> Types;
-    typedef map<string, UseCase*> UseCases;
-    Types types;
-    UseCases useCases;
-    template<typename T> map<string, T*>& getArray();
-    template<typename T> const map<string, T*>& getConstArray() const;
-    template<typename T> void initialize(T* t);
-};
-
-
-#include "Proxy/ProxyImpl.h"
-#include "Proxy/Type.h"
-#include "Proxy/Flow.h"
-#include "Proxy/Slot.h"
-#include "Proxy/Flows.h"
-#include "Proxy/UseCase.h"
-#include "Proxy/Signature.h"
 
 }
 
