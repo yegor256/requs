@@ -12,25 +12,57 @@
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
  * @version $Id: Signature.cpp 2240 2010-07-04 09:20:34Z yegor256@yahoo.com $
- *
- * This file is included ONLY from Proxy.h
  */
 
 #include <string>
+#include <boost/format.hpp>
+#include "rqdql.h"
 #include "rqdql/Exception.h"
 #include "Proxy/Type.h"
 #include "Proxy/Signature.h"
 
-const std::string proxy::Signature::Explanation::toString() const {
+proxy::Signature::Place() : _type(), _slot(), _object() { 
+    /* that's it */ 
+}
+
+void proxy::Signature::isExplained() { 
+    if (_type) {
+        return true;
+    }
+    if (!_slot.empty() || _object.empty()) {
+        return true;
+    }
+    return false;
+}
+
+void proxy::Signature::explain(const boost::shared_ptr<Type>& t) { 
+    if (isExplained()) {
+        throw rqdql::Exception(
+            rqdql::_t("Place is already explained")
+        );
+    }
+    _type = t;
+}
+
+void proxy::Signature::explain(const std::string& s, const std::string& o) { 
+    if (isExplained()) {
+        throw rqdql::Exception(
+            rqdql::_t("Place is already explained")
+        );
+    }
+    _slot = s; 
+    _object = o; 
+}
+
+const std::string proxy::Signature::Place::toString() const {
     // this is a type, like "ActorUser" or "PhotoFile"
     if (_type) {
-        if (_type->hasName()) {
-            return _type->name();
-        } else {
+        if (!_type->hasName()) {
             throw rqdql::Exception(
-                "Nameless type inside signature, how come?"
+                rqdql::_t("Nameless type inside signature, how come?")
             );
         }
+        return _type->name();
     }
     // this is a slot of an object, like "Name of ActorUser"
     if (!_slot.empty() && !_object.empty()) {

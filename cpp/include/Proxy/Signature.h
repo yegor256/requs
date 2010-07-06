@@ -43,10 +43,33 @@ public:
      */
     class Place {
     public:
-        Place() : _type(), _slot(), _object() { /* that's it */ }
-        void explain(const boost::shared_ptr<Type>& t) { _type = t; }
-        void explain(const std::string& s, const std::string& o) { _slot = s; _object = o; }
+        class AlreadyExplainedException : public rqdql::Exception {};
+        
+        /**
+         * Public constructor
+         */
+        Place();
+    
+        /**
+         * This place is already explained
+         */
+        bool isExplained() const;
+    
+        /**
+         * Explain it with a link to a TYPE
+         */
+        void explain(const boost::shared_ptr<Type>& t);
+        
+        /**
+         * Explain it with slot/object pair
+         */
+        void explain(const std::string& s, const std::string& o);
+        
+        /**
+         * Convert this place to a user-friendly format
+         */
         const std::string toString() const;
+        
     private:
         boost::shared_ptr<Type> _type;
         std::string _slot;
@@ -56,17 +79,12 @@ public:
     /**
      * Named list of places inside the signature
      */
-    typedef std::map<std::string, boost::shared_ptr<Place> > Places;
+    typedef std::map<std::string, Place> Places;
 
     /**
-     * Public constructor
+     * Public constructor, text to be provided immediately
      */
-    Signature() : _text(), _places() { /* that's it */ }
-
-    /**
-     * Public constructor
-     */
-    Signature(const std::string& t) : _text(t), _places() { /* that's it */ }
+    Signature(const std::string& t);
 
     /**
      * Find and return a position inside a signature. If the position/place
@@ -74,7 +92,12 @@ public:
      *
      * @see brokers::SignatureHolder::setSignature()
      */
-    boost::shared_ptr<Place>& place(const std::string&);
+    Place& place(const std::string&);
+
+    /**
+     * Get size of signature, in places. How many places this signature has
+     */
+    size_t size() const;
 
     /**
      * Convert this signature to a user-friendly string
@@ -110,25 +133,6 @@ private:
      */
     Places _places;
 
-    /**
-     * Get name of the element located at i-th position
-     */
-    std::string _getPlaceName(size_t) const;
-
-    /**
-     * This signature has any places at all?
-     */
-    bool _hasPlaces() const;
-
-    /**
-     * The signature has the named place?
-     */
-    bool _hasPlace(const std::string&) const;
-
-    /**
-     * Get full list of places
-     */
-    std::vector<std::string> _getPlaces() const;
 };
 
 }

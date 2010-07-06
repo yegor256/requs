@@ -20,30 +20,10 @@
 
 BOOST_AUTO_TEST_SUITE(SignatureTest)
 
-BOOST_AUTO_TEST_CASE(testSignatureCanBeCreatedEmpty) {
-    proxy::Signature sig;
-    BOOST_CHECK_EQUAL("", sig.text());
-}
-
 BOOST_AUTO_TEST_CASE(testSignatureCanBeCreatedWithText) {
     const std::string s = "{alpha} works with {beta}";
     proxy::Signature sig = proxy::Signature(s);
-    BOOST_CHECK_EQUAL(s, sig.text());
-}
-
-BOOST_AUTO_TEST_CASE(testSignatureTextCanBeChanged) {
-    proxy::Signature sig; // signature text is empty
-    const std::string s = "{alpha} sends email to {beta} with pleasure";
-    sig.text(s);
-    BOOST_CHECK_EQUAL(s, sig.text());
-}
-
-BOOST_AUTO_TEST_CASE(testPlaceCanBeExplained) {
-    proxy::Signature sig;
-    sig.text("{alpha} asks {beta}");
-    sig.explain("alpha", new Signature::Explanation())
-    sig.explain("beta", new Signature::Explanation("document", "User"))
-    BOOST_CHECK_EQUAL(s, sig.text());
+    BOOST_CHECK_EQUAL(2, sig.size());
 }
 
 BOOST_AUTO_TEST_SUITE_END()

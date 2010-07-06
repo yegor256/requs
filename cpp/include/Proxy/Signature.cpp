@@ -24,6 +24,13 @@
 #include "rqdql/Exception.h"
 #include "Proxy/Signature.h"
 
+proxy::Signature(const std::string& t) : _text(t), _places() {
+}
+
+size_t proxy::Signature::size() const {
+    return _places.size();
+}
+
 void proxy::Signature::explain(const std::string& n, const boost::shared_ptr<proxy::Signature::Explanation>& e) { 
     // maybe this place is just absent?
     if (!_hasPlace(n)) {
