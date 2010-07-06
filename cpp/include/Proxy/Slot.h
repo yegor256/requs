@@ -60,9 +60,14 @@ public:
     Slot(const std::string&);
 
     /**
+     * Get name of this SLOT, and change it beforehand
+     */
+    const std::string& name(const std::string& n) { _name = n; return name(); }
+    
+    /**
      * Get name of this SLOT
      */
-    const std::string& getName() const { return _name; }
+    const std::string& name() const { return _name; }
     
     /**
      * The slot has name?

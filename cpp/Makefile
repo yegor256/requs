@@ -41,7 +41,7 @@ BISON_DEST = include/Scanner/rqdql.y.c
 LIB = library/all-externals.so
 LIB_DIRS = library/boost-libs
 LIB_SOURCES = $(shell find $(LIB_DIRS) -name "*.cpp")
-LIB_OBJS := $(LIB_SOURCES:.cpp=.obj)
+LIB_OBJS := $(LIB_SOURCES:.cpp=.o)
 
 TEST_DIR = ./test
 TEST_RUNNER = $(TEST_DIR)/runner
@@ -68,8 +68,12 @@ $(FLEX_DEST): $(FLEX_SRC) $(HEADERS) $(SELF)
 $(BISON_DEST): $(BISON_SRC) $(HEADERS) $(SELF)
 	$(BISON) --no-lines --report=all --defines=$(SYMBOLS) --output=$(BISON_DEST) $(BISON_SRC)
 
+# objects, we just compile them, NO linking
+%.obj: %.cpp $(HEADERS)
+	$(CPP) $(CPPFLAGS) -fPIC -o $@ -g -c $<
+
 # library objects, we just compile them, NO linking
-%.obj: %.cpp $(FLEX_DEST) $(BISON_DEST)
+%.o: %.cpp
 	$(CPP) $(CPPFLAGS) -fPIC -o $@ -g -c $<
 
 $(LIB): $(LIB_OBJS)
@@ -79,7 +83,7 @@ $(LIB): $(LIB_OBJS)
 test: $(TEST_RUNNER)
 	$(TEST_RUNNER)
 
-$(TEST_RUNNER): $(LIB) $(TEST_OBJS)
+$(TEST_RUNNER): $(LIB) $(TEST_OBJS) $(HEADERS)
 	$(CPP) $(LDFLAGS) -o $(TEST_RUNNER) $(TEST_OBJS) $(LIB)
 
 # clean everything!
@@ -92,6 +96,5 @@ clean:
 	$(LIB_OBJS) \
 	$(OBJS) \
 	$(LIB) \
-	$(TESTS) \
 	$(SYMBOLS)
 

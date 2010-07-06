@@ -30,19 +30,22 @@ namespace proxy {
 class Type;
 
 /**
- * Signature of a use case
+ * Signature of a use case, as a mask of an operation to be performed.
+ * The signature shall be formatted as "{placeA} works with {placeB}", where
+ * all places shall be named and enclosed with curled braces. Later we can
+ * access them with explanations.
  */
 class Signature {
 public:
 
     /**
-     * Explanation of one position inside signature
+     * One place inside a signature
      */
-    class Explanation {
+    class Place {
     public:
-        Explanation() : _type(), _slot(), _object() { /* that's it */ }
-        Explanation(const boost::shared_ptr<Type>& t) : _type(t), _slot(), _object() { /* that's it */ }
-        Explanation(const std::string& s, const std::string& o) : _type(), _slot(s), _object(o) { /* that's it */ }
+        Place() : _type(), _slot(), _object() { /* that's it */ }
+        void explain(const boost::shared_ptr<Type>& t) { _type = t; }
+        void explain(const std::string& s, const std::string& o) { _slot = s; _object = o; }
         const std::string toString() const;
     private:
         boost::shared_ptr<Type> _type;
@@ -51,38 +54,27 @@ public:
     };
 
     /**
-     * Named list of explanations
+     * Named list of places inside the signature
      */
-    typedef std::map<std::string, boost::shared_ptr<Explanation> > Explanations;
+    typedef std::map<std::string, boost::shared_ptr<Place> > Places;
 
     /**
      * Public constructor
      */
-    Signature() : _text(), _explanations() { /* that's it */ }
+    Signature() : _text(), _places() { /* that's it */ }
 
     /**
      * Public constructor
      */
-    Signature(const std::string& t) : _text(t), _explanations() { /* that's it */ }
+    Signature(const std::string& t) : _text(t), _places() { /* that's it */ }
 
     /**
-     * Set text of the signature
-     */
-    void setText(const std::string& t) { _text = t; }
-
-    /**
-     * Get a reference to the text inside signature
-     */
-    std::string& text() { return _text; }
-
-    /**
-     * Explain the position, inside the signature. If the position exists, it
-     * will explained, otherwise the method will throw an exception. If this
-     * position is already explained, we will have an exception also.
+     * Find and return a position inside a signature. If the position/place
+     * is absent the method will throw an exception.
      *
      * @see brokers::SignatureHolder::setSignature()
      */
-    void explain(const std::string&, const boost::shared_ptr<Explanation>&);
+    boost::shared_ptr<Place>& place(const std::string&);
 
     /**
      * Convert this signature to a user-friendly string
@@ -114,15 +106,9 @@ private:
     std::string _text;
     
     /**
-     * Collection of explanations
+     * Collection of places
      */
-    Explanations _explanations;
-
-    /**
-     * Simplify the signature before matching
-     * @see operator==()
-     */
-    const std::string _simplified() const;
+    Places _places;
 
     /**
      * Get name of the element located at i-th position

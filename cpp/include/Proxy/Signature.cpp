@@ -45,8 +45,25 @@ void proxy::Signature::explain(const std::string& n, const boost::shared_ptr<pro
 }
 
 bool proxy::Signature::operator==(const proxy::Signature& s) const {
+    using namespace std;
+    const string simplified(const string& s) {
+        typedef map<string, string> Reps;
+        Reps reps;
+        reps["\\{.*?\\}"] = "{...}";
+        reps["[ \\t\\n\\r]+"] = " ";
+
+        string n = boost::algorithm::to_lower_copy(s);
+        for (Reps::const_iterator i = reps.begin(); i != reps.end(); ++i) {
+            n = boost::algorithm::replace_all_regex_copy(
+                n, // source string
+                boost::regex((*i).first), // what to find
+                (*i).second // what to replace to
+            );
+        }
+        return n;
+    }
     // first we simplity them both and then compare as strings
-    return _simplified() == s._simplified();
+    return simplified(_text) == simplified(s._text);
 }
 
 bool proxy::Signature::isFormula() const {
@@ -125,22 +142,4 @@ std::vector<std::string> proxy::Signature::_getPlaces() const {
     return places;
 }
 
-const std::string proxy::Signature::_simplified() const {
-    using namespace std;
-    
-    typedef map<string, string> Reps;
-    Reps reps;
-    reps["\\{.*?\\}"] = "{...}";
-    reps["[ \\t\\n\\r]+"] = " ";
-
-    string n = boost::algorithm::to_lower_copy(_text);
-    for (Reps::const_iterator i = reps.begin(); i != reps.end(); ++i) {
-        n = boost::algorithm::replace_all_regex_copy(
-            n, // source string
-            boost::regex((*i).first), // what to find
-            (*i).second // what to replace to
-        );
-    }
-    return n;
-}
 
