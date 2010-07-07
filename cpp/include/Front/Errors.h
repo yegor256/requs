@@ -11,14 +11,23 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
- *
- * This file is included ONLY from Front.h
+ * @version $Id: Front.h 2240 2010-07-04 09:20:34Z yegor256@yahoo.com $
  */
 
-#include "Front/Uml.h"
+#ifndef __INCLUDE_SCOPE_FRONT_ERRORS_H
+#define __INCLUDE_SCOPE_FRONT_ERRORS_H
 
-void front::Uml::fill(Xml::Node& n) {
+#include "Front/Reporter.h"
+#include "Xml/Node.h"
+
+namespace front {
+    
+class Errors : public Reporter {
+public:
+    Errors(const Params& p) : Reporter(p) { /* that's it */ }
+    void fill(Xml::Node&);
+};
+
 }
 
-
+#endif

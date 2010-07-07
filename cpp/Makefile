@@ -83,8 +83,8 @@ $(LIB): $(LIB_OBJS)
 test: $(TEST_RUNNER)
 	$(TEST_RUNNER)
 
-$(TEST_RUNNER): $(LIB) $(TEST_OBJS) $(HEADERS)
-	$(CPP) $(LDFLAGS) -o $(TEST_RUNNER) $(TEST_OBJS) $(LIB)
+$(TEST_RUNNER): $(LIB) $(TEST_OBJS) $(HEADERS) $(OBJS)
+	$(CPP) $(LDFLAGS) -o $(TEST_RUNNER) $(TEST_OBJS) $(LIB) $(OBJS)
 
 # clean everything!
 clean:

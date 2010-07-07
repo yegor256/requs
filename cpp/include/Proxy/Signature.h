@@ -19,8 +19,11 @@
 
 #include <vector>
 #include <map>
+#include <string>
 #include <boost/shared_ptr.hpp>
 #include "Solm/Formula.h"
+#include "rqdql/Exception.h"
+#include "Proxy/Signature/Place.h"
 
 namespace proxy {
 
@@ -39,47 +42,15 @@ class Signature {
 public:
 
     /**
-     * One place inside a signature
+     * Place is absent and can't be found in the signature
+     * @see place()
      */
-    class Place {
-    public:
-        class AlreadyExplainedException : public rqdql::Exception {};
-        
-        /**
-         * Public constructor
-         */
-        Place();
-    
-        /**
-         * This place is already explained
-         */
-        bool isExplained() const;
-    
-        /**
-         * Explain it with a link to a TYPE
-         */
-        void explain(const boost::shared_ptr<Type>& t);
-        
-        /**
-         * Explain it with slot/object pair
-         */
-        void explain(const std::string& s, const std::string& o);
-        
-        /**
-         * Convert this place to a user-friendly format
-         */
-        const std::string toString() const;
-        
-    private:
-        boost::shared_ptr<Type> _type;
-        std::string _slot;
-        std::string _object;
-    };
+    class exPlaceIsAbsent : public rqdql::Exception {};
 
     /**
      * Named list of places inside the signature
      */
-    typedef std::map<std::string, Place> Places;
+    typedef std::map<std::string, signature::Place> Places;
 
     /**
      * Public constructor, text to be provided immediately
@@ -92,7 +63,7 @@ public:
      *
      * @see brokers::SignatureHolder::setSignature()
      */
-    Place& place(const std::string&);
+    signature::Place& place(const std::string&);
 
     /**
      * Get size of signature, in places. How many places this signature has

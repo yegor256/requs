@@ -16,13 +16,22 @@
  * This file is included ONLY from Front.h
  */
 
+#include <string>
+#include <vector>
+#include <boost/shared_ptr.hpp>
+#include <boost/algorithm/string/regex.hpp>
+#include <boost/algorithm/string/case_conv.hpp> // to_lower_copy()
+#include "rqdql.h"
+#include "Front/Reporter.h"
+#include "Xml/Node.h"
+
 /**
  * Create new instance of the class
  */
-Reporter* Reporter::factory(const string& n, const Params& p) {
+boost::shared_ptr<Reporter> front::Reporter::factory(const std::string& n, const front::Reporter::Params& p) {
     Reporter* r;
     
-    string name = boost::algorithm::to_lower_copy(n);
+    std::string name = boost::algorithm::to_lower_copy(n);
     if (name == "errors") {
         r = new Errors(p);
     } else if (name == "svg") {
@@ -38,7 +47,7 @@ Reporter* Reporter::factory(const string& n, const Params& p) {
     } else {
         throw rqdql::Exception(boost::format("Reporter '%s' is not supported") % n);
     }
-    r->name = n;
+    r->_name = n;
     return r;
 }
 
@@ -46,7 +55,7 @@ Reporter* Reporter::factory(const string& n, const Params& p) {
  * Append new node to the holder
  * @see Front::getXml()
  */
-void Reporter::append(Xml::Node& root) {
+void front::Reporter::append(Xml::Node& root) {
     Xml::Node n = root + "report";
     for (Params::const_iterator i = params.begin(); i != params.end(); ++i) {
         n[(*i).first] = (*i).second;
@@ -57,7 +66,7 @@ void Reporter::append(Xml::Node& root) {
 /**
  * Get INTEGER parameter
  */
-template<> int Reporter::getParam<int>(const string& n, const int& d) {
+template<> int front::Reporter::getParam<int>(const std::string& n, const int& d) {
     if (params.find(n) == params.end()) {
         return d;
     }
@@ -67,7 +76,7 @@ template<> int Reporter::getParam<int>(const string& n, const int& d) {
 /**
  * Get BOOLEAN parameter
  */
-template<> bool Reporter::getParam<bool>(const string& n, const bool& d) {
+template<> bool front::Reporter::getParam<bool>(const std::string& n, const bool& d) {
     if (params.find(n) == params.end()) {
         return d;
     }

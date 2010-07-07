@@ -62,24 +62,25 @@ template<> const std::map<std::string, UseCase*>& Proxy::getConstArray<UseCase>(
     return useCases;
 }
 
-/**
- * Inject all Types and Use Cases from PROXY into SOLM
- */
 void Proxy::inject() {
     using namespace solm;
     
-    // first, we inject all TYPES, converting them into definitions
-    // of new functions (declaration)
-    for (Types::const_iterator i = types.begin(); i != types.end(); ++i) {
+    /**
+     * First, we inject all TYPES, converting them into definitions
+     * of new functions (declaration)
+     */
+    for (Types::const_iterator i = _types.begin(); i != _types.end(); ++i) {
         // add this declaration to SOLM
         rqdql::get<Solm>().addFormula(
-            (new Declaration((*i).first))
-            ->arg("x")
-            ->setFormula((*i).second->makeFormula("x"))
+            Declaration((*i).first)
+            .arg("x")
+            .setFormula((*i).second->makeFormula("x"))
         );
     }
 
-    // now we inject all use cases
+    /**
+     * Now we inject all use cases
+     */
     for (UseCases::const_iterator i = useCases.begin(); i != useCases.end(); ++i) {
         UseCase* uc = (*i).second;
         // add this declaration to SOLM

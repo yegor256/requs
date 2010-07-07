@@ -21,11 +21,11 @@
 #include "Proxy/Type.h"
 #include "Proxy/Signature.h"
 
-proxy::Signature::Place() : _type(), _slot(), _object() { 
+proxy::signature::Place() : _type(), _slot(), _object() { 
     /* that's it */ 
 }
 
-void proxy::Signature::isExplained() { 
+void proxy::signature::Place::isExplained() { 
     if (_type) {
         return true;
     }
@@ -35,18 +35,18 @@ void proxy::Signature::isExplained() {
     return false;
 }
 
-void proxy::Signature::explain(const boost::shared_ptr<Type>& t) { 
+void proxy::signature::Place::explain(const boost::shared_ptr<Type>& t) { 
     if (isExplained()) {
-        throw rqdql::Exception(
+        throw AlreadyExplainedException(
             rqdql::_t("Place is already explained")
         );
     }
     _type = t;
 }
 
-void proxy::Signature::explain(const std::string& s, const std::string& o) { 
+void proxy::signature::Place::explain(const std::string& s, const std::string& o) { 
     if (isExplained()) {
-        throw rqdql::Exception(
+        throw AlreadyExplainedException(
             rqdql::_t("Place is already explained")
         );
     }
@@ -54,7 +54,7 @@ void proxy::Signature::explain(const std::string& s, const std::string& o) {
     _object = o; 
 }
 
-const std::string proxy::Signature::Place::toString() const {
+const std::string proxy::signature::Place::toString() const {
     // this is a type, like "ActorUser" or "PhotoFile"
     if (_type) {
         if (!_type->hasName()) {

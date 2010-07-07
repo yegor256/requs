@@ -37,7 +37,9 @@ class UseCase;
  * to object-oriented entities and then inject them into SOLM.
  */
 class Proxy {
+
 public:
+    
     /**
      * Public constructor
      */
@@ -96,26 +98,41 @@ public:
     template<typename T> std::string& name(const boost::shared_ptr<T>&);
     
 private:
-    typedef std::map<std::string, boost::shared_ptr<Type> > Types;
-    typedef std::map<std::string, boost::shared_ptr<UseCase> > UseCases;
 
+    /**
+     * Named list of types
+     */
+    typedef std::map<std::string, Type> Types;
+
+    /**
+     * Named list of use cases
+     */
+    typedef std::map<std::string, UseCase> UseCases;
+
+    /**
+     * 
+     */
     Types types;
+
+    /**
+     *
+     */
     UseCases useCases;
     
     /**
      *
      */
-    template<typename T> std::map<std::string, boost::shared_ptr<T> >& getArray();
+    template<typename T> std::map<std::string, T>& getArray();
     
     /**
      *
      */
-    template<typename T> const std::map<std::string, boost::shared_ptr<T> >& getConstArray() const;
+    template<typename T> const std::map<std::string, T>& getConstArray() const;
     
     /**
      *
      */
-    template<typename T> void initialize(const boost::shared_ptr<T>& t);
+    template<typename T> void initialize(const T&);
 };
 
 }

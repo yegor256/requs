@@ -16,7 +16,9 @@
  * This file is included ONLY from Front.h
  */
 
-void Metrics::fill(Xml::Node& n) {
+#include "Front/Metrics.h"
+
+void front::Metrics::fill(Xml::Node& n) {
     using namespace solm;
     // scope ambiguity
     n / "ambiguity" = rqdql::get<Solm>().getAmbiguity();

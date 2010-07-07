@@ -17,44 +17,90 @@
 #ifndef __INCLUDE_SCOPE_PROXY_FLOWS_H
 #define __INCLUDE_SCOPE_PROXY_FLOWS_H
 
+#include <string>
 #include <vector>
 #include <map>
-#include <typeinfo>
-#include <iostream>
-#include <boost/format.hpp>
-#include <boost/algorithm/string/join.hpp> // join()
-#include <boost/algorithm/string/replace.hpp> // replace_all_copy()
-#include <boost/algorithm/string/regex.hpp> // replace_regex_copy()
-#include <boost/algorithm/string/case_conv.hpp> // to_lower_copy()
-#include "Solm.h"
-#include "Logger.h"
+#include "Solm/Formula.h"
 
 namespace proxy {
 
-class Type;
-class Slot;
-class Signature;
-class Flow;
-class Flows;
-class UseCase;
-class Proxy;
-
+/**
+ * Collection of flows
+ */
 class Flows {
+
 public:
+
+    /**
+     * Public constructor
+     * @see rqdql.y
+     */
     Flows();
-    Flows* addFlow(int i, Flow* f) { flows[i] = f; return this; }
-    Flow* getFlow(int);
-    const string toString() const;
-    solm::Sequence* makeSequence() const;
-    bool hasSequence() const { return !formula && !flows.empty(); }
-    void setFlows(Flows* f) { flows = f->flows; }
-    map<int, Flow*> getFlows() const { return flows; }
-    void setFormula(solm::Formula*); // instead of sequence, just one formula
+
+    /**
+     * Add new flow by it's number
+     * @see rqdql.y
+     */
+    void add(int, const Flow&);
+
+    /**
+     * Get one flow by its number, if it exists
+     */
+    Flow& flow(int);
+
+    /**
+     * Convert a list of Flows into a formula
+     * @see Proxy::inject()
+     */
+    operator solm::Formula() const;
+
+    /**
+     * This collection of flows has VARIADIC formula ready?
+     */
+    bool hasVariadic() const { return !formula && !flows.empty(); }
+
+    /**
+     *
+     */
+    void operator=(boost::shared_ptr<Flows>& f) { flows = f->flows; }
+
+    /**
+     * Get a reference to the collection of flows
+     */
+    std::map<int, boost::shared_ptr<Flow> >& flows(); { return flows; }
+
+    /**
+     * Instead of a sequence there is just a simple formula
+     */
+    void set(boost::shared_ptr<solm::Formula>&);
+
+    /**
+     *
+     */
     bool hasFormula() const { return formula; }
-    solm::Formula* getFormula() { return formula; }
+
+    /**
+     *
+     */
+    boost::shared_ptr<solm::Formula>& formula() { return formula; }
+
+    /**
+     *
+     */
+    const std::string toString() const;
+
 private:
-    map<int, Flow*> flows;
-    solm::Formula* formula;
+
+    /**
+     *
+     */
+    std::map<int, boost::shared_ptr<Flow> > flows;
+
+    /**
+     *
+     */
+    boost::shared_ptr<solm::Formula> formula;
+
 };
 
 }

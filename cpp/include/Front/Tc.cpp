@@ -16,9 +16,16 @@
  * This file is included ONLY from Front.h
  */
 
-void Tc::fill(Xml::Node& n) {
-    using namespace pugi;
-    using namespace analysts::tc;
+#include <vector>
+#include "rqdql.h"
+#include "Front/Tc.h"
+#include "Xml/Node.h"
+#include "Analysts.h"
+#include "Analysts/Tc.h"
+
+void front::Tc::fill(Xml::Node& n) {
+    using namespace std;
+    
     vector<TestCase*> v = rqdql::get<Analyst>().retrieve();
 
     for (vector<TestCase*>::const_iterator i = v.begin(); i != v.end(); ++i) {

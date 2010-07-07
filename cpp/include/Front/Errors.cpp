@@ -16,27 +16,38 @@
  * This file is included ONLY from Front.h
  */
 
+#include <string>
+#include <vector>
+#include "rqdql.h"
+#include "Logger.h"
+#include "Front/Errors.h"
+#include "Front/Errors/Error.h"
+#include "Xml/Node.h"
+#include "Xml/Attribute.h"
+
 /**
  * Convert errors into XML node
  */
-void Errors::fill(Xml::Node& n) {
+void front::Errors::fill(Xml::Node& n) {
+    using namespace std;
+    
     int max = getParam<int>("max", 50);
 
-    vector<Error> errors;
+    vector<errors::Error> errors;
     typedef vector<rqdql::Logger::Message> Msgs;
-    Msgs v = rqdql::get<Logger>().getMessages();
+    Msgs v = rqdql::get<rqdql::Logger>().getMessages();
     for (Msgs::const_iterator i = v.begin(); i != v.end(); ++i) {
         for (vector<int>::const_iterator k = (*i).getLines().begin(); k != (*i).getLines().end(); ++k) {
-            errors.push_back(Error(*k, (*i).getMessage()));
+            errors.push_back(errors::Error(*k, (*i).getMessage()));
         }
     }
-
+    
     if (getParam<bool>("unique", true)) {
         errors.resize(unique(errors.begin(), errors.end()) - errors.begin());
         sort(errors.begin(), errors.end());
     }
     
-    for (vector<Error>::const_iterator i = errors.begin(); i != errors.end(); ++i) {
+    for (vector<errors::Error>::const_iterator i = errors.begin(); i != errors.end(); ++i) {
         (n / "errors" + "error" = (*i).message) ["line"] = (*i).line;
         if (!--max) {
             break;

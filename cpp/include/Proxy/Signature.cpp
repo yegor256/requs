@@ -24,53 +24,59 @@
 #include "rqdql/Exception.h"
 #include "Proxy/Signature.h"
 
-proxy::Signature(const std::string& t) : _text(t), _places() {
+proxy::Signature(const std::string& t) : _text(), _places() {
+    using namespace std;
+    
+    /**
+     * To find all places in the signature
+     */
+    string::const_iterator begin = _text.begin();
+    string::const_iterator end = _text.end();
+    boost::match_results<string::const_iterator> what;
+    while (boost::regex_search(begin, end, what, boost::regex("\\{(.*?)\\}"))) {
+        _places[string(what[1].first, what[2].second-1)] = Place();
+        begin = what[0].second;
+    }
+
+    /**
+     * To simplify the signature to leave just placeholders inside,
+     * for example this signature will be converted like that:
+     * "{ActorUser} reads {files}" -> "{...} reads {...}"
+     */
+    typedef map<string, string> Replacers;
+    Replacers replacers;
+    replacers["\\{.*?\\}"] = "{...}";
+    replacers["[ \\t\\n\\r]+"] = " ";
+    _text = boost::algorithm::to_lower_copy(s);
+    for (Replacers::const_iterator i = reps.begin(); i != reps.end(); ++i) {
+        _text = boost::algorithm::replace_all_regex_copy(
+            _text, // source string
+            boost::regex((*i).first), // what to find
+            (*i).second // what to replace to
+        );
+    }
 }
 
 size_t proxy::Signature::size() const {
     return _places.size();
 }
 
-void proxy::Signature::explain(const std::string& n, const boost::shared_ptr<proxy::Signature::Explanation>& e) { 
-    // maybe this place is just absent?
-    if (!_hasPlace(n)) {
-        throw rqdql::Exception(
-            boost::format("There is no place '%s' in '%s', can't explain") 
+Place& proxy::Signature::place(const std::string& n) { 
+    /**
+     * Maybe this place is just absent?
+     */
+    if (!_places.find(n) == _places.end()) {
+        throw exAbsentPlace(
+            boost::format("There is no place '%s' in '%s'") 
             % n 
             % _text
         );
     }
-    // maybe this place is already explained?
-    if (_explanations.find(n) != _explanations.end()) {
-        throw rqdql::Exception(
-            boost::format("The place '%s' in '%s' is already explained") 
-            % n 
-            % _text
-        );
-    }
-    _explanations[n] = e;
+    return _places.find(n);
 }
 
 bool proxy::Signature::operator==(const proxy::Signature& s) const {
-    using namespace std;
-    const string simplified(const string& s) {
-        typedef map<string, string> Reps;
-        Reps reps;
-        reps["\\{.*?\\}"] = "{...}";
-        reps["[ \\t\\n\\r]+"] = " ";
-
-        string n = boost::algorithm::to_lower_copy(s);
-        for (Reps::const_iterator i = reps.begin(); i != reps.end(); ++i) {
-            n = boost::algorithm::replace_all_regex_copy(
-                n, // source string
-                boost::regex((*i).first), // what to find
-                (*i).second // what to replace to
-            );
-        }
-        return n;
-    }
-    // first we simplity them both and then compare as strings
-    return simplified(_text) == simplified(s._text);
+    return _text == s._text;
 }
 
 bool proxy::Signature::isFormula() const {
@@ -85,7 +91,6 @@ bool proxy::Signature::isFormula() const {
 boost::shared_ptr<solm::Formula> proxy::Signature::makeFormula() const {
     using namespace std;
     
-    string t = _simplified();
     // if (regex_match(t, regex("\\{...\\} reads? \\{...\\}"))) {
     //     return (new Read())->arg(_getPlaceName(0))->arg(_getPlaceName(1));
     // }
@@ -111,42 +116,3 @@ boost::shared_ptr<solm::Formula> proxy::Signature::makeFormula() const {
         boost::format(rqdql::_t("Signature '%s' is not a formula")) % _text
     );
 }
-
-std::string proxy::Signature::_getPlaceName(size_t i) const {
-    if (!_hasPlaces()) {
-        throw rqdql::Exception(
-            boost::format(rqdql::_t("No places found in signature '%s'")) % _text
-        );
-    }
-    if (i >= _getPlaces().size()) {
-        throw rqdql::Exception(
-            boost::format(rqdql::_t("Places no.%d is absent in signature '%s'")) % i % _text
-        );
-    }
-    return _getPlaces().at(i);
-}
-
-bool proxy::Signature::_hasPlaces() const {
-    return !_getPlaces().empty();
-}
-
-bool proxy::Signature::_hasPlace(const std::string& n) const {
-    std::vector<std::string> places = _getPlaces();
-    return (places.end() != find(places.begin(), places.end(), n));
-}
-
-std::vector<std::string> proxy::Signature::_getPlaces() const {
-    using namespace std;
-    
-    vector<string> places;
-    string::const_iterator begin = _text.begin();
-    string::const_iterator end = _text.end();
-    boost::match_results<string::const_iterator> what;
-    while (boost::regex_search(begin, end, what, boost::regex("\\{(.*?)\\}"))) {
-        places.push_back(string(what[1].first, what[2].second-1));
-        begin = what[0].second;
-    }
-    return places;
-}
-
-

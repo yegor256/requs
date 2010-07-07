@@ -14,46 +14,42 @@
  * @version $Id$
  */
 
+#include <vector>
+#include <string>
+#include <map>
+#include <boost/format.hpp>
+#include <boost/shared_ptr.hpp>
 #include "Proxy/Flow.h"
 #include "rqdql.h"
 #include "rqdql/Exception.h"
 #include "Logger.h"
 
-#include <vector>
-#include <string>
-#include <map>
-#include <boost/format.hpp>
-
-proxy::Flows::Flows() : flows(), formula(0) {
-    addFlow(0, new Flow());
+proxy::Flows::Flows() : _flows(), _formula() {
+    add(0, boost::shared_ptr<Flow>(new Flow()));
 }
 
-/**
- * Get a flow by its number, if it exists
- */
-proxy::Flow* proxy::Flows::getFlow(int i) { 
-    if (flows.find(i) == flows.end()) {
+void add(int i, const boost::shared_ptr<Flow>& f) { 
+    if (_flows.find(i) != _flows.end()) {
         rqdql::get<rqdql::Logger>().log(
             this, 
-            (boost::format(rqdql::_t("Flow no.%d not found")) % i).str()
+            boost::format(rqdql::_t("Flow no.%d is already in a list")) % i
         );
-        addFlow(i, new Flow(rqdql::_t("some action...")));
+        return;
     }
-    return flows[i]; 
+    _flows[i] = f;
 }
 
-const string proxy::Flows::toString() const {
-    using namespace std;
-    vector<string> lines;
-    for (map<int, Flow*>::const_iterator i = flows.begin(); i != flows.end(); ++i) {
-        lines.push_back((boost::format("%d. %s") % (*i).first % (*i).second->toString()).str());
+boost::shared_ptr<proxy::Flow> proxy::Flows::get(int i) { 
+    if (_flows.find(i) == _flows.end()) {
+        rqdql::get<rqdql::Logger>().log(
+            this, 
+            boost::format(rqdql::_t("Flow no.%d not found")) % i
+        );
+        add(i, boost::shared_ptr<Flow>(new Flow(rqdql::_t("some action..."))));
     }
-    return boost::algorithm::join(lines, "\n");
+    return _flows[i];
 }
 
-/**
- * Instead of a sequence there is just a simple formula
- */
 void proxy::Flows::setFormula(solm::Formula* f) { 
     formula = f; 
 
@@ -61,10 +57,6 @@ void proxy::Flows::setFormula(solm::Formula* f) {
     rqdql::get<rqdql::Logger>().addClone(this, f);
 }
 
-/**
- * Convert a list of Flows into a sequence of Formulas
- * @see Proxy::inject()
- */
 solm::Variadic* proxy::Flows::makeSequence() const {
     using namespace solm;
     using namespace std;
@@ -79,5 +71,18 @@ solm::Variadic* proxy::Flows::makeSequence() const {
         }
     }
     return s;
+}
+
+std::map<int, boost::shared_ptr<proxy::Flow> >& proxy::Flows::flows() { 
+    return _flows; 
+}
+
+const string proxy::Flows::toString() const {
+    using namespace std;
+    vector<string> lines;
+    for (map<int, Flow*>::const_iterator i = flows.begin(); i != flows.end(); ++i) {
+        lines.push_back((boost::format("%d. %s") % (*i).first % (*i).second->toString()).str());
+    }
+    return boost::algorithm::join(lines, "\n");
 }
 

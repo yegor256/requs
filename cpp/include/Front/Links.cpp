@@ -16,7 +16,21 @@
  * This file is included ONLY from Front.h
  */
 
-void Links::fill(Xml::Node& n) {
+#include <string>
+#include <vector>
+#include <map>
+#include "rqdql.h"
+#include "Logger.h"
+#include "Front/Links.h"
+#include "Xml/Node.h"
+#include "Xml/Attribute.h"
+#include "Proxy.h"
+#include "Proxy/Type.h"
+#include "Proxy/UseCase.h"
+
+void front::Links::fill(Xml::Node& n) {
+    using namespace std;
+    
     typedef vector<rqdql::Logger::Link> Links;
     Links v = rqdql::get<rqdql::Logger>().getLinks();
     
@@ -42,8 +56,10 @@ void Links::fill(Xml::Node& n) {
 /**
  * Add locations of objects, found in the scope
  */
-template<typename T> void Links::addLocations(Xml::Node& n, const string& label) const {
-    vector<string> types = rqdql::get<Proxy>().getNames<T>();
+template<typename T> void front::Links::addLocations(Xml::Node& n, const std::string& label) const {
+    using namespace std;
+     
+    vector<string> types = rqdql::get<proxy::Proxy>().getNames<T>();
     for (vector<string>::const_iterator i = types.begin(); i != types.end(); ++i) {
         vector<int> lines = rqdql::get<rqdql::Logger>().getLinesFor(rqdql::get<Proxy>().get<T>(*i));
         if (lines.empty()) {
