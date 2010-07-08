@@ -14,31 +14,27 @@
  * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SCOPE_PROXY_USECASE_H
-#define __INCLUDE_SCOPE_PROXY_USECASE_H
+#ifndef __INCLUDE_SCOPE_PROXY_ENTITY_H
+#define __INCLUDE_SCOPE_PROXY_ENTITY_H
 
-#include <string>
-#include <boost/shared_ptr.hpp>
-#include "Proxy/Flows.h"
+#include "Solm/Formula/Declaration.h"
 
 namespace proxy {
 
 /**
- * Forward declarations
+ * One entity in PROXY, it's like an Interface
+ * @see proxy::Type
+ * @see proxy::UseCase
  */
-class Signature;
+class Entity {
 
-class UseCase : public Entity, public Flows {
-public:
-    UseCase() : Flows(), _signature() { /* that's it */ }
-    void setSignature(const boost::shared_ptr<Signature>& s) { _signature = s; }
-    const std::string toString() const;
-    std::string& name();
-    bool hasName() const; 
-    boost::shared_ptr<Signature>& signature() { return _signature; }
+public:    
     
-private:
-    boost::shared_ptr<Signature> _signature;
+    /**
+     * Convert this entity to declaration, but without a name yet
+     */
+    virtual operator solm::Declaration() = 0;
+
 };
 
 }

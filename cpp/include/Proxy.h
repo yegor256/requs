@@ -27,8 +27,7 @@ namespace proxy {
 /**
  * Forward declarations
  */
-class Type;
-class UseCase;
+class Entity;
 
 /**
  * Proxy between English and OOP
@@ -43,7 +42,7 @@ public:
     /**
      * Public constructor
      */
-    Proxy() : types(), useCases() { clear(); }
+    Proxy();
 
     /**
      * Inject PROXY objects into SOLM
@@ -59,80 +58,36 @@ public:
     void clear();
     
     /**
-     * How many elements of type T we have in PROXY?
-     * <code>
-     * int typesTotalCount = rqdql::get<proxy::Proxy>().count<proxy::Type>();
-     * </code>
-     */
-    template<typename T> size_t count() const; 
-    
-    /**
      * Get an array of all names in PROXY with certain type
      * <code>
-     * vector<string> typeNames = rqdql::get<proxy::Proxy>().getNames<proxy::Type>();
+     * vector<string> typeNames = rqdql::get<proxy::Proxy>().names<proxy::Type>();
      * </code>
      */
-    template<typename T> const std::vector<std::string> getNames() const;
+    template<typename T> const std::vector<std::string> names() const;
     
     /**
-     * Get an object by name
-     * <code>
-     * boost::shared_ptr<proxy::Type> t = rqdql::get<proxy::Proxy>().get<proxy::Type>("ActorUser");
-     * </code>
+     * Get a reference to an entity by name
      */
-    template<typename T> boost::shared_ptr<T>& get(const std::string&);
-    
-    /**
-     * Given object has a name in PROXY?
-     * <code>
-     * boost::shared_ptr<proxy::Type> t;
-     * bool has = rqdql::get<proxy::Proxy>().hasName(t);
-     * </code>
-     */
-    template<typename T> bool hasName(const boost::shared_ptr<T>&) const;
+    boost::shared_ptr<Entity>& entity(const std::string&);
     
     /**
      * Find and return a name of the object, if such a name exists. Otherwise
      * the method will throw an exception.
      */
-    template<typename T> std::string& name(const boost::shared_ptr<T>&);
+    const std::string& find(const boost::shared_ptr<Entity>&);
     
 private:
 
     /**
-     * Named list of types
+     * Named list of entities
      */
-    typedef std::map<std::string, Type> Types;
+    typedef std::map<std::string, boost::shared_ptr<Entity> > Entities;
 
     /**
-     * Named list of use cases
+     * Name list of entities
      */
-    typedef std::map<std::string, UseCase> UseCases;
+    Entities _entities;
 
-    /**
-     * 
-     */
-    Types types;
-
-    /**
-     *
-     */
-    UseCases useCases;
-    
-    /**
-     *
-     */
-    template<typename T> std::map<std::string, T>& getArray();
-    
-    /**
-     *
-     */
-    template<typename T> const std::map<std::string, T>& getConstArray() const;
-    
-    /**
-     *
-     */
-    template<typename T> void initialize(const T&);
 };
 
 }

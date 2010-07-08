@@ -11,34 +11,42 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
+ * @version $Id: Formula.h 2240 2010-07-04 09:20:34Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SCOPE_PROXY_USECASE_H
-#define __INCLUDE_SCOPE_PROXY_USECASE_H
+#ifndef __INCLUDE_SOLM_CONTEXT_H
+#define __INCLUDE_SOLM_CONTEXT_H
 
 #include <string>
-#include <boost/shared_ptr.hpp>
-#include "Proxy/Flows.h"
+#include <map>
+#include "Solm/Snapshot.h"
 
-namespace proxy {
+namespace solm {
 
 /**
  * Forward declarations
  */
-class Signature;
+// class Context;
 
-class UseCase : public Entity, public Flows {
+/**
+ * Context in which any formula can be resolved
+ */
+class Context {
+
 public:
-    UseCase() : Flows(), _signature() { /* that's it */ }
-    void setSignature(const boost::shared_ptr<Signature>& s) { _signature = s; }
-    const std::string toString() const;
-    std::string& name();
-    bool hasName() const; 
-    boost::shared_ptr<Signature>& signature() { return _signature; }
-    
+
 private:
-    boost::shared_ptr<Signature> _signature;
+    
+    /**
+     * Snapshot
+     */
+    Snapshot _snapshot;
+    
+    /**
+     * Mapping from context names to local names
+     */
+    std::map<std::string, std::string> _mapping;
+
 };
 
 }

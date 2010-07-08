@@ -14,9 +14,8 @@
  * @version $Id: Silent.h 2095 2010-05-28 07:26:19Z yegor256@yahoo.com $
  */
 
+#include <boost/algorithm/string/join.hpp> // join()
 #include "Solm/Formula/Predicate.h"
-
-#include "boost/algorithm.hpp"
 
 const string Predicate::_toString() const {
     return name + "(" + boost::algorithm::join(Parametrized<Predicate>::getVars(), ", ") + ")";

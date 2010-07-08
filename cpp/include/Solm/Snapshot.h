@@ -20,13 +20,10 @@
 #include <vector>
 #include <string>
 #include <map>
-
-#include "boost/format.hpp"
-#include "boost/shared_ptr.hpp"
+#include <boost/format.hpp>
+#include <boost/shared_ptr.hpp>
 
 namespace solm {
-
-using namespace std;
 
 /**
  * Forward declarations

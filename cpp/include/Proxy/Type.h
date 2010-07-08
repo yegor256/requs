@@ -20,6 +20,7 @@
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include "Proxy/Entity.h"
 #include "Solm/Formula.h"
 #include "Solm/Formula/Variadic.h"
 
@@ -37,8 +38,10 @@ class Slot;
  * MAP inside Solm class. Type is a collection of slots and a collection
  * of predicates, that's it.
  */
-class Type {
+class Type : public Entity {
+    
 public:
+    
     typedef std::vector< boost::shared_ptr<Slot> > Slots;
 
     /**

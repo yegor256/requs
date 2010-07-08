@@ -17,10 +17,7 @@
 #ifndef __INCLUDE_SOLM_FORMULA_H
 #define __INCLUDE_SOLM_FORMULA_H
 
-#include <vector>
 #include <string>
-
-#include "Solm/Snapshot.h"
 
 namespace solm {
 
@@ -28,25 +25,32 @@ namespace solm {
  * Forward declarations
  */
 class Outcome;
-class Fact;
+class Context;
 
 /**
- * ...
+ * An abstract formula inside SOLM collection
  */
 class Formula {
+
 public:
-    typedef std::vector<Formula*> Formulas;
-    virtual ~Formula() { /* nothing, just to make this class polymorphic */ };
-    virtual const std::string toString() const = 0;
-    void clear() { subs.clear(); } // remove everything from the collection
-    Formula* getFormula(size_t) const; // get formula by index
-    void setFormula(Formula*, size_t);
-    void addFormula(Formula* f) { subs.push_back(f); }
-    const Formulas& getFormulas() const { return subs; }
-    Outcome getOutcome() const;
-    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
-private:
-    Formulas subs;
+
+    /**
+     * Nothing, just to make this class polymorphic
+     */
+    virtual ~Formula() { /* that's it */ };
+
+    /**
+     * Abstract method, to convert this formula to a user-friendly
+     * string format.
+     */
+    virtual const operator std::string() const = 0;
+
+    /**
+     * Abstract method, to resolve this formula on some context
+     * and produce a new Outcome.
+     */
+    virtual Outcome operator+(const Context&) const = 0;
+
 };
 
 }

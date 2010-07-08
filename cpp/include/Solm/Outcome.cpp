@@ -16,12 +16,15 @@
  * This file is included ONLY from Solm.h
  */
  
+#include <string>
+#include <vector>
 #include "Solm/Outcome.h"
 
-/**
- * Append one outcome to another
- */
-Outcome Outcome::operator+(const Outcome& out) const {
+solm::Outcome::Outcome(const Context& ctx) : std::vector<Fact>(), _context(ctx) { 
+    /* that's it */ 
+}
+
+solm::Outcome solm::Outcome::operator+(const solm::Outcome& out) const {
     // this outcome is empty - just return the given one
     if (!size()) {
         return out;
@@ -36,37 +39,25 @@ Outcome Outcome::operator+(const Outcome& out) const {
     return n;
 }
 
-/**
- * Concatenate them vertically
- */
-Outcome& Outcome::operator+=(const Outcome& out) {
+solm::Outcome& solm::Outcome::operator+=(const solm::Outcome& out) {
     getPositiveEnd().setOutcome(out);
     return *this;
 }
 
-/**
- * Concatenate them horizontally
- */
-Outcome& Outcome::operator<<(const Outcome& out) {
+solm::Outcome& solm::Outcome::operator<<(const solm::Outcome& out) {
     for (Outcome::const_iterator i = out.begin(); i != out.end(); ++i) {
         push_back(*i);
     }
     return *this;
 }
 
-/**
- * Concatenate them horizontally
- */
-Outcome& Outcome::operator<<(const Fact& f) {
+solm::Outcome& solm::Outcome::operator<<(const solm::Fact& f) {
     push_back(f);
     return *this;
 }
 
-/**
- * Get all possible paths
- */
-vector<FactPath> Outcome::getPaths() const {
-    vector<FactPath> v;
+const std::vector<solm::FactPath> Outcome::paths() const {
+    std::vector<FactPath> v;
     for (const_iterator i = begin(); i != end(); ++i) {
         FactPath p;
         p.push_back(*i);

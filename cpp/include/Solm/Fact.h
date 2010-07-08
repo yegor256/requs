@@ -19,7 +19,6 @@
 
 #include <vector>
 #include <string>
-
 #include "Solm/Snapshot.h"
 #include "Solm/Outcome.h"
 
@@ -34,24 +33,42 @@ class Formula;
  * One fact, positive or negative, with a text explanation.
  */
 class Fact {
+
 public:
+
+    /**
+     * The fact is positive? To be overriden in FactPath
+     * @see FactPath::boo()
+     */
     virtual operator bool() const;
-    virtual const std::string toString() const { return snapshot.toString(); }
+
+    /**
+     * Conver it to a user-friendly string
+     */
+    virtual operator std::string() const;
+
+    /**
+     * Two paths are equal?
+     */
     bool operator==(const Fact&) const;
-    Fact& setFormula(const Formula* f) { formula = f; return *this; }
-    Fact& setException(const std::string& e) { exception = e; return *this; }
-    Fact& setOutcome(const Outcome& o) { outcome = o; return *this; }
-    bool hasOutcome() const { return outcome.size(); }
-    Outcome& getOutcome() { return outcome; }
-    const Outcome& getOutcome() const { return outcome; }
-    const Formula* getFormula() const { return formula; }
-    Snapshot getSnapshot() const { return snapshot; }
-    Fact& setSnapshot(const Snapshot& s) { snapshot = s; return *this; }
+
+    /**
+     * Outgoing context to retrieve
+     */
+    operator Context() const;
+
+    /**
+     * Set outcome to this path
+     */
+    void set(const Outcome& o) { _outcome = o; }
+
 private:
-    std::string exception;
-    Outcome outcome;
-    const Formula* formula;
-    Snapshot snapshot;
+
+    /**
+     *
+     */
+    Outcome _outcome;
+
 };
 
 }

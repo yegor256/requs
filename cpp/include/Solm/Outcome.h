@@ -19,8 +19,6 @@
 
 #include <vector>
 
-#include "rqdql/Exception.h"
-
 namespace solm {
 
 /**
@@ -34,17 +32,57 @@ class Fact;
  * facts (where only one is positive).
  */
 class Outcome : public std::vector<Fact> {
+
 public:
-    Outcome() : std::vector<Fact>() { /* that's it */ }
+
+    /**
+     * Create new outcome, right in the context provided
+     */
+    Outcome(const Context&);
+
+    /**
+     * Convert this outcome to the context. The produced context is 
+     * the context at the END of the outcome
+     */
+    operator Context() const;
+
+    /**
+     * Append one outcome to another, concatenating them vertically
+     */
     Outcome operator+(const Outcome&) const;
+
+    /**
+     * Concatenate them vertically
+     */
     Outcome& operator+=(const Outcome&);
+
+    /**
+     * Concatenate them horizontally
+     */
     Outcome& operator<<(const Outcome&);
+
+    /**
+     * Concatenate them horizontally
+     */
     Outcome& operator<<(const Fact&);
+
+    /**
+     * This outcome has a positive ending?
+     */
     operator bool() const;
-    std::vector<FactPath> getPaths() const;
-    Fact& getPositiveEnd();
+
+    /**
+     * Get all possible paths
+     */
+    const std::vector<FactPath> paths() const;
+
 private:
-    class AbsentPositiveEndException : public rqdql::Exception {};
+
+    /**
+     * Context at the beginning of Outcome
+     */
+    Context _context;
+
 };
 
 }

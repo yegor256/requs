@@ -40,7 +40,12 @@ public:
     /**
      * Return a ref to the name of this declaration
      */
-    std::string& name() { return _name; }
+    const std::string& name() { return _name; }
+
+    /**
+     * Change name and return it back
+     */
+    const std::string& name(const std::string& s) { _name = s; return name(); }
 
     /**
      * Convert it to the user-friendly text

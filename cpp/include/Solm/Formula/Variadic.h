@@ -18,14 +18,27 @@
 #define __INCLUDE_SOLM_FORMULA_VARIADIC_H
 
 #include <string>
-
+#include <boost/shared_ptr.hpp>
 #include "Solm/Formula.h"
 #include "Solm/Snapshot.h"
 
 namespace solm {
 
+/**
+ * Forward declarations
+ */
+class Context;
+
+/**
+ * Many formulas connected in a chain with some OPERAND
+ */
 class Variadic : public Formula {
+
 public:
+    
+    /**
+     * Enumerated type of operand
+     */
     typedef enum {
         OP_TO, 
         OP_AND, 
@@ -33,13 +46,49 @@ public:
         OP_SEMICOLON
     } Operand;
     
-    Variadic(Operand op = OP_TO) : Formula(), operand(op) { /* that's it */ }
-    Variadic* addFormula(Formula* f) { Formula::addFormula(f); return this; }
-    virtual const std::string toString() const;
-    void append(const Variadic* s);
-    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
+    /**
+     * Public constructor
+     */
+    Variadic(Operand);
+
+    /**
+     * Add new formula to the chain
+     */
+    Variadic& operator+=(const Formula&);
+
+    /**
+     * Append one variadic to another, concatenate them in other words
+     */
+    Variadic& operator+=(const Variadic&);
+
+    /**
+     * Convert this class to a user-friendly string, to PREDICATES in LaTeX
+     */
+    virtual const operator std::string() const;
+
+    /**
+     * To resolve this formula on some context and produce a new Outcome
+     */
+    virtual Outcome operator+(const Context&) const;
+
 private:
+
+    /**
+     * Type for collection of formulas
+     * @see _formulas
+     */
+    typedef std::vector<boost::shared_ptr<Formula> > Formulas;
+
+    /**
+     * The operand between formulas
+     */
     Operand operand;
+    
+    /**
+     * Collection of formulas, ordered
+     */
+    Formulas _formulas;
+
 };
 
 }

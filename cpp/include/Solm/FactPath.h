@@ -19,7 +19,6 @@
 
 #include <vector>
 #include <string>
-
 #include "Solm/Fact.h"
 
 namespace solm {
@@ -28,13 +27,36 @@ namespace solm {
  * Serie of facts, ordered
  */
 class FactPath : public Fact, public std::vector<Fact> {
+
 public:
-    operator bool() const; // the path ends positively?
-    FactPath operator+(const FactPath&) const; // concatenate two paths
-    bool operator==(const FactPath&) const; // these two paths are equivalent?
-    bool operator<(const FactPath&) const; // one path is shorter than the other?
-    const std::string toString() const; // convert this path to a user-friendly string
+
+    /**
+     * The path ends positively?
+     */
+    operator bool() const;
+
+    /**
+     * Concatenate two paths
+     */
+    FactPath operator+(const FactPath&) const;
+
+    /**
+     * These two paths are equivalent?
+     */
+    bool operator==(const FactPath&) const;
+
+    /**
+     * One path is shorter than the other?
+     */
+    bool operator<(const FactPath&) const;
+
+    /**
+     * Convert this path to a user-friendly string
+     */
+    operator std::string() const;
+
 private:
+
 };
 
 }
