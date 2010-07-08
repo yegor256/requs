@@ -24,7 +24,7 @@ namespace solm {
 /**
  * Forward declarations
  */
-class Outcome;
+class Chain;
 class Context;
 
 /**
@@ -41,15 +41,16 @@ public:
 
     /**
      * Abstract method, to convert this formula to a user-friendly
-     * string format.
+     * string format. The method has to be overriden in child classes.
      */
     virtual const operator std::string() const = 0;
 
     /**
      * Abstract method, to resolve this formula on some context
-     * and produce a new Outcome.
+     * and produce a new Chain of Snapshots.
+     * The method has to be overriden in child classes.
      */
-    virtual Outcome operator+(const Context&) const = 0;
+    virtual Chain operator+(const Context&) const = 0;
 
 };
 

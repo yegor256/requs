@@ -19,24 +19,26 @@
 
 #include <vector>
 #include <string>
-#include <map>
-#include <boost/format.hpp>
-#include <boost/shared_ptr.hpp>
 
 namespace solm {
 
 /**
  * Forward declarations
  */
-class Predicate;
-class Declaration;
+// class Predicate;
+// class Declaration;
 
 /**
- * A snapshot inside a fact
+ * A snapshot
  */
 class Snapshot {
 public:
     
+    /**
+     * Public constructor
+     */
+    Snapshot();
+
     /**
      * The fact is positive?
      */
@@ -48,31 +50,30 @@ public:
     virtual operator std::string() const;
 
     /**
-     * Two paths are equal?
+     * Two snapshots are equal?
      */
-    bool operator==(const Fact&) const;
-
-    /**
-     * Outgoing context to retrieve
-     */
-    operator Context() const;
-
-    /**
-     * Set outcome to this path
-     */
-    void set(const Outcome& o) { _outcome = o; }
     bool operator==(const Snapshot&) const;
-    const string toString() const;
-    Object& create(const string&);
-    void assignId(Object&) const;
-    void deassignId(Object&) const;
-    void assignName(Object&, const string&) const;
-    bool hasName(const string&) const;
-    const vector<string> getNames() const;
-    Object& getByName(const string&); // non-const intentionally
-    static Mapping makeMapping(const Predicate*, const Declaration*);
+
+    /**
+     * Set chain to this snapshot
+     */
+    void set(const Chain& c) { _chain = c; }
+
+    // Object& create(const string&);
+    // void assignId(Object&) const;
+    // void deassignId(Object&) const;
+    // void assignName(Object&, const string&) const;
+    // bool hasName(const string&) const;
+    // const vector<string> getNames() const;
+    // Object& getByName(const string&); // non-const intentionally
+    
 private:
+    
+    /**
+     * Set chain to this snapshot
+     */
     vector<Object> objects;
+
     int computeNextId() const;
     void isMine(Object&) const;
 };

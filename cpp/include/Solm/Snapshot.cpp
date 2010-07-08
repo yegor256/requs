@@ -16,29 +16,24 @@
  * This file is included ONLY from Solm.h
  */
 
+#include <string>
+#include <vector>
+#include <boost/format.hpp>
 #include "Solm/Snapshot.h"
 
-const Snapshot::Mapping Snapshot::NullMapping = Snapshot::Mapping();
-
-/**
- * Two snapshots are equal?
- */
-bool Snapshot::operator==(const Snapshot& s) const {
+bool solm::Snapshot::operator==(const solm::Snapshot& s) const {
     return false;
 }
 
 /**
  * Create new object and return a reference to it
  */
-Snapshot::Object& Snapshot::create(const string& t) {
+solm::Snapshot::Object& solm::Snapshot::create(const string& t) {
     objects.push_back(Object(t));
     return *(objects.end() - 1);
 }
 
-/**
- * Convert snapshot to a user-friendly text
- */
-const string Snapshot::toString() const {
+const std::string solm::Snapshot::toString() const {
     vector<string> lines;
     const string format = "%-10s %-15s %-3s %-20s %-20s";
     lines.push_back((boost::format(format) % "Name" % "Type" % "ID" % "Value" % "ACL rules").str());
@@ -65,7 +60,7 @@ const string Snapshot::toString() const {
 /**
  * Assign ID to the object
  */
-void Snapshot::assignId(Snapshot::Object& obj) const {
+void solm::Snapshot::assignId(solm::Snapshot::Object& obj) const {
     isMine(obj); // thows if NOT
     if (obj.hasId()) {
         return;
@@ -76,7 +71,7 @@ void Snapshot::assignId(Snapshot::Object& obj) const {
 /**
  * De-Assign ID of the object
  */
-void Snapshot::deassignId(Snapshot::Object& obj) const {
+void solm::Snapshot::deassignId(solm::Snapshot::Object& obj) const {
     isMine(obj); // thows if NOT
     if (!obj.hasId()) {
         return;
@@ -87,7 +82,7 @@ void Snapshot::deassignId(Snapshot::Object& obj) const {
 /**
  * Assign name to the object
  */
-void Snapshot::assignName(Snapshot::Object& obj, const string& n) const {
+void solm::Snapshot::assignName(solm::Snapshot::Object& obj, const string& n) const {
     isMine(obj); // thows if NOT
     if (obj.hasName()) {
         throw rqdql::Exception(
@@ -105,7 +100,7 @@ void Snapshot::assignName(Snapshot::Object& obj, const string& n) const {
 /**
  * Build mapping between a caller and a destination
  */
-Snapshot::Mapping Snapshot::makeMapping(const Function* src, const Declaration* dest) {
+solm::Snapshot::Mapping solm::Snapshot::makeMapping(const Function* src, const Declaration* dest) {
     Mapping mapping;
     if (src->countVars() != dest->countVars()) {
         throw rqdql::Exception(
@@ -126,7 +121,7 @@ Snapshot::Mapping Snapshot::makeMapping(const Function* src, const Declaration* 
 /**
  * Validates whether this object is in collection
  */
-void Snapshot::isMine(Snapshot::Object& obj) const {
+void solm::Snapshot::isMine(solm::Snapshot::Object& obj) const {
     for (vector<Object>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
         if (&(*i) == &obj) {
             return;
@@ -140,7 +135,7 @@ void Snapshot::isMine(Snapshot::Object& obj) const {
 /**
  * Finds next available ID
  */
-int Snapshot::computeNextId() const {
+int solm::Snapshot::computeNextId() const {
     int found = 0;
     for (vector<Object>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
         found = max((*i).computeNextId(), found);
@@ -151,7 +146,7 @@ int Snapshot::computeNextId() const {
 /**
  * Do we have an object with this name?
  */
-bool Snapshot::hasName(const string& n) const {
+bool solm::Snapshot::hasName(const string& n) const {
     for (vector<Object>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
         if ((*i).hasName() && ((*i).getName() == n)) {
             return true;
@@ -164,7 +159,7 @@ bool Snapshot::hasName(const string& n) const {
  * Get a link to an object with this name. It is not const becase a link to 
  * the object is returned.
  */
-Snapshot::Object& Snapshot::getByName(const string& n) {
+solm::Snapshot::Object& solm::Snapshot::getByName(const string& n) {
     for (vector<Object>::iterator i = objects.begin(); i != objects.end(); ++i) {
         if ((*i).hasName() && ((*i).getName() == n)) {
             return *i;
@@ -178,7 +173,7 @@ Snapshot::Object& Snapshot::getByName(const string& n) {
 /**
  * Get all known names in the snapshot
  */
-const vector<string> Snapshot::getNames() const {
+const vector<string> solm::Snapshot::getNames() const {
     vector<string> v;
     for (vector<Object>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
         if ((*i).hasName()) {
@@ -192,7 +187,7 @@ const vector<string> Snapshot::getNames() const {
  * Map from one local variable to global
  * @see Function::getOutcome()
  */
-const string& Snapshot::Mapping::map(const string& s) const {
+const string& solm::Snapshot::Mapping::map(const string& s) const {
     if (!has(s)) {
         throw rqdql::Exception(
             boost::format("Can't find a global equivalent of '%s'") % s
@@ -204,8 +199,6 @@ const string& Snapshot::Mapping::map(const string& s) const {
 /**
  * Global scope has an equivalent to this local var?
  */
-bool Snapshot::Mapping::has(const string& s) const {
+bool solm::Snapshot::Mapping::has(const string& s) const {
     return (this->find(s) != this->end());
 }
-
-#include "Solm/Snapshot/Object.h"
