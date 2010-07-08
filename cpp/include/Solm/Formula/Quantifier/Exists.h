@@ -18,18 +18,30 @@
 #define __INCLUDE_SOLM_FORMULA_QUANTIFIER_EXISTS_H
 
 #include <string>
-
 #include "Solm/Formula/Quantifier.h"
-#include "Solm/Outcome.h"
-#include "Solm/Fact.h"
-#include "Solm/Snapshot.h"
+#include "Solm/Chain.h"
+#include "Solm/Context.h"
 
 namespace solm {
 
+/**
+ * Existence Quantifier
+ */
 class Exists : public Quantifier<Exists> {
+
 public:
-    virtual const std::string toString() const { return _toString("\\exists"); }
-    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
+
+    /**
+     * To convert the formula to user-friendly string
+     */
+    virtual operator std::string() const { return _toString("\\exists"); }
+
+    /**
+     * To resolve this formula on some context
+     * and produce a new Chain of Snapshots.
+     */
+    virtual Chain operator+(const Context&);
+    
 };
 
 }

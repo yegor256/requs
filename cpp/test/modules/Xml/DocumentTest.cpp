@@ -11,23 +11,22 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
-#ifndef __INCLUDE_SOLM_FORMULA_TRUE_H
-#define __INCLUDE_SOLM_FORMULA_TRUE_H
-
+#include <boost/test/unit_test.hpp>
+#include <boost/shared_ptr.hpp>
 #include <string>
-#include "Solm/Formula.h"
+#include "Xml/Document.h"
+#include "Xml/Node.h"
 
-namespace solm {
+BOOST_AUTO_TEST_SUITE(DocumentTest)
 
-class True : public Formula {
-public:
-    True() : Formula() { /* that's it */ }
-    virtual operator std::string() const { return "true"; }
-};
-
+BOOST_AUTO_TEST_CASE(testSimpleXmlCanBeCreated) {
+    Xml::Document doc;
+    Xml::Node root = doc.root("test");
+    Xml::Node n = root / "employee";
+    BOOST_TEST_MESSAGE("XML built: " << doc.asXml());
 }
 
-#endif
+BOOST_AUTO_TEST_SUITE_END()

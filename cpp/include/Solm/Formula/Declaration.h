@@ -50,12 +50,13 @@ public:
     /**
      * Convert it to the user-friendly text
      */
-    virtual const std::string toString() const;
+    virtual operator std::string() const;
 
     /**
-     * Get an outcome of this declaration
+     * To resolve this formula on some context
+     * and produce a new Chain of Snapshots.
      */
-    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
+    virtual Chain operator+(const Context&);
 
 private:
 

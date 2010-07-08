@@ -11,23 +11,23 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
+ * @version $Id: SnapshotTest.cpp 2262 2010-07-08 11:31:27Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SOLM_FORMULA_TRUE_H
-#define __INCLUDE_SOLM_FORMULA_TRUE_H
-
+#include <boost/test/unit_test.hpp>
+#include <boost/shared_ptr.hpp>
 #include <string>
-#include "Solm/Formula.h"
+#include "Xml/Document.h"
+#include "Xml/Node.h"
 
-namespace solm {
+BOOST_AUTO_TEST_SUITE(NodeTest)
 
-class True : public Formula {
-public:
-    True() : Formula() { /* that's it */ }
-    virtual operator std::string() const { return "true"; }
-};
-
+BOOST_AUTO_TEST_CASE(testNodesCanBeSetFast) {
+    Xml::Document doc;
+    Xml::Node root = doc.root("test");
+    for (int i = 0; i < 50; i++) {
+        root / "employee" ["id"] = i;
+    }
 }
 
-#endif
+BOOST_AUTO_TEST_SUITE_END()

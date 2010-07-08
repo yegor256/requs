@@ -27,10 +27,23 @@ namespace Xml {
  */
 class Node;
 
+/**
+ * Standalone document
+ */
 class Document : public pugi::xml_document {
+
 public:
+
+    /**
+     * Create and return a root element of the document
+     */
     Node root(const std::string&);
+
+    /**
+     * Convert XML Document into string
+     */
     const std::string asXml() const;
+
 };
 
 }

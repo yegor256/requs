@@ -14,11 +14,10 @@
  * @version $Id$
  */
 
-#include "Xml/Node.h"
-#include "Xml/Attribute.h"
-
 #include <string>
 #include <boost/format.hpp>
+#include "Xml/Node.h"
+#include "Xml/Attribute.h"
 
 Xml::Node operator/(pugi::xml_node n, const std::string& s) {
     pugi::xml_node x = n.child(s.c_str());
@@ -26,13 +25,13 @@ Xml::Node operator/(pugi::xml_node n, const std::string& s) {
         x = n.append_child();
         x.set_name(s.c_str());
     }
-    return Node(x);
+    return Xml::Node(x);
 }
 
 Xml::Node Xml::Node::operator+(const std::string& s) {
     pugi::xml_node n = append_child();
     n.set_name(s.c_str());
-    return Node(n);
+    return Xml::Node(n);
 }
 
 Xml::Node& Xml::Node::operator=(const std::string& s) {
@@ -56,5 +55,5 @@ Xml::Node& Xml::Node::operator=(int i) {
 
 Xml::Attribute Xml::Node::operator[](const std::string& s) {
     pugi::xml_attribute a = append_attribute(s.c_str());
-    return Attribute(a);
+    return Xml::Attribute(a);
 }

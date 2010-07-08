@@ -67,9 +67,10 @@ public:
     virtual const operator std::string() const;
 
     /**
-     * To resolve this formula on some context and produce a new Outcome
+     * To resolve this formula on some context
+     * and produce a new Chain of Snapshots.
      */
-    virtual Outcome operator+(const Context&) const;
+    virtual Chain operator+(const Context&);
 
 private:
 

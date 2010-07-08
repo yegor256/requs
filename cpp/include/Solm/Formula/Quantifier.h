@@ -23,9 +23,18 @@
 
 namespace solm {
 
+/**
+ * Quantifier
+ */
 template <typename T> class Quantifier : public Unary<T>, public Parametrized<T> {
+
 public:
-    const std::string _toString(const std::string& t) const;
+
+    /**
+     * Convert it to the user-friendly text
+     */
+    operator std::string(const std::string& t) const;
+
 };
 
 }

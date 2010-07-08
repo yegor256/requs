@@ -22,15 +22,35 @@
 
 namespace solm {
 
+/**
+ * Parametrized formula, that accepts arguments
+ */
 template <typename T> class Parametrized {
+
 public:
-    typedef std::vector<std::string> Vars;
-    T* arg(const std::string& s) { vars.push_back(s); return static_cast<T*>(this); }
-    const Vars& getVars() const { return vars; }
-    const std::string& getVar(size_t i = 0) const;
-    size_t countVars() const { return vars.size(); }
+
+    /**
+     * Arguments accepted
+     */
+    typedef std::vector<std::string> Arguments;
+
+    /**
+     * Instruct the class to accept one more argument
+     */
+    T& arg(const std::string& s) { vars.push_back(s); return static_cast<T>(*this); }
+
+    /**
+     * Get one argument
+     */
+    const std::string& arg(size_t i = 0) const;
+
 private:
-    Vars vars;
+
+    /**
+     * List of accepted arguments
+     */
+    Arguments _arguments;
+
 };
 
 }

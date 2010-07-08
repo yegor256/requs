@@ -32,6 +32,9 @@ class Logger {
 
 public:
 
+    /**
+     * Public constructor
+     */
     Logger() : _subjects(), _links(), _messages() { /* that's it */ }
 
     /**
@@ -72,7 +75,7 @@ public:
     void log(int, const std::string&);
 
     /**
-     * 
+     * The log is empty?
      */
     bool empty() const { return _messages.empty(); }
 
@@ -82,12 +85,12 @@ public:
     const std::string getReport() const;
 
     /**
-     * 
+     * Get full list of lines for the given subject
      */
     const std::vector<int>& getLinesFor(const void* s) { return _subjects[s]; }
 
     /**
-     * 
+     * Return full list of messages
      */
     const std::vector<logger::Message>& getMessages() const { return _messages; }
 
@@ -97,34 +100,35 @@ public:
     const std::vector<logger::Link>& getLinks();
 
     /**
-     * 
+     * Remove all log lines, used for testing
      */
     void clear() { _messages.clear(); }
 
     /**
-     * 
+     * Get total size of log archive
      */
     size_t size() const { return _messages.size(); }
 
 private:
 
     /**
-     * 
+     * Collection of known subject in scope, with links to their lines
+     * (where they were found)
      */
     typedef std::map<const void*, std::vector<int> > Subjects;
 
     /**
-     * 
+     * List of subjects
      */
     Subjects _subjects;
 
     /**
-     * 
+     * List of links between subjects
      */
     std::vector<logger::Link> _links;
 
     /**
-     * 
+     * Messages attached to subjects
      */
     std::vector<logger::Message> _messages;
 

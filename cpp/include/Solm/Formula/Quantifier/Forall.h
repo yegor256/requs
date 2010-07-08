@@ -18,14 +18,22 @@
 #define __INCLUDE_SOLM_FORMULA_QUANTIFIER_FORALL_H
 
 #include <string>
-
 #include "Solm/Formula/Quantifier.h"
 
 namespace solm {
 
+/**
+ * FORALL Quantifier
+ */
 class Forall : public Quantifier<Forall> {
+
 public:
-    virtual const string toString() const { return Quantifier<Forall>::_toString("\\forall"); }
+
+    /**
+     * To convert the formula to user-friendly string
+     */
+    virtual operator std::string() const { return Quantifier<Forall>::_toString("\\forall"); }
+
 };
 
 }

@@ -26,14 +26,41 @@
 
 namespace solm {
 
+/**
+ * Call for a pre-defined formula
+ */
 class Predicate : public Formula, public Parametrized<Predicate> {
+
 public:
+
+    /**
+     * Public constructor
+     */
     Predicate(const std::string& n) : Parametrized<Predicate>(), name(n) { /* that's it */ }
+
+    /**
+     * Convert it to the user-friendly text
+     */
     const std::string toString() const;
-    virtual Outcome getOutcome(const Fact&, const Snapshot::Mapping&) const;
-    const std::string& getName() const { return name; }
+
+    /**
+     * To resolve this formula on some context
+     * and produce a new Chain of Snapshots.
+     */
+    virtual Chain operator+(const Context&);
+
+    /**
+     * Convert it to the user-friendly text
+     */
+    const std::string& name() const { return _name; }
+
 private:
-    std::string name;
+    
+    /**
+     * Predicate name
+     */
+    std::string _name;
+
 };
 
 }
