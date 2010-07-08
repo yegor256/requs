@@ -14,16 +14,26 @@
  * @version $Id$
  */
 
-#include <string>
-#include <boost/format.hpp>
-#include <boost/algorithm/string/join.hpp>
-#include "Solm/Snapshot/Set.h"
+#ifndef __INCLUDE_SCOPE_LOGGER_MESSAGE_H
+#define __INCLUDE_SCOPE_LOGGER_MESSAGE_H
 
-solm::snapshot::Set::operator std::string() const {
-    using namespace std;
-    vector<string> v;
-    for (vector<int>::const_iterator i = _ids.begin(); i != _ids.end(); ++i) {
-        v.push_back((boost::format("%d") % *i).str());
-    }
-    return "[" + boost::algorithm::join(v, ", ") + "]";
+#include <vector>
+#include <string>
+
+namespace rqdql {
+namespace logger {
+
+class Message {
+public:
+    Message(const std::vector<int>& v, const std::string& m) : lines(v), message(m) { /* that's it */ }
+    const std::vector<int>& getLines() const { return lines; }
+    const std::string& getMessage() const { return message; }
+private:
+    std::vector<int> lines;
+    std::string message;
+};
+    
 }
+}
+
+#endif

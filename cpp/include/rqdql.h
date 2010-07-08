@@ -20,47 +20,45 @@
 // system libraries
 #include <iostream>
 #include <string>
-
-// boost libraries
-#include "boost/format.hpp"
-#include "boost/shared_ptr.hpp"
+#include <boost/format.hpp>
+#include <boost/shared_ptr.hpp>
 
 namespace rqdql {
 
-    /**
-     * Get LOCALIZED std::string
-     */
-    extern const std::string _t(const std::string& s);
-    
-    /**
-     * Get a singleton copy of a module/class
-     */
-    template <typename T> T& get();
+/**
+ * Get LOCALIZED std::string
+ */
+extern const std::string _t(const std::string& s);
 
-    /**
-     * Different levels of logging
-     */
-    enum LogLevel {
-        L_DEBUG   = 1,
-        L_VERBOSE = 2,
-        L_INFO    = 3,
-        L_WARNING = 4,
-        L_ERROR   = 5
-    };
-    extern LogLevel level;
-    
-    /**
-     * To log a line
-     */
-    void log(const LogLevel lvl, const std::string& line);
-    void log(const std::string& line);
-    void log(const boost::format& line);
-    void log(const LogLevel lvl, const boost::format& line);
-    
-    void yySet(std::string*& lhs, boost::format rhs);
-    void yySet(std::string*& lhs, char*& rhs);
-    
-    std::string cutLongLine(const std::string& s, size_t len);
+/**
+ * Get a singleton copy of a module/class
+ */
+template <typename T> T& get();
+
+/**
+ * Different levels of logging
+ */
+enum LogLevel {
+    L_DEBUG   = 1,
+    L_VERBOSE = 2,
+    L_INFO    = 3,
+    L_WARNING = 4,
+    L_ERROR   = 5
+};
+extern LogLevel level;
+
+/**
+ * To log a line
+ */
+void log(const LogLevel lvl, const std::string& line);
+void log(const std::string& line);
+void log(const boost::format& line);
+void log(const LogLevel lvl, const boost::format& line);
+
+void yySet(std::string*& lhs, boost::format rhs);
+void yySet(std::string*& lhs, char*& rhs);
+
+std::string cutLongLine(const std::string& s, size_t len);
 
 }
 

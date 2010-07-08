@@ -16,17 +16,29 @@
  * This file is included ONLY from Logger.h
  */
  
-#include "Logger.h"
-#include "rqdql.h"
-#include "rqdql/Exception.h"
-
+#include <string>
+#include <vector>
 #include <boost/format.hpp>
 #include <boost/regex.hpp>
 #include <boost/algorithm/string/join.hpp>
+#include "Logger.h"
+#include "Logger/Message.h"
+#include "Logger/Link.h"
+#include "rqdql.h"
+#include "rqdql/Exception.h"
 
-/**
- * Log one line
- */
+namespace rqdql {
+template<> void Logger::log(const void* s, const std::string& m) {
+    using namespace std;
+    vector<int> lines;
+    string str = m;
+    if (hasSubject(s)) {
+        lines = _subjects[s];
+    }
+    _messages.push_back(logger::Message(lines, str));
+}
+}
+
 template <typename T> void rqdql::Logger::log(const T* s, const std::string& m) {
     using namespace std;
     string str = m;
@@ -36,36 +48,17 @@ template <typename T> void rqdql::Logger::log(const T* s, const std::string& m) 
     log(static_cast<const void*>(s), str);
 }
 
-/**
- * Log one line, by explicit link
- */
-template<> void rqdql::Logger::log(const void* s, const std::string& m) {
-    using namespace std;
-    vector<int> lines;
-    string str = m;
-    if (hasSubject(s)) {
-        lines = subjects[s];
-    }
-    messages.push_back(Message(lines, str));
-}
-
-/**
- * Log one line, we know exact line number
- */
 void rqdql::Logger::log(int lineNo, const std::string& m) {
     using namespace std;
     vector<int> lines;
     lines.push_back(lineNo);
-    messages.push_back(Message(lines, m));
+    _messages.push_back(logger::Message(lines, m));
 }
 
-/**
- * Build summary report
- */
 const std::string rqdql::Logger::getReport() const {
     using namespace std;
     vector<string> msgs;
-    for (vector<Message>::const_iterator i = messages.begin(); i != messages.end(); ++i) {
+    for (vector<logger::Message>::const_iterator i = _messages.begin(); i != _messages.end(); ++i) {
         // sort them in proper order
         vector<int> lines = (*i).getLines();
         sort(lines.begin(), lines.end());
@@ -93,66 +86,52 @@ const std::string rqdql::Logger::getReport() const {
     return boost::algorithm::join(msgs, "\n");
 }
 
-/**
- * All links found between elements report to log lines
- */
-const std::vector<rqdql::Logger::Link>& rqdql::Logger::getLinks() {
+const std::vector<rqdql::logger::Link>& rqdql::Logger::getLinks() {
     using namespace std;
-    for (vector<Link>::iterator i = links.begin(); i != links.end(); ++i) {
+    for (vector<logger::Link>::iterator i = _links.begin(); i != _links.end(); ++i) {
         const void* left = (*i).getLeft();
         const void* right = (*i).getRight();
         if (!hasSubject(left)) {
-            throw rqdql::Exception(rqdql::_t("LEFT subject not found when reporting links"));
+            throw rqdql::Exception(
+                rqdql::_t("LEFT subject not found when reporting _links")
+            );
         }
         if (!hasSubject(right)) {
-            throw rqdql::Exception(rqdql::_t("RIGHT subject not found when reporting links"));
+            throw rqdql::Exception(
+                rqdql::_t("RIGHT subject not found when reporting _links")
+            );
         }
-        (*i).setLeftLines(subjects[left]);
-        (*i).setRightLines(subjects[right]);
+        (*i).setLeftLines(_subjects[left]);
+        (*i).setRightLines(_subjects[right]);
     }
-    return links;
+    return _links;
 }
 
-/**
- * Add a new subject
- * @see protocol()
- */
 void rqdql::Logger::addSubject(const void* s, int l) { 
-    subjects[s].push_back(l);
+    _subjects[s].push_back(l);
 }
 
-/**
- * We already have this subject attached to some lines?
- * @see Logger::addClone()
- */
 bool rqdql::Logger::hasSubject(const void* s) const { 
-    return subjects.find(s) != subjects.end(); 
+    return _subjects.find(s) != _subjects.end(); 
 }
 
-/**
- * Add one link between two subjects
- * Left object is the source of the link, and the right is
- * the destination
- */
 void rqdql::Logger::addLink(const void* l, const void* r) { 
-    // validate for duplicated links!
-    links.push_back(Link(l, r)); 
+    // validate for duplicated _links!
+    _links.push_back(logger::Link(l, r)); 
 }
 
-/**
- * Add object location, which is the same as the latest location of
- * another object.
- * @see Flow::makeFormula()
- * @see Flows::setFormula()
- */
 void rqdql::Logger::addClone(const void* existing, const void* n) {
     using namespace std;
     if (!hasSubject(existing)) {
-        throw rqdql::Exception(rqdql::_t("EXISTING subject not found when cloning"));
+        throw rqdql::Exception(
+            rqdql::_t("EXISTING subject not found when cloning")
+        );
     }
-    if (!subjects[existing].size()) {
-        throw rqdql::Exception(rqdql::_t("No lines were reported yet for EXISTING subject"));
+    if (!_subjects[existing].size()) {
+        throw rqdql::Exception(
+            rqdql::_t("No lines were reported yet for EXISTING subject")
+        );
     }
-    addSubject(n, *(subjects[existing].end()-1));
+    addSubject(n, *(_subjects[existing].end()-1));
 }
 

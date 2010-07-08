@@ -14,16 +14,18 @@
  * @version $Id$
  */
 
+#include <boost/test/unit_test.hpp>
+#include <boost/shared_ptr.hpp>
 #include <string>
-#include <boost/format.hpp>
-#include <boost/algorithm/string/join.hpp>
-#include "Solm/Snapshot/Set.h"
+#include "Proxy/Type.h"
+#include "Proxy/Signature.h"
+#include "Proxy/Signature/Place.h"
 
-solm::snapshot::Set::operator std::string() const {
-    using namespace std;
-    vector<string> v;
-    for (vector<int>::const_iterator i = _ids.begin(); i != _ids.end(); ++i) {
-        v.push_back((boost::format("%d") % *i).str());
-    }
-    return "[" + boost::algorithm::join(v, ", ") + "]";
+BOOST_AUTO_TEST_SUITE(SnapshotTest)
+
+BOOST_AUTO_TEST_CASE(testEmptySnapshotIsPositive) {
+    solm::Snapshot s;
+    BOOST_CHECK((bool)s);
 }
+
+BOOST_AUTO_TEST_SUITE_END()

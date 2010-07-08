@@ -14,29 +14,57 @@
  * @version $Id: Snapshot.h 2256 2010-07-08 08:30:01Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SOLM_SNAPSHOT_OBJECT_H
-#define __INCLUDE_SOLM_SNAPSHOT_OBJECT_H
+#ifndef __INCLUDE_SOLM_SNAPSHOT_OBJECT_RULE_H
+#define __INCLUDE_SOLM_SNAPSHOT_OBJECT_RULE_H
 
 #include <vector>
 #include <string>
 #include <map>
 #include <boost/format.hpp>
 #include <boost/shared_ptr.hpp>
-#include "Solm/Snapshot/Value.h"
-#include "Solm/Snapshot/Rule.h"
 
 namespace solm {
 namespace snapshot {
 
 /**
- * An object inside a snapshot
+ * Access control rule for an object
  */
-struct Object {
-    int id;
-    std::string name;
-    std::string type;
-    boost::shared_ptr<Value> value;
-    std::vector<Rule> rules;
+class Rule {
+
+public:
+    
+    /**
+     * Possible ACL operations
+     */
+    typedef enum {
+        CREATE, 
+        READ, 
+        UPDATE, 
+        DELETE
+    } Operation;
+    
+    /**
+     * Public constructor
+     */
+    Rule(Operation op, int i) : _operation(op), _id(i) { /* that's it */ }
+
+    /**
+     * Convert it to a user-friendly string
+     */
+    operator std::string() const;
+
+private:
+
+    /**
+     * Operation
+     */
+    Operation _operation;
+
+    /**
+     * Author of the operation (object ID)
+     */
+    int _id;
+
 };
 
 }

@@ -47,7 +47,7 @@ public:
      * include CREATED(), DELETED() and READ(). This list of manipulators
      * is fixed and won't be changed ever.
      */
-    const double getAmbiguity() const;
+    const double ambiguity() const;
 
     /**
      * To calculate how many formulas of a given type

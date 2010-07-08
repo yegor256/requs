@@ -20,56 +20,114 @@
 #include <vector>
 #include <map>
 #include <string>
+#include "Logger/Message.h"
+#include "Logger/Link.h"
 
 namespace rqdql {
 
+/**
+ * Universal logging component
+ */
 class Logger {
+
 public:
-    
-    class Message {
-    public:
-        Message(const std::vector<int>& v, const std::string& m) : lines(v), message(m) { /* that's it */ }
-        const std::vector<int>& getLines() const { return lines; }
-        const std::string& getMessage() const { return message; }
-    private:
-        std::vector<int> lines;
-        std::string message;
-    };
-    
-    class Link {
-    public:
-        Link(const void* l, const void* r) : left(l), right(r) { /* that's it */ }
-        const void* getLeft() const { return left; }
-        const void* getRight() const { return right; }
-        void setLeftLines(std::vector<int> l) { leftLines = l; }
-        const std::vector<int>& getLeftLines() const { return leftLines; }
-        void setRightLines(std::vector<int> l) { rightLines = l; }
-        const std::vector<int>& getRightLines() const { return rightLines; }
-    private:
-        const void* left;
-        const void* right;
-        std::vector<int> leftLines;
-        std::vector<int> rightLines;
-    };
-    Logger() : messages() { /* that's it */ }
+
+    Logger() : _subjects(), _links(), _messages() { /* that's it */ }
+
+    /**
+     * Add a new subject
+     * @see protocol()
+     */
     void addSubject(const void*, int);
+
+    /**
+     * Add object location, which is the same as the latest location of
+     * another object.
+     * @see Flow::makeFormula()
+     * @see Flows::setFormula()
+     */
     void addClone(const void*, const void*);
+
+    /**
+     * We already have this subject attached to some lines?
+     * @see Logger::addClone()
+     */
     bool hasSubject(const void*) const;
+
+    /**
+     * Add one link between two subjects
+     * Left object is the source of the link, and the right is
+     * the destination
+     */
     void addLink(const void*, const void*);
-    template <typename T> void log(const T*, const std::string&); // we know a link to an object
-    void log(int, const std::string&); // we know exact line number
-    bool empty() const { return messages.empty(); }
+
+    /**
+     * Log one line, by explicit link
+     */
+    template <typename T> void log(const T*, const std::string&);
+
+    /**
+     * Log one line, we know exact line number
+     */
+    void log(int, const std::string&);
+
+    /**
+     * 
+     */
+    bool empty() const { return _messages.empty(); }
+
+    /**
+     * Build summary report
+     */
     const std::string getReport() const;
-    const std::vector<int>& getLinesFor(const void* s) { return subjects[s]; }
-    const std::vector<Message>& getMessages() const { return messages; }
-    const std::vector<Link>& getLinks();
-    void clear() { messages.clear(); }
-    size_t size() const { return messages.size(); }
+
+    /**
+     * 
+     */
+    const std::vector<int>& getLinesFor(const void* s) { return _subjects[s]; }
+
+    /**
+     * 
+     */
+    const std::vector<logger::Message>& getMessages() const { return _messages; }
+
+    /**
+     * All links found between elements report to log lines
+     */
+    const std::vector<logger::Link>& getLinks();
+
+    /**
+     * 
+     */
+    void clear() { _messages.clear(); }
+
+    /**
+     * 
+     */
+    size_t size() const { return _messages.size(); }
+
 private:
+
+    /**
+     * 
+     */
     typedef std::map<const void*, std::vector<int> > Subjects;
-    Subjects subjects;
-    std::vector<Link> links;
-    std::vector<Message> messages;
+
+    /**
+     * 
+     */
+    Subjects _subjects;
+
+    /**
+     * 
+     */
+    std::vector<logger::Link> _links;
+
+    /**
+     * 
+     */
+    std::vector<logger::Message> _messages;
+
 };
 
 }

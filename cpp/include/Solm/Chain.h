@@ -17,6 +17,7 @@
 #ifndef __INCLUDE_SOLM_CHAIN_H
 #define __INCLUDE_SOLM_CHAIN_H
 
+#include <string>
 #include <vector>
 
 namespace solm {
@@ -66,7 +67,7 @@ public:
     /**
      * Concatenate them horizontally
      */
-    Chain& operator<<(const Fact&);
+    Chain& operator<<(const Snapshot&);
 
     /**
      * This chain has a positive ending?
@@ -77,11 +78,6 @@ public:
      * Convert this chain to a user-friendly string
      */
     operator std::string() const;
-
-    /**
-     * Get all possible chains
-     */
-    const std::vector<Chain> deriveChains() const;
 
 private:
 

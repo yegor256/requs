@@ -17,6 +17,8 @@
 #ifndef __INCLUDE_SCOPE_SCANNER_H
 #define __INCLUDE_SCOPE_SCANNER_H
 
+#include <string>
+
 typedef union {
     string* name;
     int num;
@@ -39,8 +41,14 @@ namespace rqdql {
  * Wrapper around BISON/FLEX functionality
  */
 class Scanner {
+
 public:
-    void scan(const string&); // scan input string
+    
+    /**
+     * Scan input string and inject results into proxy::Proxy
+     */
+    void scan(const std::string&);
+
 };
 
 }

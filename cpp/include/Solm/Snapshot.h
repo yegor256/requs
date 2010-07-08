@@ -19,6 +19,8 @@
 
 #include <vector>
 #include <string>
+#include "Solm/Chain.h"
+#include "Solm/Snapshot/Object.h"
 
 namespace solm {
 
@@ -40,7 +42,7 @@ public:
     Snapshot();
 
     /**
-     * The fact is positive?
+     * The snapshot is positive?
      */
     operator bool() const;
 
@@ -59,23 +61,18 @@ public:
      */
     void set(const Chain& c) { _chain = c; }
 
-    // Object& create(const string&);
-    // void assignId(Object&) const;
-    // void deassignId(Object&) const;
-    // void assignName(Object&, const string&) const;
-    // bool hasName(const string&) const;
-    // const vector<string> getNames() const;
-    // Object& getByName(const string&); // non-const intentionally
-    
 private:
     
     /**
      * Set chain to this snapshot
      */
-    vector<Object> objects;
-
-    int computeNextId() const;
-    void isMine(Object&) const;
+    std::vector<snapshot::Object> _objects;
+    
+    /**
+     * Sub-chain
+     */
+    Chain _chain;
+    
 };
 
 }
