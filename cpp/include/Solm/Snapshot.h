@@ -36,90 +36,31 @@ class Declaration;
  */
 class Snapshot {
 public:
-    class Object {
-    public:
-        class Value {
-        public:
-            virtual const string toString() const = 0;
-        };
-        class ValueString : public Value {
-        public:
-            ValueString(const string& s) : value(s) { /* that's it */ }
-            const string toString() const { return value; }
-        private:
-            string value;
-        };
-        class ValueSet : public Value {
-        public:
-            ValueSet(const vector<int>& v) : ids(v) { /* that's it */ }
-            const string toString() const;
-        private:
-            vector<int> ids;
-        };
-        class AssocMember {
-        public:
-            virtual const string toString() const = 0;
-        };
-        class AssocMemberId : public AssocMember {
-        public:
-            const string toString() const { return (boost::format("%d") % id).str(); }
-        private:
-            int id;
-        };
-        class AssocMemberName : public AssocMember {
-        public:
-            const string toString() const { return name; }
-        private:
-            string name;
-        };
-        class ValueAssoc : public Value, 
-            public pair<boost::shared_ptr<AssocMember>, boost::shared_ptr<AssocMember> > {
-        public:    
-            const string toString() const { first->toString() + ":" + second->toString(); }
-        };
-        class AclRule {
-        public:
-            typedef enum {CREATE, READ, UPDATE, DELETE} Operation;
-            AclRule(Operation op, int i) : operation(op), id(i) { /* that's it */ }
-            const string toString() const;
-        private:
-            Operation operation;
-            int id;
-        };
-        Object(const string& t) : id(0), name(""), type(t), value(), rules() { /* that's it */ }
-        int getId() const;
-        bool hasId() const;
-        const string& getName() const;
-        bool hasName() const { return !name.empty(); }
-        const string& getType() const;
-        void setType(const string&);
-        bool hasType() const { return !type.empty(); }
-        const boost::shared_ptr<const Value>& getValue() const;
-        bool hasValue() const { return (bool)value; }
-        void setValue(const boost::shared_ptr<const Value>& v) { value = v; }
-        void setValue(const string&);
-        void setValue(const vector<int>&);
-        void addRule(const AclRule& r) { rules.push_back(r); }
-        const vector<AclRule>& getRules() const { return rules; }
-    private:
-        int id;
-        string name;
-        string type;
-        boost::shared_ptr<const Value> value; 
-        vector<AclRule> rules;
+    
+    /**
+     * The fact is positive?
+     */
+    operator bool() const;
 
-        friend class Snapshot;
-        void setName(const string& n) { name = n; }
-        void setId(int i) { id = i; }
-        void removeId();
-        int computeNextId() const;
-    };
-    class Mapping : public map<string, string> {
-    public:
-        const string& map(const string& s) const;
-        bool has(const string& s) const;
-    };
-    static const Mapping NullMapping;
+    /**
+     * Conver it to a user-friendly string
+     */
+    virtual operator std::string() const;
+
+    /**
+     * Two paths are equal?
+     */
+    bool operator==(const Fact&) const;
+
+    /**
+     * Outgoing context to retrieve
+     */
+    operator Context() const;
+
+    /**
+     * Set outcome to this path
+     */
+    void set(const Outcome& o) { _outcome = o; }
     bool operator==(const Snapshot&) const;
     const string toString() const;
     Object& create(const string&);
