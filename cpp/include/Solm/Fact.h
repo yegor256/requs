@@ -37,8 +37,13 @@ class Fact {
 public:
 
     /**
+     * Public constructor
+     */
+    Fact();
+
+    /**
      * The fact is positive? To be overriden in FactPath
-     * @see FactPath::boo()
+     * @see FactPath::bool()
      */
     virtual operator bool() const;
 
@@ -65,7 +70,7 @@ public:
 private:
 
     /**
-     *
+     * Sub-Outcome
      */
     Outcome _outcome;
 

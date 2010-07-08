@@ -38,7 +38,7 @@ virtual Outcome solm::Variadic::operator+(const Context& ctx) const;
     Outcome out(ctx);
     switch (operand) {
         /**
-         * We should align all formulas is a long VERTICAL list
+         * We should align all formulas in a long VERTICAL list
          * of facts. We do it by means of Outcome::operator+().
          */
         case OP_TO:
