@@ -11,7 +11,7 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
 #ifndef __INCLUDE_SCOPE_PROXY_SIGNATURE_H
@@ -39,6 +39,7 @@ class Type;
  * access them with explanations.
  */
 class Signature {
+    
 public:
 
     /**
@@ -73,7 +74,7 @@ public:
     /**
      * Convert this signature to a user-friendly string
      */
-    const std::string toString() const { return _text; }
+    operator std::string() const { return _text; }
 
     /**
      * Compare two signatures and match them. Returns TRUE if
@@ -82,15 +83,9 @@ public:
     bool operator==(const Signature&) const;
 
     /**
-     * This signature is already a formula ready-to-go into SOLM?
-     * @see Flow::getTarget()
+     * Convert this signature to a formula
      */
-    bool isFormula() const;
-
-    /**
-     * Get the formula ready-to-go into SOLM
-     */
-    boost::shared_ptr<solm::Formula> makeFormula() const;
+    operator solm::Formula() const;
 
 private:
     

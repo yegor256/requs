@@ -11,7 +11,7 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: SignatureTest.cpp 2249 2010-07-05 16:57:14Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
 #include <boost/test/unit_test.hpp>

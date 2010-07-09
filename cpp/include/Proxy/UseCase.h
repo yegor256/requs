@@ -11,7 +11,7 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
 #ifndef __INCLUDE_SCOPE_PROXY_USECASE_H
@@ -28,17 +28,50 @@ namespace proxy {
  */
 class Signature;
 
+/**
+ *
+ */
 class UseCase : public Entity, public Flows {
+
 public:
+
+    /**
+     *
+     */
     UseCase() : Flows(), _signature() { /* that's it */ }
+
+    /**
+     *
+     */
     void setSignature(const boost::shared_ptr<Signature>& s) { _signature = s; }
+
+    /**
+     *
+     */
     const std::string toString() const;
+
+    /**
+     *
+     */
     std::string& name();
+
+    /**
+     *
+     */
     bool hasName() const; 
+
+    /**
+     *
+     */
     boost::shared_ptr<Signature>& signature() { return _signature; }
     
 private:
+
+    /**
+     *
+     */
     boost::shared_ptr<Signature> _signature;
+
 };
 
 }

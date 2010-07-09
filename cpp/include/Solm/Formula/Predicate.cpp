@@ -22,7 +22,7 @@ solm::Predicate::operator std::string() const {
     return 
     _name 
     + "(" 
-    + boost::algorithm::join(Parametrized<Predicate>::getVars(), ", ") 
+    + Parametrized<Predicate>::operator std::string()
     + ")";
 }
 

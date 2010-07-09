@@ -24,7 +24,8 @@
 template <typename T> solm::Quantifier<T>::operator std::string() const {
     // it's a stub
     return 
-    "QUANTIFIER" + " " 
+    std::string("QUANTIFIER")
+    + " " 
     + Parametrized<T>::operator std::string()
     + "(" 
     + Variadic::operator std::string() 

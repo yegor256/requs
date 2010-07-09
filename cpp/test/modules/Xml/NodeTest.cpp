@@ -11,7 +11,7 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: SnapshotTest.cpp 2262 2010-07-08 11:31:27Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
 #include <boost/test/unit_test.hpp>
