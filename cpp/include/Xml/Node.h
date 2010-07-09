@@ -45,6 +45,11 @@ public:
     Node operator+(const std::string&);
 
     /**
+     * Get a child
+     */
+    Node operator/(const std::string&);
+
+    /**
      * Set value of a node (as text)
      */
     template <typename T> Node& operator=(const T&);
@@ -55,11 +60,6 @@ public:
     Attribute operator[](const std::string&);
 
 };
-
-/**
- * Get a child
- */
-Node operator/(pugi::xml_node n, const std::string& s);
 
 }
 

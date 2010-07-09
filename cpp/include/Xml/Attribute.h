@@ -30,14 +30,18 @@ class Attribute : public pugi::xml_attribute {
 public:
 
     /**
-     * Public constructor
-     */
-    Attribute(pugi::xml_attribute& a) : xml_attribute(a) { /* that's it */ }
-
-    /**
      * Set attribute value
      */
     template <typename T> void operator=(const T&);
+
+private:
+    
+    friend class Node;
+    
+    /**
+     * Private constructor, available only to class Node
+     */
+    Attribute(pugi::xml_attribute& a) : xml_attribute(a) { /* that's it */ }
 
 };
 

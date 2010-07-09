@@ -19,19 +19,19 @@
 #include "Xml/Node.h"
 #include "Xml/Attribute.h"
 
-Xml::Node operator/(pugi::xml_node n, const std::string& s) {
-    pugi::xml_node x = n.child(s.c_str());
+Xml::Node Xml::Node::operator/(const std::string& s) {
+    pugi::xml_node x = child(s.c_str());
     if (x.empty()) {
-        x = n.append_child();
+        x = append_child();
         x.set_name(s.c_str());
     }
-    return Xml::Node(x);
+    return Node(x);
 }
 
 Xml::Node Xml::Node::operator+(const std::string& s) {
     pugi::xml_node n = append_child();
     n.set_name(s.c_str());
-    return Xml::Node(n);
+    return Node(n);
 }
 
 namespace Xml {
@@ -61,5 +61,5 @@ template<> Node& Node::operator=(const int& i) {
 
 Xml::Attribute Xml::Node::operator[](const std::string& s) {
     pugi::xml_attribute a = append_attribute(s.c_str());
-    return Xml::Attribute(a);
+    return Attribute(a);
 }
