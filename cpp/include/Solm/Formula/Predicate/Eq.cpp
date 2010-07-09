@@ -11,7 +11,7 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Solm.h 1811 2010-05-10 14:36:27Z yegor256@yahoo.com $
+ * @version $Id$
  *
  * This file is included ONLY from Solm.h
  */

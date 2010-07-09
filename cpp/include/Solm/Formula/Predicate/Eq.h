@@ -11,21 +11,28 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Silent.h 2095 2010-05-28 07:26:19Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
 #ifndef __INCLUDE_SOLM_FORMULA_PREDICATE_EQ_H
 #define __INCLUDE_SOLM_FORMULA_PREDICATE_EQ_H
 
-#include <vector>
-
 #include "Solm/Formula/Predicate.h"
 
 namespace solm {
 
+/**
+ * EQ() predicate
+ */
 class Eq : public Predicate {
+
 public:
+
+    /**
+     * Public constructor
+     */
     Eq() : Predicate("eq") { /* that's it */ }
+
 };
 
 }

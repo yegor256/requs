@@ -11,7 +11,7 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Silent.h 2098 2010-05-28 09:50:32Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
 /**
