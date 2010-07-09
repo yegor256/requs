@@ -18,18 +18,21 @@
 #define __INCLUDE_SOLM_FORMULA_DECLARATION_H
 
 #include <string>
-#include "Solm/Formula/Unary.h"
+#include "Solm/Formula/Variadic.h"
 #include "Solm/Formula/Parametrized.h"
-#include "Solm/Outcome.h"
-#include "Solm/Fact.h"
-#include "Solm/Snapshot.h"
 
 namespace solm {
+    
+/**
+ * Forward declarations
+ */
+class Chain;
+class Context;
 
 /**
  * Declaration of a new predicate
  */
-class Declaration : public Unary<Declaration>, public Parametrized<Declaration> {
+class Declaration : public Variadic, public Parametrized<Declaration> {
 public:
     
     /**

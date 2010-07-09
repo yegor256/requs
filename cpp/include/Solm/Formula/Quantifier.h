@@ -18,7 +18,6 @@
 #define __INCLUDE_SOLM_FORMULA_QUANTIFIER_H
 
 #include <string>
-#include "Solm/Formula/Unary.h"
 #include "Solm/Formula/Parametrized.h"
 
 namespace solm {
@@ -26,7 +25,7 @@ namespace solm {
 /**
  * Quantifier
  */
-template <typename T> class Quantifier : public Unary<T>, public Parametrized<T> {
+template <typename T> class Quantifier : public Formula, public Parametrized<T> {
 
 public:
 

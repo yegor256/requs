@@ -43,7 +43,7 @@ public:
      * Abstract method, to convert this formula to a user-friendly
      * string format. The method has to be overriden in child classes.
      */
-    virtual const operator std::string() const = 0;
+    virtual operator std::string() const = 0;
 
     /**
      * Abstract method, to resolve this formula on some context

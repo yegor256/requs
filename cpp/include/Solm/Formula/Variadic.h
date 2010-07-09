@@ -64,7 +64,7 @@ public:
     /**
      * Convert this class to a user-friendly string, to PREDICATES in LaTeX
      */
-    virtual const operator std::string() const;
+    virtual operator std::string() const;
 
     /**
      * To resolve this formula on some context

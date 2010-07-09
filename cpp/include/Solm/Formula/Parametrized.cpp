@@ -14,19 +14,19 @@
  * @version $Id: Silent.h 2095 2010-05-28 07:26:19Z yegor256@yahoo.com $
  */
  
+#include <boost/format.hpp>
+#include <boost/algorithm/string/join.hpp> // boost::algorithm::join()
 #include "Solm/Formula/Parametrized.h"
 
-#include "boost/format.hpp"
-
-/**
- * Get argument and validate its existense, beforehand
- */
-template <typename T> const std::string& Parametrized<T>::getVar(size_t i) const {
+template <typename T> const std::string& solm::Parametrized<T>::arg(size_t i = 0) const {
     if (i >= vars.size()) {
         throw rqdql::Exception(
             boost::format(rqdql::_t("Var[%d] is out of range")) % i
         );
     }
-    return vars[i];
+    return _arguments[i];
 }
 
+solm::Declaration::operator std::string() const { 
+    return boost::algorithm::join(_arguments, ", ");
+}

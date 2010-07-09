@@ -17,9 +17,12 @@
 #include <string>
 #include <boost/regex.hpp> // boost::regex_match
 #include <boost/algorithm/string/join.hpp> // boost::algorithm::join()
+#include "rqdql.h"
+#include "rqdql/Exception.h"
 #include "Solm/Formula/Declaration.h"
 
-Declaration::Declaration(const std::string& n) : Unary<Declaration>(), Parametrized<Declaration>() {
+solm::Declaration::Declaration(const std::string& n) : 
+    solm::Variadic(solm::Variadic::OP_AND), solm::Parametrized<solm::Declaration>() {
     if (!boost::regex_match(n, boost::regex("[a-zA-Z][a-zA-Z0-9\\.]+"))) {
         throw rqdql::Exception(
             boost::format("Invalid name for a function: '%s'") % n
@@ -28,42 +31,24 @@ Declaration::Declaration(const std::string& n) : Unary<Declaration>(), Parametri
     _name = n;
 }
 
-Outcome Declaration::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const { 
-    Fact fact;
-    fact.setFormula(this);
-    
-    Snapshot s = f.getSnapshot();
-    for (Vars::const_iterator i = getVars().begin(); i != getVars().end(); ++i) {
-        Snapshot::Object& obj = s.create("");
-        s.assignName(obj, *i);
-        s.assignId(obj);
-    }
-    fact.setSnapshot(s);
-    
-    return (Outcome() << fact) + getFormula()->getOutcome(fact); 
+solm::Chain solm::Declaration::operator+(const solm::Context&) {
+    // Fact fact;
+    // fact.setFormula(this);
+    // 
+    // Snapshot s = f.getSnapshot();
+    // for (Vars::const_iterator i = getVars().begin(); i != getVars().end(); ++i) {
+    //     Snapshot::Object& obj = s.create("");
+    //     s.assignName(obj, *i);
+    //     s.assignId(obj);
+    // }
+    // fact.setSnapshot(s);
+    // 
+    // return (Outcome() << fact) + getFormula()->getOutcome(fact); 
+    return Chain();
 }
 
-const std::string Declaration::toString() const { 
+solm::Declaration::operator std::string() const { 
     using namespace std;
-    string f;
-    if (Unary<Declaration>::getFormulas().size() != 1) {
-        rqdql::get<rqdql::Logger>().log(
-            this, 
-            boost::format("Declaration '%s' shall have exactly one formula inside") % name
-        );
-        f = Err("'missed formula").toString();
-    } else {
-        f = getFormula()->toString();
-    }
-    
-    Vars v = getVars();
-    if (!getVars().size()) {
-        rqdql::get<rqdql::Logger>().log(
-            this, 
-            boost::format("Declaration '%s' shall have at least one argument") % name
-        );
-        v.push_back("x");
-    }
-    
-    return name + "(" + boost::algorithm::join(v, ", ") + "): " + f;
+    return _name + "(" + Parametrized<Declaration>::operator string()
+        + "): " + Variadic::operator string();
 }
