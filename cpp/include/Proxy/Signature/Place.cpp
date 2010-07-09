@@ -20,12 +20,13 @@
 #include "rqdql/Exception.h"
 #include "Proxy/Type.h"
 #include "Proxy/Signature.h"
+#include "Proxy/Signature/Place.h"
 
-proxy::signature::Place() : _type(), _slot(), _object() { 
+proxy::signature::Place::Place() : _type(), _slot(), _object() { 
     /* that's it */ 
 }
 
-void proxy::signature::Place::isExplained() { 
+bool proxy::signature::Place::isExplained() const { 
     if (_type) {
         return true;
     }
@@ -37,7 +38,7 @@ void proxy::signature::Place::isExplained() {
 
 void proxy::signature::Place::explain(const boost::shared_ptr<Type>& t) { 
     if (isExplained()) {
-        throw AlreadyExplainedException(
+        throw rqdql::Exception(
             rqdql::_t("Place is already explained")
         );
     }
@@ -46,7 +47,7 @@ void proxy::signature::Place::explain(const boost::shared_ptr<Type>& t) {
 
 void proxy::signature::Place::explain(const std::string& s, const std::string& o) { 
     if (isExplained()) {
-        throw AlreadyExplainedException(
+        throw rqdql::Exception(
             rqdql::_t("Place is already explained")
         );
     }
@@ -54,15 +55,10 @@ void proxy::signature::Place::explain(const std::string& s, const std::string& o
     _object = o; 
 }
 
-const std::string proxy::signature::Place::toString() const {
+proxy::signature::Place::operator std::string() const {
     // this is a type, like "ActorUser" or "PhotoFile"
     if (_type) {
-        if (!_type->hasName()) {
-            throw rqdql::Exception(
-                rqdql::_t("Nameless type inside signature, how come?")
-            );
-        }
-        return _type->name();
+        return "{type}";
     }
     // this is a slot of an object, like "Name of ActorUser"
     if (!_slot.empty() && !_object.empty()) {

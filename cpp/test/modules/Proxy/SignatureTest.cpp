@@ -24,6 +24,7 @@ BOOST_AUTO_TEST_CASE(testSignatureCanBeCreatedWithText) {
     // const std::string s = "{alpha} works with {beta}";
     // proxy::Signature sig = proxy::Signature(s);
     // BOOST_CHECK_EQUAL(2, sig.size());
+    // BOOST_MESSAGE(rqdql::tout << sig);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

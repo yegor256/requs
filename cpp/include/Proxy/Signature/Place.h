@@ -25,18 +25,20 @@
 #include "rqdql/Exception.h"
 
 namespace proxy {
+    
+/**
+ * Forward declaration
+ */
+class Signature;
+
 namespace signature {
 
 /**
  * One place inside a signature
  */
 class Place {
-public:
     
-    /**
-     * The exception to be thrown
-     */
-    class exPlaceIsAlreadyExplained : public rqdql::Exception {};
+public:
     
     /**
      * This place is already explained
@@ -56,7 +58,7 @@ public:
     /**
      * Convert this place to a user-friendly format
      */
-    const std::string toString() const;
+    operator std::string() const;
     
 private:
 

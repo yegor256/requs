@@ -11,46 +11,41 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
- *
- * This file has to be included ONLY from Analytics.h
+ * @version $Id: Exception.h 2273 2010-07-09 18:29:48Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SCOPE_ANALYSTS_TC_TESTCASE_H
-#define __INCLUDE_SCOPE_ANALYSTS_TC_TESTCASE_H
+#ifndef __INCLUDE_RQDQL_EXCEPTION_H
+#define __INCLUDE_RQDQL_EXCEPTION_H
 
 #include <string>
+#include <sstream>
+#include <boost/format.hpp>
 
-namespace analysts {
-namespace tc {
-    
+namespace rqdql {
+
 /**
- * One Test Case, as an instruction to a tester
+ * Test typer
  */
-class TestCase {
+class Tt {
 
 public:
 
     /**
-     * Public constructor
+     * Convert it to string
      */
-    TestCase() { /* that's it */ }
-
-    /**
-     * Convert it to XMI
-     */
-    const std::string getXmi() const;
+    operator std::string() const;
 
 private:
 
     /**
-     *
+     * Stream to collect texts
      */
-    // solm::FactPath factPath;
+    std::stringstream _stream;
 
 };
 
-}
+extern Tt tt;
+    
 }
 
 #endif

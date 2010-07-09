@@ -22,9 +22,10 @@
 #include <boost/algorithm/string/regex.hpp> // boost::algorithm::replace_all_regex_copy()
 #include "rqdql.h"
 #include "rqdql/Exception.h"
+#include "Proxy/Signature/Place.h"
 #include "Proxy/Signature.h"
 
-proxy::Signature(const std::string& t) : _text(), _places() {
+proxy::Signature::Signature(const std::string& t) : _text(), _places() {
     using namespace std;
     
     /**
@@ -34,7 +35,7 @@ proxy::Signature(const std::string& t) : _text(), _places() {
     string::const_iterator end = _text.end();
     boost::match_results<string::const_iterator> what;
     while (boost::regex_search(begin, end, what, boost::regex("\\{(.*?)\\}"))) {
-        _places[string(what[1].first, what[2].second-1)] = Place();
+        _places[string(what[1].first, what[2].second-1)] = signature::Place();
         begin = what[0].second;
     }
 
@@ -47,8 +48,8 @@ proxy::Signature(const std::string& t) : _text(), _places() {
     Replacers replacers;
     replacers["\\{.*?\\}"] = "{...}";
     replacers["[ \\t\\n\\r]+"] = " ";
-    _text = boost::algorithm::to_lower_copy(s);
-    for (Replacers::const_iterator i = reps.begin(); i != reps.end(); ++i) {
+    _text = boost::algorithm::to_lower_copy(t);
+    for (Replacers::const_iterator i = replacers.begin(); i != replacers.end(); ++i) {
         _text = boost::algorithm::replace_all_regex_copy(
             _text, // source string
             boost::regex((*i).first), // what to find
@@ -57,62 +58,20 @@ proxy::Signature(const std::string& t) : _text(), _places() {
     }
 }
 
-size_t proxy::Signature::size() const {
-    return _places.size();
-}
-
-Place& proxy::Signature::place(const std::string& n) { 
+proxy::signature::Place& proxy::Signature::place(const std::string& n) { 
     /**
      * Maybe this place is just absent?
      */
-    if (!_places.find(n) == _places.end()) {
-        throw exAbsentPlace(
+    if (_places.find(n) != _places.end()) {
+        throw rqdql::Exception(
             boost::format("There is no place '%s' in '%s'") 
             % n 
             % _text
         );
     }
-    return _places.find(n);
+    return _places.find(n)->second;
 }
 
 bool proxy::Signature::operator==(const proxy::Signature& s) const {
     return _text == s._text;
-}
-
-bool proxy::Signature::isFormula() const {
-    try {
-        makeFormula();
-    } catch (...) {
-        return false;
-    }
-    return true;
-}
-
-boost::shared_ptr<solm::Formula> proxy::Signature::makeFormula() const {
-    using namespace std;
-    
-    // if (regex_match(t, regex("\\{...\\} reads? \\{...\\}"))) {
-    //     return (new Read())->arg(_getPlaceName(0))->arg(_getPlaceName(1));
-    // }
-    // if (regex_match(t, regex("\\{...\\} creates? \\{...\\}"))) {
-    //     return (new Created())->arg(_getPlaceName(0))->arg(_getPlaceName(1));
-    // }
-    // if (regex_match(t, regex("\\{...\\} deletes? \\{...\\}"))) {
-    //     return (new Deleted())->arg(_getPlaceName(0))->arg(_getPlaceName(1));
-    // }
-    // if (regex_match(t, regex("\\{...\\} updates? \\{...\\}"))) {
-    //     return (new Updated())->arg(getPlaceName(0))->arg(getPlaceName(1));
-    // }
-    // if (regex_match(t, regex("\\{...\\} turns? into \\{...\\}"))) {
-    //     return new Info("'not implemented yet: " + t);
-    // }
-    // if (regex_match(t, regex("failure"))) {
-    //     return (new Throw())->arg("'not implemented yet");
-    // }
-    // if (regex_match(t, regex("if failure"))) {
-    //     return (new Caught())->arg("'not implemented yet");
-    // }
-    throw rqdql::Exception(
-        boost::format(rqdql::_t("Signature '%s' is not a formula")) % _text
-    );
 }

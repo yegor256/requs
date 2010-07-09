@@ -29,6 +29,12 @@ namespace proxy {
  * Forward declarations
  */
 class Slot;
+class Type;
+
+/**
+ * To add TYPE to a Variadic formula
+ */
+solm::Variadic operator+=(const solm::Variadic&, const Type&);
 
 /**
  * One individual TYPE, like ActorUser, UserPhoto, etc.
@@ -76,11 +82,6 @@ public:
      */
     operator std::string() const;
 
-    /**
-     * Create a formula out of this type
-     */
-    operator solm::Formula() const;
-    
 private:
 
     /**

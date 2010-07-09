@@ -18,32 +18,33 @@
 #include <string>
 #include <boost/format.hpp>
 #include <boost/algorithm/string/replace.hpp>
-#include "Proxy/Flow.h"
 #include "rqdql.h"
 #include "Logger.h"
+#include "Proxy/Flow.h"
 
-boost::shared_ptr<proxy::Flows>& proxy::Flow::add(const boost::shared_ptr<solm::Formula>& f) { 
-    return alternatives[f] = new Flows; 
+proxy::Flows& proxy::Flow::add(const solm::Formula& f) { 
+    solm::Variadic v;
+    v += f;
+    return _alternatives[v]; 
 }
 
-boost::shared_ptr<proxy::Flows>& proxy::Flow::find(char c) {
+proxy::Flows& proxy::Flow::find(char c) {
     using namespace std;
     
     boost::shared_ptr<proxy::Flows> found = 0;
     char now = 'a';
     for (Alternatives::const_iterator i = _alternatives.begin(); i != _alternatives.end(); ++i) {
         if (now == c) {
-            found = (*i).second;
-            break;
+            return (*i).second;
         }
         now++;
     }
-    if (!found) {
-        string msg = (boost::format(rqdql::_t("'Alternative '%c' is not found")) % c).str();
-        rqdql::get<rqdql::Logger>().log(this, msg);
-        found = add(new solm::Err(msg));
-    }
-    return found;
+    // if (!found) {
+    //     string msg = (boost::format(rqdql::_t("'Alternative '%c' is not found")) % c).str();
+    //     rqdql::get<rqdql::Logger>().log(this, msg);
+    //     found = add(new solm::Err(msg));
+    // }
+    // return found;
 }
 
 const std::string proxy::Flow::toString() const {
@@ -55,10 +56,6 @@ const std::string proxy::Flow::toString() const {
     return str;
 }
 
-/**
- * Convert Flow into SOLM formula
- * @see Flows::makeSequence()
- */
 solm::Formula* proxy::Flow::makeFormula() const {
     using namespace std;
     using namespace solm;

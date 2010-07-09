@@ -14,9 +14,10 @@
  * @version $Id$
  */
 
+#include <string>
 #include <map>
-#include <boost/shared_ptr.hpp>
 #include "Solm/Formula.h"
+#include "Solm/Formula/Variadic.h"
 
 namespace proxy {
     
@@ -36,44 +37,24 @@ public:
     /** 
      * Public constructor
      */
-    Flow(const std::string& t, const boost::shared_ptr<Signature>& s) : _text(t), _signature(s) { /* that's it */ }
-
-    /** 
-     * Public constructor
-     */
-    Flow(const std::string& t) : _text(t), _signature() { /* that's it */ }
-
-    /** 
-     * Public constructor
-     */
-    Flow() : _text(), _signature() { /* that's it */ }
+    Flow(const std::string& t, const Signature& s) : _text(t), _signature(s) { /* that's it */ }
 
     /** 
      * Add new alternative to the flow
      */
-    boost::shared_ptr<Flows>& add(const boost::shared_ptr<solm::Formula>&);
+    Flows& add(const solm::Formula&);
 
     /** 
      * Find an alternative by an indexed char, or add it if not found
      */
-    boost::shared_ptr<Flows>& find(char);
-
-    /** 
-     * Convert this flow to a user-friendly string
-     */
-    const std::string toString() const;
-
-    /** 
-     * Convert the flow to the SOLM formula
-     */
-    boost::shared_ptr<solm::Formula> makeFormula() const;
+    Flows& find(char);
 
 private:
 
     /** 
-     * Public constructor
+     * List of alternatives
      */
-    typedef std::map<boost::shared_ptr<solm::Formula>, boost::shared_ptr<Flows> > Alternatives;
+    typedef std::map<solm::Variadic, Flows> Alternatives;
 
     /** 
      * Textual image of the flow
@@ -81,19 +62,14 @@ private:
     std::string _text;
 
     /** 
-     * Public constructor
+     * Signature of the FLOW
      */
-    boost::shared_ptr<Signature> signature;
+    Signature _signature;
 
     /** 
      * List of named alternatives
      */
     Alternatives _alternatives;
-
-    /** 
-     * get Formula which is called by this signature
-     */
-    boost::shared_ptr<solm::Formula>& target() const;
 
 };
 

@@ -21,7 +21,6 @@
 #include <map>
 #include <string>
 #include <boost/shared_ptr.hpp>
-#include "Solm/Formula.h"
 #include "rqdql/Exception.h"
 #include "Proxy/Signature/Place.h"
 
@@ -43,12 +42,6 @@ class Signature {
 public:
 
     /**
-     * Place is absent and can't be found in the signature
-     * @see place()
-     */
-    class exPlaceIsAbsent : public rqdql::Exception {};
-
-    /**
      * Named list of places inside the signature
      */
     typedef std::map<std::string, signature::Place> Places;
@@ -60,16 +53,12 @@ public:
 
     /**
      * Find and return a position inside a signature. If the position/place
-     * is absent the method will throw an exception.
-     *
+     * is absent the method will throw an exception. Place is an element
+     * of a signature that's why a reference is provided. It's a composition
+     * relationship between objects.
      * @see brokers::SignatureHolder::setSignature()
      */
     signature::Place& place(const std::string&);
-
-    /**
-     * Get size of signature, in places. How many places this signature has
-     */
-    size_t size() const;
 
     /**
      * Convert this signature to a user-friendly string
@@ -81,11 +70,6 @@ public:
      * two signatures look identical or very similar.
      */
     bool operator==(const Signature&) const;
-
-    /**
-     * Convert this signature to a formula
-     */
-    operator solm::Formula() const;
 
 private:
     
