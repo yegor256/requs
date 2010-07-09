@@ -27,16 +27,38 @@ namespace Xml {
  */
 class Attribute;
 
+/**
+ * XML Node
+ */
 class Node : public pugi::xml_node {
+
 public:
+
+    /**
+     * Public constructor
+     */
     Node(pugi::xml_node& n) : xml_node(n) { /* that's it */ }
+
+    /**
+     * Add new child node
+     */
     Node operator+(const std::string&);
-    Node& operator=(const std::string&);
-    Node& operator=(double);
-    Node& operator=(int);
+
+    /**
+     * Set value of a node (as text)
+     */
+    template <typename T> Node& operator=(const T&);
+
+    /**
+     * Retrieve an attribute
+     */
     Attribute operator[](const std::string&);
+
 };
 
+/**
+ * Get a child
+ */
 Node operator/(pugi::xml_node n, const std::string& s);
 
 }

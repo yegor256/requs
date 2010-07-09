@@ -14,27 +14,17 @@
  * @version $Id$
  */
 
+#include <iostream>
+#include <string>
+#include <boost/format.hpp>
+#include <boost/shared_ptr.hpp>
 #include "rqdql.h"
 #include "Logger.h"
 
-// system libraries
-#include <iostream>
-#include <string>
-
-// boost libraries
-#include "boost/format.hpp"
-#include "boost/shared_ptr.hpp"
-
-/**
- * Get LOCALIZED std::string
- */
 const std::string rqdql::_t(const std::string& s) {
     return s;
 }
 
-/**
- * Get a singleton copy of a module/class
- */
 template <typename T> T& rqdql::get() {
     static T* t;
     if (!t) {
@@ -43,9 +33,6 @@ template <typename T> T& rqdql::get() {
     return *t;
 }
 
-/**
- * To log a line
- */
 void rqdql::log(const LogLevel lvl, const std::string& line) {   
     std::string label;
     switch (lvl) {

@@ -22,11 +22,23 @@
 
 namespace Xml {
 
+/**
+ * XML Attribute
+ */
 class Attribute : public pugi::xml_attribute {
+
 public:
+
+    /**
+     * Public constructor
+     */
     Attribute(pugi::xml_attribute& a) : xml_attribute(a) { /* that's it */ }
-    void operator=(const std::string&);
-    void operator=(int);
+
+    /**
+     * Set attribute value
+     */
+    template <typename T> void operator=(const T&);
+
 };
 
 }

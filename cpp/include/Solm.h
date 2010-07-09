@@ -34,6 +34,7 @@ class Declaration;
  * to manipulate with the collection.
  */
 class Solm : public Variadic {
+    
 public:
 
     /**

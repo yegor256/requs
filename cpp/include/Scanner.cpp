@@ -14,16 +14,13 @@
  * @version $Id$
  */
 
+#include <string>
 #include "Scanner.h"
-#include "Logger.h"
 #include "Scanner/supplementary.h"
 #include "Scanner/rqdql.y.c"
 #include "Scanner/rqdql.l.c"
 
-/**
- * Run scanner
- */
-void Scanner::scan(const string& s) {
+void rqdql::Scanner::scan(const std::string& s) {
     yylineno = 1; // reset line number to 1
     yy_switch_to_buffer(yy_scan_string(s.c_str()));
     yyparse();

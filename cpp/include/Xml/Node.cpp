@@ -34,23 +34,29 @@ Xml::Node Xml::Node::operator+(const std::string& s) {
     return Xml::Node(n);
 }
 
-Xml::Node& Xml::Node::operator=(const std::string& s) {
+namespace Xml {
+template<> Node& Node::operator=(const std::string& s) {
     append_child(pugi::node_pcdata).set_value(s.c_str());
     return *this;
 }
+}
 
-Xml::Node& Xml::Node::operator=(double d) {
+namespace Xml {
+template<> Node& Node::operator=(const double& d) {
     append_child(pugi::node_pcdata).set_value(
         (boost::format("%0.3f") % d).str().c_str()
     );
     return *this;
 }
+}
 
-Xml::Node& Xml::Node::operator=(int i) {
+namespace Xml {
+template<> Node& Node::operator=(const int& i) {
     append_child(pugi::node_pcdata).set_value(
         (boost::format("%d") % i).str().c_str()
     );
     return *this;
+}
 }
 
 Xml::Attribute Xml::Node::operator[](const std::string& s) {

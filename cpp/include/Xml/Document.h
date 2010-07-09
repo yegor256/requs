@@ -23,7 +23,7 @@
 namespace Xml {
 
 /**
- * forward declaration
+ * Forward declaration
  */
 class Node;
 

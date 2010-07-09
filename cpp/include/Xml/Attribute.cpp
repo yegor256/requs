@@ -14,16 +14,19 @@
  * @version $Id$
  */
 
-#include "Xml/Attribute.h"
-
 #include <string>
 #include <boost/format.hpp>
+#include "Xml/Attribute.h"
 
-void Xml::Attribute::operator=(const std::string& s) {
+namespace Xml {
+template<> void Attribute::operator=(const std::string& s) {
     set_value(s.c_str());
 }
+}
  
-void Xml::Attribute::operator=(int i) {
+namespace Xml {
+template<> void Attribute::operator=(const int& i) {
     set_value((boost::format("%d") % i).str().c_str());
+}
 }
  
