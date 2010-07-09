@@ -11,30 +11,28 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
- *
- * This file is included ONLY from Front.h
+ * @version $Id$
  */
 
 #include <vector>
 #include "rqdql.h"
 #include "Front/Tc.h"
 #include "Xml/Node.h"
-#include "Analysts.h"
-#include "Analysts/Tc.h"
+// #include "Analysts.h"
+// #include "Analysts/Tc.h"
 
-void front::Tc::fill(Xml::Node& n) {
-    using namespace std;
-    
-    vector<TestCase*> v = rqdql::get<Analyst>().retrieve();
-
-    for (vector<TestCase*>::const_iterator i = v.begin(); i != v.end(); ++i) {
-        Xml::Node tc = (n / "cases" + "tc");
-        tc["name"] = (*i)->getName();
-        
-        // list test case steps
-        tc / "model" = (*i)->getXmi();
-    }
+void front::Tc::fill(Xml::Node& n) const {
+    // using namespace std;
+    // 
+    // vector<TestCase*> v = rqdql::get<Analyst>().retrieve();
+    // 
+    // for (vector<TestCase*>::const_iterator i = v.begin(); i != v.end(); ++i) {
+    //     Xml::Node tc = (n / "cases" + "tc");
+    //     tc["name"] = (*i)->getName();
+    //     
+    //     // list test case steps
+    //     tc / "model" = (*i)->getXmi();
+    // }
 }
 
 

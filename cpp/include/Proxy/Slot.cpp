@@ -22,18 +22,15 @@
 proxy::Slot::Slot(
     const std::string& n, 
     const proxy::Slot::Cardinality& c, 
-    const boost::shared_ptr<solm::Formula>& f, 
     const boost::shared_ptr<proxy::Type>& t) :
-    _name(n), _cardinality(c), _formula(f), _type(t) {
+    _name(n), _cardinality(c), _type(t) {
     /* nothing for now */
 }
 
 proxy::Slot::Slot(const std::string& n) :
     _name(n), 
     _cardinality("1..n -> 1"), 
-    _formula(new solm::True()), 
-    _type(new proxy::Type())
-{
+    _type(new proxy::Type()) {
     /* nothing for now */
 }
 

@@ -11,7 +11,7 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Front.h 2240 2010-07-04 09:20:34Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
 #ifndef __INCLUDE_SCOPE_FRONT_REPORTER_H
@@ -44,6 +44,7 @@ public:
     
     /**
      * Append this reporter to the XML node provided
+     * @see Front::asXml()
      */
     void append(Xml::Node&) const;
     
@@ -59,7 +60,7 @@ protected:
      * XML node with a new element <report>, which will give all
      * details required.
      */
-    virtual void fill(Xml::Node&) = 0;
+    virtual void fill(Xml::Node&) const = 0;
     
     /**
      * Get one parameter by its name and type. Second param is the
@@ -67,7 +68,7 @@ protected:
      * found. For example:
      * getParam<string>("filename", "/dev/null")
      */
-    template <typename T> T getParam(const std::string& n, const T&);
+    template <typename T> T getParam(const std::string& n, const T&) const;
     
 private:
 

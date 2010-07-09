@@ -11,44 +11,44 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
+ * @version $Id$
  *
  * This file is included ONLY from Front.h
  */
 
 #include "Front/Metrics.h"
 
-void front::Metrics::fill(Xml::Node& n) {
-    using namespace solm;
-    // scope ambiguity
-    n / "ambiguity" = rqdql::get<Solm>().getAmbiguity();
-
-    // manipulators to calculate
-    n / "manipulatorsCount" = 
-        rqdql::get<Solm>().countTypes<Created>()
-        + rqdql::get<Solm>().countTypes<Deleted>()
-        + rqdql::get<Solm>().countTypes<Read>();
-
-    // silent to calculate
-    n / "silentCount" = rqdql::get<Solm>().countTypes<Silent>();
-
-    // total number of errors found
-    n / "errorsCount" = (int)rqdql::get<Logger>().size();
-
-    // version of the RQDQL distribution
-    n / "version" = RQDQL_VERSION;
-
-    if (getParam<bool>("lists", true)) {
-        vector<string> v = rqdql::get<proxy::Proxy>().getNames<proxy::Type>();
-        for (vector<string>::const_iterator i = v.begin(); i != v.end(); ++i) {
-            n / "types" + "type" = *i;
-        }
-
-        v = rqdql::get<proxy::Proxy>().getNames<proxy::UseCase>();
-        for (vector<string>::const_iterator i = v.begin(); i != v.end(); ++i) {
-            n / "useCases" + "uc" = *i;
-        }
-    }
+void front::Metrics::fill(Xml::Node& n) const {
+    // using namespace solm;
+    // // scope ambiguity
+    // n / "ambiguity" = rqdql::get<Solm>().getAmbiguity();
+    // 
+    // // manipulators to calculate
+    // n / "manipulatorsCount" = 
+    //     rqdql::get<Solm>().countTypes<Created>()
+    //     + rqdql::get<Solm>().countTypes<Deleted>()
+    //     + rqdql::get<Solm>().countTypes<Read>();
+    // 
+    // // silent to calculate
+    // n / "silentCount" = rqdql::get<Solm>().countTypes<Silent>();
+    // 
+    // // total number of errors found
+    // n / "errorsCount" = (int)rqdql::get<Logger>().size();
+    // 
+    // // version of the RQDQL distribution
+    // n / "version" = RQDQL_VERSION;
+    // 
+    // if (getParam<bool>("lists", true)) {
+    //     vector<string> v = rqdql::get<proxy::Proxy>().getNames<proxy::Type>();
+    //     for (vector<string>::const_iterator i = v.begin(); i != v.end(); ++i) {
+    //         n / "types" + "type" = *i;
+    //     }
+    // 
+    //     v = rqdql::get<proxy::Proxy>().getNames<proxy::UseCase>();
+    //     for (vector<string>::const_iterator i = v.begin(); i != v.end(); ++i) {
+    //         n / "useCases" + "uc" = *i;
+    //     }
+    // }
 }
 
 

@@ -27,17 +27,48 @@ namespace front {
 class Errors;
 
 namespace errors {
-    
+
+/**
+ *
+ */    
 class Error {
+
 public:
+
+    /**
+     *
+     */    
     int line;
+
+    /**
+     *
+     */    
     std::string message;
+
+    /**
+     *
+     */    
     Error() : line(0), message() { /* .. */ }
+
+    /**
+     *
+     */    
     bool operator< (const Error& e) const { return line < e.line; }
+
+    /**
+     *
+     */    
     bool operator== (const Error& e) const { return (line == e.line) && (message == e.message); }
+
 private:
+
     friend class front::Errors;
+
+    /**
+     *
+     */    
     Error(int l, const std::string& m) : line(l), message(m) { /* .. */ }
+
 };
 
 }

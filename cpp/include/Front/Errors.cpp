@@ -11,7 +11,7 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
+ * @version $Id$
  *
  * This file is included ONLY from Front.h
  */
@@ -25,16 +25,13 @@
 #include "Xml/Node.h"
 #include "Xml/Attribute.h"
 
-/**
- * Convert errors into XML node
- */
-void front::Errors::fill(Xml::Node& n) {
+void front::Errors::fill(Xml::Node& n) const {
     using namespace std;
     
     int max = getParam<int>("max", 50);
 
     vector<errors::Error> errors;
-    typedef vector<rqdql::Logger::Message> Msgs;
+    typedef vector<rqdql::logger::Message> Msgs;
     Msgs v = rqdql::get<rqdql::Logger>().getMessages();
     for (Msgs::const_iterator i = v.begin(); i != v.end(); ++i) {
         for (vector<int>::const_iterator k = (*i).getLines().begin(); k != (*i).getLines().end(); ++k) {

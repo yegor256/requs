@@ -11,7 +11,7 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Front.h 2240 2010-07-04 09:20:34Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
 #ifndef __INCLUDE_SCOPE_FRONT_LINKS_H
@@ -27,11 +27,25 @@ namespace front {
  * All links between objects in scope
  */
 class Links : public Reporter {
+
 public:
+
+    /**
+     * Public constructor
+     */
     Links(const Params& p) : Reporter(p) { /* that's it */ }
-    void fill(Xml::Node&);
+
+    /**
+     * Virtual method called from Reporter::append().
+     * XML element <report> is passed here and we shall fill it with our
+     * own specific data.
+     */
+    void fill(Xml::Node&) const;
+
 private:
+
     template<typename T> void addLocations(Xml::Node&, const std::string&) const;
+
 };
     
 }

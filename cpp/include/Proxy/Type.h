@@ -19,7 +19,6 @@
 
 #include <string>
 #include <vector>
-#include <boost/shared_ptr.hpp>
 #include "Proxy/Entity.h"
 #include "Solm/Formula.h"
 #include "Solm/Formula/Variadic.h"
@@ -39,84 +38,61 @@ class Slot;
  * of predicates, that's it.
  */
 class Type : public Entity {
-    
+
 public:
     
-    typedef std::vector< boost::shared_ptr<Slot> > Slots;
+    /**
+     * Collection of slots inside this type, it's a strong composition. Slots
+     * can't exist without type and they don't have global names (or something
+     * similar).
+     */
+    typedef std::vector<Slot> Slots;
 
     /**
      * Public constructor
      */
-    Type() : _slots(), _predicate() { /* that's it */ }
+    Type();
     
     /**
-     * The class is empty and doesn't have any slots and any predicates
-     * @see makeFormula()
+     * Find and get slot by name, or create it if it's absent. You can
+     * do whatever you can with this SLOT, since it's part of the TYPE
+     * (it's a strong composition design).
      */
-    bool isEmpty() const { return !_slots.size() && !_predicate; }
+    Slot& slot(const std::string&);
 
     /**
-     * This type has name?
+     * Get a link to the predicate, which is part of this TYPE. It's
+     * a strong composition design approach.
      */
-    bool hasName() const; 
-    
-    /**
-     * Get name of this type, if it exists in SOLM. Otherwise will throw
-     * an exception (if the type has no name yet). Use hasName() first, to
-     * validate the existence of the name.
-     */
-    std::string& name(); 
-
-    /**
-     * The type has some predicate set
-     * @see makeFormula()
-     */
-    bool hasPredicate() const { return (bool)_predicate; }
-
-    /**
-     * The type has some predicate set
-     * @see makeFormula()
-     */
-    boost::shared_ptr<solm::Variadic>& predicate() { return _predicate; }
-
-    /**
-     * Find and get slot by name, or create it if it's absent
-     */
-    boost::shared_ptr<Slot>& slot(const std::string&);
-    
-    /**
-     * Get a list of slots
-     */
-    const Slots getSlots() const { return _slots; }
-    
-    /**
-     * Add new slot to the type
-     */
-    void add(const boost::shared_ptr<Slot>&);
-    
-    /**
-     * Add new slot to the type, with just a name
-     */
-    void add(const std::string&);
+    solm::Variadic& predicate();
     
     /**
      * Add new predicate to the type
      */
-    void add(const boost::shared_ptr<solm::Formula>&);
+    Type& operator+=(const solm::Formula&);
     
     /**
      * Convert this type to a user-friendly string
      */
-    const std::string toString() const;
+    operator std::string() const;
 
     /**
-     * Conver this predicate to a new SOLM formula
+     * Create a formula out of this type
      */
-    boost::shared_ptr<solm::Formula> makeFormula(const std::string&) const;
+    operator solm::Formula() const;
     
 private:
+
+    /**
+     * Collection of slots
+     */
     Slots _slots;
-    boost::shared_ptr<solm::Variadic> _predicate;
+
+    /**
+     * Predicate related to this type
+     */
+    solm::Variadic _predicate;
+
 };
 
 }

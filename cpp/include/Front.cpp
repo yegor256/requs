@@ -17,10 +17,16 @@
  * This file is included ONLY from Front.h
  */
 
-/**
- * Require this report to appear in final XML
- */
-void Front::require(const string& s) {
+#include <string>
+#include <vector>
+#include <boost/shared_ptr.hpp>
+#include <boost/regex.hpp>
+#include <boost/algorithm/string/regex.hpp>
+#include "Front.h"
+#include "Front/Reporter.h"
+
+void front::Front::require(const std::string& s) {
+    using namespace std;
     string name = s;
     string args;
     if (name.find(":") != name.npos) {
@@ -43,13 +49,11 @@ void Front::require(const string& s) {
         }
         p[attr] = val;
     }
-    reporters.push_back(Reporter::factory(name, p));
+    _reporters.push_back(Reporter::factory(name, p));
 }
 
-/**
- * Get final XML
- */
-Xml::Document& Front::getXml() {
+const std::string front::Front::asXml() {
+    using namespace std;
     static Xml::Document* doc;
     
     // if the document is not yet initialized - instantiate it now
@@ -57,18 +61,9 @@ Xml::Document& Front::getXml() {
         Xml::Document doc;
         Xml::Node root = doc.root("rqdql");
         // append reporters one by one to the document
-        for (vector<Reporter*>::const_iterator i = reporters.begin(); i != reporters.end(); ++i) {
-            Xml::Node n = root / (*i)->getName();
-            (*i)->append(n);
+        for (vector<boost::shared_ptr<Reporter> >::const_iterator i = _reporters.begin(); i != _reporters.end(); ++i) {
+            (*i)->append(root);
         }
     }
-    // return a link to this static document
-    return *doc;
-}
-
-/**
- * Convert full report into STRING
- */
-const string Front::asXml() {
-    return getXml().asXml();
+    return doc->asXml();
 }

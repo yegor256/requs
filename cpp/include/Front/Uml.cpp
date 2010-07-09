@@ -11,12 +11,13 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
+ * @version $Id$
  *
  * This file is included ONLY from Front.h
  */
 
 #include "Front/Uml.h"
+#include "Xml/Node.h"
 
 void front::Uml::fill(Xml::Node& n) {
 }

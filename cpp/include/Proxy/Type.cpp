@@ -27,32 +27,11 @@
 #include "Proxy/Slot.h"
 #include "Solm/Formula.h"
 
-/**
- * Validates whether the TYPE has static name.
- */
-bool proxy::Type::hasName() const {
-    return rqdql::get<Proxy>().hasName(boost::shared_ptr<Type>(this));
+proxy::Type() : _slots(), _predicate() { 
+    /* that's it */ 
 }
 
-/**
- * Returns a name of the TYPE if it is in the static
- * holder now. Otherwise will throw an exception. You should use
- * hasName() in order to validate before.
- */
-std::string& proxy::Type::name() {
-    try {
-        return rqdql::get<Proxy>().name(boost::shared_ptr<Type>(this));
-    } catch (rqdql::Exception e) {
-        throw rqdql::Exception(
-            rqdql::_t("Type doesn't have a name, use hasName() first")
-        );
-    }
-}
-
-/**
- * Find slot by name or create it if not found
- */
-boost::shared_ptr<proxy::Slot>& proxy::Type::slot(const std::string& s) {
+proxy::Slot& proxy::Type::slot(const std::string& s) {
     for (Slots::iterator i = _slots.begin(); i != _slots.end(); ++i) {
         if ((*i)->getName() == s) {
             return (*i);
@@ -62,16 +41,10 @@ boost::shared_ptr<proxy::Slot>& proxy::Type::slot(const std::string& s) {
     return slot(s);
 }
 
-/**
- * Explicitly add new slot to the type
- */
 void proxy::Type::add(const boost::shared_ptr<proxy::Slot>& s) { 
     _slots.push_back(s); 
 }
 
-/**
- * Add new formula to predicate
- */
 void proxy::Type::add(const boost::shared_ptr<solm::Formula>& f) {
     if (!_predicate) {
         _predicate = new solm::Variadic(solm::Variadic::OP_AND);
@@ -79,16 +52,10 @@ void proxy::Type::add(const boost::shared_ptr<solm::Formula>& f) {
     _predicate->add(f);
 }
 
-/**
- * Explicitly add new slot to the type
- */
 void proxy::Type::add(const string& s) {
     return add(new Slot(s));
 }
 
-/**
- * To convert type into string detailed presentation
- */
 const std::string proxy::Type::toString() const {
     if (_slots.empty()) {
         return "{}";

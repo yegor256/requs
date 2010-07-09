@@ -11,7 +11,7 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
+ * @version $Id$
  *
  * This file is included ONLY from Front.h
  */
@@ -22,65 +22,62 @@
 #include <boost/algorithm/string/regex.hpp>
 #include <boost/algorithm/string/case_conv.hpp> // to_lower_copy()
 #include "rqdql.h"
+#include "rqdql/Exception.h"
 #include "Front/Reporter.h"
+#include "Front/Errors.h"
+#include "Front/Links.h"
+#include "Front/Metrics.h"
+#include "Front/Tc.h"
+#include "Front/Uml.h"
 #include "Xml/Node.h"
+#include "Xml/Attribute.h"
 
-/**
- * Create new instance of the class
- */
-boost::shared_ptr<Reporter> front::Reporter::factory(const std::string& n, const front::Reporter::Params& p) {
-    Reporter* r;
+boost::shared_ptr<front::Reporter> front::Reporter::factory(const std::string& n, const front::Reporter::Params& p) {
+    boost::shared_ptr<Reporter> r;
     
     std::string name = boost::algorithm::to_lower_copy(n);
     if (name == "errors") {
-        r = new Errors(p);
-    } else if (name == "svg") {
-        r = new Svg(p);
+        r = boost::shared_ptr<Errors>(new Errors(p));
     } else if (name == "uml") {
-        r = new Uml(p);
+        r = boost::shared_ptr<Uml>(new Uml(p));
     } else if (name == "metrics") {
-        r = new Metrics(p);
+        r = boost::shared_ptr<Metrics>(new Metrics(p));
     } else if (name == "tc") {
-        r = new Tc(p);
+        r = boost::shared_ptr<Tc>(new Tc(p));
     } else if (name == "links") {
-        r = new Links(p);
+        r = boost::shared_ptr<Links>(new Links(p));
     } else {
-        throw rqdql::Exception(boost::format("Reporter '%s' is not supported") % n);
+        throw rqdql::Exception(
+            boost::format("Reporter '%s' is not supported") % n
+        );
     }
     r->_name = n;
     return r;
 }
 
-/**
- * Append new node to the holder
- * @see Front::getXml()
- */
-void front::Reporter::append(Xml::Node& root) {
-    Xml::Node n = root + "report";
-    for (Params::const_iterator i = params.begin(); i != params.end(); ++i) {
+void front::Reporter::append(Xml::Node& root) const {
+    Xml::Node n = root + _name + "report";
+    for (Params::const_iterator i = _params.begin(); i != _params.end(); ++i) {
         n[(*i).first] = (*i).second;
     }
     fill(n);
 }
 
-/**
- * Get INTEGER parameter
- */
-template<> int front::Reporter::getParam<int>(const std::string& n, const int& d) {
-    if (params.find(n) == params.end()) {
+namespace front {
+template<> int Reporter::getParam<int>(const std::string& n, const int& d) const {
+    if (_params.find(n) == _params.end()) {
         return d;
     }
-    return atoi(params[n].c_str());
+    return atoi(_params.find(n)->second.c_str());
+}
 }
 
-/**
- * Get BOOLEAN parameter
- */
-template<> bool front::Reporter::getParam<bool>(const std::string& n, const bool& d) {
-    if (params.find(n) == params.end()) {
+namespace front {
+template<> bool front::Reporter::getParam<bool>(const std::string& n, const bool& d) const {
+    if (_params.find(n) == _params.end()) {
         return d;
     }
-    string s = boost::algorithm::to_lower_copy(params[n]);
+    std::string s = boost::algorithm::to_lower_copy(_params.find(n)->second);
     if (s == "yes") {
         return true;
     }
@@ -91,4 +88,5 @@ template<> bool front::Reporter::getParam<bool>(const std::string& n, const bool
         return true;
     }
     return false;
+}
 }

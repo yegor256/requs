@@ -29,6 +29,7 @@ namespace proxy {
  * using cardinality and predicates.
  */
 class Slot : public Type {
+    
 public:
 
     /**
@@ -39,7 +40,7 @@ public:
     public:
         Cardinality(const std::string& s) : _mnemo(s) { /* later */ }
         Cardinality(const char* s) : _mnemo(s) { /* later */ }
-        const std::string toString() const { return _mnemo; }
+        operator std::string() const { return _mnemo; }
     private:
         std::string _mnemo;
     };
@@ -50,7 +51,6 @@ public:
     Slot(
         const std::string&, 
         const Cardinality&, 
-        const boost::shared_ptr<solm::Formula>&, 
         const boost::shared_ptr<Type>&
     );
 
@@ -60,34 +60,9 @@ public:
     Slot(const std::string&);
 
     /**
-     * Get name of this SLOT, and change it beforehand
+     * Get a reference to the type
      */
-    const std::string& name(const std::string& n) { _name = n; return name(); }
-    
-    /**
-     * Get name of this SLOT
-     */
-    const std::string& name() const { return _name; }
-    
-    /**
-     * The slot has name?
-     */
-    bool hasName() const { return true; } 
-    
-    /**
-     * The slot has name?
-     */
-    boost::shared_ptr<Type>& type() { return _type; }
-    
-    /**
-     * Get formula attached
-     */
-    boost::shared_ptr<solm::Formula>& formula() { return _formula; }
-    
-    /**
-     * Get slot cardinality
-     */
-    const Cardinality& getCardinality() const { return _cardinality; }
+    Type& type() { return *_type; }
     
 private:
     
@@ -102,14 +77,10 @@ private:
     Cardinality _cardinality;
     
     /**
-     * The fomula attached to the slot
-     */
-    boost::shared_ptr<solm::Formula> _formula;
-
-    /**
      * Type attached to the slot
      */
     boost::shared_ptr<Type> _type;
+
 };
 
 }
