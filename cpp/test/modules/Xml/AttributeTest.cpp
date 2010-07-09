@@ -15,30 +15,20 @@
  */
 
 #include <boost/test/unit_test.hpp>
-#include "Solm/Chain.h"
-#include "Solm/Snapshot.h"
+#include <boost/shared_ptr.hpp>
+#include <string>
+#include "Xml/Document.h"
+#include "Xml/Node.h"
+#include "Xml/Attribute.h"
 
-BOOST_AUTO_TEST_SUITE(ChainTest)
+BOOST_AUTO_TEST_SUITE(AttributeTest)
 
-BOOST_AUTO_TEST_CASE(testEmptyChainIsPositive) {
-    solm::Chain c;
-    BOOST_CHECK((bool)c);
-}
-
-BOOST_AUTO_TEST_CASE(testVerticalChainingWorks) {
-    solm::Chain c;
-    c += solm::Snapshot();
-    c += solm::Snapshot();
-    BOOST_CHECK_EQUAL(2, c.size());
-    BOOST_CHECK((bool)c); // still positive
-}
-
-BOOST_AUTO_TEST_CASE(testHorizontalChainingWorks) {
-    solm::Chain c;
-    c += solm::Snapshot();
-    c << solm::Snapshot();
-    BOOST_CHECK_EQUAL(1, c.size());
-    BOOST_CHECK((bool)c); // still positive
+BOOST_AUTO_TEST_CASE(testAttributesCanBeSetFast) {
+    Xml::Document doc;
+    Xml::Node root = doc.root("test");
+    for (int i = 0; i < 50; i++) {
+        (root + "company") ["id"] = i;
+    }
 }
 
 BOOST_AUTO_TEST_SUITE_END()

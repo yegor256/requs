@@ -11,30 +11,46 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
  *
  * This file has to be included ONLY from Analytics.h
  */
 
+#ifndef __INCLUDE_SCOPE_ANALYSTS_TC_TESTCASE_H
+#define __INCLUDE_SCOPE_ANALYSTS_TC_TESTCASE_H
+
 #include <string>
-#include "Analysts/Tc/TestCase.h"
 
+namespace analysts {
+namespace tc {
+    
 /**
- * Show it as string
+ * One Test Case, as an instruction to a tester
  */
-// const string TestCase::toString() const {
-//     vector<string> lines;
-//     for (vector<TestCase*>::const_iterator i = predecessors.begin(); i != predecessors.end(); ++i) {
-//         lines.push_back("gain success in " + (*i)->getName());
-//     }
-//     lines.push_back(after.toString());
-//     return boost::algorithm::join(lines, "\n");
-// }
+class TestCase {
 
-/**
- * Parse the fact path and produce the MOF
- * @todo Implement it, it's a stub now
- */
-const std::string analysts::tc::TestCase::getXmi() const {
-    return "...";
+public:
+
+    /**
+     * Public constructor
+     */
+    TestCase() { /* that's it */ }
+
+    /**
+     * Convert it to XMI
+     */
+    const std::string getXmi() const;
+
+private:
+
+    /**
+     *
+     */
+    // solm::FactPath factPath;
+
+};
+
 }
+}
+
+#endif

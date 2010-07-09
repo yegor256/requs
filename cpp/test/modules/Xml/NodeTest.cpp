@@ -19,6 +19,7 @@
 #include <string>
 #include "Xml/Document.h"
 #include "Xml/Node.h"
+#include "Xml/Attribute.h"
 
 BOOST_AUTO_TEST_SUITE(NodeTest)
 
@@ -26,7 +27,7 @@ BOOST_AUTO_TEST_CASE(testNodesCanBeSetFast) {
     Xml::Document doc;
     Xml::Node root = doc.root("test");
     for (int i = 0; i < 50; i++) {
-        root / "employee" ["id"] = i;
+        root + "employee" = i;
     }
 }
 

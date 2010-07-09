@@ -19,7 +19,7 @@
 #include "Front/Uml.h"
 #include "Xml/Node.h"
 
-void front::Uml::fill(Xml::Node& n) {
+void front::Uml::fill(Xml::Node& n) const {
 }
 
 
