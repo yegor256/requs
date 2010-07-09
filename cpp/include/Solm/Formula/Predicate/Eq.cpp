@@ -12,17 +12,15 @@
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
  * @version $Id$
- *
- * This file is included ONLY from Solm.h
  */
 
-const string Math::toString() const {
-    if (getVars().size() != 2) {
-        rqdql::get<rqdql::Logger>().log(
-            this, 
-            (boost::format(rqdql::_t("MATH('%s') primitive shall have exactly two arguments")) % operand).str()
-        );
-        return "TRUE";
-    }
-    return getVars().at(0) + " " + operand + " " + getVars().at(1);
-}
+// const string Math::toString() const {
+//     if (getVars().size() != 2) {
+//         rqdql::get<rqdql::Logger>().log(
+//             this, 
+//             (boost::format(rqdql::_t("MATH('%s') primitive shall have exactly two arguments")) % operand).str()
+//         );
+//         return "TRUE";
+//     }
+//     return getVars().at(0) + " " + operand + " " + getVars().at(1);
+// }

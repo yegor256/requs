@@ -17,7 +17,6 @@
 #ifndef __INCLUDE_SOLM_FORMULA_QUANTIFIER_EXISTS_H
 #define __INCLUDE_SOLM_FORMULA_QUANTIFIER_EXISTS_H
 
-#include <string>
 #include "Solm/Formula/Quantifier.h"
 #include "Solm/Chain.h"
 #include "Solm/Context.h"
@@ -30,11 +29,6 @@ namespace solm {
 class Exists : public Quantifier<Exists> {
 
 public:
-
-    /**
-     * To convert the formula to user-friendly string
-     */
-    virtual operator std::string() const { return _toString("\\exists"); }
 
     /**
      * To resolve this formula on some context

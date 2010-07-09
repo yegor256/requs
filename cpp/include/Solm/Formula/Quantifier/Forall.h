@@ -17,7 +17,6 @@
 #ifndef __INCLUDE_SOLM_FORMULA_QUANTIFIER_FORALL_H
 #define __INCLUDE_SOLM_FORMULA_QUANTIFIER_FORALL_H
 
-#include <string>
 #include "Solm/Formula/Quantifier.h"
 
 namespace solm {
@@ -28,11 +27,6 @@ namespace solm {
 class Forall : public Quantifier<Forall> {
 
 public:
-
-    /**
-     * To convert the formula to user-friendly string
-     */
-    virtual operator std::string() const { return Quantifier<Forall>::_toString("\\forall"); }
 
 };
 

@@ -12,17 +12,15 @@
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
  * @version $Id$
- *
- * This file is included ONLY from Solm/Primitive.h
  */
 
-const string In::toString() const {
-    if (getVars().size() != 2) {
-        rqdql::get<rqdql::Logger>().log(
-            this, 
-            "IN() primitive shall have exactly two arguments"
-        );
-        return "TRUE";
-    }
-    return getVars().at(0) + " \\in " + getVars().at(1);
-}
+// const string In::toString() const {
+//     if (getVars().size() != 2) {
+//         rqdql::get<rqdql::Logger>().log(
+//             this, 
+//             "IN() primitive shall have exactly two arguments"
+//         );
+//         return "TRUE";
+//     }
+//     return getVars().at(0) + " \\in " + getVars().at(1);
+// }

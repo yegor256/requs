@@ -17,32 +17,32 @@
 /**
  * Create an outcome of this formula, list of facts
  */
-Outcome Exists::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const { 
-    // copy snapshot from the FACT provided
-    Snapshot s = f.getSnapshot();
-    
-    // create an object that has to EXIST, with no type so far
-    Snapshot::Object& obj = s.create(""); // no type
-    
-    // assign a name to this object
-    s.assignName(obj, getVar());
-    
-    // maybe it's a SET, not a scalar variable?
-    if (isupper(getVar().at(0))) {
-        obj.setValue(vector<int>());
-    }
-    
-    // create new fact
-    Fact fact;
-    fact.setFormula(this).setSnapshot(s);
-    
-    // create new outcome and add this fact to it
-    Outcome out;
-    out << fact;
-    
-    // add outcome from the formula beneath
-    out += getFormula()->getOutcome(fact);
-    
-    // return this outcome created
-    return out; 
-}
+// Outcome Exists::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const { 
+//     // copy snapshot from the FACT provided
+//     Snapshot s = f.getSnapshot();
+//     
+//     // create an object that has to EXIST, with no type so far
+//     Snapshot::Object& obj = s.create(""); // no type
+//     
+//     // assign a name to this object
+//     s.assignName(obj, getVar());
+//     
+//     // maybe it's a SET, not a scalar variable?
+//     if (isupper(getVar().at(0))) {
+//         obj.setValue(vector<int>());
+//     }
+//     
+//     // create new fact
+//     Fact fact;
+//     fact.setFormula(this).setSnapshot(s);
+//     
+//     // create new outcome and add this fact to it
+//     Outcome out;
+//     out << fact;
+//     
+//     // add outcome from the formula beneath
+//     out += getFormula()->getOutcome(fact);
+//     
+//     // return this outcome created
+//     return out; 
+// }

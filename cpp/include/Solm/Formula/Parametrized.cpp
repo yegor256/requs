@@ -14,12 +14,13 @@
  * @version $Id$
  */
  
+#include <string>
 #include <boost/format.hpp>
 #include <boost/algorithm/string/join.hpp> // boost::algorithm::join()
 #include "Solm/Formula/Parametrized.h"
 
 template <typename T> const std::string& solm::Parametrized<T>::arg(size_t i = 0) const {
-    if (i >= vars.size()) {
+    if (i >= _arguments.size()) {
         throw rqdql::Exception(
             boost::format(rqdql::_t("Var[%d] is out of range")) % i
         );

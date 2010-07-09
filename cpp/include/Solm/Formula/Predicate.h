@@ -18,11 +18,10 @@
 #define __INCLUDE_SOLM_FORMULA_PREDICATE_H
 
 #include <vector>
-
 #include "Solm/Formula.h"
 #include "Solm/Formula/Parametrized.h"
-#include "Solm/Fact.h"
-#include "Solm/Snapshot.h"
+#include "Solm/Chain.h"
+#include "Solm/Context.h"
 
 namespace solm {
 
@@ -36,23 +35,18 @@ public:
     /**
      * Public constructor
      */
-    Predicate(const std::string& n) : Parametrized<Predicate>(), name(n) { /* that's it */ }
+    Predicate(const std::string& n) : Parametrized<Predicate>(), _name(n) { /* that's it */ }
 
     /**
      * Convert it to the user-friendly text
      */
-    const std::string toString() const;
+    operator std::string() const;
 
     /**
      * To resolve this formula on some context
      * and produce a new Chain of Snapshots.
      */
     virtual Chain operator+(const Context&);
-
-    /**
-     * Convert it to the user-friendly text
-     */
-    const std::string& name() const { return _name; }
 
 private:
     
