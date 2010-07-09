@@ -20,7 +20,13 @@
 #include "Solm/Snapshot.h"
 
 bool solm::Snapshot::operator==(const solm::Snapshot& s) const {
+    // @todo it's a stub
     return false;
+}
+
+solm::Snapshot& solm::Snapshot::operator<<(const solm::Snapshot& s) { 
+    _alternatives += s; 
+    return *this; 
 }
 
 solm::Snapshot::operator std::string() const {

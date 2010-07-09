@@ -28,7 +28,9 @@ namespace solm {
 class Snapshot;
 
 /**
- * Tree-like chain of snapshots
+ * Ordered list of snapshots, which will happen on scope one after
+ * another. Every snapshot will have a number of alternatives. Together
+ * they constitute a tree-like structure.
  */
 class Chain : public std::vector<Snapshot> {
 
@@ -40,32 +42,46 @@ public:
     Chain();
 
     /**
-     * These two chains are equivalent?
+     * These two chains are equivalent? We will compare them snapshot
+     * by snapshot, and will use operator==() from snapshots.
      */
     bool operator==(const Chain&) const;
 
     /**
-     * One chain is shorter than the other?
+     * One chain is shorter than the other? We just compare their length
+     * as vectors and return the result, depending on who is the longest
      */
     bool operator<(const Chain&) const;
 
     /**
-     * Append one chain to another, concatenating them vertically
+     * Append one chain to another, concatenating them vertically. We assume
+     * here that the chain is positive and can accept more snapshots. Every
+     * snapshot is either positive or negative, the same for a chain. If this
+     * chain is negative, it's not extendable any longer.
      */
     Chain operator+(const Chain&) const;
 
     /**
-     * Concatenate them vertically
+     * Concatenate them vertically, this is just a wrapper around operator+()
      */
-    Chain& operator+=(const Chain&);
+    Chain& operator+=(const Chain& c) { return *this = *this + c; }
 
     /**
-     * Concatenate them horizontally
+     * Concatenate them vertically. This method simply add new snapshot
+     * to the end of the chain, but validates beforehand that this chain
+     * is positive.
      */
-    Chain& operator<<(const Chain&);
+    Chain operator+(const Snapshot&) const;
 
     /**
-     * Concatenate them horizontally
+     * Concatenate them vertically, this is just a wrapper around operator+()
+     */
+    Chain& operator+=(const Snapshot& s) { return *this = *this + s; }
+
+    /**
+     * We extend the list of alternatives for the last snapshot in this
+     * chain. If the snapshot is positive. If it's negative there will be
+     * an exception raised.
      */
     Chain& operator<<(const Snapshot&);
 

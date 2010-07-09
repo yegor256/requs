@@ -19,24 +19,29 @@
 #include <boost/algorithm/string/join.hpp> // join()
 #include <boost/algorithm/string/replace.hpp> // replace_all_copy()
 #include "Solm/Formula/Variadic.h"
+#include "Solm/Chain.h"
+#include "Solm/Context.h"
 
-solm::Variadic::Variadic(Operand op = OP_TO) : Formula(), _operand(op), _formulas() { 
+solm::Variadic::Variadic(solm::Variadic::Operand op = OP_TO) : 
+    solm::Formula(), _operand(op), _formulas() { 
     /* that's it */ 
 }
 
-void solm::Variadic::operator+=(const solm::Formula& f) {
-    _formulas.push_back(f);
+solm::Variadic& solm::Variadic::operator+=(const solm::Formula& f) {
+    _formulas.push_back(boost::shared_ptr<Formula>(&f));
+    return *this;
 }
 
-void solm::Variadic::operator+=(const solm::Variadic& s) {
-    for (Formulas::const_iterator i = s->getFormulas().begin(); i != s->getFormulas().end(); ++i) {
-        addFormula(*i);
+solm::Variadic& solm::Variadic::operator+=(const solm::Variadic& s) {
+    for (Formulas::const_iterator i = s._formulas.begin(); i != s._formulas.end(); ++i) {
+        _formulas.push_back(*i);
     }
+    return *this;
 }
 
-virtual Outcome solm::Variadic::operator+(const Context& ctx) const;
-    Outcome out(ctx);
-    switch (operand) {
+solm::Chain solm::Variadic::operator+(const solm::Context& ctx) const {
+    Chain c;
+    switch (_operand) {
         /**
          * We should align all formulas in a long VERTICAL list
          * of facts. We do it by means of Outcome::operator+().
@@ -47,10 +52,10 @@ virtual Outcome solm::Variadic::operator+(const Context& ctx) const;
             for (Formulas::const_iterator i = _formulas.begin(); i != _formulas.end(); ++i) {
                 // if the outcome is FALSE already, we can't add any more
                 // formulas to it, we just give up and return it as is
-                if (!out) {
+                if (!c) {
                     break;
                 }
-                out = out + (*i + (Context)out);
+                c = c + (*i + (Context)c);
             }
             break;
             
@@ -60,19 +65,19 @@ virtual Outcome solm::Variadic::operator+(const Context& ctx) const;
          * @todo make sure it works, I'm not sure for now... :(
          */
         case OP_OR:
-            Outcome totalFalse;
+            Chain totalFalse;
             for (Formulas::const_iterator i = _formulas.begin(); i != _formulas.end(); ++i) {
-                Outcome t = (*i + (Context)out);
+                Chain t = (*i + (Context)c);
                 if (t) {
-                    out << t;
+                    c << t;
                 } else {
                     totalFalse = totalFalse + t;
                 }
             }
-            out << totalFalse;
+            c << totalFalse;
             break;
     }
-    return out;
+    return c;
 }
 
 const solm::Variadic::operator std::string() const {

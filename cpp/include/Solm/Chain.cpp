@@ -19,8 +19,11 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/join.hpp>
 #include "Solm/Chain.h"
+#include "Solm/Snapshot.h"
+#include "rqdql.h"
+#include "rqdql/Exception.h"
 
-solm::Chain solm::Chain::Chain() : std::vector<Snapshot>() {
+solm::Chain::Chain() : std::vector<solm::Snapshot>() {
     /* that's it */
 }
 
@@ -29,7 +32,41 @@ bool solm::Chain::operator==(const solm::Chain& c) const {
 }
 
 bool solm::Chain::operator<(const solm::Chain& c) const {
-    return size() < p.size();
+    return size() < c.size();
+}
+
+solm::Chain solm::Chain::operator+(const solm::Chain& c) const {
+    if (!*this) {
+        throw rqdql::Exception(
+            boost::format("Chain (%d snapshots) is negative, we can't PLUS to it") % size()
+        );
+    }
+    Chain n = *this;
+    for (const_iterator s = c.begin(); s != c.end(); ++s) {
+        n += *s;
+    }
+    return n;
+}
+
+solm::Chain solm::Chain::operator+(const solm::Snapshot& s) const {
+    if (!*this) {
+        throw rqdql::Exception(
+            boost::format("Chain (%d snapshots) is negative, we can't PLUS to it") % size()
+        );
+    }
+    Chain n = *this;
+    n.push_back(s);
+    return n;
+}
+
+solm::Chain& solm::Chain::operator<<(const solm::Snapshot& s) {
+    if (!*this) {
+        throw rqdql::Exception(
+            boost::format("Chain (%d snapshots) is negative, we can't << to it") % size()
+        );
+    }
+    *(end() - 1) << s;
+    return *this;
 }
 
 solm::Chain::operator bool() const {
@@ -54,37 +91,5 @@ solm::Chain::operator std::string() const {
         );
     }
     return boost::algorithm::join(lines, "\n");
-}
-
-solm::Chain solm::Chain::operator+(const solm::Chain& c) const {
-    // this outcome is empty - just return the given one
-    if (!size()) {
-        return c;
-    }
-    Outcome n = *this;
-    if (!n) {
-        throw rqdql::Exception(
-            boost::format("Outcome (%d facts) is negative, we can't append next step to it") % size()
-        );
-    }
-    ((Snapshot)n).set(c);
-    return n;
-}
-
-solm::Chain& solm::Chain::operator+=(const solm::Chain& c) {
-    ((Snapshot)*this).setOutcome(out);
-    return *this;
-}
-
-solm::Chain& solm::Chain::operator<<(const solm::Chain& c) {
-    for (const_iterator s = c.begin(); s != c.end(); ++s) {
-        push_back(*s);
-    }
-    return *this;
-}
-
-solm::Chain& solm::Chain::operator<<(const solm::Snapshot& s) {
-    push_back(s);
-    return *this;
 }
 

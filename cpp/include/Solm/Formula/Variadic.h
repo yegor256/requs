@@ -70,7 +70,7 @@ public:
      * To resolve this formula on some context
      * and produce a new Chain of Snapshots.
      */
-    virtual Chain operator+(const Context&);
+    virtual Chain operator+(const Context&) const;
 
 private:
 
@@ -83,7 +83,7 @@ private:
     /**
      * The operand between formulas
      */
-    Operand operand;
+    Operand _operand;
     
     /**
      * Collection of formulas, ordered

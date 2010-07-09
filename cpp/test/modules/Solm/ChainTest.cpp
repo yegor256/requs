@@ -11,17 +11,17 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: SnapshotTest.cpp 2262 2010-07-08 11:31:27Z yegor256@yahoo.com $
  */
 
 #include <boost/test/unit_test.hpp>
-#include "Solm/Snapshot.h"
+#include "Solm/Chain.h"
 
-BOOST_AUTO_TEST_SUITE(SnapshotTest)
+BOOST_AUTO_TEST_SUITE(ChainTest)
 
-BOOST_AUTO_TEST_CASE(testEmptySnapshotIsPositive) {
-    solm::Snapshot s;
-    BOOST_CHECK((bool)s);
+BOOST_AUTO_TEST_CASE(testEmptyChainIsPositive) {
+    solm::Chain c;
+    BOOST_CHECK((bool)c);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

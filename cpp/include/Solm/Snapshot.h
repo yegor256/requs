@@ -34,6 +34,7 @@ namespace solm {
  * A snapshot
  */
 class Snapshot {
+    
 public:
     
     /**
@@ -57,21 +58,21 @@ public:
     bool operator==(const Snapshot&) const;
 
     /**
-     * Set chain to this snapshot
+     * Add new alternative snapshot
      */
-    void set(const Chain& c) { _chain = c; }
+    Snapshot& operator<<(const Snapshot&);
 
 private:
     
     /**
-     * Set chain to this snapshot
+     * Collection of objects
      */
     std::vector<snapshot::Object> _objects;
     
     /**
-     * Sub-chain
+     * Alternative snapshots
      */
-    Chain _chain;
+    Chain _alternatives;
     
 };
 
