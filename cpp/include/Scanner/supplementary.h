@@ -15,6 +15,7 @@
  */
 
 #include <stdarg.h>
+#include "rqdql.h"
 #include "Logger.h"
 
 /**

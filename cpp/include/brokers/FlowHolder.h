@@ -1,4 +1,6 @@
 /**
+ *
+
  * RQDQL.com, Requirements Definition and Query Language
  *
  * Redistribution and use in source and binary forms, with or 
@@ -11,30 +13,29 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
-#ifndef __INCLUDE_SOLM_FORMULA_QUANTIFIER_H
-#define __INCLUDE_SOLM_FORMULA_QUANTIFIER_H
+#ifndef __INCLUDE_SCOPE_BROKERS_FLOWHOLDER_H
+#define __INCLUDE_SCOPE_BROKERS_FLOWHOLDER_H
 
-#include <string>
-#include "Solm/Formula/Variadic.h"
-#include "Solm/Formula/Parametrized.h"
+#include <vector>
+#include <boost/algorithm/string/join.hpp>
+#include "Proxy.h"
 
-namespace solm {
+namespace brokers {
 
-/**
- * Quantifier
- */
-template <typename T> class Quantifier : public Variadic, public Parametrized<T> {
-
+class FlowHolder {
 public:
-
-    /**
-     * Convert it to the user-friendly text
-     */
-    operator std::string() const;
-
+    FlowHolder() : flow(0), id(0) { /* that's it */ }
+    void setFlow(proxy::Flow* f) { flow = f; }
+    bool hasFlow() const { return flow; }
+    proxy::Flow* getFlow() const { if (!hasFlow()) throw rqdql::Exception(rqdql::_t("no FLOW here")); return flow; }
+    void setId(int i) { id = i; }
+    int getId() const { return id; }
+private:
+    proxy::Flow* flow;
+    int id;
 };
 
 }

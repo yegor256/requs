@@ -1,4 +1,6 @@
 /**
+ *
+
  * RQDQL.com, Requirements Definition and Query Language
  *
  * Redistribution and use in source and binary forms, with or 
@@ -11,31 +13,31 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: UseCase.h 1641 2010-04-16 07:56:07Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
-#ifndef __INCLUDE_SOLM_FORMULA_QUANTIFIER_H
-#define __INCLUDE_SOLM_FORMULA_QUANTIFIER_H
+#ifndef __INCLUDE_SCOPE_BROKERS_ALTPAIR_H
+#define __INCLUDE_SCOPE_BROKERS_ALTPAIR_H
 
-#include <string>
-#include "Solm/Formula/Variadic.h"
-#include "Solm/Formula/Parametrized.h"
+#include <vector>
+#include <boost/algorithm/string/join.hpp>
+#include "Proxy.h"
 
-namespace solm {
+namespace brokers {
 
-/**
- * Quantifier
- */
-template <typename T> class Quantifier : public Variadic, public Parametrized<T> {
-
+class AltPair {
 public:
-
-    /**
-     * Convert it to the user-friendly text
-     */
-    operator std::string() const;
-
+    AltPair(int i, char l) : num(i), letter(l) { /* that's it */ }
+    void setNum(int i) { num = i; }
+    int getNum() const { return num; }
+    void setLetter(char l) { letter = l; }
+    char getLetter() { return letter; }
+private:
+    int num; // -1 means STAR
+    char letter;
 };
+
+typedef vector<AltPair*> AltPairs;
 
 }
 

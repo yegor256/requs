@@ -22,10 +22,23 @@
 
 namespace solm {
 
+/**
+ * Always TRUE
+ */
 class True : public Formula {
+
 public:
+
+    /**
+     * Public constructor
+     */
     True() : Formula() { /* that's it */ }
-    virtual operator std::string() const { return "true"; }
+
+    /**
+     * Show it as string
+     */
+    operator std::string() const { return "true"; }
+
 };
 
 }

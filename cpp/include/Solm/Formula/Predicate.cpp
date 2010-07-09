@@ -17,7 +17,7 @@
 #include <boost/algorithm/string/join.hpp> // join()
 #include "Solm/Formula/Predicate.h"
 
-const string Predicate::_toString() const {
+solm::Predicate::_toString() const {
     return name + "(" + boost::algorithm::join(Parametrized<Predicate>::getVars(), ", ") + ")";
 }
 

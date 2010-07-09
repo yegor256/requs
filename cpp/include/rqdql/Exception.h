@@ -18,18 +18,44 @@
 #define __INCLUDE_RQDQL_EXCEPTION_H
 
 #include <string>
-#include "boost/format.hpp"
+#include <boost/format.hpp>
 
 namespace rqdql {
 
+/**
+ * Exception
+ */
 class Exception {
+
 public:
-    Exception() : message("no details") { /* that's it */ }
-    Exception(const std::string& s) : message(s) { /* that's it */ }
-    Exception(const boost::format& s) : message(s.str()) { /* that's it */ }
-    const std::string& getMessage() { return message; }
+
+    /**
+     * Public constructor
+     */
+    Exception() : _message("no details") { /* that's it */ }
+
+    /**
+     * Public constructor
+     */
+    Exception(const std::string& s) : _message(s) { /* that's it */ }
+
+    /**
+     * Public constructor
+     */
+    Exception(const boost::format& s) : _message(s.str()) { /* that's it */ }
+
+    /**
+     * Get message
+     */
+    const std::string& getMessage() { return _message; }
+
 private:
-    std::string message;
+
+    /**
+     * The message
+     */
+    std::string _message;
+
 };
     
 }

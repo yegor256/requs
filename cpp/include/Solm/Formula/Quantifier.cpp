@@ -16,19 +16,17 @@
  * This file is included ONLY from Solm.h
  */
 
+#include <string>
+#include "Solm/Formula/Variadic.h"
+#include "Solm/Formula/Parametrized.h"
 #include "Solm/Formula/Quantifier.h"
 
-template <typename T> const string Quantifier<T>::_toString(const string& t) const {
-    if (Unary<T>::getFormulas().size() != 1) {
-        rqdql::get<rqdql::Logger>().log(
-            this, 
-            rqdql::_t("Quantifier shall have exactly one formula inside")
-        );
-        return "TRUE";
-    }
-    return t + " " 
-    + boost::algorithm::join(Parametrized<T>::getVars(), ", ") 
-    + "(" + Unary<T>::getFormula()->toString() + ")";
+template <typename T> solm::Quantifier<T>::operator std::string() const {
+    // it's a stub
+    return 
+    "QUANTIFIER" + " " 
+    + Parametrized<T>::operator std::string()
+    + "(" 
+    + Variadic::operator std::string() 
+    + ")";
 }
-
-#include "Solm/Formula/Quantifier/Exists.h"

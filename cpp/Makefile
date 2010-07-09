@@ -94,6 +94,7 @@ clean:
 	$(FLEX_DEST) \
 	$(EXEC) \
 	$(LIB_OBJS) \
+	$(TEST_OBJS) \
 	$(OBJS) \
 	$(LIB) \
 	$(SYMBOLS)
