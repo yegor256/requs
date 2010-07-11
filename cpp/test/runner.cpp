@@ -14,6 +14,7 @@
  * @version $Id: Solm.h 2246 2010-07-05 15:55:40Z yegor256@yahoo.com $
  */
 
+#undef BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE rqdql
 #include <boost/test/included/unit_test.hpp>
 

@@ -66,6 +66,8 @@ $(EXEC): $(BISON_DEST) $(FLEX_DEST) $(OBJS)
 	$(CPP) $(LDFLAGS) -o $(EXEC) $(OBJS) \
 	-D RQDQL_VERSION="\"$(VERSION)$(shell $(SVN) info | grep "Revision:" | sed "s/Revision: /r/g")\""
 
+$(SYMBOLS): $(FLEX_DEST) $(BISON_DEST)
+
 $(FLEX_DEST): $(FLEX_SRC)
 	$(FLEX) -o$(FLEX_DEST) $(FLEX_SRC)
 
