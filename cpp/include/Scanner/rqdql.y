@@ -51,7 +51,7 @@
 %type <ptr> slotsDeclaration
 %type <ptr> useCaseDeclaration
 %type <ptr> useCaseAlternativeDeclaration
-%type <ptr> useCaseStarter
+%type <ptr> ucStarter
 %type <ptr> signature
 %type <ptr> sigElements
 %type <ptr> sigElement

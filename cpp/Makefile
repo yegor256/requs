@@ -58,13 +58,13 @@ TEST_OBJS := $(TEST_SOURCES:.cpp=.o)
 all: depends $(EXEC) test
 
 # build dependencies
-$(DEPENDS): $(FLEX_DEST) $(BISON_DEST)
+$(DEPENDS): $(FLEX_DEST) $(BISON_DEST) $(SELF)
 	$(CPP) $(CPPFLAGS) -M $(TEST_SOURCES) $(SOURCES) > $(DEPENDS)
 	
 -include $(DEPENDS)
 
 # objects, we just compile them, NO linking
-%.o: %.cpp
+%.o: %.cpp $(DEPENDS)
 	$(CPP) $(CPPFLAGS) -fPIC -o $@ -g -c $<
 
 # compile/build the product

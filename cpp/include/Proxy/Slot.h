@@ -19,8 +19,6 @@
 
 #include <string>
 #include <boost/shared_ptr.hpp>
-#include "Proxy/Type.h"
-#include "Solm/Formula.h"
 
 namespace proxy {
 
@@ -28,7 +26,7 @@ namespace proxy {
  * Slot that interconnects one TYPE with another TYPE, 
  * using cardinality and predicates.
  */
-class Slot : public Type {
+class Slot {
     
 public:
 
@@ -53,7 +51,12 @@ public:
     /**
      * Get a reference to the type
      */
-    Type& type() { return *_type; }
+    const boost::shared_ptr<Entity>& entity() const { return _entity; }
+    
+    /**
+     * Change a reference
+     */
+    void entity(const boost::shared_ptr<Entity>& e) { _entity = e; }
     
     /**
      * Compare this slot with string (NAME) 
@@ -73,9 +76,9 @@ private:
     Cardinality _cardinality;
     
     /**
-     * Type attached to the slot
+     * Entity attached to this slot
      */
-    boost::shared_ptr<Type> _type;
+    boost::shared_ptr<Entity> _entity;
 
 };
 

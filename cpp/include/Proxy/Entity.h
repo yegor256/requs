@@ -17,9 +17,15 @@
 #ifndef __INCLUDE_SCOPE_PROXY_ENTITY_H
 #define __INCLUDE_SCOPE_PROXY_ENTITY_H
 
+#include <vector>
 #include "Solm/Formula/Declaration.h"
 
 namespace proxy {
+
+/**
+ * Forward declarations
+ */
+class Slot;
 
 /**
  * One entity in PROXY
@@ -31,10 +37,52 @@ class Entity {
 public:    
     
     /**
+     * Collection of slots
+     */
+    typedef std::vector<Slot> Slots;
+    
+    /**
+     * Add one slot to this type
+     */
+    operator+=(const Slot&);
+    
+    /**
+     * Add a collection of slots to this type
+     */
+    operator+=(const Slots&);
+    
+    /**
+     * Get an access to particular slot, by name
+     */
+    Slot& slot();
+
+    /**
+     * Get an access to slots
+     */
+    Slots& slots() { return _slots; }
+
+    /**
+     * Get an access to predicate
+     */
+    solm::Variadic& invariant() { return _invariant; }
+
+    /**
      * Convert this entity to declaration, but without a name yet
      */
     virtual operator solm::Declaration() = 0;
 
+private:
+    
+    /**
+     * Collection of slots
+     */
+    std::vector<Slot> _slots;
+
+    /**
+     * Logical formula that is always true for this entity
+     */
+    solm::Variadic _invariant;
+         
 };
 
 }

@@ -20,8 +20,6 @@
 #include <string>
 #include <vector>
 #include "Proxy/Entity.h"
-#include "Solm/Formula.h"
-#include "Solm/Formula/Variadic.h"
 #include "Solm/Formula/Declaration.h"
 
 namespace proxy {
@@ -29,8 +27,7 @@ namespace proxy {
 /**
  * Forward declarations
  */
-class Slot;
-class Type;
+// class Slot;
 
 /**
  * One individual TYPE, like ActorUser, UserPhoto, etc.
@@ -44,39 +41,9 @@ class Type : public Entity {
 public:
     
     /**
-     * Collection of slots inside this type, it's a strong composition. Slots
-     * can't exist without type and they don't have global names (or something
-     * similar).
-     */
-    typedef std::vector<Slot> Slots;
-
-    /**
      * Public constructor
      */
     Type();
-    
-    /**
-     * Find and get slot by name, or create it if it's absent. You can
-     * do whatever you can with this SLOT, since it's part of the TYPE
-     * (it's a strong composition design).
-     */
-    Slot& slot(const std::string&);
-
-    /**
-     * Get a link to the predicate, which is part of this TYPE. It's
-     * a strong composition design approach.
-     */
-    solm::Variadic& predicate();
-    
-    /**
-     * Add one slot to this type
-     */
-    operator+=(const Slot&);
-    
-    /**
-     * Add a collection of slots to this type
-     */
-    operator+=(const Slots&);
     
     /**
      * Get its name
@@ -89,16 +56,6 @@ public:
     operator solm::Declaration();
 
 private:
-
-    /**
-     * Collection of slots
-     */
-    Slots _slots;
-
-    /**
-     * Predicate related to this type
-     */
-    solm::Variadic _predicate;
 
 };
 

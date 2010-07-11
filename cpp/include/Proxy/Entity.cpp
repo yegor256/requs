@@ -11,16 +11,28 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: Type.cpp 2281 2010-07-11 10:07:12Z yegor256@yahoo.com $
  */
 
 #include <string>
+#include <vector>
+#include <boost/format.hpp>
+#include <boost/algorithm/string/replace.hpp> // replace_all_copy()
+#include "rqdql.h"
+#include "rqdql/Exception.h"
+#include "Logger.h"
+#include "Proxy.h"
+#include "Proxy/Type.h"
 #include "Proxy/Slot.h"
+#include "Solm/Formula.h"
 
-proxy::Slot::Slot(const std::string& n, const proxy::Slot::Cardinality& c) {
-    /* nothing for now */
-    _type = new Type();
+proxy::Slot& proxy::Entity::slot(const std::string& s) {
+    for (Slots::iterator i = _slots.begin(); i != _slots.end(); ++i) {
+        if (*i == s) {
+            return *i;
+        }
+    }
+    _slots.push_back(Slot(s));
+    return slot(s);
 }
-
-    
 

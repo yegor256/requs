@@ -19,7 +19,6 @@
 
 #include <string>
 #include "Proxy/Entity.h"
-#include "Proxy/Flows.h"
 #include "Proxy/Signature.h"
 #include "Solm/Formula/Declaration.h"
 
@@ -28,7 +27,7 @@ namespace proxy {
 /**
  * Use case entity, collection of flows with a signature
  */
-class UseCase : public Entity, public Flows {
+class UseCase : public Entity {
 
 public:
 
