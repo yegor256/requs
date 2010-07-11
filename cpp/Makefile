@@ -22,24 +22,24 @@ PATH := $(PATH):/usr/local/bin:/usr/bin
 CPP = c++
 BISON = bison
 FLEX = flex
-INCLUDE = ./include
+INCLUDE = include
 CPPFLAGS = -I$(INCLUDE) -I./library -I/usr/include/libxml2 $(shell xml2-config --cflags)
 LDFLAGS = $(shell xml2-config --libs)
-EXEC = ./rqdql
+EXEC = rqdql
 SVN = /usr/local/bin/svn
 DEPENDS = dependencies.mk
-TESTS = ./test
-LIBS = ./library/boost-libs
-TEST_RUNNER = ./test-runner
-
-SOURCES = $(shell find . -name "*.cpp")
-OBJS := $(SOURCES:%.cpp=build/%.o)
+TESTS = test
+BUILD = build
+LIBS = library/boost-libs
+TEST_RUNNER = test-runner
 
 SYMBOLS = include/Scanner/symbols.h
 FLEX_SRC = include/Scanner/rqdql.l
 FLEX_DEST = include/Scanner/rqdql.l.c
 BISON_SRC = include/Scanner/rqdql.y
 BISON_DEST = include/Scanner/rqdql.y.c
+
+SOURCES = $(shell find $(INCLUDE) $(TESTS) $(LIBS) -name "*.cpp")
 
 # instruct Make NOT to remove intermediate files
 .SECONDARY:
@@ -48,35 +48,7 @@ BISON_DEST = include/Scanner/rqdql.y.c
 %.o: %.cpp
 
 # compile the product and run all tests
-all: depends $(EXEC) test
-
-# build dependencies
-$(DEPENDS): $(FLEX_DEST) $(BISON_DEST) $(SELF)
-	$(CPP) $(CPPFLAGS) -M $(TEST_SOURCES) $(SOURCES) > $(DEPENDS)
-	
--include $(DEPENDS)
-
-# objects, we just compile them, NO linking
-%.o: %.cpp $(DEPENDS)
-	$(CPP) $(CPPFLAGS) -fPIC -o $@ -g -c $<
-
-# compile/build the product
-$(EXEC): $(BISON_DEST) $(FLEX_DEST) $(OBJS)
-	$(CPP) $(LDFLAGS) -o $(EXEC) $(OBJS) \
-	-D RQDQL_VERSION="\"$(VERSION)$(shell $(SVN) info | grep "Revision:" | sed "s/Revision: /r/g")\""
-
-$(FLEX_DEST): $(FLEX_SRC) $(HEADERS) $(SELF)
-	$(FLEX) -o$(FLEX_DEST) $(FLEX_SRC)
-
-$(BISON_DEST): $(BISON_SRC) $(HEADERS) $(SELF)
-	$(BISON) --no-lines --report=all --defines=$(SYMBOLS) --output=$(BISON_DEST) $(BISON_SRC)
-
-# test everything
-test: $(TEST_RUNNER)
-	$(TEST_RUNNER)
-
-$(TEST_RUNNER): $(OBJS)
-	$(CPP) $(LDFLAGS) -o $(TEST_RUNNER) $(OBJS)
+all: $(DEPENDS) $(EXEC) test
 
 # clean everything!
 clean:
@@ -88,4 +60,37 @@ clean:
 	$(OBJS) \
 	$(DEPENDS) \
 	$(SYMBOLS)
+
+# compilation of all .CPP files into .O files
+define oRule
+DEST = $(BUILD)/$(patsubst %.cpp,%.o,$(subst /,-,$(1)))
+$(DEST): $(1)
+	$(CPP) $(CPPFLAGS) -fPIC -o $(DEST) -g -c $(1)
+OBJS += $(DEST)
+endef
+$(foreach s, $(SOURCES), $(eval $(call oRule, $(s))))
+
+# build dependencies
+$(DEPENDS): $(FLEX_DEST) $(BISON_DEST)
+	$(CPP) $(CPPFLAGS) -M $(TEST_SOURCES) $(SOURCES) > $(DEPENDS)
+	
+-include $(DEPENDS)
+
+# compile/build the product
+$(EXEC): $(BISON_DEST) $(FLEX_DEST) $(OBJS)
+	$(CPP) $(LDFLAGS) -o $(EXEC) $(OBJS) \
+	-D RQDQL_VERSION="\"$(VERSION)$(shell $(SVN) info | grep "Revision:" | sed "s/Revision: /r/g")\""
+
+$(FLEX_DEST): $(FLEX_SRC) $(HEADERS)
+	$(FLEX) -o$(FLEX_DEST) $(FLEX_SRC)
+
+$(BISON_DEST): $(BISON_SRC) $(HEADERS)
+	$(BISON) --no-lines --report=all --defines=$(SYMBOLS) --output=$(BISON_DEST) $(BISON_SRC)
+
+# test everything
+test: $(TEST_RUNNER)
+	$(TEST_RUNNER)
+
+$(TEST_RUNNER): $(OBJS)
+	$(CPP) $(LDFLAGS) -o $(TEST_RUNNER) $(OBJS)
 
