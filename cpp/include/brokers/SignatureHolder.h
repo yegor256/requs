@@ -19,25 +19,36 @@
 #ifndef __INCLUDE_SCOPE_BROKERS_SIGNATUREHOLDER_H
 #define __INCLUDE_SCOPE_BROKERS_SIGNATUREHOLDER_H
 
+#include <string>
 #include <vector>
-#include <boost/algorithm/string/join.hpp>
-#include "Proxy.h"
+#include <boost/shared_ptr.hpp>
+#include "Proxy/Signature.h"
+#include "brokers/SigElement.h"
 
 namespace brokers {
 
+/**
+ * Forward declarations
+ */
+// class SigElements;
+
+/**
+ * Holder of a signature
+ * @see rqdql.y
+ */
 class SignatureHolder {
 public:
-    SignatureHolder() : signature(0), text("") { /* that's it */ }
-    void setSignature(proxy::Signature* s) { signature = s; }
-    void setSignature(const SigElements*);
-    proxy::Signature* getSignature() const { if (!hasSignature()) throw rqdql::Exception(rqdql::_t("no signature here")); return signature; }
-    bool hasSignature() const { return signature; }
-    void setText(const string& t) { text = t; }
-    const string getText() const { if (!hasText()) throw rqdql::Exception(rqdql::_t("no TEXT in this SignatureHolder")); return text; }
-    bool hasText() const { return !text.empty(); }
+    SignatureHolder();
+    void set(const proxy::Signature&);
+    void set(const SigElements&);
+    proxy::Signature& getSignature() const;
+    bool hasSignature() const;
+    void set(const std::string&);
+    const std::string getText() const;
+    bool hasText() const;
 private:
-    proxy::Signature* signature;
-    string text;
+    boost::shared_ptr<proxy::Signature> _signature;
+    std::string _text;
 };
 
 }

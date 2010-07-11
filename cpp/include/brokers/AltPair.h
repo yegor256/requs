@@ -20,24 +20,22 @@
 #define __INCLUDE_SCOPE_BROKERS_ALTPAIR_H
 
 #include <vector>
-#include <boost/algorithm/string/join.hpp>
-#include "Proxy.h"
 
 namespace brokers {
 
 class AltPair {
 public:
-    AltPair(int i, char l) : num(i), letter(l) { /* that's it */ }
-    void setNum(int i) { num = i; }
-    int getNum() const { return num; }
-    void setLetter(char l) { letter = l; }
-    char getLetter() { return letter; }
+    AltPair(int, char);
+    void setNum(int);
+    int getNum() const;
+    void setLetter(char);
+    char getLetter();
 private:
-    int num; // -1 means STAR
-    char letter;
+    int _num; // -1 means STAR
+    char _letter;
 };
 
-typedef vector<AltPair*> AltPairs;
+typedef std::vector<AltPair*> AltPairs;
 
 }
 

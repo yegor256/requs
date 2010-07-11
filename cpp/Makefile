@@ -40,6 +40,8 @@ BISON_SRC = include/Scanner/rqdql.y
 BISON_DEST = include/Scanner/rqdql.y.c
 
 SOURCES = $(shell find $(INCLUDE) $(TESTS) $(LIBS) -name "*.cpp")
+SOURCES += $(BISON_DEST)
+SOURCES += $(FLEX_DEST)
 
 # instruct Make NOT to remove intermediate files
 .SECONDARY:
@@ -72,7 +74,7 @@ $(foreach s, $(SOURCES), $(eval $(call oRule, $(s))))
 
 # build dependencies
 $(DEPENDS):
-	$(CPP) $(CPPFLAGS) -M $(TEST_SOURCES) $(SOURCES) > $(DEPENDS)
+	$(CPP) $(CPPFLAGS) -M $(SOURCES) > $(DEPENDS)
 	
 -include $(DEPENDS)
 

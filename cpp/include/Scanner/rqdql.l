@@ -1,5 +1,4 @@
 /**
-
  * RQDQL.com, Requirements Definition and Query Language
  *
  * Redistribution and use in source and binary forms, with or 
@@ -106,7 +105,7 @@ QOS (QOS{NSFX})
 [a-zA-Z\-]+ { yySet(yylval.name, yytext); log(format("WORD: '%s'") % yytext); return WORD; }
 
 	/* quoted informal texts */
-(\") { BEGIN(READING_QUOTED); yylval.name = new string(""); }
+(\") { BEGIN(READING_QUOTED); yylval.name = new std::string(""); }
 <READING_QUOTED>(\") { BEGIN(INITIAL); log(format("QUOTED: '%s'") % *yylval.name); return QUOTED; }
 <READING_QUOTED>([\n\t\r]|.) { *yylval.name = *yylval.name + yytext; }
 <READING_QUOTED><<EOF>> { BEGIN(INITIAL); yyerror("Unclosed informal text"); throw "Unclosed informal text"; }

@@ -19,23 +19,22 @@
 #ifndef __INCLUDE_SCOPE_BROKERS_FLOWHOLDER_H
 #define __INCLUDE_SCOPE_BROKERS_FLOWHOLDER_H
 
-#include <vector>
-#include <boost/algorithm/string/join.hpp>
-#include "Proxy.h"
+#include <boost/shared_ptr.hpp>
+#include "Proxy/UseCase.h"
 
 namespace brokers {
 
 class FlowHolder {
 public:
-    FlowHolder() : flow(0), id(0) { /* that's it */ }
-    void setFlow(proxy::Flow* f) { flow = f; }
-    bool hasFlow() const { return flow; }
-    proxy::Flow* getFlow() const { if (!hasFlow()) throw rqdql::Exception(rqdql::_t("no FLOW here")); return flow; }
-    void setId(int i) { id = i; }
-    int getId() const { return id; }
+    FlowHolder();
+    void setFlow(const proxy::UseCase&);
+    bool hasFlow() const;
+    const proxy::UseCase& getFlow() const;
+    void setId(int i);
+    int getId() const;
 private:
-    proxy::Flow* flow;
-    int id;
+    boost::shared_ptr<proxy::UseCase> _flow;
+    int _id;
 };
 
 }

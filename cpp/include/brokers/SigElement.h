@@ -19,33 +19,42 @@
 #ifndef __INCLUDE_SCOPE_BROKERS_SIGELEMENT_H
 #define __INCLUDE_SCOPE_BROKERS_SIGELEMENT_H
 
+#include <string>
 #include <vector>
-#include <boost/algorithm/string/join.hpp>
-#include "Proxy.h"
+#include <boost/shared_ptr.hpp>
 
 namespace brokers {
 
+/**
+ * Forward declarations
+ */
+class De;
+
+/**
+ * One element inside signature
+ * @see rqdql.y
+ */
 class SigElement {
 public:
-    SigElement() : de(0), informal(""), verb("") { /* that's it */ }
-    void setInformal(const string& s) { informal = s; }
-    bool hasInformal() const { return !informal.empty(); }
-    const string getInformal() const { if (!hasInformal()) throw rqdql::Exception(rqdql::_t("no INFORMAL here")); return informal; }
-    void setDe(De* d) { de = d; }
-    De* getDe() const { if (!hasDe()) throw rqdql::Exception(rqdql::_t("no DE here")); return de; }
-    bool hasDe() const { return de; }
-    void setVerb(const string& v) { verb = v; }
-    const string getVerb() const { if (!hasVerb()) throw rqdql::Exception(rqdql::_t("no VERB here")); return verb; }
-    bool hasVerb() const { return !verb.empty(); }
-    const string toFormalString() const; // like "${user}"
-    const string toInformalString() const; // like "\"some\" ActorUser (the user)"
+    SigElement();
+    void setInformal(const std::string&);
+    bool hasInformal() const;
+    const std::string getInformal() const;
+    void setDe(const De&);
+    const De& getDe() const;
+    bool hasDe() const;
+    void setVerb(const std::string&);
+    const std::string getVerb() const;
+    bool hasVerb() const;
+    const std::string toFormalString() const; // like "${user}"
+    const std::string toInformalString() const; // like "\"some\" ActorUser (the user)"
 private:
-    De* de;
-    string informal;    
-    string verb;
+    boost::shared_ptr<De> _de;
+    std::string _informal;    
+    std::string _verb;
 };
 
-typedef vector<SigElement*> SigElements;
+typedef std::vector<SigElement*> SigElements;
 
 }
 

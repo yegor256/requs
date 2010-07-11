@@ -13,35 +13,27 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: AltPair.h 2273 2010-07-09 18:29:48Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SCOPE_BROKERS_DE_H
-#define __INCLUDE_SCOPE_BROKERS_DE_H
+#include "brokers/AltPair.h"
 
-#include <string>
-#include <boost/shared_ptr.hpp>
-#include "brokers/Explanation.h"
-
-namespace brokers {
-
-/**
- * Data element
- */
-class De {
-public:
-    De();
-    void setName(const std::string& n);
-    const std::string& getName() const;
-    bool hasName() const;
-    void setExplanation(const Explanation& e);
-    const Explanation& getExplanation() const;
-    bool hasExplanation() const;
-private:
-    std::string _name;
-    boost::shared_ptr<Explanation> _explanation;
-};
-
+brokers::AltPair::AltPair(int i, char l) : _num(i), _letter(l) { 
+    /* that's it */ 
 }
 
-#endif
+void brokers::AltPair::setNum(int i) { 
+    _num = i; 
+}
+
+int brokers::AltPair::getNum() const { 
+    return _num; 
+}
+
+void brokers::AltPair::setLetter(char l) { 
+    _letter = l; 
+}
+
+char brokers::AltPair::getLetter() { 
+    return _letter; 
+}

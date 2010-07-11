@@ -1,5 +1,4 @@
 /**
-
  * RQDQL.com, Requirements Definition and Query Language
  *
  * Redistribution and use in source and binary forms, with or 
@@ -25,10 +24,16 @@
     #include "rqdql.h"
     #include "Scanner/symbols.h"
     #include "Scanner/supplementary.h"
+
     #include "Proxy.h"
+    #include "Proxy/Type.h"
+    #include "Proxy/Slot.h"
+    #include "Proxy/UseCase.h"
+    #include "Proxy/Signature.h"
+
     #include "Solm.h"
     #include "Solm/Formula/Predicate.h"
-    #include "Proxy/Type.h"
+
     #include "brokers/De.h"
     #include "brokers/FlowHolder.h"
     #include "brokers/SigElement.h"
@@ -66,7 +71,6 @@
 %type <ptr> altId
 %type <ptr> altIdPair
 
-
 // Declaration of all known tokens
 %token <name> QUOTED
 %token <name> CAMEL
@@ -77,6 +81,7 @@
 %token <name> LETTER
 %token <name> PREPOSITION
 
+// Declaration of all known un-typed tokens
 %token COLON SEMICOLON DOT COMMA STAR
 %token AND OR
 %token WHERE
@@ -92,6 +97,7 @@
 %token IS_A
 %token INCLUDES
 
+// Declaration of associating rules
 %nonassoc COMMA
 %nonassoc AND
 %nonassoc SEMICOLON
@@ -151,7 +157,7 @@ invariantDeclaration: /* proxy::Type* */
             } else {
                 proxy::Type* classPath = static_cast<proxy::Type*>($1);
                 solm::Formula* invariant = static_cast<solm::Formula*>($3);
-                classPath->predicate() += *invariant;
+                classPath->invariant() += *invariant;
                 delete invariant;
                 $$ = classPath;
                 protocol(@1, classPath);
@@ -170,7 +176,7 @@ predicate: /* solm::Predicate* */
         {
             solm::Predicate* predicate = new solm::Predicate("info");
             std::string* informal = static_cast<std::string*>($1);
-            p->arg("'" + *informal);
+            predicate->arg("'" + *informal);
             delete informal;
             $$ = predicate;
             protocol(@1, predicate);
@@ -180,7 +186,7 @@ predicate: /* solm::Predicate* */
         {
             solm::Predicate* predicate = new solm::Predicate("info");
             std::string* words = static_cast<std::string*>($1);
-            p->arg("'words: " + *words);
+            predicate->arg("'words: " + *words);
             delete words;
             $$ = predicate;
             protocol(@1, predicate);
@@ -190,7 +196,7 @@ predicate: /* solm::Predicate* */
         {
             solm::Predicate* predicate = new solm::Predicate("info");
             std::string* WORD = static_cast<std::string*>($1);
-            p->arg("'word: " + *WORD);
+            predicate->arg("'word: " + *WORD);
             delete WORD;
             $$ = predicate;
             protocol(@1, predicate);
@@ -228,10 +234,10 @@ slotsDeclaration: /* proxy::Type* */
 classPath: /* proxy::Type* */
     theClass 
         {
-            if (!$1) {
+            proxy::Type* theClass = static_cast<proxy::Type*>($1);
+            if (!theClass) {
                 lyyerror(@1, "HIMSELF is forbidden here, in class path");
             } else {
-                proxy::Type* theClass = static_cast<proxy::Type*>($1);
                 $$ = theClass;
                 protocol(@1, theClass);
             }
@@ -261,12 +267,9 @@ slots: /* std::vector<proxy::Slot*>* */
     |
     slots separator slot 
         {
-            proxy::Entity::Slots* slotsLhs = new proxy::Entity::Slots();
             proxy::Entity::Slots* slots = static_cast<proxy::Entity::Slots*>($1);
             proxy::Slot* slot = static_cast<proxy::Slot*>($1);
-            for (proxy::Entity::Slots::const_iterator i = slots->begin(); i != slots->end(); ++i) {
-                slotsLhs->push_back(*i);
-            }
+            proxy::Entity::Slots* slotsLhs = new proxy::Entity::Slots(slots);
             slotsLhs->push_back(slot);
             $$ = slotsLhs;
             protocol(@1, slotsLhs);
@@ -282,9 +285,10 @@ slot: /* proxy::Slot* */
     slotName
         {
             std::string* slotName = static_cast<std::string*>($1);
-            $$ = new proxy::Slot(*slotName);
+            proxy::Slot* slot = new proxy::Slot(*slotName);
             delete slotName;
-            protocol(@1, $$);
+            $$ = slot;
+            protocol(@1, slot);
         }
     |
     slotName COLON invariant
@@ -292,7 +296,7 @@ slot: /* proxy::Slot* */
             std::string* slotName = static_cast<std::string*>($1);
             solm::Predicate* invariant = static_cast<std::string*>($3);
             proxy::Slot* slot = new proxy::Slot(*slotName);
-            slot->predicate() += *invariant;
+            slot->invariant() += *invariant;
             delete slotName;
             delete invariant;
             protocol(@1, slot);
@@ -306,8 +310,8 @@ useCaseDeclaration: /* NULL */
     ucStarter flows 
         {
             proxy::UseCase* ucStarter = static_cast<proxy::UseCase*>($1);
-            proxy::Flows* flows = static_cast<proxy::Flows*>($2);
-            *uc = *flows; // set full collection of flows
+            proxy::UseCase* flows = static_cast<proxy::UseCase*>($2);
+            *ucStarter = *flows; // set full collection of flows
             delete flows;
         } 
     |
@@ -329,11 +333,18 @@ ucStarter: /* proxy::UseCase */
             if (!signature->hasSignature()) {
                 lyyerror(@1, "Use Case signature can't be completely informal");
             } else {
-                proxy::UseCase* ucStarter = rqdql::get<proxy::Proxy>().entity(*UC);
-                sh->getSignature();
-                $$ = uc;
-                protocol(@1, $$);
+                proxy::Slot& s = rqdql::get<proxy::Proxy>().slot(*UC);
+                if (s) {
+                    lyyerror(@1, "Use Case is already declared");
+                } else {
+                    proxy::UseCase* ucStarter = new proxy::UseCase(signature->getSignature());
+                    s.entity(ucStarter);
+                    $$ = ucStarter;
+                    protocol(@1, ucStarter);
+                }
             }
+            delete UC;
+            delete signature;
         }
     ;
     
@@ -345,135 +356,168 @@ ucStarter: /* proxy::UseCase */
 signature: /* brokers::SignatureHolder* */
     informal 
         {
-            brokers::SignatureHolder* s = new brokers::SignatureHolder();
-            s->setText(*$1);
-            $$ = s;
-            protocol(@1, $$);
+            std::string* informal = static_cast<std::string*>($1);
+            brokers::SignatureHolder* signature = new brokers::SignatureHolder();
+            signature->set(*informal);
+            delete informal;
+            $$ = signature;
+            protocol(@1, signature);
         }
     |
     sigElements 
         {
-            brokers::SignatureHolder* s = new brokers::SignatureHolder();
-            s->setSignature(static_cast<brokers::SigElements*>($1));
-            $$ = s;
-            protocol(@1, $$);
+            brokers::SigElements sigElements = static_cast<brokers::SigElements*>($1);
+            brokers::SignatureHolder* signature = new brokers::SignatureHolder();
+            signature->set(*sigElements);
+            delete sigElements;
+            $$ = signature;
+            protocol(@1, signature);
         }
     |
     sigElements informal 
         {
-            brokers::SignatureHolder* s = new brokers::SignatureHolder();
-            s->setSignature(static_cast<brokers::SigElements*>($1));
-            s->setText(s->getText() + " " + *$2);
-            $$ = s;
-            protocol(@1, $$);
+            brokers::SigElements sigElements = static_cast<brokers::SigElements*>($1);
+            std::string* informal = static_cast<std::string*>($2);
+            brokers::SignatureHolder* signature = new brokers::SignatureHolder();
+            signature->set(sigElements);
+            signature->set(informal);
+            delete sigElements;
+            delete informal;
+            $$ = signature;
+            protocol(@1, signature);
         }
     ;
     
 sigElements: /* brokers::SigElements* */
     sigElement
         {
-            brokers::SigElements* v = new brokers::SigElements();
-            v->push_back(static_cast<brokers::SigElement*>($1));
-            $$ = v;
-            protocol(@1, $$);
+            brokers::SigElement sigElement = static_cast<brokers::SigElement*>($1);
+            brokers::SigElements* sigElements = new brokers::SigElements();
+            sigElements->push_back(*sigElement);
+            delete sigElement;
+            $$ = sigElements;
+            protocol(@1, sigElements);
         }
     |
     sigElements sigElement
         {
-            brokers::SigElements* v = new brokers::SigElements();
-            brokers::SigElements* e = static_cast<brokers::SigElements*>($1);
-            for (brokers::SigElements::const_iterator i = e->begin(); i != e->end(); ++i) {
-                v->push_back(*i);
-            }
-            v->push_back(static_cast<brokers::SigElement*>($2));
-            $$ = v;
-            protocol(@1, $$);
+            brokers::SigElements* sigElements = static_cast<brokers::SigElements*>($1);
+            brokers::SigElement sigElement = static_cast<brokers::SigElement*>($2);
+            brokers::SigElements* sigElementsLhs = new brokers::SigElements(sigElements);
+            sigElementsLhs->push_back(sigElement);
+            delete sigElements;
+            delete sigElement;
+            $$ = sigElementsLhs;
+            protocol(@1, sigElementsLhs);
         }
     ;
     
 sigElement: /* brokers::SigElement* */
     de
         {
-            brokers::SigElement* se = new brokers::SigElement();
-            se->setDe(static_cast<brokers::De*>($1));
-            $$ = se;
-            protocol(@1, $$);
+            brokers::De* de = static_cast<brokers::De*>($1);
+            brokers::SigElement* sigElement = new brokers::SigElement();
+            sigElement->setDe(*de);
+            delete de;
+            $$ = sigElement;
+            protocol(@1, sigElement);
         }
     |
     verb 
         {
-            brokers::SigElement* se = new brokers::SigElement();
-            se->setVerb(*$1);
-            $$ = se;
-            protocol(@1, $$);
+            std::string* verb = static_cast<std::string*>($1);
+            brokers::SigElement* sigElement = new brokers::SigElement();
+            sigElement->setVerb(*verb);
+            delete verb;
+            $$ = sigElement;
+            protocol(@1, sigElement);
         }
     |
     informal de 
         {
-            brokers::SigElement* se = new brokers::SigElement();
-            se->setInformal(*$1);
-            se->setDe(static_cast<brokers::De*>($2));
-            $$ = se;
-            protocol(@1, $$);
+            std::string* informal = static_cast<std::string*>($1);
+            brokers::De* de = static_cast<brokers::De*>($2);
+            brokers::SigElement* sigElement = new brokers::SigElement();
+            sigElement->setInformal(*informal);
+            sigElement->setDe(*de);
+            delete informal;
+            delete de;
+            $$ = sigElement;
+            protocol(@1, sigElement);
         }
     |
     informal verb
         {
-            brokers::SigElement* se = new brokers::SigElement();
-            se->setInformal(*$1);
-            se->setVerb(*$2);
-            $$ = se;
-            protocol(@1, $$);
+            std::string* informal = static_cast<std::string*>($1);
+            std::string* verb = static_cast<std::string*>($2);
+            brokers::SigElement* sigElement = new brokers::SigElement();
+            sigElement->setInformal(*informal);
+            sigElement->setVerb(*verb);
+            delete informal;
+            delete verb;
+            $$ = sigElement;
+            protocol(@1, sigElement);
         }
     ;
 
 de: /* brokers::De* */
     objectName 
         { 
+            std::string* objectName = static_cast<std::string*>($1);
             brokers::De* de = new brokers::De();
-            de->setName(*$1);
+            de->setName(*objectName);
+            delete objectName;
             $$ = de;
-            protocol(@1, $$);
+            protocol(@1, de);
         }
     |
     deType 
         {
+            brokers::Explanation* deType = static_cast<brokers::Explanation*>($1);
             brokers::De* de = new brokers::De();
-            de->setExplanation(static_cast<Signature::Explanation*>($1));
+            de->setExplanation(*deType);
+            delete deType;
             $$ = de;
-            protocol(@1, $$);
+            protocol(@1, de);
         }
     |
     deType OPEN_BRACE objectName CLOSE_BRACE
         {
+            brokers::Explanation* deType = static_cast<brokers::Explanation*>($1);
+            std::string* objectName = static_cast<std::string*>($3);
             brokers::De* de = new brokers::De();
-            de->setExplanation(static_cast<Signature::Explanation*>($1));
-            de->setName(*$3);
+            de->setExplanation(*deType);
+            de->setName(*objectName);
+            delete deType;
+            delete objectName;
             $$ = de;
-            protocol(@1, $$);
+            protocol(@1, de);
         }
     ;
     
-deType: /* Signature::Explanation* */
+deType: /* brokers::Explanation* */
     theClass
         {
-            Signature::Explanation* e;
-            Type* t = static_cast<Type*>($1);
+            proxy::Type* theClass = static_cast<proxy::Type*>($1);
+            brokers::Explanation* deType = new brokers::Explanation();
             // maybe it's SELF?
-            if (!t) {
-                e = new Signature::Explanation();
-            } else {
-                e = new Signature::Explanation(t);
+            if (theClass) {
+                deType->setType(theClass);
             }
-            $$ = e;
-            protocol(@1, $$);
+            $$ = deType;
+            protocol(@1, deType);
         }
     |
     slotName OF objectName 
         {
-            Signature::Explanation* e = new Signature::Explanation(*$1, *$3);
-            $$ = e;
-            protocol(@1, $$);
+            std::string* slotName = static_cast<std::string*>($1);
+            std::string* objectName = static_cast<std::string*>($3);
+            brokers::Explanation* deType = new brokers::Explanation();
+            deType->setNames(*slotName, *objectName);
+            delete slotName;
+            delete objectName;
+            $$ = deType;
+            protocol(@1, deType);
         }
     ;
     
@@ -483,8 +527,12 @@ deType: /* Signature::Explanation* */
 verb:
     words PREPOSITION 
         {
-            string* s = new std::string((boost::format("%s %s") % *$1 % *$2).str());
-            $$ = s;
+            std::string* words = static_cast<std::string*>($1);
+            std::string* PREPOSITION = static_cast<std::string*>($2);
+            std::string* verb = new std::string((boost::format("%s %s") % *words % *PREPOSITION).str());
+            delete words;
+            delete PREPOSITION;
+            $$ = verb;
         } 
     |
     WORD 
@@ -499,110 +547,146 @@ verb:
     |
     WORD PREPOSITION 
         {
-            string* s = new std::string((boost::format("%s %s") % *$1 % *$2).str());
-            $$ = s;
+            std::string* WORD = static_cast<std::string*>($1);
+            std::string* PREPOSITION = static_cast<std::string*>($2);
+            string* verb = new std::string((boost::format("%s %s") % *WORD % *PREPOSITION).str());
+            delete WORD;
+            delete PREPOSITION;
+            $$ = verb;
         } 
     ;
     
-flows: /* Flows* */
+flows: /* proxy::UseCase* */
     flow 
         {
-            Flows* v = new Flows();
-            brokers::FlowHolder* f = static_cast<brokers::FlowHolder*>($1);
-            v->addFlow(f->getId(), f->getFlow());
-            protocol(@1, $$ = v);
+            brokers::FlowHolder* flow = static_cast<brokers::FlowHolder*>($1);
+            proxy::UseCase* flows = new proxy::UseCase();
+            flows->slot(flow->getId()).entity(flow->getFlow());
+            delete flow;
+            $$ = flows;
+            protocol(@1, flows);
         }
     |
     flows flow
         {
-            Flows* v = new Flows();
-            typedef map<int, Flow*> FlowsList;
-            FlowsList e = (static_cast<Flows*>($1))->getFlows();
-            for (FlowsList::const_iterator i = e.begin(); i != e.end(); ++i) {
-                v->addFlow((*i).first, (*i).second);
-            }
-            brokers::FlowHolder* f = static_cast<brokers::FlowHolder*>($2);
-            v->addFlow(f->getId(), f->getFlow());
-            protocol(@1, $$ = v);
+            proxy::UseCase* flows = static_cast<proxy::UseCase*>($1);
+            brokers::FlowHolder* flow = static_cast<brokers::FlowHolder*>($2);
+            proxy::UseCase* flowsLhs = new proxy::UseCase(flows);
+            flowsLhs->slot(flow->getId()).entity(flow->getFlow());
+            delete flows;
+            delete flow;
+            $$ = flowsLhs;
+            protocol(@1, flowsLhs);
         }
     ;
     
 flow: /* brokers::FlowHolder* */
     NUMBER DOT signature DOT 
         {
-            brokers::FlowHolder* f = new brokers::FlowHolder();
-            brokers::SignatureHolder* s = static_cast<brokers::SignatureHolder*>($3);
-            if (s->hasSignature()) {
-                protocol(@3, s->getSignature());
-                f->setFlow(new Flow(s->getText(), s->getSignature()));
+            int NUMBER = $1;
+            brokers::SignatureHolder* signature = static_cast<brokers::SignatureHolder*>($3);
+            brokers::FlowHolder* flow = new brokers::FlowHolder();
+            if (signature->hasSignature()) {
+                protocol(@3, signature->getSignature());
+                flow->setFlow(UseCase(signature->getSignature()));
             } else {
-                f->setFlow(new Flow(s->getText()));
+                flow->setFlow(UseCase(Signature("")));
             }
-            f->setId($1);
-            $$ = f;
-            protocol(@1, f->getFlow());
+            flow->setId(NUMBER);
+            $$ = flow;
+            protocol(@1, flow);
+            protocol(@1, flow->getFlow());
         }
     ;
     
 /**
  * alternative flow of a use case
  */
-useCaseAlternativeDeclaration:
+useCaseAlternativeDeclaration: /* NULL */
     UC altId CLOSE_BRACE IF predicate COLON flows 
     {
-        Flows* flows = rqdql::get<Proxy>().get<UseCase>(*$1);
-        brokers::AltPairs* e = static_cast<brokers::AltPairs*>($2);
-        Flow* dest = 0;
-        for (brokers::AltPairs::const_iterator i = e->begin(); i != e->end(); ++i) {
-            if (dest) {
-                flows = dest->findAlternative((*(i-1))->getLetter());
-            }
-            if ((*i)->getNum() == -1) {
-                lyyerror(@2, "STAR is not supported yet");
-                dest = 0;
-                break;
-            } else {
-                dest = flows->getFlow((*i)->getNum());
-            }
-        }
-        if (dest) {
-            // it's found, inject flows there!
-            protocol(@1, dest);
-            Flows* alt = dest->addAlternative(static_cast<solm::Formula*>($5));
-            alt->setFlows(static_cast<Flows*>($7));
-        }
+        std::string* UC = static_cast<std::string*>($1);
+        brokers::AltPairs* altId = static_cast<brokers::AltPairs*>($2);
+        solm::Predicate* predicate = static_cast<solm::Predicate*>($5);
+        proxy::UseCase* flows = static_cast<proxy::UseCase*>($7);
+
+        // brokers::SignatureHolder* signature = static_cast<brokers::SignatureHolder*>($3);
+        // if (!signature->hasSignature()) {
+        //     lyyerror(@1, "Use Case signature can't be completely informal");
+        // } else {
+        //     proxy::Slot& s = rqdql::get<proxy::Proxy>().slot(*UC);
+        //     if (s) {
+        //         lyyerror(@1, "Use Case is already declared");
+        //     } else {
+        //         proxy::UseCase* ucStarter = new proxy::UseCase(signature->getSignature());
+        //         s.entity(ucStarter);
+        //         $$ = ucStarter;
+        //         protocol(@1, ucStarter);
+        //     }
+        // }
+        // delete UC;
+        // delete signature;
+
+
+        // Flows* flows = rqdql::get<Proxy>().get<UseCase>(*$1);
+        // Flow* dest = 0;
+        // for (brokers::AltPairs::const_iterator i = e->begin(); i != e->end(); ++i) {
+        //     if (dest) {
+        //         flows = dest->findAlternative((*(i-1))->getLetter());
+        //     }
+        //     if ((*i)->getNum() == -1) {
+        //         lyyerror(@2, "STAR is not supported yet");
+        //         dest = 0;
+        //         break;
+        //     } else {
+        //         dest = flows->getFlow((*i)->getNum());
+        //     }
+        // }
+        // if (dest) {
+        //     // it's found, inject flows there!
+        //     protocol(@1, dest);
+        //     Flows* alt = dest->addAlternative(static_cast<solm::Formula*>($5));
+        //     alt->setFlows(static_cast<Flows*>($7));
+        // }
     }
     ;
     
 altId: /* brokers::AltPairs* */
     altIdPair
         {
-            brokers::AltPairs* p = new brokers::AltPairs();
-            p->push_back(static_cast<brokers::AltPair*>($1));
-            $$ = p;
+            brokers::AltPair* altIdPair = static_cast<brokers::AltPair*>($1);
+            brokers::AltPairs* altId = new brokers::AltPairs();
+            altId->push_back(altIdPair);
+            delete altIdPair;
+            $$ = altId;
         }
     |
     altId altIdPair
         {
-            brokers::AltPairs* p = new brokers::AltPairs();
-            brokers::AltPairs* e = static_cast<brokers::AltPairs*>($1);
-            for (brokers::AltPairs::const_iterator i = e->begin(); i != e->end(); ++i) {
-                p->push_back(*i);
-            }
-            p->push_back(static_cast<brokers::AltPair*>($2));
-            $$ = p;
+            brokers::AltPairs* altId = static_cast<brokers::AltPairs*>($1);
+            brokers::AltPair* altIdPair = static_cast<brokers::AltPair*>($2);
+            brokers::AltPairs* altIdLhs = new brokers::AltPairs(altId);
+            altIdLhs->push_back(altIdPair);
+            $$ = aldIdLhs;
         }
     ;
     
 altIdPair: /* brokers::AltPair* */
     NUMBER LETTER 
         {
-            $$ = new brokers::AltPair($1, $2->at(0));
+            int NUMBER = $1;
+            std::string* LETTER = static_cast<std::string*>($2);
+            brokers::AltPair* altIdPair = new brokers::AltPair(NUMBER, LETTER->at(0));
+            delete LETTER;
+            $$ = altIdPair;
         }
     |
     STAR LETTER
         {
-            $$ = new brokers::AltPair(-1, $2->at(0));
+            std::string* LETTER = static_cast<std::string*>($2);
+            brokers::AltPair* altIdPair = new brokers::AltPair(-1, LETTER->at(0));
+            delete LETTER;
+            $$ = altIdPair;
         }
     ;
     
@@ -647,7 +731,7 @@ theClass: /* proxy::Type* */
     CAMEL 
         {
             std::string* CAMEL = static_cast<std::string*>($1);
-            proxy::Type* theClass = rqdql::get<Proxy>().slot(CAMEL).entity();
+            proxy::Type* theClass = rqdql::get<proxy::Proxy>().slot(CAMEL).entity();
             delete CAMEL;
             $$ = theClass;
             protocol(@1, theClass);
@@ -655,21 +739,21 @@ theClass: /* proxy::Type* */
     |
     SUD 
         {
-            proxy::Type* theClass = rqdql::get<Proxy>().slot("SUD").entity();
+            proxy::Type* theClass = rqdql::get<proxy::Proxy>().slot("SUD").entity();
             $$ = theClass;
             protocol(@1, theClass);
         }
     |
     SOMEBODY
         {
-            proxy::Type* theClass = rqdql::get<Proxy>().slot("somebody").entity();
+            proxy::Type* theClass = rqdql::get<proxy::Proxy>().slot("somebody").entity();
             $$ = theClass;
             protocol(@1, theClass);
         }
     |
     SOMETHING
         {
-            proxy::Type* theClass = rqdql::get<Proxy>().slot("something").entity();
+            proxy::Type* theClass = rqdql::get<proxy::Proxy>().slot("something").entity();
             $$ = theClass;
             protocol(@1, theClass);
         }
@@ -698,4 +782,4 @@ objectName: /* std::string* */
     
 %%
 
-// see global.cpp
+// see Scanner.h

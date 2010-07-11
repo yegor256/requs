@@ -13,33 +13,35 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: SignatureHolder.h 2273 2010-07-09 18:29:48Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SCOPE_BROKERS_DE_H
-#define __INCLUDE_SCOPE_BROKERS_DE_H
+#ifndef __INCLUDE_SCOPE_BROKERS_EXPLANATION_H
+#define __INCLUDE_SCOPE_BROKERS_EXPLANATION_H
 
 #include <string>
 #include <boost/shared_ptr.hpp>
-#include "brokers/Explanation.h"
+#include "Proxy/Type.h"
 
 namespace brokers {
 
 /**
- * Data element
+ * Forward declarations
  */
-class De {
+// class ;
+
+/**
+ * Explanation of a place in signature
+ * @see rqdql.y
+ */
+class Explanation {
 public:
-    De();
-    void setName(const std::string& n);
-    const std::string& getName() const;
-    bool hasName() const;
-    void setExplanation(const Explanation& e);
-    const Explanation& getExplanation() const;
-    bool hasExplanation() const;
+    void setType(const proxy::Type&);
+    void setNames(const std::string&, const std::string&);
 private:
-    std::string _name;
-    boost::shared_ptr<Explanation> _explanation;
+    boost::shared_ptr<proxy::Type> _type;
+    std::string _slotName;
+    std::string _objectName;
 };
 
 }

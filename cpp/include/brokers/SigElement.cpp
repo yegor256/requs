@@ -16,11 +16,70 @@
  * @version $Id$
  */
 
+#include <string>
 #include <vector>
-#include <boost/algorithm/string/join.hpp>
-#include "Proxy.h"
+#include <boost/shared_ptr.hpp>
+#include "brokers/SigElement.h"
+#include "brokers/De.h"
+#include "rqdql.h"
+#include "rqdql/Exception.h"
 
-const string SigElement::toInformalString() const {
+brokers::SigElement::SigElement() : _de(0), _informal(), _verb() { 
+    /* that's it */ 
+}
+
+void brokers::SigElement::setInformal(const std::string& s) { 
+    _informal = s; 
+}
+
+bool brokers::SigElement::hasInformal() const { 
+    return !_informal.empty(); 
+}
+
+const std::string brokers::SigElement::getInformal() const { 
+    if (!hasInformal()) {
+        throw rqdql::Exception(
+            rqdql::_t("no INFORMAL here")
+        ); 
+    }
+    return _informal; 
+}
+
+void brokers::SigElement::setDe(const boost::shared_ptr<brokers::De>& d) { 
+    _de = d; 
+}
+
+boost::shared_ptr<brokers::De>& brokers::SigElement::getDe() const { 
+    if (!hasDe()) {
+        throw rqdql::Exception(
+            rqdql::_t("no DE here")
+        ); 
+    }
+    return _de; 
+}
+
+bool brokers::SigElement::hasDe() const { 
+    return _de; 
+}
+
+void brokers::SigElement::setVerb(const std::string& v) { 
+    _verb = v; 
+}
+
+const std::string brokers::SigElement::getVerb() const { 
+    if (!hasVerb()) {
+        throw rqdql::Exception(
+            rqdql::_t("no VERB here")
+        ); 
+    }
+    return _verb; 
+}
+
+bool brokers::SigElement::hasVerb() const { 
+    return !_verb.empty(); 
+}
+
+const std::string brokers::SigElement::toInformalString() const {
     string txt;
     if (hasInformal()) {
         txt = txt + getInformal() + " ";
@@ -37,7 +96,7 @@ const string SigElement::toInformalString() const {
     return txt;
 }
 
-const string SigElement::toFormalString() const {
+const std::string brokers::SigElement::toFormalString() const {
     if (hasDe()) {
         return "{" + (getDe()->hasName() ? getDe()->getName() : "?") + "}";
     } else {

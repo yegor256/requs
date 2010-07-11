@@ -46,7 +46,7 @@ public:
      * To resolve this formula on some context
      * and produce a new Chain of Snapshots.
      */
-    virtual Chain operator+(const Context&);
+    virtual Chain operator+(const Context&) const;
 
 private:
     

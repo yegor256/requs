@@ -14,12 +14,8 @@
  * @version $Id$
  */
 
-#include <iostream>
 #include <string>
-#include <boost/format.hpp>
-#include <boost/shared_ptr.hpp>
 #include "rqdql.h"
-#include "Logger.h"
 
 const std::string rqdql::_t(const std::string& s) {
     return s;

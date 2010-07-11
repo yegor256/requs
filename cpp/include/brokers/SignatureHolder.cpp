@@ -16,11 +16,56 @@
  * @version $Id$
  */
 
+#include <string>
 #include <vector>
+#include <map>
+#include <boost/shared_ptr.hpp>
 #include <boost/algorithm/string/join.hpp>
-#include "Proxy.h"
+#include "Proxy/Signature.h"
+#include "brokers/SignatureHolder.h"
+#include "brokers/SigElement.h"
+#include "rqdql.h"
+#include "rqdql/Exception.h"
 
-void SignatureHolder::setSignature(const SigElements* e) {
+brokers::SignatureHolder::SignatureHolder() : _signature(), _text("") { 
+    /* that's it */ 
+}
+
+void brokers::SignatureHolder::set(const boost::shared_ptr<proxy::Signature>& s) { 
+    _signature = s; 
+}
+
+boost::shared_ptr<proxy::Signature>& brokers::SignatureHolder::getSignature() const { 
+    if (!hasSignature()) {
+        throw rqdql::Exception(
+            rqdql::_t("no signature here")
+        ); 
+    }
+    return _signature; 
+}
+
+bool brokers::SignatureHolder::hasSignature() const { 
+    return _signature; 
+}
+
+void brokers::SignatureHolder::set(const std::string& t) { 
+    text = t; 
+}
+
+const std::string brokers::SignatureHolder::getText() const { 
+    if (!hasText()) {
+        throw rqdql::Exception(
+            rqdql::_t("no TEXT in this SignatureHolder")
+        ); 
+    }
+    return _text; 
+}
+
+bool brokers::SignatureHolder::hasText() const { 
+    return !_text.empty(); 
+}
+
+void brokers::SignatureHolder::set(const brokers::SigElements* e) {
     using namespace proxy;
     Signature* s = new Signature();
     vector<string> texts; // full informal presentation of the signature
