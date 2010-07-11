@@ -31,7 +31,7 @@ public:
     bool hasFlow() const;
     const proxy::UseCase& getFlow() const;
     void setId(int i);
-    int getId() const;
+    const std::string getId() const;
 private:
     boost::shared_ptr<proxy::UseCase> _flow;
     int _id;

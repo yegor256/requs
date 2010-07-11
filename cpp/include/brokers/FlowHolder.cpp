@@ -17,6 +17,7 @@
  */
 
 #include <string>
+#include <boost/format.hpp>
 #include <boost/shared_ptr.hpp>
 #include "Proxy/UseCase.h"
 #include "brokers/FlowHolder.h"
@@ -28,27 +29,27 @@ brokers::FlowHolder::FlowHolder() : _flow(), _id(0) {
 }
 
 void brokers::FlowHolder::setFlow(const proxy::UseCase& f) { 
-    _flow = new proxy::UseCase(f); 
+    _flow = boost::shared_ptr<proxy::UseCase>(new proxy::UseCase(f)); 
 }
 
 bool brokers::FlowHolder::hasFlow() const { 
     return _flow; 
 }
 
-const proxy::Flow& brokers::FlowHolder::getFlow() const { 
+const proxy::UseCase& brokers::FlowHolder::getFlow() const { 
     if (!hasFlow()) {
         throw rqdql::Exception(
             rqdql::_t("no FLOW here")
         ); 
     }
-    return _flow; 
+    return *_flow; 
 }
 
 void brokers::FlowHolder::setId(int i) { 
     _id = i; 
 }
 
-int brokers::FlowHolder::getId() const { 
-    return _id; 
+const std::string brokers::FlowHolder::getId() const { 
+    return (boost::format("%d") % _id).str();
 }
 

@@ -54,7 +54,7 @@ public:
     /**
      * Add new formula to the chain
      */
-    Variadic& operator+=(const Formula&);
+    Variadic& operator+=(const boost::shared_ptr<solm::Formula>&);
 
     /**
      * Append one variadic to another, concatenate them in other words

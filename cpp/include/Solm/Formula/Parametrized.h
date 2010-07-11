@@ -37,7 +37,7 @@ public:
     /**
      * Instruct the class to accept one more argument
      */
-    T& arg(const std::string& s) { _arguments.push_back(s); return static_cast<T>(*this); }
+    T& arg(const std::string& s) { _arguments.push_back(s); return *(static_cast<T*>(this)); }
 
     /**
      * Get one argument

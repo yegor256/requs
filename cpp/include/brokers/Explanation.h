@@ -38,6 +38,7 @@ class Explanation {
 public:
     void setType(const proxy::Type&);
     void setNames(const std::string&, const std::string&);
+    operator std::string() const;
 private:
     boost::shared_ptr<proxy::Type> _type;
     std::string _slotName;

@@ -54,6 +54,11 @@ public:
     Slot(const std::string&, const Cardinality& c = "1..n -> 1");
 
     /**
+     * This slot is resolve to some entity?
+     */
+    operator bool() const { return _entity; }
+
+    /**
      * Get a reference to the type
      */
     const boost::shared_ptr<Entity>& entity() const { return _entity; }

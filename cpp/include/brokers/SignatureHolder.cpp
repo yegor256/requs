@@ -31,17 +31,17 @@ brokers::SignatureHolder::SignatureHolder() : _signature(), _text("") {
     /* that's it */ 
 }
 
-void brokers::SignatureHolder::set(const boost::shared_ptr<proxy::Signature>& s) { 
-    _signature = s; 
+void brokers::SignatureHolder::set(const proxy::Signature& s) { 
+    _signature = boost::shared_ptr<proxy::Signature>(new proxy::Signature(s)); 
 }
 
-boost::shared_ptr<proxy::Signature>& brokers::SignatureHolder::getSignature() const { 
+const proxy::Signature& brokers::SignatureHolder::getSignature() const { 
     if (!hasSignature()) {
         throw rqdql::Exception(
             rqdql::_t("no signature here")
         ); 
     }
-    return _signature; 
+    return *_signature; 
 }
 
 bool brokers::SignatureHolder::hasSignature() const { 
@@ -49,7 +49,7 @@ bool brokers::SignatureHolder::hasSignature() const {
 }
 
 void brokers::SignatureHolder::set(const std::string& t) { 
-    text = t; 
+    _text = t; 
 }
 
 const std::string brokers::SignatureHolder::getText() const { 
@@ -65,28 +65,28 @@ bool brokers::SignatureHolder::hasText() const {
     return !_text.empty(); 
 }
 
-void brokers::SignatureHolder::set(const brokers::SigElements* e) {
-    using namespace proxy;
-    Signature* s = new Signature();
-    vector<string> texts; // full informal presentation of the signature
-    vector<string> sigs; // formal signature string elements
-    
-    map<string, proxy::Signature::Explanation*> exps;
-    
-    for (SigElements::const_iterator i = e->begin(); i != e->end(); ++i) {
-        SigElement* se = *i;
-        sigs.push_back(se->toFormalString());
-        if (se->hasDe() && se->getDe()->hasName() && se->getDe()->hasExplanation()) {
-            exps[se->getDe()->getName()] = se->getDe()->getExplanation();
-        }
-        texts.push_back(se->toInformalString());
-    }
-    s->setText(boost::algorithm::join(sigs, " ")); // formal signature
-    setText(boost::algorithm::join(texts, " ")); // informal string
-    setSignature(s);
-
-    // now explain it
-    for (map<string, proxy::Signature::Explanation*>::const_iterator i = exps.begin(); i != exps.end(); ++i) {
-        s->explain((*i).first, (*i).second);
-    }
+void brokers::SignatureHolder::set(const brokers::SigElements& e) {
+    // using namespace proxy;
+    // using namespace std;
+    // Signature s = new Signature();
+    // vector<string> texts; // full informal presentation of the signature
+    // vector<string> sigs; // formal signature string elements
+    // 
+    // map<string, Explanation> exps;
+    // 
+    // for (SigElements::const_iterator i = e.begin(); i != e.end(); ++i) {
+    //     sigs.push_back((*i).toFormalString());
+    //     if ((*i).hasDe() && (*i).getDe().hasName() && (*i).getDe().hasExplanation()) {
+    //         exps[(*i).getDe().getName()] = (*i).getDe().getExplanation();
+    //     }
+    //     texts.push_back((*i).toInformalString());
+    // }
+    // s.setText(boost::algorithm::join(sigs, " ")); // formal signature
+    // setText(boost::algorithm::join(texts, " ")); // informal string
+    // setSignature(s);
+    // 
+    // // now explain it
+    // for (map<string, Explanation>::const_iterator i = exps.begin(); i != exps.end(); ++i) {
+    //     // s->explain((*i).first, (*i).second);
+    // }
 }

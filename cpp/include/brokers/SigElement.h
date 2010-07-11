@@ -54,7 +54,7 @@ private:
     std::string _verb;
 };
 
-typedef std::vector<SigElement*> SigElements;
+typedef std::vector<SigElement> SigElements;
 
 }
 

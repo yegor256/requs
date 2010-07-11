@@ -41,7 +41,7 @@ public:
     SignatureHolder();
     void set(const proxy::Signature&);
     void set(const SigElements&);
-    proxy::Signature& getSignature() const;
+    const proxy::Signature& getSignature() const;
     bool hasSignature() const;
     void set(const std::string&);
     const std::string getText() const;

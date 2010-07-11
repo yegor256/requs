@@ -31,7 +31,7 @@ void brokers::De::setName(const std::string& n) {
     _name = n; 
 }
 
-const std::string brokers::De::getName() const { 
+const std::string& brokers::De::getName() const { 
     if (!hasName()) {
         throw rqdql::Exception(
             rqdql::_t("no NAME in this DE")
@@ -45,7 +45,7 @@ bool brokers::De::hasName() const {
 }
 
 void brokers::De::setExplanation(const brokers::Explanation& e) { 
-    _explanation = new brokers::Explanation(e); 
+    _explanation = boost::shared_ptr<brokers::Explanation>(new brokers::Explanation(e)); 
 }
 
 const brokers::Explanation& brokers::De::getExplanation() const { 

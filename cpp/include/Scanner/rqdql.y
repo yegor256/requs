@@ -195,9 +195,9 @@ predicate: /* solm::Predicate* */
     WORD
         {
             solm::Predicate* predicate = new solm::Predicate("info");
-            std::string* WORD = static_cast<std::string*>($1);
-            predicate->arg("'word: " + *WORD);
-            delete WORD;
+            std::string* word = static_cast<std::string*>($1);
+            predicate->arg("'word: " + *word);
+            delete word;
             $$ = predicate;
             protocol(@1, predicate);
         }
@@ -208,7 +208,7 @@ predicate: /* solm::Predicate* */
                 lyyerror(@1, "Class can't be an instance of himself");
             } else {
                 proxy::Type* theClass = static_cast<proxy::Type*>($1);
-                solm::Predicate* predicate = new solm::Predicate(theClass); // by name of type
+                solm::Predicate* predicate = new solm::Predicate(*theClass); // by name of type
                 predicate->arg("x");
                 $$ = predicate;
                 protocol(@1, predicate);
@@ -247,7 +247,7 @@ classPath: /* proxy::Type* */
         {
             std::string* slotName = static_cast<std::string*>($1);
             proxy::Type* classPath = static_cast<proxy::Type*>($3);
-            proxy::Type* classPathLhs = classPath->slot(*slotName).entity();
+            proxy::Type* classPathLhs = static_cast<proxy::Type*>(classPath->slot(*slotName).entity().get());
             delete slotName;
             $$ = classPathLhs;
             protocol(@1, classPathLhs);
@@ -268,9 +268,10 @@ slots: /* std::vector<proxy::Slot*>* */
     slots separator slot 
         {
             proxy::Entity::Slots* slots = static_cast<proxy::Entity::Slots*>($1);
-            proxy::Slot* slot = static_cast<proxy::Slot*>($1);
-            proxy::Entity::Slots* slotsLhs = new proxy::Entity::Slots(slots);
-            slotsLhs->push_back(slot);
+            proxy::Slot* slot = static_cast<proxy::Slot*>($3);
+            proxy::Entity::Slots* slotsLhs = new proxy::Entity::Slots();
+            slotsLhs = slots; // copy all slots
+            slotsLhs->push_back(*slot);
             $$ = slotsLhs;
             protocol(@1, slotsLhs);
         } 
@@ -294,9 +295,9 @@ slot: /* proxy::Slot* */
     slotName COLON invariant
         { 
             std::string* slotName = static_cast<std::string*>($1);
-            solm::Predicate* invariant = static_cast<std::string*>($3);
+            solm::Predicate* invariant = static_cast<solm::Predicate*>($3);
             proxy::Slot* slot = new proxy::Slot(*slotName);
-            slot->invariant() += *invariant;
+            slot->entity()->invariant() += *invariant;
             delete slotName;
             delete invariant;
             protocol(@1, slot);
@@ -328,22 +329,22 @@ useCaseDeclaration: /* NULL */
 ucStarter: /* proxy::UseCase */
     UC WHERE signature COLON 
         {
-            std::string* UC = static_cast<std::string*>($1);
+            std::string* uc = static_cast<std::string*>($1);
             brokers::SignatureHolder* signature = static_cast<brokers::SignatureHolder*>($3);
             if (!signature->hasSignature()) {
                 lyyerror(@1, "Use Case signature can't be completely informal");
             } else {
-                proxy::Slot& s = rqdql::get<proxy::Proxy>().slot(*UC);
+                proxy::Slot& s = rqdql::get<proxy::Proxy>().slot(*uc);
                 if (s) {
                     lyyerror(@1, "Use Case is already declared");
                 } else {
                     proxy::UseCase* ucStarter = new proxy::UseCase(signature->getSignature());
-                    s.entity(ucStarter);
+                    s.entity(boost::shared_ptr<proxy::UseCase>(ucStarter));
                     $$ = ucStarter;
                     protocol(@1, ucStarter);
                 }
             }
-            delete UC;
+            delete uc;
             delete signature;
         }
     ;
@@ -366,7 +367,7 @@ signature: /* brokers::SignatureHolder* */
     |
     sigElements 
         {
-            brokers::SigElements sigElements = static_cast<brokers::SigElements*>($1);
+            brokers::SigElements* sigElements = static_cast<brokers::SigElements*>($1);
             brokers::SignatureHolder* signature = new brokers::SignatureHolder();
             signature->set(*sigElements);
             delete sigElements;
@@ -376,11 +377,11 @@ signature: /* brokers::SignatureHolder* */
     |
     sigElements informal 
         {
-            brokers::SigElements sigElements = static_cast<brokers::SigElements*>($1);
+            brokers::SigElements* sigElements = static_cast<brokers::SigElements*>($1);
             std::string* informal = static_cast<std::string*>($2);
             brokers::SignatureHolder* signature = new brokers::SignatureHolder();
-            signature->set(sigElements);
-            signature->set(informal);
+            signature->set(*sigElements);
+            signature->set(*informal);
             delete sigElements;
             delete informal;
             $$ = signature;
@@ -391,7 +392,7 @@ signature: /* brokers::SignatureHolder* */
 sigElements: /* brokers::SigElements* */
     sigElement
         {
-            brokers::SigElement sigElement = static_cast<brokers::SigElement*>($1);
+            brokers::SigElement* sigElement = static_cast<brokers::SigElement*>($1);
             brokers::SigElements* sigElements = new brokers::SigElements();
             sigElements->push_back(*sigElement);
             delete sigElement;
@@ -402,9 +403,10 @@ sigElements: /* brokers::SigElements* */
     sigElements sigElement
         {
             brokers::SigElements* sigElements = static_cast<brokers::SigElements*>($1);
-            brokers::SigElement sigElement = static_cast<brokers::SigElement*>($2);
-            brokers::SigElements* sigElementsLhs = new brokers::SigElements(sigElements);
-            sigElementsLhs->push_back(sigElement);
+            brokers::SigElement* sigElement = static_cast<brokers::SigElement*>($2);
+            brokers::SigElements* sigElementsLhs = new brokers::SigElements();
+            sigElementsLhs = sigElements; // copy entire vector
+            sigElementsLhs->push_back(*sigElement);
             delete sigElements;
             delete sigElement;
             $$ = sigElementsLhs;
@@ -502,7 +504,7 @@ deType: /* brokers::Explanation* */
             brokers::Explanation* deType = new brokers::Explanation();
             // maybe it's SELF?
             if (theClass) {
-                deType->setType(theClass);
+                deType->setType(*theClass);
             }
             $$ = deType;
             protocol(@1, deType);
@@ -528,10 +530,10 @@ verb:
     words PREPOSITION 
         {
             std::string* words = static_cast<std::string*>($1);
-            std::string* PREPOSITION = static_cast<std::string*>($2);
-            std::string* verb = new std::string((boost::format("%s %s") % *words % *PREPOSITION).str());
+            std::string* preposition = static_cast<std::string*>($2);
+            std::string* verb = new std::string((boost::format("%s %s") % *words % *preposition).str());
             delete words;
-            delete PREPOSITION;
+            delete preposition;
             $$ = verb;
         } 
     |
@@ -547,11 +549,11 @@ verb:
     |
     WORD PREPOSITION 
         {
-            std::string* WORD = static_cast<std::string*>($1);
-            std::string* PREPOSITION = static_cast<std::string*>($2);
-            string* verb = new std::string((boost::format("%s %s") % *WORD % *PREPOSITION).str());
-            delete WORD;
-            delete PREPOSITION;
+            std::string* word = static_cast<std::string*>($1);
+            std::string* preposition = static_cast<std::string*>($2);
+            std::string* verb = new std::string((boost::format("%s %s") % *word % *preposition).str());
+            delete word;
+            delete preposition;
             $$ = verb;
         } 
     ;
@@ -560,8 +562,9 @@ flows: /* proxy::UseCase* */
     flow 
         {
             brokers::FlowHolder* flow = static_cast<brokers::FlowHolder*>($1);
-            proxy::UseCase* flows = new proxy::UseCase();
-            flows->slot(flow->getId()).entity(flow->getFlow());
+            proxy::UseCase* flows = new proxy::UseCase(proxy::Signature(""));
+            boost::shared_ptr<proxy::UseCase> uc(new proxy::UseCase(flow->getFlow())); // allocate it in HEAP
+            flows->slot(flow->getId()).entity(uc);
             delete flow;
             $$ = flows;
             protocol(@1, flows);
@@ -571,8 +574,10 @@ flows: /* proxy::UseCase* */
         {
             proxy::UseCase* flows = static_cast<proxy::UseCase*>($1);
             brokers::FlowHolder* flow = static_cast<brokers::FlowHolder*>($2);
-            proxy::UseCase* flowsLhs = new proxy::UseCase(flows);
-            flowsLhs->slot(flow->getId()).entity(flow->getFlow());
+            proxy::UseCase* flowsLhs = new proxy::UseCase(proxy::Signature(""));
+            flowsLhs = flows; // copy entire vector
+            boost::shared_ptr<proxy::UseCase> uc(new proxy::UseCase(flow->getFlow())); // allocate it in HEAP
+            flowsLhs->slot(flow->getId()).entity(uc);
             delete flows;
             delete flow;
             $$ = flowsLhs;
@@ -583,19 +588,17 @@ flows: /* proxy::UseCase* */
 flow: /* brokers::FlowHolder* */
     NUMBER DOT signature DOT 
         {
-            int NUMBER = $1;
+            int number = $1;
             brokers::SignatureHolder* signature = static_cast<brokers::SignatureHolder*>($3);
             brokers::FlowHolder* flow = new brokers::FlowHolder();
             if (signature->hasSignature()) {
-                protocol(@3, signature->getSignature());
-                flow->setFlow(UseCase(signature->getSignature()));
+                flow->setFlow(proxy::UseCase(signature->getSignature()));
             } else {
-                flow->setFlow(UseCase(Signature("")));
+                flow->setFlow(proxy::UseCase(proxy::Signature("")));
             }
-            flow->setId(NUMBER);
+            flow->setId(number);
             $$ = flow;
             protocol(@1, flow);
-            protocol(@1, flow->getFlow());
         }
     ;
     
@@ -605,7 +608,7 @@ flow: /* brokers::FlowHolder* */
 useCaseAlternativeDeclaration: /* NULL */
     UC altId CLOSE_BRACE IF predicate COLON flows 
     {
-        std::string* UC = static_cast<std::string*>($1);
+        std::string* uc = static_cast<std::string*>($1);
         brokers::AltPairs* altId = static_cast<brokers::AltPairs*>($2);
         solm::Predicate* predicate = static_cast<solm::Predicate*>($5);
         proxy::UseCase* flows = static_cast<proxy::UseCase*>($7);
@@ -656,7 +659,7 @@ altId: /* brokers::AltPairs* */
         {
             brokers::AltPair* altIdPair = static_cast<brokers::AltPair*>($1);
             brokers::AltPairs* altId = new brokers::AltPairs();
-            altId->push_back(altIdPair);
+            altId->push_back(*altIdPair);
             delete altIdPair;
             $$ = altId;
         }
@@ -665,27 +668,28 @@ altId: /* brokers::AltPairs* */
         {
             brokers::AltPairs* altId = static_cast<brokers::AltPairs*>($1);
             brokers::AltPair* altIdPair = static_cast<brokers::AltPair*>($2);
-            brokers::AltPairs* altIdLhs = new brokers::AltPairs(altId);
-            altIdLhs->push_back(altIdPair);
-            $$ = aldIdLhs;
+            brokers::AltPairs* altIdLhs = new brokers::AltPairs();
+            altIdLhs = altId;
+            altIdLhs->push_back(*altIdPair);
+            $$ = altIdLhs;
         }
     ;
     
 altIdPair: /* brokers::AltPair* */
     NUMBER LETTER 
         {
-            int NUMBER = $1;
-            std::string* LETTER = static_cast<std::string*>($2);
-            brokers::AltPair* altIdPair = new brokers::AltPair(NUMBER, LETTER->at(0));
-            delete LETTER;
+            int number = $1;
+            std::string* letter = static_cast<std::string*>($2);
+            brokers::AltPair* altIdPair = new brokers::AltPair(number, letter->at(0));
+            delete letter;
             $$ = altIdPair;
         }
     |
     STAR LETTER
         {
-            std::string* LETTER = static_cast<std::string*>($2);
-            brokers::AltPair* altIdPair = new brokers::AltPair(-1, LETTER->at(0));
-            delete LETTER;
+            std::string* letter = static_cast<std::string*>($2);
+            brokers::AltPair* altIdPair = new brokers::AltPair(-1, letter->at(0));
+            delete letter;
             $$ = altIdPair;
         }
     ;
@@ -696,21 +700,21 @@ altIdPair: /* brokers::AltPair* */
 words: /* std::string* */
     WORD WORD
         {
-            std::string* WORD1 = static_cast<std::string*>($1);
-            std::string* WORD2 = static_cast<std::string*>($2);
-            std::string* words = new std::string((boost::format("%s %s") % *WORD1 % *WORD2).str());
-            delete WORD1;
-            delete WORD2;
+            std::string* word1 = static_cast<std::string*>($1);
+            std::string* word2 = static_cast<std::string*>($2);
+            std::string* words = new std::string((boost::format("%s %s") % *word1 % *word2).str());
+            delete word1;
+            delete word2;
             $$ = words;
         }
     |
     words WORD
         {
             std::string* words = static_cast<std::string*>($1);
-            std::string* WORD = static_cast<std::string*>($2);
-            std::string* wordsLhs = new std::string((boost::format("%s %s") % *words % *WORD).str());
+            std::string* word = static_cast<std::string*>($2);
+            std::string* wordsLhs = new std::string((boost::format("%s %s") % *words % *word).str());
             delete words;
-            delete WORD;
+            delete word;
             $$ = wordsLhs;
         }
     ;
@@ -730,30 +734,30 @@ separator: /* int */
 theClass: /* proxy::Type* */
     CAMEL 
         {
-            std::string* CAMEL = static_cast<std::string*>($1);
-            proxy::Type* theClass = rqdql::get<proxy::Proxy>().slot(CAMEL).entity();
-            delete CAMEL;
+            std::string* camel = static_cast<std::string*>($1);
+            proxy::Type* theClass = static_cast<proxy::Type*>(rqdql::get<proxy::Proxy>().slot(*camel).entity().get());
+            delete camel;
             $$ = theClass;
             protocol(@1, theClass);
         }
     |
     SUD 
         {
-            proxy::Type* theClass = rqdql::get<proxy::Proxy>().slot("SUD").entity();
+            proxy::Type* theClass = static_cast<proxy::Type*>(rqdql::get<proxy::Proxy>().slot("SUD").entity().get());
             $$ = theClass;
             protocol(@1, theClass);
         }
     |
     SOMEBODY
         {
-            proxy::Type* theClass = rqdql::get<proxy::Proxy>().slot("somebody").entity();
+            proxy::Type* theClass = static_cast<proxy::Type*>(rqdql::get<proxy::Proxy>().slot("somebody").entity().get());
             $$ = theClass;
             protocol(@1, theClass);
         }
     |
     SOMETHING
         {
-            proxy::Type* theClass = rqdql::get<proxy::Proxy>().slot("something").entity();
+            proxy::Type* theClass = static_cast<proxy::Type*>(rqdql::get<proxy::Proxy>().slot("something").entity().get());
             $$ = theClass;
             protocol(@1, theClass);
         }

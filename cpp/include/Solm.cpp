@@ -27,7 +27,7 @@ solm::Solm::Solm() : solm::Variadic(solm::Variadic::OP_SEMICOLON) {
     /* that's it */ 
 }
 
-const double solm::Solm::getAmbiguity() const {
+const double solm::Solm::ambiguity() const {
     // int x = count<Silent>();
     // int y = count<Created>() + count<Deleted>() + count<Read>();
     // if (x + y == 0) {

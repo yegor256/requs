@@ -70,7 +70,7 @@ public:
     /**
      * Convert this entity to declaration, but without a name yet
      */
-    virtual operator solm::Declaration() = 0;
+    virtual operator solm::Declaration() const = 0;
 
 private:
     

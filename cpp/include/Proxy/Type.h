@@ -53,7 +53,7 @@ public:
     /**
      * Convert this entity to declaration, but without a name yet
      */
-    operator solm::Declaration();
+    operator solm::Declaration() const;
 
 private:
 

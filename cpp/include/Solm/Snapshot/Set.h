@@ -14,8 +14,8 @@
  * @version $Id: Snapshot.h 2256 2010-07-08 08:30:01Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SOLM_SNAPSHOT_VALUE_H
-#define __INCLUDE_SOLM_SNAPSHOT_VALUE_H
+#ifndef __INCLUDE_SOLM_SNAPSHOT_VALUE_SET_H
+#define __INCLUDE_SOLM_SNAPSHOT_VALUE_SET_H
 
 #include <vector>
 #include <string>

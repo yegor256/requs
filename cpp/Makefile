@@ -40,14 +40,15 @@ BISON_SRC = include/Scanner/rqdql.y
 BISON_DEST = include/Scanner/rqdql.y.c
 
 SOURCES = $(shell find $(INCLUDE) $(TESTS) $(LIBS) -name "*.cpp")
-SOURCES += $(BISON_DEST)
-SOURCES += $(FLEX_DEST)
+#SOURCES += $(BISON_DEST)
+#SOURCES += $(FLEX_DEST)
 
 # instruct Make NOT to remove intermediate files
 .SECONDARY:
 
 # disable built-in implicit rule
 %.o: %.cpp
+%.o: %.c
 
 # compile the product and run all tests
 all: $(DEPENDS) $(EXEC) test

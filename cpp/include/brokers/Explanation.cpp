@@ -17,13 +17,18 @@
  */
 
 #include <string>
+#include "brokers/Explanation.h"
 #include "Proxy/Type.h"
 
 void brokers::Explanation::setType(const proxy::Type& t) {
-    _type = new proxy::Type(t);
+    _type = boost::shared_ptr<proxy::Type>(new proxy::Type(t));
 }
 
 void brokers::Explanation::setNames(const std::string& s, const std::string& o) {
     _slotName = s;
     _objectName = o;
+}
+
+brokers::Explanation::operator std::string() const {
+    return "explanation";
 }

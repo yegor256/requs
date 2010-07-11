@@ -35,7 +35,7 @@ private:
     char _letter;
 };
 
-typedef std::vector<AltPair*> AltPairs;
+typedef std::vector<AltPair> AltPairs;
 
 }
 

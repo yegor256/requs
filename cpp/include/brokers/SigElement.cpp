@@ -24,7 +24,7 @@
 #include "rqdql.h"
 #include "rqdql/Exception.h"
 
-brokers::SigElement::SigElement() : _de(0), _informal(), _verb() { 
+brokers::SigElement::SigElement() : _de(), _informal(), _verb() { 
     /* that's it */ 
 }
 
@@ -45,17 +45,17 @@ const std::string brokers::SigElement::getInformal() const {
     return _informal; 
 }
 
-void brokers::SigElement::setDe(const boost::shared_ptr<brokers::De>& d) { 
-    _de = d; 
+void brokers::SigElement::setDe(const brokers::De& d) { 
+    _de = boost::shared_ptr<brokers::De>(new brokers::De(d)); 
 }
 
-boost::shared_ptr<brokers::De>& brokers::SigElement::getDe() const { 
+const brokers::De& brokers::SigElement::getDe() const { 
     if (!hasDe()) {
         throw rqdql::Exception(
             rqdql::_t("no DE here")
         ); 
     }
-    return _de; 
+    return *_de; 
 }
 
 bool brokers::SigElement::hasDe() const { 
@@ -80,15 +80,15 @@ bool brokers::SigElement::hasVerb() const {
 }
 
 const std::string brokers::SigElement::toInformalString() const {
-    string txt;
+    std::string txt;
     if (hasInformal()) {
         txt = txt + getInformal() + " ";
     }
     if (hasDe()) {
-        if (getDe()->hasExplanation()) {
-            txt = txt + getDe()->getExplanation()->toString();
+        if (getDe().hasExplanation()) {
+            txt = txt + (std::string)(getDe().getExplanation());
         } else {
-            txt = txt + "the " + getDe()->getName();
+            txt = txt + "the " + getDe().getName();
         }
     } else {
         txt = txt + getVerb();
@@ -98,7 +98,7 @@ const std::string brokers::SigElement::toInformalString() const {
 
 const std::string brokers::SigElement::toFormalString() const {
     if (hasDe()) {
-        return "{" + (getDe()->hasName() ? getDe()->getName() : "?") + "}";
+        return "{" + (getDe().hasName() ? getDe().getName() : "?") + "}";
     } else {
         return getVerb();
     }

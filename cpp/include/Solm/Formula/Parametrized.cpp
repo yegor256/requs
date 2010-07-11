@@ -18,6 +18,9 @@
 #include <boost/format.hpp>
 #include <boost/algorithm/string/join.hpp> // boost::algorithm::join()
 #include "Solm/Formula/Parametrized.h"
+#include "Solm/Formula/Declaration.h"
+#include "rqdql.h"
+#include "rqdql/Exception.h"
 
 template <typename T> const std::string& solm::Parametrized<T>::arg(size_t i = 0) const {
     if (i >= _arguments.size()) {
@@ -28,6 +31,6 @@ template <typename T> const std::string& solm::Parametrized<T>::arg(size_t i = 0
     return _arguments[i];
 }
 
-solm::Declaration::operator std::string() const { 
+template <typename T> solm::Parametrized<T>::operator std::string() const { 
     return boost::algorithm::join(_arguments, ", ");
 }
