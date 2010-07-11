@@ -157,7 +157,7 @@ invariantDeclaration: /* proxy::Type* */
             } else {
                 proxy::Type* classPath = static_cast<proxy::Type*>($1);
                 solm::Formula* invariant = static_cast<solm::Formula*>($3);
-                classPath->invariant() += *invariant;
+                classPath->invariant() += boost::shared_ptr<solm::Formula>(invariant);
                 delete invariant;
                 $$ = classPath;
                 protocol(@1, classPath);
@@ -297,7 +297,7 @@ slot: /* proxy::Slot* */
             std::string* slotName = static_cast<std::string*>($1);
             solm::Predicate* invariant = static_cast<solm::Predicate*>($3);
             proxy::Slot* slot = new proxy::Slot(*slotName);
-            slot->entity()->invariant() += *invariant;
+            slot->entity()->invariant() += boost::shared_ptr<solm::Predicate>(invariant);
             delete slotName;
             delete invariant;
             protocol(@1, slot);

@@ -23,7 +23,7 @@ CPP = c++
 BISON = bison
 FLEX = flex
 INCLUDE = include
-CPPFLAGS = -I$(INCLUDE) -I./library -I/usr/include/libxml2 $(shell xml2-config --cflags)
+CPPFLAGS = -I$(INCLUDE) -I./library -I/usr/include/libxml2 $(shell xml2-config --cflags) -DBOOST_TEST_DYN_LINK
 LDFLAGS = $(shell xml2-config --libs)
 EXEC = rqdql
 SVN = /usr/local/bin/svn
@@ -39,9 +39,7 @@ FLEX_DEST = include/Scanner/rqdql.l.c
 BISON_SRC = include/Scanner/rqdql.y
 BISON_DEST = include/Scanner/rqdql.y.c
 
-SOURCES = $(shell find $(INCLUDE) $(TESTS) $(LIBS) -name "*.cpp")
-#SOURCES += $(BISON_DEST)
-#SOURCES += $(FLEX_DEST)
+SOURCES = $(shell find $(INCLUDE) $(LIBS) -name "*.cpp")
 
 # instruct Make NOT to remove intermediate files
 .SECONDARY:
@@ -67,7 +65,7 @@ clean:
 # compilation of all .CPP files into .O files
 define oRule
 DEST = $(BUILD)/$(patsubst %.cpp,%.o,$(subst /,-,$(1)))
-$(DEST): $(1)
+$(DEST): $(1) $(SELF)
 	$(CPP) $(CPPFLAGS) -fPIC -o $(DEST) -g -c $(1)
 OBJS += $(DEST)
 endef
@@ -75,7 +73,7 @@ $(foreach s, $(SOURCES), $(eval $(call oRule, $(s))))
 
 # build dependencies
 $(DEPENDS):
-	$(CPP) $(CPPFLAGS) -M $(SOURCES) > $(DEPENDS)
+	$(CPP) $(CPPFLAGS) -M $(SOURCES) $(BISON_DEST) $(FLEX_DEST) > $(DEPENDS)
 	
 -include $(DEPENDS)
 

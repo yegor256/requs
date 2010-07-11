@@ -32,7 +32,7 @@ proxy::Type::Type() {
     /* that's it */ 
 }
 
-proxy::Type::operator solm::Declaration() { 
+proxy::Type::operator solm::Declaration() const { 
     return solm::Declaration("TYPE"); 
 }
 
