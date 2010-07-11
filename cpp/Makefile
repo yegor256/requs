@@ -27,10 +27,10 @@ CPPFLAGS = -I$(INCLUDE) -I./library -I/usr/include/libxml2 $(shell xml2-config -
 LDFLAGS = $(shell xml2-config --libs)
 EXEC = ./rqdql
 SVN = /usr/local/bin/svn
+DEPENDS = dependencies.mk
 
 SOURCES = $(shell find $(INCLUDE) -name "*.cpp")
-HEADERS := $(shell find $(INCLUDE) -name "*.h")
-OBJS := $(SOURCES:.cpp=.obj)
+OBJS := $(SOURCES:.cpp=.o)
 
 SYMBOLS = include/Scanner/symbols.h
 FLEX_SRC = include/Scanner/rqdql.l
@@ -46,10 +46,7 @@ LIB_OBJS := $(LIB_SOURCES:.cpp=.o)
 TEST_DIR = ./test
 TEST_RUNNER = $(TEST_DIR)/runner
 TEST_SOURCES := $(shell find $(TEST_DIR) -name "*.cpp")
-TEST_OBJS := $(TEST_SOURCES:.cpp=.obj)
-
-# compile the product and run all tests
-all: $(EXEC) test
+TEST_OBJS := $(TEST_SOURCES:.cpp=.o)
 
 # instruct Make NOT to remove intermediate files
 .SECONDARY:
@@ -57,8 +54,21 @@ all: $(EXEC) test
 # disable built-in implicit rule
 %.o: %.cpp
 
+# compile the product and run all tests
+all: depends $(EXEC) test
+
+# build dependencies
+$(DEPENDS): $(FLEX_DEST) $(BISON_DEST)
+	$(CPP) $(CPPFLAGS) -M $(TEST_SOURCES) $(SOURCES) > $(DEPENDS)
+	
+-include $(DEPENDS)
+
+# objects, we just compile them, NO linking
+%.o: %.cpp
+	$(CPP) $(CPPFLAGS) -fPIC -o $@ -g -c $<
+
 # compile/build the product
-$(EXEC): $(HEADERS) $(BISON_DEST) $(FLEX_DEST) $(LIB)
+$(EXEC): $(BISON_DEST) $(FLEX_DEST) $(LIB)
 	$(CPP) $(LDFLAGS) -o $(EXEC) $(OBJS) $(LIB) \
 	-D RQDQL_VERSION="\"$(VERSION)$(shell $(SVN) info | grep "Revision:" | sed "s/Revision: /r/g")\""
 
@@ -68,14 +78,6 @@ $(FLEX_DEST): $(FLEX_SRC) $(HEADERS) $(SELF)
 $(BISON_DEST): $(BISON_SRC) $(HEADERS) $(SELF)
 	$(BISON) --no-lines --report=all --defines=$(SYMBOLS) --output=$(BISON_DEST) $(BISON_SRC)
 
-# objects, we just compile them, NO linking
-%.obj: %.cpp $(HEADERS)
-	$(CPP) $(CPPFLAGS) -fPIC -o $@ -g -c $<
-
-# library objects, we just compile them, NO linking
-%.o: %.cpp
-	$(CPP) $(CPPFLAGS) -fPIC -o $@ -g -c $<
-
 $(LIB): $(LIB_OBJS)
 	ar -r $(LIB) $(LIB_OBJS)
 
@@ -83,7 +85,7 @@ $(LIB): $(LIB_OBJS)
 test: $(TEST_RUNNER)
 	$(TEST_RUNNER)
 
-$(TEST_RUNNER): $(LIB) $(TEST_OBJS) $(HEADERS) $(OBJS)
+$(TEST_RUNNER): $(LIB) $(TEST_OBJS) $(OBJS)
 	$(CPP) $(LDFLAGS) -o $(TEST_RUNNER) $(TEST_OBJS) $(LIB) $(OBJS)
 
 # clean everything!
@@ -97,5 +99,6 @@ clean:
 	$(TEST_OBJS) \
 	$(OBJS) \
 	$(LIB) \
+	$(DEPENDS) \
 	$(SYMBOLS)
 

@@ -40,7 +40,7 @@ public:
     /**
      * Public constructor
      */
-    Solm() : Variadic(Variadic::OP_SEMICOLON) { /* that's it */ }
+    Solm();
 
     /**
      * To calculate ambiguity of the SOLM, as a relation between
@@ -55,28 +55,28 @@ public:
      * we have in the collection. For example:
      * Solm::getInstance().countTypes<Function>() will return integer
      */
-    template <typename T> const int count() const;
+    // template <typename T> const int count() const;
 
     /**
      * Return full list of formulas of given type
      */
-    template <typename T> const std::vector<boost::shared_ptr<T> > find() const;
+    // template <typename T> const std::vector<boost::shared_ptr<T> > find() const;
 
     /**
      * Get names of all declared functions, which are inside
      * declarations.
      */
-    const std::vector<std::string> getDeclared() const;
+    // const std::vector<std::string> getDeclared() const;
 
     /**
      * Do we have this particular declaration
      */
-    bool hasDeclaration(const string&) const;
+    // bool hasDeclaration(const string&) const;
 
     /**
      * Get the particular formula (declaration)
      */
-    boost::shared_ptr<Declaration>& getDeclaration(const string&) const;
+    // boost::shared_ptr<Declaration>& getDeclaration(const string&) const;
 
 private:
 
@@ -84,7 +84,7 @@ private:
      * Recursively collects all formulas in the collection into
      * a flat vector
      */
-    const Formulas _retrieve(Formulas) const;
+    // const Formulas _retrieve(Formulas) const;
 
 };
 

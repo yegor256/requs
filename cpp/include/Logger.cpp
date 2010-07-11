@@ -25,6 +25,10 @@
 #include "rqdql.h"
 #include "rqdql/Exception.h"
 
+rqdql::Logger::Logger() : _subjects(), _links(), _messages() { 
+    /* that's it */ 
+}
+
 namespace rqdql {
 template<> void Logger::log(const void* s, const std::string& m) {
     using namespace std;

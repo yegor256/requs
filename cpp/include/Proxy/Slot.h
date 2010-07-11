@@ -64,6 +64,11 @@ public:
      */
     Type& type() { return *_type; }
     
+    /**
+     * Compare this slot with string (NAME) 
+     */
+    bool operator==(const std::string& n) { return _name == n; }
+    
 private:
     
     /**

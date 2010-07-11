@@ -18,59 +18,44 @@
 #define __INCLUDE_SCOPE_PROXY_USECASE_H
 
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include "Proxy/Entity.h"
 #include "Proxy/Flows.h"
+#include "Proxy/Signature.h"
+#include "Solm/Formula/Declaration.h"
 
 namespace proxy {
 
 /**
- * Forward declarations
- */
-class Signature;
-
-/**
- *
+ * Use case entity, collection of flows with a signature
  */
 class UseCase : public Entity, public Flows {
 
 public:
 
     /**
-     *
+     * Public constructor
      */
-    UseCase() : Flows(), _signature() { /* that's it */ }
+    UseCase(const Signature&);
 
     /**
-     *
+     * Get an access to the signature of this use case, the composition
+     * relation with the class.
      */
-    void setSignature(const boost::shared_ptr<Signature>& s) { _signature = s; }
-
-    /**
-     *
-     */
-    const std::string toString() const;
-
-    /**
-     *
-     */
-    std::string& name();
-
-    /**
-     *
-     */
-    bool hasName() const; 
-
-    /**
-     *
-     */
-    boost::shared_ptr<Signature>& signature() { return _signature; }
+    Signature& signature() { return _signature; }
     
+    /**
+     * Convert a use case into a declaration, but without a name yet.
+     * @see Proxy::inject()
+     * @see Entity::Declaration()
+     */
+    operator solm::Declaration() const;
+
 private:
 
     /**
-     *
+     * Signature of a use case
      */
-    boost::shared_ptr<Signature> _signature;
+    Signature _signature;
 
 };
 

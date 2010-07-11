@@ -20,7 +20,7 @@
 #include <string>
 
 typedef union {
-    string* name;
+    std::string* name;
     int num;
     void* ptr;
 } YYSTYPE;

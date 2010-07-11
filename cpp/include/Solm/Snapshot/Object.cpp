@@ -139,5 +139,3 @@ const string Snapshot::Object::AclRule::toString() const {
     }
     return (boost::format("%s:%d") % s % id).str();
 }
-
-#include "Solm/Snapshot/Object/Value.h"

@@ -12,31 +12,16 @@
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
  * @version $Id$
- *
- * This file is included ONLY from Proxy.h
  */
 
-const string UseCase::toString() const {
-    return getName() + ": " + signature->toString() + "\n"
-    + Flows::toString();
+#include <string>
+#include "Proxy/UseCase.h"
+#include "Solm/Formula/Declaration.h"
+
+proxy::UseCase::UseCase(const Signature& s) : proxy::Flows(), _signature(s) { 
+    /* that's it */ 
 }
 
-/**
- * Validates whether the use case has static name
- */
-bool UseCase::hasName() const {
-    return rqdql::get<Proxy>().hasName(this);
+proxy::UseCase::operator solm::Declaration() const {
+    return solm::Declaration("UC1");
 }
-
-/**
- * Returns the name of USE CASE if it is in the static holder,
- * otherwise an exception will be thrown
- */
-const string UseCase::getName() const {
-    try {
-        return rqdql::get<Proxy>().findName(this);
-    } catch (rqdql::Exception e) {
-        throw rqdql::Exception(rqdql::_t("Use case doesn't have a name, but getName() called"));
-    }
-}
-

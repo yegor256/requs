@@ -24,131 +24,121 @@
 #include "rqdql/Exception.h"
 #include "Logger.h"
 #include "Proxy.h"
+#include "Proxy/Type.h"
 #include "Proxy/Slot.h"
 #include "Solm/Formula.h"
 
-proxy::Type() : _slots(), _predicate() { 
+proxy::Type::Type() : _slots(), _predicate() { 
     /* that's it */ 
 }
 
 proxy::Slot& proxy::Type::slot(const std::string& s) {
     for (Slots::iterator i = _slots.begin(); i != _slots.end(); ++i) {
-        if ((*i)->getName() == s) {
-            return (*i);
+        if (*i == s) {
+            return *i;
         }
     }
-    add(s);
+    _slots.push_back(Slot(s)); 
     return slot(s);
 }
 
-void proxy::Type::add(const boost::shared_ptr<proxy::Slot>& s) { 
-    _slots.push_back(s); 
+proxy::Type::operator solm::Declaration() { 
+    return solm::Declaration("TYPE"); 
 }
 
-void proxy::Type::add(const boost::shared_ptr<solm::Formula>& f) {
-    if (!_predicate) {
-        _predicate = new solm::Variadic(solm::Variadic::OP_AND);
-    }
-    _predicate->add(f);
-}
+// const std::string proxy::Type::toString() const {
+//     if (_slots.empty()) {
+//         return "{}";
+//     }
+//     
+//     string s = "{\n";
+//     for (Slots::const_iterator i = _slots.begin(); i != _slots.end(); ++i) {
+//         if (i != _slots.begin()) {
+//             s = s + ";\n";
+//         }
+//         s = s + "\t" + (*i)->name() + "[" + (*i)->getCardinality().toString() + "]: ";
+//         if ((*i)->type()->hasName()) {
+//             s = s + (*i)->type()->name();
+//         } else {
+//             s = s + boost::algorithm::replace_all_copy(
+//                 (*i)->type()->toString(), 
+//                 "\n", 
+//                 "\n\t"
+//             );
+//         }
+//     }
+//     return s + "\n}";
+// }
 
-void proxy::Type::add(const string& s) {
-    return add(new Slot(s));
-}
-
-const std::string proxy::Type::toString() const {
-    if (_slots.empty()) {
-        return "{}";
-    }
-    
-    string s = "{\n";
-    for (Slots::const_iterator i = _slots.begin(); i != _slots.end(); ++i) {
-        if (i != _slots.begin()) {
-            s = s + ";\n";
-        }
-        s = s + "\t" + (*i)->name() + "[" + (*i)->getCardinality().toString() + "]: ";
-        if ((*i)->type()->hasName()) {
-            s = s + (*i)->type()->name();
-        } else {
-            s = s + boost::algorithm::replace_all_copy(
-                (*i)->type()->toString(), 
-                "\n", 
-                "\n\t"
-            );
-        }
-    }
-    return s + "\n}";
-}
-
-boost::shred_ptr<solm::Formula> proxy::Type::makeFormula(const std::string& x) const {
-    using namespace solm;
-    // This TYPE is empty and it's definitely an error
-    // in text, but we anyway should work with this type. Thus,
-    // we report about a problem here and continue.
-    if (isEmpty() && hasName()) {
-        rqdql::get<rqdql::Logger>().log(
-            this, 
-            (boost::format(rqdql::_t("Entity '%s' is empty, probably its name is misspelled")) % getName()).str()
-        );
-        return new Err(rqdql::_t("'entity is empty"));
-    }
-    
-    // This is a new declaration of a type. Again, if the TYPE doesn't
-    // have a predicated, we don't skip it, but work with it.
-    Sequence* sequence;
-    if (hasPredicate()) {
-        sequence = getPredicate();
-    } else {
-        if (hasName()) {
-            rqdql::get<rqdql::Logger>().log(
-                this, 
-                (boost::format(rqdql::_t("Entity '%s' doesn't have any textual explanation")) % getName()).str()
-            );
-        }
-        sequence = new Sequence();
-    }
-    
-    // Here we should add slots to the TYPE
-    int propertyCounter = 1;
-    for (Slots::const_iterator j = slots.begin(); j != slots.end(); ++j) {
-        Slot* slot = *j;
-        string propertyName = (boost::format("P%d") % propertyCounter).str();
-        
-        Sequence* sq = new Sequence(Sequence::OP_AND);
-        if (slot->getType()->hasName()) {
-            sq->addFormula((new Function(slot->getType()->getName()))->arg("p"));
-        } else {
-            sq->addFormula(slot->getType()->makeFormula("p"));
-        }
-        sq->addFormula((new Function("composition"))->arg(x)->arg("p"));
-        sq->addFormula(slot->getFormula());
-        
-        Exists* e = (new Exists())
-            ->arg(propertyName)
-            ->setFormula(
-                (new And())
-                ->setLhs(
-                    (new Math("="))
-                    ->arg("|" + propertyName + "|")
-                    ->arg("1")
-                )
-                ->setRhs(
-                    (new Forall())
-                    ->arg("p")
-                    ->setFormula(
-                        (new Sequence())
-                        ->addFormula(
-                            (new In())
-                            ->arg("p")
-                            ->arg(propertyName)
-                        )
-                        ->addFormula(sq)
-                    )
-                )
-            );
-        sequence->addFormula(e);
-        propertyCounter++;
-    }
-    
-    return sequence;
-}
+// boost::shred_ptr<solm::Formula> proxy::Type::makeFormula(const std::string& x) const {
+//     using namespace solm;
+//     // This TYPE is empty and it's definitely an error
+//     // in text, but we anyway should work with this type. Thus,
+//     // we report about a problem here and continue.
+//     if (isEmpty() && hasName()) {
+//         rqdql::get<rqdql::Logger>().log(
+//             this, 
+//             (boost::format(rqdql::_t("Entity '%s' is empty, probably its name is misspelled")) % getName()).str()
+//         );
+//         return new Err(rqdql::_t("'entity is empty"));
+//     }
+//     
+//     // This is a new declaration of a type. Again, if the TYPE doesn't
+//     // have a predicated, we don't skip it, but work with it.
+//     Sequence* sequence;
+//     if (hasPredicate()) {
+//         sequence = getPredicate();
+//     } else {
+//         if (hasName()) {
+//             rqdql::get<rqdql::Logger>().log(
+//                 this, 
+//                 (boost::format(rqdql::_t("Entity '%s' doesn't have any textual explanation")) % getName()).str()
+//             );
+//         }
+//         sequence = new Sequence();
+//     }
+//     
+//     // Here we should add slots to the TYPE
+//     int propertyCounter = 1;
+//     for (Slots::const_iterator j = slots.begin(); j != slots.end(); ++j) {
+//         Slot* slot = *j;
+//         string propertyName = (boost::format("P%d") % propertyCounter).str();
+//         
+//         Sequence* sq = new Sequence(Sequence::OP_AND);
+//         if (slot->getType()->hasName()) {
+//             sq->addFormula((new Function(slot->getType()->getName()))->arg("p"));
+//         } else {
+//             sq->addFormula(slot->getType()->makeFormula("p"));
+//         }
+//         sq->addFormula((new Function("composition"))->arg(x)->arg("p"));
+//         sq->addFormula(slot->getFormula());
+//         
+//         Exists* e = (new Exists())
+//             ->arg(propertyName)
+//             ->setFormula(
+//                 (new And())
+//                 ->setLhs(
+//                     (new Math("="))
+//                     ->arg("|" + propertyName + "|")
+//                     ->arg("1")
+//                 )
+//                 ->setRhs(
+//                     (new Forall())
+//                     ->arg("p")
+//                     ->setFormula(
+//                         (new Sequence())
+//                         ->addFormula(
+//                             (new In())
+//                             ->arg("p")
+//                             ->arg(propertyName)
+//                         )
+//                         ->addFormula(sq)
+//                     )
+//                 )
+//             );
+//         sequence->addFormula(e);
+//         propertyCounter++;
+//     }
+//     
+//     return sequence;
+// }

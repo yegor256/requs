@@ -22,7 +22,11 @@
     #include "rqdql.h"
     #include "Proxy.h"
     #include "Solm.h"
-    #include "brokers.h"
+    #include "brokers/De.h"
+    #include "brokers/FlowHolder.h"
+    #include "brokers/SigElement.h"
+    #include "brokers/AltPair.h"
+    #include "brokers/SignatureHolder.h"
 	using boost::format;    
     using namespace proxy;
 %}

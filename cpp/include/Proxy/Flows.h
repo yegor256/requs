@@ -20,14 +20,14 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "Solm/Formula.h"
+#include "Proxy/Flow.h"
 
 namespace proxy {
 
 /**
  * Collection of flows
  */
-class Flows {
+class Flows : public std::map<int, Flow> {
 
 public:
 
@@ -38,68 +38,12 @@ public:
     Flows();
 
     /**
-     * Add new flow by it's number
-     * @see rqdql.y
-     */
-    void add(int, const Flow&);
-
-    /**
-     * Get one flow by its number, if it exists
+     * Get one flow by its number, if it exists. If not exists, it 
+     * will be created as an empty flow.
      */
     Flow& flow(int);
 
-    /**
-     * Convert a list of Flows into a formula
-     * @see Proxy::inject()
-     */
-    operator solm::Formula() const;
-
-    /**
-     * This collection of flows has VARIADIC formula ready?
-     */
-    bool hasVariadic() const { return !formula && !flows.empty(); }
-
-    /**
-     *
-     */
-    void operator=(boost::shared_ptr<Flows>& f) { flows = f->flows; }
-
-    /**
-     * Get a reference to the collection of flows
-     */
-    std::map<int, boost::shared_ptr<Flow> >& flows(); { return flows; }
-
-    /**
-     * Instead of a sequence there is just a simple formula
-     */
-    void set(boost::shared_ptr<solm::Formula>&);
-
-    /**
-     *
-     */
-    bool hasFormula() const { return formula; }
-
-    /**
-     *
-     */
-    boost::shared_ptr<solm::Formula>& formula() { return formula; }
-
-    /**
-     *
-     */
-    const std::string toString() const;
-
 private:
-
-    /**
-     *
-     */
-    std::map<int, boost::shared_ptr<Flow> > flows;
-
-    /**
-     *
-     */
-    boost::shared_ptr<solm::Formula> formula;
 
 };
 

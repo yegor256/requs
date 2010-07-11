@@ -14,9 +14,14 @@
  * @version $Id$
  */
 
+#ifndef __INCLUDE_SCOPE_PROXY_FLOW_H
+#define __INCLUDE_SCOPE_PROXY_FLOW_H
+
 #include <string>
 #include <map>
+#include "Proxy/Signature.h"
 #include "Solm/Formula.h"
+#include "Solm/Formula/True.h"
 #include "Solm/Formula/Variadic.h"
 
 namespace proxy {
@@ -25,7 +30,6 @@ namespace proxy {
  * Forward declarations
  */
 class Flows;
-class Signature;
 
 /** 
  * One action-flow in a list of flows
@@ -37,24 +41,24 @@ public:
     /** 
      * Public constructor
      */
-    Flow(const std::string& t, const Signature& s) : _text(t), _signature(s) { /* that's it */ }
+    Flow(const std::string&, const Signature&);
 
     /** 
-     * Add new alternative to the flow
+     * Add new formula to the alternative flow by CHAR
      */
-    Flows& add(const solm::Formula&);
-
-    /** 
-     * Find an alternative by an indexed char, or add it if not found
-     */
-    Flows& find(char);
+    Flows& alt(char c, const solm::Formula& f = solm::True());
 
 private:
 
     /** 
+     * Alternative pair
+     */
+    typedef std::pair<solm::Variadic, Flows> Alternative;
+
+    /** 
      * List of alternatives
      */
-    typedef std::map<solm::Variadic, Flows> Alternatives;
+    typedef std::map<char, Alternative> Alternatives;
 
     /** 
      * Textual image of the flow

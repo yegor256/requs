@@ -35,7 +35,7 @@ public:
     /**
      * Public constructor
      */
-    Logger() : _subjects(), _links(), _messages() { /* that's it */ }
+    Logger();
 
     /**
      * Add a new subject

@@ -49,7 +49,7 @@ public:
     /**
      * Public constructor
      */
-    Variadic(Operand);
+    Variadic(Operand op = OP_AND);
 
     /**
      * Add new formula to the chain

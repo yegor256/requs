@@ -20,6 +20,7 @@
 #define __INCLUDE_SCOPE_PROXY_SIGNATURE_PLACE_H
 
 #include <string>
+#include <map>
 #include <boost/shared_ptr.hpp>
 #include "Proxy/Type.h"
 #include "rqdql/Exception.h"
@@ -65,7 +66,8 @@ private:
     /**
      * Class signature is a friend to us
      */
-    friend class Signature;
+    friend class proxy::Signature;
+    friend class std::map<std::string, Place>;
 
     /**
      * Link to a type

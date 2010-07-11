@@ -19,6 +19,8 @@
 
 #include <string>
 #include "Solm/Formula.h"
+#include "Solm/Chain.h"
+#include "Solm/Context.h"
 
 namespace solm {
 
@@ -38,6 +40,12 @@ public:
      * Show it as string
      */
     operator std::string() const { return "true"; }
+
+    /**
+     * To resolve this formula on some context
+     * and produce a new Chain of Snapshots.
+     */
+    Chain operator+(const Context&) const { return Chain(); }
 
 };
 

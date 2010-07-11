@@ -41,7 +41,7 @@ void proxy::Proxy::inject() {
          * Convert the entity found into solm::Declaration, without
          * a name for now. Type casting is happening here.
          */
-        solm::Declaration d = dynamic_cast<solm::Declaration>(*(i->second));
+        solm::Declaration d = (solm::Declaration)(*(i->second));
         /**
          * Setting the name of the declaration
          */
@@ -49,31 +49,31 @@ void proxy::Proxy::inject() {
         /** 
          * Now we're adding this declaration to SOLM
          */
-        rqdql::get<solm::Solm>().add(d);
+        rqdql::get<solm::Solm>() += d;
     }
 }
 
-template<typename T> const vector<string> proxy::Proxy::names() const {
+template<typename T> const std::vector<std::string> proxy::Proxy::names() const {
     using namespace std;
     vector<string> v;
     for (Entities::const_iterator i = _entities.begin(); i != _entities.end(); ++i) {
-        if (typeinfo(T) == typeinfo(i->second)) {
+        // if (type_info(T) == type_info(i->second)) {
             v.push_back(i->first);
-        }
+        // }
     }
     return v;
 }
 
-boost::shared_ptr<Entity>& proxy::Proxy::entity(const string& n) {
+boost::shared_ptr<proxy::Entity>& proxy::Proxy::entity(const std::string& n) {
     if (_entities.find(n) == _entities.end()) {
         throw rqdql::Exception(
             boost::format(rqdql::_t("Entity '%s' not found in Proxy")) % n
         );
     }
-    return _entities.find(n);
+    return _entities.find(n)->second;
 }
 
-const string& proxy::Proxy::find(const boost::shared_ptr<Entity>& e) const {
+const std::string& proxy::Proxy::find(const boost::shared_ptr<Entity>& e) const {
     for (Entities::const_iterator i = _entities.begin(); i != _entities.end(); ++i) {
         if (i->second == e) {
             return i->first;

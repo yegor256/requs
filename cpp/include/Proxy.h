@@ -74,7 +74,7 @@ public:
      * Find and return a name of the object, if such a name exists. Otherwise
      * the method will throw an exception.
      */
-    const std::string& find(const boost::shared_ptr<Entity>&);
+    const std::string& find(const boost::shared_ptr<Entity>&) const;
     
 private:
 
