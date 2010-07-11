@@ -25,13 +25,16 @@
 
 namespace brokers {
 
-class De { // data element
+/**
+ * Data element
+ */
+class De {
 public:
-    De() : _name(), _explanation(0) { /* that's it */ }
-    void setName(const string& n) { name = n; }
-    const string getName() const { if (!hasName()) throw rqdql::Exception(rqdql::_t("no NAME in this DE")); return name; }
-    bool hasName() const { return !name.empty(); }
-    void setExplanation(proxy::Signature::Explanation* e) { explanation = e; }
+    De();
+    void setName(const string& n) { _name = n; }
+    const string getName() const { if (!hasName()) throw rqdql::Exception(rqdql::_t("no NAME in this DE")); return _name; }
+    bool hasName() const { return !_name.empty(); }
+    void setExplanation(proxy::Signature::Explanation* e) { _explanation = e; }
     proxy::Signature::Explanation* getExplanation() const { if (!hasExplanation()) throw rqdql::Exception(rqdql::_t("no EXPLANATION here")); return explanation; }
     bool hasExplanation() const { return explanation; }
 private:

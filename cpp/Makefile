@@ -71,7 +71,7 @@ endef
 $(foreach s, $(SOURCES), $(eval $(call oRule, $(s))))
 
 # build dependencies
-$(DEPENDS): $(FLEX_DEST) $(BISON_DEST)
+$(DEPENDS):
 	$(CPP) $(CPPFLAGS) -M $(TEST_SOURCES) $(SOURCES) > $(DEPENDS)
 	
 -include $(DEPENDS)

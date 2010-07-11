@@ -17,9 +17,10 @@
 #include <string>
 #include "Proxy/Slot.h"
 
-proxy::Slot::Slot(const std::string& n, const proxy::Slot::Cardinality& c) {
-    /* nothing for now */
-    _type = new Type();
+proxy::Slot::Slot(const std::string& n, const proxy::Slot::Cardinality& c) : 
+    _name(n), 
+    _cardinality(c),
+    _entity() {
 }
 
     

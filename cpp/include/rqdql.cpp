@@ -33,43 +33,6 @@ template <typename T> T& rqdql::get() {
     return *t;
 }
 
-void rqdql::log(const LogLevel lvl, const std::string& line) {   
-    std::string label;
-    switch (lvl) {
-        case L_DEBUG:
-            label = "DEBUG";
-            break;
-        case L_VERBOSE:
-            label = "VERB";
-            break;
-        case L_INFO:
-            label = "INFO";
-            break;
-        case L_WARNING:
-            label = "WARN";
-            break;
-        case L_ERROR:
-            label = "ERR";
-            break;
-    }
-    if (lvl >= level) {
-        rqdql::get<rqdql::Logger>().log(0, "[" + label + "] " + line);
-    }
-}
-
-
-void rqdql::log(const std::string& line) {
-    return log(L_DEBUG, line);
-}
-
-void rqdql::log(const boost::format& line) {
-    return log(L_DEBUG, line.str());
-}
-
-void rqdql::log(const LogLevel lvl, const boost::format& line) {
-    return log(lvl, line.str());
-}
-
 std::string rqdql::cutLongLine(const std::string& s, size_t len = 50) {
     if (s.length() < len) {
         return s;

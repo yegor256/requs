@@ -19,7 +19,12 @@
 %locations
 
 %{
+    #include <string>
+    #include <vector>
+    #include <boost/format.hpp>
     #include "rqdql.h"
+    #include "Scanner/symbols.h"
+    #include "Scanner/supplementary.h"
     #include "Proxy.h"
     #include "Solm.h"
     #include "Solm/Formula/Predicate.h"
@@ -29,7 +34,6 @@
     #include "brokers/SigElement.h"
     #include "brokers/AltPair.h"
     #include "brokers/SignatureHolder.h"
-	using boost::format;    
 %}
 
 // Here we should say that the type of non-terminal
@@ -213,7 +217,7 @@ slotsDeclaration: /* proxy::Type* */
     classPath INCLUDES COLON slots DOT 
         {
             proxy::Type* classPath = static_cast<proxy::Type*>($1);
-            proxy::Type::Slots* slots = static_cast<proxy::Type::Slots*>($4);
+            proxy::Entity::Slots* slots = static_cast<proxy::Entity::Slots*>($4);
             *classPath += *slots; // add all slots to the type
             delete slots;
             $$ = classPath;
@@ -237,7 +241,7 @@ classPath: /* proxy::Type* */
         {
             std::string* slotName = static_cast<std::string*>($1);
             proxy::Type* classPath = static_cast<proxy::Type*>($3);
-            proxy::Type* classPathLhs = &(classPath->slot(*slotName).type());
+            proxy::Type* classPathLhs = classPath->slot(*slotName).entity();
             delete slotName;
             $$ = classPathLhs;
             protocol(@1, classPathLhs);
@@ -247,7 +251,7 @@ classPath: /* proxy::Type* */
 slots: /* std::vector<proxy::Slot*>* */
     slot
         {
-            proxy::Type::Slots* slots = new proxy::Type::Slots();
+            proxy::Entity::Slots* slots = new proxy::Entity::Slots();
             proxy::Slot* slot = static_cast<proxy::Slot*>($1);
             slots->push_back(*slot);
             delete slot;
@@ -257,10 +261,10 @@ slots: /* std::vector<proxy::Slot*>* */
     |
     slots separator slot 
         {
-            proxy::Type::Slots* slotsLhs = new proxy::Type::Slots();
-            proxy::Type::Slots* slots = static_cast<proxy::Type::Slots*>($1);
+            proxy::Entity::Slots* slotsLhs = new proxy::Entity::Slots();
+            proxy::Entity::Slots* slots = static_cast<proxy::Entity::Slots*>($1);
             proxy::Slot* slot = static_cast<proxy::Slot*>($1);
-            for (Type::Slots::const_iterator i = slots->begin(); i != slots->end(); ++i) {
+            for (proxy::Entity::Slots::const_iterator i = slots->begin(); i != slots->end(); ++i) {
                 slotsLhs->push_back(*i);
             }
             slotsLhs->push_back(slot);
@@ -479,7 +483,7 @@ deType: /* Signature::Explanation* */
 verb:
     words PREPOSITION 
         {
-            string* s = new string((format("%s %s") % *$1 % *$2).str());
+            string* s = new std::string((boost::format("%s %s") % *$1 % *$2).str());
             $$ = s;
         } 
     |
@@ -495,7 +499,7 @@ verb:
     |
     WORD PREPOSITION 
         {
-            string* s = new string((format("%s %s") % *$1 % *$2).str());
+            string* s = new std::string((boost::format("%s %s") % *$1 % *$2).str());
             $$ = s;
         } 
     ;
@@ -605,25 +609,33 @@ altIdPair: /* brokers::AltPair* */
 /**
  * global elementary things 
  */
-words:
+words: /* std::string* */
     WORD WORD
         {
-            string* s = new string((format("%s %s") % *$1 % *$2).str());
-            $$ = s;
+            std::string* WORD1 = static_cast<std::string*>($1);
+            std::string* WORD2 = static_cast<std::string*>($2);
+            std::string* words = new std::string((boost::format("%s %s") % *WORD1 % *WORD2).str());
+            delete WORD1;
+            delete WORD2;
+            $$ = words;
         }
     |
     words WORD
         {
-            string* s = new string((format("%s %s") % *$1 % *$2).str());
-            $$ = s;
+            std::string* words = static_cast<std::string*>($1);
+            std::string* WORD = static_cast<std::string*>($2);
+            std::string* wordsLhs = new std::string((boost::format("%s %s") % *words % *WORD).str());
+            delete words;
+            delete WORD;
+            $$ = wordsLhs;
         }
     ;
     
-informal:
+informal: /* std::string* */
     QUOTED
     ;
     
-separator:
+separator: /* int */
     SEMICOLON | 
     SEMICOLON AND | 
     COMMA | 
@@ -631,50 +643,56 @@ separator:
     AND
     ;
 
-theClass:
+theClass: /* proxy::Type* */
     CAMEL 
         {
-            $$ = rqdql::get<Proxy>().get<Type>(*$1);
-            protocol(@1, $$);
+            std::string* CAMEL = static_cast<std::string*>($1);
+            proxy::Type* theClass = rqdql::get<Proxy>().slot(CAMEL).entity();
+            delete CAMEL;
+            $$ = theClass;
+            protocol(@1, theClass);
         }
     |
     SUD 
         {
-            $$ = rqdql::get<Proxy>().get<Type>("SUD");
-            protocol(@1, $$);
+            proxy::Type* theClass = rqdql::get<Proxy>().slot("SUD").entity();
+            $$ = theClass;
+            protocol(@1, theClass);
         }
     |
     SOMEBODY
         {
-            $$ = rqdql::get<Proxy>().get<Type>("somebody");
-            protocol(@1, $$);
+            proxy::Type* theClass = rqdql::get<Proxy>().slot("somebody").entity();
+            $$ = theClass;
+            protocol(@1, theClass);
         }
     |
     SOMETHING
         {
-            $$ = rqdql::get<Proxy>().get<Type>("something");
-            protocol(@1, $$);
+            proxy::Type* theClass = rqdql::get<Proxy>().slot("something").entity();
+            $$ = theClass;
+            protocol(@1, theClass);
         }
     |
     SELF
         {
-            $$ = 0;
+            $$ = 0; // NULL pointer to TYPE
         }
     ;
     
-plurality:
+plurality: /* int */
     /* empty */ |
     PLURAL_MANY |
     PLURAL_SOME |
     PLURAL_ANY
     ;
     
-slotName:
+slotName: /* std::string* */
     WORD |
     words
     ;
     
-objectName:
+objectName: /* std::string* */
     THE WORD { $$ = $2; }
     ;
     

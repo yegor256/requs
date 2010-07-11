@@ -23,6 +23,11 @@
 namespace proxy {
 
 /**
+ * Forward declarations
+ */
+class Entity;
+
+/**
  * Slot that interconnects one TYPE with another TYPE, 
  * using cardinality and predicates.
  */

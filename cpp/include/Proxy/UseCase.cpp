@@ -18,7 +18,7 @@
 #include "Proxy/UseCase.h"
 #include "Solm/Formula/Declaration.h"
 
-proxy::UseCase::UseCase(const Signature& s) : proxy::Flows(), _signature(s) { 
+proxy::UseCase::UseCase(const Signature& s) : _signature(s) { 
     /* that's it */ 
 }
 

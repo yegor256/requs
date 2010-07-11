@@ -14,47 +14,47 @@
  * @version $Id$
  */
 
-#include <stdarg.h>
-#include "rqdql.h"
-#include "Logger.h"
+#ifndef __INCLUDE_SCANNER_SUPPLEMENTARY_H
+#define __INCLUDE_SCANNER_SUPPLEMENTARY_H
 
-/**
- * Called when error is found in parser
- */
-void yyerror(const char *error, ...) {
-    // if (YYRECOVERING()) {
-    //     return;
-    // }
-    va_list args;
-    va_start(args, error);
-    char s[1000];
-    vsprintf(s, error, args);
-    va_end(args);
-    rqdql::get<rqdql::Logger>().log((int)yylloc.first_line, s);
-}
-    
-void lyyerror(YYLTYPE t, const char *error, ...) {
-    va_list args;
-    va_start(args, error);
-    char s[1000];
-    vsprintf(s, error, args);
-    va_end(args);
-    rqdql::get<rqdql::Logger>().log((int)t.first_line, s);
-}
+#include <string>
+#include <boost/format.hpp>
+#include "Scanner/symbols.h"
+
+extern void yyerror(const char*, ...);
+extern void lyyerror(YYLTYPE, const char*, ...);
 
 /**
  * Protocol the appearance of an object in input stream
  * @see rqdql.y
  */
-inline void protocol(YYLTYPE t, void* x) {
-    rqdql::get<rqdql::Logger>().addSubject(x, t.first_line);
-}
+extern void protocol(YYLTYPE, void*);
 
-void rqdql::yySet(std::string*& lhs, boost::format rhs) {
-    lhs = new std::string(rhs.str());
-}
+/**
+ * Set left-hand value
+ * @see rqdql.l
+ */
+extern void yySet(std::string*&, const boost::format&);
+extern void yySet(std::string*&, char*&);
 
-void rqdql::yySet(std::string*& lhs, char*& rhs) {
-    lhs = new std::string(rhs);
-}
+/**
+ * Different levels of logging
+ */
+enum LogLevel {
+    L_DEBUG   = 1,
+    L_VERBOSE = 2,
+    L_INFO    = 3,
+    L_WARNING = 4,
+    L_ERROR   = 5
+};
 
+/**
+ * Simple logging
+ * @see rqdql.l
+ */
+extern void log(const LogLevel, const std::string&);
+extern void log(const std::string&);
+extern void log(const boost::format&);
+extern void log(const LogLevel, const boost::format&);
+
+#endif

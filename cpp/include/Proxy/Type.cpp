@@ -28,18 +28,8 @@
 #include "Proxy/Slot.h"
 #include "Solm/Formula.h"
 
-proxy::Type::Type() : _slots(), _predicate() { 
+proxy::Type::Type() { 
     /* that's it */ 
-}
-
-proxy::Slot& proxy::Type::slot(const std::string& s) {
-    for (Slots::iterator i = _slots.begin(); i != _slots.end(); ++i) {
-        if (*i == s) {
-            return *i;
-        }
-    }
-    _slots.push_back(Slot(s)); 
-    return slot(s);
 }
 
 proxy::Type::operator solm::Declaration() { 
@@ -48,18 +38,6 @@ proxy::Type::operator solm::Declaration() {
 
 proxy::Type::operator std::string() const {
     return "stub_type";
-}
-
-proxy::Type& proxy::Type::operator+=(const Slot& s) {
-    _slots.push_back(s);
-    return *this;
-}
-
-proxy::Type& proxy::Type::operator+=(const Slots& sl) {
-    for (Slots::const_iterator s = sl->begin(); s != sl->end(); ++s) {
-        operator+=(*s);
-    }
-    return *this;
 }
 
 // const std::string proxy::Type::toString() const {

@@ -36,26 +36,9 @@ extern const std::string _t(const std::string& s);
 template <typename T> T& get();
 
 /**
- * Different levels of logging
+ * Cut the line nicely
  */
-enum LogLevel {
-    L_DEBUG   = 1,
-    L_VERBOSE = 2,
-    L_INFO    = 3,
-    L_WARNING = 4,
-    L_ERROR   = 5
-};
-extern LogLevel level;
-
-/**
- * To log a line
- */
-void log(const LogLevel lvl, const std::string& line);
-void log(const std::string& line);
-void log(const boost::format& line);
-void log(const LogLevel lvl, const boost::format& line);
-
-std::string cutLongLine(const std::string& s, size_t len);
+std::string cutLongLine(const std::string&, size_t);
 
 }
 

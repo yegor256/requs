@@ -28,59 +28,25 @@
 #include "Solm/Formula/Declaration.h"
 #include "Logger.h"
 
-proxy::Proxy::Proxy() : _entities() {
-}
-
 void proxy::Proxy::inject() {
     /**
      * We inject all entities, converting them into definitions
      * of new functions (declarations)
      */
-    for (Entities::const_iterator i = _entities.begin(); i != _entities.end(); ++i) {
-        /**
-         * Convert the entity found into solm::Declaration, without
-         * a name for now. Type casting is happening here.
-         */
-        solm::Declaration d = (solm::Declaration)(*(i->second));
-        /**
-         * Setting the name of the declaration
-         */
-        d.name(i->first);
-        /** 
-         * Now we're adding this declaration to SOLM
-         */
-        rqdql::get<solm::Solm>() += d;
-    }
-}
-
-template<typename T> const std::vector<std::string> proxy::Proxy::names() const {
-    using namespace std;
-    vector<string> v;
-    for (Entities::const_iterator i = _entities.begin(); i != _entities.end(); ++i) {
-        // if (type_info(T) == type_info(i->second)) {
-            v.push_back(i->first);
-        // }
-    }
-    return v;
-}
-
-boost::shared_ptr<proxy::Entity>& proxy::Proxy::entity(const std::string& n) {
-    if (_entities.find(n) == _entities.end()) {
-        throw rqdql::Exception(
-            boost::format(rqdql::_t("Entity '%s' not found in Proxy")) % n
-        );
-    }
-    return _entities.find(n)->second;
-}
-
-const std::string& proxy::Proxy::find(const boost::shared_ptr<Entity>& e) const {
-    for (Entities::const_iterator i = _entities.begin(); i != _entities.end(); ++i) {
-        if (i->second == e) {
-            return i->first;
-        }
-    }
-    throw rqdql::Exception(
-        rqdql::_t("The entity doesn't have a system-wide name")
-    );
+    // for (Entities::const_iterator i = _entities.begin(); i != _entities.end(); ++i) {
+    //     /**
+    //      * Convert the entity found into solm::Declaration, without
+    //      * a name for now. Type casting is happening here.
+    //      */
+    //     solm::Declaration d = (solm::Declaration)(*(i->second));
+    //     /**
+    //      * Setting the name of the declaration
+    //      */
+    //     d.name(i->first);
+    //     /** 
+    //      * Now we're adding this declaration to SOLM
+    //      */
+    //     rqdql::get<solm::Solm>() += d;
+    // }
 }
 

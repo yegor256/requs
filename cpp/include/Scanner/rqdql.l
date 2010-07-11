@@ -17,7 +17,7 @@
 
 %{
     #include "rqdql.h"
-	using namespace rqdql;
+    #include "Scanner/supplementary.h"
 	using boost::format;
 %}
 

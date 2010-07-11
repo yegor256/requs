@@ -18,6 +18,7 @@
 #define __INCLUDE_SCOPE_PROXY_ENTITY_H
 
 #include <vector>
+#include "Proxy/Slot.h"
 #include "Solm/Formula/Declaration.h"
 
 namespace proxy {
@@ -25,7 +26,7 @@ namespace proxy {
 /**
  * Forward declarations
  */
-class Slot;
+// class Slot;
 
 /**
  * One entity in PROXY
@@ -44,17 +45,17 @@ public:
     /**
      * Add one slot to this type
      */
-    operator+=(const Slot&);
+    Entity& operator+=(const Slot&);
     
     /**
      * Add a collection of slots to this type
      */
-    operator+=(const Slots&);
+    Entity& operator+=(const Slots&);
     
     /**
      * Get an access to particular slot, by name
      */
-    Slot& slot();
+    Slot& slot(const std::string&);
 
     /**
      * Get an access to slots
