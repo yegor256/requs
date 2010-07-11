@@ -48,16 +48,7 @@ public:
     /**
      * Public constructor
      */
-    Slot(
-        const std::string&, 
-        const Cardinality&, 
-        const boost::shared_ptr<Type>&
-    );
-
-    /**
-     * Public constructor
-     */
-    Slot(const std::string&);
+    Slot(const std::string&, const Cardinality& c = "1..n -> 1");
 
     /**
      * Get a reference to the type

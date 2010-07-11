@@ -15,22 +15,10 @@
  */
 
 #include <string>
-#include <boost/shared_ptr.hpp>
 #include "Proxy/Slot.h"
-#include "Solm/Formula/True.h"
 
-proxy::Slot::Slot(
-    const std::string& n, 
-    const proxy::Slot::Cardinality& c, 
-    const boost::shared_ptr<proxy::Type>& t) :
-    _name(n), _cardinality(c), _type(t) {
+proxy::Slot::Slot(const std::string& n, const proxy::Slot::Cardinality& c) {
     /* nothing for now */
-}
-
-proxy::Slot::Slot(const std::string& n) :
-    _name(n), 
-    _cardinality("1..n -> 1"), 
-    _type(new proxy::Type()) {
-    /* nothing for now */
+    _type = new Type();
 }
 

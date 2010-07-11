@@ -70,14 +70,6 @@ void rqdql::log(const LogLevel lvl, const boost::format& line) {
     return log(lvl, line.str());
 }
 
-void rqdql::yySet(std::string*& lhs, boost::format rhs) {
-    lhs = new std::string(rhs.str());
-}
-
-void rqdql::yySet(std::string*& lhs, char*& rhs) {
-    lhs = new std::string(rhs);
-}
-
 std::string rqdql::cutLongLine(const std::string& s, size_t len = 50) {
     if (s.length() < len) {
         return s;

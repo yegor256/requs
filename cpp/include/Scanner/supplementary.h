@@ -49,3 +49,12 @@ void lyyerror(YYLTYPE t, const char *error, ...) {
 inline void protocol(YYLTYPE t, void* x) {
     rqdql::get<rqdql::Logger>().addSubject(x, t.first_line);
 }
+
+void rqdql::yySet(std::string*& lhs, boost::format rhs) {
+    lhs = new std::string(rhs.str());
+}
+
+void rqdql::yySet(std::string*& lhs, char*& rhs) {
+    lhs = new std::string(rhs);
+}
+

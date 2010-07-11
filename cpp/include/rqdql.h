@@ -55,9 +55,6 @@ void log(const std::string& line);
 void log(const boost::format& line);
 void log(const LogLevel lvl, const boost::format& line);
 
-void yySet(std::string*& lhs, boost::format rhs);
-void yySet(std::string*& lhs, char*& rhs);
-
 std::string cutLongLine(const std::string& s, size_t len);
 
 }

@@ -46,6 +46,22 @@ proxy::Type::operator solm::Declaration() {
     return solm::Declaration("TYPE"); 
 }
 
+proxy::Type::operator std::string() const {
+    return "stub_type";
+}
+
+proxy::Type& proxy::Type::operator+=(const Slot& s) {
+    _slots.push_back(s);
+    return *this;
+}
+
+proxy::Type& proxy::Type::operator+=(const Slots& sl) {
+    for (Slots::const_iterator s = sl->begin(); s != sl->end(); ++s) {
+        operator+=(*s);
+    }
+    return *this;
+}
+
 // const std::string proxy::Type::toString() const {
 //     if (_slots.empty()) {
 //         return "{}";

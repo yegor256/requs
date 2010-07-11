@@ -22,13 +22,14 @@
     #include "rqdql.h"
     #include "Proxy.h"
     #include "Solm.h"
+    #include "Solm/Formula/Predicate.h"
+    #include "Proxy/Type.h"
     #include "brokers/De.h"
     #include "brokers/FlowHolder.h"
     #include "brokers/SigElement.h"
     #include "brokers/AltPair.h"
     #include "brokers/SignatureHolder.h"
 	using boost::format;    
-    using namespace proxy;
 %}
 
 // Here we should say that the type of non-terminal
@@ -138,43 +139,57 @@ qosDefinition:
 /** 
  * Invariants... 
  */
-invariantDeclaration:
+invariantDeclaration: /* proxy::Type* */
     classPath IS_A invariant DOT 
         { 
             if (!$1) {
                 lyyerror(@3, "You can't place HIMSELF to the left part of declaration");
             } else {
-                Type* t = static_cast<Type*>($1);
-                t->addPredicate(static_cast<solm::Formula*>($3));
-                $$ = t;
-                protocol(@1, $$);
+                proxy::Type* classPath = static_cast<proxy::Type*>($1);
+                solm::Formula* invariant = static_cast<solm::Formula*>($3);
+                classPath->predicate() += *invariant;
+                delete invariant;
+                $$ = classPath;
+                protocol(@1, classPath);
             }
         } 
     ;
     
-invariant:
+invariant: /* solm::Predicate* */
     predicate 
     |
     predicate informal
     ;
     
-predicate:
-    informal 
+predicate: /* solm::Predicate* */
+    informal
         {
-            $$ = new solm::Info("'" + *$1);
-            protocol(@1, $$);
+            solm::Predicate* predicate = new solm::Predicate("info");
+            std::string* informal = static_cast<std::string*>($1);
+            p->arg("'" + *informal);
+            delete informal;
+            $$ = predicate;
+            protocol(@1, predicate);
         } 
     |
     words
         {
-            $$ = new solm::Info("'predicate: " + *$1);
-            protocol(@1, $$);
+            solm::Predicate* predicate = new solm::Predicate("info");
+            std::string* words = static_cast<std::string*>($1);
+            p->arg("'words: " + *words);
+            delete words;
+            $$ = predicate;
+            protocol(@1, predicate);
         }
     |
     WORD
         {
-            $$ = new solm::Info("'predicate: " + *$1);
-            protocol(@1, $$);
+            solm::Predicate* predicate = new solm::Predicate("info");
+            std::string* WORD = static_cast<std::string*>($1);
+            p->arg("'word: " + *WORD);
+            delete WORD;
+            $$ = predicate;
+            protocol(@1, predicate);
         }
     |
     theClass plurality
@@ -182,9 +197,11 @@ predicate:
             if (!$1) {
                 lyyerror(@1, "Class can't be an instance of himself");
             } else {
-                Type* t = static_cast<Type*>($1);
-                $$ = (new solm::Function(t->getName()))->arg("x");
-                protocol(@1, $$);
+                proxy::Type* theClass = static_cast<proxy::Type*>($1);
+                solm::Predicate* predicate = new solm::Predicate(theClass); // by name of type
+                predicate->arg("x");
+                $$ = predicate;
+                protocol(@1, predicate);
             }
         }
     ;
@@ -192,58 +209,63 @@ predicate:
 /**
  * Slots... 
  */
-slotsDeclaration:
+slotsDeclaration: /* proxy::Type* */
     classPath INCLUDES COLON slots DOT 
         {
-            Type* t = static_cast<Type*>($1);
-            Type::Slots* e = static_cast<Type::Slots*>($4);
-            for (Type::Slots::const_iterator i = e->begin(); i != e->end(); ++i) {
-                t->addSlot(*i);
-            }
-            $$ = t;
-            protocol(@1, $$);
+            proxy::Type* classPath = static_cast<proxy::Type*>($1);
+            proxy::Type::Slots* slots = static_cast<proxy::Type::Slots*>($4);
+            *classPath += *slots; // add all slots to the type
+            delete slots;
+            $$ = classPath;
+            protocol(@1, classPath);
         }
     ;
     
-classPath: /* Type */
+classPath: /* proxy::Type* */
     theClass 
         {
             if (!$1) {
                 lyyerror(@1, "HIMSELF is forbidden here, in class path");
             } else {
-                $$ = $1;
-                protocol(@1, $$);
+                proxy::Type* theClass = static_cast<proxy::Type*>($1);
+                $$ = theClass;
+                protocol(@1, theClass);
             }
         }
     |
     slotName OF classPath
         {
-            Type* e = static_cast<Type*>($3);
-            Type* t = e->getSlot(*$1)->getType();
-            $$ = t;
-            protocol(@1, $$);
+            std::string* slotName = static_cast<std::string*>($1);
+            proxy::Type* classPath = static_cast<proxy::Type*>($3);
+            proxy::Type* classPathLhs = &(classPath->slot(*slotName).type());
+            delete slotName;
+            $$ = classPathLhs;
+            protocol(@1, classPathLhs);
         }
     ;
     
-slots: /* vector<Slot*> */
+slots: /* std::vector<proxy::Slot*>* */
     slot
         {
-            Type::Slots* v = new Type::Slots();
-            v->push_back(static_cast<Slot*>($1));
-            $$ = v;
-            protocol(@1, $$);
+            proxy::Type::Slots* slots = new proxy::Type::Slots();
+            proxy::Slot* slot = static_cast<proxy::Slot*>($1);
+            slots->push_back(*slot);
+            delete slot;
+            $$ = slots;
+            protocol(@1, slots);
         }
     |
     slots separator slot 
         {
-            Type::Slots* v = new Type::Slots();
-            Type::Slots* e = static_cast<Type::Slots*>($1);
-            for (Type::Slots::const_iterator i = e->begin(); i != e->end(); ++i) {
-                v->push_back(*i);
+            proxy::Type::Slots* slotsLhs = new proxy::Type::Slots();
+            proxy::Type::Slots* slots = static_cast<proxy::Type::Slots*>($1);
+            proxy::Slot* slot = static_cast<proxy::Slot*>($1);
+            for (Type::Slots::const_iterator i = slots->begin(); i != slots->end(); ++i) {
+                slotsLhs->push_back(*i);
             }
-            v->push_back(static_cast<Slot*>($3));
-            $$ = v;
-            protocol(@1, $$);
+            slotsLhs->push_back(slot);
+            $$ = slotsLhs;
+            protocol(@1, slotsLhs);
         } 
     |
     slots separator error
@@ -252,54 +274,62 @@ slots: /* vector<Slot*> */
         }
     ;
     
-slot: /* Slot */
+slot: /* proxy::Slot* */
     slotName
         {
-            $$ = new Slot(*$1);
+            std::string* slotName = static_cast<std::string*>($1);
+            $$ = new proxy::Slot(*slotName);
+            delete slotName;
             protocol(@1, $$);
         }
     |
     slotName COLON invariant
         { 
-            $$ = new Slot(
-                *$1, 
-                "1..n -> 1", 
-                static_cast<solm::Formula*>($3), 
-                new Type()
-            );
-            protocol(@1, $$);
+            std::string* slotName = static_cast<std::string*>($1);
+            solm::Predicate* invariant = static_cast<std::string*>($3);
+            proxy::Slot* slot = new proxy::Slot(*slotName);
+            slot->predicate() += *invariant;
+            delete slotName;
+            delete invariant;
+            protocol(@1, slot);
         }
     ;
     
 /**
  * Use cases... 
  */
-useCaseDeclaration:
-    useCaseStarter flows 
+useCaseDeclaration: /* NULL */
+    ucStarter flows 
         {
-            UseCase* uc = static_cast<UseCase*>($1);
-            uc->setFlows(static_cast<Flows*>($2));
+            proxy::UseCase* ucStarter = static_cast<proxy::UseCase*>($1);
+            proxy::Flows* flows = static_cast<proxy::Flows*>($2);
+            *uc = *flows; // set full collection of flows
+            delete flows;
         } 
     |
-    useCaseStarter informal DOT
+    ucStarter informal DOT
         {
-            UseCase* uc = static_cast<UseCase*>($1);
-            uc->setFormula(new solm::Silent("'" + *$2));
+            proxy::UseCase* ucStarter = static_cast<proxy::UseCase*>($1);
+            std::string* informal = static_cast<std::string*>($2);
+            // @todo To make explicit injection into SOLM of just this formula
+            // in a form of declaration
+            delete informal;
         }
     ;
      
-useCaseStarter:
+ucStarter: /* proxy::UseCase */
     UC WHERE signature COLON 
         {
-            UseCase* uc = rqdql::get<Proxy>().get<UseCase>(*$1);
-            brokers::SignatureHolder* sh = static_cast<brokers::SignatureHolder*>($3);
-            if (sh->hasSignature()) {
-                uc->setSignature(sh->getSignature());
-            } else {
+            std::string* UC = static_cast<std::string*>($1);
+            brokers::SignatureHolder* signature = static_cast<brokers::SignatureHolder*>($3);
+            if (!signature->hasSignature()) {
                 lyyerror(@1, "Use Case signature can't be completely informal");
+            } else {
+                proxy::UseCase* ucStarter = rqdql::get<proxy::Proxy>().entity(*UC);
+                sh->getSignature();
+                $$ = uc;
+                protocol(@1, $$);
             }
-            $$ = uc;
-            protocol(@1, $$);
         }
     ;
     

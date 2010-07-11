@@ -44,6 +44,13 @@ class Type : public Entity {
 public:
     
     /**
+     * Collection of slots inside this type, it's a strong composition. Slots
+     * can't exist without type and they don't have global names (or something
+     * similar).
+     */
+    typedef std::vector<Slot> Slots;
+
+    /**
      * Public constructor
      */
     Type();
@@ -62,7 +69,17 @@ public:
     solm::Variadic& predicate();
     
     /**
-     * Convert this type to a user-friendly string
+     * Add one slot to this type
+     */
+    operator+=(const Slot&);
+    
+    /**
+     * Add a collection of slots to this type
+     */
+    operator+=(const Slots&);
+    
+    /**
+     * Get its name
      */
     operator std::string() const;
 
@@ -72,13 +89,6 @@ public:
     operator solm::Declaration();
 
 private:
-
-    /**
-     * Collection of slots inside this type, it's a strong composition. Slots
-     * can't exist without type and they don't have global names (or something
-     * similar).
-     */
-    typedef std::vector<Slot> Slots;
 
     /**
      * Collection of slots

@@ -22,7 +22,7 @@
 namespace proxy {
 
 /**
- * One entity in PROXY, it's like an Interface
+ * One entity in PROXY
  * @see proxy::Type
  * @see proxy::UseCase
  */
