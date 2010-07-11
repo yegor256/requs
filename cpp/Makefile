@@ -30,7 +30,7 @@ SVN = /usr/local/bin/svn
 DEPENDS = dependencies.mk
 TESTS = test
 BUILD = build
-LIBS = library/boost-libs
+LIBS = library/boost-libs library/pugixml
 TEST_RUNNER = test-runner
 
 SYMBOLS = include/Scanner/symbols.h
