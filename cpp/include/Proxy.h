@@ -37,6 +37,11 @@ public:
      */
     void inject();
     
+    /**
+     * Convert the entire holder of entities into one big declaration
+     */
+    operator solm::Declaration() const;
+    
 };
 
 }

@@ -1,6 +1,5 @@
 /**
  *
-
  * RQDQL.com, Requirements Definition and Query Language
  *
  * Redistribution and use in source and binary forms, with or 
@@ -26,7 +25,8 @@
 namespace brokers {
 
 /**
- * Data element
+ * Data Element (DE)
+ * @see rqdql.y
  */
 class De {
 public:

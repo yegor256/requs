@@ -21,14 +21,6 @@ const std::string rqdql::_t(const std::string& s) {
     return s;
 }
 
-template <typename T> T& rqdql::get() {
-    static T* t;
-    if (!t) {
-        t = new T();
-    }
-    return *t;
-}
-
 std::string rqdql::cutLongLine(const std::string& s, size_t len = 50) {
     if (s.length() < len) {
         return s;

@@ -45,7 +45,7 @@ public:
     /**
      * The snapshot is positive?
      */
-    operator bool() const;
+    operator bool() const { return true; }
 
     /**
      * Conver it to a user-friendly string

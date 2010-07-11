@@ -30,7 +30,7 @@ class Tc {
 public:
 
     /**
-     * Retrieve full list of test cases
+     * Retrieve full list of test cases, found in scope
      */
     std::vector<tc::TestCase> retrieve() const;
 

@@ -19,6 +19,10 @@
 
 #include <vector>
 #include <string>
+#include <boost/algorithm/string/join.hpp> // boost::algorithm::join()
+#include <boost/format.hpp>
+#include "rqdql.h"
+#include "rqdql/Exception.h"
 
 namespace solm {
 
@@ -37,17 +41,29 @@ public:
     /**
      * Instruct the class to accept one more argument
      */
-    T& arg(const std::string& s) { _arguments.push_back(s); return *(static_cast<T*>(this)); }
+    T& arg(const std::string& s) { 
+        _arguments.push_back(s); 
+        return *(static_cast<T*>(this)); 
+    }
 
     /**
      * Get one argument
      */
-    const std::string& arg(size_t) const;
+    const std::string& arg(size_t i) const {
+        if (i >= _arguments.size()) {
+            throw rqdql::Exception(
+                boost::format(rqdql::_t("Var[%d] is out of range")) % i
+            );
+        }
+        return _arguments[i];
+    }
 
     /**
      * Convert arguments to a string
      */
-    operator std::string() const;
+    operator std::string() const {
+        return boost::algorithm::join(_arguments, ", ");
+    }
 
 private:
 

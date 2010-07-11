@@ -24,6 +24,10 @@
 
 namespace brokers {
 
+/**
+ * Holder of one flow for a use case
+ * @see rqdql.y
+ */
 class FlowHolder {
 public:
     FlowHolder();

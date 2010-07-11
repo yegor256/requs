@@ -26,11 +26,6 @@
 namespace brokers {
 
 /**
- * Forward declarations
- */
-// class ;
-
-/**
  * Explanation of a place in signature
  * @see rqdql.y
  */

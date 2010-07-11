@@ -20,17 +20,11 @@
 #define __INCLUDE_SCOPE_BROKERS_SIGNATUREHOLDER_H
 
 #include <string>
-#include <vector>
 #include <boost/shared_ptr.hpp>
 #include "Proxy/Signature.h"
 #include "brokers/SigElement.h"
 
 namespace brokers {
-
-/**
- * Forward declarations
- */
-// class SigElements;
 
 /**
  * Holder of a signature

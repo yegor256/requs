@@ -33,12 +33,18 @@ extern const std::string _t(const std::string& s);
 /**
  * Get a singleton copy of a module/class
  */
-template <typename T> T& get();
+template <typename T> T& get() {
+     static T* t;
+     if (!t) {
+         t = new T();
+     }
+     return *t;
+}
 
 /**
  * Cut the line nicely
  */
-std::string cutLongLine(const std::string&, size_t);
+extern std::string cutLongLine(const std::string&, size_t);
 
 }
 
