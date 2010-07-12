@@ -20,11 +20,10 @@
 #include <unistd.h>
 #include <iostream>
 #include "rqdql.h"
+#include "Proxy.h"
 #include "Scanner.h"
 #include "Logger.h"
 #include "Front.h"
-
-rqdql::LogLevel rqdql::level = L_ERROR;
 
 /**
  * Main method in the product

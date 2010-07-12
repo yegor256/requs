@@ -17,13 +17,15 @@
 VERSION = 0.6.1
 
 MAKEFLAGS = -r
-SELF = Makefile
 PATH := $(PATH):/usr/local/bin:/usr/bin
 CPP = c++
 BISON = bison
 FLEX = flex
 SVN = /usr/local/bin/svn
-CPPFLAGS = -fPIC -g -I$(INCLUDE) -I./library -I/usr/include/libxml2 $(shell xml2-config --cflags) -DBOOST_TEST_DYN_LINK
+CPPFLAGS = -fPIC -g -I$(INCLUDE) \
+	-I./library $(shell xml2-config --cflags) \
+	-DBOOST_TEST_DYN_LINK \
+	-D RQDQL_VERSION="\"$(VERSION)$(shell $(SVN) info | grep "Revision:" | sed "s/Revision: /r/g")\""
 LDFLAGS = $(shell xml2-config --libs)
 
 EXEC = rqdql
@@ -40,8 +42,20 @@ FLEX_DEST = include/Scanner/rqdql.l.c
 BISON_SRC = include/Scanner/rqdql.y
 BISON_DEST = include/Scanner/rqdql.y.c
 
-SOURCES = $(shell find $(INCLUDE) $(TESTS) $(LIBS) -name "*.cpp")
-OBJS = $(SOURCES:%.cpp=$(BUILD)/%.o)
+MAIN_SOURCES = $(shell find $(INCLUDE) -name "*.cpp")
+TEST_SOURCES = $(shell find $(TESTS) -name "*.cpp")
+LIB_SOURCES = $(shell find $(LIBS) -name "*.cpp")
+SOURCES = rqdql.cpp
+SOURCES += $(MAIN_SOURCES)
+SOURCES += $(TEST_SOURCES)
+SOURCES += $(LIB_SOURCES)
+
+MAIN_OBJS = $(MAIN_SOURCES:%.cpp=$(BUILD)/%.o)
+TEST_OBJS = $(TEST_SOURCES:%.cpp=$(BUILD)/%.o)
+LIB_OBJS = $(LIB_SOURCES:%.cpp=$(BUILD)/%.o)
+OBJS = $(MAIN_OBJS)
+OBJS += $(TEST_OBJS)
+OBJS += $(LIB_OBJS)
 
 # disable implicit rules
 %.o: %.cpp
@@ -53,7 +67,7 @@ OBJS = $(SOURCES:%.cpp=$(BUILD)/%.o)
 all: depends $(EXEC) test
 
 # build dependencies
-depends: $(SELF) $(BISON_DEST) $(FLEX_DEST)
+depends: $(BISON_DEST) $(FLEX_DEST)
 	$(CPP) $(CPPFLAGS) -M $(SOURCES) $(BISON_DEST) $(FLEX_DEST) > $(DEPENDS)	
 -include $(DEPENDS)
 
@@ -62,9 +76,8 @@ $(BUILD)/%.o: %.cpp
 	$(CPP) $(CPPFLAGS) -o $@ -c $<
 
 # compile/build the product
-$(EXEC): $(BISON_DEST) $(FLEX_DEST) $(OBJS)
-	$(CPP) $(LDFLAGS) -o $(EXEC) $(OBJS) \
-	-D RQDQL_VERSION="\"$(VERSION)$(shell $(SVN) info | grep "Revision:" | sed "s/Revision: /r/g")\""
+$(EXEC): $(OBJS)
+	$(CPP) $(LDFLAGS) -o $(EXEC) $(BUILD)/rqdql.o $(MAIN_OBJS) $(LIB_OBJS)
 
 $(SYMBOLS): $(FLEX_DEST) $(BISON_DEST)
 
@@ -76,7 +89,7 @@ $(BISON_DEST): $(BISON_SRC) $(FLEX_DEST)
 
 # test everything
 test: $(TEST_RUNNER)
-	$(TEST_RUNNER)
+	./$(TEST_RUNNER)
 
 $(TEST_RUNNER): $(OBJS)
 	$(CPP) $(LDFLAGS) -o $(TEST_RUNNER) $(OBJS)
