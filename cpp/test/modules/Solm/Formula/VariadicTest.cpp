@@ -15,17 +15,19 @@
  */
 
 #include <boost/test/unit_test.hpp>
-#include "Xml/Document.h"
-#include "Xml/Node.h"
-using namespace Xml;
+#include <boost/shared_ptr.hpp>
+#include "Solm/Formula/Variadic.h"
+#include "Solm/Formula/True.h"
+using namespace solm;
 
-BOOST_AUTO_TEST_SUITE(DocumentTest)
+BOOST_AUTO_TEST_SUITE(VariadicTest)
 
-BOOST_AUTO_TEST_CASE(testSimpleXmlCanBeCreated) {
-    Document doc;
-    Node root = doc.root("test");
-    Node n = root / "employee";
-    BOOST_TEST_MESSAGE("XML built: " << doc.asXml());
+BOOST_AUTO_TEST_CASE(testFormulaCanBeConstructed) {
+    Variadic v;
+    v += boost::shared_ptr<True>(new True());
+    v += boost::shared_ptr<True>(new True());
+    Chain c = v + Context();
+    BOOST_CHECK((bool)c); // the chain is positive
 }
 
 BOOST_AUTO_TEST_SUITE_END()

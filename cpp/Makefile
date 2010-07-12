@@ -64,11 +64,12 @@ OBJS += $(LIB_OBJS)
 .SECONDARY:
 
 # compile the product and run all tests
-all: depends $(EXEC) test
+all: $(DEPENDS) $(EXEC) test
 
 # build dependencies
-depends: $(BISON_DEST) $(FLEX_DEST)
+$(DEPENDS):
 	$(CPP) $(CPPFLAGS) -M $(SOURCES) $(BISON_DEST) $(FLEX_DEST) > $(DEPENDS)	
+	
 -include $(DEPENDS)
 
 $(BUILD)/%.o: %.cpp

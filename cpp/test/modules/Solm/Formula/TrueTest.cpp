@@ -11,21 +11,19 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: ChainTest.cpp 2278 2010-07-09 19:17:28Z yegor256@yahoo.com $
  */
 
 #include <boost/test/unit_test.hpp>
-#include "Xml/Document.h"
-#include "Xml/Node.h"
-using namespace Xml;
+#include "Solm/Formula/True.h"
+using namespace solm;
 
-BOOST_AUTO_TEST_SUITE(DocumentTest)
+BOOST_AUTO_TEST_SUITE(TrueTest)
 
-BOOST_AUTO_TEST_CASE(testSimpleXmlCanBeCreated) {
-    Document doc;
-    Node root = doc.root("test");
-    Node n = root / "employee";
-    BOOST_TEST_MESSAGE("XML built: " << doc.asXml());
+BOOST_AUTO_TEST_CASE(testFormulaIsAlwaysPositive) {
+    True t;
+    Chain c = t + Context();
+    BOOST_CHECK((bool)c); // the chain is positive
 }
 
 BOOST_AUTO_TEST_SUITE_END()

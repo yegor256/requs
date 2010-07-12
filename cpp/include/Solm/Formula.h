@@ -28,7 +28,8 @@ class Chain;
 class Context;
 
 /**
- * An abstract formula inside SOLM collection
+ * An abstract formula inside SOLM collection. The class is abstract
+ * and can't be instantiated.
  */
 class Formula {
 

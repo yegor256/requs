@@ -24,11 +24,6 @@
 namespace solm {
 
 /**
- * Forward declarations
- */
-// class Context;
-
-/**
  * Context in which any formula can be resolved
  */
 class Context {
