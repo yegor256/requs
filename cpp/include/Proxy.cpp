@@ -12,8 +12,6 @@
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
  * @version $Id$
- *
- * This file is included ONLY from Proxy.h
  */
 
 #include <vector>
@@ -27,6 +25,11 @@
 #include "Solm.h"
 #include "Solm/Formula/Declaration.h"
 #include "Logger.h"
+
+proxy::Proxy::operator solm::Declaration() const {
+    // stub!
+    return solm::Declaration("");
+}
 
 void proxy::Proxy::inject() {
     /**

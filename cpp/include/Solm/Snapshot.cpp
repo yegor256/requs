@@ -19,6 +19,10 @@
 #include <boost/format.hpp>
 #include "Solm/Snapshot.h"
 
+solm::Snapshot::Snapshot() : _objects(), _alternatives() {
+    /* that's it */
+}
+
 bool solm::Snapshot::operator==(const solm::Snapshot& s) const {
     // @todo it's a stub
     return false;

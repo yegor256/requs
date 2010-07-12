@@ -40,7 +40,7 @@ FLEX_DEST = include/Scanner/rqdql.l.c
 BISON_SRC = include/Scanner/rqdql.y
 BISON_DEST = include/Scanner/rqdql.y.c
 
-SOURCES = $(shell find $(INCLUDE) $(LIBS) -name "*.cpp")
+SOURCES = $(shell find $(INCLUDE) $(TESTS) $(LIBS) -name "*.cpp")
 OBJS = $(SOURCES:%.cpp=$(BUILD)/%.o)
 
 # disable implicit rules
@@ -88,6 +88,7 @@ clean:
 	include/Scanner/rqdql.y.output \
 	$(FLEX_DEST) \
 	$(EXEC) \
+	$(BUILD)/* \
 	$(OBJS) \
 	$(DEPENDS) \
 	$(SYMBOLS)

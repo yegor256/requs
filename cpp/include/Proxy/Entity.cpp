@@ -26,6 +26,16 @@
 #include "Proxy/Slot.h"
 #include "Solm/Formula.h"
 
+proxy::Entity& proxy::Entity::operator+=(const proxy::Slot& s) {
+    //stub only
+    return *this;
+}
+
+proxy::Entity& proxy::Entity::operator+=(const proxy::Entity::Slots& s) {
+    //stub only
+    return *this;
+}
+
 proxy::Slot& proxy::Entity::slot(const std::string& s) {
     for (Slots::iterator i = _slots.begin(); i != _slots.end(); ++i) {
         if (*i == s) {
