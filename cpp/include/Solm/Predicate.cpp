@@ -11,21 +11,28 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: ChainTest.cpp 2278 2010-07-09 19:17:28Z yegor256@yahoo.com $
+ * @version $Id: Predicate.h 2304 2010-07-13 11:58:31Z yegor256@yahoo.com $
  */
 
-#include <boost/test/unit_test.hpp>
+#include <string>
+#include <vector>
+#include <boost/shared_ptr.hpp>
 #include "Solm/Predicate.h"
+#include "Solm/Argument.h"
 #include "Solm/Chain.h"
 #include "Solm/Context.h"
-using namespace solm;
 
-BOOST_AUTO_TEST_SUITE(PredicateTest)
-
-BOOST_AUTO_TEST_CASE(testSimpleSentence) {
-    Predicate p("(and true (eq x 5) (kind x \"ActorUser\"))");
-    Chain c = p + Context();
-    // BOOST_CHECK((bool)p);
+const boost::shared_ptr<solm::Argument>& solm::Predicate::arg(size_t i, const std::string& v) {
+    if (!v.empty()) {
+        // change it...
+    }
+    return _arguments.at(i);
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+solm::Predicate& solm::Predicate::operator+=(const solm::Argument&) {
+    return *this;
+}
+
+solm::Chain solm::Predicate::operator+(const solm::Context&) const { 
+    return Chain(); 
+}

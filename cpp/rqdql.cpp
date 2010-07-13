@@ -20,6 +20,7 @@
 #include <unistd.h>
 #include <iostream>
 #include "rqdql.h"
+#include "rqdql/Exception.h"
 #include "Proxy.h"
 #include "Scanner.h"
 #include "Logger.h"

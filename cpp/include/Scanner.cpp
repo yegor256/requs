@@ -25,3 +25,4 @@ void rqdql::Scanner::scan(const std::string& s) {
     yy_switch_to_buffer(yy_scan_string(s.c_str()));
     yyparse();
 }
+

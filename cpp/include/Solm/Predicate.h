@@ -51,19 +51,19 @@ public:
      * @param i Index of the argument to access to
      * @param v The value to set, if provided
      */
-    const boost::shared_ptr<Argument>& arg(size_t i, const std::string& v = "");
+    const boost::shared_ptr<Argument>& arg(size_t, const std::string& v = "");
 
     /**
      * To add new argument to the list of arguments, to the end
      * of the list
      */
-    Predicate& operator+=(const Argument&) const;
+    Predicate& operator+=(const Argument&);
 
     /**
      * To resolve this argument on some context
      * and produce a new Chain of Snapshots.
      */
-    Chain operator+(const Context&) const { return Chain(); }
+    Chain operator+(const Context&) const;
 
 private:
     

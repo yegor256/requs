@@ -64,10 +64,10 @@ OBJS += $(LIB_OBJS)
 .SECONDARY:
 
 # compile the product and run all tests
-all: $(DEPENDS) $(EXEC) test
+all: $(DEPENDS) test $(EXEC) 
 
 # build dependencies
-$(DEPENDS): $(BISON_DEST) $(FLEX_DEST) $(SOURCES)
+$(DEPENDS): $(BISON_DEST) $(FLEX_DEST) $(MAIN_SOURCES)
 	$(CPP) $(CPPFLAGS) -M $(MAIN_SOURCES) $(BISON_DEST) $(FLEX_DEST) > $(DEPENDS)	
 	
 -include $(DEPENDS)
@@ -77,7 +77,7 @@ $(BUILD)/%.o: %.cpp
 	$(CPP) $(CPPFLAGS) -o $@ -c $<
 
 # compile/build the product
-$(EXEC): $(OBJS)
+$(EXEC): $(OBJS) $(BUILD)/rqdql.o
 	$(CPP) $(LDFLAGS) -o $(EXEC) $(BUILD)/rqdql.o $(MAIN_OBJS) $(LIB_OBJS)
 
 $(SYMBOLS): $(FLEX_DEST) $(BISON_DEST)
