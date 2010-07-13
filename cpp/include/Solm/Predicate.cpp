@@ -17,10 +17,15 @@
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include <boost/algorithm/string/join.hpp>
 #include "Solm/Predicate.h"
 #include "Solm/Argument.h"
 #include "Solm/Chain.h"
 #include "Solm/Context.h"
+
+solm::Predicate::Predicate(const std::string& p) : _name(p), _arguments() { 
+    /* that's it for now */ 
+}
 
 const boost::shared_ptr<solm::Argument>& solm::Predicate::arg(size_t i, const std::string& v) {
     if (!v.empty()) {
@@ -35,4 +40,12 @@ solm::Predicate& solm::Predicate::operator+=(const solm::Argument&) {
 
 solm::Chain solm::Predicate::operator+(const solm::Context&) const { 
     return Chain(); 
+}
+
+solm::Predicate::operator std::string() const { 
+    std::vector<std::string> args;
+    for (Arguments::const_iterator i = _arguments.begin(); i != _arguments.end(); ++i) {
+        args.push_back((std::string)**i);
+    }
+    return "(" + _name + " " + boost::algorithm::join(args, " ") + ")"; 
 }

@@ -39,7 +39,7 @@ public:
      * @param p Predicate in LISP-style
      * @see PredicateTest.cpp
      */
-    Predicate(const std::string& p = "(true)") : _arguments() { /* that's it for now */ }
+    Predicate(const std::string& p = "(true)");
 
     /**
      * Get an access to the argument of predicate
@@ -64,13 +64,28 @@ public:
      * and produce a new Chain of Snapshots.
      */
     Chain operator+(const Context&) const;
+    
+    /**
+     * Convert the predicate to string
+     */
+    operator std::string() const;
 
 private:
     
     /**
+     * List of arguments
+     */
+    typedef std::vector<boost::shared_ptr<Argument> > Arguments;
+    
+    /**
+     * Name of the predicate
+     */
+    std::string _name;
+    
+    /**
      * Collection of arguments
      */
-    std::vector<boost::shared_ptr<Argument> > _arguments;
+    Arguments _arguments;
 
 };
 

@@ -90,7 +90,7 @@ $(BISON_DEST): $(BISON_SRC) $(FLEX_DEST)
 
 # test everything
 test: $(TEST_RUNNER)
-	./$(TEST_RUNNER)
+	./$(TEST_RUNNER) --log_level=message
 
 $(TEST_RUNNER): $(OBJS)
 	$(CPP) $(LDFLAGS) -o $(TEST_RUNNER) $(OBJS)

@@ -18,8 +18,6 @@
 #define __INCLUDE_SOLM_ARGUMENT_H
 
 #include <string>
-#include <vector>
-#include <boost/shared_ptr.hpp>
 #include "Solm/Chain.h"
 #include "Solm/Context.h"
 
@@ -38,6 +36,11 @@ public:
      * The method has to be overriden in child classes.
      */
     virtual Chain operator+(const Context&) const = 0;
+
+    /**
+     * Convert the argument to string
+     */
+    virtual operator std::string() const = 0;
 
 private:
     

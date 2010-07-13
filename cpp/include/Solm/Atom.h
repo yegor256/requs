@@ -46,6 +46,11 @@ public:
      */
     Chain operator+(const Context&) const { return Chain(); }
 
+    /**
+     * Convert the predicate to string
+     */
+    operator std::string() const { return _value; }
+
 private:
     
     /**

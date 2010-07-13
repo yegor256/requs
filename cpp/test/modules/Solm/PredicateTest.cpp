@@ -11,10 +11,11 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: ChainTest.cpp 2278 2010-07-09 19:17:28Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
 #include <boost/test/unit_test.hpp>
+#include <string>
 #include "Solm/Predicate.h"
 #include "Solm/Chain.h"
 #include "Solm/Context.h"
@@ -22,9 +23,17 @@ using namespace solm;
 
 BOOST_AUTO_TEST_SUITE(PredicateTest)
 
-BOOST_AUTO_TEST_CASE(testSimpleSentence) {
+BOOST_AUTO_TEST_CASE(testSimplePredicateIsSerializable) {
+    Predicate p("(and true (eq x 5) (kind x \"ActorUser\"))");
+    std::string s = p;
+    BOOST_TEST_MESSAGE("predicate: " + s);
+    BOOST_CHECK(!s.empty());
+}
+
+BOOST_AUTO_TEST_CASE(testSimplePredicateCanBeResolved) {
     Predicate p("(and true (eq x 5) (kind x \"ActorUser\"))");
     Chain c = p + Context();
+    Context ctx = (Context)c;
     // BOOST_CHECK((bool)p);
 }
 

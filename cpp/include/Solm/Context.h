@@ -32,6 +32,15 @@ class Context {
 public:
 
     /**
+     * An object inside a context
+     */
+    struct Object {
+        int id;
+        std::string variable;
+        std::string value;
+    };
+
+    /**
      * Public constructor
      */
     Context();
@@ -42,12 +51,7 @@ public:
     operator bool() const { return true; }
 
     /**
-     * Two contexts are equal?
-     */
-    bool operator==(const Context&) const;
-
-    /**
-     * Add new alternative snapshot
+     * Add new alternative context
      */
     Context& operator<<(const Context&);
 
@@ -59,15 +63,10 @@ private:
     std::vector<context::Object> _objects;
     
     /**
-     * Alternative snapshots
+     * Alternative contexts
      */
     Chain _alternatives;
     
-    /**
-     * Mapping from context names to local names
-     */
-    std::map<std::string, std::string> _mapping;
-
 };
 
 }
