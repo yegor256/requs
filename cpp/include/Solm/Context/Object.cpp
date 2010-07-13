@@ -18,7 +18,7 @@
 
 #include <string>
 #include <boost/shared_ptr.hpp>
-#include "Solm/Snapshot/Object.h"
+#include "Solm/Context/Object.h"
 
 // /**
 //  * Get value

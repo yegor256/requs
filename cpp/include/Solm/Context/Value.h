@@ -14,13 +14,13 @@
  * @version $Id$
  */
 
-#ifndef __INCLUDE_SOLM_SNAPSHOT_VALUE_H
-#define __INCLUDE_SOLM_SNAPSHOT_VALUE_H
+#ifndef __INCLUDE_SOLM_CONTEXT_VALUE_H
+#define __INCLUDE_SOLM_CONTEXT_VALUE_H
 
 #include <string>
 
 namespace solm {
-namespace snapshot {
+namespace context {
 
 /**
  * A single value of an object, abstract class

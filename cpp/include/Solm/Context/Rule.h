@@ -14,8 +14,8 @@
  * @version $Id$
  */
 
-#ifndef __INCLUDE_SOLM_SNAPSHOT_OBJECT_RULE_H
-#define __INCLUDE_SOLM_SNAPSHOT_OBJECT_RULE_H
+#ifndef __INCLUDE_SOLM_CONTEXT_OBJECT_RULE_H
+#define __INCLUDE_SOLM_CONTEXT_OBJECT_RULE_H
 
 #include <vector>
 #include <string>
@@ -24,7 +24,7 @@
 #include <boost/shared_ptr.hpp>
 
 namespace solm {
-namespace snapshot {
+namespace context {
 
 /**
  * Access control rule for an object

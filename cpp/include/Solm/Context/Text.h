@@ -14,14 +14,14 @@
  * @version $Id$
  */
 
-#ifndef __INCLUDE_SOLM_SNAPSHOT_VALUE_TEXT_H
-#define __INCLUDE_SOLM_SNAPSHOT_VALUE_TEXT_H
+#ifndef __INCLUDE_SOLM_CONTEXT_VALUE_TEXT_H
+#define __INCLUDE_SOLM_CONTEXT_VALUE_TEXT_H
 
 #include <string>
-#include "Solm/Snapshot/Value.h"
+#include "Solm/Context/Value.h"
 
 namespace solm {
-namespace snapshot {
+namespace context {
 
 /**
  * Simple value in form of text

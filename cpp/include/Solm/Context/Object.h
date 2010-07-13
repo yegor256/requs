@@ -14,19 +14,19 @@
  * @version $Id$
  */
 
-#ifndef __INCLUDE_SOLM_SNAPSHOT_OBJECT_H
-#define __INCLUDE_SOLM_SNAPSHOT_OBJECT_H
+#ifndef __INCLUDE_SOLM_CONTEXT_OBJECT_H
+#define __INCLUDE_SOLM_CONTEXT_OBJECT_H
 
 #include <vector>
 #include <string>
 #include <map>
 #include <boost/format.hpp>
 #include <boost/shared_ptr.hpp>
-#include "Solm/Snapshot/Value.h"
-#include "Solm/Snapshot/Rule.h"
+#include "Solm/Context/Value.h"
+#include "Solm/Context/Rule.h"
 
 namespace solm {
-namespace snapshot {
+namespace context {
 
 /**
  * An object inside a snapshot

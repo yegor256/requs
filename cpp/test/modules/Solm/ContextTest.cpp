@@ -11,17 +11,17 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: SnapshotTest.cpp 2269 2010-07-09 16:00:21Z yegor256@yahoo.com $
  */
 
 #include <boost/test/unit_test.hpp>
-#include "Solm/Snapshot.h"
+#include "Solm/Context.h"
 
-BOOST_AUTO_TEST_SUITE(SnapshotTest)
+BOOST_AUTO_TEST_SUITE(ContextTest)
 
-BOOST_AUTO_TEST_CASE(testEmptySnapshotIsPositive) {
-    solm::Snapshot s;
-    BOOST_CHECK((bool)s);
+BOOST_AUTO_TEST_CASE(testEmptyContextIsPositive) {
+    solm::Context ctx;
+    BOOST_CHECK((bool)ctx);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

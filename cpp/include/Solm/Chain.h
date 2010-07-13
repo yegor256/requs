@@ -25,14 +25,14 @@ namespace solm {
 /**
  * Forward declarations
  */
-class Snapshot;
+class Context;
 
 /**
  * Ordered list of snapshots, which will happen on scope one after
  * another. Every snapshot will have a number of alternatives. Together
  * they constitute a tree-like structure.
  */
-class Chain : public std::vector<Snapshot> {
+class Chain : public std::vector<Context> {
 
 public:
 
@@ -71,19 +71,19 @@ public:
      * to the end of the chain, but validates beforehand that this chain
      * is positive.
      */
-    Chain operator+(const Snapshot&) const;
+    Chain operator+(const Context&) const;
 
     /**
      * Concatenate them vertically, this is just a wrapper around operator+()
      */
-    Chain& operator+=(const Snapshot& s) { return *this = *this + s; }
+    Chain& operator+=(const Context& s) { return *this = *this + s; }
 
     /**
      * We extend the list of alternatives for the last snapshot in this
      * chain. If the snapshot is positive. If it's negative there will be
      * an exception raised.
      */
-    Chain& operator<<(const Snapshot&);
+    Chain& operator<<(const Context&);
 
     /**
      * This chain has a positive ending?

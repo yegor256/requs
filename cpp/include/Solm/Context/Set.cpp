@@ -17,9 +17,9 @@
 #include <string>
 #include <boost/format.hpp>
 #include <boost/algorithm/string/join.hpp>
-#include "Solm/Snapshot/Set.h"
+#include "Solm/Context/Set.h"
 
-solm::snapshot::Set::operator std::string() const {
+solm::context::Set::operator std::string() const {
     using namespace std;
     vector<string> v;
     for (vector<int>::const_iterator i = _ids.begin(); i != _ids.end(); ++i) {

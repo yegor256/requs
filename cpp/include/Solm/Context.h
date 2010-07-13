@@ -19,12 +19,12 @@
 
 #include <string>
 #include <map>
-#include "Solm/Snapshot.h"
+#include "Solm/Context/Object.h"
 
 namespace solm {
 
 /**
- * Context in which any formula can be resolved
+ * Context in which any predicate can be resolved
  */
 class Context {
 
@@ -33,15 +33,15 @@ public:
     /**
      * Public constructor
      */
-    Snapshot();
+    Context();
 
     /**
-     * The snapshot is positive?
+     * The context is positive?
      */
     operator bool() const { return true; }
 
     /**
-     * Two snapshots are equal?
+     * Two contexts are equal?
      */
     bool operator==(const Context&) const;
 
@@ -55,7 +55,7 @@ private:
     /**
      * Collection of objects
      */
-    std::vector<snapshot::Object> _objects;
+    std::vector<context::Object> _objects;
     
     /**
      * Alternative snapshots

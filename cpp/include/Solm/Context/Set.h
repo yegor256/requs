@@ -19,10 +19,10 @@
 
 #include <vector>
 #include <string>
-#include "Solm/Snapshot/Value.h"
+#include "Solm/Context/Value.h"
 
 namespace solm {
-namespace snapshot {
+namespace context {
 
 /**
  * Collection of id's
