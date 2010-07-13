@@ -16,8 +16,6 @@
 
 #include <boost/test/unit_test.hpp>
 #include "Solm/Predicate.h"
-#include "Solm/Chain.h"
-#include "Solm/Snapshot.h"
 using namespace solm;
 
 BOOST_AUTO_TEST_SUITE(PredicateTest)

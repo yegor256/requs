@@ -196,7 +196,7 @@ predicate: /* solm::Predicate* */
         {
             solm::Predicate* predicate = new solm::Predicate("(info)");
             std::string* word = static_cast<std::string*>($1);
-            predicate->arg(0, "\"" + *word) + "\"";
+            predicate->arg(0, "\"" + *word + "\"");
             delete word;
             $$ = predicate;
             protocol(@1, predicate);
@@ -208,7 +208,7 @@ predicate: /* solm::Predicate* */
                 lyyerror(@1, "Class can't be an instance of himself");
             } else {
                 proxy::Type* theClass = static_cast<proxy::Type*>($1);
-                solm::Predicate* predicate = new solm::Predicate("(" + *theClass + ")"); // by name of type
+                solm::Predicate* predicate = new solm::Predicate("(" + (std::string)*theClass + ")"); // by name of type
                 predicate->arg(0, "x");
                 $$ = predicate;
                 protocol(@1, predicate);
@@ -297,7 +297,7 @@ slot: /* proxy::Slot* */
             std::string* slotName = static_cast<std::string*>($1);
             solm::Predicate* invariant = static_cast<solm::Predicate*>($3);
             proxy::Slot* slot = new proxy::Slot(*slotName);
-            slot->entity()->invariant() += boost::shared_ptr<solm::Predicate>(invariant);
+            slot->entity()->invariant() += *invariant;
             delete slotName;
             delete invariant;
             protocol(@1, slot);

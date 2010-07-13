@@ -54,6 +54,12 @@ public:
     const boost::shared_ptr<Argument>& arg(size_t i, const std::string& v = "");
 
     /**
+     * To add new argument to the list of arguments, to the end
+     * of the list
+     */
+    Predicate& operator+=(const Argument&) const;
+
+    /**
      * To resolve this argument on some context
      * and produce a new Chain of Snapshots.
      */

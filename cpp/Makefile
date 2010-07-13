@@ -68,7 +68,7 @@ all: $(DEPENDS) $(EXEC) test
 
 # build dependencies
 $(DEPENDS): $(BISON_DEST) $(FLEX_DEST) $(SOURCES)
-	$(CPP) $(CPPFLAGS) -M $(SOURCES) $(BISON_DEST) $(FLEX_DEST) > $(DEPENDS)	
+	$(CPP) $(CPPFLAGS) -M $(MAIN_SOURCES) $(BISON_DEST) $(FLEX_DEST) > $(DEPENDS)	
 	
 -include $(DEPENDS)
 

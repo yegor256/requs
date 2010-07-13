@@ -20,6 +20,7 @@
 #include <string>
 #include <map>
 #include "Solm/Context/Object.h"
+#include "Solm/Chain.h"
 
 namespace solm {
 

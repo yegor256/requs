@@ -16,7 +16,7 @@
 
 #include <boost/test/unit_test.hpp>
 #include "Solm/Chain.h"
-#include "Solm/Snapshot.h"
+#include "Solm/Context.h"
 
 BOOST_AUTO_TEST_SUITE(ChainTest)
 
@@ -27,16 +27,16 @@ BOOST_AUTO_TEST_CASE(testEmptyChainIsPositive) {
 
 BOOST_AUTO_TEST_CASE(testVerticalChainingWorks) {
     solm::Chain c;
-    c += solm::Snapshot();
-    c += solm::Snapshot();
+    c += solm::Context();
+    c += solm::Context();
     BOOST_CHECK_EQUAL(2, c.size());
     BOOST_CHECK((bool)c); // still positive
 }
 
 BOOST_AUTO_TEST_CASE(testHorizontalChainingWorks) {
     solm::Chain c;
-    c += solm::Snapshot();
-    c << solm::Snapshot();
+    c += solm::Context();
+    c << solm::Context();
     BOOST_CHECK_EQUAL(1, c.size());
     BOOST_CHECK((bool)c); // still positive
 }
