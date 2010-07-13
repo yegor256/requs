@@ -14,27 +14,35 @@
  * @version $Id$
  */
 
-#ifndef __INCLUDE_SOLM_FORMULA_QUANTIFIER_EXISTS_H
-#define __INCLUDE_SOLM_FORMULA_QUANTIFIER_EXISTS_H
+#ifndef __INCLUDE_SOLM_ARGUMENT_H
+#define __INCLUDE_SOLM_ARGUMENT_H
 
-#include "Solm/Formula/Quantifier.h"
-#include "Solm/Chain.h"
-#include "Solm/Context.h"
+#include <string>
+#include <vector>
+#include <boost/shared_ptr.hpp>
 
 namespace solm {
 
 /**
- * Existence Quantifier
+ * Forward declarations
  */
-class Exists : public Quantifier<Exists> {
+// class Formula;
+
+/**
+ * Second order logic argument, it's an abstract class
+ */
+class Argument {
 
 public:
 
     /**
-     * To resolve this formula on some context
+     * Abstract method, to resolve this argument on some context
      * and produce a new Chain of Snapshots.
+     * The method has to be overriden in child classes.
      */
-    virtual Chain operator+(const Context&);
+    virtual Chain operator+(const Context&) const = 0;
+
+private:
     
 };
 

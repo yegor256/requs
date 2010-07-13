@@ -11,55 +11,36 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: Sentence.h 2298 2010-07-13 08:08:15Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SOLM_SENTENCE_H
-#define __INCLUDE_SOLM_SENTENCE_H
+#ifndef __INCLUDE_SOLM_PREDICATE_H
+#define __INCLUDE_SOLM_PREDICATE_H
 
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
-#include "Solm/Formula.h"
-#include "Solm/Formula/Variadic.h"
 
 namespace solm {
 
 /**
  * Forward declarations
  */
-class Formula;
+// class Formula;
 
 /**
- * Second order logic sentence, that contains formulas inside formulas
- * and so on.
+ * Second order logic predicate
  */
-class Sentence : public Variadic {
+class Predicate : public Argument {
 
 public:
-
+    
     /**
-     * Public constructor, from a LISP-style sentence, for example you can
-     * use it like this:
-     * Sentence s("(and (eq x '14) (kind x 'ActorUser))");
+     * Construct a new predicate from a string
      *
-     * Full reference of syntax used:
-     *   (true)
-     *   (declare p (...)) : Declararion of predicate
-     *   (and (eq x 5) (kind x "Actor"))
-     *   (or (.) ...)
-     *   (to (.) ...)
-     *   (not (.))
-     *   (forall x (.))
-     *   (exists x (.))
-     *   (p name x ...)
-     *   (eq x 123)
-     *   (in x Y)
-     *   (kind x "ActorUser")
-     *
-     * You can find more examples in a SentenceTest.cpp.
+     * @param p Predicate in LISP-style
      */
-    Sentence(const string&);
+    Predicate(const string& p);
 
 private:
     

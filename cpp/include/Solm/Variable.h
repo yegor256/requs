@@ -11,44 +11,45 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: Sentence.h 2298 2010-07-13 08:08:15Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SOLM_FORMULA_TRUE_H
-#define __INCLUDE_SOLM_FORMULA_TRUE_H
+#ifndef __INCLUDE_SOLM_VARIABLE_H
+#define __INCLUDE_SOLM_VARIABLE_H
 
 #include <string>
-#include "Solm/Formula.h"
-#include "Solm/Chain.h"
-#include "Solm/Context.h"
+#include <vector>
+#include <boost/shared_ptr.hpp>
 
 namespace solm {
 
 /**
- * Always TRUE
+ * Forward declarations
  */
-class True : public Formula {
-
-public:
-
-    /**
-     * Public constructor
-     */
-    True() : Formula() { /* that's it */ }
-
-    /**
-     * To resolve this formula on some context
-     * and produce a new Chain of Snapshots.
-     */
-    Chain operator+(const Context&) const { return Chain(); }
-
-};
+// class Formula;
 
 /**
- * Convert the formula to string and output it to the
- * test typer, in order to use in unit tests
+ * Second order logic variable, like "x" or "user"
  */
-rqdql::Tt& operator<<(const rqdql::Tt&, const True&);
+class Variable : public Argument {
+
+public:
+    
+    /**
+     * Construct a variable
+     *
+     * @param A string representation of a variable
+     */
+    Variable(const string& n) : _name(n) { /* that's it */ }
+
+private:
+    
+    /**
+     * Variable name
+     */
+    std::string _name;
+
+};
 
 }
 

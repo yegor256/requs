@@ -11,22 +11,43 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: Sentence.h 2298 2010-07-13 08:08:15Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SOLM_FORMULA_QUANTIFIER_FORALL_H
-#define __INCLUDE_SOLM_FORMULA_QUANTIFIER_FORALL_H
+#ifndef __INCLUDE_SOLM_ATOM_H
+#define __INCLUDE_SOLM_ATOM_H
 
-#include "Solm/Formula/Quantifier.h"
+#include <string>
+#include <vector>
+#include <boost/shared_ptr.hpp>
 
 namespace solm {
 
 /**
- * FORALL Quantifier
+ * Forward declarations
  */
-class Forall : public Quantifier<Forall> {
+// class Formula;
+
+/**
+ * Second order logic atom
+ */
+class Atom : public Argument {
 
 public:
+    
+    /**
+     * Public constructor
+     *
+     * @param v The value of the atom, like "file.txt"
+     */
+    Atom(const string& v) : _value(v) { /* that's it */ }
+
+private:
+    
+    /**
+     * Value of the atom
+     */
+    std::string _value;
 
 };
 

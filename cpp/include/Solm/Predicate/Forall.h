@@ -12,22 +12,34 @@
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
  * @version $Id$
- *
- * This file is included ONLY from Solm.h
  */
 
-#include <string>
-#include "Solm/Formula/Variadic.h"
-#include "Solm/Formula/Parametrized.h"
-#include "Solm/Formula/Quantifier.h"
+#ifndef __INCLUDE_SOLM_PREDICATE_H
+#define __INCLUDE_SOLM_PREDICATE_H
 
-// template <typename T> solm::Quantifier<T>::operator std::string() const {
-//     // it's a stub
-//     return 
-//     std::string("QUANTIFIER")
-//     + " " 
-//     + Parametrized<T>::operator std::string()
-//     + "(" 
-//     + Variadic::operator std::string() 
-//     + ")";
-// }
+#include <string>
+#include <vector>
+#include <boost/shared_ptr.hpp>
+#include "Solm/Predicate.h"
+
+namespace solm {
+
+/**
+ * Forward declarations
+ */
+// class Formula;
+
+/**
+ * Second order logic predicate
+ */
+class Forall : public Predicate {
+
+public:
+    
+private:
+    
+};
+
+}
+
+#endif
