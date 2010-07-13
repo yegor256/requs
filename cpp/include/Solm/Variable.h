@@ -20,13 +20,11 @@
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include "Solm/Argument.h"
+#include "Solm/Chain.h"
+#include "Solm/Context.h"
 
 namespace solm {
-
-/**
- * Forward declarations
- */
-// class Formula;
 
 /**
  * Second order logic variable, like "x" or "user"
@@ -41,6 +39,12 @@ public:
      * @param A string representation of a variable
      */
     Variable(const string& n) : _name(n) { /* that's it */ }
+
+    /**
+     * To resolve this argument on some context
+     * and produce a new Chain of Snapshots.
+     */
+    Chain operator+(const Context&) const { return Chain(); }
 
 private:
     

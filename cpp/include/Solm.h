@@ -17,18 +17,23 @@
 #ifndef __INCLUDE_SOLM_H
 #define __INCLUDE_SOLM_H
 
-#include "Solm/Sentence.h"
+#include "Solm/Predicate.h"
 
 namespace solm {
     
 /**
  * Second-Order Logic Model (SOLM)
- * This is a collection of formulas, and some nice methods
- * to manipulate with the collection.
+ *
+ * This is a huge AND predicate that includes all other predicates
  */
-class Solm : public Sentence {
+class Solm : public Predicate {
     
 public:
+    
+    /**
+     * Public constructor
+     */
+    Solm();
 
     /**
      * To calculate ambiguity of the SOLM, as a relation between

@@ -26,14 +26,14 @@
 #include "Proxy.h"
 #include "Proxy/Type.h"
 #include "Proxy/Slot.h"
-#include "Solm/Formula.h"
+#include "Solm/Predicate.h"
 
 proxy::Type::Type() { 
     /* that's it */ 
 }
 
-proxy::Type::operator solm::Declaration() const { 
-    return solm::Declaration("TYPE"); 
+proxy::Type::operator solm::Predicate() const { 
+    return solm::Predicate("(defun TYPE true)"); 
 }
 
 proxy::Type::operator std::string() const {

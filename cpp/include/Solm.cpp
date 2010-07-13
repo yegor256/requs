@@ -21,9 +21,9 @@
 #include "rqdql.h"
 #include "rqdql/Exception.h"
 #include "Solm.h"
-#include "Solm/Formula/Declaration.h"
+#include "Solm/Predicate.h"
 
-solm::Solm::Solm() : solm::Variadic(solm::Variadic::OP_SEMICOLON) { 
+solm::Solm::Solm() : solm::Predicate("(and)") { 
     /* that's it */ 
 }
 

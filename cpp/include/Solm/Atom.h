@@ -20,13 +20,11 @@
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include "Solm/Argument.h"
+#include "Solm/Chain.h"
+#include "Solm/Context.h"
 
 namespace solm {
-
-/**
- * Forward declarations
- */
-// class Formula;
 
 /**
  * Second order logic atom
@@ -41,6 +39,12 @@ public:
      * @param v The value of the atom, like "file.txt"
      */
     Atom(const string& v) : _value(v) { /* that's it */ }
+
+    /**
+     * To resolve this argument on some context
+     * and produce a new Chain of Snapshots.
+     */
+    Chain operator+(const Context&) const { return Chain(); }
 
 private:
     

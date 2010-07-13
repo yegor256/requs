@@ -16,12 +16,12 @@
 
 #include <string>
 #include "Proxy/UseCase.h"
-#include "Solm/Formula/Declaration.h"
+#include "Solm/Predicate.h"
 
 proxy::UseCase::UseCase(const Signature& s) : _signature(s) { 
     /* that's it */ 
 }
 
-proxy::UseCase::operator solm::Declaration() const {
-    return solm::Declaration("UC1");
+proxy::UseCase::operator solm::Predicate() const {
+    return solm::Predicate("(defun UC1 true)");
 }

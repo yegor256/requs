@@ -15,15 +15,16 @@
  */
 
 #include <boost/test/unit_test.hpp>
-#include "Solm/Formula/True.h"
+#include "Solm/Predicate.h"
+#include "Solm/Chain.h"
+#include "Solm/Snapshot.h"
 using namespace solm;
 
-BOOST_AUTO_TEST_SUITE(TrueTest)
+BOOST_AUTO_TEST_SUITE(PredicateTest)
 
-BOOST_AUTO_TEST_CASE(testFormulaIsAlwaysPositive) {
-    True t;
-    Chain c = t + Context();
-    BOOST_CHECK((bool)c); // the chain is positive
+BOOST_AUTO_TEST_CASE(testSimpleSentence) {
+    Predicate p("(and true (eq x 5) (kind x \"ActorUser\"))");
+    // BOOST_CHECK((bool)p);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

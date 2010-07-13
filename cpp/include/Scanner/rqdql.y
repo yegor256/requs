@@ -32,7 +32,7 @@
     #include "Proxy/Signature.h"
 
     #include "Solm.h"
-    #include "Solm/Formula/Predicate.h"
+    #include "Solm/Predicate.h"
 
     #include "brokers/De.h"
     #include "brokers/FlowHolder.h"
@@ -156,8 +156,8 @@ invariantDeclaration: /* proxy::Type* */
                 lyyerror(@3, "You can't place HIMSELF to the left part of declaration");
             } else {
                 proxy::Type* classPath = static_cast<proxy::Type*>($1);
-                solm::Formula* invariant = static_cast<solm::Formula*>($3);
-                classPath->invariant() += boost::shared_ptr<solm::Formula>(invariant);
+                solm::Predicate* invariant = static_cast<solm::Predicate*>($3);
+                classPath->invariant() += boost::shared_ptr<solm::Predicate>(invariant);
                 delete invariant;
                 $$ = classPath;
                 protocol(@1, classPath);
@@ -648,7 +648,7 @@ useCaseAlternativeDeclaration: /* NULL */
         // if (dest) {
         //     // it's found, inject flows there!
         //     protocol(@1, dest);
-        //     Flows* alt = dest->addAlternative(static_cast<solm::Formula*>($5));
+        //     Flows* alt = dest->addAlternative(static_cast<solm::Predicate*>($5));
         //     alt->setFlows(static_cast<Flows*>($7));
         // }
     }

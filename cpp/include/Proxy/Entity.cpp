@@ -24,7 +24,7 @@
 #include "Proxy.h"
 #include "Proxy/Type.h"
 #include "Proxy/Slot.h"
-#include "Solm/Formula.h"
+#include "Solm/Predicate.h"
 
 proxy::Entity& proxy::Entity::operator+=(const proxy::Slot& s) {
     //stub only

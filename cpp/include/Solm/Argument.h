@@ -20,13 +20,10 @@
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include "Solm/Chain.h"
+#include "Solm/Context.h"
 
 namespace solm {
-
-/**
- * Forward declarations
- */
-// class Formula;
 
 /**
  * Second order logic argument, it's an abstract class

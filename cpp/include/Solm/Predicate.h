@@ -20,13 +20,11 @@
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include "Solm/Argument.h"
+#include "Solm/Chain.h"
+#include "Solm/Context.h"
 
 namespace solm {
-
-/**
- * Forward declarations
- */
-// class Formula;
 
 /**
  * Second order logic predicate
@@ -39,15 +37,22 @@ public:
      * Construct a new predicate from a string
      *
      * @param p Predicate in LISP-style
+     * @see PredicateTest.cpp
      */
-    Predicate(const string& p);
+    Predicate(const std::string& p = "true") : _arguments() { /* that's it for now */ }
+
+    /**
+     * To resolve this argument on some context
+     * and produce a new Chain of Snapshots.
+     */
+    Chain operator+(const Context&) const { return Chain(); }
 
 private:
     
     /**
-     * Pointer to a formula which is the parent one in the sentence
+     * Collection of arguments
      */
-    boost::shared_ptr<Formula> _formula;
+    std::vector<boost::shared_ptr<Argument> > _arguments;
 
 };
 
