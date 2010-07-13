@@ -11,7 +11,7 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Sentence.h 2298 2010-07-13 08:08:15Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
 #ifndef __INCLUDE_SOLM_PREDICATE_H
@@ -39,7 +39,19 @@ public:
      * @param p Predicate in LISP-style
      * @see PredicateTest.cpp
      */
-    Predicate(const std::string& p = "true") : _arguments() { /* that's it for now */ }
+    Predicate(const std::string& p = "(true)") : _arguments() { /* that's it for now */ }
+
+    /**
+     * Get an access to the argument of predicate
+     * 
+     * The method will change the argument, if some string is
+     * provided. In any case the method will return the current
+     * value of the argument (after change, of course).
+     *
+     * @param i Index of the argument to access to
+     * @param v The value to set, if provided
+     */
+    const boost::shared_ptr<Argument>& arg(size_t i, const std::string& v = "");
 
     /**
      * To resolve this argument on some context

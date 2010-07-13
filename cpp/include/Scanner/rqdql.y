@@ -151,18 +151,18 @@ qosDefinition:
  */
 invariantDeclaration: /* proxy::Type* */
     classPath IS_A invariant DOT 
-        { 
+        {
             if (!$1) {
                 lyyerror(@3, "You can't place HIMSELF to the left part of declaration");
             } else {
                 proxy::Type* classPath = static_cast<proxy::Type*>($1);
                 solm::Predicate* invariant = static_cast<solm::Predicate*>($3);
-                classPath->invariant() += boost::shared_ptr<solm::Predicate>(invariant);
+                classPath->invariant() += *invariant;
                 delete invariant;
                 $$ = classPath;
                 protocol(@1, classPath);
             }
-        } 
+        }
     ;
     
 invariant: /* solm::Predicate* */
@@ -174,9 +174,9 @@ invariant: /* solm::Predicate* */
 predicate: /* solm::Predicate* */
     informal
         {
-            solm::Predicate* predicate = new solm::Predicate("info");
+            solm::Predicate* predicate = new solm::Predicate("(info)");
             std::string* informal = static_cast<std::string*>($1);
-            predicate->arg("'" + *informal);
+            predicate->arg(0, "\"" + *informal + "\"");
             delete informal;
             $$ = predicate;
             protocol(@1, predicate);
@@ -184,9 +184,9 @@ predicate: /* solm::Predicate* */
     |
     words
         {
-            solm::Predicate* predicate = new solm::Predicate("info");
+            solm::Predicate* predicate = new solm::Predicate("(info)");
             std::string* words = static_cast<std::string*>($1);
-            predicate->arg("'words: " + *words);
+            predicate->arg(0, "\"" + *words + "\"");
             delete words;
             $$ = predicate;
             protocol(@1, predicate);
@@ -194,9 +194,9 @@ predicate: /* solm::Predicate* */
     |
     WORD
         {
-            solm::Predicate* predicate = new solm::Predicate("info");
+            solm::Predicate* predicate = new solm::Predicate("(info)");
             std::string* word = static_cast<std::string*>($1);
-            predicate->arg("'word: " + *word);
+            predicate->arg(0, "\"" + *word) + "\"";
             delete word;
             $$ = predicate;
             protocol(@1, predicate);
@@ -208,8 +208,8 @@ predicate: /* solm::Predicate* */
                 lyyerror(@1, "Class can't be an instance of himself");
             } else {
                 proxy::Type* theClass = static_cast<proxy::Type*>($1);
-                solm::Predicate* predicate = new solm::Predicate(*theClass); // by name of type
-                predicate->arg("x");
+                solm::Predicate* predicate = new solm::Predicate("(" + *theClass + ")"); // by name of type
+                predicate->arg(0, "x");
                 $$ = predicate;
                 protocol(@1, predicate);
             }

@@ -30,12 +30,37 @@ class Context {
 
 public:
 
+    /**
+     * Public constructor
+     */
+    Snapshot();
+
+    /**
+     * The snapshot is positive?
+     */
+    operator bool() const { return true; }
+
+    /**
+     * Two snapshots are equal?
+     */
+    bool operator==(const Context&) const;
+
+    /**
+     * Add new alternative snapshot
+     */
+    Context& operator<<(const Context&);
+
 private:
     
     /**
-     * Snapshot
+     * Collection of objects
      */
-    Snapshot _snapshot;
+    std::vector<snapshot::Object> _objects;
+    
+    /**
+     * Alternative snapshots
+     */
+    Chain _alternatives;
     
     /**
      * Mapping from context names to local names

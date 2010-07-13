@@ -67,7 +67,7 @@ OBJS += $(LIB_OBJS)
 all: $(DEPENDS) $(EXEC) test
 
 # build dependencies
-$(DEPENDS):
+$(DEPENDS): $(BISON_DEST) $(FLEX_DEST) $(SOURCES)
 	$(CPP) $(CPPFLAGS) -M $(SOURCES) $(BISON_DEST) $(FLEX_DEST) > $(DEPENDS)	
 	
 -include $(DEPENDS)
@@ -97,7 +97,7 @@ $(TEST_RUNNER): $(OBJS)
 
 # clean everything!
 clean:
-	rm -f \
+	rm -rf \
 	$(BISON_DEST) \
 	include/Scanner/rqdql.y.output \
 	$(FLEX_DEST) \

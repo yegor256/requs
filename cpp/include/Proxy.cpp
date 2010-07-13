@@ -23,12 +23,12 @@
 #include "rqdql.h"
 #include "rqdql/Exception.h"
 #include "Solm.h"
-#include "Solm/Formula/Declaration.h"
+#include "Solm/Predicate.h"
 #include "Logger.h"
 
-proxy::Proxy::operator solm::Declaration() const {
+proxy::Proxy::operator solm::Predicate() const {
     // stub!
-    return solm::Declaration("");
+    return solm::Predicate("");
 }
 
 void proxy::Proxy::inject() {

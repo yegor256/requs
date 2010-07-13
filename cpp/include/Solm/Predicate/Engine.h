@@ -11,29 +11,43 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: Forall.h 2299 2010-07-13 10:01:56Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SOLM_PREDICATE_ENH
-#define __INCLUDE_SOLM_PREDICATE_H
+#ifndef __INCLUDE_SOLM_PREDICATE_ENGINE_H
+#define __INCLUDE_SOLM_PREDICATE_ENGINE_H
 
 #include <string>
 #include <vector>
 #include "Solm/Predicate.h"
-#include "Solm/Predicate/Engine.h"
 
 namespace solm {
 namespace predicate {
 
 /**
- * Second order logic predicate
+ * Engine to calculate predicate outcome
  */
-class Forall : public Predicate {
+class Engine {
 
 public:
     
+    /**
+     * Construct this engine and prepare for calculations
+     */
+    Engine(const Context&, const std::vector<boost::shared_ptr<Argument> >&) { }
+    
+    /**
+     * To resolve the predicate and return new Chain of Contexts
+     */
+    Chain operator+(const Context&) const { return Chain(); }
+
 private:
     
+    /**
+     * Collection of arguments
+     */
+    std::vector<boost::shared_ptr<Argument> > _arguments;
+
 };
 
 }
