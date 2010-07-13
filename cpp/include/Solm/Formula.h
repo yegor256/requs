@@ -41,12 +41,6 @@ public:
     virtual ~Formula() { /* that's it */ };
 
     /**
-     * Abstract method, to convert this formula to a user-friendly
-     * string format. The method has to be overriden in child classes.
-     */
-    virtual operator std::string() const = 0;
-
-    /**
      * Abstract method, to resolve this formula on some context
      * and produce a new Chain of Snapshots.
      * The method has to be overriden in child classes.

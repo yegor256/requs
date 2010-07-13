@@ -62,11 +62,6 @@ public:
     Variadic& operator+=(const Variadic&);
 
     /**
-     * Convert this class to a user-friendly string, to PREDICATES in LaTeX
-     */
-    virtual operator std::string() const;
-
-    /**
      * To resolve this formula on some context
      * and produce a new Chain of Snapshots.
      */

@@ -11,26 +11,20 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: ChainTest.cpp 2278 2010-07-09 19:17:28Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SOLM_SNAPSHOT_VALUE_H
-#define __INCLUDE_SOLM_SNAPSHOT_VALUE_H
+#include <boost/test/unit_test.hpp>
+#include "Solm/Sentence.h"
+#include "Solm/Chain.h"
+#include "Solm/Snapshot.h"
+using namespace solm;
 
-#include <string>
+BOOST_AUTO_TEST_SUITE(SentenceTest)
 
-namespace solm {
-namespace snapshot {
-
-/**
- * A single value of an object, abstract class
- */
-class Value {
-public:
-    virtual operator std::string() const = 0;
-};
-
-}
+BOOST_AUTO_TEST_CASE(testSimpleSentence) {
+    Sentence s("(and (true) (eq x '5) (kind x 'ActorUser))");
+    BOOST_CHECK((bool)s);
 }
 
-#endif
+BOOST_AUTO_TEST_SUITE_END()

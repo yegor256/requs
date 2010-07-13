@@ -17,30 +17,18 @@
 #ifndef __INCLUDE_SOLM_H
 #define __INCLUDE_SOLM_H
 
-#include <vector>
-#include <string>
-#include "Solm/Formula/Variadic.h"
+#include "Solm/Sentence.h"
 
 namespace solm {
     
-/**
- * Forward declaration
- */
-class Declaration;
-
 /**
  * Second-Order Logic Model (SOLM)
  * This is a collection of formulas, and some nice methods
  * to manipulate with the collection.
  */
-class Solm : public Variadic {
+class Solm : public Sentence {
     
 public:
-
-    /**
-     * Public constructor
-     */
-    Solm();
 
     /**
      * To calculate ambiguity of the SOLM, as a relation between
@@ -50,41 +38,7 @@ public:
      */
     const double ambiguity() const;
 
-    /**
-     * To calculate how many formulas of a given type
-     * we have in the collection. For example:
-     * Solm::getInstance().countTypes<Function>() will return integer
-     */
-    // template <typename T> const int count() const;
-
-    /**
-     * Return full list of formulas of given type
-     */
-    // template <typename T> const std::vector<boost::shared_ptr<T> > find() const;
-
-    /**
-     * Get names of all declared functions, which are inside
-     * declarations.
-     */
-    // const std::vector<std::string> getDeclared() const;
-
-    /**
-     * Do we have this particular declaration
-     */
-    // bool hasDeclaration(const string&) const;
-
-    /**
-     * Get the particular formula (declaration)
-     */
-    // boost::shared_ptr<Declaration>& getDeclaration(const string&) const;
-
 private:
-
-    /**
-     * Recursively collects all formulas in the collection into
-     * a flat vector
-     */
-    // const Formulas _retrieve(Formulas) const;
 
 };
 

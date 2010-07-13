@@ -47,11 +47,11 @@ solm::Chain solm::Declaration::operator+(const solm::Context&) {
     return Chain();
 }
 
-solm::Declaration::operator std::string() const { 
-    return 
-        _name 
-        + "(" 
-        + Parametrized<Declaration>::operator std::string()
-        + "): " 
-        + Variadic::operator std::string();
-}
+// solm::Declaration::operator std::string() const { 
+//     return 
+//         _name 
+//         + "(" 
+//         + Parametrized<Declaration>::operator std::string()
+//         + "): " 
+//         + Variadic::operator std::string();
+// }

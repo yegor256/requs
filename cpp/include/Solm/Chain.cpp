@@ -11,7 +11,7 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: FactPath.cpp 2256 2010-07-08 08:30:01Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
 #include <string>
@@ -78,18 +78,18 @@ solm::Chain::operator bool() const {
     return true;
 }
 
-solm::Chain::operator std::string() const {
-    using namespace std;
-    vector<string> lines;
-    for (const_iterator s = begin(); s != end(); ++s) {
-        lines.push_back(
-            boost::algorithm::replace_all_copy(
-                (string)*s,
-                "\n",
-                "\t\n"
-            )
-        );
-    }
-    return boost::algorithm::join(lines, "\n");
-}
+// solm::Chain::operator std::string() const {
+//     using namespace std;
+//     vector<string> lines;
+//     for (const_iterator s = begin(); s != end(); ++s) {
+//         lines.push_back(
+//             boost::algorithm::replace_all_copy(
+//                 (string)*s,
+//                 "\n",
+//                 "\t\n"
+//             )
+//         );
+//     }
+//     return boost::algorithm::join(lines, "\n");
+// }
 

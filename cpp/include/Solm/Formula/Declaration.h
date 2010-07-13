@@ -52,11 +52,6 @@ public:
     const std::string& name(const std::string& s) { _name = s; return name(); }
 
     /**
-     * Convert it to the user-friendly text
-     */
-    virtual operator std::string() const;
-
-    /**
      * To resolve this formula on some context
      * and produce a new Chain of Snapshots.
      */

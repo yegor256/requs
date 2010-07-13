@@ -38,11 +38,6 @@ public:
     Predicate(const std::string& n) : Parametrized<Predicate>(), _name(n) { /* that's it */ }
 
     /**
-     * Convert it to the user-friendly text
-     */
-    operator std::string() const;
-
-    /**
      * To resolve this formula on some context
      * and produce a new Chain of Snapshots.
      */

@@ -37,17 +37,18 @@ public:
     True() : Formula() { /* that's it */ }
 
     /**
-     * Show it as string
-     */
-    operator std::string() const { return "true"; }
-
-    /**
      * To resolve this formula on some context
      * and produce a new Chain of Snapshots.
      */
     Chain operator+(const Context&) const { return Chain(); }
 
 };
+
+/**
+ * Convert the formula to string and output it to the
+ * test typer, in order to use in unit tests
+ */
+rqdql::Tt& operator<<(const rqdql::Tt&, const True&);
 
 }
 

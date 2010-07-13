@@ -80,7 +80,7 @@ solm::Chain solm::Variadic::operator+(const solm::Context& ctx) const {
     return c;
 }
 
-solm::Variadic::operator std::string() const {
+// solm::Variadic::operator std::string() const {
     // using namespace std;
     // 
     // vector<string> lines;
@@ -107,7 +107,7 @@ solm::Variadic::operator std::string() const {
     //     "\n", 
     //     "\n\t"
     // ) + "\n)";
-    return "stub";
-}
+//     return "stub";
+// }
 
 

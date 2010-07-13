@@ -21,13 +21,13 @@
 #include "Solm/Formula/Parametrized.h"
 #include "Solm/Formula/Quantifier.h"
 
-template <typename T> solm::Quantifier<T>::operator std::string() const {
-    // it's a stub
-    return 
-    std::string("QUANTIFIER")
-    + " " 
-    + Parametrized<T>::operator std::string()
-    + "(" 
-    + Variadic::operator std::string() 
-    + ")";
-}
+// template <typename T> solm::Quantifier<T>::operator std::string() const {
+//     // it's a stub
+//     return 
+//     std::string("QUANTIFIER")
+//     + " " 
+//     + Parametrized<T>::operator std::string()
+//     + "(" 
+//     + Variadic::operator std::string() 
+//     + ")";
+// }

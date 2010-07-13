@@ -33,8 +33,8 @@ solm::Snapshot& solm::Snapshot::operator<<(const solm::Snapshot& s) {
     return *this; 
 }
 
-solm::Snapshot::operator std::string() const {
-    return "snapshot stub";
+// solm::Snapshot::operator std::string() const {
+//     return "snapshot stub";
     // vector<string> lines;
     // const string format = "%-10s %-15s %-3s %-20s %-20s";
     // lines.push_back((boost::format(format) % "Name" % "Type" % "ID" % "Value" % "ACL rules").str());
@@ -56,7 +56,7 @@ solm::Snapshot::operator std::string() const {
     //     );
     // }
     // return boost::algorithm::join(lines, "\n");
-}
+// }
 
 // solm::Snapshot::Object& solm::Snapshot::create(const string& t) {
 //     objects.push_back(Object(t));

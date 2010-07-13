@@ -14,5 +14,14 @@
  * @version $Id$
  */
 
-#include "Solm/Formula.h"
+#include <string>
+#include <vector>
+#include <boost/shared_ptr.hpp>
+#include "Solm/Sentence.h"
+#include "rqdql.h"
+#include "rqdql/Exception.h"
+
+solm::Sentence::Sentence(const string& s) : _formula() {
+    /* that's it */
+}
 

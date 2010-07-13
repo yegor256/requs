@@ -29,12 +29,12 @@ CPPFLAGS = -fPIC -g -I$(INCLUDE) \
 LDFLAGS = $(shell xml2-config --libs)
 
 EXEC = rqdql
-DEPENDS = dependencies.mk
+DEPENDS = $(BUILD)/dependencies.mk
 INCLUDE = include
 TESTS = test
 BUILD = build
 LIBS = library/boost-libs library/pugixml
-TEST_RUNNER = test-runner
+TEST_RUNNER = $(BUILD)/test-runner
 
 SYMBOLS = include/Scanner/symbols.h
 FLEX_SRC = include/Scanner/rqdql.l

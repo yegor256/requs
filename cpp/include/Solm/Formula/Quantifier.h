@@ -30,11 +30,6 @@ template <typename T> class Quantifier : public Variadic, public Parametrized<T>
 
 public:
 
-    /**
-     * Convert it to the user-friendly text
-     */
-    operator std::string() const;
-
 };
 
 }

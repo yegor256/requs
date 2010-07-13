@@ -48,11 +48,6 @@ public:
     operator bool() const { return true; }
 
     /**
-     * Conver it to a user-friendly string
-     */
-    virtual operator std::string() const;
-
-    /**
      * Two snapshots are equal?
      */
     bool operator==(const Snapshot&) const;

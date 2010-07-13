@@ -18,13 +18,13 @@
 #include <boost/algorithm/string/join.hpp> // join()
 #include "Solm/Formula/Predicate.h"
 
-solm::Predicate::operator std::string() const {
-    return 
-    _name 
-    + "(" 
-    + Parametrized<Predicate>::operator std::string()
-    + ")";
-}
+// solm::Predicate::operator std::string() const {
+//     return 
+//     _name 
+//     + "(" 
+//     + Parametrized<Predicate>::operator std::string()
+//     + ")";
+// }
 
 // Outcome Function::getOutcome(const Fact& f, const Snapshot::Mapping& m = Snapshot::NullMapping) const { 
 //     // we are asserting the the arg is NUMBER
