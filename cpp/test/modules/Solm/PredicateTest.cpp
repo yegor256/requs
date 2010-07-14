@@ -18,7 +18,8 @@
 #include <string>
 #include "Solm/Predicate.h"
 #include "Solm/Chain.h"
-#include "Solm/Context.h"
+#include "Solm/Data.h"
+#include "Solm/Rule.h"
 using namespace solm;
 
 BOOST_AUTO_TEST_SUITE(PredicateTest)
@@ -29,15 +30,15 @@ BOOST_AUTO_TEST_CASE(testSimplePredicateCanBeResolved) {
     // resolve the predicate on an empty Database
     Chain c = p + Data();
     Data d = (Data)c;
-    
+
     // here we assume that Data has the following rules/facts:
     // value_of(x, 5)
-    Data::Answer a = d.question("value_of(x, V)");
-    
+    Data::Answer answer = d.question(Rule("value_of(x, V)"));
+
     // the value of V should be 5!
-    BOOST_CHECK(a);
-    BOOST_CHECK(a.has("V"));
-    BOOST_CHECK_EQUALS("5", a["V"]);
+    BOOST_REQUIRE(answer);
+    BOOST_REQUIRE(answer.has("V"));
+    BOOST_REQUIRE_EQUAL("5", answer[std::string("V")]);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

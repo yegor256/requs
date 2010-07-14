@@ -16,27 +16,28 @@
 
 #include <boost/test/unit_test.hpp>
 #include "Solm/Chain.h"
-#include "Solm/Context.h"
+#include "Solm/Data.h"
+using namespace solm;
 
 BOOST_AUTO_TEST_SUITE(ChainTest)
 
 BOOST_AUTO_TEST_CASE(testEmptyChainIsPositive) {
-    solm::Chain c;
+    Chain c;
     BOOST_CHECK((bool)c);
 }
 
 BOOST_AUTO_TEST_CASE(testVerticalChainingWorks) {
-    solm::Chain c;
-    c += solm::Context();
-    c += solm::Context();
+    Chain c;
+    c += Data();
+    c += Data();
     BOOST_CHECK_EQUAL(2, c.size());
     BOOST_CHECK((bool)c); // still positive
 }
 
 BOOST_AUTO_TEST_CASE(testHorizontalChainingWorks) {
-    solm::Chain c;
-    c += solm::Context();
-    c << solm::Context();
+    Chain c;
+    c += Data();
+    c << Data();
     BOOST_CHECK_EQUAL(1, c.size());
     BOOST_CHECK((bool)c); // still positive
 }

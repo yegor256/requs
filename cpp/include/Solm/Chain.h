@@ -42,6 +42,11 @@ public:
     Chain();
 
     /**
+     * Get the latest Data block in the chain
+     */
+    operator Data() const;
+
+    /**
      * These two chains are equivalent? We will compare them snapshot
      * by snapshot, and will use operator==() from snapshots.
      */

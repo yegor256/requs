@@ -27,6 +27,11 @@ solm::Chain::Chain() : std::vector<solm::Data>() {
     /* that's it */
 }
 
+solm::Chain::operator solm::Data() const {
+    // stub
+    return solm::Data();
+}
+
 bool solm::Chain::operator==(const solm::Chain& c) const {
     return equal(begin(), end(), c.begin());
 }

@@ -15,13 +15,14 @@
  */
 
 #include <boost/test/unit_test.hpp>
-#include "Solm/Context.h"
+#include "Solm/Data.h"
+using namespace solm;
 
-BOOST_AUTO_TEST_SUITE(ContextTest)
+BOOST_AUTO_TEST_SUITE(DataTest)
 
-BOOST_AUTO_TEST_CASE(testEmptyContextIsPositive) {
-    solm::Context ctx;
-    BOOST_CHECK((bool)ctx);
+BOOST_AUTO_TEST_CASE(testEmptyDataIsPositive) {
+    Data d;
+    BOOST_CHECK((bool)d);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

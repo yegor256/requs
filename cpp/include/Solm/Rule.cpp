@@ -11,20 +11,13 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Context.h 2304 2010-07-13 11:58:31Z yegor256@yahoo.com $
+ * @version $Id: Data.h 2308 2010-07-14 12:25:35Z yegor256@yahoo.com $
  */
 
 #include <string>
-#include "Solm/Data.h"
+#include <vector>
+#include "Solm/Object.h"
+#include "Solm/Rule.h"
 
-solm::Data::Data() {
-}
-
-solm::Data& solm::Data::operator<<(const solm::Data&) {
-    return *this;
-}
-
-const solm::Data::Answer solm::Data::question(const solm::Rule& q) {
-    std::map<std::string, std::string> vals;
-    return Answer(true, vals);
+solm::Rule::Rule(const std::string&) {
 }
