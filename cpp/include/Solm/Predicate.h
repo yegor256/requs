@@ -22,7 +22,7 @@
 #include <boost/shared_ptr.hpp>
 #include "Solm/Argument.h"
 #include "Solm/Chain.h"
-#include "Solm/Clauses.h"
+#include "Solm/Data.h"
 
 namespace solm {
 
@@ -63,7 +63,7 @@ public:
      * To resolve this argument on some set of Prolog-like clauses
      * and produce a new Chain of clauses.
      */
-    Chain operator+(const Clauses&) const;
+    Chain operator+(const Data&) const;
     
     /**
      * Convert the predicate to string

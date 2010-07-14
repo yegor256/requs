@@ -22,7 +22,7 @@
 #include <boost/shared_ptr.hpp>
 #include "Solm/Argument.h"
 #include "Solm/Chain.h"
-#include "Solm/Clauses.h"
+#include "Solm/Data.h"
 
 namespace solm {
 
@@ -44,7 +44,7 @@ public:
      * To resolve this argument on some clauses
      * and produce a new Chain of clauses.
      */
-    Chain operator+(const Clauses&) const { return Chain(); }
+    Chain operator+(const Data&) const { return Chain(); }
 
     /**
      * Convert the predicate to string

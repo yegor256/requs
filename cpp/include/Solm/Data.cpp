@@ -15,16 +15,16 @@
  */
 
 #include <string>
-#include "Solm/Clauses.h"
+#include "Solm/Data.h"
 
-solm::Clauses::Clauses() {
+solm::Data::Data() {
 }
 
-bool solm::Clauses::operator==(const solm::Clauses&) const {
+bool solm::Data::operator==(const solm::Data&) const {
     return true;
 }
 
-solm::Clauses& solm::Clauses::operator<<(const solm::Clauses&) {
+solm::Data& solm::Data::operator<<(const solm::Data&) {
     return *this;
 }
 

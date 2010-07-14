@@ -20,6 +20,7 @@
 #include <string>
 #include <vector>
 #include "Solm/Predicate.h"
+#include "Solm/Data.h"
 
 namespace solm {
 namespace predicate {
@@ -34,12 +35,12 @@ public:
     /**
      * Construct this engine and prepare for calculations
      */
-    Engine(const Context&, const std::vector<boost::shared_ptr<Argument> >&) { }
+    Engine(const Data&, const std::vector<boost::shared_ptr<Argument> >&) { }
     
     /**
      * To resolve the predicate and return new Chain of Contexts
      */
-    Chain operator+(const Context&) const { return Chain(); }
+    Chain operator+(const Data&) const { return Chain(); }
 
 private:
     

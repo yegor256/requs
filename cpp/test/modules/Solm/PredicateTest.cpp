@@ -23,18 +23,21 @@ using namespace solm;
 
 BOOST_AUTO_TEST_SUITE(PredicateTest)
 
-BOOST_AUTO_TEST_CASE(testSimplePredicateIsSerializable) {
-    Predicate p("(and true (eq x 5) (kind x \"ActorUser\"))");
-    std::string s = p;
-    BOOST_TEST_MESSAGE("predicate: " + s);
-    BOOST_CHECK(!s.empty());
-}
-
 BOOST_AUTO_TEST_CASE(testSimplePredicateCanBeResolved) {
-    Predicate p("(and true (eq x 5) (kind x \"ActorUser\"))");
-    Chain c = p + Context();
-    Context ctx = (Context)c;
-    // BOOST_CHECK((bool)p);
+    Predicate p("(exists x (eq x 5))");
+
+    // resolve the predicate on an empty Database
+    Chain c = p + Data();
+    Data d = (Data)c;
+    
+    // here we assume that Data has the following rules/facts:
+    // value_of(x, 5)
+    Data::Answer a = d.question("value_of(x, V)");
+    
+    // the value of V should be 5!
+    BOOST_CHECK(a);
+    BOOST_CHECK(a.has("V"));
+    BOOST_CHECK_EQUALS("5", a["V"]);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

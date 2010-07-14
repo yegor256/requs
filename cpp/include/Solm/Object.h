@@ -11,32 +11,37 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: Data.h 2308 2010-07-14 12:25:35Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SOLM_PREDICATE_FORALL_H
-#define __INCLUDE_SOLM_PREDICATE_FORALL_H
+#ifndef __INCLUDE_SOLM_OBJECT_H
+#define __INCLUDE_SOLM_OBJECT_H
 
 #include <string>
-#include <vector>
-#include "Solm/Predicate.h"
-#include "Solm/Predicate/Engine.h"
 
 namespace solm {
-namespace predicate {
 
 /**
- * Second order logic predicate
+ * Prolog-style object inside a rule
  */
-class Forall : public Predicate {
+class Object {
 
 public:
-    
+
+    /**
+     * Public constructor
+     */
+    Object(const std::string&);
+
 private:
+    
+    /**
+     * String presentation of an object, in prolog-style
+     */
+    std::string _value;
     
 };
 
-}
 }
 
 #endif

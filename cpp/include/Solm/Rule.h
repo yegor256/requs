@@ -11,53 +11,42 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id$
+ * @version $Id: Data.h 2308 2010-07-14 12:25:35Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SOLM_VARIABLE_H
-#define __INCLUDE_SOLM_VARIABLE_H
+#ifndef __INCLUDE_SOLM_RULE_H
+#define __INCLUDE_SOLM_RULE_H
 
 #include <string>
 #include <vector>
-#include <boost/shared_ptr.hpp>
-#include "Solm/Argument.h"
-#include "Solm/Chain.h"
-#include "Solm/Data.h"
+#include "Solm/Object.h"
 
 namespace solm {
 
 /**
- * Second order logic variable, like "x" or "user"
+ * Prolog-style rule
  */
-class Variable : public Argument {
+class Rule {
 
 public:
-    
-    /**
-     * Construct a variable
-     *
-     * @param A string representation of a variable
-     */
-    Variable(const string& n) : _name(n) { /* that's it */ }
 
     /**
-     * To resolve this argument on some Prolog-like clauses
-     * and produce a new Chain of clauses.
+     * Public constructor
      */
-    Chain operator+(const Data&) const { return Chain(); }
-
-    /**
-     * Convert the variable to string
-     */
-    operator std::string() const { return _name; }
+    Rule(const std::string&);
 
 private:
     
     /**
-     * Variable name
+     * Name of the rule
      */
     std::string _name;
-
+    
+    /**
+     * Collection of objects
+     */
+    std::vector<Object> _objects;
+    
 };
 
 }

@@ -14,43 +14,65 @@
  * @version $Id$
  */
 
-#ifndef __INCLUDE_SOLM_CLAUSES_H
-#define __INCLUDE_SOLM_CLAUSES_H
+#ifndef __INCLUDE_SOLM_DATA_H
+#define __INCLUDE_SOLM_DATA_H
 
 #include <string>
 #include <map>
 #include "Solm/Chain.h"
+#include "Solm/Rule.h"
 
 namespace solm {
 
 /**
  * Prolog-style set of clauses
  */
-class Clauses {
+class Data {
 
 public:
+    
+    /**
+     * An answer we can give to the question asked
+     */
+    class Answer {
+    public:
+        operator bool() const { return _success; }
+        bool has(const std::string& v) { return _values.find(v) != _values.end(); }
+        const std::string& operator[](const std::string& v) const { return _values.find(v)->second; }
+    private:
+        friend class Data;
+        bool _success;
+        std::map<std::string, std::string> _values;
+        Answer(bool s, const std::map<std::string, std::string>& v) : _success(s), _values(v) { /* that's it */ }
+    };
 
     /**
      * Public constructor
      */
-    Clauses();
+    Data();
 
     /**
-     * The context is positive?
+     * The data block is positive?
      */
     operator bool() const { return true; }
 
     /**
-     * Add new alternative set of clauses
+     * Add new alternative Data block
      */
-    Clauses& operator<<(const Clauses&);
+    Data& operator<<(const Data&);
+    
+    /**
+     * Make a prolog-styled question, providing a simple rule
+     * and get an answer.
+     */
+    const Answer question(const Rule&);
 
 private:
     
     /**
-     * Collection of objects
+     * Collection of rules
      */
-    std::vector<clauses::Fact> _facts;
+    std::vector<Rule> _facts;
     
     /**
      * Alternative clauses
