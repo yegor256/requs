@@ -19,7 +19,7 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/join.hpp>
 #include "Solm/Chain.h"
-#include "Solm/Context.h"
+#include "Solm/Clauses.h"
 #include "rqdql.h"
 #include "rqdql/Exception.h"
 

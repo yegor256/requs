@@ -22,7 +22,7 @@
 #include <boost/shared_ptr.hpp>
 #include "Solm/Argument.h"
 #include "Solm/Chain.h"
-#include "Solm/Context.h"
+#include "Solm/Clauses.h"
 
 namespace solm {
 
@@ -41,10 +41,10 @@ public:
     Atom(const string& v) : _value(v) { /* that's it */ }
 
     /**
-     * To resolve this argument on some context
-     * and produce a new Chain of Snapshots.
+     * To resolve this argument on some clauses
+     * and produce a new Chain of clauses.
      */
-    Chain operator+(const Context&) const { return Chain(); }
+    Chain operator+(const Clauses&) const { return Chain(); }
 
     /**
      * Convert the predicate to string

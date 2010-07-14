@@ -19,7 +19,7 @@
 
 #include <string>
 #include "Solm/Chain.h"
-#include "Solm/Context.h"
+#include "Solm/Clauses.h"
 
 namespace solm {
 
@@ -31,11 +31,11 @@ class Argument {
 public:
 
     /**
-     * Abstract method, to resolve this argument on some context
-     * and produce a new Chain of Snapshots.
+     * Abstract method, to resolve this argument on some clauses
+     * and produce a new Chain of clauses.
      * The method has to be overriden in child classes.
      */
-    virtual Chain operator+(const Context&) const = 0;
+    virtual Chain operator+(const Clauses&) const = 0;
 
     /**
      * Convert the argument to string

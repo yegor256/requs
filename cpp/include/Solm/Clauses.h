@@ -14,36 +14,26 @@
  * @version $Id$
  */
 
-#ifndef __INCLUDE_SOLM_CONTEXT_H
-#define __INCLUDE_SOLM_CONTEXT_H
+#ifndef __INCLUDE_SOLM_CLAUSES_H
+#define __INCLUDE_SOLM_CLAUSES_H
 
 #include <string>
 #include <map>
-#include "Solm/Context/Object.h"
 #include "Solm/Chain.h"
 
 namespace solm {
 
 /**
- * Context in which any predicate can be resolved
+ * Prolog-style set of clauses
  */
-class Context {
+class Clauses {
 
 public:
 
     /**
-     * An object inside a context
-     */
-    struct Object {
-        int id;
-        std::string variable;
-        std::string value;
-    };
-
-    /**
      * Public constructor
      */
-    Context();
+    Clauses();
 
     /**
      * The context is positive?
@@ -51,19 +41,19 @@ public:
     operator bool() const { return true; }
 
     /**
-     * Add new alternative context
+     * Add new alternative set of clauses
      */
-    Context& operator<<(const Context&);
+    Clauses& operator<<(const Clauses&);
 
 private:
     
     /**
      * Collection of objects
      */
-    std::vector<context::Object> _objects;
+    std::vector<clauses::Fact> _facts;
     
     /**
-     * Alternative contexts
+     * Alternative clauses
      */
     Chain _alternatives;
     

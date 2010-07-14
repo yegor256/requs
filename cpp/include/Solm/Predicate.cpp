@@ -21,7 +21,7 @@
 #include "Solm/Predicate.h"
 #include "Solm/Argument.h"
 #include "Solm/Chain.h"
-#include "Solm/Context.h"
+#include "Solm/Clauses.h"
 
 solm::Predicate::Predicate(const std::string& p) : _name(p), _arguments() { 
     /* that's it for now */ 
@@ -38,7 +38,7 @@ solm::Predicate& solm::Predicate::operator+=(const solm::Argument&) {
     return *this;
 }
 
-solm::Chain solm::Predicate::operator+(const solm::Context&) const { 
+solm::Chain solm::Predicate::operator+(const solm::Clauses&) const { 
     return Chain(); 
 }
 
