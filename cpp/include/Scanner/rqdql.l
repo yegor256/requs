@@ -112,7 +112,7 @@ QOS (QOS{NSFX})
 <READING_QUOTED><<EOF>> { BEGIN(INITIAL); yyerror("Unclosed informal text"); throw "Unclosed informal text"; }
 
 \n { yycolumn = 1; }
-[ \t\r] { /* ignore spaces */ }
+{SPACE} { /* ignore spaces */ }
 . { yyerror("Unknown symbol \"%c\"", yytext[0]); }
 
 %%

@@ -69,7 +69,7 @@ $(DEPENDS)/%.d: %.cpp $(GENERATED_SRC)
 	@set -e; rm -f $@; \
 	mkdir -p $(dir $@); \
 	$(CC) -MM $(CPPFLAGS) $< > $@.$$$$; \
-	sed 's,\(.*\.o\)[ :]*,$(patsubst %.d,%.o,$@) $@ : ,g' < $@.$$$$ > $@; \
+	sed 's,\(.*\.o\)[ :]*,$(patsubst %.cpp,$(BUILD)/%.o,$<) $@ : ,g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$
 
 -include $(MAIN_SRC:%.cpp=$(DEPENDS)/%.d)

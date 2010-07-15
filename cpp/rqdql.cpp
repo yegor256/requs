@@ -69,7 +69,7 @@ int main(int argc, char** argv) {
         }
         cout << rqdql::get<front::Front>().asXml() << endl;
     } catch (rqdql::Exception e) {
-        cerr << "Internal error: \"" << e.getMessage() << "\"" << endl;
+        cerr << "Internal error: \"" << (string)e << "\"" << endl;
         return -1;
     } catch (...) {
         cerr << "Unknown internal error, please email your text to <bugs@rqdql.com>" << endl;

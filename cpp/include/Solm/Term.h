@@ -30,11 +30,32 @@ class Term {
 public:
 
     /**
+     * Type of term
+     */
+    typedef enum {
+        T_ATOM,
+        T_RULE,
+        T_FACT,
+        T_NUMBER,
+        T_TEXT
+    } Kind;
+
+    /**
      * Public constructor
      */
     Term(const std::string&);
 
+    /**
+     * This term is of the type?
+     */
+    bool is(Kind) const;
+
 private:
+    
+    /**
+     * Value of the term, as a string
+     */
+    std::string _value;
     
     /**
      * Collection of terms

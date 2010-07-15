@@ -16,6 +16,7 @@
 
 #include <string>
 #include "Solm/Data.h"
+#include "Solm/Term.h"
 
 solm::Data::Data() {
 }
@@ -24,6 +25,6 @@ solm::Data& solm::Data::operator<<(const solm::Data&) {
     return *this;
 }
 
-const solm::Answer solm::Data::question(const solm::Rule& q) {
+const solm::Answer solm::Data::question(const solm::Term& q) {
     return Answer();
 }

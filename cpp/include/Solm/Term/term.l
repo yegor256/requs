@@ -15,23 +15,39 @@
  */
 
 %{
+	#include <string>
 	#include <boost/format.hpp>
-    #include <vector>
     #include "Solm/Term.h"
 	using boost::format;
+	using std::string;
 %}
 
 %option prefix="term"
 %option noyywrap
 
 SPACE ([ \t\r\n]+)
-ATOM ([0-9]+(\.[0-9]+)*)
+TAIL ([a-zA-Z_0-9]+)
+VARIABLE ([A-Z]({TAIL})*)
+OBJECT ([a-z_]({TAIL})*)
+NUMBER ([0-9]+(\.[0-9]+)*)
+TEXT ('.*')
+OPERATOR ([,:/\\\*\-\?\+\$\&<>=]+|"is")
 
 %%
 
-    /* find entities */
-{ATOM} { yylval.str = yytext); return ATOM; }
+	/* find punctuation */
+"(" { return OPEN_BRACE; }
+")" { return CLOSE_BRACE; }
+"." { return DOT; }
 
-. { yyerror("Unknown symbol \"%c\"", yytext[0]); }
+    /* find entities */
+{OPERATOR} { termlval.p = new string(termtext); return OPERATOR; }
+{OBJECT} { termlval.p = new string(termtext); return OBJECT; }
+{VARIABLE} { termlval.p = new string(termtext); return VARIABLE; }
+{NUMBER} { termlval.p = new string(termtext); return NUMBER; }
+{TEXT} { termlval.p = new string(termtext); return TEXT; }
+
+{SPACE} { /* ignore spaces */ }
+. { termerror("Unknown symbol"); }
 
 %%

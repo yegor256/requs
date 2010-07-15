@@ -21,13 +21,50 @@
     #include "Solm/Term.h"
 %}
 
+%union {
+    std::string* p;
+}
+
 %name-prefix="term"
 
-%token ATOM
+%token DOT
+%token <p> OPEN_BRACE CLOSE_BRACE
+%token <p> OPERATOR
+%token <p> NUMBER
+%token <p> VARIABLE
+%token <p> OBJECT
+%token <p> TEXT
+
+%left OPERATOR
+%nonassoc DOT
 
 %%
 
-srs : ATOM;
+sentence:
+    term DOT
+    ;
+
+term: 
+    NUMBER
+    |
+    VARIABLE
+    |
+    OBJECT
+    |
+    TEXT
+    |
+    infixed
+    |
+    prefixed
+    ;
+    
+infixed:
+    term OPERATOR term
+    ;
+    
+prefixed:
+    OBJECT OPEN_BRACE term CLOSE_BRACE
+    ;
     
 %%
 

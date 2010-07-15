@@ -19,42 +19,39 @@
 
 #include <string>
 #include <boost/format.hpp>
+using std::string;
 
 namespace rqdql {
 
 /**
- * Exception
+ * Custom exception that is thrown everywhere in the project.
+ *
+ * This class is used when an exception with text details should
+ * be thrown. The exception is properly treated in unit tests.
  */
-class Exception {
+class Exception : public std::exception, public string {
 
 public:
 
     /**
      * Public constructor
      */
-    Exception() : _message("no details") { /* that's it */ }
+    Exception() : string("no details") { /* that's it */ }
 
     /**
      * Public constructor
      */
-    Exception(const std::string& s) : _message(s) { /* that's it */ }
+    Exception(const string& s) : string(s) { /* that's it */ }
 
     /**
      * Public constructor
      */
-    Exception(const boost::format& s) : _message(s.str()) { /* that's it */ }
-
+    Exception(const boost::format& s) : string(s.str()) { /* that's it */ }
+    
     /**
-     * Get message
+     * Public destructor
      */
-    const std::string& getMessage() { return _message; }
-
-private:
-
-    /**
-     * The message
-     */
-    std::string _message;
+    ~Exception() throw () { /* nothing */ }
 
 };
     
