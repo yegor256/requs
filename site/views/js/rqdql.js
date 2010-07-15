@@ -46,7 +46,7 @@ rqdql.parse = function(text, callback)
     if (typeof jQuery == 'undefined') {
         throw new Error('jQuery is NOT loaded');
     }
-    
+
     $.ajax(
         {
             url: "http://tracfacade.fazend.com/rqdql",

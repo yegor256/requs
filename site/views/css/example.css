@@ -38,6 +38,7 @@ div#front {
 
 table#lines {
     table-layout: fixed;
+    margin-top: 1em;
 }
 
     table#lines tbody {
