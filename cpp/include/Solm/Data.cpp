@@ -24,7 +24,6 @@ solm::Data& solm::Data::operator<<(const solm::Data&) {
     return *this;
 }
 
-const solm::Data::Answer solm::Data::question(const solm::Rule& q) {
-    std::map<std::string, std::string> vals;
-    return Answer(true, vals);
+const solm::Answer solm::Data::question(const solm::Rule& q) {
+    return Answer();
 }

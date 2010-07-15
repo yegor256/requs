@@ -18,9 +18,10 @@
 #define __INCLUDE_SOLM_DATA_H
 
 #include <string>
-#include <map>
+#include <vector>
 #include "Solm/Chain.h"
 #include "Solm/Rule.h"
+#include "Solm/Answer.h"
 
 namespace solm {
 
@@ -32,21 +33,6 @@ class Data {
 public:
     
     /**
-     * An answer we can give to the question asked
-     */
-    class Answer {
-    public:
-        operator bool() const { return _success; }
-        bool has(const std::string& v) { return _values.find(v) != _values.end(); }
-        const std::string& operator[](const std::string& v) const { return _values.find(v)->second; }
-    private:
-        friend class Data;
-        bool _success;
-        std::map<std::string, std::string> _values;
-        Answer(bool s, const std::map<std::string, std::string>& v) : _success(s), _values(v) { /* that's it */ }
-    };
-
-    /**
      * Public constructor
      */
     Data();
@@ -55,6 +41,11 @@ public:
      * The data block is positive?
      */
     operator bool() const { return true; }
+
+    /**
+     * Add new rule to it
+     */
+    Data& operator+=(const Rule& r) { _facts.push_back(r); return *this; }
 
     /**
      * Add new alternative Data block

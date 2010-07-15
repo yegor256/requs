@@ -14,7 +14,7 @@
 # @copyright Copyright (c) rqdql.com, 2010
 # @version $Id$
 
-VERSION = 0.6.1
+VERSION = 0.2
 
 MAKEFLAGS = -r
 PATH := $(PATH):/usr/local/bin:/usr/bin
@@ -29,18 +29,18 @@ CPPFLAGS = -fPIC -g -I$(INCLUDE) \
 LDFLAGS = $(shell xml2-config --libs)
 
 EXEC = rqdql
-DEPENDS = $(BUILD)/dependencies.mk
 INCLUDE = include
 TESTS = test
 BUILD = build
+DEPENDS = $(BUILD)/dependencies.mk
 LIBS = library/boost-libs library/pugixml
 TEST_RUNNER = $(BUILD)/test-runner
 
-SYMBOLS = include/Scanner/symbols.h
-FLEX_SRC = include/Scanner/rqdql.l
-FLEX_DEST = include/Scanner/rqdql.l.c
-BISON_SRC = include/Scanner/rqdql.y
-BISON_DEST = include/Scanner/rqdql.y.c
+SYMBOLS = $(INCLUDE)/Scanner/symbols.h
+FLEX_SRC = $(INCLUDE)/Scanner/rqdql.l
+FLEX_DEST = $(INCLUDE)/Scanner/rqdql.l.c
+BISON_SRC = $(INCLUDE)/Scanner/rqdql.y
+BISON_DEST = $(INCLUDE)/Scanner/rqdql.y.c
 
 MAIN_SOURCES = $(shell find $(INCLUDE) -name "*.cpp")
 TEST_SOURCES = $(shell find $(TESTS) -name "*.cpp")
@@ -99,7 +99,7 @@ $(TEST_RUNNER): $(OBJS)
 clean:
 	rm -rf \
 	$(BISON_DEST) \
-	include/Scanner/rqdql.y.output \
+	$(INCLUDE)/Scanner/rqdql.y.output \
 	$(FLEX_DEST) \
 	$(EXEC) \
 	$(BUILD)/* \
