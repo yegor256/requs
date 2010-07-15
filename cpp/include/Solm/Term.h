@@ -73,6 +73,7 @@ private:
     
     /**
      * Private constructor, that creates an object with the name and terms.
+     * @see term.y
      */
     Term(const std::string& v, const std::vector<Term>& t) : _value(v), _terms(t) { }
     

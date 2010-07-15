@@ -15,13 +15,23 @@
  */
 
 #include <boost/test/unit_test.hpp>
+#include <string>
 #include "Solm/Term.h"
 using namespace solm;
+using std::string;
 
 BOOST_AUTO_TEST_SUITE(TermTest)
 
 BOOST_AUTO_TEST_CASE(testDifferentFormatsAreOK) {
     Term t("123.");
+
+    // simple objects and atoms
+    t = Term("mary.");
+    BOOST_CHECK(t.is(Term::T_ATOM) && !t.is(Term::T_NUMBER));
+    t = Term("45.890.");
+    BOOST_CHECK(t.is(Term::T_NUMBER));
+    t = Term("'this is text'.");
+    BOOST_CHECK(t.is(Term::T_TEXT));
     
     // simple facts
     t = Term("father_of(john, mary).");
@@ -46,6 +56,7 @@ BOOST_AUTO_TEST_CASE(testDifferentFormatsAreOK) {
     BOOST_CHECK(!t.is(Term::T_FACT));
     t = Term("X =:= Y."); // X and Y stand for the same number/value
     BOOST_CHECK(!t.is(Term::T_FACT));
+    BOOST_LOG_MESSAGE((std::string)t);
     t = Term("X =\\= Y."); // X and Y stand for the different values/numbers
     BOOST_CHECK(!t.is(Term::T_FACT));
     
