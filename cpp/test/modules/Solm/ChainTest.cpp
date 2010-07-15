@@ -27,19 +27,19 @@ BOOST_AUTO_TEST_CASE(testEmptyChainIsPositive) {
 }
 
 BOOST_AUTO_TEST_CASE(testVerticalChainingWorks) {
-    // Chain c;
-    // c += Data();
-    // c += Data();
-    // BOOST_CHECK_EQUAL(2, c.size());
-    // BOOST_CHECK((bool)c); // still positive
+    Chain c;
+    c += Data();
+    c += Data();
+    BOOST_CHECK_EQUAL(2, c.size());
+    BOOST_CHECK((bool)c); // still positive
 }
 
 BOOST_AUTO_TEST_CASE(testHorizontalChainingWorks) {
-    // Chain c;
-    // c += Data();
-    // c << Data();
-    // BOOST_CHECK_EQUAL(1, c.size());
-    // BOOST_CHECK((bool)c); // still positive
+    Chain c;
+    c += Data();
+    c << Data();
+    BOOST_CHECK_EQUAL(1, c.size());
+    BOOST_CHECK((bool)c); // still positive
 }
 
 BOOST_AUTO_TEST_SUITE_END()

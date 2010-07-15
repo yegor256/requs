@@ -19,10 +19,13 @@
     #include <vector>
     #include <boost/format.hpp>
     #include "Solm/Term.h"
+    using solm::Term;
+    using std::string;
 %}
 
 %union {
-    std::string* p;
+    string* p;
+    solm::Term* term;
 }
 
 %name-prefix="term"
@@ -35,6 +38,10 @@
 %token <p> OBJECT
 %token <p> TEXT
 
+%type <term> term
+%type <term> infixed
+%type <term> prefixed
+
 %left OPERATOR
 %nonassoc DOT
 
@@ -42,28 +49,101 @@
 
 sentence:
     term DOT
+        {
+            /* the TERM is found, inject it into the destination */
+            
+            /**
+             * This variable is defined in Term.cpp
+             */
+            extern solm::Term::Term* term_target;
+            
+            Term* term = static_cast<Term*>($1);
+            *term_target = *term;
+            delete term;
+        }
     ;
 
-term: 
+term: /* solm::Term* */
     NUMBER
+        {
+            /* create new TERM from number */
+            string* number = static_cast<string*>($1);
+            Term* term = new Term(*number, std::vector<Term>());
+            delete number;
+            $$ = term;
+        }
     |
     VARIABLE
+        {
+            /* create new TERM from variable */
+            string* variable = static_cast<string*>($1);
+            Term* term = new Term(*variable, std::vector<Term>());
+            delete variable;
+            $$ = term;
+        }
     |
     OBJECT
+        {
+            /* create new TERM from object */
+            string* object = static_cast<string*>($1);
+            Term* term = new Term(*object, std::vector<Term>());
+            delete object;
+            $$ = term;
+        }
     |
     TEXT
+        {
+            /* create new TERM from text */
+            string* text = static_cast<string*>($1);
+            Term* term = new Term(*text, std::vector<Term>());
+            delete text;
+            $$ = term;
+        }
     |
     infixed
+        {
+            /* do nothing, just copy pointers */
+            $$ = $1;
+        }
     |
     prefixed
+        {
+            /* do nothing, just copy pointers */
+            $$ = $1;
+        }
     ;
     
-infixed:
+infixed: /* solm::Term* */
     term OPERATOR term
+        {
+            /* create new TERM from two other terms and operator */
+            string* op = static_cast<string*>($2);
+            Term* term1 = static_cast<Term*>($1);
+            Term* term2 = static_cast<Term*>($3);
+            std::vector<Term> terms;
+            terms.push_back(*term1);
+            terms.push_back(*term2);
+            Term* infixed = new Term(*op, terms);
+            delete op;
+            delete term1;
+            delete term2;
+            $$ = infixed;
+        }
     ;
     
-prefixed:
+prefixed: /* solm::Term* */
     OBJECT OPEN_BRACE term CLOSE_BRACE
+        {
+            /* create new TERM from name and other term */
+            string* object = static_cast<string*>($1);
+            Term* term = static_cast<Term*>($3);
+            std::vector<Term> terms;
+            terms.push_back(*term);
+            Term* prefixed = new Term(*object, terms);
+            delete object;
+            delete term;
+            $$ = prefixed;
+        }
     ;
     
 %%

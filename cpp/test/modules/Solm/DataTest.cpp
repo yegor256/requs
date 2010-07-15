@@ -29,11 +29,11 @@ BOOST_AUTO_TEST_CASE(testWeCanResolveSimpleFactsAndRules) {
     Data d;
     
     // here we add simple prolog-style facts
-    d += Term("father(john, mary).");
-    d += Term("father(john, peter).");
+    d += Term("kid(john, mary).");
+    d += Term("kid(john, peter).");
     
     // now we're asking for a list of X that satisfy this rule
-    Answer a = d.question(Term("father(john, X)."));
+    Answer a = d.question(Term("kid(john, X)."));
     
     BOOST_REQUIRE(a);
     BOOST_REQUIRE(a.has("X"));

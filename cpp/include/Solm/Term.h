@@ -20,6 +20,13 @@
 #include <string>
 #include <vector>
 
+/**
+ * This function will build Term objects, and the class is its friend
+ *
+ * @see Term.cpp
+ */
+extern int termparse();
+
 namespace solm {
 
 /**
@@ -29,6 +36,8 @@ class Term {
 
 public:
 
+    friend int ::termparse();
+    
     /**
      * Type of term
      */
@@ -61,6 +70,11 @@ private:
      * Collection of terms
      */
     std::vector<Term> _terms;
+    
+    /**
+     * Private constructor, that creates an object with the name and terms.
+     */
+    Term(const std::string& v, const std::vector<Term>& t) : _value(v), _terms(t) { }
     
 };
 
