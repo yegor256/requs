@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage[T1]{fontenc}
+\usepackage[T1]{fontenc} % to enable "{" symbol in \ttfamily
 \usepackage{listings} % listings
     \lstset{
         basicstyle=\small\ttfamily,
@@ -19,11 +19,18 @@
     \definecolor{rupBody}{rgb}{1,1,0.8}
     \definecolor{rupBorder}{rgb}{0.6039,0,0.2}
 \usepackage{tikz}
-	\usetikzlibrary{shapes,arrows}
+	\usetikzlibrary{shapes} % node split
+	\usetikzlibrary{chains} % start chains
+	\usetikzlibrary{arrows} % diamond
     \usetikzlibrary{decorations.pathmorphing}
     \usetikzlibrary{positioning}
     \usetikzlibrary{fit}
     \usetikzlibrary{trees} % for grow cyclic
+    \tikzstyle{class} = [text ragged, font={\scriptsize\ttfamily}, fill=white, anchor=north,
+        rectangle split, rectangle split parts=2,
+        fill=rupBody, draw=rupBorder] % class in class diagram
+    \tikzstyle{comment} = [font={\scriptsize\ttfamily}, fill=white] % comment in class diagram
+    \tikzstyle{cardinality} = [font={\scriptsize\ttfamily}] % cardinality
 
 \begin{document}
 \setlength{\parindent}{0pt}
@@ -62,13 +69,18 @@
 \begin{abstract}
     Requirements Definition and Query Language/Library (RQDQL) is
     an experimental set of tools and formats that enables definition of
-    a Software Requirements Specifications (SRS) document in a 
+    an SRS document in a 
     human-friendly language, and at the same time making it understandable
-    by computers. Requirements in plain English are converted to 
+    by computers. Requirements in plain text are converted to 
     second order logic predicates and then represented in MOF/XMI.
 \end{abstract}
 
 \section{Introduction}
+
+    IEEE 830 says: ``\emph{Software Requirements Specification should be
+    correct, unambiguous, complete, consistent, ranked for importance and/or stability,
+    verifiable, modifiable, traceable}''~\cite{ieee830}. RQDQL enables the creation 
+    of such documents in plain text format.
 
     First, we convert plain English into objects (in terms of object-oriented
     programming). Next, we convert objects into second order logic predicates.
@@ -92,14 +104,14 @@
             \node (english) {Plain English};
             \node [right of=english] (objects) {OOP Objects};
             \node [right of=objects] (sol) {Second Order Logic Predicates};
-            \node [right of=sol] (snapshots) {Data Scope Snapshots};
-            \node [below of=snapshots] (mof) {MOF/XMI};
+            \node [right of=sol] (data) {Data Facts};
+            \node [below of=data] (mof) {MOF/XMI};
             \node [left of=mof] (user) {End-User};
             \node [below left of=mof] (computer) {Computer};
             \draw (english) -- (objects);
             \path (objects) -- (sol);
-            \path (sol) -- (snapshots);
-            \path (snapshots) -- (mof);
+            \path (sol) -- (data);
+            \path (data) -- (mof);
             \path (mof) -- (user);
             \path (mof) -- (computer);
         \end{tikzpicture}
@@ -113,18 +125,18 @@
     
     Section~\ref{sec:to-solm} explains how objects are converted to 
     second order logic ``predicates'',
-    and validated. Here we also discuss the interconnection between
-    RQDQL and Prolog~\cite{shapiro94}.
+    and validated. Here we also discuss the interconnection with
+    Lisp~\cite{graham93}.
     
-    Section~\ref{sec:to-snapshots} explains the process of converting of 
-    second order predicates to data ``snapshots'', and reveals the internal
-    structure of said snapshots.
+    Section~\ref{sec:to-data} explains the process of converting of 
+    second order predicates to Prolog-style data ``facts'', and reveals the internal
+    structure of said facts. We discuss interconnection with Prolog~\cite{shapiro94}.
 
     Section~\ref{sec:front} is about an interface between \type{rqdql}
     command-line utility and its users.
     
     Section~\ref{sec:test-cases} explains the mechanism of conversion
-    of snapshots into test cases.
+    of data facts into test cases.
     
     Section~\ref{sec:design} contains the most important architecture
     and design decisions documented in diagrams.
@@ -133,6 +145,43 @@
 
     Detailed explanation of the RQDQL syntax is given on its website at~\cite{rqdql}.
 
+    In C++ we use the following types:
+
+    \begin{tikzpicture}
+        \node [class] (entity) {Entity\nodepart{second}predicate};
+        \node [class, below right=4em of entity] (slot) {Slot\nodepart{second}name\linebreak{}cardinality};
+        \node [class, below left=5em of entity] (type) {Type\nodepart{second}};
+        \node [class, below=4em of entity] (uc) {UseCase\nodepart{second}};
+        \node [class, below right=4em of uc] (signature) {Signature\nodepart{second}text};
+        \node [class, left=6em of signature] (place) {Place\nodepart{second}};
+        \draw [-open triangle 60] (type) -- (entity);
+        \draw [-open triangle 60] (uc) -- (entity);
+        \draw [-diamond] 
+            (entity) 
+            -- 
+            node [cardinality, very near start, left=0.5em] {1} 
+            node [comment] {\_slots} (slot) 
+            node [cardinality, very near end, right=0.5em] {*};
+        \draw [-open diamond] 
+            (slot) 
+            |- 
+            node [cardinality, very near start, right=0.2em] {1} 
+            node [comment] {\_entity} (entity)
+            node [cardinality, very near end, above=0.2em] {0..1};
+        \draw [-diamond] 
+            (uc) 
+            -- 
+            node [cardinality, very near start, left=0.2em] {1} 
+            node [comment] {\_signature} (signature)
+            node [cardinality, very near end, right=0.2em] {1};
+        \draw [-diamond]
+            (signature)
+            -- 
+            node [cardinality, very near start, above=0.2em] {1} 
+            node [comment] {\_places} (place)
+            node [cardinality, very near end, below=0.2em] {*};
+    \end{tikzpicture}
+
     \subsection{Types}
 
         A simplified verbal form of a type looks like this:
@@ -140,7 +189,7 @@
     \begin{verbatim}
 User includes:
   email: "email address";
-  photo-s: Photo "a collection of photos";
+  face-s: Photo "a collection of photos";
   manager: User "user's manager, if any";
   address.
 Address of User includes: city, country.\end{verbatim}
@@ -148,26 +197,40 @@ Address of User includes: city, country.\end{verbatim}
         In C++ the type is presented by class \texttt{proxy::Type} and
         the type written above will look like:
         
-    \begin{verbatim}
-"User": proxy::Type {
-  slots: [
-    proxy::Slot { name: "email", type: "text", cardinality: 1..n->1 },
-    proxy::Slot { name: "photo", type: "Photo", cardinality: 1..n->* },
-    proxy::Slot { name: "manager", type: "User", cardinality: 1..n->1 },
-    proxy::Slot { 
-      name: "address", 
-      type: proxy::Type {
-        slots: [
-          proxy::Slot { name: "city", type: "text", cardinality: 1..n->1 },
-          proxy::Slot { name: "country", type: "text", cardinality: 1..n->1 }
-        ]
-      }, 
-      cardinality: 1..n->1 
-    }
-  ]
-};
-"Photo": proxy::Type { slots: [] };
-"text": proxy::Type { slots: [] };\end{verbatim}
+        \begin{tikzpicture}[start chain, node distance=4em, every node/.style={on chain,join}, every join/.style={-}]
+            \node [class, on chain] (proxy) {\underline{proxy:Proxy}\nodepart{second}};
+            \begin{scope}[start branch=email]
+                \node [class, on chain=going above right] {\underline{:Slot}\nodepart{second}name: ``text''};
+                \node [class, on chain] {\underline{:Type}\nodepart{second}};
+            \end{scope}
+            \begin{scope}[start branch=user]
+                \node [class, on chain] {\underline{:Slot}\nodepart{second}name: ``User''};
+                \begin{scope}[start branch=email]
+                    \node [class, on chain=going above right] {\underline{:Slot}\nodepart{second}name: ``email''};
+                    \node [class, on chain] {\underline{:Type}\nodepart{second}};
+                \end{scope}
+                \begin{scope}[start branch=face]
+                    \node [class, on chain] {\underline{:Slot}\nodepart{second}name: ``face''};
+                \end{scope}
+                \begin{scope}[start branch=manager]
+                    \node [class, on chain] {\underline{:Slot}\nodepart{second}name: ``manager''};
+                \end{scope}
+                \begin{scope}[start branch=address]
+                    \node [class, on chain] {\underline{:Slot}\nodepart{second}name: ``address''};
+                    \node [class, on chain] {\underline{:Type}\nodepart{second}};
+                    \begin{scope}[start branch=city]
+                        \node [class, on chain=going above right] {\underline{:Slot}\nodepart{second}name: ``city''};
+                    \end{scope}
+                    \begin{scope}[start branch=country]
+                        \node [class, on chain=going above right] {\underline{:Slot}\nodepart{second}name: ``country''};
+                    \end{scope}
+                \end{scope}
+            \end{scope}
+            \begin{scope}[start branch=photo]
+                \node [class, on chain=going below right] {\underline{:Slot}\nodepart{second}name: ``Photo''};
+                \node [class, on chain] {\underline{:Type}\nodepart{second}};
+            \end{scope}
+        \end{tikzpicture}
   
     \subsection{Use Cases}
 
@@ -186,14 +249,15 @@ UC1: 2a) If failed with "file format is not valid":
   2. Fail with "only PNG images are accepted".\end{verbatim}
 
         The use case is represented in the system by means of 
-        \texttt{proxy::UseCase} and \texttt{proxy::Flow}-s. The
+        \texttt{proxy::UseCase} and \texttt{proxy::Slot}-s. The
         use case given above will be converted to:
 
         \begin{verbatim}
 "UC1": proxy::UseCase {
   signature: "{...} extends photo album",
-  flows: [
-    0: proxy::Flow { 
+  slots: [
+    0: proxy::Slot { 
+      name: 
       signature: "start", 
       alternatives: [ formula: proxy::Flows{...} ] 
     }
@@ -406,7 +470,7 @@ class UseCase {
         $\quad \type{read}(p, x)\wedge \type{info}(\type{'The user reads the photo})$ \\
         \end{maths}
 
-\section{Predicates to Snapshots}\label{sec:to-snapshots}
+\section{Predicates to Snapshots}\label{sec:to-data}
 
     Every formula produces a number of ``fact paths''. Every fact path
     is a vector of ``facts'', and every fact is either a positive or negative:
