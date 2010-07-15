@@ -17,6 +17,7 @@
 #include <string>
 #include <vector>
 #include <boost/format.hpp>
+#include <boost/algorithm/string/join.hpp>
 #include "Solm/Term.h"
 #include "rqdql.h"
 #include "rqdql/Exception.h"
@@ -62,6 +63,30 @@ solm::Term::Term(const std::string& s) {
 
 bool solm::Term::is(solm::Term::Kind k) const {
     return true;
+}
+
+solm::Term::operator std::string() const {
+    std::string s(_value);
+    if (_terms.size()) {
+        std::vector<std::string> v;
+        for (std::vector<Term>::const_iterator i = _terms.begin(); i != _terms.end(); ++i) {
+            v.push_back((std::string)*i);
+        }
+        s += "(" + boost::algorithm::join(v, ", ") + ")";
+    }
+    return s;
+}
+
+solm::Term::Term(const std::string& v, const solm::Term::Terms& t) : _value(v), _terms() {
+    for (Terms::const_iterator i = t.begin(); i != t.end(); ++i) {
+        if ((*i)._value == ",") {
+            for (Terms::const_iterator j = (*i)._terms.begin(); j != (*i)._terms.end(); ++j) {
+                _terms.push_back(*j);
+            }
+        } else {
+            _terms.push_back(*i);
+        }
+    }
 }
 
 void termerror(const char*, ...) {

@@ -58,8 +58,15 @@ public:
      * This term is of the type?
      */
     bool is(Kind) const;
+    
+    /**
+     * Convert this term to string
+     */
+    operator std::string() const;
 
 private:
+    
+    typedef std::vector<solm::Term> Terms;
     
     /**
      * Value of the term, as a string
@@ -75,7 +82,7 @@ private:
      * Private constructor, that creates an object with the name and terms.
      * @see term.y
      */
-    Term(const std::string& v, const std::vector<Term>& t) : _value(v), _terms(t) { }
+    Term(const std::string&, const Terms&);
     
 };
 
