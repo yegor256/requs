@@ -20,9 +20,9 @@ using namespace solm;
 
 BOOST_AUTO_TEST_SUITE(DataTest)
 
-BOOST_AUTO_TEST_CASE(testEmptyDataIsPositive) {
+BOOST_AUTO_TEST_CASE(testEmptyDataIsNegative) {
     Data d;
-    BOOST_CHECK((bool)d);
+    BOOST_CHECK(!(bool)d);
 }
 
 BOOST_AUTO_TEST_CASE(testWeCanResolveSimpleFactsAndRules) {

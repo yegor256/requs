@@ -26,7 +26,7 @@ namespace solm {
 /**
  * Prolog-style rule
  */
-class Rule {
+class Rule : Object {
 
 public:
 
@@ -36,11 +36,6 @@ public:
     Rule(const std::string&);
 
 private:
-    
-    /**
-     * Name of the rule
-     */
-    std::string _name;
     
     /**
      * Collection of objects
