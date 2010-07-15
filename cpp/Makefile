@@ -22,12 +22,6 @@ CPP = c++
 BISON = bison
 FLEX = flex
 SVN = /usr/local/bin/svn
-CPPFLAGS = -fPIC -g -I$(INCLUDE) \
-	-I./library $(shell xml2-config --cflags) \
-	-DBOOST_TEST_DYN_LINK \
-	-D RQDQL_VERSION="\"$(VERSION)$(shell $(SVN) info | grep "Revision:" | sed "s/Revision: /r/g")\""
-LDFLAGS = $(shell xml2-config --libs)
-
 EXEC = rqdql
 INCLUDE = include
 TESTS = test
@@ -35,24 +29,31 @@ BUILD = build
 DEPENDS = $(BUILD)/dependencies.mk
 LIBS = library/boost-libs library/pugixml
 TEST_RUNNER = $(BUILD)/test-runner
+GENERATED = $(BUILD)/generated
 
-SYMBOLS = $(INCLUDE)/Scanner/symbols.h
-FLEX_SRC = $(INCLUDE)/Scanner/rqdql.l
-FLEX_DEST = $(INCLUDE)/Scanner/rqdql.l.c
-BISON_SRC = $(INCLUDE)/Scanner/rqdql.y
-BISON_DEST = $(INCLUDE)/Scanner/rqdql.y.c
+CPPFLAGS = -fPIC -g -I$(INCLUDE) \
+	-I./library $(shell xml2-config --cflags) \
+	-D BOOST_TEST_DYN_LINK \
+	-D RQDQL_GENERATED_DIR=$(GENERATED) \
+	-D RQDQL_VERSION="\"$(VERSION)$(shell $(SVN) info | grep "Revision:" | sed "s/Revision: /r/g")\""
+LDFLAGS = $(shell xml2-config --libs)
 
-MAIN_SOURCES = $(shell find $(INCLUDE) -name "*.cpp")
-TEST_SOURCES = $(shell find $(TESTS) -name "*.cpp")
-LIB_SOURCES = $(shell find $(LIBS) -name "*.cpp")
+FLEX_SRC = $(shell find $(INCLUDE) -name "*.l")
+FLEX_DEST = $(FLEX_SRC:%.l=$(GENERATED)/%.l.c)
+BISON_SRC = $(shell find $(INCLUDE) -name "*.y")
+BISON_DEST = $(BISON_SRC:%.y=$(GENERATED)/%.y.c)
+
+MAIN_SRC = $(shell find $(INCLUDE) -name "*.cpp")
+TEST_SRC = $(shell find $(TESTS) -name "*.cpp")
+LIB_SRC = $(shell find $(LIBS) -name "*.cpp")
 SOURCES = rqdql.cpp
-SOURCES += $(MAIN_SOURCES)
-SOURCES += $(TEST_SOURCES)
-SOURCES += $(LIB_SOURCES)
+SOURCES += $(MAIN_SRC)
+SOURCES += $(TEST_SRC)
+SOURCES += $(LIB_SRC)
 
-MAIN_OBJS = $(MAIN_SOURCES:%.cpp=$(BUILD)/%.o)
-TEST_OBJS = $(TEST_SOURCES:%.cpp=$(BUILD)/%.o)
-LIB_OBJS = $(LIB_SOURCES:%.cpp=$(BUILD)/%.o)
+MAIN_OBJS = $(MAIN_SRC:%.cpp=$(BUILD)/%.o)
+TEST_OBJS = $(TEST_SRC:%.cpp=$(BUILD)/%.o)
+LIB_OBJS = $(LIB_SRC:%.cpp=$(BUILD)/%.o)
 OBJS = $(MAIN_OBJS)
 OBJS += $(TEST_OBJS)
 OBJS += $(LIB_OBJS)
@@ -67,12 +68,12 @@ OBJS += $(LIB_OBJS)
 all: $(DEPENDS) test $(EXEC) 
 
 # build dependencies
-$(DEPENDS): $(BISON_DEST) $(FLEX_DEST) $(MAIN_SOURCES)
-	$(CPP) $(CPPFLAGS) -M $(MAIN_SOURCES) $(BISON_DEST) $(FLEX_DEST) > $(DEPENDS)	
+$(DEPENDS): $(BISON_DEST) $(FLEX_DEST) $(SOURCES)
+	$(CPP) $(CPPFLAGS) -M $(MAIN_SRC) $(BISON_DEST) $(FLEX_DEST) > $(DEPENDS)	
 	
 -include $(DEPENDS)
 
-$(BUILD)/%.o: %.cpp
+$(BUILD)/%.o: %.cpp $(FLEX_DEST) $(BISON_DEST)
 	mkdir -p $(dir $@)
 	$(CPP) $(CPPFLAGS) -o $@ -c $<
 
@@ -80,13 +81,12 @@ $(BUILD)/%.o: %.cpp
 $(EXEC): $(OBJS) $(BUILD)/rqdql.o
 	$(CPP) $(LDFLAGS) -o $(EXEC) $(BUILD)/rqdql.o $(MAIN_OBJS) $(LIB_OBJS)
 
-$(SYMBOLS): $(FLEX_DEST) $(BISON_DEST)
+%.l.c: %.l
+	$(FLEX) -o$@ $<
 
-$(FLEX_DEST): $(FLEX_SRC)
-	$(FLEX) -o$(FLEX_DEST) $(FLEX_SRC)
-
-$(BISON_DEST): $(BISON_SRC) $(FLEX_DEST)
-	$(BISON) --no-lines --report=all --defines=$(SYMBOLS) --output=$(BISON_DEST) $(BISON_SRC)
+%.y.c: %.y
+	mkdir -p $(dir $(GENERATED)/$@)
+	$(BISON) --no-lines --report=none --defines=$(GENERATED)/$@-symbols.h --output=$@ $<
 
 # test everything
 test: $(TEST_RUNNER)
@@ -98,11 +98,5 @@ $(TEST_RUNNER): $(OBJS)
 # clean everything!
 clean:
 	rm -rf \
-	$(BISON_DEST) \
-	$(INCLUDE)/Scanner/rqdql.y.output \
-	$(FLEX_DEST) \
 	$(EXEC) \
-	$(BUILD)/* \
-	$(OBJS) \
-	$(DEPENDS) \
-	$(SYMBOLS)
+	$(BUILD)/*

@@ -11,17 +11,29 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Data.h 2308 2010-07-14 12:25:35Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
-#include <string>
-#include <vector>
-#include "Solm/Term.h"
-#include "RQDQL_GENERATED_DIR/Solm/Term/term.y.c"
-#include "RQDQL_GENERATED_DIR/Solm/Term/term.l.c"
-#include "RQDQL_GENERATED_DIR/Solm/Term/term.y.c-symbols.h"
+%{
+	#include <boost/format.hpp>
+    #include <vector>
+    #include "Solm/Term.h"
+	using boost::format;
+%}
 
-solm::Term::Term(const std::string&) {
-    yy_switch_to_buffer(yy_scan_string(s.c_str()));
-    yyparse();
-}
+%option prefix="term"
+%option noyywrap
+
+SPACE ([ \t\r\n]+)
+ATOM ([0-9]+(\.[0-9]+)*)
+
+%%
+
+    /* find entities */
+{ATOM} { yylval.str = yytext); return ATOM; }
+{UC} { yySet(yylval.name, yytext); log(format("UC: '%s'") % yytext); return UC; }
+{CAMEL} { yySet(yylval.name, yytext); log(format("CAMEL: '%s'") % yytext); return CAMEL; }
+
+. { yyerror("Unknown symbol \"%c\"", yytext[0]); }
+
+%%

@@ -11,17 +11,23 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Data.h 2308 2010-07-14 12:25:35Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
-#include <string>
-#include <vector>
-#include "Solm/Term.h"
-#include "RQDQL_GENERATED_DIR/Solm/Term/term.y.c"
-#include "RQDQL_GENERATED_DIR/Solm/Term/term.l.c"
-#include "RQDQL_GENERATED_DIR/Solm/Term/term.y.c-symbols.h"
+%{
+    #include <string>
+    #include <vector>
+    #include <boost/format.hpp>
+    #include "Solm/Term.h"
+%}
 
-solm::Term::Term(const std::string&) {
-    yy_switch_to_buffer(yy_scan_string(s.c_str()));
-    yyparse();
-}
+%name-prefix "term"
+
+%type <str> words
+
+%%
+
+    
+%%
+
+// see Solm/Term.cpp

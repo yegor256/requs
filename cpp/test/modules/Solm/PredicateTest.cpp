@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(testSimplePredicateCanBeResolved) {
 
     // here we assume that Data has the following rules/facts:
     // value_of(x, 5)
-    Answer a = d.question(Rule("value_of(x, V)"));
+    Answer a = d.question(Term("value_of(x, V)."));
 
     // the value of V should be 5!
     BOOST_REQUIRE(a);

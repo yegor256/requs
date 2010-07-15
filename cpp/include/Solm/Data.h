@@ -20,7 +20,7 @@
 #include <string>
 #include <vector>
 #include "Solm/Chain.h"
-#include "Solm/Rule.h"
+#include "Solm/Term.h"
 #include "Solm/Answer.h"
 
 namespace solm {

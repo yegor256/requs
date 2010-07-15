@@ -14,33 +14,32 @@
  * @version $Id: Data.h 2308 2010-07-14 12:25:35Z yegor256@yahoo.com $
  */
 
-#ifndef __INCLUDE_SOLM_RULE_H
-#define __INCLUDE_SOLM_RULE_H
+#ifndef __INCLUDE_SOLM_TERM_H
+#define __INCLUDE_SOLM_TERM_H
 
 #include <string>
 #include <vector>
-#include "Solm/Object.h"
 
 namespace solm {
 
 /**
- * Prolog-style rule
+ * Prolog-style term
  */
-class Rule : Object {
+class Term {
 
 public:
 
     /**
      * Public constructor
      */
-    Rule(const std::string&);
+    Term(const std::string&);
 
 private:
     
     /**
-     * Collection of objects
+     * Collection of terms
      */
-    std::vector<Object> _objects;
+    std::vector<Term> _terms;
     
 };
 
