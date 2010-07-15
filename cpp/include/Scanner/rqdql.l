@@ -15,8 +15,9 @@
  */
 
 %{
+	#include <string>
+	#include <boost/format.hpp>
     #include "rqdql.h"
-    #include "Scanner/supplementary.h"
 	using boost::format;
 %}
 

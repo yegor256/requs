@@ -19,22 +19,6 @@
 
 #include <string>
 
-typedef union {
-    std::string* name;
-    int num;
-    void* ptr;
-} YYSTYPE;
-
-// bison/flex file
-// this define will protect us against BISON default YYSTYPE
-#define YYSTYPE_IS_DECLARED 1
-#define YYSTYPE_IS_TRIVIAL 1
-#include "Scanner/symbols.h"
-
-extern int yyparse();
-extern int yylex(void);
-extern int yylineno;
-
 namespace rqdql {
 
 /**

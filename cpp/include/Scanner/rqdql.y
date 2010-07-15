@@ -22,8 +22,6 @@
     #include <vector>
     #include <boost/format.hpp>
     #include "rqdql.h"
-    #include "Scanner/symbols.h"
-    #include "Scanner/supplementary.h"
 
     #include "Proxy.h"
     #include "Proxy/Type.h"

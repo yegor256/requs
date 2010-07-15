@@ -21,12 +21,13 @@
     #include "Solm/Term.h"
 %}
 
-%name-prefix "term"
+%name-prefix="term"
 
-%type <str> words
+%token ATOM
 
 %%
 
+srs : ATOM;
     
 %%
 

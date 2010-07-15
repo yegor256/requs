@@ -19,7 +19,7 @@
 #include "Solm/Predicate.h"
 #include "Solm/Chain.h"
 #include "Solm/Data.h"
-#include "Solm/Rule.h"
+#include "Solm/Term.h"
 using namespace solm;
 
 BOOST_AUTO_TEST_SUITE(PredicateTest)

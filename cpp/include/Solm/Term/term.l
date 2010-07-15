@@ -31,8 +31,6 @@ ATOM ([0-9]+(\.[0-9]+)*)
 
     /* find entities */
 {ATOM} { yylval.str = yytext); return ATOM; }
-{UC} { yySet(yylval.name, yytext); log(format("UC: '%s'") % yytext); return UC; }
-{CAMEL} { yySet(yylval.name, yytext); log(format("CAMEL: '%s'") % yytext); return CAMEL; }
 
 . { yyerror("Unknown symbol \"%c\"", yytext[0]); }
 

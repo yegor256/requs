@@ -16,6 +16,7 @@
 
 VERSION = 0.2
 
+.DEFAULT_GOAL := all
 MAKEFLAGS = -r
 PATH := $(PATH):/usr/local/bin:/usr/bin
 CPP = c++
@@ -26,15 +27,17 @@ EXEC = rqdql
 INCLUDE = include
 TESTS = test
 BUILD = build
-DEPENDS = $(BUILD)/dependencies.mk
+DEPENDS = $(BUILD)/dependencies
 LIBS = library/boost-libs library/pugixml
 TEST_RUNNER = $(BUILD)/test-runner
 GENERATED = $(BUILD)/generated
 
-CPPFLAGS = -fPIC -g -I$(INCLUDE) \
-	-I./library $(shell xml2-config --cflags) \
+CPPFLAGS = -fPIC -g \
+	-I $(INCLUDE) \
+	-I ./library \
+	$(shell xml2-config --cflags) \
 	-D BOOST_TEST_DYN_LINK \
-	-D RQDQL_GENERATED_DIR=$(GENERATED) \
+	-I $(GENERATED)/$(INCLUDE) \
 	-D RQDQL_VERSION="\"$(VERSION)$(shell $(SVN) info | grep "Revision:" | sed "s/Revision: /r/g")\""
 LDFLAGS = $(shell xml2-config --libs)
 
@@ -43,50 +46,49 @@ FLEX_DEST = $(FLEX_SRC:%.l=$(GENERATED)/%.l.c)
 BISON_SRC = $(shell find $(INCLUDE) -name "*.y")
 BISON_DEST = $(BISON_SRC:%.y=$(GENERATED)/%.y.c)
 
+GENERATED_SRC = $(FLEX_DEST) $(BISON_DEST)
+
 MAIN_SRC = $(shell find $(INCLUDE) -name "*.cpp")
 TEST_SRC = $(shell find $(TESTS) -name "*.cpp")
 LIB_SRC = $(shell find $(LIBS) -name "*.cpp")
-SOURCES = rqdql.cpp
-SOURCES += $(MAIN_SRC)
-SOURCES += $(TEST_SRC)
-SOURCES += $(LIB_SRC)
+SOURCES = rqdql.cpp $(MAIN_SRC) $(TEST_SRC) $(LIB_SRC)
 
 MAIN_OBJS = $(MAIN_SRC:%.cpp=$(BUILD)/%.o)
 TEST_OBJS = $(TEST_SRC:%.cpp=$(BUILD)/%.o)
 LIB_OBJS = $(LIB_SRC:%.cpp=$(BUILD)/%.o)
-OBJS = $(MAIN_OBJS)
-OBJS += $(TEST_OBJS)
-OBJS += $(LIB_OBJS)
-
-# disable implicit rules
-%.o: %.cpp
+OBJS = $(MAIN_OBJS) $(TEST_OBJS) $(LIB_OBJS)
 
 # instruct Make NOT to remove intermediate files
 .SECONDARY:
 
 # compile the product and run all tests
-all: $(DEPENDS) test $(EXEC) 
+all: test $(EXEC) 
 
 # build dependencies
-$(DEPENDS): $(BISON_DEST) $(FLEX_DEST) $(SOURCES)
-	$(CPP) $(CPPFLAGS) -M $(MAIN_SRC) $(BISON_DEST) $(FLEX_DEST) > $(DEPENDS)	
-	
--include $(DEPENDS)
+$(DEPENDS)/%.d: %.cpp $(GENERATED_SRC)
+	@set -e; rm -f $@; \
+	mkdir -p $(dir $@); \
+	$(CC) -MM $(CPPFLAGS) $< > $@.$$$$; \
+	sed 's,\(.*\.o\)[ :]*,$(patsubst %.d,%.o,$@) $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$
 
-$(BUILD)/%.o: %.cpp $(FLEX_DEST) $(BISON_DEST)
-	mkdir -p $(dir $@)
+-include $(MAIN_SRC:%.cpp=$(DEPENDS)/%.d)
+
+$(BUILD)/%.o: %.cpp
+	@mkdir -p $(dir $@)
 	$(CPP) $(CPPFLAGS) -o $@ -c $<
 
 # compile/build the product
 $(EXEC): $(OBJS) $(BUILD)/rqdql.o
 	$(CPP) $(LDFLAGS) -o $(EXEC) $(BUILD)/rqdql.o $(MAIN_OBJS) $(LIB_OBJS)
 
-%.l.c: %.l
+$(GENERATED)/%.l.c: %.l
+	@mkdir -p $(dir $@)
 	$(FLEX) -o$@ $<
 
-%.y.c: %.y
-	mkdir -p $(dir $(GENERATED)/$@)
-	$(BISON) --no-lines --report=none --defines=$(GENERATED)/$@-symbols.h --output=$@ $<
+$(GENERATED)/%.y.c: %.y
+	@mkdir -p $(dir $@)
+	$(BISON) --no-lines --report=none --defines=$@-symbols.h --output=$@ $<
 
 # test everything
 test: $(TEST_RUNNER)
@@ -96,7 +98,8 @@ $(TEST_RUNNER): $(OBJS)
 	$(CPP) $(LDFLAGS) -o $(TEST_RUNNER) $(OBJS)
 
 # clean everything!
+.PHONY: clean
 clean:
-	rm -rf \
+	-rm -rf \
 	$(EXEC) \
 	$(BUILD)/*

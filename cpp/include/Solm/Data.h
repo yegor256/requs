@@ -45,7 +45,7 @@ public:
     /**
      * Add new rule to it
      */
-    Data& operator+=(const Rule& r) { _facts.push_back(r); return *this; }
+    Data& operator+=(const Term& r) { _facts.push_back(r); return *this; }
 
     /**
      * Add new alternative Data block
@@ -56,14 +56,14 @@ public:
      * Make a prolog-styled question, providing a simple rule
      * and get an answer.
      */
-    const Answer question(const Rule&);
+    const Answer question(const Term&);
 
 private:
     
     /**
      * Collection of rules
      */
-    std::vector<Rule> _facts;
+    std::vector<Term> _facts;
     
     /**
      * Alternative clauses

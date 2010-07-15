@@ -17,11 +17,11 @@
 #include <string>
 #include <vector>
 #include "Solm/Term.h"
-#include "RQDQL_GENERATED_DIR/Solm/Term/term.y.c"
-#include "RQDQL_GENERATED_DIR/Solm/Term/term.l.c"
-#include "RQDQL_GENERATED_DIR/Solm/Term/term.y.c-symbols.h"
+//#include "RQDQL_GENERATED_DIR/Solm/Term/term.y.c"
+//#include "RQDQL_GENERATED_DIR/Solm/Term/term.l.c"
+//#include "RQDQL_GENERATED_DIR/Solm/Term/term.y.c-symbols.h"
 
-solm::Term::Term(const std::string&) {
-    yy_switch_to_buffer(yy_scan_string(s.c_str()));
-    yyparse();
+solm::Term::Term(const std::string& s) {
+    term_switch_to_buffer(term_scan_string(s.c_str()));
+    termparse();
 }
