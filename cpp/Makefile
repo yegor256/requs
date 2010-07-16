@@ -72,7 +72,7 @@ $(DEPENDS)/%.d: %.cpp $(GENERATED_SRC)
 	sed 's,\(.*\.o\)[ :]*,$(patsubst %.cpp,$(BUILD)/%.o,$<) $@ : ,g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$
 
--include $(MAIN_SRC:%.cpp=$(DEPENDS)/%.d)
+-include $(MAIN_SRC:%.cpp=$(DEPENDS)/%.d) $(TEST_SRC:%.cpp=$(DEPENDS)/%.d)
 
 $(BUILD)/%.o: %.cpp
 	@mkdir -p $(dir $@)

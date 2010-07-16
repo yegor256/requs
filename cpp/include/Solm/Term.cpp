@@ -114,10 +114,6 @@ bool solm::Term::operator==(const solm::Term& t) const {
 
 bool solm::Term::is(solm::Term::Kind k) const {
     switch (k) {
-        case T_RULE:
-            return variables().size();
-        case T_FACT:
-            return is(T_OBJECT) && _terms.size() && !variables().size();
         case T_ATOM:
             return (is(T_OBJECT) || is(T_VARIABLE) || is(T_NUMBER) || is(T_TEXT)) && !_terms.size();
         case T_NUMBER:
@@ -132,142 +128,29 @@ bool solm::Term::is(solm::Term::Kind k) const {
             return _value == "false";
         case T_TRUE:
             return _value == "true";
-        case T_CONJUNCTOR:
-            return _value == ",";
-        case T_OPERATOR:
-            return boost::regex_match(_value, boost::regex("[,:/\\\\\\*\\-\\?\\+\\$\\&<>=]+|is"));
         default:
             return false;
     }
 }
 
 solm::Term::operator string() const {
+    if (!_terms.size()) {
+        return _value;
+    }
+    
     std::vector<string> v;
     for (std::vector<Term>::const_iterator i = _terms.begin(); i != _terms.end(); ++i) {
         v.push_back((string)(*i));
     }
-
-    string s;
-    if (is(T_OPERATOR)) {
-        s = boost::algorithm::join(v, (is(T_CONJUNCTOR) ? "" : " ") + _value + " ");
-    } else {
-        s = _value;
-        if (v.size()) {
-            s += "(" + boost::algorithm::join(v, ", ") + ")";
-        }
-    }
-    return s;
+    return "(" + _value + " " + boost::algorithm::join(v, " ") + ")";
 }
 
-solm::Term::operator bool() const {
-    if (is(T_FALSE)) {
-        return false;
-    }
-    for (Terms::const_iterator i = _terms.begin(); i != _terms.end(); ++i) {
-        if (!(*i)) {
-            return false;
-        }
-    }
-    return true;
+const solm::Term solm::Term::operator*(const solm::Term& t) {
+    return Term();
 }
 
-const solm::Term::Terms solm::Term::variables() const {
-    Terms v;
-    if (is(T_VARIABLE)) {
-        v.push_back(*this);
-    } else {
-        for (Terms::const_iterator i = _terms.begin(); i != _terms.end(); ++i) {
-            Terms subs = (*i).variables();
-            for (Terms::const_iterator j = subs.begin(); j != subs.end(); ++j) {
-                v.push_back(*j);
-            }
-        }
-    }
-    return v;
-}
-
-const solm::Term solm::Term::operator/(const solm::Term& t) {
-    /**
-     * This implementation is very primitive as it is now. It resolves
-     * only very basic and simple queries. We should replace it with 
-     * proper integratio with PROLOG.
-     */
-     
-    std::vector<string> v;
-
-    /**
-     * This is a conjunctor of other terms.
-     */
-    if (is(T_CONJUNCTOR)) {
-        for (Terms::const_iterator i = _terms.begin(); i != _terms.end(); ++i) {
-            Term sub = (Term)(*i) / t;
-            if (sub) {
-                v.push_back((string)sub);
-            }
-        }
-    }
-    
-    /**
-     * This term is a "mirror" of the requested one. We will just try
-     * to find variables inside it.
-     */
-    if (is(T_FACT) && (_value == t._value) && (_terms.size() == t._terms.size())) {
-        Terms::const_iterator j = t._terms.begin();
-        for (Terms::const_iterator i = _terms.begin(); i != _terms.end(); ++i) {
-            if ((*i).is(T_ATOM) && (*j).is(T_VARIABLE)) {
-                v.push_back((string)(*j) + " = " + (string)(*i));
-            }
-            ++j;
-        }
-    }
-
-    if (v.size()) {
-        return Term(boost::algorithm::join(v, ", ") + ".");
-    }
-
-    return Term("false.");
-}
-
-solm::Term::Term(const string& v, const solm::Term::Terms& t) : _value(v), _terms() {
-    /**
-     * We add all received TERMS to this, one by one. And we should
-     * ignore COMMA-s, when we can go deeper inside and straight them
-     * into one line.
-     */
-    for (Terms::const_iterator i = t.begin(); i != t.end(); ++i) {
-        if ((*i).is(T_CONJUNCTOR)) {
-            for (Terms::const_iterator j = (*i)._terms.begin(); j != (*i)._terms.end(); ++j) {
-                _terms.push_back(*j);
-            }
-        } else {
-            _terms.push_back(*i);
-        }
-    }
-    
-    /**
-     * Now we need to clean the list of terms and remove duplicated
-     * TERMs.
-     */
-    _terms.resize(unique(_terms.begin(), _terms.end()) - _terms.begin());
-    
-    /**
-     * If the list has more than one element, every TRUE term should
-     * be removed from the list
-     */
-    if (_terms.size() > 1) {
-        _terms.resize(remove(_terms.begin(), _terms.end(), Term()) - _terms.begin());
-    }
-    
-    /**
-     * If it's just COMMA and there is only one argument, we should
-     * simplify the term, and remove this COMMA. For example:
-     * ,(alpha) => alpha or ,(king(france)) => king(france)
-     */
-    if (is(T_CONJUNCTOR) && (_terms.size() == 1)) {
-        _value = _terms.at(0)._value;
-        Terms t = _terms.at(0)._terms;
-        _terms = t;
-    }
+solm::Term::Term(const string& v, const solm::Term::Terms& t) : _value(v), _terms(t) {
+    /* that's it */
 }
 
 void termerror(const char* s, ...) {

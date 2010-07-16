@@ -36,12 +36,6 @@ void testTerm(const string& t) {
     if (term.is(Term::T_NUMBER)) {
         flags.push_back("N");
     }
-    if (term.is(Term::T_RULE)) {
-        flags.push_back("R");
-    }
-    if (term.is(Term::T_FACT)) {
-        flags.push_back("F");
-    }
     if (term.is(Term::T_VARIABLE)) {
         flags.push_back("V");
     }
@@ -56,19 +50,13 @@ void testTerm(const string& t) {
 
 BOOST_AUTO_TEST_SUITE(TermTest)
 
-BOOST_AUTO_TEST_CASE(testEmptyTermWorksFine) {
-    Term t;
-    BOOST_REQUIRE((bool)t); // it's TRUE by default
-}
-
 BOOST_AUTO_TEST_CASE(testInvalidFormatsRaiseExceptions) {
-    BOOST_CHECK_THROW(testTerm("true"), std::exception); // DOT missed
-    BOOST_CHECK_THROW(testTerm("123true."), std::exception); // invalid name of the object
-    BOOST_CHECK_THROW(testTerm("-Aksel."), std::exception); // invalid name
+    BOOST_CHECK_THROW(testTerm("123true"), std::exception); // invalid name of the object
+    BOOST_CHECK_THROW(testTerm("-Aksel"), std::exception); // invalid name
 
     // now let's make sure that we can successfuly parse terms
     // after the problems happened before
-    testTerm("like(klaus, beer)."); 
+    testTerm("(like Klaus beer)"); 
 }
 
 BOOST_AUTO_TEST_CASE(testDifferentFormatsAreOK) {
@@ -80,11 +68,11 @@ BOOST_AUTO_TEST_CASE(testDifferentFormatsAreOK) {
     testTerm("\"this is text\"");
     
     // simple facts
-    testTerm("(father_of john mary)");
-    testTerm("(age_of smith 45)");
-    testTerm("(child_of emily (parents alex, alice))");
-    testTerm("(and (mistique_character king 'Persia') (king \"Arthur\"))");
-    testTerm("(in_class john mary_smith peter alex_Wilson_3rd)");
+    testTerm("(fatherOf john mary)");
+    testTerm("(ageOf smith 45)");
+    testTerm("(childOf emily (parents alex alice))");
+    testTerm("(and (mistiqueCharacter king \"Persia\") (king \"Arthur\"))");
+    testTerm("(inClass john marySmith peter AlexWilson)");
     testTerm("(and (eq a 1) (eq b 2))");
 }
 

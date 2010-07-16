@@ -42,16 +42,12 @@ public:
     
     typedef enum {
         T_ATOM,
-        T_RULE,
-        T_FACT,
         T_NUMBER,
         T_TEXT,
         T_VARIABLE,
         T_OBJECT,
         T_FALSE,
-        T_TRUE,
-        T_CONJUNCTOR,
-        T_OPERATOR
+        T_TRUE
     } Kind;
 
     /**
@@ -75,22 +71,12 @@ public:
     operator std::string() const;
     
     /**
-     * Convert this term to boolean. TRUE means that this term contains
-     * some valuable information. FALSE means that the term is just FALSE,
-     * meaning "no knowledge at all".
+     * Resolve this TERM in terms of a new term. This operation
+     * is the main action we perform with the TERM. We resove it,
+     * in order to predict possible future behavior of logical
+     * functions and predicates.
      */
-    operator bool() const;
-    
-    /**
-     * Get full list of variables
-     */
-    const Terms variables() const;
-
-    /**
-     * Make a prolog-styled question, providing a simple rule
-     * and get an answer.
-     */
-    const Term operator/(const Term&);
+    const Term operator*(const Term&);
 
 private:
     
@@ -102,7 +88,7 @@ private:
     /**
      * Collection of terms
      */
-    std::vector<Term> _terms;
+    Terms _terms;
     
     /**
      * Private constructor, that creates an object with the name and terms.
