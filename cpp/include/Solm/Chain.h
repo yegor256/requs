@@ -28,7 +28,7 @@ namespace solm {
  * another. Every snapshot will have a number of alternatives. Together
  * they constitute a tree-like structure.
  */
-class Chain : public std::map<Term, Chain> {
+class Chain : private std::map<Term, Chain> {
 
 public:
 
@@ -50,11 +50,24 @@ public:
     operator Term() const;
 
     /**
-     * We extend the list of alternatives for the chain.
+     * To extend the list of alternatives for the chain. If this chain
+     * already have a positive outcome, an exception will be thrown.
      */
     Chain& operator<<(const Term&);
 
+    /**
+     * To add a new Term to the first positive Term of the chain. If such
+     * a positive Term is absent an exception will be thrown.
+     */
+    Chain& operator+=(const Term&);
+
 private:
+
+    /**
+     * Find and return a reference to a final pair in this chain. The
+     * pair contains a positive Term and an empty Chain.
+     */
+    std::pair<Term, Chain>& finalPair();
 
 };
 

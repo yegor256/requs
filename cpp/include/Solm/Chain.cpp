@@ -15,9 +15,7 @@
  */
 
 #include <string>
-#include <vector>
-#include <boost/algorithm/string/replace.hpp>
-#include <boost/algorithm/string/join.hpp>
+#include <map>
 #include "Solm/Chain.h"
 #include "Solm/Term.h"
 #include "rqdql.h"
@@ -37,17 +35,34 @@ solm::Chain::operator bool() const {
 }
 
 solm::Chain::operator solm::Term() const {
-    if (!*this) {
-        throw rqdql::Exception(
-            boost::format("Chain (%d terms) is negative, we can't convert it to TERM") % size()
-        );
-    }
-    // stub
-    return Term();
+    return Term(finalPair().first);
 }
 
 solm::Chain& solm::Chain::operator<<(const solm::Term& s) {
+    if (*this && s) {
+        throw rqdql::Exception(
+            boost::format("Chain (%d terms) is positive, you can't add a positive TERM '%s' to it") % size() % s
+        );
+    }
     operator[](s); // create a new term there
     return *this;
 }
 
+solm::Chain& solm::Chain::operator+=(const solm::Term& s) {
+    (Term)(*this)
+    return *this;
+}
+
+pair<solm::Term, solm::Chain>& solm::Chain::finalPair() {
+    if (!*this) {
+        throw rqdql::Exception(
+            boost::format("Chain (%d terms) is negative, we can't get finalPair()") % size()
+        );
+    }
+    for (const_iterator s = begin(); s != end(); ++s) {
+        if ((*s).first && !(*s).second.size()) {
+            return *s;
+        }
+        if ()
+    }
+}
