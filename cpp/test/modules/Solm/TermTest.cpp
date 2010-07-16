@@ -22,8 +22,13 @@
 using namespace solm;
 using std::string;
 
-void testTerm(const string& t) {
+void testTerm(const string& t, const string& image = "") {
     Term term = Term(t);
+    
+    if (!image.empty()) {
+        BOOST_CHECK_EQUAL(image, (string)term);
+    }
+    
     std::vector<string> flags;
     if (term.is(Term::T_ATOM)) {
         flags.push_back("A");
@@ -71,29 +76,31 @@ BOOST_AUTO_TEST_CASE(testInvalidFormatsRaiseExceptions) {
 
 BOOST_AUTO_TEST_CASE(testDifferentFormatsAreOK) {
     // simple objects and atoms
-    testTerm("true.");
-    testTerm("mary.");
-    testTerm("victor, peter, 44, 'works?'.");
+    testTerm("true.", "true");
+    testTerm("mary.", "mary");
+    testTerm("victor, peter, 44, 'works?'.", "victor, peter, 44, 'works?'");
     testTerm("45.890.");
     testTerm("'this is text'.");
     
     // simple facts
     testTerm("father_of(john, mary).");
-    testTerm("age_of(smith, 45), true.");
+    testTerm("age_of(smith, 45), true.", "age_of(smith, 45)");
     testTerm("child_of(emily, parents(alex, alice)).");
     testTerm("mistique_character(king, 'Persia'), king('Arthur').");
     testTerm("in_class(john, mary_smith, peter, alex_Wilson_3rd).");
+    testTerm("a = 1, b = 2."/*, "a = 1, b = 2"*/);
+    testTerm("a(b < 4, c =\\= 'test', mary(1, 2))."/*, "a(b < 4, c =\\= 'test', mary(1, 2))"*/);
     
     // specific formatting
     testTerm("child(X, Y) :- parent(Y, X)."); // rule definition
     testTerm("P < 67."); // number of P is less than 67
     testTerm("P is 67."); // P should be equal to 67
     testTerm("X = Y."); // X is the same as Y
-    testTerm("X =:= Y."); // X and Y stand for the same number/value
+    testTerm("X =:= Y.", "X =:= Y"); // X and Y stand for the same number/value
     testTerm("X =\\= Y."); // X and Y stand for the different values/numbers
     
     // simple questions
-    testTerm("parent(X, mary)."); // who is a parent of mary?
+    testTerm("parent(X, mary).", "parent(X, mary)"); // who is a parent of mary?
     testTerm("prince(X), X =\\= 'Arthur'."); // who is a prince and is not "Arthur"?
 }
 
@@ -109,12 +116,23 @@ BOOST_AUTO_TEST_CASE(testDoubleTrueIsIgnored) {
 
 BOOST_AUTO_TEST_CASE(testWeCanResolveSimpleFactsAndRules) {
     // here we add simple prolog-style facts
+    Term t("kid(john, mary).");
+    
+    // now we're asking for a list of X that satisfy this rule
+    Term a = t / Term("kid(john, X).");
+    
+    BOOST_REQUIRE((bool)a); // the term should be positive
+    // BOOST_REQUIRE_EQUAL("X = mary", (string)a);
+}
+
+BOOST_AUTO_TEST_CASE(testWeCanResolveMoreComplexRules) {
+    // here we add simple prolog-style facts
     Term t("kid(john, mary), kid(john, peter).");
     
     // now we're asking for a list of X that satisfy this rule
     Term a = t / Term("kid(john, X).");
     
-    // BOOST_REQUIRE((bool)a); // the term should be positive
+    BOOST_REQUIRE((bool)a); // the term should be positive
     // BOOST_REQUIRE_EQUAL("X = mary", (string)a);
 }
 

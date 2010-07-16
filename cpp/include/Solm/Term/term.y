@@ -21,6 +21,11 @@
     #include "Solm/Term.h"
     using solm::Term;
     using std::string;
+
+    /**
+     * This variable is defined in Term.cpp
+     */
+    extern solm::Term::Term* term_target;
 %}
 
 %union {
@@ -31,6 +36,7 @@
 %name-prefix="term"
 
 %token DOT
+%token <p> COMMA
 %token <p> OPEN_BRACE CLOSE_BRACE
 %token <p> OPERATOR
 %token <p> NUMBER
@@ -41,9 +47,10 @@
 %type <term> term
 %type <term> infixed
 %type <term> prefixed
+%type <p> op
 
 %left OPERATOR
-%nonassoc DOT
+%left COMMA
 
 %%
 
@@ -51,12 +58,6 @@ sentence:
     term DOT
         {
             /* the TERM is found, inject it into the destination */
-            
-            /**
-             * This variable is defined in Term.cpp
-             */
-            extern solm::Term::Term* term_target;
-            
             Term* term = static_cast<Term*>($1);
             *term_target = *term;
             delete term;
@@ -111,15 +112,16 @@ term: /* solm::Term* */
             /* do nothing, just copy pointers */
             $$ = $1;
         }
+    ;
+    
+op: /* std::string* */
+    OPERATOR
     |
-    error
-        {
-            termerror("invalid term");
-        }
+    COMMA
     ;
     
 infixed: /* solm::Term* */
-    term OPERATOR term
+    term op term
         {
             /* create new TERM from two other terms and operator */
             string* op = static_cast<string*>($2);

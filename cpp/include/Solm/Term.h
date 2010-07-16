@@ -48,7 +48,10 @@ public:
         T_TEXT,
         T_VARIABLE,
         T_OBJECT,
-        T_FALSE
+        T_FALSE,
+        T_TRUE,
+        T_CONJUNCTOR,
+        T_OPERATOR
     } Kind;
 
     /**

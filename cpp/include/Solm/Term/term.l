@@ -31,11 +31,12 @@ VARIABLE ([A-Z]({TAIL})*)
 OBJECT ([a-z_]({TAIL})*)
 NUMBER ([\-\+]?[0-9]+(\.[0-9]+)*)
 TEXT ('.*')
-OPERATOR ([,:/\\\*\-\?\+\$\&<>=]+|"is")
+OPERATOR (":-"|<|>|=|=\\=|=:=|"is")
 
 %%
 
 	/* find punctuation */
+"," { termlval.p = new string(termtext); return COMMA; }
 "(" { return OPEN_BRACE; }
 ")" { return CLOSE_BRACE; }
 "." { return DOT; }
