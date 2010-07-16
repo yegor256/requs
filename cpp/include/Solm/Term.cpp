@@ -19,6 +19,7 @@
 #include <boost/format.hpp>
 #include <boost/algorithm/string/join.hpp>
 #include <boost/regex.hpp>
+#include <boost/scope_exit.hpp>
 #include "Solm/Term.h"
 #include "rqdql.h"
 #include "rqdql/Exception.h"
@@ -50,16 +51,63 @@ solm::Term::Term* term_target;
 #include "Solm/Term/term.l.c"
 #include "Solm/Term/term.y.c"
 
-solm::Term::Term(const std::string& s) {
+solm::Term::Term(const std::string& s) : _terms() {
+    /**
+     * If nothing provided we assume that it's a simple term TRUE
+     * and we should skip all syntax analysis and processing.
+     */
+    if (s.empty()) {
+        _value = "true";
+        return;
+    }
+    
+    /**
+     * We can't start this function if the same function is already
+     * running. If we do this, we will break the BISON parser.
+     */
+    if (term_target) {
+        throw rqdql::Exception(
+            rqdql::_t("You can't start Term() from itself")
+        );
+    }
+    
+    /**
+     * This variable is used by the parser.
+     */
     term_target = this;
+
+    /**
+     * Drop this link to NULL once the execution is finished. We should
+     * execute this procedure in any case, no matter whether we finish this
+     * function with success or exception.
+     */
+    BOOST_SCOPE_EXIT( (&term_target) ) {
+        term_target = 0;
+    } BOOST_SCOPE_EXIT_END
+        
     try {
         term_switch_to_buffer(term_scan_string(s.c_str()));
         termparse();
-    } catch (...) {
+    } catch (std::string ex) {
+        /**
+         * This exception will be thrown by termerror(), see
+         * the end of this file. termparse() calls this termerror()
+         * function when it finds some problem in parsing.
+         */
         throw rqdql::Exception(
-            boost::format(rqdql::_t("Invalid term syntax: '%s'")) % s
+            boost::format(rqdql::_t("Invalid TERM '%s' (%s)")) % s % ex
         );
     }
+}
+
+bool solm::Term::operator==(const solm::Term& t) const {
+    if (_value != t._value) {
+        return false;
+    }
+    if (_terms.size() != t._terms.size()) {
+        return true;
+    }
+    return equal(_terms.begin(), _terms.end(), t._terms.begin());
 }
 
 bool solm::Term::is(solm::Term::Kind k) const {
@@ -129,6 +177,11 @@ const solm::Term solm::Term::operator/(const solm::Term&) {
 }
 
 solm::Term::Term(const std::string& v, const solm::Term::Terms& t) : _value(v), _terms() {
+    /**
+     * We add all received TERMS to this, one by one. And we should
+     * ignore COMMA-s, when we can go deeper inside and straight them
+     * into one line.
+     */
     for (Terms::const_iterator i = t.begin(); i != t.end(); ++i) {
         if ((*i)._value == ",") {
             for (Terms::const_iterator j = (*i)._terms.begin(); j != (*i)._terms.end(); ++j) {
@@ -138,8 +191,33 @@ solm::Term::Term(const std::string& v, const solm::Term::Terms& t) : _value(v), 
             _terms.push_back(*i);
         }
     }
+    
+    /**
+     * Now we need to clean the list of terms and remove duplicated
+     * TERMs.
+     */
+    _terms.resize(unique(_terms.begin(), _terms.end()) - _terms.begin());
+    
+    /**
+     * If the list has more than one element, every TRUE term should
+     * be removed from the list
+     */
+    if (_terms.size() > 1) {
+        _terms.resize(remove(_terms.begin(), _terms.end(), Term()) - _terms.begin());
+    }
+    
+    /**
+     * If it's just COMMA and there is only one argument, we should
+     * simplify the term, and remove this COMMA. For example:
+     * ,(alpha) => alpha or ,(king(france)) => king(france)
+     */
+    if ((_value == ",") && (_terms.size() == 1)) {
+        _value = _terms.at(0)._value;
+        Terms t = _terms.at(0)._terms;
+        _terms = t;
+    }
 }
 
-void termerror(const char*, ...) {
-    throw 0;
+void termerror(const char* s, ...) {
+    throw std::string(s);
 }

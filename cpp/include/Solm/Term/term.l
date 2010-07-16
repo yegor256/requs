@@ -48,6 +48,6 @@ OPERATOR ([,:/\\\*\-\?\+\$\&<>=]+|"is")
 {TEXT} { termlval.p = new string(termtext); return TEXT; }
 
 {SPACE} { /* ignore spaces */ }
-. { termerror("Unknown symbol"); }
+. { termerror("unknown symbol"); }
 
 %%

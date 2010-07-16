@@ -54,7 +54,12 @@ public:
     /**
      * Public constructor
      */
-    Term(const std::string&);
+    Term(const std::string& = "");
+
+    /**
+     * Compare this term with another one.
+     */
+    bool operator==(const Term&) const;
 
     /**
      * This term is of the type?

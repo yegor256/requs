@@ -38,59 +38,21 @@ public:
     Chain();
 
     /**
-     * Get the latest Data block in the chain
+     * This chain has a positive ending?
+     */
+    operator bool() const;
+
+    /**
+     * Get the latest Term in the chain, the latest positive. If such
+     * an ending is absent, we throw an exception here. You better first
+     * use operator bool() to check it.
      */
     operator Term() const;
 
     /**
-     * These two chains are equivalent? We will compare them snapshot
-     * by snapshot, and will use operator==() from snapshots.
-     */
-    bool operator==(const Chain&) const;
-
-    /**
-     * One chain is shorter than the other? We just compare their length
-     * as vectors and return the result, depending on who is the longest
-     */
-    bool operator<(const Chain&) const;
-
-    /**
-     * Append one chain to another, concatenating them vertically. We assume
-     * here that the chain is positive and can accept more snapshots. Every
-     * snapshot is either positive or negative, the same for a chain. If this
-     * chain is negative, it's not extendable any longer, and an exception
-     * will be thrown.
-     */
-    Chain operator+(const Chain&) const;
-
-    /**
-     * Concatenate them vertically, this is just a wrapper around operator+()
-     */
-    Chain& operator+=(const Chain& c) { return *this = *this + c; }
-
-    /**
-     * Concatenate them vertically. This method simply add new clauses
-     * to the end of the chain, but validates beforehand that this chain
-     * is positive.
-     */
-    Chain operator+(const Term&) const;
-
-    /**
-     * Concatenate them vertically, this is just a wrapper around operator+()
-     */
-    Chain& operator+=(const Term& s) { return *this = *this + s; }
-
-    /**
-     * We extend the list of alternatives for the last clauses in this
-     * chain. If the clauses is positive. If it's negative there will be
-     * an exception raised.
+     * We extend the list of alternatives for the chain.
      */
     Chain& operator<<(const Term&);
-
-    /**
-     * This chain has a positive ending?
-     */
-    operator bool() const;
 
 private:
 

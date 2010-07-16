@@ -111,6 +111,11 @@ term: /* solm::Term* */
             /* do nothing, just copy pointers */
             $$ = $1;
         }
+    |
+    error
+        {
+            termerror("invalid term");
+        }
     ;
     
 infixed: /* solm::Term* */

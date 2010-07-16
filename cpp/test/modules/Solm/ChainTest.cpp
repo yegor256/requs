@@ -23,21 +23,20 @@ BOOST_AUTO_TEST_SUITE(ChainTest)
 
 BOOST_AUTO_TEST_CASE(testEmptyChainIsPositive) {
     Chain c;
-    BOOST_CHECK((bool)c);
+    BOOST_REQUIRE((bool)c); // it has to be positive
 }
 
 BOOST_AUTO_TEST_CASE(testVerticalChainingWorks) {
     Chain c;
-    c += Term("123.");
-    c += Term("mary.");
+    c << Term("123.");
+    c << Term("false.");
     BOOST_CHECK_EQUAL(2, c.size());
-    BOOST_CHECK((bool)c); // still positive
+    BOOST_CHECK(!(bool)c); // it's negative
 }
 
 BOOST_AUTO_TEST_CASE(testHorizontalChainingWorks) {
     Chain c;
-    c += Term("father(peter, john).");
-    c << Term("sister(mary, aksel).");
+    c << Term("father(peter, john), sister(mary, aksel).");
     BOOST_CHECK_EQUAL(1, c.size());
     BOOST_CHECK((bool)c); // still positive
 }

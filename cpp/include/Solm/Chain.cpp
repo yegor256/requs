@@ -27,54 +27,6 @@ solm::Chain::Chain() : std::map<solm::Term, solm::Chain>() {
     /* that's it */
 }
 
-solm::Chain::operator solm::Term() const {
-    // stub
-    return solm::Term("false.");
-}
-
-bool solm::Chain::operator==(const solm::Chain& c) const {
-    return equal(begin(), end(), c.begin());
-}
-
-bool solm::Chain::operator<(const solm::Chain& c) const {
-    return size() < c.size();
-}
-
-solm::Chain solm::Chain::operator+(const solm::Chain& c) const {
-    if (!*this) {
-        throw rqdql::Exception(
-            boost::format("Chain (%d terms) is negative, we can't PLUS to it") % size()
-        );
-    }
-    Chain n = *this;
-    // later...
-    // for (const_iterator s = c.begin(); s != c.end(); ++s) {
-    //     n += *s;
-    // }
-    return n;
-}
-
-solm::Chain solm::Chain::operator+(const solm::Term& s) const {
-    if (!*this) {
-        throw rqdql::Exception(
-            boost::format("Chain (%d terms) is negative, we can't PLUS to it") % size()
-        );
-    }
-    Chain n = *this;
-    // n.push_back(s);
-    return n;
-}
-
-solm::Chain& solm::Chain::operator<<(const solm::Term& s) {
-    if (!*this) {
-        throw rqdql::Exception(
-            boost::format("Chain (%d snapshots) is negative, we can't << to it") % size()
-        );
-    }
-    // *(end() - 1) << s;
-    return *this;
-}
-
 solm::Chain::operator bool() const {
     for (const_iterator s = begin(); s != end(); ++s) {
         if (!((*s).first) || !((*s).second)) {
@@ -84,18 +36,18 @@ solm::Chain::operator bool() const {
     return true;
 }
 
-// solm::Chain::operator std::string() const {
-//     using namespace std;
-//     vector<string> lines;
-//     for (const_iterator s = begin(); s != end(); ++s) {
-//         lines.push_back(
-//             boost::algorithm::replace_all_copy(
-//                 (string)*s,
-//                 "\n",
-//                 "\t\n"
-//             )
-//         );
-//     }
-//     return boost::algorithm::join(lines, "\n");
-// }
+solm::Chain::operator solm::Term() const {
+    if (!*this) {
+        throw rqdql::Exception(
+            boost::format("Chain (%d terms) is negative, we can't convert it to TERM") % size()
+        );
+    }
+    // stub
+    return Term();
+}
+
+solm::Chain& solm::Chain::operator<<(const solm::Term& s) {
+    operator[](s); // create a new term there
+    return *this;
+}
 
