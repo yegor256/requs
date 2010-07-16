@@ -28,7 +28,7 @@ namespace solm {
 /**
  * Prolog-style set of clauses
  */
-class Data {
+class Data : public Term {
 
 public:
     
@@ -38,32 +38,11 @@ public:
     Data();
 
     /**
-     * The data block is positive?
-     */
-    operator bool() const { return true; }
-
-    /**
-     * Add new rule to it
-     */
-    Data& operator+=(const Term& r) { _facts.push_back(r); return *this; }
-
-    /**
      * Add new alternative Data block
      */
     Data& operator<<(const Data&);
     
-    /**
-     * Make a prolog-styled question, providing a simple rule
-     * and get an answer.
-     */
-    const Answer question(const Term&);
-
 private:
-    
-    /**
-     * Collection of rules
-     */
-    std::vector<Term> _facts;
     
     /**
      * Alternative clauses

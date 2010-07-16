@@ -47,7 +47,8 @@ public:
         T_NUMBER,
         T_TEXT,
         T_VARIABLE,
-        T_OBJECT
+        T_OBJECT,
+        T_FALSE
     } Kind;
 
     /**
@@ -66,9 +67,22 @@ public:
     operator std::string() const;
     
     /**
+     * Convert this term to boolean. TRUE means that this term contains
+     * some valuable information. FALSE means that the term is just FALSE,
+     * meaning "no knowledge at all".
+     */
+    operator bool() const;
+    
+    /**
      * Get full list of variables
      */
     const Terms variables() const;
+
+    /**
+     * Make a prolog-styled question, providing a simple rule
+     * and get an answer.
+     */
+    const Term operator/(const Term&);
 
 private:
     

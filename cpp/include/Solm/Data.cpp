@@ -21,6 +21,15 @@
 solm::Data::Data() {
 }
 
+solm::Data::operator bool() const { 
+    return ; 
+}
+
+solm::Data& solm::Data::operator+=(const solm::Data::Term& r) { 
+    _facts.push_back(r); 
+    return *this; 
+}
+
 solm::Data& solm::Data::operator<<(const solm::Data&) {
     return *this;
 }

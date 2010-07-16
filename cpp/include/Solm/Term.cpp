@@ -78,6 +78,8 @@ bool solm::Term::is(solm::Term::Kind k) const {
             return boost::regex_match(_value, boost::regex("[a-z_][a-zA-Z0-9_]*"));
         case T_VARIABLE:
             return boost::regex_match(_value, boost::regex("[A-Z][a-zA-Z0-9_]*"));
+        case T_FALSE:
+            return _value == "false";
         default:
             return false;
     }
@@ -93,6 +95,10 @@ solm::Term::operator std::string() const {
         s += "(" + boost::algorithm::join(v, ", ") + ")";
     }
     return s;
+}
+
+solm::Term::operator bool() const {
+    return !is(T_FALSE);
 }
 
 const solm::Term::Terms solm::Term::variables() const {

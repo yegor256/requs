@@ -57,6 +57,7 @@ BOOST_AUTO_TEST_SUITE(TermTest)
 BOOST_AUTO_TEST_CASE(testDifferentFormatsAreOK) {
     // simple objects and atoms
     testTerm("mary.");
+    testTerm("victor, peter, 44, 'works?'.");
     testTerm("45.890.");
     testTerm("'this is text'.");
     
@@ -78,6 +79,17 @@ BOOST_AUTO_TEST_CASE(testDifferentFormatsAreOK) {
     // simple questions
     testTerm("parent(X, mary)."); // who is a parent of mary?
     testTerm("prince(X), X =\\= 'Arthur'."); // who is a prince and is not "Arthur"?
+}
+
+BOOST_AUTO_TEST_CASE(testWeCanResolveSimpleFactsAndRules) {
+    // here we add simple prolog-style facts
+    Term t("kid(john, mary), kid(john, peter).");
+    
+    // now we're asking for a list of X that satisfy this rule
+    Term a = t / Term("kid(john, X).");
+    
+    BOOST_REQUIRE((bool)a); // the term should be positive
+    BOOST_REQUIRE((string)a == "X = mary");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
