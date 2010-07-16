@@ -18,22 +18,22 @@
     #include <string>
     #include <vector>
     #include <boost/format.hpp>
-    #include "Solm/Term.h"
-    using solm::Term;
+    #include "Solm/Predicate.h"
+    using solm::P;
     using std::string;
 
     /**
-     * This variable is defined in Term.cpp
+     * This variable is defined in Predicate.cpp
      */
-    extern solm::Term::Term* term_target;
+    extern solm::Predicate::Predicate* predicate_target;
 %}
 
 %union {
     string* p;
-    solm::Term* term;
+    solm::Predicate* predicate;
 }
 
-%name-prefix="term"
+%name-prefix="predicate"
 
 %token DOT
 %token <p> COMMA
@@ -44,9 +44,9 @@
 %token <p> OBJECT
 %token <p> TEXT
 
-%type <term> term
-%type <term> infixed
-%type <term> prefixed
+%type <predicate> predicate
+%type <predicate> infixed
+%type <predicate> prefixed
 %type <p> op
 
 %left OPERATOR
@@ -55,50 +55,50 @@
 %%
 
 sentence:
-    term DOT
+    predicate DOT
         {
             /* the TERM is found, inject it into the destination */
-            Term* term = static_cast<Term*>($1);
-            *term_target = *term;
-            delete term;
+            Predicate* predicate = static_cast<Predicate*>($1);
+            *predicate_target = *predicate;
+            delete predicate;
         }
     ;
 
-term: /* solm::Term* */
+predicate: /* solm::Predicate* */
     NUMBER
         {
             /* create new TERM from number */
             string* number = static_cast<string*>($1);
-            Term* term = new Term(*number, std::vector<Term>());
+            Predicate* predicate = new Predicate(*number, std::vector<Predicate>());
             delete number;
-            $$ = term;
+            $$ = predicate;
         }
     |
     VARIABLE
         {
             /* create new TERM from variable */
             string* variable = static_cast<string*>($1);
-            Term* term = new Term(*variable, std::vector<Term>());
+            Predicate* predicate = new Predicate(*variable, std::vector<Predicate>());
             delete variable;
-            $$ = term;
+            $$ = predicate;
         }
     |
     OBJECT
         {
             /* create new TERM from object */
             string* object = static_cast<string*>($1);
-            Term* term = new Term(*object, std::vector<Term>());
+            Predicate* predicate = new Predicate(*object, std::vector<Predicate>());
             delete object;
-            $$ = term;
+            $$ = predicate;
         }
     |
     TEXT
         {
             /* create new TERM from text */
             string* text = static_cast<string*>($1);
-            Term* term = new Term(*text, std::vector<Term>());
+            Predicate* predicate = new Predicate(*text, std::vector<Predicate>());
             delete text;
-            $$ = term;
+            $$ = predicate;
         }
     |
     infixed
@@ -120,39 +120,39 @@ op: /* std::string* */
     COMMA
     ;
     
-infixed: /* solm::Term* */
-    term op term
+infixed: /* solm::Predicate* */
+    predicate op predicate
         {
-            /* create new TERM from two other terms and operator */
+            /* create new TERM from two other predicates and operator */
             string* op = static_cast<string*>($2);
-            Term* term1 = static_cast<Term*>($1);
-            Term* term2 = static_cast<Term*>($3);
-            std::vector<Term> terms;
-            terms.push_back(*term1);
-            terms.push_back(*term2);
-            Term* infixed = new Term(*op, terms);
+            Predicate* predicate1 = static_cast<Predicate*>($1);
+            Predicate* predicate2 = static_cast<Predicate*>($3);
+            std::vector<Predicate> predicates;
+            predicates.push_back(*predicate1);
+            predicates.push_back(*predicate2);
+            Predicate* infixed = new Predicate(*op, predicates);
             delete op;
-            delete term1;
-            delete term2;
+            delete predicate1;
+            delete predicate2;
             $$ = infixed;
         }
     ;
     
-prefixed: /* solm::Term* */
-    OBJECT OPEN_BRACE term CLOSE_BRACE
+prefixed: /* solm::Predicate* */
+    OBJECT OPEN_BRACE predicate CLOSE_BRACE
         {
-            /* create new TERM from name and other term */
+            /* create new TERM from name and other predicate */
             string* object = static_cast<string*>($1);
-            Term* term = static_cast<Term*>($3);
-            std::vector<Term> terms;
-            terms.push_back(*term);
-            Term* prefixed = new Term(*object, terms);
+            Predicate* predicate = static_cast<Predicate*>($3);
+            std::vector<Predicate> predicates;
+            predicates.push_back(*predicate);
+            Predicate* prefixed = new Predicate(*object, predicates);
             delete object;
-            delete term;
+            delete predicate;
             $$ = prefixed;
         }
     ;
     
 %%
 
-// see Solm/Term.cpp
+// see Solm/Predicate.cpp

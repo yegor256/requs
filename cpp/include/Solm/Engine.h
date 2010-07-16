@@ -11,16 +11,15 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Forall.h 2299 2010-07-13 10:01:56Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
-#ifndef __INCLUDE_SOLM_PREDICATE_ENGINE_H
-#define __INCLUDE_SOLM_PREDICATE_ENGINE_H
+#ifndef __INCLUDE_SOLM_ENGINE_H
+#define __INCLUDE_SOLM_ENGINE_H
 
 #include <string>
 #include <vector>
 #include "Solm/Predicate.h"
-#include "Solm/Data.h"
 
 namespace solm {
 namespace predicate {

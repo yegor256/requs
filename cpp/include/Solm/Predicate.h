@@ -11,34 +11,34 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Term.h 2308 2010-07-14 12:25:35Z yegor256@yahoo.com $
+ * @version $Id$
  */
 
-#ifndef __INCLUDE_SOLM_TERM_H
-#define __INCLUDE_SOLM_TERM_H
+#ifndef __INCLUDE_SOLM_PREDICATE_H
+#define __INCLUDE_SOLM_PREDICATE_H
 
 #include <string>
 #include <vector>
 
 /**
- * This function will build Term objects, and the class is its friend
+ * This function will build Predicate objects, and the class is its friend
  *
- * @see Term.cpp
+ * @see Predicate.cpp
  */
-extern int termparse();
+extern int predicate_parse();
 
 namespace solm {
 
 /**
- * Prolog-style term
+ * Simple predicate
  */
-class Term {
+class Predicate {
 
 public:
 
-    friend int ::termparse();
+    friend int ::predicate_parse();
     
-    typedef std::vector<Term> Terms;
+    typedef std::vector<Predicate> Predicates;
     
     typedef enum {
         T_ATOM,
@@ -57,12 +57,12 @@ public:
     /**
      * Public constructor
      */
-    Term(const std::string& = "");
+    Predicate(const std::string& = "");
 
     /**
      * Compare this term with another one.
      */
-    bool operator==(const Term&) const;
+    bool operator==(const Predicate&) const;
 
     /**
      * This term is of the type?
@@ -84,13 +84,13 @@ public:
     /**
      * Get full list of variables
      */
-    const Terms variables() const;
+    const Predicates variables() const;
 
     /**
      * Make a prolog-styled question, providing a simple rule
      * and get an answer.
      */
-    const Term operator/(const Term&);
+    const Predicate operator/(const Predicate&);
 
 private:
     
@@ -102,13 +102,13 @@ private:
     /**
      * Collection of terms
      */
-    std::vector<Term> _terms;
+    std::vector<Predicate> _terms;
     
     /**
      * Private constructor, that creates an object with the name and terms.
      * @see term.y
      */
-    Term(const std::string&, const Terms&);
+    Predicate(const std::string&, const Predicates&);
     
 };
 
