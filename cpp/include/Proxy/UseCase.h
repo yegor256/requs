@@ -20,7 +20,7 @@
 #include <string>
 #include "Proxy/Entity.h"
 #include "Proxy/Signature.h"
-#include "Solm/Predicate.h"
+#include "Solm/Term.h"
 
 namespace proxy {
 
@@ -46,7 +46,7 @@ public:
      * Convert a use case into a declaration, but without a name yet.
      * @see Proxy::inject()
      */
-    operator solm::Predicate() const;
+    operator solm::Term() const;
 
 private:
 

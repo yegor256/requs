@@ -22,6 +22,6 @@ proxy::UseCase::UseCase(const Signature& s) : _signature(s) {
     /* that's it */ 
 }
 
-proxy::UseCase::operator solm::Predicate() const {
-    return solm::Predicate("(defun UC1 true)");
+proxy::UseCase::operator solm::Term() const {
+    return solm::Term("(defun UC1 true)");
 }

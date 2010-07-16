@@ -40,7 +40,7 @@ public:
     /**
      * Convert the entire holder of entities into one big declaration
      */
-    operator solm::Predicate() const;
+    operator solm::Term() const;
     
 };
 

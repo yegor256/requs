@@ -17,7 +17,7 @@
 #ifndef __INCLUDE_SOLM_H
 #define __INCLUDE_SOLM_H
 
-#include "Solm/Predicate.h"
+#include "Solm/Term.h"
 
 namespace solm {
     
@@ -26,7 +26,7 @@ namespace solm {
  *
  * This is a huge AND predicate that includes all other predicates
  */
-class Solm : public Predicate {
+class Solm : public Term {
     
 public:
     

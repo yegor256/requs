@@ -17,38 +17,32 @@
 %{
 	#include <string>
 	#include <boost/format.hpp>
-    #include "Solm/Predicate.h"
+    #include "Solm/Term.h"
 	using boost::format;
 	using std::string;
 %}
 
-%option prefix="predicate"
+%option prefix="term"
 %option noyywrap
 
 SPACE ([ \t\r\n]+)
-TAIL ([a-zA-Z_0-9]+)
-VARIABLE ([A-Z]({TAIL})*)
-OBJECT ([a-z_]({TAIL})*)
+ID ([a-zA-Z]+)
 NUMBER ([\-\+]?[0-9]+(\.[0-9]+)*)
-TEXT ('.*')
-OPERATOR (":-"|<|>|=|=\\=|=:=|"is")
+TEXT (\".*\")
 
 %%
 
 	/* find punctuation */
-"," { predicatelval.p = new string(predicatetext); return COMMA; }
 "(" { return OPEN_BRACE; }
 ")" { return CLOSE_BRACE; }
-"." { return DOT; }
 
     /* find entities */
-{OPERATOR} { predicatelval.p = new string(predicatetext); return OPERATOR; }
-{OBJECT} { predicatelval.p = new string(predicatetext); return OBJECT; }
-{VARIABLE} { predicatelval.p = new string(predicatetext); return VARIABLE; }
-{NUMBER} { predicatelval.p = new string(predicatetext); return NUMBER; }
-{TEXT} { predicatelval.p = new string(predicatetext); return TEXT; }
+{ID} { termlval.p = new string(termtext); return VARIABLE; }
+"'"{ID} { termlval.p = new string(termtext); return OBJECT; }
+{NUMBER} { termlval.p = new string(termtext); return NUMBER; }
+{TEXT} { termlval.p = new string(termtext); return TEXT; }
 
 {SPACE} { /* ignore spaces */ }
-. { predicateerror("unknown symbol"); }
+. { termerror("unknown symbol"); }
 
 %%

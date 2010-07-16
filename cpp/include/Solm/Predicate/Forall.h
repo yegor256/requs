@@ -20,7 +20,6 @@
 #include <string>
 #include <vector>
 #include "Solm/Predicate.h"
-#include "Solm/Predicate/Engine.h"
 
 namespace solm {
 namespace predicate {

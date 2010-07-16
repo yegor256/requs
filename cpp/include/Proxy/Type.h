@@ -20,7 +20,7 @@
 #include <string>
 #include <vector>
 #include "Proxy/Entity.h"
-#include "Solm/Predicate.h"
+#include "Solm/Term.h"
 
 namespace proxy {
 
@@ -53,7 +53,7 @@ public:
     /**
      * Convert this entity to declaration, but without a name yet
      */
-    operator solm::Predicate() const;
+    operator solm::Term() const;
 
 private:
 

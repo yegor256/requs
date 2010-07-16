@@ -19,38 +19,36 @@
 
 #include <string>
 #include <vector>
-#include "Solm/Predicate.h"
+#include "Solm/Term.h"
 
 namespace solm {
-namespace predicate {
 
 /**
  * Engine to calculate predicate outcome
  */
-class Engine {
+class Predicate {
 
 public:
     
     /**
      * Construct this engine and prepare for calculations
      */
-    Engine(const Data&, const std::vector<boost::shared_ptr<Argument> >&) { }
+    // Predicate(const Data&, const std::vector<boost::shared_ptr<Argument> >&) { }
     
     /**
      * To resolve the predicate and return new Chain of Contexts
      */
-    Chain operator+(const Data&) const { return Chain(); }
+    // Chain operator+(const Data&) const { return Chain(); }
 
 private:
     
     /**
      * Collection of arguments
      */
-    std::vector<boost::shared_ptr<Argument> > _arguments;
+    // std::vector<boost::shared_ptr<Argument> > _arguments;
 
 };
 
-}
 }
 
 #endif

@@ -19,7 +19,7 @@
 
 #include <vector>
 #include "Proxy/Slot.h"
-#include "Solm/Predicate.h"
+#include "Solm/Term.h"
 
 namespace proxy {
 
@@ -65,12 +65,12 @@ public:
     /**
      * Get an access to predicate
      */
-    solm::Predicate& invariant() { return _invariant; }
+    solm::Term& invariant() { return _invariant; }
 
     /**
      * Convert this entity to declaration, but without a name yet
      */
-    virtual operator solm::Predicate() const = 0;
+    virtual operator solm::Term() const = 0;
 
 private:
     
@@ -82,7 +82,7 @@ private:
     /**
      * Logical formula that is always true for this entity
      */
-    solm::Predicate _invariant;
+    solm::Term _invariant;
          
 };
 

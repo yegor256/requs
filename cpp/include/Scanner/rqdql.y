@@ -30,7 +30,7 @@
     #include "Proxy/Signature.h"
 
     #include "Solm.h"
-    #include "Solm/Predicate.h"
+    #include "Solm/Term.h"
 
     #include "brokers/De.h"
     #include "brokers/FlowHolder.h"
@@ -154,8 +154,8 @@ invariantDeclaration: /* proxy::Type* */
                 lyyerror(@3, "You can't place HIMSELF to the left part of declaration");
             } else {
                 proxy::Type* classPath = static_cast<proxy::Type*>($1);
-                solm::Predicate* invariant = static_cast<solm::Predicate*>($3);
-                classPath->invariant() += *invariant;
+                solm::Term* invariant = static_cast<solm::Term*>($3);
+                // classPath->invariant() += *invariant;
                 delete invariant;
                 $$ = classPath;
                 protocol(@1, classPath);
@@ -163,18 +163,18 @@ invariantDeclaration: /* proxy::Type* */
         }
     ;
     
-invariant: /* solm::Predicate* */
+invariant: /* solm::Term* */
     predicate 
     |
     predicate informal
     ;
     
-predicate: /* solm::Predicate* */
+predicate: /* solm::Term* */
     informal
         {
-            solm::Predicate* predicate = new solm::Predicate("(info)");
+            solm::Term* predicate = new solm::Term("(info)");
             std::string* informal = static_cast<std::string*>($1);
-            predicate->arg(0, "\"" + *informal + "\"");
+            // predicate->arg(0, "\"" + *informal + "\"");
             delete informal;
             $$ = predicate;
             protocol(@1, predicate);
@@ -182,9 +182,9 @@ predicate: /* solm::Predicate* */
     |
     words
         {
-            solm::Predicate* predicate = new solm::Predicate("(info)");
+            solm::Term* predicate = new solm::Term("(info)");
             std::string* words = static_cast<std::string*>($1);
-            predicate->arg(0, "\"" + *words + "\"");
+            // predicate->arg(0, "\"" + *words + "\"");
             delete words;
             $$ = predicate;
             protocol(@1, predicate);
@@ -192,9 +192,9 @@ predicate: /* solm::Predicate* */
     |
     WORD
         {
-            solm::Predicate* predicate = new solm::Predicate("(info)");
+            solm::Term* predicate = new solm::Term("(info)");
             std::string* word = static_cast<std::string*>($1);
-            predicate->arg(0, "\"" + *word + "\"");
+            // predicate->arg(0, "\"" + *word + "\"");
             delete word;
             $$ = predicate;
             protocol(@1, predicate);
@@ -206,8 +206,8 @@ predicate: /* solm::Predicate* */
                 lyyerror(@1, "Class can't be an instance of himself");
             } else {
                 proxy::Type* theClass = static_cast<proxy::Type*>($1);
-                solm::Predicate* predicate = new solm::Predicate("(" + (std::string)*theClass + ")"); // by name of type
-                predicate->arg(0, "x");
+                solm::Term* predicate = new solm::Term("(" + (std::string)*theClass + ")"); // by name of type
+                // predicate->arg(0, "x");
                 $$ = predicate;
                 protocol(@1, predicate);
             }
@@ -293,9 +293,9 @@ slot: /* proxy::Slot* */
     slotName COLON invariant
         { 
             std::string* slotName = static_cast<std::string*>($1);
-            solm::Predicate* invariant = static_cast<solm::Predicate*>($3);
+            solm::Term* invariant = static_cast<solm::Term*>($3);
             proxy::Slot* slot = new proxy::Slot(*slotName);
-            slot->entity()->invariant() += *invariant;
+            // slot->entity()->invariant() += *invariant;
             delete slotName;
             delete invariant;
             protocol(@1, slot);
@@ -608,7 +608,7 @@ useCaseAlternativeDeclaration: /* NULL */
     {
         std::string* uc = static_cast<std::string*>($1);
         brokers::AltPairs* altId = static_cast<brokers::AltPairs*>($2);
-        solm::Predicate* predicate = static_cast<solm::Predicate*>($5);
+        solm::Term* predicate = static_cast<solm::Term*>($5);
         proxy::UseCase* flows = static_cast<proxy::UseCase*>($7);
 
         // brokers::SignatureHolder* signature = static_cast<brokers::SignatureHolder*>($3);
@@ -646,7 +646,7 @@ useCaseAlternativeDeclaration: /* NULL */
         // if (dest) {
         //     // it's found, inject flows there!
         //     protocol(@1, dest);
-        //     Flows* alt = dest->addAlternative(static_cast<solm::Predicate*>($5));
+        //     Flows* alt = dest->addAlternative(static_cast<solm::Term*>($5));
         //     alt->setFlows(static_cast<Flows*>($7));
         // }
     }

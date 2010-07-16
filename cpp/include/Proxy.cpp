@@ -26,9 +26,9 @@
 #include "Solm/Predicate.h"
 #include "Logger.h"
 
-proxy::Proxy::operator solm::Predicate() const {
+proxy::Proxy::operator solm::Term() const {
     // stub!
-    return solm::Predicate("");
+    return solm::Term("true");
 }
 
 void proxy::Proxy::inject() {

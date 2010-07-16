@@ -21,24 +21,24 @@
 #include <vector>
 
 /**
- * This function will build Predicate objects, and the class is its friend
+ * This function will build Term objects, and the class is its friend
  *
- * @see Predicate.cpp
+ * @see Term.cpp
  */
-extern int predicate_parse();
+extern int termparse();
 
 namespace solm {
 
 /**
- * Simple predicate
+ * Simple term
  */
-class Predicate {
+class Term {
 
 public:
 
-    friend int ::predicate_parse();
+    friend int ::termparse();
     
-    typedef std::vector<Predicate> Predicates;
+    typedef std::vector<Term> Terms;
     
     typedef enum {
         T_ATOM,
@@ -57,12 +57,12 @@ public:
     /**
      * Public constructor
      */
-    Predicate(const std::string& = "");
+    Term(const std::string& = "");
 
     /**
      * Compare this term with another one.
      */
-    bool operator==(const Predicate&) const;
+    bool operator==(const Term&) const;
 
     /**
      * This term is of the type?
@@ -84,13 +84,13 @@ public:
     /**
      * Get full list of variables
      */
-    const Predicates variables() const;
+    const Terms variables() const;
 
     /**
      * Make a prolog-styled question, providing a simple rule
      * and get an answer.
      */
-    const Predicate operator/(const Predicate&);
+    const Term operator/(const Term&);
 
 private:
     
@@ -102,13 +102,13 @@ private:
     /**
      * Collection of terms
      */
-    std::vector<Predicate> _terms;
+    std::vector<Term> _terms;
     
     /**
      * Private constructor, that creates an object with the name and terms.
      * @see term.y
      */
-    Predicate(const std::string&, const Predicates&);
+    Term(const std::string&, const Terms&);
     
 };
 
