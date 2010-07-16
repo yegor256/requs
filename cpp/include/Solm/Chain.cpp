@@ -23,7 +23,7 @@
 #include "rqdql.h"
 #include "rqdql/Exception.h"
 
-solm::Chain::Chain() : std::vector<solm::Term>() {
+solm::Chain::Chain() : std::map<solm::Term, solm::Chain>() {
     /* that's it */
 }
 
