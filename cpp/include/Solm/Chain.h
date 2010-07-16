@@ -18,21 +18,17 @@
 #define __INCLUDE_SOLM_CHAIN_H
 
 #include <string>
-#include <vector>
+#include <map>
+#include "Solm/Term.h"
 
 namespace solm {
 
 /**
- * Forward declarations
- */
-class Data;
-
-/**
- * Ordered list of snapshots, which will happen on scope one after
+ * Ordered list of terms, which will happen on scope one after
  * another. Every snapshot will have a number of alternatives. Together
  * they constitute a tree-like structure.
  */
-class Chain : public std::vector<Data> {
+class Chain : public std::map<Term, Chain> {
 
 public:
 
@@ -44,7 +40,7 @@ public:
     /**
      * Get the latest Data block in the chain
      */
-    operator Data() const;
+    operator Term() const;
 
     /**
      * These two chains are equivalent? We will compare them snapshot
@@ -76,19 +72,19 @@ public:
      * to the end of the chain, but validates beforehand that this chain
      * is positive.
      */
-    Chain operator+(const Data&) const;
+    Chain operator+(const Term&) const;
 
     /**
      * Concatenate them vertically, this is just a wrapper around operator+()
      */
-    Chain& operator+=(const Data& s) { return *this = *this + s; }
+    Chain& operator+=(const Term& s) { return *this = *this + s; }
 
     /**
      * We extend the list of alternatives for the last clauses in this
      * chain. If the clauses is positive. If it's negative there will be
      * an exception raised.
      */
-    Chain& operator<<(const Data&);
+    Chain& operator<<(const Term&);
 
     /**
      * This chain has a positive ending?

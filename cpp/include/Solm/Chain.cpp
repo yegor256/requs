@@ -19,17 +19,17 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/join.hpp>
 #include "Solm/Chain.h"
-#include "Solm/Data.h"
+#include "Solm/Term.h"
 #include "rqdql.h"
 #include "rqdql/Exception.h"
 
-solm::Chain::Chain() : std::vector<solm::Data>() {
+solm::Chain::Chain() : std::vector<solm::Term>() {
     /* that's it */
 }
 
-solm::Chain::operator solm::Data() const {
+solm::Chain::operator solm::Term() const {
     // stub
-    return solm::Data();
+    return solm::Term();
 }
 
 bool solm::Chain::operator==(const solm::Chain& c) const {
@@ -53,7 +53,7 @@ solm::Chain solm::Chain::operator+(const solm::Chain& c) const {
     return n;
 }
 
-solm::Chain solm::Chain::operator+(const solm::Data& s) const {
+solm::Chain solm::Chain::operator+(const solm::Term& s) const {
     if (!*this) {
         throw rqdql::Exception(
             boost::format("Chain (%d snapshots) is negative, we can't PLUS to it") % size()
@@ -64,7 +64,7 @@ solm::Chain solm::Chain::operator+(const solm::Data& s) const {
     return n;
 }
 
-solm::Chain& solm::Chain::operator<<(const solm::Data& s) {
+solm::Chain& solm::Chain::operator<<(const solm::Term& s) {
     if (!*this) {
         throw rqdql::Exception(
             boost::format("Chain (%d snapshots) is negative, we can't << to it") % size()

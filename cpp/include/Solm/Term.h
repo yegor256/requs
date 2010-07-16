@@ -11,7 +11,7 @@
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) rqdql.com, 2010
- * @version $Id: Data.h 2308 2010-07-14 12:25:35Z yegor256@yahoo.com $
+ * @version $Id: Term.h 2308 2010-07-14 12:25:35Z yegor256@yahoo.com $
  */
 
 #ifndef __INCLUDE_SOLM_TERM_H

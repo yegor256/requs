@@ -98,7 +98,15 @@ solm::Term::operator std::string() const {
 }
 
 solm::Term::operator bool() const {
-    return !is(T_FALSE);
+    if (is(T_FALSE)) {
+        return false;
+    }
+    for (Terms::const_iterator i = _terms.begin(); i != _terms.end(); ++i) {
+        if (!(*i)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 const solm::Term::Terms solm::Term::variables() const {

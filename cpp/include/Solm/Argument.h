@@ -19,7 +19,7 @@
 
 #include <string>
 #include "Solm/Chain.h"
-#include "Solm/Data.h"
+#include "Solm/Term.h"
 
 namespace solm {
 
@@ -35,7 +35,7 @@ public:
      * and produce a new Chain of clauses.
      * The method has to be overriden in child classes.
      */
-    virtual Chain operator+(const Data&) const = 0;
+    virtual Chain operator+(const Term&) const = 0;
 
     /**
      * Convert the argument to string
