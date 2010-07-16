@@ -58,7 +58,8 @@ public:
      * Append one chain to another, concatenating them vertically. We assume
      * here that the chain is positive and can accept more snapshots. Every
      * snapshot is either positive or negative, the same for a chain. If this
-     * chain is negative, it's not extendable any longer.
+     * chain is negative, it's not extendable any longer, and an exception
+     * will be thrown.
      */
     Chain operator+(const Chain&) const;
 

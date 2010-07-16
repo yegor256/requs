@@ -29,7 +29,7 @@ solm::Chain::Chain() : std::map<solm::Term, solm::Chain>() {
 
 solm::Chain::operator solm::Term() const {
     // stub
-    return solm::Term();
+    return solm::Term("false.");
 }
 
 bool solm::Chain::operator==(const solm::Chain& c) const {
@@ -43,24 +43,25 @@ bool solm::Chain::operator<(const solm::Chain& c) const {
 solm::Chain solm::Chain::operator+(const solm::Chain& c) const {
     if (!*this) {
         throw rqdql::Exception(
-            boost::format("Chain (%d snapshots) is negative, we can't PLUS to it") % size()
+            boost::format("Chain (%d terms) is negative, we can't PLUS to it") % size()
         );
     }
     Chain n = *this;
-    for (const_iterator s = c.begin(); s != c.end(); ++s) {
-        n += *s;
-    }
+    // later...
+    // for (const_iterator s = c.begin(); s != c.end(); ++s) {
+    //     n += *s;
+    // }
     return n;
 }
 
 solm::Chain solm::Chain::operator+(const solm::Term& s) const {
     if (!*this) {
         throw rqdql::Exception(
-            boost::format("Chain (%d snapshots) is negative, we can't PLUS to it") % size()
+            boost::format("Chain (%d terms) is negative, we can't PLUS to it") % size()
         );
     }
     Chain n = *this;
-    n.push_back(s);
+    // n.push_back(s);
     return n;
 }
 
@@ -70,13 +71,13 @@ solm::Chain& solm::Chain::operator<<(const solm::Term& s) {
             boost::format("Chain (%d snapshots) is negative, we can't << to it") % size()
         );
     }
-    *(end() - 1) << s;
+    // *(end() - 1) << s;
     return *this;
 }
 
 solm::Chain::operator bool() const {
     for (const_iterator s = begin(); s != end(); ++s) {
-        if (!(*s)) {
+        if (!((*s).first) || !((*s).second)) {
             return false;
         }
     }

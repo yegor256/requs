@@ -18,7 +18,6 @@
 #include <string>
 #include "Solm/Predicate.h"
 #include "Solm/Chain.h"
-#include "Solm/Data.h"
 #include "Solm/Term.h"
 using namespace solm;
 
@@ -28,17 +27,16 @@ BOOST_AUTO_TEST_CASE(testSimplePredicateCanBeResolved) {
     Predicate p("(exists x (eq x 5))");
     
     // resolve the predicate on an empty Database
-    Chain c = p + Data();
-    Data d = (Data)c;
+    Chain c = p + Term("true.");
+    Term t = (Term)c;
     
     // here we assume that Data has the following rules/facts:
     // value_of(x, 5)
-    Answer a = d.question(Term("value_of(x, V)."));
+    Term a = t / Term("value_of(x, V).");
     
     // the value of V should be 5!
-    BOOST_REQUIRE(a);
-    BOOST_REQUIRE(a.has("V"));
-    // BOOST_REQUIRE_EQUAL("5", answer[std::string("V")]);
+    BOOST_REQUIRE((bool)a);
+    BOOST_REQUIRE((std::string)a == "V = 5");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

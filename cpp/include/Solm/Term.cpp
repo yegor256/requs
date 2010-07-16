@@ -124,6 +124,10 @@ const solm::Term::Terms solm::Term::variables() const {
     return v;
 }
 
+const solm::Term solm::Term::operator/(const solm::Term&) {
+    return Term("false.");
+}
+
 solm::Term::Term(const std::string& v, const solm::Term::Terms& t) : _value(v), _terms() {
     for (Terms::const_iterator i = t.begin(); i != t.end(); ++i) {
         if ((*i)._value == ",") {

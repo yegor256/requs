@@ -16,7 +16,7 @@
 
 #include <boost/test/unit_test.hpp>
 #include "Solm/Chain.h"
-#include "Solm/Data.h"
+#include "Solm/Term.h"
 using namespace solm;
 
 BOOST_AUTO_TEST_SUITE(ChainTest)
@@ -28,16 +28,16 @@ BOOST_AUTO_TEST_CASE(testEmptyChainIsPositive) {
 
 BOOST_AUTO_TEST_CASE(testVerticalChainingWorks) {
     Chain c;
-    c += Data();
-    c += Data();
+    c += Term("123.");
+    c += Term("mary.");
     BOOST_CHECK_EQUAL(2, c.size());
     BOOST_CHECK((bool)c); // still positive
 }
 
 BOOST_AUTO_TEST_CASE(testHorizontalChainingWorks) {
     Chain c;
-    c += Data();
-    c << Data();
+    c += Term("father(peter, john).");
+    c << Term("sister(mary, aksel).");
     BOOST_CHECK_EQUAL(1, c.size());
     BOOST_CHECK((bool)c); // still positive
 }
