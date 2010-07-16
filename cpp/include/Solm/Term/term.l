@@ -29,7 +29,7 @@ SPACE ([ \t\r\n]+)
 TAIL ([a-zA-Z_0-9]+)
 VARIABLE ([A-Z]({TAIL})*)
 OBJECT ([a-z_]({TAIL})*)
-NUMBER ([0-9]+(\.[0-9]+)*)
+NUMBER ([\-\+]?[0-9]+(\.[0-9]+)*)
 TEXT ('.*')
 OPERATOR ([,:/\\\*\-\?\+\$\&<>=]+|"is")
 

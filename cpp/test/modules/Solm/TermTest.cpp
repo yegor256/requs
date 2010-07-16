@@ -16,14 +16,40 @@
 
 #include <boost/test/unit_test.hpp>
 #include <string>
+#include <vector>
+#include <boost/algorithm/string/join.hpp>
 #include "Solm/Term.h"
 using namespace solm;
 using std::string;
 
 void testTerm(const string& t) {
     Term term = Term(t);
-    BOOST_TEST_MESSAGE(t + " --> " + (std::string)term);
-    // BOOST_CHECK(term.is(Term::T_ATOM) && !t.is(Term::T_NUMBER));
+    std::vector<string> flags;
+    if (term.is(Term::T_ATOM)) {
+        flags.push_back("A");
+    }
+    if (term.is(Term::T_TEXT)) {
+        flags.push_back("T");
+    }
+    if (term.is(Term::T_NUMBER)) {
+        flags.push_back("N");
+    }
+    if (term.is(Term::T_RULE)) {
+        flags.push_back("R");
+    }
+    if (term.is(Term::T_FACT)) {
+        flags.push_back("F");
+    }
+    if (term.is(Term::T_VARIABLE)) {
+        flags.push_back("V");
+    }
+    if (term.is(Term::T_OBJECT)) {
+        flags.push_back("O");
+    }
+    BOOST_TEST_MESSAGE(
+        t + " --> " + (std::string)term 
+        + " [" + boost::algorithm::join(flags, ",") + "]"
+    );
 }
 
 BOOST_AUTO_TEST_SUITE(TermTest)

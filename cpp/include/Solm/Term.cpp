@@ -18,6 +18,7 @@
 #include <vector>
 #include <boost/format.hpp>
 #include <boost/algorithm/string/join.hpp>
+#include <boost/regex.hpp>
 #include "Solm/Term.h"
 #include "rqdql.h"
 #include "rqdql/Exception.h"
@@ -62,7 +63,24 @@ solm::Term::Term(const std::string& s) {
 }
 
 bool solm::Term::is(solm::Term::Kind k) const {
-    return true;
+    switch (k) {
+        case T_RULE:
+            return variables().size();
+        case T_FACT:
+            return is(T_OBJECT) && _terms.size() && !variables().size();
+        case T_ATOM:
+            return (is(T_OBJECT) || is(T_VARIABLE) || is(T_NUMBER) || is(T_TEXT)) && !_terms.size();
+        case T_NUMBER:
+            return boost::regex_match(_value, boost::regex("[\\-\\+]?[0-9]+(\\.[0-9]+)?"));
+        case T_TEXT:
+            return boost::regex_match(_value, boost::regex("'.*'"));
+        case T_OBJECT:
+            return boost::regex_match(_value, boost::regex("[a-z_][a-zA-Z0-9_]*"));
+        case T_VARIABLE:
+            return boost::regex_match(_value, boost::regex("[A-Z][a-zA-Z0-9_]*"));
+        default:
+            return false;
+    }
 }
 
 solm::Term::operator std::string() const {
@@ -75,6 +93,21 @@ solm::Term::operator std::string() const {
         s += "(" + boost::algorithm::join(v, ", ") + ")";
     }
     return s;
+}
+
+const solm::Term::Terms solm::Term::variables() const {
+    Terms v;
+    if (is(T_VARIABLE)) {
+        v.push_back(*this);
+    } else {
+        for (Terms::const_iterator i = _terms.begin(); i != _terms.end(); ++i) {
+            Terms subs = (*i).variables();
+            for (Terms::const_iterator j = subs.begin(); j != subs.end(); ++j) {
+                v.push_back(*j);
+            }
+        }
+    }
+    return v;
 }
 
 solm::Term::Term(const std::string& v, const solm::Term::Terms& t) : _value(v), _terms() {

@@ -38,15 +38,16 @@ public:
 
     friend int ::termparse();
     
-    /**
-     * Type of term
-     */
+    typedef std::vector<Term> Terms;
+    
     typedef enum {
         T_ATOM,
         T_RULE,
         T_FACT,
         T_NUMBER,
-        T_TEXT
+        T_TEXT,
+        T_VARIABLE,
+        T_OBJECT
     } Kind;
 
     /**
@@ -63,10 +64,13 @@ public:
      * Convert this term to string
      */
     operator std::string() const;
+    
+    /**
+     * Get full list of variables
+     */
+    const Terms variables() const;
 
 private:
-    
-    typedef std::vector<solm::Term> Terms;
     
     /**
      * Value of the term, as a string
