@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!--
+ * @version $Id: exclude.xml 617 2010-12-07 12:55:18Z yegor256@yahoo.com $
+ -->
+<FindBugsFilter>
+    <Match>
+        <Package name="com.rqdql.gettext" />
+    </Match>
+</FindBugsFilter>
