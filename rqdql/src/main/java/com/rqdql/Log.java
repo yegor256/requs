@@ -137,6 +137,13 @@ public final class Log {
     }
 
     /**
+     * Private supplementary class.
+     * @see #logger()
+     */
+    private static class FakeException extends Throwable {
+    }
+
+    /**
      * Get the instance of the logger for this particular caller.
      *
      * <p>Here we retrieve the name of calling class from stack trace,
@@ -145,7 +152,7 @@ public final class Log {
      * @return The instance of {@link Logger} class
      */
     private static Logger logger() {
-        final Throwable thr = new NullPointerException();
+        final Throwable thr = new Log.FakeException();
         final StackTraceElement[] elements = thr.getStackTrace();
         String name = Log.class.getCanonicalName();
         for (int idx = 2; idx < elements.length; idx += 1) {
