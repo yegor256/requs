@@ -79,6 +79,11 @@
         <url>http://trac.fazend.com/rqdql</url>
     </issueManagement>
 
+    <ciManagement>
+        <system>hudson</system>
+        <url>http://hudson.fazend.com:8081/hudson/job/rqdql</url>
+    </ciManagement>
+
     <scm>
         <connection>scm:svn:svn://svn.fazend.com/rqdql/trunk/rqdql</connection>
         <developerConnection>scm:svn:svn://svn.fazend.com/rqdql/trunk/rqdql</developerConnection>
@@ -763,9 +768,30 @@
                     </configuration>
                 </plugin>
                 <plugin>
+                    <!--
+                    To GPG-sign the artifact before deployment to foreign
+                    repository
+                    -->
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>1.1</version> <!-- 21 Dec 2010 -->
+                </plugin>
+                <plugin>
+                    <!--
+                    To assemble the project into one executable standalone JAR
+                    -->
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>2.2</version> <!-- 19 Dec 2010 -->
+                    <configuration>
+                        <tarLongFileMode>gnu</tarLongFileMode>
+                        <appendAssemblyId>true</appendAssemblyId>
+                        <archive>
+                            <manifest>
+                                <mainClass>com.rqdql.cli.Main</mainClass>
+                            </manifest>
+                        </archive>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -784,6 +810,25 @@
                         <goals>
                             <goal>attach-descriptor</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <!-- version is specified in pluginManagement section -->
+                <executions>
+                    <execution>
+                        <id>executable-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/bin.xml</descriptor>
+                            </descriptors>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
