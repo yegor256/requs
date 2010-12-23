@@ -140,7 +140,7 @@ public final class Log {
      * Private supplementary class.
      * @see #logger()
      */
-    private static class FakeException extends Throwable {
+    private static class ThrowableDecorator extends Throwable {
     }
 
     /**
@@ -152,7 +152,7 @@ public final class Log {
      * @return The instance of {@link Logger} class
      */
     private static Logger logger() {
-        final Throwable thr = new Log.FakeException();
+        final Throwable thr = new Log.ThrowableDecorator();
         final StackTraceElement[] elements = thr.getStackTrace();
         String name = Log.class.getCanonicalName();
         for (int idx = 2; idx < elements.length; idx += 1) {
