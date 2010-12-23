@@ -23,6 +23,9 @@
  */
 package com.rqdql.cli;
 
+// for internal logging
+import com.rqdql.Log;
+
 /**
  * Entry point of the JAR.
  *
@@ -44,7 +47,7 @@ public final class Main {
      * @param args List of command-line arguments
      */
     public static void main(final String[] args) {
-        System.out.println("hello, world!");
+        Log.info("%d arguments provided", args.length);
     }
 
 }
