@@ -6,7 +6,7 @@ Command Line Interface of RQDQL
 java -jar rqdql-bin.jar [-?v] <report>+ < <input-file>
 ---
 
-  Every <<<&lt;report&gt;>>> is formatted as:
+  Every <<<\<report\>>>> is formatted as:
 
 ---
 <name>:<arg1>[=<value1>][,<arg2>[=<value2>]...]
