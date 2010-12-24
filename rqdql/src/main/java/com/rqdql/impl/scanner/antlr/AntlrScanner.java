@@ -45,7 +45,7 @@ public final class AntlrScanner implements Scanner {
      * {@inheritDoc}
      */
     @Override
-    public final void setThesaurus(final Thesaurus thrs) {
+    public void setThesaurus(final Thesaurus thrs) {
         Log.trace(
             "setThesaurus(%s)",
             thrs.getClass().getCanonicalName()
@@ -57,7 +57,7 @@ public final class AntlrScanner implements Scanner {
      * {@inheritDoc}
      */
     @Override
-    public final void scan(final String text) {
+    public void scan(final String text) {
         Log.trace(
             "scan(%s.../%d bytes)",
             text.substring(0, 20),

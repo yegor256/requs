@@ -29,13 +29,15 @@ package com.rqdql.api.front;
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public class FrontFactory {
+public final class FrontFactory {
 
     /**
      * Find and return a reporter.
      * @param name The name of reporter
+     * @return The {@link Reporter} just found
+     * @throws ReporterNotFoundException If the reporter is not found
      */
-    public final Reporter find(final String name)
+    public Reporter find(final String name)
         throws ReporterNotFoundException {
         final String clsName = "com.rqdql.impl.front." + name;
         try {

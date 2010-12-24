@@ -62,7 +62,7 @@ public final class Auditor {
      *
      * @return The auditor to use
      */
-    public final Auditor getInstance() {
+    public Auditor getInstance() {
         if (Auditor.instance == null) {
             Auditor.instance = new Auditor();
         }
@@ -74,7 +74,7 @@ public final class Auditor {
      *
      * @param listener The {@link NotionListener}
      */
-    public final void addListener(final NotionListener listener) {
+    public void addListener(final NotionListener listener) {
         this.listeners.add(listener);
     }
 
@@ -83,7 +83,7 @@ public final class Auditor {
      *
      * @param notion A piece of new information
      */
-    public final void tell(final Notion notion) {
+    public void tell(final Notion notion) {
         for (NotionListener listener : this.listeners) {
             listener.listenNotion(notion);
         }
