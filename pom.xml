@@ -796,7 +796,7 @@
                     <artifactId>latex-maven-plugin</artifactId>
                     <version>1.0</version> <!-- 24 Dec 2010 -->
                     <configuration>
-                        <latexBuildDir>${project.build.directory}/site/pdf</latexBuildDir>
+                        <buildDir>${project.build.directory}/site/pdf</buildDir>
                     </configuration>
                 </plugin>
                 <plugin>
