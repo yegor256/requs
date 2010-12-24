@@ -42,10 +42,7 @@ void testTerm(const string& t) {
     if (term.is(Term::T_OBJECT)) {
         flags.push_back("O");
     }
-    BOOST_TEST_MESSAGE(
-        t + " --> " + (std::string)term 
-        + " [" + boost::algorithm::join(flags, ",") + "]"
-    );
+    BOOST_TEST_MESSAGE(t + " [" + boost::algorithm::join(flags, ",") + "] passed");
 }
 
 BOOST_AUTO_TEST_SUITE(TermTest)

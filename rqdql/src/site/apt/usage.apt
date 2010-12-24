@@ -1,12 +1,12 @@
 Command Line Interface of RQDQL
 
-  Download <<<rqdql-bin.jar>>>, and run it like this:
+  Download <<<rqdql-bin.jar>>> and run it:
 
 ---
 java -jar rqdql-bin.jar [-?v] <report>+ < <input-file>
 ---
 
-  Every <<<<report>>>> is formatted as:
+  Every <<<&lt;report&gt;>>> is formatted as:
 
 ---
 <name>:<arg1>[=<value1>][,<arg2>[=<value2>]...]

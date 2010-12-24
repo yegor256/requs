@@ -1,0 +1,68 @@
+/**
+ * RQDQL.com
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt. It is also available
+ * through the world-wide-web at this URL: http://www.rqdql.com/LICENSE.txt
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@rqdql.com so we can send you a copy immediately.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+ * OF SUCH DAMAGE.
+ *
+ * Copyright (c) 2010, rempl.com, Inc.
+ * @version $Id: build.xml 30 2010-12-15 08:08:32Z yegor256@yahoo.com $
+ */
+
+body {
+    font-family: 'Trebuchet MS', Verdana, Arial, Serif;
+    font-size: 16px;
+}
+
+tt, pre {
+    background-color: #eee;
+}
+tt {
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+}
+
+/*
+ * Overriding maven-theme.css and maven-base.css
+ */
+p {
+    font-size: 1em;
+}
+h2 {
+    font-size: 1.5em;
+    color: #2276A4;
+}
+.source {
+    overflow: hidden;
+}
+div#bodyColumn {
+    margin-left: 15em;
+}
+div#contentBox {
+    width: 50em;
+}
+div#banner {
+    background: white;
+}
+div#leftColumn {
+    width: 14em;
+}
+div#breadcrumbs {
+    font-size: 0.8em;
+}

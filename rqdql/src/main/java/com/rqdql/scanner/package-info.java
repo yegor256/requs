@@ -21,64 +21,11 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.cli;
-
-// for internal logging
-import com.rqdql.Log;
-
-// for processing of incoming document
-import com.rqdql.SOLM;
-import com.rqdql.Scanner;
-import com.rqdql.Thesaurus;
-import com.rqdql.ScannerFactory;
-
-// for manipulations with STDIN
-import java.io.Writer;
-import java.io.StringWriter;
-
-// for manipulations with STDIN
-import org.apache.commons.io.IOUtils;
 
 /**
- * Entry point of the JAR.
+ * RQDQL to OOP scanner.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class Main {
-
-    /**
-     * Private ctor, to avoid instantiation of the class.
-     */
-    private Main() {
-        // intentionally empty
-    }
-
-    /**
-     * Entry point of the entire JAR.
-     *
-     * @param args List of command-line arguments
-     */
-    public static void main(final String[] args) {
-        for (String arg : args) {
-        }
-        Log.info("%d arguments provided", args.length);
-
-        Scanner scanner = new ScannerFactory().getScanner();
-        Thesaurus thesaurus = 
-        scanner.setThesaurus(thesaurus);
-        scanner.scan(Main.stdin());
-        
-    }
-
-    /**
-     * Get STDIN as {@link String}.
-     * @return The STDIN as {@link String}
-     */
-    private static String stdin() {
-        final Writer writer = new StringWriter();
-        IOUtils.copy(System.in, writer);
-        return writer.toString();
-    }
-
-}
+package com.rqdql.scanner;

@@ -1,7 +1,9 @@
 Requirements Definition and Query Language (RQDQL)
 
-  IEEE 830-1998 says: "SRS (software requirements specification) should be
+  IEEE 830-1998 says: "<SRS (software requirements specification) should be
   correct, unambiguous, complete, consistent, ranked for importance and/or stability,
-  verifiable, modifiable, traceable". RQDQL is going to enable the creation
+  verifiable, modifiable, traceable>". RQDQL is going to enable the creation
   of such documents in plain text format. If you're interested to join the group
-  developing RQDQL, email to team@rqdql.com.
+  developing RQDQL, email to {{{mailto:team@rqdql.com}team@rqdql.com}}.
+
+  Software Design Document (SDD) is available {{{./pdf/sdd/sdd.pdf}in PDF}}.

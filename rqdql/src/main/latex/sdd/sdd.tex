@@ -69,9 +69,9 @@
 \begin{abstract}
     Requirements Definition and Query Language/Library (RQDQL) is
     an experimental set of tools and formats that enables definition of
-    an SRS document in a 
+    an SRS document in a
     human-friendly language, and at the same time making it understandable
-    by computers. Requirements in plain text are converted to 
+    by computers. Requirements in plain text are converted to
     second order logic predicates and then represented in MOF/XMI.
 \end{abstract}
 
@@ -79,7 +79,7 @@
 
     IEEE 830 says: ``\emph{Software Requirements Specification should be
     correct, unambiguous, complete, consistent, ranked for importance and/or stability,
-    verifiable, modifiable, traceable}''~\cite{ieee830}. RQDQL enables the creation 
+    verifiable, modifiable, traceable}''~\cite{ieee830}. RQDQL enables the creation
     of such documents in plain text format.
 
     First, we convert plain English into objects (in terms of object-oriented
@@ -91,7 +91,7 @@
     for an end-user or understood by a computer. Finally, the entire process
     is delivered to end-users in customizable XML~\cite{xml} reports.
     The workflow of the process explained is presented in Fig.~\ref{fig:Workflow}.
-    
+
     \begin{figure}[ht]
         \caption{RQDQL highest-level workflow description, where we start
             from a plain English and finish with a strict formal description
@@ -117,27 +117,27 @@
         \end{tikzpicture}
         \label{fig:Workflow}
     \end{figure}
-    
+
     Section~\ref{sec:to-objects} explains the process of converting of plain English
     to ``objects''. We're using \texttt{bison/flex}~\cite{yacc} grammar analysis
-    tools from Linux and C++ language. 
+    tools from Linux and C++ language.
     Moreover, the entire RQDQL is written in C++~\cite{stroustrup00}.
-    
-    Section~\ref{sec:to-solm} explains how objects are converted to 
+
+    Section~\ref{sec:to-solm} explains how objects are converted to
     second order logic ``predicates'',
     and validated. Here we also discuss the interconnection with
     Lisp~\cite{graham93}.
-    
-    Section~\ref{sec:to-data} explains the process of converting of 
+
+    Section~\ref{sec:to-data} explains the process of converting of
     second order predicates to Prolog-style data ``facts'', and reveals the internal
     structure of said facts. We discuss interconnection with Prolog~\cite{shapiro94}.
 
     Section~\ref{sec:front} is about an interface between \type{rqdql}
     command-line utility and its users.
-    
+
     Section~\ref{sec:test-cases} explains the mechanism of conversion
     of data facts into test cases.
-    
+
     Section~\ref{sec:design} contains the most important architecture
     and design decisions documented in diagrams.
 
@@ -156,28 +156,28 @@
         \node [class, left=6em of signature] (place) {Place\nodepart{second}};
         \draw [-open triangle 60] (type) -- (entity);
         \draw [-open triangle 60] (uc) -- (entity);
-        \draw [-diamond] 
-            (entity) 
-            -- 
-            node [cardinality, very near start, left=0.5em] {1} 
-            node [comment] {\_slots} (slot) 
+        \draw [-diamond]
+            (entity)
+            --
+            node [cardinality, very near start, left=0.5em] {1}
+            node [comment] {\_slots} (slot)
             node [cardinality, very near end, right=0.5em] {*};
-        \draw [-open diamond] 
-            (slot) 
-            |- 
-            node [cardinality, very near start, right=0.2em] {1} 
+        \draw [-open diamond]
+            (slot)
+            |-
+            node [cardinality, very near start, right=0.2em] {1}
             node [comment] {\_entity} (entity)
             node [cardinality, very near end, above=0.2em] {0..1};
-        \draw [-diamond] 
-            (uc) 
-            -- 
-            node [cardinality, very near start, left=0.2em] {1} 
+        \draw [-diamond]
+            (uc)
+            --
+            node [cardinality, very near start, left=0.2em] {1}
             node [comment] {\_signature} (signature)
             node [cardinality, very near end, right=0.2em] {1};
         \draw [-diamond]
             (signature)
-            -- 
-            node [cardinality, very near start, above=0.2em] {1} 
+            --
+            node [cardinality, very near start, above=0.2em] {1}
             node [comment] {\_places} (place)
             node [cardinality, very near end, below=0.2em] {*};
     \end{tikzpicture}
@@ -196,7 +196,7 @@ Address of User includes: city, country.\end{verbatim}
 
         In C++ the type is presented by class \texttt{proxy::Type} and
         the type written above will look like:
-        
+
         \begin{tikzpicture}[start chain, node distance=4em, every node/.style={on chain,join}, every join/.style={-}]
             \node [class, on chain] (proxy) {\underline{proxy:Proxy}\nodepart{second}};
             \begin{scope}[start branch=email]
@@ -231,11 +231,11 @@ Address of User includes: city, country.\end{verbatim}
                 \node [class, on chain] {\underline{:Type}\nodepart{second}};
             \end{scope}
         \end{tikzpicture}
-  
+
     \subsection{Use Cases}
 
         Verbal form of a use case:
-    
+
         \begin{verbatim}
 UC1: User (the user) extends photo album:
   1. The user creates photo of himself (the photo).
@@ -248,7 +248,7 @@ UC1: 2a) If failed with "file format is not valid":
   1. We delete the photo.
   2. Fail with "only PNG images are accepted".\end{verbatim}
 
-        The use case is represented in the system by means of 
+        The use case is represented in the system by means of
         \texttt{proxy::UseCase} and \texttt{proxy::Slot}-s. The
         use case given above will be converted to:
 
@@ -256,15 +256,15 @@ UC1: 2a) If failed with "file format is not valid":
 "UC1": proxy::UseCase {
   signature: "{...} extends photo album",
   slots: [
-    0: proxy::Slot { 
-      name: 
-      signature: "start", 
-      alternatives: [ formula: proxy::Flows{...} ] 
+    0: proxy::Slot {
+      name:
+      signature: "start",
+      alternatives: [ formula: proxy::Flows{...} ]
     }
     1: proxy::Flow { signature: "{...} creates {...}", alternatives: [] }
-    2: proxy::Flow { 
-      signature: "{...} validate {...}", 
-      alternatives: [ formula: proxy::Flows{...} ] 
+    2: proxy::Flow {
+      signature: "{...} validate {...}",
+      alternatives: [ formula: proxy::Flows{...} ]
     }
     3: proxy::Flow { signature: null, alternatives: [] }
     4: proxy::Flow { signature: "{...} reads {...}", alternatives: [] }
@@ -272,7 +272,7 @@ UC1: 2a) If failed with "file format is not valid":
 }\end{verbatim}
 
         \type{proxy::Proxy} is a collection of C++ classes:
-    
+
     \begin{lstlisting}[language=C++]
 class Type {
   vector<solm::Variadic*> predicate;
@@ -308,22 +308,22 @@ class UseCase {
     are C++ encoded. The second group includes ``pre-defined predicates'',
     which are injected into \type{solm::Solm} by \type{proxy::Proxy}. The third group includes
     predicates defined by custom document, called ``custom predicates'':
-    
+
     \begin{tikzpicture}[every node/.style={draw, text centered},
         every path/.style={-triangle 60, draw}]
         \node [text width=5em] (system) {System};
         \node [text width=10em, above=2em of system.north, anchor=south] (predefined) {Pre-defined};
         \node [text width=15em, above=2em of predefined.north, anchor=south] (custom) {Custom};
-        \node [draw=none, right=1em of system] {C++ in \type{solm::Solm}}; 
-        \node [draw=none, right=1em of predefined] {\type{proxy::Proxy} injects into \type{solm::Solm}}; 
-        \node [draw=none, right=1em of custom] {from \type{rqdql::Scanner}}; 
+        \node [draw=none, right=1em of system] {C++ in \type{solm::Solm}};
+        \node [draw=none, right=1em of predefined] {\type{proxy::Proxy} injects into \type{solm::Solm}};
+        \node [draw=none, right=1em of custom] {from \type{rqdql::Scanner}};
         \path (custom) -- (predefined);
         \path (predefined) -- (system);
     \end{tikzpicture}
 
     \subsection{System Predicates}
 
-        System predicates and formulas are ($x_i$ is a variable, $p_i$ is a predicate, 
+        System predicates and formulas are ($x_i$ is a variable, $p_i$ is a predicate,
         $X_i$ is a set of variables):
 
         \begin{maths}
@@ -342,15 +342,15 @@ class UseCase {
         $\type{re}(x_1, x_2)$ & variable $x_1$ matches regular expression $x_2$\\
         $\type{ac}(x_1, x_2, x_3)$ & variable $x_1$ has access $x_3$ to variable $x_2$ \\
         \end{maths}
-        
+
         A variable can be represented by an \textit{atom}, which starts with a single
         quotation mark (like in Lisp~\cite{graham93}), for example:
-        
+
         $$\exists X (\forall x(x \in X \to x < \type{'5}) \wedge X = \type{'3})$$
-        
+
         A variable can be represented by a \textit{set},
         which looks like:
-        
+
         $$\exists x (x = \{y, \type{'5}\})$$
 
         Only declaration and quantifiers can declare a variable (create
@@ -375,16 +375,16 @@ class UseCase {
                         child [level distance=4em] {node {Forall}}
                         child [level distance=4em] {node {Exists}}
                     }
-                    child {node {Declaration\nodepart{second} name\linebreak var[]}} 
+                    child {node {Declaration\nodepart{second} name\linebreak var[]}}
                 }
-                child {node {Variadic\nodepart{second} operand\linebreak formula[]}} 
+                child {node {Variadic\nodepart{second} operand\linebreak formula[]}}
                 child {node [dashed] {Predicate\nodepart{second} var[]
                     \linebreak
                     in, eq, lt, kind, re, ac}}
-                child {node {True\nodepart{second}}} 
+                child {node {True\nodepart{second}}}
             ;
         \end{tikzpicture}
-        
+
         This structure is fixed and is not going to change. All other predicates
         are defined on top of these.
 
@@ -408,7 +408,7 @@ class UseCase {
         $\type{text}(x): \type{kind}(x, \type{'text}).$ \\
         $\type{SUD}(x): \type{kind}(x, \type{'actor}).$ \\
         \end{maths}
-        
+
         Also math binary predicates:
 
         \begin{maths}
@@ -417,19 +417,19 @@ class UseCase {
         $x_1 \leq x_2: x_1 < x_2 \vee x_1 = x_2. $ \\
         $x_1 \neq x_2: \neg (x_1 = x_2). $ \\
         \end{maths}
-        
+
     \subsection{Types to Predicates}
-    
+
         Let's convert a type defined above to second order logic predicates.
         First, we define predicates for slots inside the type (a few examples):
-        
+
         \begin{maths}
         $\type{User.photo}(x, p): \type{kind}(x, \type{'User}) \wedge \type{Photo}(p) \wedge$ \\
         $\quad \exists r (\type{kind}(r, \type{'User.email}) \wedge r = \{x, p\}). $ \\
         $\type{User.address.country}(x, p): \type{kind}(x, \type{'User}) \wedge \type{text}(p)$ \\
         $\quad \exists r (\type{kind}(r, \type{'User.address.country}) \wedge r = \{x, p\}). $ \\
         \end{maths}
-        
+
         Then we create predicates for types ($\Pi_i$ is a set):
 
         \begin{maths}
@@ -446,7 +446,7 @@ class UseCase {
 
         Every use case is a predicate, $\type{UC}_1(x) = \type{true}$ means that the user
         successfully extended his photo album:
-    
+
         \begin{maths}
         $\type{UC}_1(x) : $ \\
         $\quad \type{User}(x) \bigwedge$ \\
@@ -474,7 +474,7 @@ class UseCase {
 
     Every formula produces a number of ``fact paths''. Every fact path
     is a vector of ``facts'', and every fact is either a positive or negative:
-    
+
     \begin{tikzpicture}[
         node distance=4em,
         every node/.style={circle, draw},
@@ -502,25 +502,25 @@ class UseCase {
         ;
         \node [right of=t1] (t2) {f};
         \node [right of=t2] (t3) {f};
-        
+
         \node [draw=black, rectangle, rounded corners, fit=(t1) (t2) (t3)] (f1) {};
             \node [draw=none, anchor=east] at (f1.west) {formula 1};
 
         \node [draw=black, rectangle, rounded corners, fit=(t2-1) (t2-1-1) (t2-1-2) (t2-1-3) (t2-2) (t2-3)] (f2) {};
             \node [draw=none, anchor=east] at (f2.west) {formula 2};
     \end{tikzpicture}
-    
+
     Every fact includes a ``snapshot'' of persistent data. Snapshot includes:
     objects. Every object
-    has a name, value, type, 
+    has a name, value, type,
     and may have a number of changes made by other objects:
-    
+
     \begin{lstlisting}[language=C++]
 class Object {
     int id; // could be zero
     string name; // could be empty
     string type; // mandatory
-    Value* value; 
+    Value* value;
     vector<AclRule> rules;
 };
 class Value {};
@@ -530,7 +530,7 @@ class Value {};
     class ValueSet : public Value {
         vector<int> ids;
     };
-    class ValueAssociation : public Value, 
+    class ValueAssociation : public Value,
         public pair<AssociationMember, AssociationMember> {};
         class AssociationMember {};
             class AssociationMemberId : public AssociationMember {
@@ -555,36 +555,36 @@ vector<Object> snapshot;
         \hline
 
         $\type{UC}_1(x) : $ \\
-        $\quad \type{User}(x) \to$ 
+        $\quad \type{User}(x) \to$
             & \chng{$x$} & \chng{\texttt{User}} & \chng{\texttt{1}} \\
-        
+
         \hline
-        $\quad \exists \Pi(\type{User.photo}(x, \Pi)) \to$ 
+        $\quad \exists \Pi(\type{User.photo}(x, \Pi)) \to$
             & $x$ & \texttt{User} & \texttt{1} \\
             & \chng{$\Pi$} & \chng{\texttt{Photo}} & & \chng{\texttt{[?]}} \\
             &  & \chng{\texttt{User.photo}} & & \chng{\texttt{1:$\Pi$}} \\
-        
+
         \hline
         $\quad ($ \\
-        $\quad\quad |\Pi| > 5 \to$ 
+        $\quad\quad |\Pi| > 5 \to$
             & $x$ & \texttt{User} & \texttt{1} \\
             & $\Pi$ & \texttt{Photo} & & \texttt{[\chng{2}]} \\
             &  & \chng{\texttt{Photo}} & \chng{\texttt{2}} \\
             & & \texttt{User.photo} & \texttt{\chng{3}} & \chng{\texttt{1:2}} \\
-            
+
         \hline
         $\quad\quad \exists y(y \in \Pi) \to$ \\
         $\quad\quad \type{deleted}(y) $ \\
         $\quad ) \to$
             & \multicolumn{4}{l}{\textit{skipped}} \\
-            
+
         \hline
-        $\quad \exists p(p \in \Pi) \to$ 
+        $\quad \exists p(p \in \Pi) \to$
             & $x$ & \texttt{User} & \texttt{1} \\
             & $\Pi$ & \texttt{Photo} & & \texttt{[2]} \\
             & \chng{$p$} & \texttt{Photo} & \texttt{2} \\
             &  & \texttt{User.photo} & \texttt{3} & \texttt{1:2} \\
-            
+
         \hline
         $\quad \type{created}(p, x) \to$
             & $x$ & \texttt{User} & \texttt{1} \\
@@ -593,7 +593,7 @@ vector<Object> snapshot;
             & \chng{$p$} & \chng{\texttt{Photo}} & \chng{\texttt{4}} & & \chng{\texttt{CREATE:1}} \\
             & & \texttt{User.photo} & & \texttt{1:2} \\
             & & \chng{\texttt{User.photo}} & \chng{\texttt{5}} & \chng{\texttt{1:4}} \\
-            
+
         \hline
         $\quad \type{UC}_2(p) \vee$ \\
         $\quad ($ \\
@@ -602,7 +602,7 @@ vector<Object> snapshot;
         $\quad\quad \type{throw}(\mbox{``only PNG...''})$ \\
         $\quad ) \to$
             & \multicolumn{5}{l}{\textit{skipped}} \\
-        
+
         \hline
         $\quad \type{silent}(\mbox{``We protocol...''})$ \\
         $\quad \type{read}(p, x) $
@@ -615,20 +615,20 @@ vector<Object> snapshot;
             & & \texttt{User.photo} & & \texttt{1:4} \\
             & & \chng{\texttt{silent}} & \chng{\texttt{6}} &
                 \chng{\parbox[t]{5em}{\raggedright``We protocol...''}} \\
-        
+
     \end{tabular}
 
 \section{Front-end}\label{sec:front}
 
     Front is a collection of components. Every component gets
-    an associative array of configuration parameters 
+    an associative array of configuration parameters
     and returns an XML element. The element is named \texttt{<report>}
     and has attributes equivalent to the configuration
     params provided.
-    
+
     \texttt{main()} returns an XML document that integrates
     all reports retrieved:
-    
+
     \begin{lstlisting}[language=XML]
 <?xml version="1.0" ?>
 <rqdql>
@@ -658,13 +658,13 @@ vector<Object> snapshot;
     \end{lstlisting}
 
     The script shall be called from command line like this:
-    
+
     \begin{lstlisting}[language=bash]
 $ rqdql errors uml:uc=UC6.5 metrics < myscope.txt
     \end{lstlisting}
-    
+
     Possible reports are:
-    
+
     \begin{itemize}
         \item \texttt{errors}: full list of errors
         \item \texttt{metrics}: full analysis of the scope ambiguity, size, intensity, etc.
@@ -673,14 +673,14 @@ $ rqdql errors uml:uc=UC6.5 metrics < myscope.txt
         \item \texttt{svg:uc=UC5,type=ActorUser,...}: description of types and use cases in SVG
         \item \texttt{tc:uc=UC5,...}: Test Cases for the given UC-s (or all)
     \end{itemize}
-    
+
 \section{Test Cases}\label{sec:test-cases}
 
     We optimize vectors of snapshots, in order
-    to produce the smallest collection. 
+    to produce the smallest collection.
     Then, we convert a vector of snapshots into MOF meta-model.
     The process looks like this:
-    
+
     \begin{tikzpicture}[node distance=8em, -triangle 60, font=\ttfamily]
         \node [draw] (declarations) {Declaration[]};
         \node [draw, right of=declarations] (outcomes) {Outcome[]};
@@ -691,7 +691,7 @@ $ rqdql errors uml:uc=UC6.5 metrics < myscope.txt
         \node [draw, left of=mof] (xmi) {XMI};
         \node [draw, left of=xmi] (uml) {UML};
         \node [draw, above left of=xmi] (code) {code};
-        
+
         \draw (declarations) -- (outcomes);
         \draw (outcomes) -- (paths);
         \draw (paths) -- (optimization);
@@ -701,7 +701,7 @@ $ rqdql errors uml:uc=UC6.5 metrics < myscope.txt
         \draw (xmi) -- (uml);
         \draw (xmi) -- (code);
     \end{tikzpicture}
-    
+
 \section{Architecture and Design}\label{sec:design}
 
     This section is under construction and the material
@@ -720,7 +720,7 @@ $ rqdql errors uml:uc=UC6.5 metrics < myscope.txt
         \node [draw, right of=logger] (front) {Front};
         \node [draw, right of=front] (main) {\texttt{main()}};
         \node [draw, below of=main] (plugin) {RqdqlPlugin};
-    
+
         \draw [->] (yacc) -- (brokers);
         \draw [->] (brokers) -- (proxy);
         \draw [->] (proxy) -- (solm);
@@ -728,7 +728,7 @@ $ rqdql errors uml:uc=UC6.5 metrics < myscope.txt
         \draw [->] (front) -- (logger);
         \draw [->] (front) -- (solm);
         \draw [->] (plugin) -- (main);
-    
+
         \draw [dashed, ->] (yacc) -- (logger);
         \draw [dashed, ->] (brokers) -- (logger);
         \draw [dashed, ->] (proxy) -- (logger);
@@ -737,7 +737,7 @@ $ rqdql errors uml:uc=UC6.5 metrics < myscope.txt
 
 
 
-\bibliography{/Users/be/svn/inventions/bibliography/tpc}{}
-\bibliographystyle{plain}
+%\bibliography{?}{}
+%\bibliographystyle{plain}
 
 \end{document}
