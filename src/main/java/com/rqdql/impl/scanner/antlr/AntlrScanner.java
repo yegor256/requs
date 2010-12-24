@@ -26,7 +26,6 @@ package com.rqdql.impl.scanner.antlr;
 // parent interfaces, classes
 import com.rqdql.Log;
 import com.rqdql.api.scanner.Scanner;
-import com.rqdql.api.thesaurus.Thesaurus;
 
 /**
  * {@link Scanner} that uses Antlr3 for scanning of RQDQL text.
@@ -37,32 +36,25 @@ import com.rqdql.api.thesaurus.Thesaurus;
 public final class AntlrScanner implements Scanner {
 
     /**
-     * The {@link Thesaurus} to work with.
+     * The text to work with.
      */
-    private Thesaurus thesaurus;
+    private String text;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setThesaurus(final Thesaurus thrs) {
-        Log.trace(
-            "setThesaurus(%s)",
-            thrs.getClass().getCanonicalName()
-        );
-        this.thesaurus = thrs;
+    public void run() {
+        Log.trace("#run()");
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void scan(final String text) {
-        Log.trace(
-            "scan(%s.../%d bytes)",
-            text.substring(0, 20),
-            text.length()
-        );
+    public void setInput(final String txt) {
+        Log.trace("#setInput(%d bytes)", txt.length());
+        this.text = txt;
     }
 
 }

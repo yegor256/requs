@@ -23,8 +23,8 @@
  */
 package com.rqdql.api.thesaurus;
 
-// destination
-import com.rqdql.api.solm.SOLM;
+// parent interface
+import com.rqdql.api.Instrument;
 
 /**
  * Thesaurus of OOP constructs.
@@ -32,12 +32,12 @@ import com.rqdql.api.solm.SOLM;
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id: Log.java 2358 2010-12-23 15:40:20Z yegor256@yahoo.com $
  */
-public interface Thesaurus {
+public interface Thesaurus extends Instrument {
 
     /**
-     * Convert OOP constructs into SOLM.
-     * @param solm The {@link SOLM} to use
+     * {@inheritDoc}
      */
-    void convert(final SOLM solm);
+    @Override
+    void run();
 
 }

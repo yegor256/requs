@@ -27,7 +27,6 @@ package com.rqdql.impl.thesaurus.simple;
 import com.rqdql.Log;
 
 // API interfaces
-import com.rqdql.api.solm.SOLM;
 import com.rqdql.api.thesaurus.Thesaurus;
 
 /**
@@ -42,8 +41,8 @@ public final class SimpleThesaurus implements Thesaurus {
      * {@inheritDoc}
      */
     @Override
-    public void convert(final SOLM solm) {
-        Log.trace("convert(%s)", solm.getClass().getCanonicalName());
+    public void run() {
+        Log.trace("#run()");
     }
 
 }
