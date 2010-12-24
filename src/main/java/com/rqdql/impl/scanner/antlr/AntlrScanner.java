@@ -45,7 +45,8 @@ public final class AntlrScanner implements Scanner {
      */
     @Override
     public void run() {
-        Log.trace("#run()");
+        assert this.text != null;
+        Log.trace("#run(), with injected %d bytes", this.text.length());
     }
 
     /**

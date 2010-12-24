@@ -47,12 +47,13 @@ public final class Main {
      * @throws Exception If something goes wrong inside
      * @see <a href="http://stackoverflow.com/questions/309424">SO discussion</a>
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(final String[] args) throws Exception {
         final String xml = new Dispatcher().dispatch(
             args,
             IOUtils.toString(System.in, "UTF-8")
         );
-        System.out.println(xml);
+        System.out.print(xml);
     }
 
 }
