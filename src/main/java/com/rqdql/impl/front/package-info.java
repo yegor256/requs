@@ -21,29 +21,11 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.api.solm;
-
-// for logging
-import com.rqdql.Log;
-
-// for scanning
-import com.rqdql.impl.solm.simple.SimpleSOLM;
 
 /**
- * Factory of {@link SOLM}s.
+ * Reporters.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class SOLMFactory {
-
-    /**
-     * Creates a new {@link SOLM}.
-     * @return The {@link SOLM} just created
-     */
-    public final SOLM getSOLM() {
-        Log.trace("#getSOLM()");
-        return new SimpleSOLM();
-    }
-
-}
+package com.rqdql.impl.front;

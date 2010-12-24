@@ -44,7 +44,7 @@ public interface Scanner {
     /**
      * Scan the RQDQL-grammar text and inject found
      * OOP constructs into pre-registered OopListener.
-     * @param msg The text to scan
+     * @param text The text to scan
      */
     void scan(final String text);
 

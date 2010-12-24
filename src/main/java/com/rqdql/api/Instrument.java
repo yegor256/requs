@@ -21,29 +21,19 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.api.scanner;
-
-// for logging
-import com.rqdql.Log;
-
-// for scanning
-import com.rqdql.impl.scanner.antlr.AntlrScanner;
+package com.rqdql.api;
 
 /**
- * Factory of {@link Scanner}s.
+ * Instrument.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
- * @version $Id: Log.java 2358 2010-12-23 15:40:20Z yegor256@yahoo.com $
+ * @version $Id$
  */
-public final class ScannerFactory {
+public interface Instrument {
 
     /**
-     * Creates a new {@link Scanner}.
-     * @return The {@link Scanner} just created
+     * Process what is required.
      */
-    public final Scanner getScanner() {
-        Log.trace("#getScanner()");
-        return new AntlrScanner();
-    }
+    void run();
 
 }

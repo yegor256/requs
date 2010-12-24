@@ -44,6 +44,7 @@ public final class Main {
     /**
      * Entry point of the entire JAR.
      * @param args List of command-line arguments
+     * @throws Exception If something goes wrong inside
      * @see <a href="http://stackoverflow.com/questions/309424">SO discussion</a>
      */
     public static void main(final String[] args) throws Exception {

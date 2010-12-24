@@ -42,7 +42,7 @@ public final class SimpleThesaurus implements Thesaurus {
      * {@inheritDoc}
      */
     @Override
-    public final void convert(final SOLM solm) {
+    public void convert(final SOLM solm) {
         Log.trace("convert(%s)", solm.getClass().getCanonicalName());
     }
 

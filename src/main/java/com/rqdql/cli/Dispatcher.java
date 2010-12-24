@@ -27,32 +27,14 @@ package com.rqdql.cli;
 import com.rqdql.Log;
 
 // for processing of incoming document
-import com.rqdql.api.front.Config;
-import com.rqdql.api.front.FrontFactory;
-import com.rqdql.api.front.Reporter;
-import com.rqdql.api.solm.SOLM;
-import com.rqdql.api.solm.SOLMFactory;
+import com.rqdql.api.Instrument;
+import com.rqdql.api.InstrumentFactory;
+import com.rqdql.api.front.Assembler;
 import com.rqdql.api.scanner.Scanner;
-import com.rqdql.api.scanner.ScannerFactory;
-import com.rqdql.api.thesaurus.Thesaurus;
-import com.rqdql.api.thesaurus.ThesaurusFactory;
-
-// for XML serialization
-import java.io.ByteArrayOutputStream;
 
 // for manipulations with options
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-// for XML processing
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Serializer;
-
-// for processing of words/names of reports
-import org.apache.commons.lang.WordUtils;
 
 /**
  * Dispatcher of CLI request.
@@ -64,34 +46,12 @@ import org.apache.commons.lang.WordUtils;
 public final class Dispatcher {
 
     /**
-     * Name of XML root element.
-     * @see #document(Map)
-     */
-    private static final String ROOT_NAME = "rqdql";
-
-    /**
-     * Name of XML element with report.
-     * @see #document(Map)
-     */
-    private static final String REPORT_NAME = "report";
-
-    /**
-     * Max line length of the XML produced.
-     * @see #toXML(Document)
-     */
-    private static final int MAX_LENGTH = 80;
-
-    /**
-     * XML indentation spaces.
-     * @see #toXML(Document)
-     */
-    private static final int INDENTATION = 4;
-
-    /**
      * Entry point of the entire JAR.
      *
      * @param args List of command-line arguments
-     * @param XML produced
+     * @param input Incoming RQDQL stream
+     * @return XML produced
+     * @see Main#main(String[])
      */
     public String dispatch(final String[] args, final String input) {
         Log.trace("#dispatch(%d arguments)", args.length);
@@ -101,83 +61,19 @@ public final class Dispatcher {
                 reps.add(arg);
             }
         }
-        final Map<String, Reporter> reporters = this.reporters(reps);
+        final Assembler asm = new Assembler();
+        asm.initialize(reps);
 
-        Scanner scanner = new ScannerFactory().getScanner();
-        Thesaurus thesaurus = new ThesaurusFactory().getThesaurus();
-        SOLM solm = new SOLMFactory().getSOLM();
-        scanner.setThesaurus(thesaurus);
-        scanner.scan(input);
-        thesaurus.convert(solm);
-
-        Document dom = this.document(reporters);
-        return this.toXML(dom);
-    }
-
-    /**
-     * Build and return a list of front reporters.
-     * @return Collection of reporters
-     */
-    private Map<String, Reporter> reporters(final List<String> reps) {
-        Map<String, Reporter> reporters = new HashMap<String, Reporter>();
-        FrontFactory factory = new FrontFactory();
-        for (String rep : reps) {
-            // todo: this is stub
-            final String name = WordUtils.capitalize(rep);
-            Reporter reporter;
-            try {
-                reporter = factory.find(name);
-            } catch (com.rqdql.api.front.ReporterNotFoundException ex) {
-                throw com.rqdql.Problem.raise(ex);
-            }
-            final Config config = new Config();
-            // todo: inject data into config
-            reporter.configure(config);
-            reporter.init();
-            reporters.put(name, reporter);
-            Log.debug(
-                "Reporter '%s' instantiated as %s",
-                name,
-                reporter.getClass().getCanonicalName()
-            );
+        (Scanner) InstrumentFactory.getInstance()
+            .find("scanner/Scanner")
+            .setInput(input);
+        final List<Instrument> instruments =
+            InstrumentFactory.getInstance().getInstruments();
+        for (Instrument inst : instruments) {
+            inst.run();
         }
-        return reporters;
-    }
 
-    /**
-     * Build {@link Document} from a list of {@link Reporter}s.
-     * @return reporters The list of them
-     * @return XML Document
-     */
-    private Document document(final Map<String, Reporter> reporters) {
-        final Element root = new Element(this.ROOT_NAME);
-        final Document dom = new Document(root);
-        for (Map.Entry<String, Reporter> pair : reporters.entrySet()) {
-            final Element element = new Element(pair.getKey());
-            root.appendChild(element);
-            final Element node = new Element(this.REPORT_NAME);
-            element.appendChild(node);
-            pair.getValue().report(node);
-        }
-        return dom;
-    }
-
-    /**
-     * Convert DOM {@link Document} to {@link String}.
-     * @return dom The Document
-     * @return XML in string
-     */
-    private String toXML(final Document dom) {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final Serializer serializer = new Serializer(baos);
-        serializer.setIndent(this.INDENTATION);
-        serializer.setMaxLength(this.MAX_LENGTH);
-        try {
-            serializer.write(dom);
-        } catch (java.io.IOException ex) {
-            throw com.rqdql.Problem.raise(ex);
-        }
-        return baos.toString();
+        return asm.assemble();
     }
 
 

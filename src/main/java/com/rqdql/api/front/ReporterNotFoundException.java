@@ -34,6 +34,7 @@ public class ReporterNotFoundException extends Exception {
     /**
      * Public ctor.
      * @param name The name of reporter
+     * @param exp Cause of this problem
      */
     public ReporterNotFoundException(final String name, final Throwable exp) {
         super("Reporter not found: " + name, exp);
