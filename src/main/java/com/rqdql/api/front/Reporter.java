@@ -21,37 +21,34 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.cli;
+package com.rqdql.api.front;
 
-// for manipulations with STDIN
-import org.apache.commons.io.IOUtils;
+// for XML processing
+import nu.xom.Element;
 
 /**
- * Entry point of the JAR.
+ * Reporter of some information from Java to XML.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class Main {
+public interface Reporter {
 
     /**
-     * Private ctor, to avoid instantiation of the class.
+     * Set configuration.
+     * @param config The {@link Config} provided by client
      */
-    private Main() {
-        // intentionally empty
-    }
+    void configure(final Config config);
 
     /**
-     * Entry point of the entire JAR.
-     * @param args List of command-line arguments
-     * @see <a href="http://stackoverflow.com/questions/309424">SO discussion</a>
+     * Initialize it, if necessary.
      */
-    public static void main(final String[] args) throws Exception {
-        final String xml = new Dispatcher().dispatch(
-            args,
-            IOUtils.toString(System.in, "UTF-8")
-        );
-        System.out.println(xml);
-    }
+    void init();
+
+    /**
+     * Report into the DOM {@link Element}.
+     * @param element The {@link Element} to fill
+     */
+    void report(final Element element);
 
 }

@@ -21,37 +21,48 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.cli;
+package com.rqdql.impl.scanner.antlr;
 
-// for manipulations with STDIN
-import org.apache.commons.io.IOUtils;
+// parent interfaces, classes
+import com.rqdql.Log;
+import com.rqdql.api.scanner.Scanner;
+import com.rqdql.api.thesaurus.Thesaurus;
 
 /**
- * Entry point of the JAR.
+ * {@link Scanner} that uses Antlr3 for scanning of RQDQL text.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
- * @version $Id$
+ * @version $Id: Log.java 2358 2010-12-23 15:40:20Z yegor256@yahoo.com $
  */
-public final class Main {
+public final class AntlrScanner implements Scanner {
 
     /**
-     * Private ctor, to avoid instantiation of the class.
+     * The {@link Thesaurus} to work with.
      */
-    private Main() {
-        // intentionally empty
+    private Thesaurus thesaurus;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void setThesaurus(final Thesaurus thrs) {
+        Log.trace(
+            "setThesaurus(%s)",
+            thrs.getClass().getCanonicalName()
+        );
+        this.thesaurus = thrs;
     }
 
     /**
-     * Entry point of the entire JAR.
-     * @param args List of command-line arguments
-     * @see <a href="http://stackoverflow.com/questions/309424">SO discussion</a>
+     * {@inheritDoc}
      */
-    public static void main(final String[] args) throws Exception {
-        final String xml = new Dispatcher().dispatch(
-            args,
-            IOUtils.toString(System.in, "UTF-8")
+    @Override
+    public final void scan(final String text) {
+        Log.trace(
+            "scan(%s.../%d bytes)",
+            text.substring(0, 20),
+            text.length()
         );
-        System.out.println(xml);
     }
 
 }

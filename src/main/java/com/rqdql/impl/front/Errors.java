@@ -21,37 +21,48 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.cli;
+package com.rqdql.impl.front;
 
-// for manipulations with STDIN
-import org.apache.commons.io.IOUtils;
+// for logging
+import com.rqdql.Log;
+
+// API
+import com.rqdql.api.front.Config;
+import com.rqdql.api.front.Reporter;
+
+// for XML processing
+import nu.xom.Element;
 
 /**
- * Entry point of the JAR.
+ * Reporter of errors.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class Main {
+public class Errors implements Reporter {
 
     /**
-     * Private ctor, to avoid instantiation of the class.
+     * {@inheritDoc}
      */
-    private Main() {
-        // intentionally empty
+    @Override
+    public final void configure(final Config config) {
+        Log.trace("#configure()");
     }
 
     /**
-     * Entry point of the entire JAR.
-     * @param args List of command-line arguments
-     * @see <a href="http://stackoverflow.com/questions/309424">SO discussion</a>
+     * {@inheritDoc}
      */
-    public static void main(final String[] args) throws Exception {
-        final String xml = new Dispatcher().dispatch(
-            args,
-            IOUtils.toString(System.in, "UTF-8")
-        );
-        System.out.println(xml);
+    @Override
+    public final void init() {
+        Log.trace("#init()");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void report(final Element element) {
+        Log.trace("#report()");
     }
 
 }

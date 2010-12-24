@@ -478,6 +478,18 @@
     </profiles>
 
     <dependencies>
+		<dependency>
+		    <!--
+		    XOM is used as an alternative to classical Java XML
+		    manipulation library, which is difficult to use and
+		    very verbose. Other options considered: DOM4J, JDOM.
+		    @see http://stackoverflow.com/questions/831865
+		    @see http://www.xom.nu
+		    -->
+			<groupId>xom</groupId>
+			<artifactId>xom</artifactId>
+			<version>1.2.5</version> <!-- 13 Oct 2010 -->
+		</dependency>
         <dependency>
             <!--
             Since every framework uses its own logging mechanism

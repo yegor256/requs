@@ -21,37 +21,29 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.cli;
+package com.rqdql.api.solm;
 
-// for manipulations with STDIN
-import org.apache.commons.io.IOUtils;
+// for logging
+import com.rqdql.Log;
+
+// for scanning
+import com.rqdql.impl.solm.simple.SimpleSOLM;
 
 /**
- * Entry point of the JAR.
+ * Factory of {@link SOLM}s.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class Main {
+public final class SOLMFactory {
 
     /**
-     * Private ctor, to avoid instantiation of the class.
+     * Creates a new {@link SOLM}.
+     * @return The {@link SOLM} just created
      */
-    private Main() {
-        // intentionally empty
-    }
-
-    /**
-     * Entry point of the entire JAR.
-     * @param args List of command-line arguments
-     * @see <a href="http://stackoverflow.com/questions/309424">SO discussion</a>
-     */
-    public static void main(final String[] args) throws Exception {
-        final String xml = new Dispatcher().dispatch(
-            args,
-            IOUtils.toString(System.in, "UTF-8")
-        );
-        System.out.println(xml);
+    public final SOLM getSOLM() {
+        Log.trace("#getSOLM()");
+        return new SimpleSOLM();
     }
 
 }
