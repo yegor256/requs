@@ -44,6 +44,9 @@
     </bannerLeft>
 
     <body>
+        <head>
+            <link href="./images/favicon.gif" rel="shortcut icon" />
+        </head>
         <breadcrumbs>
             <item name="rqdql.com" href="http://www.rqdql.com"/>
         </breadcrumbs>
@@ -62,7 +65,7 @@
         <menu ref="reports" />
     </body>
 
-    <publishDate position="right"/>
+    <publishDate position="right" format="dd M yyyy" />
     <version position="right"/>
 
 </project>

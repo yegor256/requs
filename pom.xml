@@ -741,8 +741,8 @@
                                 <artifactId>maven-checkstyle-plugin</artifactId>
                                 <!-- version is specified in pluginManagement -->
                                 <configuration>
-                                    <configLocation>src/test/resources/maven/checkstyle/checks.xml</configLocation>
-                                    <headerLocation>src/test/resources/maven/checkstyle/LICENSE.txt</headerLocation>
+                                    <configLocation>src/test/maven/checkstyle/checks.xml</configLocation>
+                                    <headerLocation>src/test/maven/checkstyle/LICENSE.txt</headerLocation>
                                 </configuration>
                             </plugin>
                             <plugin>
@@ -753,7 +753,7 @@
                                     <targetJdk>${jdk.version}</targetJdk>
                                     <linkXRef>false</linkXRef>
                                     <rulesets>
-                                        <ruleset>src/test/resources/maven/pmd/ruleset.xml</ruleset>
+                                        <ruleset>src/test/maven/pmd/ruleset.xml</ruleset>
                                     </rulesets>
                                 </configuration>
                             </plugin>
@@ -773,6 +773,18 @@
                                 <version>2.0-beta-2</version> <!-- 7 Nov 2010 -->
                             </plugin>
                         </reportPlugins>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <!--
+                    Process LaTeX documentation in order to produce PDF
+                    @see http://mojo.codehaus.org/latex-maven-plugin
+                    -->
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>latex-maven-plugin</artifactId>
+                    <version>1.0</version> <!-- 24 Dec 2010 -->
+                    <configuration>
+                        <latexBuildDir>${project.build.directory}/site/pdf</latexBuildDir>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -817,6 +829,20 @@
                         <id>attach-descriptor</id>
                         <goals>
                             <goal>attach-descriptor</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>latex-maven-plugin</artifactId>
+                <!-- version is specified in pluginManagement section -->
+                <executions>
+                    <execution>
+                        <id>latex-documents</id>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>latex</goal>
                         </goals>
                     </execution>
                 </executions>
