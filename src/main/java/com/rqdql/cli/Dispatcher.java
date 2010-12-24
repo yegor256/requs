@@ -62,8 +62,13 @@ public final class Dispatcher {
                 reps.add(arg);
             }
         }
+
         final Assembler asm = new Assembler();
-        asm.init(reps);
+        try {
+            asm.init(reps);
+        } catch (com.rqdql.api.front.ReporterNotFoundException ex) {
+            throw com.rqdql.Problem.raise(ex);
+        }
 
         final Scanner scanner = (Scanner) InstrumentFactory.getInstance()
             .find("scanner/Scanner");

@@ -83,19 +83,17 @@ public final class Assembler {
      * Build a list of front reporters.
      * @param reps List of reporters to create (together with their args)
      * @see com.rqdql.cli.Dispatcher#dispatch(String[], String)
+     * @throws ReporterNotFoundException If one of reporters are not found
      */
-    public void init(final List<String> reps) {
+    public void init(final List<String> reps)
+        throws ReporterNotFoundException {
         this.reporters = new HashMap<String, Reporter>();
         final FrontFactory factory = new FrontFactory();
         for (String rep : reps) {
             // todo: this is stub
             final String name = WordUtils.capitalize(rep);
             Reporter reporter;
-            try {
-                reporter = factory.find(name);
-            } catch (com.rqdql.api.front.ReporterNotFoundException ex) {
-                throw com.rqdql.Problem.raise(ex);
-            }
+            reporter = factory.find(name);
             final Config config = new Config();
             // todo: inject data into config
             reporter.configure(config);

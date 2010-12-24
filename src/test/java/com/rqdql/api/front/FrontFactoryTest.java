@@ -15,4 +15,10 @@ public class FrontFactoryTest {
         assertTrue(rep instanceof com.rqdql.impl.front.Metrics);
     }
 
+    @Test(expected = ReporterNotFoundException.class)
+    public void testMakesAnAttemplToFindNonExistingReporter() throws Exception {
+        FrontFactory factory = new FrontFactory();
+        Reporter rep = factory.find("there is no such reporter");
+    }
+
 }
