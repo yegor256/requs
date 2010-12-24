@@ -21,37 +21,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.cli;
-
-// for manipulations with STDIN
-import org.apache.commons.io.IOUtils;
+package com.rqdql.api.front;
 
 /**
- * Entry point of the JAR.
+ * Configuration of reporter.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class Main {
-
-    /**
-     * Private ctor, to avoid instantiation of the class.
-     */
-    private Main() {
-        // intentionally empty
-    }
-
-    /**
-     * Entry point of the entire JAR.
-     * @param args List of command-line arguments
-     * @see <a href="http://stackoverflow.com/questions/309424">SO discussion</a>
-     */
-    public static void main(final String[] args) throws Exception {
-        final String xml = new Dispatcher().dispatch(
-            args,
-            IOUtils.toString(System.in, "UTF-8")
-        );
-        System.out.println(xml);
-    }
+public class Config {
 
 }

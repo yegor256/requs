@@ -21,37 +21,29 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.cli;
+package com.rqdql.impl.thesaurus.simple;
 
-// for manipulations with STDIN
-import org.apache.commons.io.IOUtils;
+// for logging
+import com.rqdql.Log;
+
+// API interfaces
+import com.rqdql.api.solm.SOLM;
+import com.rqdql.api.thesaurus.Thesaurus;
 
 /**
- * Entry point of the JAR.
+ * Thesaurus of OOP constructs.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
- * @version $Id$
+ * @version $Id: Log.java 2358 2010-12-23 15:40:20Z yegor256@yahoo.com $
  */
-public final class Main {
+public final class SimpleThesaurus implements Thesaurus {
 
     /**
-     * Private ctor, to avoid instantiation of the class.
+     * {@inheritDoc}
      */
-    private Main() {
-        // intentionally empty
-    }
-
-    /**
-     * Entry point of the entire JAR.
-     * @param args List of command-line arguments
-     * @see <a href="http://stackoverflow.com/questions/309424">SO discussion</a>
-     */
-    public static void main(final String[] args) throws Exception {
-        final String xml = new Dispatcher().dispatch(
-            args,
-            IOUtils.toString(System.in, "UTF-8")
-        );
-        System.out.println(xml);
+    @Override
+    public final void convert(final SOLM solm) {
+        Log.trace("convert(%s)", solm.getClass().getCanonicalName());
     }
 
 }

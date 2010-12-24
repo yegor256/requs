@@ -21,11 +21,48 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
+package com.rqdql.impl.front;
+
+// for logging
+import com.rqdql.Log;
+
+// API
+import com.rqdql.api.front.Config;
+import com.rqdql.api.front.Reporter;
+
+// for XML processing
+import nu.xom.Element;
 
 /**
- * RQDQL to OOP scanner.
+ * Reporter of metrics.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-package com.rqdql.scanner;
+public class Metrics implements Reporter {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void configure(final Config config) {
+        Log.trace("#configure()");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void init() {
+        Log.trace("#init()");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void report(final Element element) {
+        Log.trace("#report()");
+    }
+
+}

@@ -21,37 +21,31 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.cli;
+package com.rqdql.api.scanner;
 
-// for manipulations with STDIN
-import org.apache.commons.io.IOUtils;
+// coupled class
+import com.rqdql.api.thesaurus.Thesaurus;
 
 /**
- * Entry point of the JAR.
+ * Scanner of incoming RQDQL text, and converting it into
+ * OOP constructs.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
- * @version $Id$
+ * @version $Id: Log.java 2358 2010-12-23 15:40:20Z yegor256@yahoo.com $
  */
-public final class Main {
+public interface Scanner {
 
     /**
-     * Private ctor, to avoid instantiation of the class.
+     * Register a thesaurus of OOP constructs.
+     * @param thesaurus The thesaurus of OOP constructs
      */
-    private Main() {
-        // intentionally empty
-    }
+    void setThesaurus(final Thesaurus thesaurus);
 
     /**
-     * Entry point of the entire JAR.
-     * @param args List of command-line arguments
-     * @see <a href="http://stackoverflow.com/questions/309424">SO discussion</a>
+     * Scan the RQDQL-grammar text and inject found
+     * OOP constructs into pre-registered OopListener.
+     * @param msg The text to scan
      */
-    public static void main(final String[] args) throws Exception {
-        final String xml = new Dispatcher().dispatch(
-            args,
-            IOUtils.toString(System.in, "UTF-8")
-        );
-        System.out.println(xml);
-    }
+    void scan(final String text);
 
 }
