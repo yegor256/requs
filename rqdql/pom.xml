@@ -34,7 +34,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.rqdql</groupId>
     <artifactId>rqdql</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Requirements Definition and Query Language (RQDQL)</name>
@@ -189,8 +189,8 @@
                                 <consoleOutput>true</consoleOutput>
                                 <logViolationsToConsole>true</logViolationsToConsole>
                                 <violationSeverity>info</violationSeverity>
-                                <configLocation>${project.basedir}/src/test/resources/maven/checkstyle/checks.xml</configLocation>
-                                <headerLocation>${project.basedir}/src/test/resources/maven/checkstyle/LICENSE.txt</headerLocation>
+                                <configLocation>${project.basedir}/src/test/maven/checkstyle/checks.xml</configLocation>
+                                <headerLocation>${project.basedir}/src/test/maven/checkstyle/LICENSE.txt</headerLocation>
                             </configuration>
                         </plugin>
                         <plugin>
@@ -209,7 +209,7 @@
                                 <verbose>true</verbose>
                                 <linkXRef>false</linkXRef>
                                 <rulesets>
-                                    <ruleset>${project.basedir}/src/test/resources/maven/pmd/ruleset.xml</ruleset>
+                                    <ruleset>${project.basedir}/src/test/maven/pmd/ruleset.xml</ruleset>
                                 </rulesets>
                             </configuration>
                         </plugin>
@@ -231,7 +231,7 @@
                                 -->
                                 <failOnError>false</failOnError>
                                 <xmlOutput>true</xmlOutput>
-                                <excludeFilterFile>${project.basedir}/src/test/resources/maven/findbugs/exclude.xml</excludeFilterFile>
+                                <excludeFilterFile>${project.basedir}/src/test/maven/findbugs/exclude.xml</excludeFilterFile>
                             </configuration>
                         </plugin>
                         <plugin>
@@ -274,6 +274,14 @@
                                     <packageBranchRate>70</packageBranchRate>
                                     <totalLineRate>80</totalLineRate>
                                     <totalBranchRate>80</totalBranchRate>
+                                    <regexes>
+                                        <regex>
+                                            <!-- because it's utility class -->
+                                            <pattern>com.rqdql.cli.Main</pattern>
+                                            <lineRate>40</lineRate>
+                                            <branchRate>60</branchRate>
+                                        </regex>
+                                    </regexes>
                                 </check>
                             </configuration>
                         </plugin>
@@ -702,7 +710,7 @@
                                 <artifactId>maven-javadoc-plugin</artifactId>
                                 <!-- version is specified in pluginManagement -->
                                 <configuration>
-                                    <stylesheetfile>src/test/resources/maven/javadoc/screen.css</stylesheetfile>
+                                    <stylesheetfile>src/test/maven/javadoc/screen.css</stylesheetfile>
                                     <tags>
                                         <tag>
                                             <name>todo</name>
