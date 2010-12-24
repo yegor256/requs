@@ -264,6 +264,8 @@
                                     <excludes>
                                         <!-- auto-generated classes for i18n -->
                                         <exclude>com/rqdql/gettext/*</exclude>
+                                        <!-- CLI class, which is never instantiated -->
+                                        <exclude>com/rqdql/cli/Main.java</exclude>
                                     </excludes>
                                 </instrumentation>
                                 <check>
@@ -274,14 +276,6 @@
                                     <packageBranchRate>70</packageBranchRate>
                                     <totalLineRate>80</totalLineRate>
                                     <totalBranchRate>80</totalBranchRate>
-                                    <regexes>
-                                        <regex>
-                                            <!-- because it's utility class -->
-                                            <pattern>com.rqdql.cli.Main</pattern>
-                                            <lineRate>40</lineRate>
-                                            <branchRate>60</branchRate>
-                                        </regex>
-                                    </regexes>
                                 </check>
                             </configuration>
                         </plugin>
