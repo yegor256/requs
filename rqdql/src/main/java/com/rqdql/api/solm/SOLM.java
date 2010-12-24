@@ -23,12 +23,21 @@
  */
 package com.rqdql.api.solm;
 
+// parent interface
+import com.rqdql.api.Instrument;
+
 /**
  * Second Order Logic Model (SOLM).
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public interface SOLM {
+public interface SOLM extends Instrument {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void run();
 
 }

@@ -34,6 +34,7 @@ import com.rqdql.api.scanner.Scanner;
 
 // for manipulations with options
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -62,12 +63,12 @@ public final class Dispatcher {
             }
         }
         final Assembler asm = new Assembler();
-        asm.initialize(reps);
+        asm.init(reps);
 
-        (Scanner) InstrumentFactory.getInstance()
-            .find("scanner/Scanner")
+        ((Scanner) InstrumentFactory.getInstance()
+            .find("scanner/Scanner"))
             .setInput(input);
-        final List<Instrument> instruments =
+        final Collection<Instrument> instruments =
             InstrumentFactory.getInstance().getInstruments();
         for (Instrument inst : instruments) {
             inst.run();

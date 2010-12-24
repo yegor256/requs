@@ -23,8 +23,8 @@
  */
 package com.rqdql.api.scanner;
 
-// coupled class
-import com.rqdql.api.thesaurus.Thesaurus;
+// parent interface
+import com.rqdql.api.Instrument;
 
 /**
  * Scanner of incoming RQDQL text, and converting it into
@@ -33,19 +33,18 @@ import com.rqdql.api.thesaurus.Thesaurus;
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id: Log.java 2358 2010-12-23 15:40:20Z yegor256@yahoo.com $
  */
-public interface Scanner {
+public interface Scanner extends Instrument {
 
     /**
-     * Register a thesaurus of OOP constructs.
-     * @param thesaurus The thesaurus of OOP constructs
+     * {@inheritDoc}
      */
-    void setThesaurus(final Thesaurus thesaurus);
+    @Override
+    void run();
 
     /**
-     * Scan the RQDQL-grammar text and inject found
-     * OOP constructs into pre-registered OopListener.
-     * @param text The text to scan
+     * Inject content with RQDQL-syntax text.
+     * @param input The text to parse
      */
-    void scan(final String text);
+    void setInput(final String input);
 
 }

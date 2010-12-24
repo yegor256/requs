@@ -27,6 +27,7 @@ package com.rqdql.api;
 import com.rqdql.Log;
 
 // for listing of instruments
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +40,11 @@ import java.util.Map;
 public final class InstrumentFactory {
 
     /**
+     * Signleton instance.
+     */
+    private static InstrumentFactory instance;
+
+    /**
      * List of instruments discovered.
      */
     private Map<String, Instrument> instruments;
@@ -48,6 +54,19 @@ public final class InstrumentFactory {
      */
     private InstrumentFactory() {
         this.instruments = new HashMap<String, Instrument>();
+        // todo: let's implement it more effectively
+        this.instruments.put(
+            "scanner/Scanner",
+            new com.rqdql.impl.scanner.antlr.AntlrScanner()
+        );
+        this.instruments.put(
+            "thesaurus/Thesaurus",
+            new com.rqdql.impl.thesaurus.simple.SimpleThesaurus()
+        );
+        this.instruments.put(
+            "solm/Solm",
+            new com.rqdql.impl.solm.simple.SimpleSOLM()
+        );
     }
 
     /**
@@ -65,7 +84,7 @@ public final class InstrumentFactory {
      * Get a full list of instruments.
      * @return Ordered list of instruments
      */
-    public List<Instrument> getInstruments() {
+    public Collection<Instrument> getInstruments() {
         return this.instruments.values();
     }
 

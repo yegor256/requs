@@ -23,6 +23,9 @@
  */
 package com.rqdql.impl.solm.simple;
 
+// for logging
+import com.rqdql.Log;
+
 // parent interface
 import com.rqdql.api.solm.SOLM;
 
@@ -33,5 +36,13 @@ import com.rqdql.api.solm.SOLM;
  * @version $Id$
  */
 public class SimpleSOLM implements SOLM {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void run() {
+        Log.trace("#run()");
+    }
 
 }
