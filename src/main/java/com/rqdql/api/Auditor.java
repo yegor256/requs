@@ -33,7 +33,7 @@ import java.util.List;
  *
  * <p>It is a signleton pattern, meaning that you can't instantiate
  * the class explicitly, but should always get an access to its
- * instance via {@link @getInstance()} method.
+ * instance via {@link #getInstance()} method.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$

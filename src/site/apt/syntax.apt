@@ -1,7 +1,7 @@
-Requirements Definition and Query Language (<<RQDQL>>)
+Requirements Definition and Query Language (RQDQL)
 
   {{{http://standards.ieee.org/reading/ieee/std_public/description/se/830-1998_desc.html}IEEE 830-1998}}
-  says: "SRS (<<software requirements specification>>) should be
+  says: "SRS (<software requirements specification>) should be
   correct, unambiguous, complete, consistent, ranked for importance and/or stability,
   verifiable, modifiable, traceable". RQDQL is going to enable the creation
   of such documents in plain text format. If you're interested to join the group
@@ -37,7 +37,7 @@ ImageFile includes:
   size: "total number of bytes in PNG content".
 +--
 
-  The semantic is the same &mdash; the type still contains three <<slots>>
+  The semantic is the same -- the type still contains three <<slots>>
   (<<<PNG content>>>, <<<name>>> and <<<size>>>). However
   in this example we've added an informal explanation to every one of them.
   A colon separates the name of the slot and its invariant.
@@ -76,21 +76,21 @@ Size <<of>> ImageFile <<is a>> "size of PNG content of this file".
   In general, <<informal texts>> play an important role during the initial
   development of a requirements document and
   during a preliminary system analysis. When you don't know for sure
-  how to define the information you have in a strict format &mdash; you
+  how to define the information you have in a strict format -- you
   should use informal texts. Later, when you have more information,
   you will replace them.
 
   As you've already noticed, RQDQL is a case-insensitive language in all places
-  except one &mdash; type names should use
+  except one -- type names should use
   {{{http://en.wikipedia.org/wiki/CamelCase}CamelCase Notation}}. Thus
   "<<<name of ImageFile>>>" and "<<<Name of ImageFile>>>" point
   us to the same type. However, <<<ImageFile>>> is a valid type
   name, and <<<imagefile>>> is just an English word.
 
-  There is one special meta-type, which we should mention &mdash; Actors.
+  There is one special meta-type, which we should mention -- Actors.
   Every type that has <<<Actor>>> prefix is an instance of a meta-type
   called "Actors". In the scope definition document actors represent people,
-  machines, services, databases, etc. &mdash; anything and anyone
+  machines, services, databases, etc. -- anything and anyone
   who interacts with the <<system under development (SUD)>>,
   crossing the board of the SUD. Important to note that the SUD is
   an actor itself, and its name in the document is <<<SUD>>>. You
@@ -207,9 +207,9 @@ UC8.1 3a) If failed with "invalid format":
   the entire scope definition document. The metric is called
   "<<scope ambiguity>>" and is calculated like:
 
----
++--
 A = S / (S + M)
----
++--
 
   <S> stands for a total number of all informal flows,
   and <M> is a total number of CRUD-manipulators.
@@ -280,7 +280,7 @@ UC8.1 3a) If failed with "invalid format":
   was just declared in this flow and it means that it's <<<NULL>>> so far.
   "<<<The user>>>" was passed as a parameter to this use case
   and there is no information about its status, whether it is <<<NULL>>> or not.
-  If it is <<<NULL>>> (not instantiated yet) &mdash; it is an error
+  If it is <<<NULL>>> (not instantiated yet) -- it is an error
   and it will be found by RQDQL parser and reported.
 
   <<<2. The friend is one of friend of the user.>>>
