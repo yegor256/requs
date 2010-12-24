@@ -43,7 +43,7 @@ public final class Auditor {
     /**
      * A unique instance of this class.
      */
-    private static Auditor instance;
+    private static Auditor instance = new Auditor();
 
     /**
      * List of listeners.
@@ -62,10 +62,7 @@ public final class Auditor {
      *
      * @return The auditor to use
      */
-    public Auditor getInstance() {
-        if (Auditor.instance == null) {
-            Auditor.instance = new Auditor();
-        }
+    public static Auditor getInstance() {
         return Auditor.instance;
     }
 

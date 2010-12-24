@@ -42,7 +42,7 @@ public final class InstrumentFactory {
     /**
      * Signleton instance.
      */
-    private static InstrumentFactory instance;
+    private static InstrumentFactory instance = new InstrumentFactory();
 
     /**
      * List of instruments discovered.
@@ -53,6 +53,7 @@ public final class InstrumentFactory {
      * Private ctor, to avoid direct instantiation of the class.
      */
     private InstrumentFactory() {
+        Log.trace("#InstrumentFactory()");
         this.instruments = new HashMap<String, Instrument>();
         // todo: let's implement it more effectively
         this.instruments.put(
@@ -74,9 +75,6 @@ public final class InstrumentFactory {
      * @return The factory to use
      */
     public static InstrumentFactory getInstance() {
-        if (InstrumentFactory.instance == null) {
-            InstrumentFactory.instance = new InstrumentFactory();
-        }
         return InstrumentFactory.instance;
     }
 
@@ -85,6 +83,7 @@ public final class InstrumentFactory {
      * @return Ordered list of instruments
      */
     public Collection<Instrument> getInstruments() {
+        Log.trace("#getInstruments()");
         return this.instruments.values();
     }
 
@@ -94,6 +93,7 @@ public final class InstrumentFactory {
      * @return The instrument found
      */
     public Instrument find(final String name) {
+        Log.trace("#find('%s')", name);
         return this.instruments.get(name);
     }
 

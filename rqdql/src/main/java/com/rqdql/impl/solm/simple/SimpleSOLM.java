@@ -41,7 +41,7 @@ public class SimpleSOLM implements SOLM {
      * {@inheritDoc}
      */
     @Override
-    public void run() {
+    public final void run() {
         Log.trace("#run()");
     }
 

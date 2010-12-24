@@ -58,16 +58,16 @@ public final class Dispatcher {
         Log.trace("#dispatch(%d arguments)", args.length);
         final List<String> reps = new ArrayList<String>();
         for (String arg : args) {
-            if (!arg.startsWith("-")) {
+            if (arg.charAt(0) != '-') {
                 reps.add(arg);
             }
         }
         final Assembler asm = new Assembler();
         asm.init(reps);
 
-        ((Scanner) InstrumentFactory.getInstance()
-            .find("scanner/Scanner"))
-            .setInput(input);
+        final Scanner scanner = (Scanner) InstrumentFactory.getInstance()
+            .find("scanner/Scanner");
+        scanner.setInput(input);
         final Collection<Instrument> instruments =
             InstrumentFactory.getInstance().getInstruments();
         for (Instrument inst : instruments) {
