@@ -47,6 +47,8 @@ public final class Main {
      * @param args List of command-line arguments
      */
     public static void main(final String[] args) {
+        for (String arg : args) {
+        }
         Log.info("%d arguments provided", args.length);
     }
 

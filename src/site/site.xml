@@ -53,7 +53,11 @@
         <menu name="Overview">
             <item name="Introduction" href="index.html" />
             <item name="Grammar" href="syntax.html" />
-            <item name="FAQ" href="faq.html" />
+            <item name="Usage" href="usage.html" />
+        </menu>
+        <menu name="Reporters">
+            <item name="errors" href="reporters/errors.html" />
+            <item name="metrics" href="reporters/metrics.html" />
         </menu>
         <menu ref="reports" />
     </body>
