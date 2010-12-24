@@ -25,7 +25,7 @@
  * @version $Id: build.xml 30 2010-12-15 08:08:32Z yegor256@yahoo.com $
  */
 
-* {
+body {
     font-family: 'Trebuchet MS', Verdana, Arial, Serif;
     font-size: 16px;
 }
@@ -37,6 +37,9 @@ tt {
     padding-left: 0.3em;
     padding-right: 0.3em;
 }
+div.source pre {
+    background-color: white;
+}
 
 /*
  * Overriding maven-theme.css and maven-base.css
@@ -47,6 +50,12 @@ p {
 h2 {
     font-size: 1.5em;
     color: #2276A4;
+}
+h3 {
+    font-size: 1.2em;
+    background: none;
+    color: #2276A4;
+    padding: 1em 0em;
 }
 .source {
     overflow: hidden;
@@ -64,5 +73,8 @@ div#leftColumn {
     width: 14em;
 }
 div#breadcrumbs {
-    font-size: 0.8em;
+    font-size: 0.7em;
+}
+div#footer {
+    font-size: 0.7em;
 }
