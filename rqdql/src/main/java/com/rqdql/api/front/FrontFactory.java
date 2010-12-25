@@ -32,6 +32,30 @@ package com.rqdql.api.front;
 public final class FrontFactory {
 
     /**
+     * Package, where all reporters are implemented.
+     */
+    private Package pack;
+
+    /**
+     * Public ctor with default value.
+     * @todo #1! I don't know why the first line doesn't work,
+     *           instead it returns NULL. Let's investigate further
+     *           and fix the problem.
+     */
+    public FrontFactory() {
+        // this(Package.getPackage("com.rqdql.impl.front"));
+        this(com.rqdql.impl.front.Errors.class.getPackage());
+    }
+
+    /**
+     * Public ctor with pre-defined package.
+     * @param pckg The package, where reporters are implemented
+     */
+    public FrontFactory(final Package pckg) {
+        this.pack = pckg;
+    }
+
+    /**
      * Find and return a reporter.
      * @param name The name of reporter
      * @return The {@link Reporter} just found
@@ -39,7 +63,7 @@ public final class FrontFactory {
      */
     public Reporter find(final String name)
         throws ReporterNotFoundException {
-        final String clsName = "com.rqdql.impl.front." + name;
+        final String clsName = this.pack.getName() + "." + name;
         try {
             return (Reporter) Class.forName(clsName).newInstance();
         } catch (java.lang.IllegalAccessException ex) {
