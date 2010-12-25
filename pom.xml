@@ -261,13 +261,11 @@
                                 -->
                                 <quiet>false</quiet>
                                 <instrumentation>
-                                    <ignores>
-                                        <!-- CLI class, which is never instantiated -->
-                                        <ignore>com.rqdql.cli.Main</ignore>
-                                    </ignores>
                                     <excludes>
                                         <!-- auto-generated classes for i18n -->
                                         <exclude>com/rqdql/gettext/*</exclude>
+                                        <!-- CLI class, which is never instantiated -->
+                                        <exclude>com/rqdql/cli/Main.class</exclude>
                                     </excludes>
                                 </instrumentation>
                                 <check>
