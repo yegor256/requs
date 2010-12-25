@@ -57,6 +57,9 @@ h3 {
     color: #2276A4;
     padding: 1em 0em;
 }
+table {
+    font-size: 0.8em;
+}
 .source {
     overflow: hidden;
 }
