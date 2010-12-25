@@ -70,7 +70,7 @@
                 <role>Architect</role>
                 <role>Developer</role>
             </roles>
-            <timezone>+2</timezone>
+            <timezone>+1</timezone>
         </developer>
     </developers>
 
@@ -261,11 +261,13 @@
                                 -->
                                 <quiet>false</quiet>
                                 <instrumentation>
+                                    <ignores>
+                                        <!-- CLI class, which is never instantiated -->
+                                        <ignore>com.rqdql.cli.Main</ignore>
+                                    </ignores>
                                     <excludes>
                                         <!-- auto-generated classes for i18n -->
                                         <exclude>com/rqdql/gettext/*</exclude>
-                                        <!-- CLI class, which is never instantiated -->
-                                        <exclude>com/rqdql/cli/Main.java</exclude>
                                     </excludes>
                                 </instrumentation>
                                 <check>
