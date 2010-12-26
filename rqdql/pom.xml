@@ -116,7 +116,7 @@
         <site>
             <id>www.rqdql.com</id>
             <name>RQDQL.com Project Site</name>
-            <url>ftp://www.rqdql.com/</url>
+            <url>${site.deploy.url}</url>
         </site>
     </distributionManagement>
 
