@@ -40,7 +40,7 @@ Requirements Definition and Query Language (RQDQL)
   The scope definition document consists of <<types>>
   and <<use cases>>. For example, there are two types
   (<<<ActorVisitor>>> and <<<ImageFile>>>) and one
-  use case (<<<UC3.2>>>) defined:
+  use case (<<<UC3.2>>>) defined in the snippet:
 
 +--
 ActorVisitor is an "originator of HTTP request".
@@ -49,12 +49,12 @@ UC3.2 where ActorUser (the user) deletes photos of himself:
 ImageFile includes: PNG content, name, and size.
 +--
 
-  Everything inside double quotes is considered as an
+  Everything inside double quotes is considered as
   informal content, which we take "as is", without
-  any attempt to understand what does it mean. You can double quote anything
+  any attempt to understand what it means. You can double quote anything
   (except double quotes, of course), and you can place
   informal texts in any place of the document. They are ignored
-  during formal analysis.
+  during formal RQDQL analysis.
 
   Let's consider a bit bigger example of a type <<<ImageFile>>>:
 
@@ -67,37 +67,37 @@ ImageFile includes:
 
   The semantic is the same -- the type still contains three <<slots>>
   (<<<PNG content>>>, <<<name>>> and <<<size>>>). However
-  in this example we've added an informal explanation to every one of them.
+  in this example we have added an informal explanation to every one of them.
   A colon separates the name of the slot and its invariant.
   Pay attention to the dots, colons, semicolons and commas used above.
-  Comma, semicolon and preposition "<<<and>>>" can replace each other.
+  Comma, semicolon and preposition <<<and>>> can replace each other.
   For example, the following declarations are semantically equivalent:
 
 +--
-PNG content <<and>> name <<<and>>> size
-PNG content<<,>> name<<,>> size
-PNG content<<;>> name<<;>> size
+PNG content and name and size
+PNG content, name, size
+PNG content; name; size
 +--
 
   A slot is a type itself and can be used outside of its parent type
-  by means of a preposition "<<<of>>>", for example:
+  by means of a preposition <<<of>>>, for example:
 
 +--
-PNG content <<of>> ImageFile <<is a>> binary file.
-Name <<of>> ImageFile <<is>> unique.
-Size <<of>> ImageFile <<is a>> "size of PNG content of this file".
+PNG content of ImageFile is a binary file.
+Name of ImageFile is unique.
+Size of ImageFile is a "size of PNG content of this file".
 +--
 
-  By means of "<<<is/is a>>>" we enable a declaration of <<invariants>>
+  By means of <<<is>>/<<is a>>> we enable a declaration of <<invariants>>
   on types. Invariant is a <<predicate>>, which is always true, no matter
   what happens with the system. In the example above it is always true
-  that "<<<PNG content>>>" is a file with binary content (not a readable
+  that <<<PNG content>>> is a file with binary content (not a readable
   ASCII text). Nobody can break this invariant and put a textual information
-  into this slot. Similarly, the "<<<name of ImageFile>>>" is
+  into this slot. Similarly, the <<<name of ImageFile>>> is
   always unique in its type. We won't be able to find two identical
-  slots in the type "<<<name of ImageFile>>>", never.
+  slots in the type <<<name of ImageFile>>>, never.
   As you noticed, an invariant could be declared with an informal text, as we've
-  done with "<<<size of ImageFile>>>". Such a declaration means
+  done with <<<size of ImageFile>>>. Such a declaration means
   absolutely nothing and will be ignored. But it helps when you're starting
   to develop the scope document.
 
@@ -111,7 +111,7 @@ Size <<of>> ImageFile <<is a>> "size of PNG content of this file".
   As you've already noticed, RQDQL is a case-insensitive language in all places
   except one -- type names should use
   {{{http://en.wikipedia.org/wiki/CamelCase}CamelCase Notation}}. Thus
-  "<<<name of ImageFile>>>" and "<<<Name of ImageFile>>>" point
+  <<<name of ImageFile>>> and <<<Name of ImageFile>>> point
   us to the same type. However, <<<ImageFile>>> is a valid type
   name, and <<<imagefile>>> is just an English word.
 
@@ -123,14 +123,15 @@ Size <<of>> ImageFile <<is a>> "size of PNG content of this file".
   crossing the board of the SUD. Important to note that the SUD is
   an actor itself, and its name in the document is <<<SUD>>>. You
   are free to use <<<SUD>>> or replace it with more
-  convenient "<<<we>>>" and "<<<us>>>".
+  convenient <<<we>>> and <<<us>>>.
 
   To put things together we should declare a use case, which is
   a step-by-step explanation of interaction between an actor
   and <<objects>>, for example:
 
 +--
-UC8.1 where ActorUser (the user) shares ImageFile with ActorUser (the friend):
+UC8.1 where ActorUser (the user) shares ImageFile
+with ActorUser (the friend):
   1. The user creates ImageFile (the photo).
   2. The user updates the friend "selecting one of his contacts".
   3. We convert the photo "to the right PNG format, 600x600 maximum".
@@ -153,14 +154,14 @@ UC8.1 3a) If failed with "invalid format":
   signature of this use case is (types are in bold):
 
 +--
-<<ActorUser>> shares <<ImageFile>> with <<ActorUser>>
+ActorUser shares ImageFile with ActorUser
 +--
 
   In order to include this use case into another one we should use this
   signature, filling it with particular objects. Objects start with
-  article "<<<the>>>" and on their first occurrence they appear in round brackets. In our
-  use case there are three objects: "<<<the user>>>",
-  "<<<the friend>>>" and "<<<the photo>>>". An object could be
+  article <<<the>>> and on their first occurrence they appear in round brackets. In our
+  use case there are three objects: <<<the user>>>,
+  <<<the friend>>> and <<<the photo>>>. An object could be
   either received by a use case or created inside it. However, there is no grammar
   difference between objects received and objects created. We assume
   that an object is empty until anyone updates or creates it (more on this later).
@@ -172,14 +173,14 @@ UC8.1 3a) If failed with "invalid format":
   what these flows really tell us about:
 
 +--
-1. <<ActorUser>> creates <<ImageFile>>
+1. ActorUser creates ImageFile
   the user => ActorUser
   the photo => ImageFile
-5. SUD converts <<ImageFile>>
+5. SUD converts ImageFile
   the photo => ImageFile
-6. SUD notifies <<ActorUser>> by email.
+6. SUD notifies ActorUser by email.
   the user => ActorUser
-7. ActorUser reads <<ImageFile>>.
+7. ActorUser reads ImageFile.
   the photo => ImageFile
 +--
 
@@ -192,12 +193,12 @@ UC8.1 3a) If failed with "invalid format":
   ({{{http://en.wikipedia.org/wiki/Create,_read,_update_and_delete}CRUD}} requirements pattern):
 
 +--
-<<Somebody>> creates <<something>>
-<<Somebody>> reads <<something>>
-<<Somebody>> updates <<something>>
-<<Somebody>> deletes <<something>>
-<<Something>> is <<something>>
-<<Somebody>> turns into <<somebody>>
+Somebody creates something
+Somebody reads something
+Somebody updates something
+Somebody deletes something
+Something is something
+Somebody turns into somebody
 +--
 
   As you understand, <<<somebody>>> means "any actor",
@@ -216,15 +217,15 @@ UC8.1 3a) If failed with "invalid format":
   (<<informal flow>>).
 
   Besides that, a flow might have a special instruction, which we've seen
-  in alternative flow <<<1a1>>> and <<<5a2>>>. "<<<failure>>>"
+  in alternative flow <<<1a1>>> and <<<5a2>>>. <<<failure>>>
   means that a use case should be stopped at this point and the
   reason of this termination is explained right after the word <<<failure>>>
   as an informal text.
 
   Reason of failure is used by a parent use case, which included the
   current one. This is exactly what happens in <<<5a>>>. We are
-  waiting for a failure from "<<<we convert the photo>>>", and
-  we're ready to accept a failure called "<<<invalid format>>>".
+  waiting for a failure from <<<we convert the photo>>>, and
+  we're ready to accept a failure called <<<invalid format>>>.
   This approach is very similar to
   {{{http://en.wikipedia.org/wiki/Exception_handling}exception handling paradigm}}
   in object-oriented languages.
@@ -260,7 +261,8 @@ A = S / (S + M)
 UC4 where ActorUser (the user) communicates:
   1. The user shares ImageFile with ActorUser.
   2. "He can do other actions, not defined yet".
-UC8.1 where ActorUser (the user) shares ImageFile with ActorUser (the friend):
+UC8.1 where ActorUser (the user) shares ImageFile
+with ActorUser (the friend):
   1. The user creates ImageFile (the photo).
   2. The friend is friend of the user.
   3. We convert the photo "to the right PNG format, 600x600 maximum".
@@ -274,13 +276,13 @@ UC8.1 3a) If failed with "invalid format":
 +--
 
   <<<UC4 where ActorUser (the user) communicates:>>>
-  <<<UC4>>> is defined with a signature "<<<{...} communicates>>>", which
+  <<<UC4>>> is defined with a signature <<<{...} communicates>>>, which
   is unique in the scope and explicitly identifies the use case. This signature
   has only one parameter that has to be of type <<<ActorUser>>>.
 
   <<<1. The user shares ImageFile with ActorUser.>>>
   First flow of the use case <<<UC4>>> points to another use
-  case, which has to be found by signature "<<<{...} shares {...} with {...}>>>",
+  case, which has to be found by signature <<<{...} shares {...} with {...}>>>,
   and types of parameters are <<<ActorUser>>>, <<<ImageFile>>> and <<<ActorUser>>>.
   This signature matches the signature of use case <<<UC8.1>>>.
 
@@ -290,30 +292,30 @@ UC8.1 3a) If failed with "invalid format":
 
   <<<UC8.1 where ActorUser (the user) shares ImageFile with ActorUser (the friend):>>>
   The declaration of another use case <<<UC8.1>>> with a signature
-  "<<<{...} shares {...} with {...}>>>" that exactly matches the first
+  <<<{...} shares {...} with {...}>>> that exactly matches the first
   flow of <<<UC4>>>. The use case instantiates two objects:
-  "<<<the user>>>" of type <<<ActorUser>>> and
-  "<<<the friend>>>" of the same type. <<<ImageFile>>> (the
+  <<<the user>>> of type <<<ActorUser>>> and
+  <<<the friend>>> of the same type. <<<ImageFile>>> (the
   second parameter of the use case) does not instantiate anything, and
   it means that <<<UC4>>>, which is calling <<<UC8.1>>>, won't be able
   to retrieve the <<<ImageFile>>> created/managed here.
 
   <<<1. The user creates ImageFile (the photo).>>>
   The first flow of this use case points to an elementary use case
-  "<<<{...} creates {...}>>>". Two parameters of this elementary
+  <<<{...} creates {...}>>>. Two parameters of this elementary
   use case have to be provided, and they are:
-  "<<<the user>>>" and "<<<the photo>>>". It is assumed that
-  "<<<the user>>>" was instantiated before and is not <<<NULL>>>, and "<<<the photo>>>" will
-  be instantiated in this elementary use case. "<<<The photo>>>"
+  <<<the user>>> and <<<the photo>>>. It is assumed that
+  <<<the user>>> was instantiated before and is not <<<NULL>>>, and <<<the photo>>> will
+  be instantiated in this elementary use case. <<<The photo>>>
   was just declared in this flow and it means that it's <<<NULL>>> so far.
-  "<<<The user>>>" was passed as a parameter to this use case
+  <<<The user>>> was passed as a parameter to this use case
   and there is no information about its status, whether it is <<<NULL>>> or not.
   If it is <<<NULL>>> (not instantiated yet) -- it is an error
   and it will be found by RQDQL parser and reported.
 
   <<<2. The friend is one of friend of the user.>>>
-  Explicit instantiation of the variable happens here. "<<<Friend of the user>>>"
-  is a slot in "<<<the user>>>" and
+  Explicit instantiation of the variable happens here. <<<Friend of the user>>>
+  is a slot in <<<the user>>> and
 
 * Appendix A. Formal Grammar
 
