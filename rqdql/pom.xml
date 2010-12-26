@@ -34,7 +34,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.rqdql</groupId>
     <artifactId>rqdql</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>2.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Requirements Definition and Query Language (RQDQL)</name>
@@ -43,7 +43,7 @@
         Requirements manipulation language
     </description>
     <url>http://www.rqdql.com</url>
-    <inceptionYear>2010</inceptionYear>
+    <inceptionYear>2009</inceptionYear>
 
     <organization>
         <name>RQDQL.com</name>
@@ -73,6 +73,16 @@
             <timezone>+1</timezone>
         </developer>
     </developers>
+
+    <mailingLists>
+        <mailingList>
+            <name>RQDQL Discussions</name>
+            <subscribe>rqdql@googlegroups.com</subscribe>
+            <unsubscribe>rqdql@googlegroups.com</unsubscribe>
+            <post>rqdql@googlegroups.com</post>
+            <archive>http://groups.google.com/group/rqdql</archive>
+        </mailingList>
+    </mailingLists>
 
     <issueManagement>
         <system>Trac 0.12</system>
