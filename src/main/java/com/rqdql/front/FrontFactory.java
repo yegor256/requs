@@ -21,7 +21,7 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.api.front;
+package com.rqdql.front;
 
 /**
  * Factory of {@link Reporter}s.
@@ -44,7 +44,7 @@ public final class FrontFactory {
      */
     public FrontFactory() {
         // this(Package.getPackage("com.rqdql.impl.front"));
-        this(com.rqdql.impl.front.Errors.class.getPackage());
+        this(com.rqdql.front.reporters.Errors.class.getPackage());
     }
 
     /**

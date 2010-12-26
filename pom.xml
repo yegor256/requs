@@ -818,7 +818,9 @@
                 <plugin>
                     <!--
                     To GPG-sign the artifact before deployment to foreign
-                    repository
+                    repository. GPG keys have to be provided in CI
+                    environment, and published beforehand.
+                    @link http://www.sonatype.com/people/2010/01/how-to-generate-pgp-signatures-with-maven/
                     -->
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>

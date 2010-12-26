@@ -21,11 +21,34 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
+package com.rqdql.front;
+
+// for XML processing
+import nu.xom.Element;
 
 /**
- * Front-end reporter.
+ * Reporter of some information from Java to XML.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
- * @version $Id: package-info.java 2360 2010-12-24 11:04:12Z yegor256@yahoo.com $
+ * @version $Id$
  */
-package com.rqdql.api.front;
+public interface Reporter {
+
+    /**
+     * Set configuration.
+     * @param config The {@link Config} provided by client
+     */
+    void configure(final Config config);
+
+    /**
+     * Initialize it, if necessary.
+     */
+    void init();
+
+    /**
+     * Report into the DOM {@link Element}.
+     * @param element The {@link Element} to fill
+     */
+    void report(final Element element);
+
+}

@@ -21,25 +21,25 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.impl.front;
+package com.rqdql.front.reporters;
 
 // for logging
 import com.rqdql.Log;
 
 // API
-import com.rqdql.api.front.Config;
-import com.rqdql.api.front.Reporter;
+import com.rqdql.front.Config;
+import com.rqdql.front.Reporter;
 
 // for XML processing
 import nu.xom.Element;
 
 /**
- * Reporter of metrics.
+ * Reporter of errors.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public class Metrics implements Reporter {
+public class Errors implements Reporter {
 
     /**
      * {@inheritDoc}
