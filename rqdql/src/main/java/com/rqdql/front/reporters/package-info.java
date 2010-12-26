@@ -21,14 +21,11 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.api.front;
 
 /**
- * Configuration of reporter.
+ * Reporters.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public class Config {
-
-}
+package com.rqdql.front.reporters;

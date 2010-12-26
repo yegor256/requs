@@ -21,7 +21,7 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.api.front;
+package com.rqdql.front;
 
 /**
  * Exception when reporter is not found.
