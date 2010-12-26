@@ -36,5 +36,5 @@ Requirements Definition and Query Language (RQDQL)
 
   Software Design Document (SDD) is available {{{./pdf/sdd.pdf}in PDF}}.
 
-  Download executable JAR from
-  {{{https://oss.sonatype.org/content/groups/public/com/rqdql/}repository}}.
+  Download executable JAR
+  {{{https://oss.sonatype.org/content/groups/public/com/rqdql/rqdql/}here}}.
