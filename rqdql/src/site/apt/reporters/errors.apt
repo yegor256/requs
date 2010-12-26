@@ -28,4 +28,33 @@ Yegor Bugayenko
 
 <<<errors>>> reporter
 
-  tbd..
+  The <<<errors>>> reporter exposes all errors found in
+  the text via XML <<<error>>> elements, for example:
+
++--
+<?xml version="1.0">
+<rqdql>
+  [...]
+  <errors>
+    <report max="50">
+      <errors>
+        <error line="15">Invalid syntax of entity</error>
+        <error line="54">Missed argument</error>
+      </errors>
+    </report>
+  </errors>
+  [...]
+</rqdql>
++--
+
+  The reporter accepts the following parameters:
+
+*--+--+--+--+
+|| Parameter || Type || Description || Default value ||
+*--+--+--+--+
+| <<<max>>> | Number | Maximum number of errors to be exposed | 10 |
+*--+--+--+--+
+| <<<unique>>> | Boolean | Ignore duplicate error messages on the same line | true |
+*--+--+--+--+
+
+  ...

@@ -39,6 +39,7 @@ tt {
 }
 div.source pre {
     background-color: white;
+    font-size: 0.9em;
 }
 
 /*
@@ -48,18 +49,37 @@ p {
     font-size: 1em;
 }
 h2 {
+    font-weight: normal;
     font-size: 1.5em;
     color: #2276A4;
 }
 h3 {
+    font-weight: normal;
     font-size: 1.2em;
     background: none;
     color: #2276A4;
     padding: 1em 0em;
 }
-table th,
-table td {
-    font-size: 0.8em;
+table {
+    font-size: 1em;
+}
+table.bodyTable {
+    border: none !important;
+}
+table.bodyTable td,
+table.bodyTable th {
+    font-size: 0.9em;
+    border: none !important;
+}
+table.bodyTable th {
+    font-weight: normal;
+    background-color: #2276A4;
+}
+table.bodyTable tr.a {
+    background-color: white;
+}
+table.bodyTable tr.b {
+    background-color: white;
 }
 .source {
     overflow: hidden;

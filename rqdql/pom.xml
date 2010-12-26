@@ -305,6 +305,118 @@
                                 <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
                             </configuration>
                         </plugin>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-site-plugin</artifactId>
+                            <!-- version is specified in build/pluginManagement -->
+                            <configuration>
+                                <reportPlugins>
+                                    <plugin>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-project-info-reports-plugin</artifactId>
+                                        <!-- version is specified in pluginManagement -->
+                                        <reports>
+                                            <report>cim</report>
+                                            <report>dependencies</report>
+                                            <report>issue-tracking</report>
+                                            <report>license</report>
+                                            <report>mailing-list</report>
+                                            <report>plugins</report>
+                                            <report>project-team</report>
+                                            <report>scm</report>
+                                            <report>summary</report>
+                                        </reports>
+                                    </plugin>
+                                    <plugin>
+                                        <groupId>org.codehaus.mojo</groupId>
+                                        <artifactId>taglist-maven-plugin</artifactId>
+                                        <version>2.4</version> <!-- 15 Nov 2010 -->
+                                        <configuration>
+                                            <tagListOptions>
+                                                <tagClasses>
+                                                    <tagClass>
+                                                        <displayName>ToDo</displayName>
+                                                        <tags>
+                                                            <tag>
+                                                                <matchString>@todo</matchString>
+                                                                <matchType>exact</matchType>
+                                                            </tag>
+                                                        </tags>
+                                                    </tagClass>
+                                                </tagClasses>
+                                            </tagListOptions>
+                                        </configuration>
+                                    </plugin>
+                                    <plugin>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-javadoc-plugin</artifactId>
+                                        <!-- version is specified in pluginManagement -->
+                                        <configuration>
+                                            <stylesheetfile>src/test/maven/javadoc/screen.css</stylesheetfile>
+                                            <tags>
+                                                <tag>
+                                                    <name>todo</name>
+                                                    <placement>a</placement>
+                                                    <head>To do:</head>
+                                                </tag>
+                                            </tags>
+                                            <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+                                            <docletArtifact>
+                                                <groupId>org.umlgraph</groupId>
+                                                <artifactId>doclet</artifactId>
+                                                <version>5.1</version>
+                                            </docletArtifact>
+                                            <additionalparam>
+                                                -views
+                                                -all
+                                            </additionalparam>
+                                            <useStandardDocletOptions>true</useStandardDocletOptions>
+                                        </configuration>
+                                    </plugin>
+                                    <plugin>
+                                        <groupId>org.codehaus.mojo</groupId>
+                                        <artifactId>findbugs-maven-plugin</artifactId>
+                                        <!-- version is specified in pluginManagement -->
+                                    </plugin>
+                                    <plugin>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-checkstyle-plugin</artifactId>
+                                        <!-- version is specified in pluginManagement -->
+                                        <configuration>
+                                            <configLocation>src/test/maven/checkstyle/checks.xml</configLocation>
+                                            <headerLocation>src/test/maven/checkstyle/LICENSE.txt</headerLocation>
+                                        </configuration>
+                                    </plugin>
+                                    <plugin>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-pmd-plugin</artifactId>
+                                        <!-- version is specified in pluginManagement -->
+                                        <configuration>
+                                            <targetJdk>${jdk.version}</targetJdk>
+                                            <linkXRef>false</linkXRef>
+                                            <rulesets>
+                                                <ruleset>src/test/maven/pmd/ruleset.xml</ruleset>
+                                            </rulesets>
+                                        </configuration>
+                                    </plugin>
+                                    <plugin>
+                                        <groupId>org.codehaus.mojo</groupId>
+                                        <artifactId>cobertura-maven-plugin</artifactId>
+                                        <!-- version is specified in pluginManagement -->
+                                    </plugin>
+                                    <plugin>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-jxr-plugin</artifactId>
+                                        <version>2.2</version>
+                                    </plugin>
+                                    <plugin>
+                                        <groupId>org.codehaus.mojo</groupId>
+                                        <artifactId>jdepend-maven-plugin</artifactId>
+                                        <version>2.0-beta-2</version> <!-- 7 Nov 2010 -->
+                                    </plugin>
+                                </reportPlugins>
+                            </configuration>
+                        </plugin>
                     </plugins>
                 </pluginManagement>
                 <plugins>
@@ -475,6 +587,33 @@
                                         </requireOS>
                                     </rules>
                                 </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-site-plugin</artifactId>
+                        <!-- version is specified in pluginManagement -->
+                        <executions>
+                            <execution>
+                                <id>attach-descriptor</id>
+                                <goals>
+                                    <goal>attach-descriptor</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>latex-maven-plugin</artifactId>
+                        <!-- version is specified in pluginManagement section -->
+                        <executions>
+                            <execution>
+                                <id>latex-documents</id>
+                                <phase>pre-site</phase>
+                                <goals>
+                                    <goal>latex</goal>
+                                </goals>
                             </execution>
                         </executions>
                     </plugin>
@@ -697,109 +836,6 @@
                     <version>3.0-beta-2</version> <!-- 4 Nov 2010 -->
                     <configuration>
                         <reportPlugins>
-                            <plugin>
-                                <groupId>org.apache.maven.plugins</groupId>
-                                <artifactId>maven-project-info-reports-plugin</artifactId>
-                                <!-- version is specified in pluginManagement -->
-                                <reports>
-                                    <report>cim</report>
-                                    <report>dependencies</report>
-                                    <report>issue-tracking</report>
-                                    <report>license</report>
-                                    <report>mailing-list</report>
-                                    <report>plugins</report>
-                                    <report>project-team</report>
-                                    <report>scm</report>
-                                    <report>summary</report>
-                                </reports>
-                            </plugin>
-                            <plugin>
-                                <groupId>org.codehaus.mojo</groupId>
-                                <artifactId>taglist-maven-plugin</artifactId>
-                                <version>2.4</version> <!-- 15 Nov 2010 -->
-                                <configuration>
-                                    <tagListOptions>
-                                        <tagClasses>
-                                            <tagClass>
-                                                <displayName>ToDo</displayName>
-                                                <tags>
-                                                    <tag>
-                                                        <matchString>@todo</matchString>
-                                                        <matchType>exact</matchType>
-                                                    </tag>
-                                                </tags>
-                                            </tagClass>
-                                        </tagClasses>
-                                    </tagListOptions>
-                                </configuration>
-                            </plugin>
-                            <plugin>
-                                <groupId>org.apache.maven.plugins</groupId>
-                                <artifactId>maven-javadoc-plugin</artifactId>
-                                <!-- version is specified in pluginManagement -->
-                                <configuration>
-                                    <stylesheetfile>src/test/maven/javadoc/screen.css</stylesheetfile>
-                                    <tags>
-                                        <tag>
-                                            <name>todo</name>
-                                            <placement>a</placement>
-                                            <head>To do:</head>
-                                        </tag>
-                                    </tags>
-                                    <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
-                                    <docletArtifact>
-                                        <groupId>org.umlgraph</groupId>
-                                        <artifactId>doclet</artifactId>
-                                        <version>5.1</version>
-                                    </docletArtifact>
-                                    <additionalparam>
-                                        -views
-                                        -all
-                                    </additionalparam>
-                                    <useStandardDocletOptions>true</useStandardDocletOptions>
-                                </configuration>
-                            </plugin>
-                            <plugin>
-                                <groupId>org.codehaus.mojo</groupId>
-                                <artifactId>findbugs-maven-plugin</artifactId>
-                                <!-- version is specified in pluginManagement -->
-                            </plugin>
-                            <plugin>
-                                <groupId>org.apache.maven.plugins</groupId>
-                                <artifactId>maven-checkstyle-plugin</artifactId>
-                                <!-- version is specified in pluginManagement -->
-                                <configuration>
-                                    <configLocation>src/test/maven/checkstyle/checks.xml</configLocation>
-                                    <headerLocation>src/test/maven/checkstyle/LICENSE.txt</headerLocation>
-                                </configuration>
-                            </plugin>
-                            <plugin>
-                                <groupId>org.apache.maven.plugins</groupId>
-                                <artifactId>maven-pmd-plugin</artifactId>
-                                <!-- version is specified in pluginManagement -->
-                                <configuration>
-                                    <targetJdk>${jdk.version}</targetJdk>
-                                    <linkXRef>false</linkXRef>
-                                    <rulesets>
-                                        <ruleset>src/test/maven/pmd/ruleset.xml</ruleset>
-                                    </rulesets>
-                                </configuration>
-                            </plugin>
-                            <plugin>
-                                <groupId>org.codehaus.mojo</groupId>
-                                <artifactId>cobertura-maven-plugin</artifactId>
-                                <!-- version is specified in pluginManagement -->
-                            </plugin>
-                            <plugin>
-                                <groupId>org.apache.maven.plugins</groupId>
-                                <artifactId>maven-jxr-plugin</artifactId>
-                                <version>2.2</version>
-                            </plugin>
-                            <plugin>
-                                <groupId>org.codehaus.mojo</groupId>
-                                <artifactId>jdepend-maven-plugin</artifactId>
-                                <version>2.0-beta-2</version> <!-- 7 Nov 2010 -->
-                            </plugin>
                         </reportPlugins>
                     </configuration>
                 </plugin>
@@ -850,33 +886,6 @@
             Configuration details of all plugins you will
             find in <pluginManagement> section above
             -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-                <!-- version is specified in pluginManagement -->
-                <executions>
-                    <execution>
-                        <id>attach-descriptor</id>
-                        <goals>
-                            <goal>attach-descriptor</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>latex-maven-plugin</artifactId>
-                <!-- version is specified in pluginManagement section -->
-                <executions>
-                    <execution>
-                        <id>latex-documents</id>
-                        <phase>pre-site</phase>
-                        <goals>
-                            <goal>latex</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
