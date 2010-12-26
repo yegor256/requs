@@ -46,6 +46,7 @@ public class Errors implements Reporter {
      */
     @Override
     public final void configure(final Config config) {
+        // this is just a stub for now
         Log.trace("#configure()");
     }
 
@@ -54,6 +55,7 @@ public class Errors implements Reporter {
      */
     @Override
     public final void init() {
+        // this is just a stub for now
         Log.trace("#init()");
     }
 
@@ -62,6 +64,7 @@ public class Errors implements Reporter {
      */
     @Override
     public final void report(final Element element) {
+        // this is just a stub for now
         Log.trace("#report()");
     }
 
