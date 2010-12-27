@@ -63,10 +63,16 @@ public final class Dispatcher {
      */
     public String dispatch(final String[] args, final String input) {
         final long startTime = System.currentTimeMillis();
-        Log.trace("#dispatch(%d arguments)", args.length);
+        Log.trace(
+            "#dispatch(%d arguments, %d bytes)",
+            args.length,
+            input.length()
+        );
         final List<String> reps = new ArrayList<String>();
         for (String arg : args) {
-            if (arg.charAt(0) != '-') {
+            if (arg.charAt(0) == '-') {
+                // todo: parse the option, using apache-commons-cli
+            } else {
                 reps.add(arg);
             }
         }
