@@ -51,7 +51,7 @@ public final class Dispatcher {
     /**
      * Miliseconds in one second.
      */
-    private static long MSEC = 1000;
+    private static final long MSEC = 1000;
 
     /**
      * Entry point of the entire JAR.
