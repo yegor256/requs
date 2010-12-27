@@ -65,6 +65,15 @@ public class DispatcherTest {
         }
         String xml = new Dispatcher().dispatch(reports, input);
         Document report = new Builder().build(xml, null);
+
+        Nodes invariants = dom.query("//invariants/invariant");
+        for (int i = 0; i < invariants.size(); i++) {
+            String xpath = invariants.get(i).getValue();
+            assertTrue(
+                "XPath failure, nothing found: " + xpath,
+                report.query(xpath).size() > 0
+            );
+        }
     }
 
 }

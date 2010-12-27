@@ -23,6 +23,8 @@
         <reporter>errors:max=5,unique</reporter>
         <reporter>metrics</reporter>
         <reporter>links</reporter>
+        <reporter>uml</reporter>
+        <reporter>tc</reporter>
     </reporters>
     <invariants>
         <!-- The XML contains this root element -->
@@ -36,5 +38,14 @@
 
         <!-- The report is present -->
         <invariant>/rqdql/metrics/report</invariant>
+
+        <!-- The report is present -->
+        <invariant>/rqdql/links/report</invariant>
+
+        <!-- The report is present -->
+        <invariant>/rqdql/uml/report</invariant>
+
+        <!-- The report is present -->
+        <invariant>/rqdql/tc/report</invariant>
     </invariants>
 </root>
