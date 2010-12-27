@@ -57,6 +57,7 @@ public final class Dispatcher {
      * @see Main#main(String[])
      */
     public String dispatch(final String[] args, final String input) {
+        final long startTime = System.currentTimeMillis();
         Log.trace("#dispatch(%d arguments)", args.length);
         final List<String> reps = new ArrayList<String>();
         for (String arg : args) {
@@ -81,7 +82,14 @@ public final class Dispatcher {
             inst.run();
         }
 
-        return asm.assemble();
+        final String xml = asm.assemble();
+
+        Log.info(
+            "Dispatched %d bytes in %.2fsec",
+            input.length(),
+            (float) (System.currentTimeMillis() - startTime) / 1000
+        );
+        return xml;
     }
 
 
