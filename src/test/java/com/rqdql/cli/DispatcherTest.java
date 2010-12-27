@@ -11,6 +11,22 @@ import com.rqdql.ResourceLoader;
 public class DispatcherTest {
 
     @Test
+    public void testGetsVersionNumber() throws Exception {
+        String out = new Dispatcher().dispatch(
+            new String[] { "-v" },
+            ""
+        );
+    }
+
+    @Test
+    public void testGetsHelpMessage() throws Exception {
+        String out = new Dispatcher().dispatch(
+            new String[] { "-?" },
+            ""
+        );
+    }
+
+    @Test
     public void testRunsSimpleReportSet() throws Exception {
         String[] args = { "errors", "metrics" };
         String input = "ActorUser is a \"human being\".";
@@ -19,7 +35,7 @@ public class DispatcherTest {
 
     @Test(expected = com.rqdql.Problem.class)
     public void testDispatchesWithInvalidReporter() throws Exception {
-        String[] args = { "-?", "non-existing", "metrics" };
+        String[] args = { "non-existing", "metrics" };
         new Dispatcher().dispatch(args, "nothing");
     }
 
