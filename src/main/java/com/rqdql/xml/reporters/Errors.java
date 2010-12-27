@@ -21,11 +21,51 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
+package com.rqdql.xml.reporters;
+
+// for logging
+import com.rqdql.Log;
+
+// API
+import com.rqdql.xml.Config;
+import com.rqdql.xml.Reporter;
+
+// for XML processing
+import nu.xom.Element;
 
 /**
- * Front-end reporters.
+ * Reporter of errors.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
- * @version $Id: package-info.java 2360 2010-12-24 11:04:12Z yegor256@yahoo.com $
+ * @version $Id$
  */
-package com.rqdql.front;
+public class Errors implements Reporter {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void configure(final Config config) {
+        // this is just a stub for now
+        Log.trace("#configure()");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void init() {
+        // this is just a stub for now
+        Log.trace("#init()");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void report(final Element element) {
+        // this is just a stub for now
+        Log.trace("#report()");
+    }
+
+}

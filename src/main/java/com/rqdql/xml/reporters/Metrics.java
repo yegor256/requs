@@ -21,23 +21,48 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.front;
+package com.rqdql.xml.reporters;
+
+// for logging
+import com.rqdql.Log;
+
+// API
+import com.rqdql.xml.Config;
+import com.rqdql.xml.Reporter;
+
+// for XML processing
+import nu.xom.Element;
 
 /**
- * Exception when reporter is not found.
+ * Reporter of metrics.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public class ReporterNotFoundException extends Exception {
+public class Metrics implements Reporter {
 
     /**
-     * Public ctor.
-     * @param name The name of reporter
-     * @param exp Cause of this problem
+     * {@inheritDoc}
      */
-    public ReporterNotFoundException(final String name, final Throwable exp) {
-        super("Reporter not found: " + name, exp);
+    @Override
+    public final void configure(final Config config) {
+        Log.trace("#configure()");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void init() {
+        Log.trace("#init()");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void report(final Element element) {
+        Log.trace("#report()");
     }
 
 }

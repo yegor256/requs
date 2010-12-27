@@ -1,21 +1,22 @@
 /**
  * @version $Id$
  */
-package com.rqdql.front.reporters;
+package com.rqdql.xml.reporters;
 
 import org.junit.*;
 import static org.junit.Assert.*;
 import java.util.*;
-import com.rqdql.front.*;
+import com.rqdql.xml.*;
 import com.rqdql.api.InstrumentFactory;
 import com.rqdql.api.scanner.Scanner;
-import nu.xom.Element;
+import nu.xom.*;
 
-/**
- *
- */
 public class ErrorsTest {
 
+    /**
+     * @todo #2:3hrs The test has to be implemented
+     */
+    @Ignore("#2:3hrs")
     @Test
     public void testProcessesTextWithErrorsAndSpotsThemInXMLReport() throws Exception {
         Reporter rep = new Errors();
@@ -27,10 +28,13 @@ public class ErrorsTest {
         // we expect grammar errors to be caught by Errors Reporter
         scanner.run();
 
-        Element xml = new Element("test-report");
+        Element xml = new Element("report");
+        Document dom = new Document(xml);
         rep.report(xml);
-
-        // xml.query();
+        assertTrue(
+            "No errors found in the document? How come?",
+            dom.query("/report/errors/error[@line]").size() > 0
+        );
     }
 
 }
