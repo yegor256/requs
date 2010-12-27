@@ -1,12 +1,12 @@
 /**
  * @version $Id$
  */
-package com.rqdql.xml.reporters;
+package com.rqdql.cli.reporters;
 
 import org.junit.*;
 import static org.junit.Assert.*;
 import java.util.*;
-import com.rqdql.xml.*;
+import com.rqdql.cli.*;
 import com.rqdql.api.InstrumentFactory;
 import com.rqdql.api.scanner.Scanner;
 import nu.xom.*;

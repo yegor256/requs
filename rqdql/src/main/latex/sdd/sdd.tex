@@ -1,3 +1,26 @@
+%%
+%% RQDQL.com
+%%
+%% This source file is subject to the new BSD license that is bundled
+%% with this package in the file LICENSE.txt. It is also available
+%% through the world-wide-web at this URL: http://www.rqdql.com/LICENSE.txt
+%% If you did not receive a copy of the license and are unable to
+%% obtain it through the world-wide-web, please send an email
+%% to license@rqdql.com so we can send you a copy immediately.
+%%
+%% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+%% "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+%% LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+%% FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+%% COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+%% INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+%% BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+%% OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+%% AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+%% OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+%% OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+%% OF SUCH DAMAGE.
+%%
 \documentclass{article}
 \usepackage[T1]{fontenc} % to enable "{" symbol in \ttfamily
 \usepackage{listings} % listings
@@ -46,34 +69,28 @@
     \vspace*{1em}
 }
 
-\title{RQDQL: White Paper
-    \footnote{
-        This project is done for TechnoPark Corp. by Yegor Bugayenko
-        according to the long-term intellectual property rental
-        agreement. All intellectual properties rights (IPR) for the the material
-        explained in the document belong to Yegor Bugayenko.
-        For more information on IPR and privacy of this document and
-        the source codes of RQDQL please contact us at \texttt{privacy@tpc2.com}.
+
+
+
+\title{RQDQL: White Paper}
+    \author{
+        Yegor Bugayenko\\
+        568 9th Str South, 202, \\
+        Naples, FL 34102\\
+        \texttt{yegor@rqdql.com}
     }
-}
-\author{
-    Yegor Bugayenko \\
-    TechnoPark Corp. \\
-    568 Ninth Street South, 202, \\
-    Naples, Florida, 34102, \\
-    United States of America \\
-    tel. (239) 935 5429 \\
-    \texttt{yegor@tpc2.com}
-}
-\maketitle
-\begin{abstract}
-    Requirements Definition and Query Language/Library (RQDQL) is
-    an experimental set of tools and formats that enables definition of
-    an SRS document in a
-    human-friendly language, and at the same time making it understandable
-    by computers. Requirements in plain text are converted to
-    second order logic predicates and then represented in MOF/XMI.
-\end{abstract}
+    \maketitle
+    \begin{abstract}
+        Requirements Definition and Query Language (RQDQL) is
+        an experimental set of tools and formats that enables definition of
+        an SRS document in a
+        human-friendly language, and at the same time making it understandable
+        by computers. Requirements in plain text are converted to
+        second order logic predicates and then represented in MOF/XMI.
+    \end{abstract}
+
+
+
 
 \section{Introduction}
 
@@ -84,7 +101,7 @@
 
     First, we convert plain English into objects (in terms of object-oriented
     programming). Next, we convert objects into second order logic predicates.
-    Then we resolve predicates on data scope (in terms of logical programming)
+    Then, we resolve predicates on data scope (in terms of logical programming)
     and create a collection of all possible scope variants. Then, for every
     scope variant we build a model in terms of MOF~\cite{mof2}, converting them later
     into XMI and transferring to the destination. Next, XMI~\cite{mof-to-xmi} can be rendered
@@ -118,10 +135,10 @@
         \label{fig:Workflow}
     \end{figure}
 
-    Section~\ref{sec:to-objects} explains the process of converting of plain English
-    to ``objects''. We're using \texttt{bison/flex}~\cite{yacc} grammar analysis
-    tools from Linux and C++ language.
-    Moreover, the entire RQDQL is written in C++~\cite{stroustrup00}.
+    Section~\ref{sec:to-objects} explains the process of converting plain English
+    to ``object oriented thesaurus''. We are using
+    \href{http://www.altlr.org}{\texttt{antlr3}} grammar analysis toolkit.
+    Moreover, the entire RQDQL product is written in Java.
 
     Section~\ref{sec:to-solm} explains how objects are converted to
     second order logic ``predicates'',
@@ -132,8 +149,8 @@
     second order predicates to Prolog-style data ``facts'', and reveals the internal
     structure of said facts. We discuss interconnection with Prolog~\cite{shapiro94}.
 
-    Section~\ref{sec:front} is about an interface between \type{rqdql}
-    command-line utility and its users.
+    Section~\ref{sec:front} is about an interface between \type{rqdql-bin.jar}
+    command-line interface and its users.
 
     Section~\ref{sec:test-cases} explains the mechanism of conversion
     of data facts into test cases.
@@ -141,11 +158,15 @@
     Section~\ref{sec:design} contains the most important architecture
     and design decisions documented in diagrams.
 
-\section{English to Objects}\label{sec:to-objects}
 
-    Detailed explanation of the RQDQL syntax is given on its website at~\cite{rqdql}.
 
-    In C++ we use the following types:
+\section{Plain English to Object Thesaurus}
+\label{sec:to-objects}
+
+    Detailed explanation of the RQDQL syntax is given on its
+    website \href{http://www.rqdql.com}{www.rqdql.com}.
+
+    In Java we use the following types:
 
     \begin{tikzpicture}
         \node [class] (entity) {Entity\nodepart{second}predicate};
@@ -194,7 +215,7 @@ User includes:
   address.
 Address of User includes: city, country.\end{verbatim}
 
-        In C++ the type is presented by class \texttt{proxy::Type} and
+        In Java the type is presented by class \texttt{Type} and
         the type written above will look like:
 
         \begin{tikzpicture}[start chain, node distance=4em, every node/.style={on chain,join}, every join/.style={-}]
@@ -249,40 +270,40 @@ UC1: 2a) If failed with "file format is not valid":
   2. Fail with "only PNG images are accepted".\end{verbatim}
 
         The use case is represented in the system by means of
-        \texttt{proxy::UseCase} and \texttt{proxy::Slot}-s. The
+        \texttt{com.rqdql.api.thesaurus.UseCase} and \texttt{com.rqdql.api.thesaurus.Slot}-s. The
         use case given above will be converted to:
 
         \begin{verbatim}
-"UC1": proxy::UseCase {
+"UC1": com.rqdql.api.thesaurus.UseCase {
   signature: "{...} extends photo album",
   slots: [
-    0: proxy::Slot {
+    0: Slot {
       name:
       signature: "start",
-      alternatives: [ formula: proxy::Flows{...} ]
+      alternatives: [ formula: Flows{...} ]
     }
-    1: proxy::Flow { signature: "{...} creates {...}", alternatives: [] }
-    2: proxy::Flow {
+    1: Flow { signature: "{...} creates {...}", alternatives: [] }
+    2: Flow {
       signature: "{...} validate {...}",
-      alternatives: [ formula: proxy::Flows{...} ]
+      alternatives: [ formula: Flows{...} ]
     }
-    3: proxy::Flow { signature: null, alternatives: [] }
-    4: proxy::Flow { signature: "{...} reads {...}", alternatives: [] }
+    3: Flow { signature: null, alternatives: [] }
+    4: Flow { signature: "{...} reads {...}", alternatives: [] }
   ]
 }\end{verbatim}
 
-        \type{proxy::Proxy} is a collection of C++ classes:
+        Package \type{com.rqdql.api.thesaurus} is a collection of Java classes:
 
-    \begin{lstlisting}[language=C++]
+    \begin{lstlisting}[language=Java]
 class Type {
-  vector<solm::Variadic*> predicate;
-  vector<Slot*> slots;
+  vector<Variadic> predicate;
+  vector<Slot> slots;
 };
-class Slot : public Type {
+class Slot extends Type {
   string name;
   Cardinality cardinality;
-  vector<solm::Formula*> predicates;
-  Type* type;
+  Vector<Formula> predicates;
+  Type type;
 };
 map<string, Type> types; // all named types
 class UseCase {
@@ -295,18 +316,23 @@ class UseCase {
   class Flow {
     string informal;
     Signature signature;
-    map<solm::Formula*, Flows&> alternatives;
+    map<Formula*, Flows&> alternatives;
   };
 };
 \end{lstlisting}
 
-\section{Objects to Predicates}\label{sec:to-solm}
 
-    Class \type{proxy::Proxy} converts objects to second order logic predicates
-    inside \type{solm::Solm}. There are
+
+
+\section{Object Thesaurus to SOL Predicates}
+\label{sec:to-solm}
+
+    \type{com.rqdql.api.thesaurus.Thesaurus} instrument converts
+    its objects into second order logic predicates
+    inside \type{com.rqdql.api.solm}. There are
     three groups of predicates. The first one is ``system predicates'', which
-    are C++ encoded. The second group includes ``pre-defined predicates'',
-    which are injected into \type{solm::Solm} by \type{proxy::Proxy}. The third group includes
+    are Java encoded. The second group includes ``pre-defined predicates'',
+    which are injected into \type{Solm} by \type{Thesaurus}. The third group includes
     predicates defined by custom document, called ``custom predicates'':
 
     \begin{tikzpicture}[every node/.style={draw, text centered},
@@ -314,9 +340,9 @@ class UseCase {
         \node [text width=5em] (system) {System};
         \node [text width=10em, above=2em of system.north, anchor=south] (predefined) {Pre-defined};
         \node [text width=15em, above=2em of predefined.north, anchor=south] (custom) {Custom};
-        \node [draw=none, right=1em of system] {C++ in \type{solm::Solm}};
-        \node [draw=none, right=1em of predefined] {\type{proxy::Proxy} injects into \type{solm::Solm}};
-        \node [draw=none, right=1em of custom] {from \type{rqdql::Scanner}};
+        \node [draw=none, right=1em of system] {Java in \type{Solm}};
+        \node [draw=none, right=1em of predefined] {\type{Proxy} injects into \type{Solm}};
+        \node [draw=none, right=1em of custom] {from \type{Scanner}};
         \path (custom) -- (predefined);
         \path (predefined) -- (system);
     \end{tikzpicture}
@@ -357,8 +383,8 @@ class UseCase {
         a new variable). All other predicates will report a fatal error
         if an undefined variable is passed to them.
 
-        Predicates are realized in \type{solm::Solm} as a collection of \emph{formulas}
-        (classes inherited from \type{solm::Formula}):
+        Predicates are realized in \type{Solm} as a collection of \emph{formulas}
+        (classes inherited from \type{Formula}):
 
         \begin{tikzpicture}[
             every node/.style={class},
@@ -470,7 +496,12 @@ class UseCase {
         $\quad \type{read}(p, x)\wedge \type{info}(\type{'The user reads the photo})$ \\
         \end{maths}
 
-\section{Predicates to Snapshots}\label{sec:to-data}
+
+
+
+
+\section{Predicates to Snapshots}
+\label{sec:to-data}
 
     Every formula produces a number of ``fact paths''. Every fact path
     is a vector of ``facts'', and every fact is either a positive or negative:
@@ -515,7 +546,7 @@ class UseCase {
     has a name, value, type,
     and may have a number of changes made by other objects:
 
-    \begin{lstlisting}[language=C++]
+    \begin{lstlisting}[language=Java]
 class Object {
     int id; // could be zero
     string name; // could be empty
@@ -618,9 +649,14 @@ vector<Object> snapshot;
 
     \end{tabular}
 
-\section{Front-end}\label{sec:front}
 
-    Front is a collection of components. Every component gets
+
+
+
+\section{Command Line Interface}
+\label{sec:front}
+
+    CLI is a collection of components. Every component gets
     an associative array of configuration parameters
     and returns an XML element. The element is named \texttt{<report>}
     and has attributes equivalent to the configuration

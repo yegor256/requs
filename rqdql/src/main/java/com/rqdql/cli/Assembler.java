@@ -21,7 +21,7 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.xml;
+package com.rqdql.cli;
 
 // for internal logging
 import com.rqdql.Log;

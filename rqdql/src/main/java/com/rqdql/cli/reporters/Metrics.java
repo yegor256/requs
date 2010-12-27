@@ -21,14 +21,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.xml.reporters;
+package com.rqdql.cli.reporters;
 
 // for logging
 import com.rqdql.Log;
 
 // API
-import com.rqdql.xml.Config;
-import com.rqdql.xml.Reporter;
+import com.rqdql.cli.Config;
+import com.rqdql.cli.Reporter;
 
 // for XML processing
 import nu.xom.Element;

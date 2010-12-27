@@ -21,34 +21,51 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.xml;
+package com.rqdql.cli.reporters;
+
+// for logging
+import com.rqdql.Log;
+
+// API
+import com.rqdql.cli.Config;
+import com.rqdql.cli.Reporter;
 
 // for XML processing
 import nu.xom.Element;
 
 /**
- * Reporter of some information from Java to XML.
+ * Reporter of errors.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public interface Reporter {
+public class Errors implements Reporter {
 
     /**
-     * Set configuration.
-     * @param config The {@link Config} provided by client
+     * {@inheritDoc}
      */
-    void configure(final Config config);
+    @Override
+    public final void configure(final Config config) {
+        // this is just a stub for now
+        Log.trace("#configure()");
+    }
 
     /**
-     * Initialize it, if necessary.
+     * {@inheritDoc}
      */
-    void init();
+    @Override
+    public final void init() {
+        // this is just a stub for now
+        Log.trace("#init()");
+    }
 
     /**
-     * Report into the DOM {@link Element}.
-     * @param element The {@link Element} to fill
+     * {@inheritDoc}
      */
-    void report(final Element element);
+    @Override
+    public final void report(final Element element) {
+        // this is just a stub for now
+        Log.trace("#report()");
+    }
 
 }
