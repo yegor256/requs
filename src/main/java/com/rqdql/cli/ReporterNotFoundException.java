@@ -21,11 +21,23 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
+package com.rqdql.cli;
 
 /**
- * Reporters.
+ * Exception when reporter is not found.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-package com.rqdql.xml.reporters;
+public class ReporterNotFoundException extends Exception {
+
+    /**
+     * Public ctor.
+     * @param name The name of reporter
+     * @param exp Cause of this problem
+     */
+    public ReporterNotFoundException(final String name, final Throwable exp) {
+        super("Reporter not found: " + name, exp);
+    }
+
+}

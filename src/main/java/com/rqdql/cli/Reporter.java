@@ -21,14 +21,34 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.xml;
+package com.rqdql.cli;
+
+// for XML processing
+import nu.xom.Element;
 
 /**
- * Configuration of reporter.
+ * Reporter of some information from Java to XML.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public class Config {
+public interface Reporter {
+
+    /**
+     * Set configuration.
+     * @param config The {@link Config} provided by client
+     */
+    void configure(final Config config);
+
+    /**
+     * Initialize it, if necessary.
+     */
+    void init();
+
+    /**
+     * Report into the DOM {@link Element}.
+     * @param element The {@link Element} to fill
+     */
+    void report(final Element element);
 
 }
