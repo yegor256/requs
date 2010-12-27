@@ -38,3 +38,5 @@ Requirements Definition and Query Language (RQDQL)
 
   Download executable JAR
   {{{https://oss.sonatype.org/content/groups/public/com/rqdql/rqdql/}here}}.
+
+  Try online {{{./example.html}instant example}}.
