@@ -38,6 +38,22 @@
     }
 \usepackage{array} % complex TABULAR environments
 \usepackage{color}
+\usepackage[hyperfootnotes=true,unicode]{hyperref}
+    \hypersetup{
+        unicode=false,
+        pdftoolbar=false,
+        pdfmenubar=false,
+        pdffitwindow=false,
+        pdftitle={RQDQL White Paper},
+        pdfauthor={RQDQL.com},
+        pdfsubject={RQDQL White Paper},
+        pdfnewwindow=true,
+        colorlinks=true,
+        linkcolor=blue,
+        citecolor=blue,
+        filecolor=blue,
+        urlcolor=blue
+    }
 \usepackage[rgb]{xcolor}
     \definecolor{rupBody}{rgb}{1,1,0.8}
     \definecolor{rupBorder}{rgb}{0.6039,0,0.2}
@@ -670,14 +686,7 @@ vector<Object> snapshot;
 <rqdql>
   <errors>
     <report>
-      <error>
-        <lines>
-          <line>23</line>
-        </lines>
-        <msg>
-          This is an error
-        </msg>
-      </error>
+      <error line="23">This is an error</error>
     </report>
   </errors>
   <metrics>
@@ -696,7 +705,7 @@ vector<Object> snapshot;
     The script shall be called from command line like this:
 
     \begin{lstlisting}[language=bash]
-$ rqdql errors uml:uc=UC6.5 metrics < myscope.txt
+$ java -jar rqdql-bin.jar errors uml:uc=UC6.5 metrics < myscope.txt
     \end{lstlisting}
 
     Possible reports are:
@@ -710,7 +719,12 @@ $ rqdql errors uml:uc=UC6.5 metrics < myscope.txt
         \item \texttt{tc:uc=UC5,...}: Test Cases for the given UC-s (or all)
     \end{itemize}
 
-\section{Test Cases}\label{sec:test-cases}
+
+
+
+
+\section{Test Cases}
+\label{sec:test-cases}
 
     We optimize vectors of snapshots, in order
     to produce the smallest collection.
@@ -738,7 +752,12 @@ $ rqdql errors uml:uc=UC6.5 metrics < myscope.txt
         \draw (xmi) -- (code);
     \end{tikzpicture}
 
-\section{Architecture and Design}\label{sec:design}
+
+
+
+
+\section{Architecture and Design}
+\label{sec:design}
 
     This section is under construction and the material
     you find below is just a preliminary draft pictures
