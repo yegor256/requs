@@ -1,7 +1,7 @@
 /**
  * @version $Id$
  */
-package com.rqdql.front;
+package com.rqdql.xml;
 
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -14,7 +14,7 @@ public class FrontFactoryTest {
     public void testFindsSingleReporter() throws Exception {
         FrontFactory factory = new FrontFactory();
         Reporter rep = factory.find("Metrics");
-        assertTrue(rep instanceof com.rqdql.front.reporters.Metrics);
+        assertTrue(rep instanceof com.rqdql.xml.reporters.Metrics);
     }
 
     @Test(expected = ReporterNotFoundException.class)

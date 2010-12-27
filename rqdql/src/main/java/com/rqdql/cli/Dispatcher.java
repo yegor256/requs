@@ -32,7 +32,7 @@ import com.rqdql.api.InstrumentFactory;
 import com.rqdql.api.scanner.Scanner;
 
 // for front reporting
-import com.rqdql.front.Assembler;
+import com.rqdql.xml.Assembler;
 
 // for manipulations with options
 import java.util.ArrayList;
@@ -68,7 +68,7 @@ public final class Dispatcher {
         final Assembler asm = new Assembler();
         try {
             asm.init(reps);
-        } catch (com.rqdql.front.ReporterNotFoundException ex) {
+        } catch (com.rqdql.xml.ReporterNotFoundException ex) {
             throw com.rqdql.Problem.raise(ex);
         }
 

@@ -23,9 +23,9 @@
  */
 
 /**
- * Reporters.
+ * Front-end reporters.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
- * @version $Id$
+ * @version $Id: package-info.java 2360 2010-12-24 11:04:12Z yegor256@yahoo.com $
  */
-package com.rqdql.front.reporters;
+package com.rqdql.xml;

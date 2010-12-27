@@ -28,8 +28,8 @@ Yegor Bugayenko
 
 <<<errors>>> reporter
 
-  The <<<errors>>> reporter exposes all errors found in
-  the text via XML <<<error>>> elements, for example:
+  The reporter exposes all errors found in
+  the text via XML <<<\<error\>>>> elements, for example:
 
 +--
 <?xml version="1.0">

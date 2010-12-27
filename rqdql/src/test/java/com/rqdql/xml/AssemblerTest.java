@@ -1,7 +1,7 @@
 /**
  * @version $Id$
  */
-package com.rqdql.front;
+package com.rqdql.xml;
 
 import org.junit.*;
 import static org.junit.Assert.*;

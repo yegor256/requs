@@ -21,48 +21,34 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.front.reporters;
-
-// for logging
-import com.rqdql.Log;
-
-// API
-import com.rqdql.front.Config;
-import com.rqdql.front.Reporter;
+package com.rqdql.xml;
 
 // for XML processing
 import nu.xom.Element;
 
 /**
- * Reporter of metrics.
+ * Reporter of some information from Java to XML.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public class Metrics implements Reporter {
+public interface Reporter {
 
     /**
-     * {@inheritDoc}
+     * Set configuration.
+     * @param config The {@link Config} provided by client
      */
-    @Override
-    public final void configure(final Config config) {
-        Log.trace("#configure()");
-    }
+    void configure(final Config config);
 
     /**
-     * {@inheritDoc}
+     * Initialize it, if necessary.
      */
-    @Override
-    public final void init() {
-        Log.trace("#init()");
-    }
+    void init();
 
     /**
-     * {@inheritDoc}
+     * Report into the DOM {@link Element}.
+     * @param element The {@link Element} to fill
      */
-    @Override
-    public final void report(final Element element) {
-        Log.trace("#report()");
-    }
+    void report(final Element element);
 
 }

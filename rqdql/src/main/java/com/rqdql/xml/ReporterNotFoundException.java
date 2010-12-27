@@ -21,34 +21,23 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.front;
-
-// for XML processing
-import nu.xom.Element;
+package com.rqdql.xml;
 
 /**
- * Reporter of some information from Java to XML.
+ * Exception when reporter is not found.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public interface Reporter {
+public class ReporterNotFoundException extends Exception {
 
     /**
-     * Set configuration.
-     * @param config The {@link Config} provided by client
+     * Public ctor.
+     * @param name The name of reporter
+     * @param exp Cause of this problem
      */
-    void configure(final Config config);
-
-    /**
-     * Initialize it, if necessary.
-     */
-    void init();
-
-    /**
-     * Report into the DOM {@link Element}.
-     * @param element The {@link Element} to fill
-     */
-    void report(final Element element);
+    public ReporterNotFoundException(final String name, final Throwable exp) {
+        super("Reporter not found: " + name, exp);
+    }
 
 }
