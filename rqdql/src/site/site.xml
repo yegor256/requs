@@ -66,7 +66,7 @@
         <menu ref="reports" />
     </body>
 
-    <publishDate position="right" format="dd M yyyy" />
+    <publishDate position="right" format="dd-MMM-yyyy" />
     <version position="right"/>
 
 </project>

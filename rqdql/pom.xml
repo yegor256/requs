@@ -618,6 +618,27 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                        <!--
+                        Process LaTeX documentation in order to produce PDF
+                        @see http://mojo.codehaus.org/latex-maven-plugin
+                        -->
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>latex-maven-plugin</artifactId>
+                        <version>1.0</version> <!-- 24 Dec 2010 -->
+                        <configuration>
+                            <buildDir>${project.build.directory}/site/pdf</buildDir>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>latex-documents</id>
+                                <phase>pre-site</phase>
+                                <goals>
+                                    <goal>latex</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
@@ -751,27 +772,6 @@
                     <reportPlugins>
                     </reportPlugins>
                 </configuration>
-            </plugin>
-            <plugin>
-                <!--
-                Process LaTeX documentation in order to produce PDF
-                @see http://mojo.codehaus.org/latex-maven-plugin
-                -->
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>latex-maven-plugin</artifactId>
-                <version>1.0</version> <!-- 24 Dec 2010 -->
-                <configuration>
-                    <buildDir>${project.build.directory}/site/pdf</buildDir>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>latex-documents</id>
-                        <phase>pre-site</phase>
-                        <goals>
-                            <goal>latex</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <!--
