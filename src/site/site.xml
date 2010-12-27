@@ -62,6 +62,9 @@
         <menu name="Reporters">
             <item name="errors" href="reporters/errors.html" />
             <item name="metrics" href="reporters/metrics.html" />
+            <item name="links" href="reporters/links.html" />
+            <item name="tc" href="reporters/tc.html" />
+            <item name="uml" href="reporters/uml.html" />
         </menu>
         <menu ref="reports" />
     </body>
