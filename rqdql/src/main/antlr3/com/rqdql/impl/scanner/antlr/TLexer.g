@@ -21,21 +21,21 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.api;
+lexer grammar TLexer;
 
-/**
- * A piece of information discovered by some module,
- * and which should be sent to all listeners.
- *
- * @author Yegor Bugayenko (yegor@rqdql.com)
- * @version $Id$
- */
-public interface Notion {
+options {
+    // programming language to use as destination
+    language = Java;
 
-    /**
-     * Get message of the notion.
-     * @return The message of this notion
-     */
-    String getMessage();
-
+    // Tell ANTLR to make the generated lexer class extend the
+    // the named class, which is where any supporting code and
+    // variables will be placed.
+    superClass = AbstractTLexer;
 }
+
+// What package should the generated source exist in?
+@header {
+    package com.rqdql.impl.scanner.antlr;
+}
+
+SPACE: ( ' ' | '\t' | '\n' | '\r' ) { skip(); };

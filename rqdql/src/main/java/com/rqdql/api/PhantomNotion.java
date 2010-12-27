@@ -21,57 +21,43 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.impl.scanner.antlr;
-
-// parent interfaces, classes
-import com.rqdql.Log;
-import com.rqdql.api.Auditor;
-import com.rqdql.api.PhantomNotion;
-import com.rqdql.api.scanner.Scanner;
-
-// for ANTLR3 parsing
-import org.antlr.runtime.ANTLRStringStream;
-import org.antlr.runtime.CommonTokenStream;
+package com.rqdql.api;
 
 /**
- * {@link Scanner} that uses Antlr3 for scanning of RQDQL text.
+ * Some phantom notion.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
- * @version $Id: Log.java 2358 2010-12-23 15:40:20Z yegor256@yahoo.com $
+ * @version $Id$
  */
-public final class AntlrScanner implements Scanner {
+public class PhantomNotion implements Notion {
 
     /**
-     * The text to work with.
+     * The message.
      */
-    private String text;
+    private String message;
 
     /**
-     * {@inheritDoc}
+     * Public ctor.
+     * @param thr Cause of the problem
      */
-    @Override
-    public void run() {
-        assert this.text != null;
-        Log.trace("#run(), with injected %d bytes", this.text.length());
+    public PhantomNotion(final Throwable thr) {
+        this.message = thr.getMessage();
+    }
 
-        final TLexer lexer = new TLexer();
-        lexer.setCharStream(new ANTLRStringStream(this.text));
-        final CommonTokenStream tokens = new CommonTokenStream(lexer);
-        final TParser parser = new TParser(tokens);
-        try {
-            parser.srs();
-        } catch (org.antlr.runtime.RecognitionException ex) {
-            Auditor.getInstance().tell(new PhantomNotion(ex));
-        }
+    /**
+     * Public ctor.
+     * @param msg Cause of the problem
+     */
+    public PhantomNotion(final String msg) {
+        this.message = msg;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setInput(final String txt) {
-        Log.trace("#setInput(%d bytes)", txt.length());
-        this.text = txt;
+    public final String getMessage() {
+        return this.message;
     }
 
 }
