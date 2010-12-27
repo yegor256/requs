@@ -88,7 +88,7 @@ Name of ImageFile is unique.
 Size of ImageFile is a "size of PNG content of this file".
 +--
 
-  By means of <<<is>>/<<is a>>> we enable a declaration of <<invariants>>
+  By means of <<<is>>>/<<<is a>>> we enable a declaration of <<invariants>>
   on types. Invariant is a <<predicate>>, which is always true, no matter
   what happens with the system. In the example above it is always true
   that <<<PNG content>>> is a file with binary content (not a readable
