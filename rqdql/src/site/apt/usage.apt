@@ -52,7 +52,9 @@ java -jar rqdql-bin.jar errors:max=50,unique metrics < srs.txt
 
 +--
 <?xml version="1.0">
-<rqdql>
+<rqdql xmlns="http://rqdql.com/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://rqdql.com/ http://rqdql.com/rqdql.xsd>
   <errors>
     <report max="50" unique="true">
       <errors>

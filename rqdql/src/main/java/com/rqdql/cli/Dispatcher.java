@@ -106,7 +106,6 @@ public final class Dispatcher {
                 + "Options:\n"
                 + "  -?\tShows this help message\n"
                 + "  -v\tReturns current version of the product\n"
-                + "This program built for " + this.version() + "\n"
                 + "Report bugs to <bugs@rqdql.com>";
         } else if ("-v".equals(arg)) {
             out = this.version();
@@ -135,6 +134,11 @@ public final class Dispatcher {
     /**
      * Get current version of the package.
      * @return The version of the package
+     * @todo #3! This is just a stub for now and has to be
+     *           refactored in order to implement properly. We
+     *           should grab version number from JAR MANIFEST.MF file,
+     *           where it is stored by buildnumber-maven-plugin during
+     *           packaging of the JAR.
      */
     private String version() {
         return "2.0";
