@@ -77,16 +77,7 @@ public final class Dispatcher {
         } catch (com.rqdql.xml.ReporterNotFoundException ex) {
             throw com.rqdql.Problem.raise(ex);
         }
-
-        final Scanner scanner = (Scanner) InstrumentFactory.getInstance()
-            .find("scanner/Scanner");
-        scanner.setInput(input);
-        final Collection<Instrument> instruments =
-            InstrumentFactory.getInstance().getInstruments();
-        for (Instrument inst : instruments) {
-            inst.run();
-        }
-
+        this.parse(input);
         final String xml = asm.assemble();
 
         Log.info(
@@ -97,5 +88,20 @@ public final class Dispatcher {
         return xml;
     }
 
+    /**
+     * Parse string via instruments available.
+     * @param input Incoming RQDQL stream
+     * @see #dispatch(String[], String)
+     */
+    private void parse(final String input) {
+        final Scanner scanner = (Scanner) InstrumentFactory.getInstance()
+            .find("scanner/Scanner");
+        scanner.setInput(input);
+        final Collection<Instrument> instruments =
+            InstrumentFactory.getInstance().getInstruments();
+        for (Instrument inst : instruments) {
+            inst.run();
+        }
+    }
 
 }

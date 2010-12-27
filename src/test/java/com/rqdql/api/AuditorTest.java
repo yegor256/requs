@@ -27,7 +27,7 @@ public class AuditorTest {
         Auditor a = Auditor.getInstance();
         Listener listener = new Listener();
         a.addListener(listener);
-        a.tell(new Notion() {});
+        a.tell(new PhantomNotion("some message"));
         assertTrue(listener.received != null);
     }
 

@@ -21,21 +21,33 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  */
-package com.rqdql.api;
+tree grammar TTree;
 
-/**
- * A piece of information discovered by some module,
- * and which should be sent to all listeners.
- *
- * @author Yegor Bugayenko (yegor@rqdql.com)
- * @version $Id$
- */
-public interface Notion {
+options {
+    // Destination language
+    language = Java;
 
-    /**
-     * Get message of the notion.
-     * @return The message of this notion
-     */
-    String getMessage();
+    // Use the vocab from the parser (not the lexer)
+    // The ANTLR Maven plugin knows how to work out the
+    // relationships between the .g files and it will build
+    // the tree parser after the parser. It will also rebuild
+    // the tree parser if the parser is rebuilt.
+    tokenVocab = TParser;
 
+    // Use ANTLR built-in CommonToken for tree nodes
+    ASTLabelType = CommonToken;
 }
+
+// What package should the generated source exist in?
+@header {
+    package com.rqdql.impl.scanner.antlr;
+}
+
+srs
+    : statement* EOF
+    ;
+
+statement
+    : SPACE
+    ;
+

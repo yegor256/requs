@@ -23,55 +23,47 @@
  */
 package com.rqdql.impl.scanner.antlr;
 
-// parent interfaces, classes
-import com.rqdql.Log;
-import com.rqdql.api.Auditor;
-import com.rqdql.api.PhantomNotion;
-import com.rqdql.api.scanner.Scanner;
-
-// for ANTLR3 parsing
-import org.antlr.runtime.ANTLRStringStream;
-import org.antlr.runtime.CommonTokenStream;
+// for ANTLR3 lexical analysis
+import org.antlr.runtime.CharStream;
+import org.antlr.runtime.Lexer;
+import org.antlr.runtime.RecognizerSharedState;
 
 /**
- * {@link Scanner} that uses Antlr3 for scanning of RQDQL text.
+ * Abstract lexer.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
- * @version $Id: Log.java 2358 2010-12-23 15:40:20Z yegor256@yahoo.com $
+ * @version $Id$
  */
-public final class AntlrScanner implements Scanner {
+public abstract class AbstractTLexer extends Lexer {
 
     /**
-     * The text to work with.
+     * Default constructor for the lexer, when you do not
+     * yet know what the character stream to be provided is.
      */
-    private String text;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void run() {
-        assert this.text != null;
-        Log.trace("#run(), with injected %d bytes", this.text.length());
-
-        final TLexer lexer = new TLexer();
-        lexer.setCharStream(new ANTLRStringStream(this.text));
-        final CommonTokenStream tokens = new CommonTokenStream(lexer);
-        final TParser parser = new TParser(tokens);
-        try {
-            parser.srs();
-        } catch (org.antlr.runtime.RecognitionException ex) {
-            Auditor.getInstance().tell(new PhantomNotion(ex));
-        }
+    public AbstractTLexer() {
+        super();
     }
 
     /**
-     * {@inheritDoc}
+     * Create a new instance of the lexer using the given
+     * character stream as the input to lex into tokens.
+     *
+     * @param input A valid character stream that contains
+     *        the ruleSrc code you wish to compile (or lex at least)
      */
-    @Override
-    public void setInput(final String txt) {
-        Log.trace("#setInput(%d bytes)", txt.length());
-        this.text = txt;
+    public AbstractTLexer(final CharStream input) {
+        this(input, new RecognizerSharedState());
+    }
+
+    /**
+     * Internal constructor for ANTLR - do not use.
+     *
+     * @param input The character stream we are going to lex
+     * @param state The shared state object, shared between all lexer comonents
+     */
+    public AbstractTLexer(final CharStream input,
+        final RecognizerSharedState state) {
+        super(input, state);
     }
 
 }
