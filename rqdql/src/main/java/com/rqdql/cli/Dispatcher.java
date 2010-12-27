@@ -71,7 +71,7 @@ public final class Dispatcher {
         final List<String> reps = new ArrayList<String>();
         for (String arg : args) {
             if (arg.charAt(0) == '-') {
-                // todo: parse the option, using apache-commons-cli
+                return this.option(arg);
             } else {
                 reps.add(arg);
             }
@@ -95,6 +95,28 @@ public final class Dispatcher {
     }
 
     /**
+     * Parse the argument and return output.
+     * @param arg The argument
+     * @return Output
+     */
+    private String option(final String arg) {
+        String out;
+        if ("-?".equals(arg)) {
+            out = "usage: java -jar rqdql-bin.jar [-?v] [reports...]\n"
+                + "Options:\n"
+                + "  -?\tShows this help message\n"
+                + "  -v\tReturns current version of the product\n"
+                + "This program built for " + this.version() + "\n"
+                + "Report bugs to <bugs@rqdql.com>";
+        } else if ("-v".equals(arg)) {
+            out = this.version();
+        } else {
+            throw com.rqdql.Problem.raise("Unknown option: " + arg);
+        }
+        return out;
+    }
+
+    /**
      * Parse string via instruments available.
      * @param input Incoming RQDQL stream
      * @see #dispatch(String[], String)
@@ -108,6 +130,14 @@ public final class Dispatcher {
         for (Instrument inst : instruments) {
             inst.run();
         }
+    }
+
+    /**
+     * Get current version of the package.
+     * @return The version of the package
+     */
+    private String version() {
+        return "2.0";
     }
 
 }

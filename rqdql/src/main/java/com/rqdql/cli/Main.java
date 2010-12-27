@@ -53,7 +53,7 @@ public final class Main {
             args,
             IOUtils.toString(System.in, "UTF-8")
         );
-        System.out.print(xml);
+        System.out.println(xml);
     }
 
 }
