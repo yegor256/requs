@@ -49,6 +49,11 @@ import java.util.List;
 public final class Dispatcher {
 
     /**
+     * Miliseconds in one second.
+     */
+    private static long MSEC = 1000;
+
+    /**
      * Entry point of the entire JAR.
      *
      * @param args List of command-line arguments
@@ -87,7 +92,7 @@ public final class Dispatcher {
         Log.info(
             "Dispatched %d bytes in %.2fsec",
             input.length(),
-            (float) (System.currentTimeMillis() - startTime) / 1000
+            (float) (System.currentTimeMillis() - startTime) / this.MSEC
         );
         return xml;
     }
