@@ -29,11 +29,11 @@
         numbers=left,
         numberstyle=\scriptsize,
         firstnumber=1,
-        stepnumber=4,
+        stepnumber=1,
         numbersep=1em,
         aboveskip=2em,
         belowskip=1em,
-        lineskip=-0.3em,
+        lineskip=0em,
         frame=leftline,
     }
 \usepackage{array} % complex TABULAR environments
@@ -93,16 +93,19 @@
     \usetikzlibrary{positioning}
     \usetikzlibrary{fit}
     \usetikzlibrary{trees} % for grow cyclic
-    \tikzstyle{class} = [text ragged, font={\scriptsize\ttfamily}, fill=white, anchor=north,
-        rectangle split, rectangle split parts=2,
-        fill=rupBody, draw=rupBorder] % class in class diagram
+    \tikzstyle{RUP} = [fill=rupBody, draw=rupBorder]
+    \tikzstyle{class} = [text ragged, font={\scriptsize\ttfamily}, anchor=north,
+        rectangle split, rectangle split parts=2, RUP] % class in class diagram
+    \tikzstyle{slot} = [comment, draw=rupBorder, dashed, fill=rupBody]
     \tikzstyle{comment} = [font={\scriptsize\ttfamily}, fill=white] % comment in class diagram
     \tikzstyle{cardinality} = [font={\scriptsize\ttfamily}] % cardinality
+\usepackage[small,bf]{caption}
 
 \begin{document}
+    \raggedright
     \setlength{\parindent}{0pt}
     \setlength{\parskip}{1em}
-    \newcommand{\type}[1]{\mbox{\texttt{#1}}}
+    \newcommand{\type}[1]{\colorbox{lightgray}{\texttt{#1}}}
     \newenvironment{maths}
     {
         \vspace*{0.5em}
@@ -146,35 +149,38 @@
     programming). Next, we convert objects into second order logic predicates.
     Then, we resolve predicates on data scope (in terms of logical programming)
     and create a collection of all possible scope variants. Then, for every
-    scope variant we build a model in terms of MOF~\citet{mof2}, converting them later
-    into XMI and transferring to the destination. Next, XMI~\citet{mof-to-xmi} can be rendered
+    scope variant we build a model in terms of MOF, see~\citet{mof2}, converting them later
+    into XMI and transferring to the destination. Next, XMI, see~\citet{mof-to-xmi}, can be rendered
     for an end-user or understood by a computer. Finally, the entire process
-    is delivered to end-users in customizable XML~\citet{xml} reports.
-    The workflow of the process explained is presented in Fig.~\ref{fig:Workflow}.
+    is delivered to end-users in customizable XML, see~\citet{xml}, reports.
+    The workflow of the process explained is presented in Fig.\ref{fig:Workflow}.
 
     \begin{figure}[ht]
-        \caption{RQDQL highest-level workflow description, where we start
-            from plain text and finish with a strict formal description
-            of a testing model, visible to an end-user and a computer.}
+        \centering
         \begin{tikzpicture}[
             every node/.style={text width=5em, text centered, draw=black, font=\small},
             every path/.style={draw, -triangle 60},
             node distance=8em
         ]
-            \node (english) {Plain Text Scanner};
-            \node [right of=english] (objects) {Object Thesaurus};
-            \node [right of=objects] (sol) {Second Order Logic Predicates};
-            \node [right of=sol] (data) {Data Facts};
-            \node [below of=data] (mof) {MOF/XMI};
+            \node [RUP] (scanner) {Scanner};
+            \node [below of=scanner] (text) {Plain Text};
+            \node [RUP, right of=scanner] (objects) {Object Thesaurus};
+            \node [RUP, right of=objects] (sol) {Second Order Logic Predicates};
+            \node [RUP, right of=sol] (data) {Data Facts};
+            \node [RUP, below of=data] (mof) {MOF/XMI};
             \node [left of=mof] (user) {End-User};
             \node [below left of=mof] (computer) {Computer};
-            \draw (english) -- (objects);
+            \draw (text) -- (scanner);
+            \draw (scanner) -- (objects);
             \path (objects) -- (sol);
             \path (sol) -- (data);
             \path (data) -- (mof);
             \path (mof) -- (user);
             \path (mof) -- (computer);
         \end{tikzpicture}
+        \caption{RQDQL highest-level workflow description, where we start
+            from plain text and finish with a strict formal description
+            of a testing model, visible to an end-user and a computer.}
         \label{fig:Workflow}
     \end{figure}
 
@@ -212,160 +218,235 @@
     Detailed explanation of the RQDQL syntax is given on its
     website \href{http://www.rqdql.com}{www.rqdql.com}.
 
-    In Java we use the following types:
+    Fig.\ref{fig:Thesaurus-Classes} explains what Java classes we use
+    to store objects retrieved from RQDQL texts. All said Java classes
+    are declared in the
+    \type{com.rqdql.api.thesaurus} package.
 
-    \begin{tikzpicture}
-        \node [class] (entity) {Entity\nodepart{second}predicate};
-        \node [class, below right=4em of entity] (slot) {Slot\nodepart{second}name\linebreak{}cardinality};
-        \node [class, below left=5em of entity] (type) {Type\nodepart{second}};
-        \node [class, below=4em of entity] (uc) {UseCase\nodepart{second}};
-        \node [class, below right=4em of uc] (signature) {Signature\nodepart{second}text};
-        \node [class, left=6em of signature] (place) {Place\nodepart{second}};
-        \draw [-open triangle 60] (type) -- (entity);
-        \draw [-open triangle 60] (uc) -- (entity);
-        \draw [-diamond]
-            (entity)
-            --
-            node [cardinality, very near start, left=0.5em] {1}
-            node [comment] {\_slots} (slot)
-            node [cardinality, very near end, right=0.5em] {*};
-        \draw [-open diamond]
-            (slot)
-            |-
-            node [cardinality, very near start, right=0.2em] {1}
-            node [comment] {\_entity} (entity)
-            node [cardinality, very near end, above=0.2em] {0..1};
-        \draw [-diamond]
-            (uc)
-            --
-            node [cardinality, very near start, left=0.2em] {1}
-            node [comment] {\_signature} (signature)
-            node [cardinality, very near end, right=0.2em] {1};
-        \draw [-diamond]
-            (signature)
-            --
-            node [cardinality, very near start, above=0.2em] {1}
-            node [comment] {\_places} (place)
-            node [cardinality, very near end, below=0.2em] {*};
-    \end{tikzpicture}
+    \begin{figure}[ht]
+        \centering
+        \begin{tikzpicture}
+            \node [class] (entity) {Entity\nodepart{second}predicate};
+            \node [class, below right=4em of entity] (slot) {Slot\nodepart{second}name, cardinality};
+            \node [class, below left=5em of entity] (type) {Type\nodepart{second}};
+            \node [class, below=4em of entity] (uc) {UseCase\nodepart{second}};
+            \node [class, below right=4em of uc] (signature) {Signature\nodepart{second}text};
+            \node [class, left=6em of signature] (place) {Place\nodepart{second}name};
+            \node [class, below left=3em of type] (sud) {\underline{SUD: Entity}\nodepart{second}};
+            \draw [-open triangle 60, dashed] (sud) -- (type);
+            \draw [-open triangle 60] (type) -- (entity);
+            \draw [-open triangle 60] (uc) -- (entity);
+            \draw [-diamond]
+                (entity)
+                --
+                node [cardinality, very near start, left=0.5em] {1}
+                node [comment] {slots} (slot)
+                node [cardinality, very near end, right=0.5em] {*};
+            \draw [-open diamond]
+                (slot)
+                |-
+                node [cardinality, very near start, right=0.2em] {1}
+                node [comment] {entity} (entity)
+                node [cardinality, very near end, above=0.2em] {0..1};
+            \draw [-open diamond]
+                (place)
+                --
+                node [cardinality, very near start, right=0.2em] {*}
+                node [comment] {type} (type)
+                node [cardinality, very near end, left=0.2em] {1};
+            \draw [-diamond]
+                (uc)
+                --
+                node [cardinality, very near start, left=0.2em] {1}
+                node [comment] {signature} (signature)
+                node [cardinality, very near end, right=0.2em] {1};
+            \draw [-diamond]
+                (signature)
+                --
+                node [cardinality, very near start, above=0.2em] {1}
+                node [comment] {places} (place)
+                node [cardinality, very near end, below=0.2em] {*};
+        \end{tikzpicture}
+        \caption{Java classes in the Object Thesaurus.}
+        \label{fig:Thesaurus-Classes}
+    \end{figure}
+
+    There is a global instance \type{SUD} of class \type{Entity}, which
+    is a holder of all other types. The instance is gettable via
+    \type{Thesaurus.getSUD()} method.
 
     \subsection{Types}
 
-        A simplified verbal form of a type looks like this:
+        A simplified verbal form of a RQDQL type looks like this:
 
-    \begin{verbatim}
+\begin{lstlisting}
+User is a "human being".
 User includes:
   email: "email address";
   face-s: Photo "a collection of photos";
-  manager: User "user's manager, if any";
+  manager-?: User "user's manager, if any";
   address.
-Address of User includes: city, country.\end{verbatim}
+Address of User includes: city, country.
+\end{lstlisting}
 
-        In Java the type is presented by class \texttt{Type} and
-        the type written above will look like:
+        In Java the type is presented by class \type{Type} and
+        the type written above will look like shown in
+        Fig.\ref{fig:Simple-Type}. Symbol \tikz \node[slot] {"face"/0..*}; means
+        an instance of class \type{Slot} with \type{name} of \type{"face"}
+        and \type{cardinality} of \type{0..*}.
 
-        \begin{tikzpicture}[start chain, node distance=4em, every node/.style={on chain,join}, every join/.style={-}]
-            \node [class, on chain] (proxy) {\underline{proxy:Proxy}\nodepart{second}};
-            \begin{scope}[start branch=email]
-                \node [class, on chain=going above right] {\underline{:Slot}\nodepart{second}name: ``text''};
-                \node [class, on chain] {\underline{:Type}\nodepart{second}};
-            \end{scope}
-            \begin{scope}[start branch=user]
-                \node [class, on chain] {\underline{:Slot}\nodepart{second}name: ``User''};
-                \begin{scope}[start branch=email]
-                    \node [class, on chain=going above right] {\underline{:Slot}\nodepart{second}name: ``email''};
-                    \node [class, on chain] {\underline{:Type}\nodepart{second}};
-                \end{scope}
-                \begin{scope}[start branch=face]
-                    \node [class, on chain] {\underline{:Slot}\nodepart{second}name: ``face''};
-                \end{scope}
-                \begin{scope}[start branch=manager]
-                    \node [class, on chain] {\underline{:Slot}\nodepart{second}name: ``manager''};
-                \end{scope}
-                \begin{scope}[start branch=address]
-                    \node [class, on chain] {\underline{:Slot}\nodepart{second}name: ``address''};
-                    \node [class, on chain] {\underline{:Type}\nodepart{second}};
-                    \begin{scope}[start branch=city]
-                        \node [class, on chain=going above right] {\underline{:Slot}\nodepart{second}name: ``city''};
-                    \end{scope}
-                    \begin{scope}[start branch=country]
-                        \node [class, on chain=going above right] {\underline{:Slot}\nodepart{second}name: ``country''};
-                    \end{scope}
-                \end{scope}
-            \end{scope}
-            \begin{scope}[start branch=photo]
-                \node [class, on chain=going below right] {\underline{:Slot}\nodepart{second}name: ``Photo''};
-                \node [class, on chain] {\underline{:Type}\nodepart{second}};
-            \end{scope}
-        \end{tikzpicture}
+        \begin{figure}[ht]
+            \centering
+            \begin{tikzpicture}
+                \draw
+                    node [class] (sud) {\underline{SUD: Entity}\nodepart{second}}
+                    +(-5,-3)
+                    node [class] (user) {\underline{:Type}\nodepart{second}info("human being")}
+                    +(0,-3)
+                    node [class] (text) {\underline{:Type}\nodepart{second}}
+                    +(4,-3)
+                    node [class] (photo) {\underline{:Type}\nodepart{second}}
+                    +(-5,-6)
+                    node [class] (address) {\underline{:Type}\nodepart{second}};
+
+                \draw [->] (sud) -- node [slot] {"photo"/0..*} (photo);
+                \draw [->] (sud) -- node [slot] {"user"/0..*} (user);
+                \draw [->] (sud) -- node [slot] {"text"/0..*} (text);
+                \draw [->] (user) -- node [slot] {"address"/1} (address);
+                \draw [->] (user) .. controls +(-2,3) and +(1,3) .. node [slot] {"manager"/0..1} (user);
+                \draw [->] (user) -- node [slot] {"email"/1} (text);
+                \draw [->] (user) .. controls +(7,-2) .. node [slot] {"face"/0..*} (photo);
+                \draw [->] (address) .. controls +(3,1) .. node [slot] {"city"/1} (text);
+                \draw [->] (address) .. controls +(5,0) .. node [slot] {"country"/1} (text);
+            \end{tikzpicture}
+            \caption{Simple RQDQL type is translated into Thesaurus objects and
+                relations between them.}
+            \label{fig:Simple-Type}
+        \end{figure}
 
     \subsection{Use Cases}
 
-        Verbal form of a use case:
+        There is a simple verbal form of an informal use case:
 
-        \begin{verbatim}
-UC1: User (the user) extends photo album:
+\begin{lstlisting}
+UC1: User (the user) personalizes himself: "the user
+uploads a new photo, SUD validates it and saves".
+\end{lstlisting}
+
+        Such a simple use case is represented in the Thesaurus
+        as explained in Fig.\ref{fig:Simple-UC}
+
+        \begin{figure}[ht]
+            \centering
+            \begin{tikzpicture}
+                \draw
+                    node [class] (sud) {\underline{SUD: Entity}\nodepart{second}}
+                    +(0,-3)
+                    node [class] (uc1) {\underline{:UseCase}\nodepart{second}}
+                    +(0,-6)
+                    node [class] (flow1) {\underline{:UseCase}\nodepart{second}}
+                    +(4,-3)
+                    node [class] (signature) {\underline{:Signature}\nodepart{second}"\{...\} personalizes \{...\}"}
+                    +(7.5,-1)
+                    node [class] (place0) {\underline{:Place}\nodepart{second}name: "user"}
+                    +(7.5,-5)
+                    node [class] (place1) {\underline{:Place}\nodepart{second}name: "user"}
+                    +(10,-3)
+                    node [class] (user) {\underline{:Type}\nodepart{second}};
+                \draw[->] (sud) -- node[slot] {"UC1/0..*"} (uc1);
+                \draw[->] (uc1) -- node[slot] {"flow-1/1"} (flow1);
+                \draw[->] (sud) -| node[slot] {"user/0..*"} (user);
+                \draw[->] (signature) |- node[comment] {place[0]} (place0);
+                \draw[->] (signature) |- node[comment] {place[1]} (place1);
+                \draw[->] (uc1) -- node[comment, rotate=90] {signature} (signature);
+                \draw[->] (place0) -- node[comment] {type} (user);
+                \draw[->] (place1) -- node[comment] {type} (user);
+            \end{tikzpicture}
+            \caption{Simple RQDQL use case is translated into Thesaurus objects and
+                relations between them.}
+            \label{fig:Simple-UC}
+        \end{figure}
+
+        A signature is a text with places inside, for example
+        \type{\{...\} personalizes \{...\}}. There are two places inside
+        this signature, each of which has to be explained by an
+        instance of class \type{Place}. Such an instance contains
+        a link to \type{Type} and a name. The link can't be \type{null},
+        while the name can. If the name is not set it means that this is just
+        a link to a type, and it is not instantiated.
+
+        There is a more complex example of the same use case:
+
+\begin{lstlisting}
+UC1: User (the user) personalizes himself:
   1. The user creates photo of himself (the photo).
   2. We validate the photo "immediately".
-  3. "We protocol the operation in backlog".
-  4. The user reads the photo.
-UC1: 0a) If number of photos of the user is greater than 5:
-  1. The user deletes photo of himself.
 UC1: 2a) If failed with "file format is not valid":
   1. We delete the photo.
-  2. Fail with "only PNG images are accepted".\end{verbatim}
+  2. Fail with "only PNG images are accepted".
+\end{lstlisting}
 
         The use case is represented in the system by means of
-        \texttt{com.rqdql.api.thesaurus.UseCase} and \texttt{com.rqdql.api.thesaurus.Slot}-s. The
-        use case given above will be converted to:
+        \texttt{UseCase} and \texttt{Slot}-s. The
+        use case given above will be converted to the set
+        of objects in Fig.\ref{fig:Complex-UC}. For the sake of
+        simplicity the diagram contains only \type{UseCase} types, and
+        their relative signatures and predicates.
 
-        \begin{verbatim}
-"UC1": com.rqdql.api.thesaurus.UseCase {
-  signature: "{...} extends photo album",
-  slots: [
-    0: Slot {
-      name:
-      signature: "start",
-      alternatives: [ formula: Flows{...} ]
-    }
-    1: Flow { signature: "{...} creates {...}", alternatives: [] }
-    2: Flow {
-      signature: "{...} validate {...}",
-      alternatives: [ formula: Flows{...} ]
-    }
-    3: Flow { signature: null, alternatives: [] }
-    4: Flow { signature: "{...} reads {...}", alternatives: [] }
-  ]
-}\end{verbatim}
+        \begin{figure}[ht]
+            \centering
+            \newcommand{\sigc}[2]{\begin{minipage}{\textwidth}\texttt{#1}\\ \normalfont{}#2\end{minipage}}
+            \begin{tikzpicture}
+                \draw
+                    node [class] (sud) {\underline{SUD: Entity}\nodepart{second}}
+                    +(0,-2)
+                    node [class] (uc1) {\underline{:UseCase}\nodepart{second}}
+                    +(3,-3)
+                    node [class] (flow0) {\underline{:UseCase}\nodepart{second}}
+                    +(3,-4.2)
+                    node [class] (flow1) {\underline{:UseCase}\nodepart{second}}
+                    +(3,-5.4)
+                    node [class] (flow2) {\underline{:UseCase}\nodepart{second}}
+                    +(6,-6.6)
+                    node [class] (flow20) {\underline{:UseCase}\nodepart{second}}
+                    +(6,-7.8)
+                    node [class] (flow21) {\underline{:UseCase}\nodepart{second}}
+                    +(6,-9)
+                    node [class] (flow22) {\underline{:UseCase}\nodepart{second}};
+                \draw[->] (sud) -- node[slot] {"UC1/0..*"} (uc1);
+                \draw[->] (uc1) |- node[near end, slot] {"flow-0/1"} (flow0);
+                \draw[->] (uc1) |- node[near end, slot] {"flow-1/1"} (flow1);
+                \draw[->] (uc1) |- node[near end, slot] {"flow-2/1"} (flow2);
+                \draw[->] (flow2) |- node[near end, slot] {"flow-0/1"} (flow20);
+                \draw[->] (flow2) |- node[near end, slot] {"flow-1/1"} (flow21);
+                \draw[->] (flow2) |- node[near end, slot] {"flow-2/1"} (flow22);
+                \node[comment, right=0em of uc1.east, anchor=west] {
+                    \sigc{"\{...\} personalizes \{...\}"}
+                    {info(\texttt{"User (the user) personalizes himself"})}};
+                \node[comment, right=0em of flow0.east, anchor=west] {
+                    \sigc{"start"}
+                    {info("")}};
+                \node[comment, right=0em of flow1.east, anchor=west] {
+                    \sigc{"\{...\} creates \{...\}"}
+                    {info(\texttt{"The user creates photo of himself (the photo)"})}};
+                \node[comment, right=0em of flow2.east, anchor=west] {
+                    \sigc{"\{...\} validate \{...\}"}
+                    {info(\texttt{"We validate the photo \textbackslash"immediately\textbackslash""})}};
+                \node[comment, right=0em of flow20.east, anchor=west] {
+                    \sigc{"start"}
+                    {info("")}};
+                \node[comment, right=0em of flow21.east, anchor=west] {
+                    \sigc{"\{...\} delete \{...\}"}
+                    {info("We delete the photo")}};
+                \node[comment, right=0em of flow22.east, anchor=west] {
+                    \sigc{""}
+                    {throw(\texttt{"only PNG images are accepted"}) $\wedge$\\
+                        info(\texttt{"Fail with \textbackslash"only PNG images are accepted\textbackslash""})}};
+            \end{tikzpicture}
+            \caption{More complex RQDQL use case translated.}
+            \label{fig:Complex-UC}
+        \end{figure}
 
-        Package \type{com.rqdql.api.thesaurus} is a collection of Java classes:
-
-    \begin{lstlisting}[language=Java]
-class Type {
-  vector<Variadic> predicate;
-  vector<Slot> slots;
-};
-class Slot extends Type {
-  string name;
-  Cardinality cardinality;
-  Vector<Formula> predicates;
-  Type type;
-};
-map<string, Type> types; // all named types
-class UseCase {
-  class Signature {
-    string format; // e.g. "${sud} validate ${photo}"
-    map<string, Explanation> explanations; // e.g. <"photo", "User.photos">
-  };
-  Signature signature;
-  typedef map<int, Flow> Flows;
-  class Flow {
-    string informal;
-    Signature signature;
-    map<Formula*, Flows&> alternatives;
-  };
-};
-\end{lstlisting}
 
 
 
@@ -378,7 +459,7 @@ class UseCase {
     inside \type{com.rqdql.api.solm}. There are
     three groups of predicates. The first one is ``system predicates'', which
     are Java encoded. The second group includes ``pre-defined predicates'',
-    which are injected into \type{Solm} by \type{Thesaurus}. The third group includes
+    which are injected into \type{SOLM} by \type{Thesaurus}. The third group includes
     predicates defined by custom document, called ``custom predicates'':
 
     \begin{tikzpicture}[every node/.style={draw, text centered},
@@ -387,7 +468,7 @@ class UseCase {
         \node [text width=10em, above=2em of system.north, anchor=south] (predefined) {Pre-defined};
         \node [text width=15em, above=2em of predefined.north, anchor=south] (custom) {Custom};
         \node [draw=none, right=1em of system] {Java in \type{Solm}};
-        \node [draw=none, right=1em of predefined] {\type{Proxy} injects into \type{Solm}};
+        \node [draw=none, right=1em of predefined] {\type{Thesaurus} injects into \type{SOLM}};
         \node [draw=none, right=1em of custom] {from \type{Scanner}};
         \path (custom) -- (predefined);
         \path (predefined) -- (system);
