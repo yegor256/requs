@@ -93,6 +93,10 @@ div#contentBox {
 div#banner {
     background: white;
 }
+a#bannerLeft img {
+    margin-left: 20px;
+    margin-top: 15px;
+}
 div#leftColumn {
     width: 13em;
 }
