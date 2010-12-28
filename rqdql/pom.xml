@@ -584,6 +584,20 @@
                                                 <head>To do:</head>
                                             </tag>
                                         </tags>
+                                        <reportSets>
+                                            <reportSet>
+                                                <id>html</id>
+                                                <reports>
+                                                    <report>javadoc</report>
+                                                </reports>
+                                            </reportSet>
+                                            <reportSet>
+                                                <id>test-html</id>
+                                                <reports>
+                                                    <report>javadoc</report>
+                                                </reports>
+                                            </reportSet>
+                                        </reportSets>
                                         <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
                                         <docletArtifact>
                                             <groupId>org.umlgraph</groupId>
