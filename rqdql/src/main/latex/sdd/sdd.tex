@@ -21,7 +21,7 @@
 %% OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 %% OF SUCH DAMAGE.
 %%
-\documentclass{article}
+\documentclass[12pt,oneside,letterpaper]{article}
 \usepackage[T1]{fontenc} % to enable "{" symbol in \ttfamily
 \usepackage{listings} % listings
     \lstset{
@@ -57,6 +57,7 @@
 \usepackage[rgb]{xcolor}
     \definecolor{rupBody}{rgb}{1,1,0.8}
     \definecolor{rupBorder}{rgb}{0.6039,0,0.2}
+\usepackage{natbib} % for nicer references formatting
 \usepackage{tikz}
 	\usetikzlibrary{shapes} % node split
 	\usetikzlibrary{chains} % start chains
@@ -72,18 +73,18 @@
     \tikzstyle{cardinality} = [font={\scriptsize\ttfamily}] % cardinality
 
 \begin{document}
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{1em}
-\newcommand{\type}[1]{\mbox{\texttt{#1}}}
-\newenvironment{maths}
-{
-    \vspace*{0.5em}
-    \begin{tabular}{l>{\raggedright\arraybackslash}p{20em}}
-}
-{
-    \end{tabular}
-    \vspace*{1em}
-}
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{1em}
+    \newcommand{\type}[1]{\mbox{\texttt{#1}}}
+    \newenvironment{maths}
+    {
+        \vspace*{0.5em}
+        \begin{tabular}{l>{\raggedright\arraybackslash}p{20em}}
+    }
+    {
+        \end{tabular}
+        \vspace*{1em}
+    }
 
 
 
@@ -98,10 +99,10 @@
     \maketitle
     \begin{abstract}
         Requirements Definition and Query Language (RQDQL) is
-        an experimental set of tools and formats that enables definition of
-        an SRS document in a
-        human-friendly language, and at the same time making it understandable
-        by computers. Requirements in plain text are converted to
+        an experimental set of tools and formats that enable definition of
+        SRS documents in a
+        human-friendly language at the same time making it understandable
+        by computers. Plain text functional requirements are converted to
         second order logic predicates and then represented in MOF/XMI.
     \end{abstract}
 
@@ -110,19 +111,19 @@
 
 \section{Introduction}
 
-    IEEE 830 says: ``\emph{Software Requirements Specification should be
+    \citet{ieee830} says: ``\emph{Software Requirements Specification should be
     correct, unambiguous, complete, consistent, ranked for importance and/or stability,
-    verifiable, modifiable, traceable}''~\cite{ieee830}. RQDQL enables the creation
+    verifiable, modifiable, traceable}''. RQDQL enables the creation
     of such documents in plain text format.
 
     First, we convert plain English into objects (in terms of object-oriented
     programming). Next, we convert objects into second order logic predicates.
     Then, we resolve predicates on data scope (in terms of logical programming)
     and create a collection of all possible scope variants. Then, for every
-    scope variant we build a model in terms of MOF~\cite{mof2}, converting them later
-    into XMI and transferring to the destination. Next, XMI~\cite{mof-to-xmi} can be rendered
+    scope variant we build a model in terms of MOF~\citet{mof2}, converting them later
+    into XMI and transferring to the destination. Next, XMI~\citet{mof-to-xmi} can be rendered
     for an end-user or understood by a computer. Finally, the entire process
-    is delivered to end-users in customizable XML~\cite{xml} reports.
+    is delivered to end-users in customizable XML~\citet{xml} reports.
     The workflow of the process explained is presented in Fig.~\ref{fig:Workflow}.
 
     \begin{figure}[ht]
@@ -134,8 +135,8 @@
             every path/.style={draw, -triangle 60},
             node distance=8em
         ]
-            \node (english) {Plain English};
-            \node [right of=english] (objects) {OOP Objects};
+            \node (english) {Plain Text Scanner};
+            \node [right of=english] (objects) {Object Thesaurus};
             \node [right of=objects] (sol) {Second Order Logic Predicates};
             \node [right of=sol] (data) {Data Facts};
             \node [below of=data] (mof) {MOF/XMI};
@@ -151,10 +152,10 @@
         \label{fig:Workflow}
     \end{figure}
 
-    Section~\ref{sec:to-objects} explains the process of converting plain English
-    to ``object oriented thesaurus''. We are using
+    Section~\ref{sec:to-objects} explains the process of converting plain text
+    to ``Object Thesaurus''. We are using
     \href{http://www.altlr.org}{\texttt{antlr3}} grammar analysis toolkit.
-    Moreover, the entire RQDQL product is written in Java.
+    Moreover, the entire RQDQL product is written in \href{http://www.java.com/en/}{Java}.
 
     Section~\ref{sec:to-solm} explains how objects are converted to
     second order logic ``predicates'',
@@ -791,7 +792,7 @@ $ java -jar rqdql-bin.jar errors uml:uc=UC6.5 metrics < myscope.txt
     \end{tikzpicture}
 
 
+\bibliographystyle{apalike}
 \bibliography{sdd}{}
-\bibliographystyle{plain}
 
 \end{document}
