@@ -104,7 +104,7 @@ public class LogTest {
     }
 
     @Test
-    public void testSendsLogMessageFromNonWoquoClass() throws Exception {
+    public void testSendsLogMessageFromNonRqdqlClass() throws Exception {
         org.acme.Bookstore.ping("sample message, ignore it");
         assertEquals("com.rqdql.LogTest", this.appender.event.getLoggerName());
     }

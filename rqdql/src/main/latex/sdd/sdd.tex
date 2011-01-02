@@ -232,8 +232,8 @@
             \node [class, below=4em of entity] (uc) {UseCase\nodepart{second}};
             \node [class, below right=4em of uc] (signature) {Signature\nodepart{second}text};
             \node [class, left=6em of signature] (place) {Place\nodepart{second}name};
-            \node [class, below left=3em of type] (sud) {\underline{SUD: Entity}\nodepart{second}};
-            \draw [-open triangle 60, dashed] (sud) -- (type);
+            \node [class, left=3em of entity] (sud) {\underline{SUD: Entity}\nodepart{second}};
+            \draw [-open triangle 60, dashed] (sud) -- (entity);
             \draw [-open triangle 60] (type) -- (entity);
             \draw [-open triangle 60] (uc) -- (entity);
             \draw [-diamond]
