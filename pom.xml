@@ -40,7 +40,9 @@
     <name>Requirements Definition and Query Language (RQDQL)</name>
 
     <description>
+        <![CDATA[
         Requirements manipulation language
+        ]]>
     </description>
     <url>http://www.rqdql.com</url>
     <inceptionYear>2009</inceptionYear>
@@ -55,7 +57,11 @@
             <name>BSD</name>
             <url>http://www.rqdql.com/LICENSE.txt</url>
             <distribution>repo</distribution>
-            <comments>This is free open source project, feel free to redistribute it</comments>
+            <comments>
+                <![CDATA[
+                This is free open source project, feel free to redistribute it
+                ]]>
+            </comments>
         </license>
     </licenses>
 
@@ -95,12 +101,13 @@
     </ciManagement>
 
     <scm>
-        <connection>scm:svn:svn://svn.fazend.com/rqdql/trunk/rqdql</connection>
-        <developerConnection>scm:svn:svn://svn.fazend.com/rqdql/trunk/rqdql</developerConnection>
-        <url>svn://svn.fazend.com/rqdql/trunk/rqdql</url>
+        <connection>scm:svn:http://svn.fazend.com/rqdql/trunk/rqdql</connection>
+        <developerConnection>scm:svn:http://svn.fazend.com/rqdql/trunk/rqdql</developerConnection>
+        <url>http://svn.fazend.com/rqdql/trunk/rqdql</url>
     </scm>
 
     <distributionManagement>
+        <downloadUrl>https://oss.sonatype.org/content/groups/public</downloadUrl>
         <repository>
             <uniqueVersion>false</uniqueVersion>
             <id>sonatype-nexus-staging</id>
@@ -304,6 +311,24 @@
                                 <phase>package</phase>
                                 <goals>
                                     <goal>javadoc</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <!--
+                        Validate the quality of documentation
+                        @link http://maven.apache.org/plugins/maven-docck-plugin
+                        -->
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-docck-plugin</artifactId>
+                        <version>1.0</version> <!-- 30 Dec 2010 -->
+                        <executions>
+                            <execution>
+                                <id>check-documentation</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>check</goal>
                                 </goals>
                             </execution>
                         </executions>
@@ -741,6 +766,9 @@
                 <configuration>
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
+                    <optimize>true</optimize>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
             <plugin>
