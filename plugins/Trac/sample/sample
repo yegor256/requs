@@ -1,0 +1,52 @@
+#!/usr/bin/env perl
+
+use strict;
+
+my $line_count = 0;
+my $mark_trac = 0;
+my $wk;
+
+while (<>)
+{
+    $line_count++;
+
+    # ругается на [такие] слова, указывает тип ошибки "[]" и номер строки
+    if (m(\s?\[([\w-]+)\].*?$)o)
+    {	
+	print "[],$line_count: used chars '[' & ']' to wrap word \"$1\"\n";
+	next;
+    }
+
+    # ругается на слово wiki, указывает на тип ошибки "WK", номер строки и позицию в строке
+    $wk = index($_, "wiki");
+    unless ($wk == -1)
+    {
+	select STDERR;
+	print "WK,$line_count,$wk:Found word 'wiki' here\n";
+	select STDOUT;
+	next;
+    }
+
+    # начал новый параграф со строки со словом <start>
+    unless (index($_, "<start>") == -1)
+    {
+	$mark_trac = $line_count;
+	next;
+    }
+
+    # читает этот параграф до строки со словом <end>
+    if ($mark_trac)
+    {
+	unless (index($_, "<end>") == -1)
+	{
+	    # по окончании параграфа сигнализирует об ошибке "TRIANGLE"
+	    # и соообщаяет номера первой и последней строк параграфа
+	    print "TRIANGLE,$mark_trac-$line_count:Trac paragraph has been detected\n";
+	    $mark_trac = 0;
+	    next;
+	} else {
+	    # шагаю по москве
+	    next;
+	}
+    }
+}
