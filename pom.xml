@@ -334,6 +334,34 @@
                         </executions>
                     </plugin>
                     <plugin>
+                        <!-- version and configuration is in pluginManagement section -->
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>analyze-only</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>analyze-only</goal>
+                                </goals>
+                                <configuration>
+                                    <ignoreNonCompile>true</ignoreNonCompile>
+                                    <failOnWarning>true</failOnWarning>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>analyze-dep-mgt</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>analyze-dep-mgt</goal>
+                                </goals>
+                                <configuration>
+                                    <failBuild>true</failBuild>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
                         <!--
                         Coding styling validator. Configuration is inside resources/checkstyle
                         directory. When you edit that file don't forget to install
@@ -713,7 +741,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.0</version>
+                <version>2.1</version> <!-- 6 Feb 2011 -->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
