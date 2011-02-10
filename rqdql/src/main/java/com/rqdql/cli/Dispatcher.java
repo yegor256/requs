@@ -37,7 +37,10 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Dispatcher of CLI request.
+ * Dispatcher of CLI request. The class is instantiated in
+ * {@link Main}, in order to dispatch command line interface
+ * request and return an output string to be rendered to
+ * the requester.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
@@ -52,7 +55,6 @@ public final class Dispatcher {
 
     /**
      * Entry point of the entire JAR.
-     *
      * @param args List of command-line arguments
      * @param input Incoming RQDQL stream
      * @return XML produced
@@ -95,6 +97,7 @@ public final class Dispatcher {
      * Parse the argument and return output.
      * @param arg The argument
      * @return Output
+     * @see #dispatch(String[], String)
      */
     private String option(final String arg) {
         String out;
@@ -131,6 +134,7 @@ public final class Dispatcher {
     /**
      * Get current version of the package.
      * @return The version of the package
+     * @see #option(String)
      * @todo #3! This is just a stub for now and has to be
      *           refactored in order to implement properly. We
      *           should grab version number from JAR MANIFEST.MF file,
