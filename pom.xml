@@ -257,7 +257,6 @@
                         It's important to work this way, because sudden
                         version changing may lead to broken builds.
                         -->
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-enforcer-plugin</artifactId>
                         <version>1.0-beta-1</version>
                         <executions>
@@ -288,7 +287,6 @@
                         which is then to be used in site:site. It will be
                         located at target/site/apidocs.
                         -->
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <version>2.7</version>  <!-- 12 October 2010 -->
                         <configuration>
@@ -320,7 +318,6 @@
                         Validate the quality of documentation
                         @link http://maven.apache.org/plugins/maven-docck-plugin
                         -->
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-docck-plugin</artifactId>
                         <version>1.0</version> <!-- 30 Dec 2010 -->
                         <executions>
@@ -335,7 +332,6 @@
                     </plugin>
                     <plugin>
                         <!-- version and configuration is in pluginManagement section -->
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-dependency-plugin</artifactId>
                         <executions>
                             <execution>
@@ -367,7 +363,6 @@
                         directory. When you edit that file don't forget to install
                         the build-tool project first, and then run this project.
                         -->
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-checkstyle-plugin</artifactId>
                         <version>2.6</version> <!-- 14 October 2010 -->
                         <configuration>
@@ -394,7 +389,6 @@
                         CI environment it should stop the build if some errors are
                         found.
                         -->
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-pmd-plugin</artifactId>
                         <version>2.5</version> <!-- 2 Nov 2010 -->
                         <configuration>
@@ -583,13 +577,11 @@
                         </executions>
                     </plugin>
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-site-plugin</artifactId>
                         <!-- version is specified in build/plugins -->
                         <configuration>
                             <reportPlugins>
                                 <plugin>
-                                    <groupId>org.apache.maven.plugins</groupId>
                                     <artifactId>maven-project-info-reports-plugin</artifactId>
                                     <!-- version is specified in plugins -->
                                     <reports>
@@ -625,7 +617,6 @@
                                     </configuration>
                                 </plugin>
                                 <plugin>
-                                    <groupId>org.apache.maven.plugins</groupId>
                                     <artifactId>maven-javadoc-plugin</artifactId>
                                     <!-- version is specified in build/plugins -->
                                     <configuration>
@@ -729,27 +720,22 @@
         </extensions>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>2.2</version>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>2.5</version>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>2.1</version> <!-- 6 Feb 2011 -->
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-install-plugin</artifactId>
                 <version>2.2</version>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>2.2</version> <!-- 7 Nov 2010 -->
                 <configuration>
@@ -758,7 +744,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.1</version> <!-- 2 Dec 2010 -->
                 <configuration>
@@ -770,7 +755,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.4.3</version>
             </plugin>
@@ -780,7 +764,6 @@
                 a summary report. It is required to send testing protocol
                 to the STDOUT as well, not only to the file.
                 -->
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.5</version> <!-- 1 Oct 2010 -->
                 <configuration>
@@ -788,7 +771,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version> <!-- 27 Oct 2010 -->
                 <configuration>
@@ -805,7 +787,6 @@
                 of the product.
                 @link http://maven.apache.org/plugins/maven-release-plugin/usage.html
                 -->
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.1</version>
                 <configuration>
@@ -829,7 +810,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>3.0-beta-3</version> <!-- 28 Dec 2010 -->
                 <configuration>
@@ -844,7 +824,6 @@
                 environment, and published beforehand.
                 @link http://www.sonatype.com/people/2010/01/how-to-generate-pgp-signatures-with-maven/
                 -->
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.1</version> <!-- 21 Dec 2010 -->
                 <executions>
@@ -861,7 +840,6 @@
                 <!--
                 To assemble the project into one executable standalone JAR
                 -->
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.2</version> <!-- 19 Dec 2010 -->
                 <configuration>
