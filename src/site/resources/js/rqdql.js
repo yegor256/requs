@@ -61,7 +61,7 @@ rqdql.parse = function(text, callback)
 
     $.ajax(
         {
-            url: "http://tracfacade.fazend.com/rqdql",
+            url: "http://trac.rest.fazend.com/rqdql",
             data: { 'text': text },
             dataType: "jsonp",
             success: function(data)
@@ -73,7 +73,7 @@ rqdql.parse = function(text, callback)
             error: function(XMLHttpRequest, textStatus, errorThrown)
             {
                 var xml = (new DOMParser()).parseFromString(
-                    '<?xml version="1.0"?><rqdql/>', 
+                    '<?xml version="1.0"?><rqdql/>',
                     "text/xml"
                 );
                 $('<fatal/>').text(textStatus).appendTo(xml);
@@ -94,7 +94,7 @@ rqdql.Scope = function(input)
          * RQDQL XML response
          */
         xml: $(input),
-    
+
         /**
          * Convert the scope to the plain XML
          */
@@ -102,7 +102,7 @@ rqdql.Scope = function(input)
         {
             return (new XMLSerializer()).serializeToString(input);
         },
-        
+
         /**
          * The scope is valid, and was processed properly
          */
@@ -116,7 +116,7 @@ rqdql.Scope = function(input)
             }
             return true;
         },
-        
+
         /**
          * Get version of RQDQL parser
          */
@@ -127,7 +127,7 @@ rqdql.Scope = function(input)
             }
             return this.xml.find('metrics version').text();
         },
-        
+
         /**
          * Get ambiguity, as float number
          */
@@ -138,7 +138,7 @@ rqdql.Scope = function(input)
             }
             return parseFloat(this.xml.find('metrics ambiguity').text());
         },
-        
+
         /**
          * Get total number of errors
          */
@@ -149,7 +149,7 @@ rqdql.Scope = function(input)
             }
             return parseInt(this.xml.find('metrics errorsCount').text());
         },
-        
+
         /**
          * Get full list of errors for the given line
          */
@@ -157,14 +157,14 @@ rqdql.Scope = function(input)
         {
             var result = new Array();
             this.xml.find('errors error[line=' + line + ']').each(
-                function(index, element) 
+                function(index, element)
                 {
                     result[index] = $(element).text();
                 }
             );
             return result;
         },
-        
+
         /**
          * Get full list of objects found at this line
          */
@@ -172,13 +172,13 @@ rqdql.Scope = function(input)
         {
             var result = new Array();
             this.xml.find('links loc:has(line:contains(' + line + '))').each(
-                function(index, element) 
+                function(index, element)
                 {
                     result[index] = $(element).attr('name').toString();
                 }
             );
             return result;
         },
-        
+
     };
 };
