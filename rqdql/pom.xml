@@ -242,6 +242,25 @@
                 <version>1.8.5</version> <!-- 9 Oct 2010 -->
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <!--
+                XOM is used as an alternative to classical Java XML
+                manipulation library, which is difficult to use and
+                very verbose. Other options considered: DOM4J, JDOM.
+                @see http://stackoverflow.com/questions/831865
+                @see http://www.xom.nu
+                -->
+                <groupId>xom</groupId>
+                <artifactId>xom</artifactId>
+                <version>1.2.5</version> <!-- 13 Oct 2010 -->
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.rqdql</groupId>
+                <artifactId>rqdql-tk</artifactId>
+                <version>2.0-SNAPSHOT</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
