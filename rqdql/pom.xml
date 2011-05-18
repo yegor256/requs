@@ -51,6 +51,7 @@
         <module>rqdql-thesaurus</module>
         <module>rqdql-cli</module>
         <module>rqdql-plugins</module>
+        <module>rqdql-reporter</module>
     </modules>
 
     <description>
