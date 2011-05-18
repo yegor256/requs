@@ -46,19 +46,64 @@
     <packaging>jar</packaging>
     <name>rqdql-cli</name>
 
+    <profiles>
+        <profile>
+            <id>static-analysis</id>
+            <activation>
+                <property><name>ci</name></property>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>cobertura-maven-plugin</artifactId>
+                            <configuration>
+                                <instrumentation>
+                                    <excludes>
+                                        <!-- CLI class, which is never instantiated -->
+                                        <exclude>com/rqdql/cli/Main.class</exclude>
+                                    </excludes>
+                                </instrumentation>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
+                <!--
+                To assemble the project into one executable standalone JAR
+                -->
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2</version> <!-- 19 Dec 2010 -->
                 <configuration>
-                    <instrumentation>
-                        <excludes>
-                            <!-- CLI class, which is never instantiated -->
-                            <exclude>com/rqdql/cli/Main.class</exclude>
-                        </excludes>
-                    </instrumentation>
+                    <tarLongFileMode>gnu</tarLongFileMode>
+                    <appendAssemblyId>true</appendAssemblyId>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.rqdql.cli.Main</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>executable-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/bin.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
