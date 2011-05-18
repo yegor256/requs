@@ -29,38 +29,44 @@
  */
 package com.rqdql.cli;
 
-import org.junit.*;
-import static org.junit.Assert.*;
-import nu.xom.*;
 import com.rqdql.tk.ResourceLoader;
+import nu.xom.Builder;
+import nu.xom.Document;
+import nu.xom.Nodes;
+import org.junit.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 /**
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public class DispatcherTest {
+public final class DispatcherTest {
 
     @Test
     public void testGetsVersionNumber() throws Exception {
-        String out = new Dispatcher().dispatch(
-            new String[] { "-v" },
+        final String out = new Dispatcher().dispatch(
+            new String[] {"-v"},
             ""
         );
+        assertThat(out, containsString("2.0"));
     }
 
     @Test
     public void testGetsHelpMessage() throws Exception {
-        String out = new Dispatcher().dispatch(
-            new String[] { "-?" },
+        final String out = new Dispatcher().dispatch(
+            new String[] {"-?"},
             ""
         );
+        assertThat(out, containsString("usage:"));
     }
 
     @Test
     public void testRunsSimpleReportSet() throws Exception {
-        String[] args = { "errors", "metrics" };
-        String input = "ActorUser is a \"human being\".";
-        String xml = new Dispatcher().dispatch(args, input);
+        final String[] args = {"errors", "metrics"};
+        final String input = "ActorUser is a \"human being\".";
+        final String xml = new Dispatcher().dispatch(args, input);
+        assertThat(xml, containsString("<?xml"));
     }
 
     /**
@@ -70,7 +76,7 @@ public class DispatcherTest {
     @Ignore
     @Test
     public void testParsesANumberOfSpecifications() throws Exception {
-        String[] files = {
+        final String[] files = {
             "SRS-BookStore.xml",
         };
         for (String file : files) {
@@ -78,24 +84,24 @@ public class DispatcherTest {
         }
     }
 
-    private void parse(String file) throws Exception {
-        Document dom = new Builder().build(ResourceLoader.find(file));
-        String input = dom.query("//SRS").get(0).getValue();
-        Nodes reporters = dom.query("//reporters/reporter");
-        int total = reporters.size();
-        String[] reports = new String[total];
-        for (int i = 0; i < total; i++) {
+    private void parse(final String file) throws Exception {
+        final Document dom = new Builder().build(ResourceLoader.find(file));
+        final String input = dom.query("//SRS").get(0).getValue();
+        final Nodes reporters = dom.query("//reporters/reporter");
+        final int total = reporters.size();
+        final String[] reports = new String[total];
+        for (int i = 0; i < total; i += 1) {
             reports[i] = reporters.get(i).getValue();
         }
-        String xml = new Dispatcher().dispatch(reports, input);
-        Document report = new Builder().build(xml, null);
+        final String xml = new Dispatcher().dispatch(reports, input);
+        final Document report = new Builder().build(xml, null);
 
-        Nodes invariants = dom.query("//invariants/invariant");
-        for (int i = 0; i < invariants.size(); i++) {
-            String xpath = invariants.get(i).getValue();
-            assertTrue(
-                "XPath failure, nothing found: " + xpath,
-                report.query(xpath).size() > 0
+        final Nodes invariants = dom.query("//invariants/invariant");
+        for (int i = 0; i < invariants.size(); i += 1) {
+            final String xpath = invariants.get(i).getValue();
+            assertThat(
+                report.query(xpath).size(),
+                describedAs(xpath, is(greaterThan(0)))
             );
         }
     }

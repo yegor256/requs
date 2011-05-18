@@ -59,6 +59,11 @@
         </dependency>
         <dependency>
             <!-- all other details are in dependencyManagement in parent pom.xml -->
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+        </dependency>
+        <dependency>
+            <!-- all other details are in dependencyManagement in parent pom.xml -->
             <groupId>xom</groupId>
             <artifactId>xom</artifactId>
         </dependency>

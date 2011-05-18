@@ -56,7 +56,7 @@ public final class Dispatcher {
         for (String arg : args) {
             if (arg.charAt(0) == '-') {
                 return this.option(arg);
-            } else {
+            // } else {
                 // add new report to the summary
             }
         }

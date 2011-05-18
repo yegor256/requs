@@ -35,7 +35,7 @@ package com.rqdql.reporter;
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public class XmlSummary {
+public final class XmlSummary {
 
     /**
      * The document to work with.
@@ -64,7 +64,8 @@ public class XmlSummary {
      */
     public String xml() {
         // stub for now
-        return "<?xml version='1.0'?><rqdql/>";
+        return "<?xml version='1.0'?><rqdql>"
+            + this.document.length() + "</rqdql>";
     }
 
 }

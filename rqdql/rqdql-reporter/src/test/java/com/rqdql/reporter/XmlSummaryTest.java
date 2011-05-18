@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<!--
+/**
  * Copyright (c) 2009-2011, RQDQL.com
  * All rights reserved.
  *
@@ -27,36 +26,28 @@
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright (c) 2009-2011, RQDQL.com.
+ */
+package com.rqdql.reporter;
+
+import org.junit.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+
+/**
+ * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
- -->
-<project
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+ */
+public final class XmlSummaryTest {
 
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.rqdql</groupId>
-        <artifactId>rqdql</artifactId>
-        <version>2.0-SNAPSHOT</version>
-    </parent>
-    <artifactId>rqdql-reporter</artifactId>
-    <packaging>jar</packaging>
-    <name>rqdql-reporter</name>
+    @Test
+    public void testSimpleReporting() throws Exception {
+        final XmlSummary summary = new XmlSummary("some text");
+        summary.add(
+            new Report() {
+            }
+        );
+        final String xml = summary.xml();
+        assertThat(xml, containsString("<?xml"));
+    }
 
-    <dependencies>
-        <dependency>
-            <!-- all other details are in dependencyManagement in parent pom.xml -->
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <!-- all other details are in dependencyManagement in parent pom.xml -->
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-        </dependency>
-    </dependencies>
-
-</project>
+}

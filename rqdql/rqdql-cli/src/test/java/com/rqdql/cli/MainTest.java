@@ -30,19 +30,22 @@
 package com.rqdql.cli;
 
 import org.junit.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 /**
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public class MainTest {
+public final class MainTest {
 
-    @Test(expected = java.lang.IllegalAccessException.class)
-    public void testMakesAnIncorrectAttemptToInstantiateClass() throws Exception {
-        String name = "com.rqdql.cli.Main";
-        Class cls = Class.forName(name);
-        cls.newInstance(); // exception here
+    @Test(expected = IllegalAccessException.class)
+    public void testMakesAnIncorrectAttemptToInstantiateClass()
+        throws Exception {
+        final String name = "com.rqdql.cli.Main";
+        final Class cls = Class.forName(name);
+        assertThat(cls, is(not(nullValue())));
+        cls.newInstance();
     }
 
 }
