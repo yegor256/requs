@@ -27,9 +27,9 @@ grammar Rqdql;
     }
 }
 
-scope
+document returns [String context]
     :
-    NAME
+    'test'
     ;
 
 NAME: ( 'a' .. 'z' | 'A' .. 'Z' )*;

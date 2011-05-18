@@ -58,29 +58,44 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>static-analysis</id>
+            <activation>
+                <property><name>ci</name></property>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <!-- ignore ANTLR3 auto-generated code -->
+                            <artifactId>maven-pmd-plugin</artifactId>
+                            <configuration>
+                                <excludeRoots>
+                                    <excludeRoot>${project.build.directory}/generated-sources/antlr3</excludeRoot>
+                                </excludeRoots>
+                            </configuration>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>cobertura-maven-plugin</artifactId>
+                            <configuration>
+                                <instrumentation>
+                                    <excludes>
+                                        <!-- auto-generated classes for ANTLR3 -->
+                                        <exclude>com/rqdql/scanner/antlr/*</exclude>
+                                    </excludes>
+                                </instrumentation>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
-            <plugin>
-                <!-- ignore ANTLR3 auto-generated code -->
-                <artifactId>maven-pmd-plugin</artifactId>
-                <configuration>
-                    <excludeRoots>
-                        <excludeRoot>${project.build.directory}/generated-sources/antlr3</excludeRoot>
-                    </excludeRoots>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <configuration>
-                    <instrumentation>
-                        <excludes>
-                            <!-- auto-generated classes for ANTLR3 -->
-                            <exclude>com/rqdql/scanner/antlr/*</exclude>
-                        </excludes>
-                    </instrumentation>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr3-maven-plugin</artifactId>
