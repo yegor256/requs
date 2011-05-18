@@ -23,18 +23,8 @@
  */
 package com.rqdql.cli;
 
-// for internal logging
-import com.rqdql.Log;
-
-// for processing of incoming document
-import com.rqdql.api.Instrument;
-import com.rqdql.api.InstrumentFactory;
-import com.rqdql.api.scanner.Scanner;
-
-// for manipulations with options
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+// processor
+import com.rqdql.reporter.XmlSummary;
 
 /**
  * Dispatcher of CLI request. The class is instantiated in
@@ -49,11 +39,6 @@ import java.util.List;
 public final class Dispatcher {
 
     /**
-     * Miliseconds in one second.
-     */
-    private static final long MSEC = 1000;
-
-    /**
      * Entry point of the entire JAR.
      * @param args List of command-line arguments
      * @param input Incoming RQDQL stream
@@ -61,35 +46,15 @@ public final class Dispatcher {
      * @see Main#main(String[])
      */
     public String dispatch(final String[] args, final String input) {
-        final long startTime = System.currentTimeMillis();
-        Log.trace(
-            "#dispatch(%d arguments, %d bytes)",
-            args.length,
-            input.length()
-        );
-        final List<String> reps = new ArrayList<String>();
+        final XmlSummary summary = new XmlSummary();
         for (String arg : args) {
             if (arg.charAt(0) == '-') {
-                return this.option(arg);
+                throw new IllegalStateException(this.option(arg));
             } else {
-                reps.add(arg);
+                // add new report to the summary
             }
         }
-
-        final Assembler asm = new Assembler();
-        try {
-            asm.init(reps);
-        } catch (ReporterNotFoundException ex) {
-            throw com.rqdql.Problem.raise(ex);
-        }
-        this.parse(input);
-        final String xml = asm.assemble();
-
-        Log.info(
-            "Dispatched %d bytes in %.2fsec",
-            input.length(),
-            (float) (System.currentTimeMillis() - startTime) / this.MSEC
-        );
+        final String xml = summary.xml();
         return xml;
     }
 
@@ -110,25 +75,9 @@ public final class Dispatcher {
         } else if ("-v".equals(arg)) {
             out = this.version();
         } else {
-            throw com.rqdql.Problem.raise("Unknown option: " + arg);
+            throw new IllegalArgumentException("Unknown option: " + arg);
         }
         return out;
-    }
-
-    /**
-     * Parse string via instruments available.
-     * @param input Incoming RQDQL stream
-     * @see #dispatch(String[], String)
-     */
-    private void parse(final String input) {
-        final Scanner scanner = (Scanner) InstrumentFactory.getInstance()
-            .find("scanner/Scanner");
-        scanner.setInput(input);
-        final Collection<Instrument> instruments =
-            InstrumentFactory.getInstance().getInstruments();
-        for (Instrument inst : instruments) {
-            inst.run();
-        }
     }
 
     /**
