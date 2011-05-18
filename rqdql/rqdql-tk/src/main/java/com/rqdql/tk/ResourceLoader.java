@@ -1,7 +1,7 @@
 /**
  * @version $Id$
  */
-package com.rqdql;
+package com.rqdql.tk;
 
 import java.io.File;
 import org.apache.commons.io.FileUtils; // for file manipulation
