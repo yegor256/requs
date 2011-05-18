@@ -7,7 +7,6 @@ import java.io.File;
 import org.apache.commons.io.FileUtils; // for file manipulation
 import org.apache.commons.lang.StringUtils; // for string manipulation
 import java.net.URL;
-import com.rqdql.Log; // for logging
 import java.util.ArrayList;
 
 public class ResourceLoader {
