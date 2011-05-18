@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+    "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
+    "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+<!--
+ * @version $Id$
+ * @link http://checkstyle.sourceforge.net/config.html
+ -->
+<module name="Checker">
+
+    <!-- Checks whether files end with a new line. -->
+    <module name="NewlineAtEndOfFile"/>
+
+    <!-- Checks that property files contain the same keys. -->
+    <module name="Translation"/>
+
+    <module name="FileLength">
+        <property name="max" value="500"/>
+    </module>
+
+    <!-- Following interprets the header file as regular expressions. -->
+    <!-- <module name="RegexpHeader"/>  -->
+
+    <module name="FileTabCharacter">
+        <property name="eachLine" value="true"/>
+    </module>
+
+    <module name="RegexpSingleline">
+        <property name="format" value="\s+$"/>
+        <property name="message" value="Line has trailing spaces."/>
+    </module>
+
+    <!-- Checks for Header -->
+    <module name="Header">
+        <property name="headerFile" value="${checkstyle.header.file}"/>
+    </module>
+
+    <!-- to enable suppressions -->
+    <module name="SuppressWithNearbyCommentFilter">
+        <property name="commentFormat" value="@checkstyle (\w+) \((\d+) lines?\)"/>
+        <property name="checkFormat" value="$1"/>
+        <property name="influenceFormat" value="$2"/>
+    </module>
+
+    <module name="TreeWalker">
+
+        <property name="cacheFile" value="${checkstyle.cache.file}" />
+
+        <!-- to enable suppressions -->
+        <module name="FileContentsHolder"/>
+
+        <!-- Checks for annotations. -->
+        <module name="AnnotationUseStyle"/>
+        <module name="MissingDeprecated"/>
+        <module name="MissingOverride"/>
+        <module name="PackageAnnotation"/>
+        <module name="SuppressWarnings"/>
+
+        <!-- Checks for blocks. -->
+        <module name="EmptyBlock"/>
+        <module name="LeftCurly"/>
+        <module name="NeedBraces"/>
+        <module name="RightCurly"/>
+        <module name="AvoidNestedBlocks"/>
+
+        <!-- Checks for class design. -->
+        <module name="VisibilityModifier"/>
+        <module name="FinalClass"/>
+        <module name="InterfaceIsType"/>
+        <module name="HideUtilityClassConstructor"/>
+        <module name="DesignForExtension"/>
+        <module name="MutableException"/>
+        <module name="ThrowsCount" />
+        <!-- <module name="InnerTypeLast"/>  absent in 5.0 -->
+
+        <!-- Checks for common coding problems -->
+        <module name="ArrayTrailingComma"/>
+        <module name="AvoidInlineConditionals"/>
+        <module name="CovariantEquals"/>
+        <module name="DoubleCheckedLocking"/>
+        <module name="EmptyStatement"/>
+        <module name="EqualsAvoidNull"/>
+        <module name="EqualsHashCode"/>
+        <module name="FinalLocalVariable"/>
+        <module name="HiddenField"/>
+        <module name="IllegalInstantiation"/>
+        <module name="IllegalToken">
+            <property name="tokens" value="POST_INC, POST_DEC"/>
+        </module>
+        <module name="IllegalTokenText" />
+        <module name="InnerAssignment"/>
+        <module name="MagicNumber"/>
+        <module name="MissingSwitchDefault"/>
+        <module name="ModifiedControlVariable"/>
+        <module name="RedundantThrows"/>
+        <module name="SimplifyBooleanExpression"/>
+        <module name="SimplifyBooleanReturn"/>
+        <module name="StringLiteralEquality"/>
+        <module name="NestedIfDepth"/>
+        <module name="NestedTryDepth"/>
+        <module name="NoClone"/>
+        <module name="NoFinalizer"/>
+        <module name="SuperClone"/>
+        <module name="SuperFinalize"/>
+        <module name="IllegalCatch"/>
+        <module name="IllegalThrows"/>
+        <module name="PackageDeclaration"/>
+        <module name="ReturnCount" />
+        <module name="IllegalType"/>
+        <module name="DeclarationOrder"/>
+        <module name="ParameterAssignment"/>
+        <module name="ExplicitInitialization"/>
+        <module name="DefaultComesLast"/>
+        <!-- <module name="MissingCtor"/> -->
+        <module name="FallThrough"/>
+        <module name="MultipleStringLiterals"/>
+        <module name="MultipleVariableDeclarations"/>
+        <module name="RequireThis">
+            <property name="checkMethods" value="false"/>
+        </module>
+        <module name="UnnecessaryParentheses"/>
+
+        <!-- Checks for imports. -->
+        <module name="AvoidStarImport">
+            <property name="excludes" value="org.junit.*,org.mockito.Mockito.*,org.hamcrest.Matchers.*"/>
+        </module>
+        <module name="AvoidStaticImport">
+            <property name="excludes" value="org.junit.*,org.mockito.Mockito.*,org.hamcrest.Matchers.*,org.hamcrest.MatcherAssert.assertThat"/>
+        </module>
+        <module name="IllegalImport"/>
+        <module name="RedundantImport"/>
+        <module name="UnusedImports"/>
+        <module name="ImportOrder"/>
+
+        <!-- Metrics. -->
+        <module name="BooleanExpressionComplexity"/>
+        <module name="ClassDataAbstractionCoupling"/>
+        <module name="ClassFanOutComplexity">
+            <!--
+            Total number of classes that a particular class
+            depends on. We're increasing this value because
+            default "20" is too low.
+            -->
+            <property name="max" value="30"/>
+        </module>
+        <module name="CyclomaticComplexity"/>
+        <module name="NPathComplexity"/>
+        <module name="JavaNCSS"/>
+
+        <!-- Miscellaneous other checks. -->
+        <module name="TodoComment"/>
+        <module name="UpperEll"/>
+        <module name="ArrayTypeStyle"/>
+        <module name="FinalParameters"/>
+        <module name="Indentation"/>
+        <module name="TrailingComment"/>
+
+        <!-- Modifier Checks. -->
+        <module name="ModifierOrder"/>
+        <module name="RedundantModifier"/>
+
+        <!-- Checks for Naming Conventions. -->
+        <module name="AbstractClassName"/>
+        <module name="ClassTypeParameterName"/>
+        <module name="ConstantName"/>
+        <module name="LocalFinalVariableName"/>
+        <module name="LocalVariableName"/>
+        <module name="MemberName"/>
+        <module name="MethodName"/>
+        <module name="MethodTypeParameterName"/>
+        <module name="PackageName"/>
+        <module name="ParameterName"/>
+        <module name="StaticVariableName"/>
+        <module name="TypeName"/>
+
+        <!-- Checks for Size Violations. -->
+        <module name="ExecutableStatementCount">
+            <property name="max" value="20"/>
+        </module>
+        <module name="LineLength">
+            <property name="max" value="80"/>
+            <property name="ignorePattern" value="^\s+(\*|//)\s+@[a-z]+ "/>
+        </module>
+        <module name="AnonInnerLength" />
+        <module name="MethodLength"/>
+        <module name="ParameterNumber">
+            <property name="max" value="3"/>
+        </module>
+        <module name="OuterTypeNumber"/>
+
+        <!-- Checks for whitespace. -->
+        <module name="GenericWhitespace"/>
+        <module name="EmptyForInitializerPad"/>
+        <module name="EmptyForIteratorPad"/>
+        <module name="MethodParamPad"/>
+        <module name="NoWhitespaceAfter"/>
+        <module name="NoWhitespaceBefore"/>
+        <module name="OperatorWrap"/>
+        <module name="ParenPad"/>
+        <module name="TypecastParenPad"/>
+        <module name="WhitespaceAfter"/>
+        <module name="WhitespaceAround"/>
+
+    </module>
+
+</module>
