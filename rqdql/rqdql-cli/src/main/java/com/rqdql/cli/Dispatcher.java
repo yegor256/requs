@@ -46,7 +46,7 @@ public final class Dispatcher {
      * @see Main#main(String[])
      */
     public String dispatch(final String[] args, final String input) {
-        final XmlSummary summary = new XmlSummary();
+        final XmlSummary summary = new XmlSummary(input);
         for (String arg : args) {
             if (arg.charAt(0) == '-') {
                 throw new IllegalStateException(this.option(arg));
