@@ -1,5 +1,6 @@
 /**
  * @version $Id$
+ * @todo #3 Let's move this class to com.ymock:ymock-util package.
  */
 package com.rqdql.tk;
 
