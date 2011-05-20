@@ -30,6 +30,10 @@
  *
  * Copyright (c) 2009-2011, RQDQL.com.
  * @version $Id$
+ *
+ * @todo #3 The architecture is not defined yet. We need to prototype
+ *       the entire system and create a proof-of-concept with key classes
+ *       and relationships between them.
  -->
 <project
     xmlns="http://maven.apache.org/POM/4.0.0"
