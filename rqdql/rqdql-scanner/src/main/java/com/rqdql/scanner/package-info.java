@@ -27,59 +27,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.reporter;
-
-// scanner from com.rqdql:rqdql-scanner
-import com.rqdql.scanner.InputText;
-
-// SOLM from com.rqdql:rqdql-solm
-import com.rqdql.solm.Predicate;
-
-// thesaurus from com.rqdql:rqdql-thesaurus
-import com.rqdql.thesaurus.Type;
 
 /**
- * Convert RQDQL grammar into XML.
+ * Scanner.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class XmlSummary {
-
-    /**
-     * The document to work with.
-     */
-    private final String document;
-
-    /**
-     * Public ctor.
-     * @param doc The document with grammar
-     */
-    public XmlSummary(final String doc) {
-        this.document = doc;
-    }
-
-    /**
-     * Add new reporter to the summary.
-     * @param report The report
-     */
-    public void add(final Report report) {
-        // todo
-    }
-
-    /**
-     * Get XML summary.
-     * @return The XML report
-     */
-    public String xml() {
-        final Collector collector = new Collector();
-        final InputText text = new InputText(collector, this.document);
-        final Type type = text.toType();
-        final Predicate predicate = type.toPredicate();
-
-        // stub for now
-        return "<?xml version='1.0'?><rqdql>"
-            + this.document.length() + "</rqdql>";
-    }
-
-}
+package com.rqdql.scanner;

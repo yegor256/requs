@@ -34,6 +34,7 @@ import com.rqdql.tk.ResourceLoader;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Yegor Bugayenko (yegor@rqdql.com)
@@ -43,6 +44,7 @@ public final class TypeTest {
 
     @Test
     public void testValidatesSimpleType() throws Exception {
+        final Origin origin = mock(Origin.class);
         final Type type = new Type();
         final Predicate predicate = type.toPredicate();
         assertThat(predicate.);

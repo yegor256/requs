@@ -29,57 +29,31 @@
  */
 package com.rqdql.reporter;
 
-// scanner from com.rqdql:rqdql-scanner
-import com.rqdql.scanner.InputText;
-
-// SOLM from com.rqdql:rqdql-solm
-import com.rqdql.solm.Predicate;
-
-// thesaurus from com.rqdql:rqdql-thesaurus
-import com.rqdql.thesaurus.Type;
+// commons from com.rqdql:rqdql-commons
+import com.rqdql.commons.Origin;
 
 /**
- * Convert RQDQL grammar into XML.
+ * Collector of errors/warns.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class XmlSummary {
+public final class Collector implements Origin {
 
     /**
-     * The document to work with.
+     * {@inheritDoc}
      */
-    private final String document;
-
-    /**
-     * Public ctor.
-     * @param doc The document with grammar
-     */
-    public XmlSummary(final String doc) {
-        this.document = doc;
+    @Override
+    public void error(final String text, final String... args) {
+        
     }
 
     /**
-     * Add new reporter to the summary.
-     * @param report The report
+     * {@inheritDoc}
      */
-    public void add(final Report report) {
-        // todo
-    }
-
-    /**
-     * Get XML summary.
-     * @return The XML report
-     */
-    public String xml() {
-        final Collector collector = new Collector();
-        final InputText text = new InputText(collector, this.document);
-        final Type type = text.toType();
-        final Predicate predicate = type.toPredicate();
-
-        // stub for now
-        return "<?xml version='1.0'?><rqdql>"
-            + this.document.length() + "</rqdql>";
+    @Override
+    public void warn(final String text, final String... args) {
+        this.origin.warn(text, args);
     }
 
 }

@@ -29,6 +29,9 @@
  */
 package com.rqdql.thesaurus;
 
+// commons from com.rqdql:rqdql-commons
+import com.rqdql.commons.Origin;
+
 // SOLM from com.rqdql:rqdql-solm
 import com.rqdql.solm.Predicate;
 
@@ -41,10 +44,16 @@ import com.rqdql.solm.Predicate;
 public final class Type {
 
     /**
-     * Public ctor.
+     * The origin of this type.
      */
-    public Type() {
-        // empty
+    private final Origin origin;
+
+    /**
+     * Public ctor.
+     * @param ogn The origin of this type
+     */
+    public Type(final Origin ogn) {
+        this.origin = ogn;
     }
 
     /**

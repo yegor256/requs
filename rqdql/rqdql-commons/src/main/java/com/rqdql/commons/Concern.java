@@ -27,59 +27,26 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.reporter;
-
-// scanner from com.rqdql:rqdql-scanner
-import com.rqdql.scanner.InputText;
-
-// SOLM from com.rqdql:rqdql-solm
-import com.rqdql.solm.Predicate;
-
-// thesaurus from com.rqdql:rqdql-thesaurus
-import com.rqdql.thesaurus.Type;
+package com.rqdql.commons;
 
 /**
- * Convert RQDQL grammar into XML.
+ * Concern.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class XmlSummary {
+public final class Concern {
 
     /**
-     * The document to work with.
+     * The description.
      */
-    private final String document;
+    private final String
 
     /**
-     * Public ctor.
-     * @param doc The document with grammar
+     * Report a warning.
+     * @param text The text of the warning message
+     * @param args List of arguments
      */
-    public XmlSummary(final String doc) {
-        this.document = doc;
-    }
-
-    /**
-     * Add new reporter to the summary.
-     * @param report The report
-     */
-    public void add(final Report report) {
-        // todo
-    }
-
-    /**
-     * Get XML summary.
-     * @return The XML report
-     */
-    public String xml() {
-        final Collector collector = new Collector();
-        final InputText text = new InputText(collector, this.document);
-        final Type type = text.toType();
-        final Predicate predicate = type.toPredicate();
-
-        // stub for now
-        return "<?xml version='1.0'?><rqdql>"
-            + this.document.length() + "</rqdql>";
-    }
+    void warn(final String text, final String... args);
 
 }
