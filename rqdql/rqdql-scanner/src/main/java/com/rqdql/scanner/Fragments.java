@@ -32,43 +32,59 @@ package com.rqdql.scanner;
 // commons from com.rqdql:rqdql-commons
 import com.rqdql.commons.Origin;
 
-// thesaurus from com.rqdql:rqdql-thesaurus
-import com.rqdql.thesaurus.Type;
+// JDK
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Input text, in RQDQL format.
+ * Fragments in the text.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class InputText {
+public final class Fragments implements Origin {
 
     /**
-     * The text to be processed.
-     */
-    private final String text;
-
-    /**
-     * The origin of this text.
+     * The origin of this origin.
      */
     private final Origin origin;
 
     /**
-     * Public ctor.
-     * @param orgn The origin of this text
-     * @param txt The text to process
+     * List of fragments.
      */
-    public InputText(final Origin orgn, final String txt) {
-        this.origin = orgn;
-        this.text = txt;
+    private final List<Fragment> fragments =
+        new ArrayList<Fragment>();
+
+    /**
+     * Public ctor.
+     * @param ogn The origin
+     */
+    public Fragments(final Origin ogn) {
+        this.origin = ogn;
     }
 
     /**
-     * Get {@link Type} from this input text.
-     * @return The type
+     * Add new fragment.
+     * @param fragment The fragment to add
      */
-    public Type toType() {
-        return new Type(new Fragments(this.origin));
+    public void add(final Fragment fragment) {
+        this.fragments.add(fragment);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void error(final String text, final String... args) {
+        this.origin.error(text, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void warn(final String text, final String... args) {
+        this.origin.warn(text, args);
     }
 
 }

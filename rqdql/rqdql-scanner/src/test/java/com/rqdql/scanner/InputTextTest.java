@@ -34,6 +34,7 @@ import com.rqdql.tk.ResourceLoader;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Yegor Bugayenko (yegor@rqdql.com)
@@ -43,7 +44,8 @@ public final class InputTextTest {
 
     @Test
     public void testValidatesSimpleRQDQLText() throws Exception {
-        final InputText text = new InputText("User is a \"man\".");
+        final Origin origin = mock(Origin.class);
+        final InputText text = new InputText(origin, "User is a \"man\".");
         final Type type = text.toType();
         assertThat(type.);
     }

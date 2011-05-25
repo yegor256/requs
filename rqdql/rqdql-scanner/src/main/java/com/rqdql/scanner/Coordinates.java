@@ -29,46 +29,32 @@
  */
 package com.rqdql.scanner;
 
-// commons from com.rqdql:rqdql-commons
-import com.rqdql.commons.Origin;
-
-// thesaurus from com.rqdql:rqdql-thesaurus
-import com.rqdql.thesaurus.Type;
-
 /**
- * Input text, in RQDQL format.
+ * Coordinates in text.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class InputText {
+public final class Coordinates {
 
     /**
-     * The text to be processed.
+     * Line number, starting from 1.
      */
-    private final String text;
+    private final Integer line;
 
     /**
-     * The origin of this text.
+     * Position in the line, starting from 1.
      */
-    private final Origin origin;
+    private final Integer position;
 
     /**
      * Public ctor.
-     * @param orgn The origin of this text
-     * @param txt The text to process
+     * @param lin The line
+     * @param pos The position
      */
-    public InputText(final Origin orgn, final String txt) {
-        this.origin = orgn;
-        this.text = txt;
-    }
-
-    /**
-     * Get {@link Type} from this input text.
-     * @return The type
-     */
-    public Type toType() {
-        return new Type(new Fragments(this.origin));
+    public Coordinates(final Integer lin, final Integer pos) {
+        this.line = lin;
+        this.position = pos;
     }
 
 }

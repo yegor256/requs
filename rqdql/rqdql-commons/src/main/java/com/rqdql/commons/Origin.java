@@ -27,48 +27,28 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.scanner;
-
-// commons from com.rqdql:rqdql-commons
-import com.rqdql.commons.Origin;
-
-// thesaurus from com.rqdql:rqdql-thesaurus
-import com.rqdql.thesaurus.Type;
+package com.rqdql.commons;
 
 /**
- * Input text, in RQDQL format.
+ * Origin of the data structure.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class InputText {
+public interface Origin {
 
     /**
-     * The text to be processed.
+     * Report a problem.
+     * @param text The text of the error message
+     * @param args List of arguments
      */
-    private final String text;
+    void error(final String text, final String... args);
 
     /**
-     * The origin of this text.
+     * Report a warning.
+     * @param text The text of the warning message
+     * @param args List of arguments
      */
-    private final Origin origin;
-
-    /**
-     * Public ctor.
-     * @param orgn The origin of this text
-     * @param txt The text to process
-     */
-    public InputText(final Origin orgn, final String txt) {
-        this.origin = orgn;
-        this.text = txt;
-    }
-
-    /**
-     * Get {@link Type} from this input text.
-     * @return The type
-     */
-    public Type toType() {
-        return new Type(new Fragments(this.origin));
-    }
+    void warn(final String text, final String... args);
 
 }
