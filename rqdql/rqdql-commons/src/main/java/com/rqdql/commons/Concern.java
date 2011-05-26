@@ -40,13 +40,29 @@ public final class Concern {
     /**
      * The description.
      */
-    private final String
+    private final String text;
 
     /**
-     * Report a warning.
-     * @param text The text of the warning message
-     * @param args List of arguments
+     * The position inside the origin.
      */
-    void warn(final String text, final String... args);
+    private final String pos;
+
+    /**
+     * Public ctor.
+     * @param txt The text of the concern
+     */
+    public Concern(final String txt) {
+        this.text = txt;
+    }
+
+    /**
+     * Public ctor.
+     * @param txt The text of the concern
+     * @param pos Position
+     */
+    public Concern(final String txt, final String pos) {
+        this(txt);
+        this.position = pos;
+    }
 
 }

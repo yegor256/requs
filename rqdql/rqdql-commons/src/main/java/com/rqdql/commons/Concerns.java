@@ -29,18 +29,29 @@
  */
 package com.rqdql.commons;
 
+// JDK
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Origin of the data structure.
+ * Concerns.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public interface Origin {
+public final class Concerns {
 
     /**
-     * Raise a concern(s).
-     * @param concerns Ordered list of concerns
+     * Ordered list of concerns.
      */
-    void raise(final Concerns concerns);
+    private final List<Concern> concerns = new ArrayList<Concern>();
+
+    /**
+     * Add new concern.
+     * @param concern The concern to add
+     */
+    public void add(final Concern concern) {
+        this.concerns.add(concern);
+    }
 
 }

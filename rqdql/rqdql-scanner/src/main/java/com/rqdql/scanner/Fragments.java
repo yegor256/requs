@@ -75,16 +75,9 @@ public final class Fragments implements Origin {
      * {@inheritDoc}
      */
     @Override
-    public void error(final String text, final String... args) {
-        this.origin.error(text, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void warn(final String text, final String... args) {
-        this.origin.warn(text, args);
+    public void raise(final Concerns concerns) {
+        concerns.add(new Concern(this.toString()));
+        this.origin.raise(concerns);
     }
 
 }
