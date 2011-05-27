@@ -47,7 +47,7 @@ public final class InputTextTest {
         final Origin origin = mock(Origin.class);
         final InputText text = new InputText(origin, "User is a \"man\".");
         final Type type = text.toType();
-        assertThat(type.);
+        assertThat(type.getName(), equalTo("SUD"));
     }
 
 }

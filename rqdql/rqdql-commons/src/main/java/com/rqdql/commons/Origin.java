@@ -38,15 +38,16 @@ package com.rqdql.commons;
 public interface Origin {
 
     /**
-     * Raise a concern.
+     * Raise a concern/error.
      * @param message Error message to send to origin
      */
     void error(final String message);
 
     /**
-     * Create new sub-origin.
-     * @param coordinates
+     * Create new sub-{@link Origin}.
+     * @param originable The entity that is the the source of new origin
+     * @return The new origin
      */
-    Origin sub(final Coordinates coordinates);
+    Origin sub(final Originable originable);
 
 }

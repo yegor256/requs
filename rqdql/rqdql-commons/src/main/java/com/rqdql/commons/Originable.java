@@ -38,11 +38,9 @@ package com.rqdql.commons;
 public interface Originable {
 
     /**
-     * Get name of it.
-     * @param fragment The fragment to add
+     * Turn it into a string.
+     * @return The string
      */
-    public void (final Fragment fragment) {
-        this.fragments.add(fragment);
-    }
+    String originate();
 
 }

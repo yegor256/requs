@@ -57,4 +57,12 @@ public final class Coordinates {
         this.position = pos;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return this.line + ":" + this.position;
+    }
+
 }

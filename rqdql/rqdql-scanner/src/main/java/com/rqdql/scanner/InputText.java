@@ -68,7 +68,7 @@ public final class InputText {
      * @return The type
      */
     public Type toType() {
-        return new Type(new Fragments(this.origin));
+        return new Type(this.origin.sub(new Fragments()));
     }
 
 }

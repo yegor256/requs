@@ -30,11 +30,14 @@
 package com.rqdql.scanner;
 
 // commons from com.rqdql:rqdql-commons
-import com.rqdql.commons.Origin;
+import com.rqdql.commons.Originable;
 
 // JDK
 import java.util.ArrayList;
 import java.util.List;
+
+// string manipulations from commmons-lang:commons-lang
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Fragments in the text.
@@ -42,12 +45,7 @@ import java.util.List;
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class Fragments implements Origin {
-
-    /**
-     * The origin of this origin.
-     */
-    private final Origin origin;
+public final class Fragments implements Originable {
 
     /**
      * List of fragments.
@@ -75,9 +73,8 @@ public final class Fragments implements Origin {
      * {@inheritDoc}
      */
     @Override
-    public void raise(final Concerns concerns) {
-        concerns.add(new Concern(this.toString()));
-        this.origin.raise(concerns);
+    public String originate() {
+        return "[" + StringUtils.join(",", this.fragments) + "]";
     }
 
 }

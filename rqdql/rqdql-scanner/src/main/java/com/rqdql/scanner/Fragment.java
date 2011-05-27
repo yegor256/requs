@@ -57,4 +57,12 @@ public final class Fragment {
         this.stop = stp;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return this.start.toString() + "-" + this.stop.toString();
+    }
+
 }
