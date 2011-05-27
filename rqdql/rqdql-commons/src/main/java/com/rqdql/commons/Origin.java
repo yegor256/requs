@@ -38,9 +38,15 @@ package com.rqdql.commons;
 public interface Origin {
 
     /**
-     * Raise a concern(s).
-     * @param concerns Ordered list of concerns
+     * Raise a concern.
+     * @param message Error message to send to origin
      */
-    void raise(final Concerns concerns);
+    void error(final String message);
+
+    /**
+     * Create new sub-origin.
+     * @param coordinates
+     */
+    Origin sub(final Coordinates coordinates);
 
 }

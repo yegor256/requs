@@ -30,39 +30,19 @@
 package com.rqdql.commons;
 
 /**
- * Concern.
+ * Something that can be used as coordinates for a new origin.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class Concern {
+public interface Originable {
 
     /**
-     * The description.
+     * Get name of it.
+     * @param fragment The fragment to add
      */
-    private final String text;
-
-    /**
-     * The position inside the origin.
-     */
-    private final String pos;
-
-    /**
-     * Public ctor.
-     * @param txt The text of the concern
-     */
-    public Concern(final String txt) {
-        this.text = txt;
-    }
-
-    /**
-     * Public ctor.
-     * @param txt The text of the concern
-     * @param pos Position
-     */
-    public Concern(final String txt, final String pos) {
-        this(txt);
-        this.position = pos;
+    public void (final Fragment fragment) {
+        this.fragments.add(fragment);
     }
 
 }
