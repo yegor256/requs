@@ -29,23 +29,25 @@
  */
 package com.rqdql.thesaurus;
 
+import com.rqdql.commons.Origin;
 import com.rqdql.solm.Predicate;
 import com.rqdql.tk.ResourceLoader;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class TypeTest {
+public final class PredicateTest {
 
     @Test
     public void testValidatesSimpleType() throws Exception {
-        final Type type = new Type();
-        final Predicate predicate = type.toPredicate();
-        assertThat(predicate.);
+        final Origin origin = mock(Origin.class);
+        final Predicate predicate = new Predicate(origin);
+        assertThat(predicate, is(not(nullValue())));
     }
 
 }

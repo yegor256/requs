@@ -29,6 +29,9 @@
  */
 package com.rqdql.solm;
 
+// commons from com.rqdql:rqdql-commons
+import com.rqdql.commons.Origin;
+
 /**
  * Predicate.
  *
@@ -38,9 +41,16 @@ package com.rqdql.solm;
 public final class Predicate {
 
     /**
-     * Public ctor.
+     * The origin of the predicate.
      */
-    public Predicate() {
+    private final Origin origin;
+
+    /**
+     * Public ctor.
+     * @param orgn The origin of this predicate
+     */
+    public Predicate(final Origin orgn) {
+        this.origin = orgn;
     }
 
 }

@@ -61,7 +61,7 @@ public final class Type {
      * @return The predicate
      */
     public Predicate toPredicate() {
-        return new Predicate();
+        return new Predicate(this.origin);
     }
 
 }

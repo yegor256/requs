@@ -29,8 +29,8 @@
  */
 package com.rqdql.thesaurus;
 
+import com.rqdql.commons.Origin;
 import com.rqdql.solm.Predicate;
-import com.rqdql.tk.ResourceLoader;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -45,9 +45,9 @@ public final class TypeTest {
     @Test
     public void testValidatesSimpleType() throws Exception {
         final Origin origin = mock(Origin.class);
-        final Type type = new Type();
+        final Type type = new Type(origin);
         final Predicate predicate = type.toPredicate();
-        assertThat(predicate.);
+        assertThat(predicate, is(not(nullValue())));
     }
 
 }

@@ -31,6 +31,7 @@ package com.rqdql.reporter;
 
 // commons from com.rqdql:rqdql-commons
 import com.rqdql.commons.Origin;
+import com.rqdql.commons.Originable;
 
 /**
  * Collector of errors/warns.
@@ -44,16 +45,17 @@ public final class Collector implements Origin {
      * {@inheritDoc}
      */
     @Override
-    public void error(final String text, final String... args) {
-        
+    public void error(final String text) {
+        // nothing
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void warn(final String text, final String... args) {
-        this.origin.warn(text, args);
+    public Origin sub(final Originable originable) {
+        // stub
+        return this;
     }
 
 }

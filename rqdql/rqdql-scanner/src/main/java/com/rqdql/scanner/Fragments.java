@@ -30,6 +30,7 @@
 package com.rqdql.scanner;
 
 // commons from com.rqdql:rqdql-commons
+import com.rqdql.commons.Origin;
 import com.rqdql.commons.Originable;
 
 // JDK
@@ -54,14 +55,6 @@ public final class Fragments implements Originable {
         new ArrayList<Fragment>();
 
     /**
-     * Public ctor.
-     * @param ogn The origin
-     */
-    public Fragments(final Origin ogn) {
-        this.origin = ogn;
-    }
-
-    /**
      * Add new fragment.
      * @param fragment The fragment to add
      */
@@ -74,7 +67,7 @@ public final class Fragments implements Originable {
      */
     @Override
     public String originate() {
-        return "[" + StringUtils.join(",", this.fragments) + "]";
+        return "[" + StringUtils.join(this.fragments, ",") + "]";
     }
 
 }
