@@ -38,7 +38,7 @@ import com.rqdql.commons.Origin;
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class Predicate {
+public final class Predicate implements Formula {
 
     /**
      * The origin of the predicate.
@@ -51,6 +51,16 @@ public final class Predicate {
      */
     public Predicate(final Origin orgn) {
         this.origin = orgn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        // it's just a stub
+        this.origin.error("works?");
+        return "test";
     }
 
 }

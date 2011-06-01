@@ -31,7 +31,6 @@ package com.rqdql.scanner;
 
 import com.rqdql.commons.Origin;
 import com.rqdql.thesaurus.Type;
-import com.rqdql.tk.ResourceLoader;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;

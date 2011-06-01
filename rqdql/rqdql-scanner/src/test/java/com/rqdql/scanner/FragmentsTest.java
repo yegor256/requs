@@ -29,44 +29,29 @@
  */
 package com.rqdql.scanner;
 
-// commons from com.rqdql:rqdql-commons
-import com.rqdql.commons.Originable;
-
-// JDK
-import java.util.ArrayList;
-import java.util.List;
-
-// string manipulations from commmons-lang:commons-lang
-import org.apache.commons.lang.StringUtils;
+import org.junit.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 /**
- * Fragments in the text.
- *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class Fragments implements Originable {
+public final class FragmentsTest {
 
-    /**
-     * List of fragments.
-     */
-    private final List<Fragment> fragments =
-        new ArrayList<Fragment>();
-
-    /**
-     * Add new fragment.
-     * @param fragment The fragment to add
-     */
-    public void add(final Fragment fragment) {
-        this.fragments.add(fragment);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String originate() {
-        return "[" + StringUtils.join(this.fragments, ",") + "]";
+    @Test
+    public void testBuildsFragments() throws Exception {
+        final Fragments fragments = new Fragments();
+        fragments.add(
+            new Fragment(
+                new Coordinates(1, 1),
+                new Coordinates(1, 1)
+            )
+        );
+        assertThat(
+            fragments.originate(),
+            equalTo("[1:1-1:1]")
+        );
     }
 
 }

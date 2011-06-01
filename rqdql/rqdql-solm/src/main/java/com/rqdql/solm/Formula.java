@@ -27,46 +27,14 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.scanner;
-
-// commons from com.rqdql:rqdql-commons
-import com.rqdql.commons.Originable;
-
-// JDK
-import java.util.ArrayList;
-import java.util.List;
-
-// string manipulations from commmons-lang:commons-lang
-import org.apache.commons.lang.StringUtils;
+package com.rqdql.solm;
 
 /**
- * Fragments in the text.
+ * Second-order logic model formula.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class Fragments implements Originable {
-
-    /**
-     * List of fragments.
-     */
-    private final List<Fragment> fragments =
-        new ArrayList<Fragment>();
-
-    /**
-     * Add new fragment.
-     * @param fragment The fragment to add
-     */
-    public void add(final Fragment fragment) {
-        this.fragments.add(fragment);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String originate() {
-        return "[" + StringUtils.join(this.fragments, ",") + "]";
-    }
+public interface Formula {
 
 }

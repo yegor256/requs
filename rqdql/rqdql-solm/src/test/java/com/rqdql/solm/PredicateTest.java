@@ -30,7 +30,6 @@
 package com.rqdql.solm;
 
 import com.rqdql.commons.Origin;
-import com.rqdql.tk.ResourceLoader;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -49,6 +48,7 @@ public final class PredicateTest {
         final Origin origin = mock(Origin.class);
         final Predicate predicate = new Predicate(origin);
         assertThat(predicate, is(not(nullValue())));
+        assertThat(predicate.toString(), is(not(nullValue())));
     }
 
 }

@@ -46,4 +46,11 @@
     <packaging>jar</packaging>
     <name>plugin-trac</name>
 
+    <!--
+    @todo #3 At the moment the plugin is not implemented as it should be. It
+          is not in the Maven build cycle at all. And it doesn't do everything
+          it should do, as explained in
+          http://trac.fazend.com/rqdql/wiki/TracRqdqlPlugin
+    -->
+
 </project>

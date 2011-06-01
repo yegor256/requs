@@ -243,6 +243,15 @@
                 <version>2.0-SNAPSHOT</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <!--
+                Logging facility and other utils.
+                @link http://www.ymock.com
+                -->
+                <groupId>com.ymock</groupId>
+                <artifactId>ymock-util</artifactId>
+                <version>1.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

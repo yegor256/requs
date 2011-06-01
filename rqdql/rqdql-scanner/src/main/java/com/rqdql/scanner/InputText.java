@@ -68,6 +68,8 @@ public final class InputText {
      * @return The type
      */
     public Type toType() {
+        // it's a stub
+        this.origin.error("text length: " + this.text.length());
         return new Type(this.origin.sub(new Fragments()));
     }
 

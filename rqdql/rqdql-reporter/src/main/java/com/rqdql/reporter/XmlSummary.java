@@ -38,6 +38,9 @@ import com.rqdql.solm.Predicate;
 // thesaurus from com.rqdql:rqdql-thesaurus
 import com.rqdql.thesaurus.Type;
 
+// logging facility from com.ymock:ymock-util
+import com.ymock.util.Logger;
+
 /**
  * Convert RQDQL grammar into XML.
  *
@@ -76,6 +79,11 @@ public final class XmlSummary {
         final InputText text = new InputText(collector, this.document);
         final Type type = text.toType();
         final Predicate predicate = type.toPredicate();
+        Logger.info(
+            this,
+            "reporting finished with %s",
+            predicate
+        );
 
         // stub for now
         return "<?xml version='1.0'?><rqdql>"
