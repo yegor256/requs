@@ -789,6 +789,294 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                        <!--
+                        @todo #2 These groovy scripts shall be placed into
+                                 rempl-tk src/main/resources/groovy directory.
+                        -->
+                        <!-- version and configuration is in pluginManagement section -->
+                        <groupId>org.codehaus.gmaven</groupId>
+                        <artifactId>gmaven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <!--
+                                For every sub-module we create placeholders, which will
+                                be FTP-deployed to the web server, BEFORE the sub-module. This
+                                is required in order to avoid problem with "non existing directory"
+                                when we're starting to deploy a sub-module into a directory which
+                                is currently absent.
+                                -->
+                                <id>site-placeholders</id>
+                                <phase>post-site</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <classpath>
+                                        <element>
+                                            <!-- this is where placeholders directory is located -->
+                                            <groupId>com.rqdql</groupId>
+                                            <artifactId>rqdql-tk</artifactId>
+                                            <version>2.0-SNAPSHOT</version>
+                                        </element>
+                                        <element>
+                                            <!-- for file manipulations -->
+                                            <groupId>commons-io</groupId>
+                                            <artifactId>commons-io</artifactId>
+                                            <version>2.0.1</version> <!-- 7 Mar 2011 -->
+                                        </element>
+                                        <element>
+                                            <!-- for manipulations with strings -->
+                                            <groupId>commons-lang</groupId>
+                                            <artifactId>commons-lang</artifactId>
+                                            <version>2.5</version> <!-- 15 Oct 2010 -->
+                                        </element>
+                                    </classpath>
+                                    <properties>
+                                        <placeholders>
+                                            site-placeholders/.htaccess,
+                                            site-placeholders/placeholder.html
+                                        </placeholders>
+                                        <target>${project.build.directory}/site</target>
+                                    </properties>
+                                    <source>
+                                        <![CDATA[
+                                        import org.apache.commons.lang.StringUtils;
+                                        import org.apache.commons.io.FileUtils;
+                                        def target = new File(project.properties['target'])
+                                        if (!target.exists()) {
+                                            fail("Can't find target: " + project.properties['target'])
+                                        }
+                                        for (module in project.modules) {
+                                            def dir = new File(target.getPath(), module)
+                                            dir.mkdir()
+                                            for (ph in StringUtils.split(project.properties['placeholders'], ",")) {
+                                                ph = StringUtils.trim(ph)
+                                                def phfile = new File(ph);
+                                                def url = getClass().getClassLoader().getResource(ph);
+                                                if (url == null) {
+                                                    fail("Can't find placeholder " + ph)
+                                                }
+                                                log.info("Placeholder " + ph + " found at " + url);
+                                                def dest = new File(
+                                                    dir.toString(),
+                                                    StringUtils.substringAfterLast(ph, "/")
+                                                )
+                                                if (dest.exists()) {
+                                                    fail("Placeholder already exists: " + dest)
+                                                }
+                                                FileUtils.copyURLToFile(
+                                                    url, // JAR-related URL of the found file
+                                                    dest // destination file
+                                                )
+                                                log.info("Placeholder " + ph + " copied to " + dir);
+                                            }
+                                        }
+                                        ]]>
+                                    </source>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <!--
+                                Here we process all available .tex files located in
+                                "src/main/tikz" directory and add them to the project
+                                site. This operation is done during "site" lifecycle.
+                                TEX is a LaTeX format with extensive usage of TikZ/PGF.
+                                @see http://sourceforge.net/projects/pgf/
+                                -->
+                                <id>tikz</id>
+                                <phase>pre-site</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <properties>
+                                        <src>${basedir}/src/main/tikz</src>
+                                        <output>${project.build.directory}/site/tikz</output>
+                                        <temp>${project.build.directory}/tikz-processing</temp>
+                                        <scale>0.5</scale>
+                                        <!-- these files are in rempl-tk module -->
+                                        <closures>tikz/header.tex</closures>
+                                    </properties>
+                                    <classpath>
+                                        <element>
+                                            <!-- for TIKZ closures -->
+                                            <groupId>com.rqdql</groupId>
+                                            <artifactId>rqdql-tk</artifactId>
+                                            <version>2.0-SNAPSHOT</version>
+                                        </element>
+                                        <element>
+                                            <!-- for execution of shell commands -->
+                                            <groupId>org.apache.commons</groupId>
+                                            <artifactId>commons-exec</artifactId>
+                                            <version>1.1</version> <!-- 22 Feb 2011 -->
+                                        </element>
+                                        <element>
+                                            <!-- for file manipulations -->
+                                            <groupId>commons-io</groupId>
+                                            <artifactId>commons-io</artifactId>
+                                            <version>2.0.1</version> <!-- 7 Mar 2011 -->
+                                        </element>
+                                        <element>
+                                            <!-- for manipulations with strings -->
+                                            <groupId>commons-lang</groupId>
+                                            <artifactId>commons-lang</artifactId>
+                                            <version>2.5</version> <!-- 15 Oct 2010 -->
+                                        </element>
+                                    </classpath>
+                                    <source>
+                                        <![CDATA[
+                                        import org.apache.commons.lang.StringUtils;
+                                        import org.apache.commons.io.FileUtils;
+                                        import org.apache.commons.io.FilenameUtils;
+                                        import org.apache.commons.exec.CommandLine;
+                                        import org.apache.commons.exec.DefaultExecutor;
+                                        def srcDir = new File(project.properties['src'])
+                                        def outputDir = new File(project.properties['output'])
+                                        if (!srcDir.exists()) {
+                                            log.info("Directory is absent, nothing to compile: " + srcDir)
+                                            return
+                                        }
+                                        log.info("Reading TIKZ files from " + srcDir)
+                                        if (!outputDir.exists()) {
+                                            FileUtils.forceMkdir(outputDir)
+                                            log.info("Directory created: " + outputDir)
+                                        }
+                                        log.info("Writing PNG files to " + outputDir)
+                                        tempDir = new File(project.properties['temp'])
+                                        FileUtils.forceMkdir(tempDir)
+                                        FileUtils.copyDirectory(srcDir, tempDir)
+                                        for (closure in StringUtils.split(project.properties['closures'], ",")) {
+                                            def cfile = new File(closure);
+                                            if (!cfile.exists()) {
+                                                def url = getClass().getClassLoader().getResource(closure);
+                                                if (url == null) {
+                                                    fail("Can't find closure " + closure)
+                                                }
+                                                log.info("Closure " + closure + " found at " + url);
+                                                FileUtils.copyURLToFile(
+                                                    url, // JAR-related URL of the found file
+                                                    new File(
+                                                        tempDir.toString(),
+                                                        StringUtils.substringAfterLast(closure, "/")
+                                                    )
+                                                )
+                                            } else {
+                                                FileUtils.copyFileToDirectory(cfile, tempDir)
+                                            }
+                                            log.info("Closure " + closure + " copied to " + tempDir);
+                                        }
+                                        def files = FileUtils.listFiles(srcDir, ["tex"] as String[], false)
+                                        for (src in files) {
+                                            if (!FilenameUtils.getBaseName(src.getPath()).contains("-")) {
+                                                continue
+                                            }
+                                            def dest = new File(
+                                                outputDir.getPath(),
+                                                FilenameUtils.getBaseName(src.getPath())
+                                                + ".png"
+                                            )
+                                            if (dest.exists() && !FileUtils.isFileNewer(src, dest)) {
+                                                continue
+                                            }
+                                            FileUtils.copyFile(src, new File(tempDir.getPath(), "a.tex"))
+                                            def cmd = new String(
+                                                "latex -halt-on-error -interaction=nonstopmode a.tex && "
+                                                + "dvips -o a.ps a.dvi && "
+                                                + "echo quit "
+                                                + "| gs -q -dNOPAUSE -sDEVICE=ppmraw -sOutputFile=- -r300 a.ps"
+                                                + "| pnmalias -bgcolor rgb:ff/ff/ff -falias -fgcolor rgb:00/00/00 -weight 0.6"
+                                                + "| pnmcrop -white"
+                                                + "| pnmscale " + project.properties['scale']
+                                                + "| pnmtopng -interlace > a.png"
+                                            )
+                                            def line = new CommandLine("/bin/sh")
+                                            line.addArgument("-c")
+                                            line.addArgument(cmd, false)
+                                            def executor = new DefaultExecutor()
+                                            executor.setWorkingDirectory(tempDir)
+                                            executor.execute(line);
+                                            FileUtils.copyFile(new File(tempDir.getPath(), "a.png"), dest)
+                                        }
+                                        FileUtils.deleteDirectory(tempDir)
+                                        ]]>
+                                    </source>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <!--
+                                When site is ready we need to replace certain strings
+                                inside its HTML files, in order to improve readability
+                                of the output.
+                                -->
+                                <id>site-markers</id>
+                                <phase>post-site</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <classpath>
+                                        <element>
+                                            <!-- for file manipulations -->
+                                            <groupId>commons-io</groupId>
+                                            <artifactId>commons-io</artifactId>
+                                            <version>2.0.1</version> <!-- 7 Mar 2011 -->
+                                        </element>
+                                        <element>
+                                            <!-- for manipulations with strings -->
+                                            <groupId>commons-lang</groupId>
+                                            <artifactId>commons-lang</artifactId>
+                                            <version>2.5</version> <!-- 15 Oct 2010 -->
+                                        </element>
+                                    </classpath>
+                                    <properties>
+                                        <find>
+                                            <![CDATA[
+                                            Version: ${project.version}
+                                            <title>Coverage Report</title>
+                                            ]]>
+                                        </find>
+                                        <replace>
+                                            <![CDATA[
+                                            Version: ${project.version}/${buildNumber}
+                                            <title>Coverage Report (${project.version}/${buildNumber})</title>
+                                            ]]>
+                                        </replace>
+                                        <target>${project.build.directory}/site</target>
+                                    </properties>
+                                    <source>
+                                        <![CDATA[
+                                        import org.apache.commons.io.FileUtils;
+                                        import org.apache.commons.io.filefilter.*;
+                                        import org.apache.commons.lang.StringUtils;
+                                        def dir = new File(project.properties['target'])
+                                        if (!dir.exists()) {
+                                            log.info("Directory is absent: " + dir)
+                                            return
+                                        }
+                                        def it = FileUtils.iterateFiles(
+                                            dir,
+                                            new SuffixFileFilter(".html"),
+                                            TrueFileFilter.INSTANCE
+                                        )
+                                        def find = StringUtils.stripAll(
+                                            StringUtils.split(project.properties['find'], "\n")
+                                        )
+                                        def replace = StringUtils.stripAll(
+                                            StringUtils.split(project.properties['replace'], "\n")
+                                        )
+                                        while (it.hasNext()) {
+                                            def File file = it.next()
+                                            def contents = FileUtils.readFileToString(file)
+                                            contents = StringUtils.replaceEach(contents, find, replace)
+                                            FileUtils.writeStringToFile(file, contents)
+                                        }
+                                        ]]>
+                                    </source>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
