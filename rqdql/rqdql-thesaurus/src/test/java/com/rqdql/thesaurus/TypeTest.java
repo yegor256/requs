@@ -39,6 +39,8 @@ import static org.mockito.Mockito.*;
 /**
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
+ * @todo #3 This is just a stub. The test should validate the transformation
+ *       of a Type into Predicate. Different types should be tested.
  */
 public final class TypeTest {
 

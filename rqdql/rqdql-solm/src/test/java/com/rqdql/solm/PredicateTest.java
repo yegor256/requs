@@ -27,10 +27,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.thesaurus;
+package com.rqdql.solm;
 
 import com.rqdql.commons.Origin;
-import com.rqdql.solm.Predicate;
 import com.rqdql.tk.ResourceLoader;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -40,6 +39,8 @@ import static org.mockito.Mockito.*;
 /**
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
+ * @todo #3 This is just a stub. The test should perform real transformation
+ *       of a predicate into test cases.
  */
 public final class PredicateTest {
 

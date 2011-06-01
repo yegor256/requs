@@ -40,6 +40,11 @@ import static org.mockito.Mockito.*;
 /**
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
+ * @todo #3 The test should be implemented with much more details. We
+ *          should pass more complex constructs to the InputText
+ *          and validate what is returned back. Maybe some changes will
+ *          be required to the documentation. Besides that we should
+ *          explain what we're doing in Maven site, with UML diagrams.
  */
 public final class InputTextTest {
 
