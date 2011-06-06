@@ -721,7 +721,7 @@
                                     <artifactId>maven-javadoc-plugin</artifactId>
                                     <!-- version is specified in build/plugins -->
                                     <configuration>
-                                        <stylesheetfile>src/test/maven/javadoc/screen.css</stylesheetfile>
+                                        <stylesheetfile>javadoc/screen.css</stylesheetfile>
                                         <tags>
                                             <tag>
                                                 <name>todo</name>
@@ -779,6 +779,7 @@
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>latex-maven-plugin</artifactId>
                         <version>1.0</version> <!-- 24 Dec 2010 -->
+                        <inherited>false</inherited>
                         <configuration>
                             <buildDir>${project.build.directory}/site/pdf</buildDir>
                         </configuration>
