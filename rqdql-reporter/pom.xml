@@ -57,6 +57,31 @@
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
         </dependency>
+        <dependency>
+            <!-- all other details are in dependencyManagement in parent pom.xml -->
+            <groupId>com.ymock</groupId>
+            <artifactId>ymock-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.rqdql</groupId>
+            <artifactId>rqdql-commons</artifactId>
+            <version>2.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rqdql</groupId>
+            <artifactId>rqdql-scanner</artifactId>
+            <version>2.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rqdql</groupId>
+            <artifactId>rqdql-thesaurus</artifactId>
+            <version>2.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rqdql</groupId>
+            <artifactId>rqdql-solm</artifactId>
+            <version>2.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

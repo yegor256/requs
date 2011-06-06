@@ -46,4 +46,32 @@
     <packaging>jar</packaging>
     <name>rqdql-thesaurus</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.rqdql</groupId>
+            <artifactId>rqdql-commons</artifactId>
+            <version>2.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rqdql</groupId>
+            <artifactId>rqdql-solm</artifactId>
+            <version>2.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <!-- other details are in parent pom dependencyManagement -->
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <!-- other details are in parent pom dependencyManagement -->
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <!-- other details are in parent pom dependencyManagement -->
+        </dependency>
+    </dependencies>
+
 </project>

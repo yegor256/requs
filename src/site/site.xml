@@ -78,6 +78,7 @@
             <item name="tc" href="reporters/tc.html" />
             <item name="uml" href="reporters/uml.html" />
         </menu>
+        <menu ref="modules" />
         <menu ref="reports" />
     </body>
 
