@@ -86,9 +86,9 @@
     \definecolor{rupBorder}{rgb}{0.6039,0,0.2}
 \usepackage{natbib} % for nicer references formatting
 \usepackage{tikz}
-	\usetikzlibrary{shapes} % node split
-	\usetikzlibrary{chains} % start chains
-	\usetikzlibrary{arrows} % diamond
+    \usetikzlibrary{shapes} % node split
+    \usetikzlibrary{chains} % start chains
+    \usetikzlibrary{arrows} % diamond
     \usetikzlibrary{decorations.pathmorphing}
     \usetikzlibrary{positioning}
     \usetikzlibrary{fit}
@@ -221,7 +221,7 @@
     Fig.\ref{fig:Thesaurus-Classes} explains what Java classes we use
     to store objects retrieved from RQDQL texts. All said Java classes
     are declared in the
-    \type{com.rqdql.api.thesaurus} package.
+    \type{com.rqdql.thesaurus} package.
 
     \begin{figure}[ht]
         \centering
@@ -232,8 +232,6 @@
             \node [class, below=4em of entity] (uc) {UseCase\nodepart{second}};
             \node [class, below right=4em of uc] (signature) {Signature\nodepart{second}text};
             \node [class, left=6em of signature] (place) {Place\nodepart{second}name};
-            \node [class, left=3em of entity] (sud) {\underline{SUD: Entity}\nodepart{second}};
-            \draw [-open triangle 60, dashed] (sud) -- (entity);
             \draw [-open triangle 60] (type) -- (entity);
             \draw [-open triangle 60] (uc) -- (entity);
             \draw [-diamond]
@@ -271,9 +269,9 @@
         \label{fig:Thesaurus-Classes}
     \end{figure}
 
-    There is a global instance \type{SUD} of class \type{Entity}, which
-    is a holder of all other types. The instance is gettable via
-    \type{Thesaurus.getSUD()} method.
+    The instance of class \type{Entity}, which
+    is a holder of all other types, is created by
+    \type{InputText.toType()} method.
 
     \subsection{Types}
 
@@ -367,7 +365,7 @@ uploads a new photo, SUD validates it and saves".
             \label{fig:Simple-UC}
         \end{figure}
 
-        A signature is a text with places inside, for example
+        A signature is a text with ``places'' inside, for example
         \type{\{...\} personalizes \{...\}}. There are two places inside
         this signature, each of which has to be explained by an
         instance of class \type{Place}. Such an instance contains
@@ -387,7 +385,7 @@ UC1: 2a) If failed with "file format is not valid":
 \end{lstlisting}
 
         The use case is represented in the system by means of
-        \texttt{UseCase} and \texttt{Slot}-s. The
+        \type{UseCase} and \type{Slot}-s. The
         use case given above will be converted to the set
         of objects in Fig.\ref{fig:Complex-UC}. For the sake of
         simplicity the diagram contains only \type{UseCase} types, and
@@ -454,12 +452,12 @@ UC1: 2a) If failed with "file format is not valid":
 \section{Object Thesaurus to SOL Predicates}
 \label{sec:to-solm}
 
-    \type{com.rqdql.api.thesaurus.Thesaurus} instrument converts
-    its objects into second order logic predicates
-    inside \type{com.rqdql.api.solm}. There are
+    \type{com.rqdql.thesaurus.Type} class can be converted
+    into second order logic predicate:
+    \type{com.rqdql.solm.Predicate}. There are
     three groups of predicates. The first one is ``system predicates'', which
     are Java encoded. The second group includes ``pre-defined predicates'',
-    which are injected into \type{SOLM} by \type{Thesaurus}. The third group includes
+    which are injected into \type{Solm} by \type{Thesaurus}. The third group includes
     predicates defined by custom document, called ``custom predicates'':
 
     \begin{tikzpicture}[every node/.style={draw, text centered},
@@ -468,7 +466,7 @@ UC1: 2a) If failed with "file format is not valid":
         \node [text width=10em, above=2em of system.north, anchor=south] (predefined) {Pre-defined};
         \node [text width=15em, above=2em of predefined.north, anchor=south] (custom) {Custom};
         \node [draw=none, right=1em of system] {Java in \type{Solm}};
-        \node [draw=none, right=1em of predefined] {\type{Thesaurus} injects into \type{SOLM}};
+        \node [draw=none, right=1em of predefined] {\type{Thesaurus} injects into \type{Solm}};
         \node [draw=none, right=1em of custom] {from \type{Scanner}};
         \path (custom) -- (predefined);
         \path (predefined) -- (system);
@@ -497,7 +495,7 @@ UC1: 2a) If failed with "file format is not valid":
         \end{maths}
 
         A variable can be represented by an \textit{atom}, which starts with a single
-        quotation mark (like in Lisp~\cite{graham93}), for example:
+        quotation mark, like in Lisp~\cite{graham93}, for example:
 
         $$\exists X (\forall x(x \in X \to x < \type{'5}) \wedge X = \type{'3})$$
 
@@ -541,11 +539,9 @@ UC1: 2a) If failed with "file format is not valid":
         This structure is fixed and is not going to change. All other predicates
         are defined on top of these.
 
-    \subsection{Pre-defined Predicates}
+    \subsection{Pre-defined Formulas}
 
-        Before the conversion is started \texttt{Proxy}
-        injects into \texttt{Solm} a number of ``pre-defined
-        predicates'', in order to enable other predicates in SOLM:
+        These predicates are predefined in \type{Solm}:
 
         \begin{maths}
         $\type{created}(x_1, x_2): \type{ac}(x_1, x_2, \type{'C}). $ \\
@@ -780,60 +776,6 @@ vector<Object> snapshot;
 
 
 
-\section{Command Line Interface}
-\label{sec:front}
-
-    CLI is a collection of components. Every component gets
-    an associative array of configuration parameters
-    and returns an XML element. The element is named \texttt{<report>}
-    and has attributes equivalent to the configuration
-    params provided.
-
-    \texttt{main()} returns an XML document that integrates
-    all reports retrieved:
-
-    \begin{lstlisting}[language=XML]
-<?xml version="1.0" ?>
-<rqdql>
-  <errors>
-    <report>
-      <error line="23">This is an error</error>
-    </report>
-  </errors>
-  <metrics>
-    <report>
-      <ambiguity>0.765</ambiguity>
-    </report>
-  </metrics>
-  <uml>
-    <report uc="UC6.5">
-      <uml><[CDATA[....]]></uml>
-    </report>
-  </uml>
-</rqdql>
-    \end{lstlisting}
-
-    The script shall be called from command line like this:
-
-    \begin{lstlisting}[language=bash]
-$ java -jar rqdql-bin.jar errors uml:uc=UC6.5 metrics < myscope.txt
-    \end{lstlisting}
-
-    Possible reports are:
-
-    \begin{itemize}
-        \item \texttt{errors}: full list of errors
-        \item \texttt{metrics}: full analysis of the scope ambiguity, size, intensity, etc.
-        \item \texttt{links}: report links between objects (line to line)
-        \item \texttt{uml:uc=UC5,type=ActorUser,...}: description of types and use cases in UML
-        \item \texttt{svg:uc=UC5,type=ActorUser,...}: description of types and use cases in SVG
-        \item \texttt{tc:uc=UC5,...}: Test Cases for the given UC-s (or all)
-    \end{itemize}
-
-
-
-
-
 \section{Test Cases}
 \label{sec:test-cases}
 
@@ -867,42 +809,72 @@ $ java -jar rqdql-bin.jar errors uml:uc=UC6.5 metrics < myscope.txt
 
 
 
+\section{Command Line Interface}
+\label{sec:front}
+
+    CLI is a collection of components. Every component gets
+    an associative array of configuration parameters
+    and returns an XML element. The element is named \type{<report>}
+    and has attributes equivalent to the configuration
+    params provided.
+
+    \type{main()} returns an XML document that integrates
+    all reports retrieved:
+
+    \begin{lstlisting}[language=XML]
+<?xml version="1.0" ?>
+<rqdql>
+  <errors>
+    <report>
+      <error line="23">This is an error</error>
+    </report>
+  </errors>
+  <metrics>
+    <report>
+      <ambiguity>0.765</ambiguity>
+    </report>
+  </metrics>
+  <uml>
+    <report uc="UC6.5">
+      <uml><[CDATA[....]]></uml>
+    </report>
+  </uml>
+</rqdql>
+    \end{lstlisting}
+
+    The script shall be called from command line like this:
+
+    \begin{lstlisting}[language=bash]
+$ java -jar rqdql-bin.jar \
+    errors uml:uc=UC6.5 \
+    metrics \
+    < myscope.txt
+    \end{lstlisting}
+
+    Possible reports are:
+
+    \begin{itemize}
+        \item \type{errors}: full list of errors
+        \item \type{metrics}: full analysis of the scope ambiguity, size, intensity, etc.
+        \item \type{links}: report links between objects (line to line)
+        \item \type{uml:uc=UC5,type=ActorUser,...}: description of types and use cases in UML
+        \item \type{svg:uc=UC5,type=ActorUser,...}: description of types and use cases in SVG
+        \item \type{tc:uc=UC5,...}: Test Cases for the given UC-s (or all)
+    \end{itemize}
+
+
+
+
+
 \section{Architecture and Design}
 \label{sec:design}
 
-    This section is under construction and the material
-    you find below is just a preliminary draft pictures
-    to keep me focused on the subject. Consider them as
-    working drafts...
+    Architectural and design decisions are documented at
+    \href{http://www.rqdql.com}{rqdql.com}.
 
-    \begin{tikzpicture}
-        [node distance=8em]
-        \node [draw] (yacc) {YACC};
-        \node [draw, right of=yacc] (brokers) {C++ brokers};
-        \node [draw, right of=brokers] (proxy) {Proxy};
-        \node [draw, right of=proxy] (solm) {Solm};
 
-        \node [draw, below of=proxy] (logger) {Logger};
-        \node [draw, right of=logger] (front) {Front};
-        \node [draw, right of=front] (main) {\texttt{main()}};
-        \node [draw, below of=main] (plugin) {RqdqlPlugin};
-
-        \draw [->] (yacc) -- (brokers);
-        \draw [->] (brokers) -- (proxy);
-        \draw [->] (proxy) -- (solm);
-        \draw [->] (main) -- (front);
-        \draw [->] (front) -- (logger);
-        \draw [->] (front) -- (solm);
-        \draw [->] (plugin) -- (main);
-
-        \draw [dashed, ->] (yacc) -- (logger);
-        \draw [dashed, ->] (brokers) -- (logger);
-        \draw [dashed, ->] (proxy) -- (logger);
-        \draw [dashed, ->] (solm) -- (logger);
-    \end{tikzpicture}
 
 
 \bibliographystyle{apalike}
 \bibliography{sdd}{}
-
 \end{document}

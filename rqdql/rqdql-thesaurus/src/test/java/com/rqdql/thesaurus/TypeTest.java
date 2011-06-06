@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<!--
+/**
  * Copyright (c) 2009-2011, RQDQL.com
  * All rights reserved.
  *
@@ -27,23 +26,30 @@
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright (c) 2009-2011, RQDQL.com.
+ */
+package com.rqdql.thesaurus;
+
+import com.rqdql.commons.Origin;
+import com.rqdql.solm.Predicate;
+import org.junit.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
+
+/**
+ * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
- -->
-<project
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+ * @todo #3 This is just a stub. The test should validate the transformation
+ *       of a Type into Predicate. Different types should be tested.
+ */
+public final class TypeTest {
 
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.rqdql</groupId>
-        <artifactId>rqdql-plugins</artifactId>
-        <version>2.0-SNAPSHOT</version>
-    </parent>
-    <artifactId>plugin-trac</artifactId>
-    <packaging>jar</packaging>
-    <name>plugin-trac</name>
+    @Test
+    public void testValidatesSimpleType() throws Exception {
+        final Origin origin = mock(Origin.class);
+        final Type type = new Type(origin);
+        final Predicate predicate = type.toPredicate();
+        assertThat(predicate, is(not(nullValue())));
+    }
 
-</project>
+}

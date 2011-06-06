@@ -36,6 +36,9 @@ import static org.hamcrest.Matchers.*;
 /**
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
+ * @todo #3 This is just a stub. The test should implement proper
+ *       report building and validate whether the resulting XML really
+ *       contains all the expected information.
  */
 public final class XmlSummaryTest {
 

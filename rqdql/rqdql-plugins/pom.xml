@@ -47,7 +47,7 @@
     <name>rqdql-plugins</name>
 
     <modules>
-        <module>plugin-trac</module>
+        <module>rqdql-plugin-trac</module>
     </modules>
 
 </project>
