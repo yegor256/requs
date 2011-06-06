@@ -48,7 +48,7 @@ public final class PredicateTest {
         final Origin origin = mock(Origin.class);
         final Predicate predicate = new Predicate(origin);
         assertThat(predicate, is(not(nullValue())));
-        assertThat(predicate.toString(), is(not(nullValue())));
+        assertThat(predicate.toOutcome(), is(not(nullValue())));
     }
 
 }

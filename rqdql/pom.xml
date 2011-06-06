@@ -349,7 +349,7 @@
                             located at target/site/apidocs.
                             -->
                             <artifactId>maven-javadoc-plugin</artifactId>
-                            <version>2.7</version>  <!-- 12 October 2010 -->
+                            <version>2.8</version>  <!-- 5 June 2011 -->
                             <configuration>
                                 <failOnError>true</failOnError>
                                 <quiet>true</quiet>

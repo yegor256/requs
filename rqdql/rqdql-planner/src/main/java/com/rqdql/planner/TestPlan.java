@@ -61,6 +61,8 @@ public final class TestPlan {
      * @return The UML
      */
     public Diagram toDiagram() {
+        // just a stub
+        this.origin.error("test");
         return new Diagram();
     }
 
