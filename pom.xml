@@ -48,17 +48,17 @@
     <name>rqdql</name>
 
     <modules>
-        <module>rqdql-tk</module>
+        <!--<module>rqdql-tk</module>
         <module>rqdql-commons</module>
         <module>rqdql-scanner</module>
         <module>rqdql-solm</module>
         <module>rqdql-thesaurus</module>
         <module>rqdql-facts</module>
-        <module>rqdql-cli</module>
+        <module>rqdql-cli</module>-->
         <module>rqdql-plugins</module>
-        <module>rqdql-reporter</module>
+        <!--<module>rqdql-reporter</module>
         <module>rqdql-planner</module>
-        <module>rqdql-uml</module>
+        <module>rqdql-uml</module>-->
     </modules>
 
     <description>
@@ -490,6 +490,11 @@
                                     <totalBranchRate>80</totalBranchRate>
                                 </check>
                             </configuration>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>exec-maven-plugin</artifactId>
+                            <version>1.2</version>
                         </plugin>
                     </plugins>
                 </pluginManagement>
