@@ -27,41 +27,24 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.solm;
+package com.rqdql.uml;
 
-// commons from com.rqdql:rqdql-commons
-import com.rqdql.commons.Origin;
-
-// outcome from com.rqdql:rqdql-facts
-import com.rqdql.facts.Outcome;
+import org.junit.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 /**
- * Predicate.
- *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
+ * @todo #3 This is just a stub. The test should perform real generation
+ *       of a UML diagram, and validate it's content.
  */
-public final class Predicate implements Formula {
+public final class DiagramTest {
 
-    /**
-     * The origin of the predicate.
-     */
-    private final Origin origin;
-
-    /**
-     * Public ctor.
-     * @param orgn The origin of this predicate
-     */
-    public Predicate(final Origin orgn) {
-        this.origin = orgn;
-    }
-
-    /**
-     * Get possible outcome of the predicate.
-     * @return The outcome
-     */
-    public Outcome toOutcome() {
-        return new Outcome(this.origin.sub(null));
+    @Test
+    public void testValidatesDiagram() throws Exception {
+        final Diagram diagram = new Diagram();
+        assertThat(diagram.toString(), is(not(nullValue())));
     }
 
 }

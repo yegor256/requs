@@ -27,41 +27,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.solm;
-
-// commons from com.rqdql:rqdql-commons
-import com.rqdql.commons.Origin;
-
-// outcome from com.rqdql:rqdql-facts
-import com.rqdql.facts.Outcome;
+package com.rqdql.uml;
 
 /**
- * Predicate.
+ * UML Diagram abstraction.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class Predicate implements Formula {
+public final class Diagram {
 
     /**
-     * The origin of the predicate.
+     * {@inheritDoc}
      */
-    private final Origin origin;
-
-    /**
-     * Public ctor.
-     * @param orgn The origin of this predicate
-     */
-    public Predicate(final Origin orgn) {
-        this.origin = orgn;
-    }
-
-    /**
-     * Get possible outcome of the predicate.
-     * @return The outcome
-     */
-    public Outcome toOutcome() {
-        return new Outcome(this.origin.sub(null));
+    @Override
+    public String toString() {
+        return "test";
     }
 
 }

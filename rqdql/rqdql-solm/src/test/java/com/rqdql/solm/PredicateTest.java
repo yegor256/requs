@@ -39,7 +39,7 @@ import static org.mockito.Mockito.*;
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  * @todo #3 This is just a stub. The test should perform real transformation
- *       of a predicate into test cases.
+ *       of a predicate into facts.
  */
 public final class PredicateTest {
 

@@ -42,9 +42,9 @@
         <artifactId>rqdql-plugins</artifactId>
         <version>2.0-SNAPSHOT</version>
     </parent>
-    <artifactId>plugin-trac</artifactId>
+    <artifactId>rqdql-plugin-trac</artifactId>
     <packaging>jar</packaging>
-    <name>plugin-trac</name>
+    <name>rqdql-plugin-trac</name>
 
     <!--
     @todo #3 At the moment the plugin is not implemented as it should be. It

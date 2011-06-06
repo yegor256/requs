@@ -53,9 +53,12 @@
         <module>rqdql-scanner</module>
         <module>rqdql-solm</module>
         <module>rqdql-thesaurus</module>
+        <module>rqdql-facts</module>
         <module>rqdql-cli</module>
         <module>rqdql-plugins</module>
         <module>rqdql-reporter</module>
+        <module>rqdql-planner</module>
+        <module>rqdql-uml</module>
     </modules>
 
     <description>
@@ -782,7 +785,7 @@
                         <executions>
                             <execution>
                                 <id>latex-documents</id>
-                                <phase>pre-site</phase>
+                                <phase>post-site</phase>
                                 <goals>
                                     <goal>latex</goal>
                                 </goals>

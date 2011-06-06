@@ -27,41 +27,41 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.solm;
+package com.rqdql.planner;
 
 // commons from com.rqdql:rqdql-commons
 import com.rqdql.commons.Origin;
 
-// outcome from com.rqdql:rqdql-facts
-import com.rqdql.facts.Outcome;
+// commons from com.rqdql:rqdql-uml
+import com.rqdql.uml.Diagram;
 
 /**
- * Predicate.
+ * Test plan.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class Predicate implements Formula {
+public final class TestPlan {
 
     /**
-     * The origin of the predicate.
+     * The origin of the outcome.
      */
     private final Origin origin;
 
     /**
      * Public ctor.
-     * @param orgn The origin of this predicate
+     * @param orgn The origin of this test plan
      */
-    public Predicate(final Origin orgn) {
+    public TestPlan(final Origin orgn) {
         this.origin = orgn;
     }
 
     /**
-     * Get possible outcome of the predicate.
-     * @return The outcome
+     * Convert this test plan to UML.
+     * @return The UML
      */
-    public Outcome toOutcome() {
-        return new Outcome(this.origin.sub(null));
+    public Diagram toDiagram() {
+        return new Diagram();
     }
 
 }
