@@ -436,7 +436,7 @@
                             -->
                             <groupId>org.codehaus.mojo</groupId>
                             <artifactId>findbugs-maven-plugin</artifactId>
-                            <version>2.3.2-SNAPSHOT</version> <!-- 6 Nov 2010 -->
+                            <version>2.3.2</version> <!-- 6 Nov 2010 -->
                             <configuration>
                                 <threshold>Exp</threshold> <!-- as much to show as possible -->
                                 <!--
