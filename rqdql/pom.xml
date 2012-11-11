@@ -430,26 +430,6 @@
                         </plugin>
                         <plugin>
                             <!--
-                            Static code analysis to find potential bugs in code. One
-                            major drawback in this plugin is that it DOES'T produce
-                            any report to the output, only to XML files
-                            -->
-                            <groupId>org.codehaus.mojo</groupId>
-                            <artifactId>findbugs-maven-plugin</artifactId>
-                            <version>2.3.2</version> <!-- 6 Nov 2010 -->
-                            <configuration>
-                                <threshold>Exp</threshold> <!-- as much to show as possible -->
-                                <!--
-                                We never fail on error here, instead we let
-                                our Groovy code to fail later, after parsing of
-                                all errors
-                                -->
-                                <failOnError>false</failOnError>
-                                <xmlOutput>true</xmlOutput>
-                            </configuration>
-                        </plugin>
-                        <plugin>
-                            <!--
                             This is a code coverage validator, executed AFTER
                             all unit tests are passed. Cobertura starts all tests
                             again in order to calculate code coverage, and validates
@@ -577,71 +557,6 @@
                                     <goal>check</goal>
                                     <goal>cpd-check</goal>
                                 </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <!-- configuration is in pluginManagement section above -->
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>findbugs-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <!-- configuration is in pluginManagement section above -->
-                        <groupId>org.codehaus.gmaven</groupId>
-                        <artifactId>gmaven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>findbugs</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>execute</goal>
-                                </goals>
-                                <configuration>
-                                    <properties>
-                                        <xml>${project.build.directory}/findbugsXml.xml</xml>
-                                        <failOnError>true</failOnError>
-                                    </properties>
-                                    <!--
-                                    @link http://docs.codehaus.org/display/GMAVEN/Executing+Groovy+Code
-                                    @link http://groovy.codehaus.org./Reading+XML+using+Groovy%27s+XmlParser
-                                    -->
-                                    <source>
-                                        <![CDATA[
-                                        def file = new File(project.properties['xml'])
-                                        if (!file.exists()) {
-                                            log.info("No XML report, nothing to parse")
-                                            return
-                                        }
-                                        def xml = new XmlParser().parse(file)
-                                        def bugs = xml.BugInstance
-                                        def total = bugs.size()
-                                        if (total <= 0) {
-                                            log.info("No errors/warnings found")
-                                            return
-                                        }
-                                        log.info("Total bugs: " + total)
-                                        for (i in 0..total-1) {
-                                            def bug = bugs[i]
-                                            log.info(
-                                                bug.LongMessage.text()
-                                                + " " + bug.Class.'@classname'
-                                                + " " + bug.Class.SourceLine.Message.text()
-                                            )
-                                        }
-                                        if (project.properties['failOnError']) {
-                                            fail(total + " FindBugs error(s)")
-                                        }
-                                        ]]>
-                                    </source>
-                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
