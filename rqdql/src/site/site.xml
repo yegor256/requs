@@ -26,63 +26,38 @@
  * Copyright (c) 2010, rqdql.com, Inc.
  * @version $Id$
  -->
-<project xmlns="http://maven.apache.org/DECORATION/1.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0
-    http://maven.apache.org/xsd/decoration-1.0.0.xsd"
-    name="RQDQL">
-
+<project xmlns="http://maven.apache.org/DECORATION/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0     http://maven.apache.org/xsd/decoration-1.0.0.xsd" name="rqdql">
     <skin>
-        <groupId>org.apache.maven.skins</groupId>
-        <artifactId>maven-stylus-skin</artifactId>
-        <version>1.2</version>
+        <groupId>com.jcabi</groupId>
+        <artifactId>jcabi-maven-skin</artifactId>
+        <version>1.0-SNAPSHOT</version>
     </skin>
-
     <bannerLeft>
         <name>RQDQL</name>
         <src>images/logo.png</src>
         <href>http://www.rqdql.com</href>
     </bannerLeft>
-
+    <googleAnalyticsAccountId>UA-1963507-18</googleAnalyticsAccountId>
     <body>
         <head>
-            <link href="./images/favicon.gif" rel="shortcut icon" />
-            <script type="text/javascript">
-                //<![CDATA[
-                var _gaq = _gaq || [];
-                _gaq.push(['_setAccount', 'UA-1963507-18']);
-                _gaq.push(['_trackPageview']);
-                (function() {
-                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-                })();
-                //]]>
-            </script>
+            <link href="./images/favicon.gif" rel="shortcut icon"/>
         </head>
         <breadcrumbs>
             <item name="rqdql.com" href="http://www.rqdql.com"/>
         </breadcrumbs>
-        <links>
-            <item name="Built with Maven 2" href="http://maven.apache.org/" />
-        </links>
         <menu name="Overview">
-            <item name="Introduction" href="index.html" />
-            <item name="Grammar" href="syntax.html" />
-            <item name="Usage" href="usage.html" />
+            <item name="Introduction" href="index.html"/>
+            <item name="Grammar" href="syntax.html"/>
+            <item name="Usage" href="usage.html"/>
         </menu>
         <menu name="Reporters">
-            <item name="errors" href="reporters/errors.html" />
-            <item name="metrics" href="reporters/metrics.html" />
-            <item name="links" href="reporters/links.html" />
-            <item name="tc" href="reporters/tc.html" />
-            <item name="uml" href="reporters/uml.html" />
+            <item name="errors" href="reporters/errors.html"/>
+            <item name="metrics" href="reporters/metrics.html"/>
+            <item name="links" href="reporters/links.html"/>
+            <item name="tc" href="reporters/tc.html"/>
+            <item name="uml" href="reporters/uml.html"/>
         </menu>
-        <menu ref="modules" />
-        <menu ref="reports" />
+        <menu ref="modules"/>
+        <menu ref="reports"/>
     </body>
-
-    <publishDate position="right" format="dd-MMM-yyyy" />
-    <version position="right"/>
-
 </project>

@@ -679,7 +679,6 @@
                 <plugins>
                     <plugin>
                         <artifactId>maven-site-plugin</artifactId>
-                        <!-- version is specified in build/plugins -->
                         <configuration>
                             <reportPlugins>
                                 <plugin>
@@ -721,7 +720,6 @@
                                     <artifactId>maven-javadoc-plugin</artifactId>
                                     <!-- version is specified in build/plugins -->
                                     <configuration>
-                                        <stylesheetfile>javadoc/screen.css</stylesheetfile>
                                         <tags>
                                             <tag>
                                                 <name>todo</name>
@@ -737,28 +735,12 @@
                                                 </reports>
                                             </reportSet>
                                         </reportSets>
-                                        <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
-                                        <docletArtifact>
-                                            <groupId>org.umlgraph</groupId>
-                                            <artifactId>doclet</artifactId>
-                                            <version>5.1</version>
-                                        </docletArtifact>
-                                        <additionalparam>
-                                            -views
-                                            -all
-                                        </additionalparam>
-                                        <useStandardDocletOptions>true</useStandardDocletOptions>
                                     </configuration>
                                 </plugin>
                                 <plugin>
                                     <groupId>org.codehaus.mojo</groupId>
                                     <artifactId>cobertura-maven-plugin</artifactId>
                                     <!-- version is specified in build/plugins -->
-                                </plugin>
-                                <plugin>
-                                    <groupId>org.codehaus.mojo</groupId>
-                                    <artifactId>jdepend-maven-plugin</artifactId>
-                                    <version>2.0-beta-2</version> <!-- 7 Nov 2010 -->
                                 </plugin>
                             </reportPlugins>
                         </configuration>
@@ -1202,7 +1184,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.0-beta-3</version> <!-- 28 Dec 2010 -->
+                    <version>3.2</version>
                     <configuration>
                         <reportPlugins>
                         </reportPlugins>
