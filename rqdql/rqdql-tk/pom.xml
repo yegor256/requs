@@ -49,6 +49,10 @@
         ]]>
     </description>
 
+    <organization>
+        <name>RQDQL.com</name>
+    </organization>
+
     <distributionManagement>
         <downloadUrl>https://oss.sonatype.org/content/groups/public</downloadUrl>
         <repository>
