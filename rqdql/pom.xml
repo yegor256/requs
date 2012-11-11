@@ -131,21 +131,17 @@
     <distributionManagement>
         <downloadUrl>https://oss.sonatype.org/content/groups/public</downloadUrl>
         <repository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>sonatype-nexus-staging</id>
-            <name>Sonatype OSS Repository</name>
+            <id>oss.sonatype.org</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
         <snapshotRepository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype OSS Repository</name>
+            <id>oss.sonatype.org</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <site>
             <id>www.rqdql.com</id>
             <name>RQDQL.com Project Site</name>
-            <url>${site.deploy.url}</url>
+            <url>s3://www.rqdql.com/</url>
         </site>
     </distributionManagement>
 
@@ -434,26 +430,6 @@
                         </plugin>
                         <plugin>
                             <!--
-                            Static code analysis to find potential bugs in code. One
-                            major drawback in this plugin is that it DOES'T produce
-                            any report to the output, only to XML files
-                            -->
-                            <groupId>org.codehaus.mojo</groupId>
-                            <artifactId>findbugs-maven-plugin</artifactId>
-                            <version>2.3.2-SNAPSHOT</version> <!-- 6 Nov 2010 -->
-                            <configuration>
-                                <threshold>Exp</threshold> <!-- as much to show as possible -->
-                                <!--
-                                We never fail on error here, instead we let
-                                our Groovy code to fail later, after parsing of
-                                all errors
-                                -->
-                                <failOnError>false</failOnError>
-                                <xmlOutput>true</xmlOutput>
-                            </configuration>
-                        </plugin>
-                        <plugin>
-                            <!--
                             This is a code coverage validator, executed AFTER
                             all unit tests are passed. Cobertura starts all tests
                             again in order to calculate code coverage, and validates
@@ -587,71 +563,6 @@
                     <plugin>
                         <!-- configuration is in pluginManagement section above -->
                         <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>findbugs-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <!-- configuration is in pluginManagement section above -->
-                        <groupId>org.codehaus.gmaven</groupId>
-                        <artifactId>gmaven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>findbugs</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>execute</goal>
-                                </goals>
-                                <configuration>
-                                    <properties>
-                                        <xml>${project.build.directory}/findbugsXml.xml</xml>
-                                        <failOnError>true</failOnError>
-                                    </properties>
-                                    <!--
-                                    @link http://docs.codehaus.org/display/GMAVEN/Executing+Groovy+Code
-                                    @link http://groovy.codehaus.org./Reading+XML+using+Groovy%27s+XmlParser
-                                    -->
-                                    <source>
-                                        <![CDATA[
-                                        def file = new File(project.properties['xml'])
-                                        if (!file.exists()) {
-                                            log.info("No XML report, nothing to parse")
-                                            return
-                                        }
-                                        def xml = new XmlParser().parse(file)
-                                        def bugs = xml.BugInstance
-                                        def total = bugs.size()
-                                        if (total <= 0) {
-                                            log.info("No errors/warnings found")
-                                            return
-                                        }
-                                        log.info("Total bugs: " + total)
-                                        for (i in 0..total-1) {
-                                            def bug = bugs[i]
-                                            log.info(
-                                                bug.LongMessage.text()
-                                                + " " + bug.Class.'@classname'
-                                                + " " + bug.Class.SourceLine.Message.text()
-                                            )
-                                        }
-                                        if (project.properties['failOnError']) {
-                                            fail(total + " FindBugs error(s)")
-                                        }
-                                        ]]>
-                                    </source>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <!-- configuration is in pluginManagement section above -->
-                        <groupId>org.codehaus.mojo</groupId>
                         <artifactId>cobertura-maven-plugin</artifactId>
                         <executions>
                             <execution>
@@ -679,7 +590,6 @@
                 <plugins>
                     <plugin>
                         <artifactId>maven-site-plugin</artifactId>
-                        <!-- version is specified in build/plugins -->
                         <configuration>
                             <reportPlugins>
                                 <plugin>
@@ -721,7 +631,6 @@
                                     <artifactId>maven-javadoc-plugin</artifactId>
                                     <!-- version is specified in build/plugins -->
                                     <configuration>
-                                        <stylesheetfile>javadoc/screen.css</stylesheetfile>
                                         <tags>
                                             <tag>
                                                 <name>todo</name>
@@ -737,28 +646,12 @@
                                                 </reports>
                                             </reportSet>
                                         </reportSets>
-                                        <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
-                                        <docletArtifact>
-                                            <groupId>org.umlgraph</groupId>
-                                            <artifactId>doclet</artifactId>
-                                            <version>5.1</version>
-                                        </docletArtifact>
-                                        <additionalparam>
-                                            -views
-                                            -all
-                                        </additionalparam>
-                                        <useStandardDocletOptions>true</useStandardDocletOptions>
                                     </configuration>
                                 </plugin>
                                 <plugin>
                                     <groupId>org.codehaus.mojo</groupId>
                                     <artifactId>cobertura-maven-plugin</artifactId>
                                     <!-- version is specified in build/plugins -->
-                                </plugin>
-                                <plugin>
-                                    <groupId>org.codehaus.mojo</groupId>
-                                    <artifactId>jdepend-maven-plugin</artifactId>
-                                    <version>2.0-beta-2</version> <!-- 7 Nov 2010 -->
                                 </plugin>
                             </reportPlugins>
                         </configuration>
@@ -1098,14 +991,10 @@
             </resource>
         </resources>
         <extensions>
-            <!--
-            To enable site deployment by FTP
-            @link http://maven.apache.org/wagon/wagon-providers/wagon-ftp/
-            -->
             <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ftp</artifactId>
-                <version>1.0-beta-7</version> <!-- 18 Dec 2010 -->
+                <groupId>org.kuali.maven.wagons</groupId>
+                <artifactId>maven-s3-wagon</artifactId>
+                <version since="20 Sep 2012">1.1.14</version>
             </extension>
         </extensions>
         <pluginManagement>
@@ -1202,7 +1091,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.0-beta-3</version> <!-- 28 Dec 2010 -->
+                    <version>3.2</version>
                     <configuration>
                         <reportPlugins>
                         </reportPlugins>

@@ -26,7 +26,7 @@
  * Copyright (c) 2010, rqdql.com, Inc.
  * @version $Id$
  -->
-<project xmlns="http://maven.apache.org/DECORATION/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0     http://maven.apache.org/xsd/decoration-1.0.0.xsd" name="rqdql">
+<project xmlns="http://maven.apache.org/DECORATION/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0     http://maven.apache.org/xsd/decoration-1.0.0.xsd" name="rqdql-tk">
     <skin>
         <groupId>com.jcabi</groupId>
         <artifactId>jcabi-maven-skin</artifactId>
@@ -40,24 +40,18 @@
     <googleAnalyticsAccountId>UA-1963507-18</googleAnalyticsAccountId>
     <body>
         <head>
-            <link href="http://www.rqdql.com/images/favicon.gif" rel="shortcut icon"/>
+            <link href="./images/favicon.gif" rel="shortcut icon"/>
         </head>
         <breadcrumbs>
-            <item name="rqdql.com" href="http://www.rqdql.com"/>
+            <item name="rqdql.com" href="http://www.rqdql.com/"/>
+            <item name="rqdql-tk" href="http://www.rqdql.com/rqdql-tk"/>
         </breadcrumbs>
+        <menu name="Parent Project">
+            <item name="rqdql" href="http://www.rqdql.com"/>
+        </menu>
         <menu name="Overview">
             <item name="Introduction" href="index.html"/>
-            <item name="Grammar" href="syntax.html"/>
-            <item name="Usage" href="usage.html"/>
         </menu>
-        <menu name="Reporters">
-            <item name="errors" href="reporters/errors.html"/>
-            <item name="metrics" href="reporters/metrics.html"/>
-            <item name="links" href="reporters/links.html"/>
-            <item name="tc" href="reporters/tc.html"/>
-            <item name="uml" href="reporters/uml.html"/>
-        </menu>
-        <menu ref="modules"/>
         <menu ref="reports"/>
     </body>
 </project>
