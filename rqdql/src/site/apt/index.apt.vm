@@ -40,3 +40,8 @@ Requirements Definition and Query Language (RQDQL)
   {{{https://oss.sonatype.org/content/groups/public/com/rqdql/rqdql/}here}}.
 
   Try online {{{./example.html}instant example}}.
+
+  This software was initially developed in C++. Now we're transferring it
+  to Java and this work is not finished yet. A complete (compilable and working)
+  version in C++ is available in Subversion:
+  <<<svn://svn.rqdql.com/rqdql/tags/rqdql-0.4-latest/cpp>>>.
