@@ -59,6 +59,11 @@
             <id>oss.sonatype.org</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
+        <site>
+            <id>www.rqdql.com</id>
+            <name>RQDQL.com Project Site</name>
+            <url>s3://www.rqdql.com/</url>
+        </site>
     </distributionManagement>
 
     <dependencies>
@@ -73,6 +78,16 @@
             <version>1.3.2</version> <!-- 9 Oct 2010 -->
         </dependency>
     </dependencies>
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.kuali.maven.wagons</groupId>
+                <artifactId>maven-s3-wagon</artifactId>
+                <version since="20 Sep 2012">1.1.14</version>
+            </extension>
+        </extensions>
+    </build>
 
 </project>
 

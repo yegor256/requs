@@ -131,21 +131,17 @@
     <distributionManagement>
         <downloadUrl>https://oss.sonatype.org/content/groups/public</downloadUrl>
         <repository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>sonatype-nexus-staging</id>
-            <name>Sonatype OSS Repository</name>
+            <id>oss.sonatype.org</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
         <snapshotRepository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype OSS Repository</name>
+            <id>oss.sonatype.org</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <site>
             <id>www.rqdql.com</id>
             <name>RQDQL.com Project Site</name>
-            <url>${site.deploy.url}</url>
+            <url>s3://www.rqdql.com/</url>
         </site>
     </distributionManagement>
 
@@ -1080,14 +1076,10 @@
             </resource>
         </resources>
         <extensions>
-            <!--
-            To enable site deployment by FTP
-            @link http://maven.apache.org/wagon/wagon-providers/wagon-ftp/
-            -->
             <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ftp</artifactId>
-                <version>1.0-beta-7</version> <!-- 18 Dec 2010 -->
+                <groupId>org.kuali.maven.wagons</groupId>
+                <artifactId>maven-s3-wagon</artifactId>
+                <version since="20 Sep 2012">1.1.14</version>
             </extension>
         </extensions>
         <pluginManagement>
