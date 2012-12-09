@@ -34,13 +34,13 @@
     </skin>
     <bannerLeft>
         <name>RQDQL</name>
-        <src>http://www.rqdql.com/images/logo.png</src>
+        <src>http://img.rqdql.com/logo.png</src>
         <href>http://www.rqdql.com</href>
     </bannerLeft>
     <googleAnalyticsAccountId>UA-1963507-18</googleAnalyticsAccountId>
     <body>
         <head>
-            <link href="http://www.rqdql.com/images/favicon.gif" rel="shortcut icon"/>
+            <link href="http://img.rqdql.com/favicon.gif" rel="shortcut icon"/>
         </head>
         <breadcrumbs>
             <item name="rqdql.com" href="http://www.rqdql.com"/>
@@ -49,13 +49,6 @@
             <item name="Introduction" href="index.html"/>
             <item name="Grammar" href="syntax.html"/>
             <item name="Usage" href="usage.html"/>
-        </menu>
-        <menu name="Reporters">
-            <item name="errors" href="reporters/errors.html"/>
-            <item name="metrics" href="reporters/metrics.html"/>
-            <item name="links" href="reporters/links.html"/>
-            <item name="tc" href="reporters/tc.html"/>
-            <item name="uml" href="reporters/uml.html"/>
         </menu>
         <menu ref="modules"/>
         <menu ref="reports"/>
