@@ -29,7 +29,7 @@
  */
 package com.rqdql.facts;
 
-import com.rqdql.commons.Origin;
+import com.rqdql.thesaurus.Type;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -50,10 +50,9 @@ public final class OutcomeTest {
      */
     @Test
     public void testValidatesSimpleOutcome() throws Exception {
-        final Origin origin = Mockito.mock(Origin.class);
-        final Outcome outcome = new Outcome(origin);
+        final Type type = Mockito.mock(Type.class);
+        final Outcome outcome = new Outcome(type);
         MatcherAssert.assertThat(outcome, Matchers.notNullValue());
-        MatcherAssert.assertThat(outcome.toTestPlan(), Matchers.notNullValue());
     }
 
 }

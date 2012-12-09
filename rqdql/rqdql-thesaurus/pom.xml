@@ -43,14 +43,29 @@
     <name>rqdql-thesaurus</name>
     <dependencies>
         <dependency>
-            <groupId>com.rqdql</groupId>
-            <artifactId>rqdql-commons</artifactId>
-            <version rqdql="yes">2.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.rqdql</groupId>
-            <artifactId>rqdql-solm</artifactId>
-            <version rqdql="yes">2.0-SNAPSHOT</version>
+            <!--
+            ANTLR3 Parser/Lexer
+            @link http://www.antlr.org/
+            -->
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr-runtime</artifactId>
+            <version since="13 Oct 2010">3.3</version>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr3-maven-plugin</artifactId>
+                <version>3.1.3-1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>antlr</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

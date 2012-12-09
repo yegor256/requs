@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<!--
+/**
  * Copyright (c) 2009-2011, RQDQL.com
  * All rights reserved.
  *
@@ -27,25 +26,32 @@
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright (c) 2009-2011, RQDQL.com.
- * @version $Id: pom.xml 2445 2011-05-28 06:01:19Z yegor256@yahoo.com $
- -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.rqdql</groupId>
-        <artifactId>rqdql</artifactId>
-        <version rqdql="yes">2.0-SNAPSHOT</version>
-    </parent>
-    <artifactId>rqdql-facts</artifactId>
-    <packaging>jar</packaging>
-    <name>rqdql-facts</name>
-    <dependencies>
-        <dependency>
-            <groupId>com.rqdql</groupId>
-            <artifactId>rqdql-sol</artifactId>
-            <version rqdql="yes">2.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
-</project>
+ */
+package com.rqdql.cli;
+
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+
+/**
+ * Test case for {@link XmlSummary}.
+ * @author Yegor Bugayenko (yegor@rqdql.com)
+ * @version $Id$
+ * @todo #3 This is just a stub. The test should implement proper
+ *  report building and validate whether the resulting XML really
+ *  contains all the expected information.
+ */
+public final class XmlSummaryTest {
+
+    /**
+     * XmlSummary can work.
+     * @throws Exception If error
+     */
+    @Test
+    public void testSimpleReporting() throws Exception {
+        final XmlSummary summary = new XmlSummary("some text");
+        final String xml = summary.xml();
+        MatcherAssert.assertThat(xml, Matchers.containsString("<?xml"));
+    }
+
+}

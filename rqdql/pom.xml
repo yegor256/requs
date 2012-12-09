@@ -48,16 +48,12 @@
     <packaging>pom</packaging>
     <name>rqdql</name>
     <modules>
-        <module>rqdql-commons</module>
-        <module>rqdql-scanner</module>
-        <module>rqdql-solm</module>
         <module>rqdql-thesaurus</module>
+        <module>rqdql-sol</module>
         <module>rqdql-facts</module>
         <module>rqdql-cli</module>
+        <module>rqdql-xmi</module>
         <module>rqdql-plugins</module>
-        <module>rqdql-reporter</module>
-        <module>rqdql-planner</module>
-        <module>rqdql-uml</module>
     </modules>
     <description><![CDATA[
         Requirements Definition and Query Language (RQDQL).
@@ -143,15 +139,6 @@
         <dependencies>
             <dependency>
                 <!--
-                ANTLR3 Parser/Lexer
-                @link http://www.antlr.org/
-                -->
-                <groupId>org.antlr</groupId>
-                <artifactId>antlr-runtime</artifactId>
-                <version since="13 Oct 2010">3.3</version>
-            </dependency>
-            <dependency>
-                <!--
                 XOM is used as an alternative to classical Java XML
                 manipulation library, which is difficult to use and
                 very verbose. Other options considered: DOM4J, JDOM.
@@ -165,15 +152,30 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <RQDQL-Version>${project.version}</RQDQL-Version>
+                            <RQDQL-Build>${buildNumber}</RQDQL-Build>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <profiles>
         <profile>
             <!--
             This PDF generator doesn't work at the moment because
             there is no ability to specify
-            "--shell-escape --enable-write18"
+            "-shell-escape -enable-write18"
             for pdflatex. I already reported this issue to the plugin team:
             @see https://jira.codehaus.org/browse/MLATEX-16 -->
-            <id>site----disabled</id>
+            <id>site-disabled</id>
             <build>
                 <plugins>
                     <plugin>

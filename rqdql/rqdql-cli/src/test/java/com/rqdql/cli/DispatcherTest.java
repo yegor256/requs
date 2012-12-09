@@ -54,7 +54,7 @@ public final class DispatcherTest {
             new String[] {"-v"},
             ""
         );
-        MatcherAssert.assertThat(out, Matchers.containsString("2.0"));
+        MatcherAssert.assertThat(out, Matchers.containsString("-SNAPSHOT"));
     }
 
     /**

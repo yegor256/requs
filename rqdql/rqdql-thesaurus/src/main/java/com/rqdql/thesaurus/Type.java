@@ -29,36 +29,12 @@
  */
 package com.rqdql.thesaurus;
 
-import com.rqdql.commons.Origin;
-import com.rqdql.solm.Predicate;
-
 /**
- * Type from Thesaurus.
+ * Type.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class Type {
-
-    /**
-     * The origin of this type.
-     */
-    private final transient Origin origin;
-
-    /**
-     * Public ctor.
-     * @param ogn The origin of this type
-     */
-    public Type(final Origin ogn) {
-        this.origin = ogn;
-    }
-
-    /**
-     * Get {@link Predicate} from this Type.
-     * @return The predicate
-     */
-    public Predicate toPredicate() {
-        return new Predicate(this.origin);
-    }
+public interface Type {
 
 }

@@ -29,10 +29,12 @@
  */
 package com.rqdql.cli;
 
-import com.rqdql.reporter.XmlSummary;
+import com.jcabi.manifests.Manifests;
 
 /**
- * Dispatcher of CLI request. The class is instantiated in
+ * Dispatcher of CLI request.
+ *
+ * <p>The class is instantiated in
  * {@link Main}, in order to dispatch command line interface
  * request and return an output string to be rendered to
  * the requester.
@@ -41,7 +43,7 @@ import com.rqdql.reporter.XmlSummary;
  * @version $Id$
  * @see Main
  */
-public final class Dispatcher {
+final class Dispatcher {
 
     /**
      * Entry point of the entire JAR.
@@ -81,27 +83,13 @@ public final class Dispatcher {
                 + "  -v\tReturns current version of the product\n"
                 + "Report bugs to <bugs@rqdql.com>";
         } else if ("-v".equals(arg)) {
-            out = this.version();
+            out = Manifests.read("RQDQL-Version");
         } else {
             throw new IllegalArgumentException(
                 String.format("Unknown option: %s", arg)
             );
         }
         return out;
-    }
-
-    /**
-     * Get current version of the package.
-     * @return The version of the package
-     * @see #option(String)
-     * @todo #3! This is just a stub for now and has to be
-     *  refactored in order to implement properly. We
-     *  should grab version number from JAR MANIFEST.MF file,
-     *  where it is stored by buildnumber-maven-plugin during
-     *  packaging of the JAR.
-     */
-    private String version() {
-        return "2.0";
     }
 
 }

@@ -33,37 +33,19 @@
         \definecolor{rupBody}{rgb}{1,1,0.8}
         \definecolor{rupBorder}{rgb}{0.6039,0,0.2}
     \usepackage[hyperfootnotes=true,unicode]{hyperref}
-        \hypersetup{
-            unicode=false,
-            pdftoolbar=false,
-            pdfmenubar=false,
-            pdffitwindow=false,
-            pdftitle={RQDQL White Paper},
-            pdfauthor={RQDQL.com},
-            pdfsubject={RQDQL White Paper},
-            pdfnewwindow=true,
-            colorlinks=true,
-            linkcolor=blue,
-            citecolor=blue,
-            filecolor=blue,
-            urlcolor=blue
-        }
+        \hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,filecolor=blue,urlcolor=blue}
     \usepackage[absolute]{textpos}
         \TPGrid{16}{16}
     \usepackage[top=2\TPVertModule, bottom=3\TPVertModule, left=3\TPHorizModule, right=3\TPHorizModule]{geometry}
-    \usepackage{fancyhdr}
-        \pagestyle{fancy}
-        \fancyhf{}
-        \renewcommand{\headrulewidth}{0pt}
-        \lfoot{
+	\usepackage{everypage} % put something on every page
+    	\AddEverypageHook{
             \begin{textblock}{3}[0,1](3,15)
-                \IfFileExists{logo.png}{}{\write18{wget http://img.rqdql.com/logo.png}}
                 \includegraphics[scale=0.4]{./logo.png}
             \end{textblock}
             \begin{textblock}{3}[1,1](13,15)
-                {\fontfamily{phv}\selectfont\raggedleft\scriptsize
-                Page \#\thepage{} of \pageref*{LastPage}\\
-                \today\\}
+                \raggedleft\scriptsize
+                Page \thepage{} of \pageref*{LastPage}\\
+                \today\\
             \end{textblock}
         }
     \usepackage{lastpage}
@@ -85,27 +67,20 @@
     \usepackage[small,bf]{caption}
 
 \begin{document}
+    \IfFileExists{logo.png}{}{\write18{wget http://img.rqdql.com/logo.png}}
     \raggedright
     \setlength{\parindent}{0pt}
     \setlength{\parskip}{1em}
     \newcommand{\type}[1]{\colorbox{lightgray}{\texttt{#1}}}
     \newenvironment{maths}
-    {
-        \vspace*{0.5em}
-        \begin{tabular}{l>{\raggedright\arraybackslash}p{20em}}
-    }
-    {
-        \end{tabular}
-        \vspace*{1em}
-    }
-
-
-\title{RQDQL: White Paper}
+        {\vspace*{0.5em}\begin{tabular}{l>{\raggedright\arraybackslash}p{20em}}}
+        {\end{tabular}\vspace*{1em}}
+    \title{RQDQL: White Paper}
     \author{
         Yegor Bugayenko\\
         568 9th Str South, 202, \\
         Naples, FL 34102\\
-        \texttt{yegor@rqdql.com}
+        \texttt{yegor@tpc2.com}
     }
     \maketitle
     \begin{abstract}
@@ -198,7 +173,7 @@
 \label{sec:to-objects}
 
     Detailed explanation of the RQDQL syntax is given on its
-    website \href{http://www.rqdql.com}{www.rqdql.com}.
+    website \href{http://www.rqdql.com/syntax.html}{www.rqdql.com}.
 
     Fig.\ref{fig:Thesaurus-Classes} explains what Java classes we use
     to store objects retrieved from RQDQL texts. All said Java classes
