@@ -167,7 +167,13 @@
     </dependencyManagement>
     <profiles>
         <profile>
-            <id>site--</id>
+            <!--
+            This PDF generator doesn't work at the moment because
+            there is no ability to specify
+            "--shell-escape --enable-write18"
+            for pdflatex. I already reported this issue to the plugin team:
+            @see https://jira.codehaus.org/browse/MLATEX-16 -->
+            <id>site----disabled</id>
             <build>
                 <plugins>
                     <plugin>
