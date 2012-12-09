@@ -82,9 +82,9 @@
         <developer>
             <id>1</id>
             <name>Yegor Bugayenko</name>
-            <email>yegor@rqdql.com</email>
-            <organization>REMPL.com</organization>
-            <organizationUrl>http://www.rqdql.com</organizationUrl>
+            <email>yegor@tpc2.com</email>
+            <organization>TPC2.com</organization>
+            <organizationUrl>http://www.tpc2.com</organizationUrl>
             <roles>
                 <role>Architect</role>
                 <role>Developer</role>
@@ -167,7 +167,7 @@
     </dependencyManagement>
     <profiles>
         <profile>
-            <id>site</id>
+            <id>site--</id>
             <build>
                 <plugins>
                     <plugin>
@@ -177,7 +177,7 @@
                         -->
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>latex-maven-plugin</artifactId>
-                        <version since="24 Dec 2010">1.0</version>
+                        <version since="9 Dec 2012">1.1</version>
                         <inherited>false</inherited>
                         <configuration>
                             <buildDir>${project.build.directory}/site/pdf</buildDir>
