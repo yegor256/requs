@@ -38,10 +38,13 @@
         <artifactId>rqdql</artifactId>
         <version rqdql="yes">2.0-SNAPSHOT</version>
     </parent>
-    <artifactId>rqdql-plugins</artifactId>
-    <packaging>pom</packaging>
-    <name>rqdql-plugins</name>
-    <modules>
-        <module>rqdql-plugin-trac</module>
-    </modules>
+    <artifactId>rqdql-trac-plugin</artifactId>
+    <packaging>jar</packaging>
+    <name>rqdql-trac-plugin</name>
+    <!--
+    @todo #3 At the moment the plugin is not implemented as it should be. It
+          is not in the Maven build cycle at all. And it doesn't do everything
+          it should do, as explained in
+          http://trac.fazend.com/rqdql/wiki/TracRqdqlPlugin
+    -->
 </project>
