@@ -29,19 +29,24 @@
  */
 package com.rqdql.reporter;
 
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
+ * Test case for {@link XmlSummary}.
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  * @todo #3 This is just a stub. The test should implement proper
- *       report building and validate whether the resulting XML really
- *       contains all the expected information.
+ *  report building and validate whether the resulting XML really
+ *  contains all the expected information.
  */
 public final class XmlSummaryTest {
 
+    /**
+     * XmlSummary can work.
+     * @throws Exception If error
+     */
     @Test
     public void testSimpleReporting() throws Exception {
         final XmlSummary summary = new XmlSummary("some text");
@@ -50,7 +55,7 @@ public final class XmlSummaryTest {
             }
         );
         final String xml = summary.xml();
-        assertThat(xml, containsString("<?xml"));
+        MatcherAssert.assertThat(xml, Matchers.containsString("<?xml"));
     }
 
 }

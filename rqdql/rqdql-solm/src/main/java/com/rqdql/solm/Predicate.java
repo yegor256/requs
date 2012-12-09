@@ -29,10 +29,7 @@
  */
 package com.rqdql.solm;
 
-// commons from com.rqdql:rqdql-commons
 import com.rqdql.commons.Origin;
-
-// outcome from com.rqdql:rqdql-facts
 import com.rqdql.facts.Outcome;
 
 /**
@@ -46,7 +43,7 @@ public final class Predicate implements Formula {
     /**
      * The origin of the predicate.
      */
-    private final Origin origin;
+    private final transient Origin origin;
 
     /**
      * Public ctor.

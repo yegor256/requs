@@ -29,7 +29,6 @@
  */
 package com.rqdql.cli;
 
-// processor
 import com.rqdql.reporter.XmlSummary;
 
 /**
@@ -53,14 +52,17 @@ public final class Dispatcher {
      */
     public String dispatch(final String[] args, final String input) {
         final XmlSummary summary = new XmlSummary(input);
+        String output = null;
         for (String arg : args) {
             if (arg.charAt(0) == '-') {
-                return this.option(arg);
-            // } else {
-                // add new report to the summary
+                output = this.option(arg);
+                break;
             }
         }
-        return summary.xml();
+        if (output == null) {
+            output = summary.xml();
+        }
+        return output;
     }
 
     /**
@@ -72,6 +74,7 @@ public final class Dispatcher {
     private String option(final String arg) {
         String out;
         if ("-?".equals(arg)) {
+            // @checkstyle StringLiteralsConcatenation (5 lines)
             out = "usage: java -jar rqdql-bin.jar [-?v] [reports...]\n"
                 + "Options:\n"
                 + "  -?\tShows this help message\n"
@@ -80,7 +83,9 @@ public final class Dispatcher {
         } else if ("-v".equals(arg)) {
             out = this.version();
         } else {
-            throw new IllegalArgumentException("Unknown option: " + arg);
+            throw new IllegalArgumentException(
+                String.format("Unknown option: %s", arg)
+            );
         }
         return out;
     }
@@ -90,10 +95,10 @@ public final class Dispatcher {
      * @return The version of the package
      * @see #option(String)
      * @todo #3! This is just a stub for now and has to be
-     *           refactored in order to implement properly. We
-     *           should grab version number from JAR MANIFEST.MF file,
-     *           where it is stored by buildnumber-maven-plugin during
-     *           packaging of the JAR.
+     *  refactored in order to implement properly. We
+     *  should grab version number from JAR MANIFEST.MF file,
+     *  where it is stored by buildnumber-maven-plugin during
+     *  packaging of the JAR.
      */
     private String version() {
         return "2.0";

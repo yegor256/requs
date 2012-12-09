@@ -40,12 +40,12 @@ public final class Fragment {
     /**
      * Start coordinates in the text.
      */
-    private final Coordinates start;
+    private final transient Coordinates start;
 
     /**
      * Stop coordinates in the text.
      */
-    private final Coordinates stop;
+    private final transient Coordinates stop;
 
     /**
      * Public ctor.

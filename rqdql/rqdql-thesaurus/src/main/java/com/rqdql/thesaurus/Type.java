@@ -29,10 +29,7 @@
  */
 package com.rqdql.thesaurus;
 
-// commons from com.rqdql:rqdql-commons
 import com.rqdql.commons.Origin;
-
-// SOLM from com.rqdql:rqdql-solm
 import com.rqdql.solm.Predicate;
 
 /**
@@ -46,7 +43,7 @@ public final class Type {
     /**
      * The origin of this type.
      */
-    private final Origin origin;
+    private final transient Origin origin;
 
     /**
      * Public ctor.

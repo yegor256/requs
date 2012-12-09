@@ -29,17 +29,10 @@
  */
 package com.rqdql.reporter;
 
-// scanner from com.rqdql:rqdql-scanner
+import com.jcabi.log.Logger;
 import com.rqdql.scanner.InputText;
-
-// SOLM from com.rqdql:rqdql-solm
 import com.rqdql.solm.Predicate;
-
-// thesaurus from com.rqdql:rqdql-thesaurus
 import com.rqdql.thesaurus.Type;
-
-// logging facility from com.ymock:ymock-util
-import com.ymock.util.Logger;
 
 /**
  * Convert RQDQL grammar into XML.
@@ -52,7 +45,7 @@ public final class XmlSummary {
     /**
      * The document to work with.
      */
-    private final String document;
+    private final transient String document;
 
     /**
      * Public ctor.
@@ -84,10 +77,10 @@ public final class XmlSummary {
             "reporting finished with %s",
             predicate
         );
-
-        // stub for now
-        return "<?xml version='1.0'?><rqdql>"
-            + this.document.length() + "</rqdql>";
+        return String.format(
+            "<?xml version='1.0'?><rqdql>%d</rqdql>",
+            this.document.length()
+        );
     }
 
 }

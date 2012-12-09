@@ -31,28 +31,33 @@ package com.rqdql.scanner;
 
 import com.rqdql.commons.Origin;
 import com.rqdql.thesaurus.Type;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
+ * Test case for {@link InputText}.
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  * @todo #3 The test should be implemented with much more details. We
- *          should pass more complex constructs to the InputText
- *          and validate what is returned back. Maybe some changes will
- *          be required to the documentation. Besides that we should
- *          explain what we're doing in Maven site, with UML diagrams.
+ *  should pass more complex constructs to the InputText
+ *  and validate what is returned back. Maybe some changes will
+ *  be required to the documentation. Besides that we should
+ *  explain what we're doing in Maven site, with UML diagrams.
  */
 public final class InputTextTest {
 
+    /**
+     * InputText can scan simple text.
+     * @throws Exception If some error inside
+     */
     @Test
     public void testValidatesSimpleRQDQLText() throws Exception {
-        final Origin origin = mock(Origin.class);
+        final Origin origin = Mockito.mock(Origin.class);
         final InputText text = new InputText(origin, "User is a \"man\".");
         final Type type = text.toType();
-        assertThat(type, is(not(nullValue())));
+        MatcherAssert.assertThat(type, Matchers.notNullValue());
     }
 
 }

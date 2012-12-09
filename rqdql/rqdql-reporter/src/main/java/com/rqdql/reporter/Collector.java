@@ -29,7 +29,6 @@
  */
 package com.rqdql.reporter;
 
-// commons from com.rqdql:rqdql-commons
 import com.rqdql.commons.Origin;
 import com.rqdql.commons.Originable;
 
@@ -54,7 +53,6 @@ public final class Collector implements Origin {
      */
     @Override
     public Origin sub(final Originable originable) {
-        // stub
         return this;
     }
 

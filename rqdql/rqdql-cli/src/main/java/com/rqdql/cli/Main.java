@@ -29,7 +29,6 @@
  */
 package com.rqdql.cli;
 
-// for manipulations with STDIN
 import org.apache.commons.io.IOUtils;
 
 /**

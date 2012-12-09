@@ -29,10 +29,7 @@
  */
 package com.rqdql.planner;
 
-// commons from com.rqdql:rqdql-commons
 import com.rqdql.commons.Origin;
-
-// commons from com.rqdql:rqdql-uml
 import com.rqdql.uml.Diagram;
 
 /**
@@ -46,7 +43,7 @@ public final class TestPlan {
     /**
      * The origin of the outcome.
      */
-    private final Origin origin;
+    private final transient Origin origin;
 
     /**
      * Public ctor.
@@ -57,11 +54,10 @@ public final class TestPlan {
     }
 
     /**
-     * Convert this test plan to UML.
+     * Convert this test plan to UML (this is just a stub now).
      * @return The UML
      */
     public Diagram toDiagram() {
-        // just a stub
         this.origin.error("test");
         return new Diagram();
     }

@@ -29,10 +29,7 @@
  */
 package com.rqdql.scanner;
 
-// commons from com.rqdql:rqdql-commons
 import com.rqdql.commons.Origin;
-
-// thesaurus from com.rqdql:rqdql-thesaurus
 import com.rqdql.thesaurus.Type;
 
 /**
@@ -46,12 +43,12 @@ public final class InputText {
     /**
      * The text to be processed.
      */
-    private final String text;
+    private final transient String text;
 
     /**
      * The origin of this text.
      */
-    private final Origin origin;
+    private final transient Origin origin;
 
     /**
      * Public ctor.
@@ -64,12 +61,16 @@ public final class InputText {
     }
 
     /**
-     * Get {@link Type} from this input text.
+     * Get {@link Type} from this input text (it's a stub now).
      * @return The type
      */
     public Type toType() {
-        // it's a stub
-        this.origin.error("text length: " + this.text.length());
+        this.origin.error(
+            String.format(
+                "text length: %d",
+                this.text.length()
+            )
+        );
         return new Type(this.origin.sub(new Fragments()));
     }
 

@@ -27,38 +27,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.facts;
-
-import com.rqdql.commons.Origin;
-import com.rqdql.planner.TestPlan;
 
 /**
- * Outcome of a predicate.
+ * XML Reporter, tests.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class Outcome {
-
-    /**
-     * The origin of the outcome.
-     */
-    private final transient Origin origin;
-
-    /**
-     * Public ctor.
-     * @param orgn The origin of this outcome
-     */
-    public Outcome(final Origin orgn) {
-        this.origin = orgn;
-    }
-
-    /**
-     * Convert this outcome to a Test Plan.
-     * @return The test plan
-     */
-    public TestPlan toTestPlan() {
-        return new TestPlan(this.origin.sub(null));
-    }
-
-}
+package com.rqdql.reporter;

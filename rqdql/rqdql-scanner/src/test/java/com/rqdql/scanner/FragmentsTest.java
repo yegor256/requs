@@ -29,16 +29,21 @@
  */
 package com.rqdql.scanner;
 
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
+ * Test case for {@link Fragments}.
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
 public final class FragmentsTest {
 
+    /**
+     * Fragments can work.
+     * @throws Exception If some error inside
+     */
     @Test
     public void testBuildsFragments() throws Exception {
         final Fragments fragments = new Fragments();
@@ -48,9 +53,9 @@ public final class FragmentsTest {
                 new Coordinates(1, 1)
             )
         );
-        assertThat(
+        MatcherAssert.assertThat(
             fragments.originate(),
-            equalTo("[1:1-1:1]")
+            Matchers.equalTo("[1:1-1:1]")
         );
     }
 

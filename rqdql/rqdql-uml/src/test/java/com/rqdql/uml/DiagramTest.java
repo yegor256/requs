@@ -29,22 +29,30 @@
  */
 package com.rqdql.uml;
 
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
+ * Test case for {@link Diagram}.
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  * @todo #3 This is just a stub. The test should perform real generation
- *       of a UML diagram, and validate it's content.
+ *  of a UML diagram, and validate it's content.
  */
 public final class DiagramTest {
 
+    /**
+     * Diagram can validate.
+     * @throws Exception If something goes wrong
+     */
     @Test
     public void testValidatesDiagram() throws Exception {
         final Diagram diagram = new Diagram();
-        assertThat(diagram.toString(), is(not(nullValue())));
+        MatcherAssert.assertThat(
+            diagram.toString(),
+            Matchers.notNullValue()
+        );
     }
 
 }

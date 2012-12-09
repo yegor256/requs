@@ -27,29 +27,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.thesaurus;
-
-import com.rqdql.commons.Origin;
-import com.rqdql.solm.Predicate;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
 
 /**
+ * Command Line Interface (CLI) classes, tests.
+ *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
- * @todo #3 This is just a stub. The test should validate the transformation
- *       of a Type into Predicate. Different types should be tested.
  */
-public final class TypeTest {
-
-    @Test
-    public void testValidatesSimpleType() throws Exception {
-        final Origin origin = mock(Origin.class);
-        final Type type = new Type(origin);
-        final Predicate predicate = type.toPredicate();
-        assertThat(predicate, is(not(nullValue())));
-    }
-
-}
+package com.rqdql.cli;

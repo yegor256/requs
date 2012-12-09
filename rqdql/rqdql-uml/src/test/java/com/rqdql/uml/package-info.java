@@ -27,28 +27,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.solm;
-
-import com.rqdql.commons.Origin;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
 
 /**
+ * UML drawer, tests.
+ *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
- * @todo #3 This is just a stub. The test should perform real transformation
- *       of a predicate into facts.
  */
-public final class PredicateTest {
-
-    @Test
-    public void testValidatesSimpleType() throws Exception {
-        final Origin origin = mock(Origin.class);
-        final Predicate predicate = new Predicate(origin);
-        assertThat(predicate, is(not(nullValue())));
-        assertThat(predicate.toOutcome(), is(not(nullValue())));
-    }
-
-}
+package com.rqdql.uml;

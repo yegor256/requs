@@ -30,25 +30,30 @@
 package com.rqdql.facts;
 
 import com.rqdql.commons.Origin;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
+ * Test case for {@link Outcome}.
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  * @todo #3 This is just a stub. The test should perform real transformation
- *       of an outcome to test cases.
+ *  of an outcome to test cases.
  */
 public final class OutcomeTest {
 
+    /**
+     * Outcome can work.
+     * @throws Exception If something goes wrong
+     */
     @Test
     public void testValidatesSimpleOutcome() throws Exception {
-        final Origin origin = mock(Origin.class);
+        final Origin origin = Mockito.mock(Origin.class);
         final Outcome outcome = new Outcome(origin);
-        assertThat(outcome, is(not(nullValue())));
-        assertThat(outcome.toTestPlan(), is(not(nullValue())));
+        MatcherAssert.assertThat(outcome, Matchers.notNullValue());
+        MatcherAssert.assertThat(outcome.toTestPlan(), Matchers.notNullValue());
     }
 
 }

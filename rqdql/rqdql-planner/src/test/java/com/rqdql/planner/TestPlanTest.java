@@ -30,25 +30,30 @@
 package com.rqdql.planner;
 
 import com.rqdql.commons.Origin;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
+ * Test case for {@link TestPlan}.
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  * @todo #3 This is just a stub. The test should perform real transformation
- *       of a test plan to UML diagram.
+ *  of a test plan to UML diagram.
  */
 public final class TestPlanTest {
 
+    /**
+     * TestPlan can work.
+     * @throws Exception If something goes wrong
+     */
     @Test
     public void testValidatesSimpleTestPlan() throws Exception {
-        final Origin origin = mock(Origin.class);
+        final Origin origin = Mockito.mock(Origin.class);
         final TestPlan plan = new TestPlan(origin);
-        assertThat(plan, is(not(nullValue())));
-        assertThat(plan.toDiagram(), is(not(nullValue())));
+        MatcherAssert.assertThat(plan, Matchers.notNullValue());
+        MatcherAssert.assertThat(plan.toDiagram(), Matchers.notNullValue());
     }
 
 }

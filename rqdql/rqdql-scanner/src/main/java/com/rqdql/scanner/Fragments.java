@@ -29,14 +29,9 @@
  */
 package com.rqdql.scanner;
 
-// commons from com.rqdql:rqdql-commons
 import com.rqdql.commons.Originable;
-
-// JDK
 import java.util.ArrayList;
 import java.util.List;
-
-// string manipulations from commmons-lang:commons-lang
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -50,7 +45,7 @@ public final class Fragments implements Originable {
     /**
      * List of fragments.
      */
-    private final List<Fragment> fragments =
+    private final transient List<Fragment> kids =
         new ArrayList<Fragment>();
 
     /**
@@ -58,7 +53,7 @@ public final class Fragments implements Originable {
      * @param fragment The fragment to add
      */
     public void add(final Fragment fragment) {
-        this.fragments.add(fragment);
+        this.kids.add(fragment);
     }
 
     /**
@@ -66,7 +61,7 @@ public final class Fragments implements Originable {
      */
     @Override
     public String originate() {
-        return "[" + StringUtils.join(this.fragments, ",") + "]";
+        return String.format("[%s]", StringUtils.join(this.kids, ","));
     }
 
 }

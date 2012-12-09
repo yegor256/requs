@@ -40,12 +40,12 @@ public final class Coordinates {
     /**
      * Line number, starting from 1.
      */
-    private final Integer line;
+    private final transient Integer line;
 
     /**
      * Position in the line, starting from 1.
      */
-    private final Integer position;
+    private final transient Integer position;
 
     /**
      * Public ctor.
