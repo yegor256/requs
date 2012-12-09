@@ -148,7 +148,7 @@
                 -->
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr-runtime</artifactId>
-                <version>3.3</version>
+                <version since="13 Oct 2010">3.3</version>
             </dependency>
             <dependency>
                 <!--
@@ -160,8 +160,7 @@
                 -->
                 <groupId>xom</groupId>
                 <artifactId>xom</artifactId>
-                <version>1.2.5</version>
-                <!-- 13 Oct 2010 -->
+                <version since="13 Oct 2010">1.2.5</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
@@ -178,8 +177,7 @@
                         -->
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>latex-maven-plugin</artifactId>
-                        <version>1.0</version>
-                        <!-- 24 Dec 2010 -->
+                        <version since="24 Dec 2010">1.0</version>
                         <inherited>false</inherited>
                         <configuration>
                             <buildDir>${project.build.directory}/site/pdf</buildDir>
