@@ -58,20 +58,23 @@ rqdql.parse = function(text, callback)
     if (typeof jQuery == 'undefined') {
         throw new Error('jQuery is NOT loaded');
     }
-
+    console.log("hi");
     $.ajax(
         {
-            url: "http://trac.rest.fazend.com/rqdql",
+            url: "/instant",
             data: { 'text': text },
-            dataType: "jsonp",
+            type: 'POST',
+            dataType: 'xml',
             success: function(data)
             {
                 var xml = (new DOMParser()).parseFromString(data, "text/xml");
                 var scope = new rqdql.Scope(xml);
+                console.log("parsing results received");
                 callback(scope);
             },
             error: function(XMLHttpRequest, textStatus, errorThrown)
             {
+                console.log("failed to parse RQDQL text");
                 var xml = (new DOMParser()).parseFromString(
                     '<?xml version="1.0"?><rqdql/>',
                     "text/xml"

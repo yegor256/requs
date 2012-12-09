@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
  * Copyright (c) 2009-2011, RQDQL.com
  * All rights reserved.
@@ -53,7 +53,8 @@
         <module>rqdql-facts</module>
         <module>rqdql-cli</module>
         <module>rqdql-xmi</module>
-        <module>rqdql-plugins</module>
+        <module>rqdql-trac-plugin</module>
+        <module>rqdql-demo</module>
     </modules>
     <description><![CDATA[
         Requirements Definition and Query Language (RQDQL).
