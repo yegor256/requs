@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
  * Copyright (c) 2009-2011, RQDQL.com
  * All rights reserved.
@@ -35,65 +35,53 @@
  *       the entire system and create a proof-of-concept with key classes
  *       and relationships between them.
  -->
-<project
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.jcabi</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.2</version>
+    </parent>
     <groupId>com.rqdql</groupId>
     <artifactId>rqdql</artifactId>
-    <version>2.0-SNAPSHOT</version>
+    <version rqdql="yes">2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>rqdql</name>
-
     <modules>
-        <module>rqdql-tk</module>
-        <module>rqdql-commons</module>
-        <module>rqdql-scanner</module>
-        <module>rqdql-solm</module>
         <module>rqdql-thesaurus</module>
+        <module>rqdql-sol</module>
         <module>rqdql-facts</module>
         <module>rqdql-cli</module>
-        <module>rqdql-plugins</module>
-        <module>rqdql-reporter</module>
-        <module>rqdql-planner</module>
-        <module>rqdql-uml</module>
+        <module>rqdql-xmi</module>
+        <module>rqdql-trac-plugin</module>
+        <module>rqdql-demo</module>
     </modules>
-
-    <description>
-        <![CDATA[
+    <description><![CDATA[
         Requirements Definition and Query Language (RQDQL).
-        ]]>
-    </description>
+        ]]></description>
     <url>http://www.rqdql.com</url>
     <inceptionYear>2009</inceptionYear>
-
     <organization>
         <name>RQDQL.com</name>
         <url>http://www.rqdql.com</url>
     </organization>
-
     <licenses>
         <license>
             <name>BSD</name>
             <url>http://www.rqdql.com/LICENSE.txt</url>
             <distribution>repo</distribution>
-            <comments>
-                <![CDATA[
+            <comments><![CDATA[
                 This is free open source project, feel free to redistribute it
-                ]]>
-            </comments>
+                ]]></comments>
         </license>
     </licenses>
-
     <developers>
         <developer>
             <id>1</id>
             <name>Yegor Bugayenko</name>
-            <email>yegor@rqdql.com</email>
-            <organization>REMPL.com</organization>
-            <organizationUrl>http://www.rqdql.com</organizationUrl>
+            <email>yegor@tpc2.com</email>
+            <organization>TPC2.com</organization>
+            <organizationUrl>http://www.tpc2.com</organizationUrl>
             <roles>
                 <role>Architect</role>
                 <role>Developer</role>
@@ -101,7 +89,6 @@
             <timezone>+1</timezone>
         </developer>
     </developers>
-
     <mailingLists>
         <mailingList>
             <name>RQDQL Discussions</name>
@@ -111,118 +98,46 @@
             <archive>http://groups.google.com/group/rqdql</archive>
         </mailingList>
     </mailingLists>
-
     <issueManagement>
         <system>Trac 0.12</system>
         <url>http://trac.fazend.com/rqdql</url>
     </issueManagement>
-
     <ciManagement>
-        <system>hudson</system>
-        <url>http://hudson.fazend.com:8081/hudson/job/rqdql</url>
+        <system>jenkins</system>
+        <url>http://ci.rqdql.com:8080/job/rqdql</url>
     </ciManagement>
-
     <scm>
         <connection>scm:svn:http://svn.fazend.com/rqdql/trunk/rqdql</connection>
         <developerConnection>scm:svn:http://svn.fazend.com/rqdql/trunk/rqdql</developerConnection>
         <url>http://svn.fazend.com/rqdql/trunk/rqdql</url>
     </scm>
-
     <distributionManagement>
-        <downloadUrl>https://oss.sonatype.org/content/groups/public</downloadUrl>
-        <repository>
-            <id>oss.sonatype.org</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-        </repository>
-        <snapshotRepository>
-            <id>oss.sonatype.org</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
         <site>
             <id>www.rqdql.com</id>
             <name>RQDQL.com Project Site</name>
             <url>s3://www.rqdql.com/</url>
         </site>
     </distributionManagement>
-
-    <prerequisites>
-        <maven>3.0</maven>
-    </prerequisites>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jdk.version>1.6</jdk.version>
-    </properties>
-
-    <repositories>
-        <!-- intentionally empty -->
-    </repositories>
-
-    <pluginRepositories>
-        <!-- intentionally empty -->
-    </pluginRepositories>
-
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit-dep</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+        </dependency>
+    </dependencies>
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <!--
-                ANTLR3 Parser/Lexer
-                @link http://www.antlr.org/
-                -->
-                <groupId>org.antlr</groupId>
-                <artifactId>antlr-runtime</artifactId>
-                <version>3.3</version>
-            </dependency>
-            <dependency>
-                <!--
-                This library simplifies string operations. This is
-                org.apache.commons.lang.*.
-                -->
-                <groupId>commons-lang</groupId>
-                <artifactId>commons-lang</artifactId>
-                <version>2.5</version> <!-- 15 Oct 2010 -->
-            </dependency>
-            <dependency>
-                <!--
-                This library simplifies file-management operations.
-                -->
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>1.3.2</version> <!-- 9 Oct 2010 -->
-            </dependency>
-            <dependency>
-                <!--
-                We are using JUnit framework for unit test organization
-                and management. This framework is the most stable and mature
-                in the market. Other options considered: TestNG.
-                @link http://www.junit.org/
-                -->
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>4.7</version> <!-- 10 Sep 2010 -->
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <!--
-                Assertions and matchers for unit tests.
-                @link http://code.google.com/p/hamcrest/wiki/Tutorial
-                -->
-                <groupId>org.hamcrest</groupId>
-                <artifactId>hamcrest-all</artifactId>
-                <version>1.1</version> <!-- 6 Apr 2011 -->
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <!--
-                Mockito is used as a mocking library during testing.
-                Other options: jMock.
-                @link http://www.mockito.org/
-                -->
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-all</artifactId>
-                <version>1.8.5</version> <!-- 9 Oct 2010 -->
-                <scope>test</scope>
-            </dependency>
             <dependency>
                 <!--
                 XOM is used as an alternative to classical Java XML
@@ -233,437 +148,37 @@
                 -->
                 <groupId>xom</groupId>
                 <artifactId>xom</artifactId>
-                <version>1.2.5</version> <!-- 13 Oct 2010 -->
+                <version since="13 Oct 2010">1.2.5</version>
                 <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.rqdql</groupId>
-                <artifactId>rqdql-tk</artifactId>
-                <version>2.0-SNAPSHOT</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <!--
-                Logging facility and other utils.
-                @link http://www.ymock.com
-                -->
-                <groupId>com.ymock</groupId>
-                <artifactId>ymock-util</artifactId>
-                <version>1.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
-
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <RQDQL-Version>${project.version}</RQDQL-Version>
+                            <RQDQL-Build>${buildNumber}</RQDQL-Build>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <profiles>
         <profile>
             <!--
-            This profile activates all continuous integration specific
-            plugins, not necessary in development. To activate
-            this profile run: "mvn -Dci"
-            -->
-            <id>for-production</id>
-            <activation>
-                <property><name>ci</name></property>
-            </activation>
+            This PDF generator doesn't work at the moment because
+            there is no ability to specify
+            "-shell-escape -enable-write18"
+            for pdflatex. I already reported this issue to the plugin team:
+            @see https://jira.codehaus.org/browse/MLATEX-16 -->
+            <id>site-disabled</id>
             <build>
                 <plugins>
-                    <plugin>
-                        <!--
-                        This is an extra validation mechanism, that enforces
-                        explicit version numbering across the POM.XML file.
-                        It's important to work this way, because sudden
-                        version changing may lead to broken builds.
-                        -->
-                        <artifactId>maven-enforcer-plugin</artifactId>
-                        <version>1.0-beta-1</version>
-                        <executions>
-                            <execution>
-                                <id>enforce-it</id>
-                                <goals>
-                                    <goal>enforce</goal>
-                                </goals>
-                                <configuration>
-                                    <rules>
-                                        <requireMavenVersion>
-                                            <version>3.0</version>
-                                        </requireMavenVersion>
-                                        <requireJavaVersion>
-                                            <version>${jdk.version}</version>
-                                        </requireJavaVersion>
-                                        <requireOS>
-                                            <family>unix</family>
-                                        </requireOS>
-                                    </rules>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <!--
-                        This plugin will collect current build number
-                        from Subversion and save it into MANIFEST.MF. Later,
-                        this number is used by different java classes, mostly
-                        in order to expose it in web.
-                        -->
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>buildnumber-maven-plugin</artifactId>
-                        <version>1.0-beta-4</version>
-                        <configuration>
-                            <doCheck>false</doCheck>
-                            <doUpdate>false</doUpdate>
-                            <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>create</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <!--
-            This profile activates all strict static code analysis validation
-            procedures, mandatory for continuous integration. To activate
-            this profile run: "mvn -Dci"
-            -->
-            <id>static-analysis</id>
-            <activation>
-                <property><name>ci</name></property>
-            </activation>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <!--
-                            API documentation builder. It will produce documentation
-                            which is then to be used in site:site. It will be
-                            located at target/site/apidocs.
-                            -->
-                            <artifactId>maven-javadoc-plugin</artifactId>
-                            <version>2.8</version>  <!-- 5 June 2011 -->
-                            <configuration>
-                                <failOnError>true</failOnError>
-                                <quiet>true</quiet>
-                                <tags>
-                                    <!--
-                                    Here we instruct plugin to use custom tag
-                                    @link http://maven.apache.org/plugins/maven-javadoc-plugin/examples/tag-configuration.html
-                                    -->
-                                    <tag>
-                                        <name>todo</name>
-                                        <placement>a</placement>
-                                        <head>To do:</head>
-                                    </tag>
-                                </tags>
-                            </configuration>
-                            <dependencies>
-                                <dependency>
-                                    <groupId>com.rqdql</groupId>
-                                    <artifactId>rqdql-tk</artifactId>
-                                    <version>2.0-SNAPSHOT</version>
-                                </dependency>
-                            </dependencies>
-                        </plugin>
-                        <plugin>
-                            <!--
-                            Validate the quality of documentation
-                            @link http://maven.apache.org/plugins/maven-docck-plugin
-                            -->
-                            <artifactId>maven-docck-plugin</artifactId>
-                            <version>1.0</version> <!-- 30 Dec 2010 -->
-                        </plugin>
-                        <plugin>
-                            <!--
-                            Coding styling validator. Configuration is inside resources/checkstyle
-                            directory. When you edit that file don't forget to install
-                            the build-tool project first, and then run this project.
-                            -->
-                            <artifactId>maven-checkstyle-plugin</artifactId>
-                            <version>2.6</version> <!-- 14 October 2010 -->
-                            <configuration>
-                                <failOnViolation>true</failOnViolation>
-                                <failsOnError>true</failsOnError>
-                                <consoleOutput>true</consoleOutput>
-                                <logViolationsToConsole>true</logViolationsToConsole>
-                                <violationSeverity>info</violationSeverity>
-                                <configLocation>checkstyle/checks.xml</configLocation>
-                                <headerLocation>checkstyle/LICENSE.txt</headerLocation>
-                            </configuration>
-                            <dependencies>
-                                <dependency>
-                                    <groupId>com.rqdql</groupId>
-                                    <artifactId>rqdql-tk</artifactId>
-                                    <version>2.0-SNAPSHOT</version>
-                                </dependency>
-                            </dependencies>
-                        </plugin>
-                        <plugin>
-                            <!--
-                            Project Mess Detector, finds coding errors and reports them. In
-                            CI environment it should stop the build if some errors are
-                            found.
-                            -->
-                            <artifactId>maven-pmd-plugin</artifactId>
-                            <version>2.5</version> <!-- 2 Nov 2010 -->
-                            <configuration>
-                                <failOnViolation>true</failOnViolation>
-                                <targetJdk>${jdk.version}</targetJdk>
-                                <aggregate>false</aggregate>
-                                <verbose>true</verbose>
-                                <linkXRef>false</linkXRef>
-                                <rulesets>
-                                    <ruleset>pmd/ruleset.xml</ruleset>
-                                </rulesets>
-                            </configuration>
-                            <dependencies>
-                                <dependency>
-                                    <groupId>com.rqdql</groupId>
-                                    <artifactId>rqdql-tk</artifactId>
-                                    <version>2.0-SNAPSHOT</version>
-                                </dependency>
-                            </dependencies>
-                        </plugin>
-                        <plugin>
-                            <!--
-                            This is a code coverage validator, executed AFTER
-                            all unit tests are passed. Cobertura starts all tests
-                            again in order to calculate code coverage, and validates
-                            that this coverage is in the allowed interval.
-                            -->
-                            <groupId>org.codehaus.mojo</groupId>
-                            <artifactId>cobertura-maven-plugin</artifactId>
-                            <version>2.4</version> <!-- 2 Nov 2010 -->
-                            <configuration>
-                                <!--
-                                This option doesn't work with cobertura 2.4, but is
-                                going to be implemented in 2.5
-                                @link http://jira.codehaus.org/browse/MCOBERTURA-75
-                                -->
-                                <quiet>false</quiet>
-                                <instrumentation>
-                                    <excludes>
-                                        <!-- auto-generated classes for i18n -->
-                                        <exclude>com/rqdql/gettext/*</exclude>
-                                        <!-- auto-generated classes for ANTLR3 -->
-                                        <exclude>com/rqdql/impl/scanner/antlr/T*</exclude>
-                                        <exclude>com/rqdql/impl/scanner/antlr/AbstractT*</exclude>
-                                        <!-- CLI class, which is never instantiated -->
-                                        <exclude>com/rqdql/cli/Main.class</exclude>
-                                    </excludes>
-                                </instrumentation>
-                                <check>
-                                    <haltOnFailure>true</haltOnFailure>
-                                    <lineRate>60</lineRate>
-                                    <branchRate>60</branchRate>
-                                    <packageLineRate>70</packageLineRate>
-                                    <packageBranchRate>70</packageBranchRate>
-                                    <totalLineRate>80</totalLineRate>
-                                    <totalBranchRate>80</totalBranchRate>
-                                </check>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-                <plugins>
-                    <plugin>
-                        <!-- configuration is in pluginManagement section above -->
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>javadoc</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <!-- configuration is in pluginManagement section above -->
-                        <artifactId>maven-docck-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>check-documentation</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <!-- configuration is in pluginManagement section above -->
-                        <artifactId>maven-dependency-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>analyze-only</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>analyze-only</goal>
-                                </goals>
-                                <configuration>
-                                    <ignoreNonCompile>true</ignoreNonCompile>
-                                    <failOnWarning>true</failOnWarning>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>analyze-dep-mgt</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>analyze-dep-mgt</goal>
-                                </goals>
-                                <configuration>
-                                    <failBuild>true</failBuild>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <!-- configuration is in pluginManagement section above -->
-                        <artifactId>maven-checkstyle-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>check-sources</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>check-test-sources</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                                <configuration>
-                                    <!-- the files are inside :ymock-tk module -->
-                                    <configLocation>checkstyle/checks-test.xml</configLocation>
-                                    <sourceDirectory>${project.build.testSourceDirectory}</sourceDirectory>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <!-- configuration is in pluginManagement section above -->
-                        <artifactId>maven-pmd-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>check</goal>
-                                    <goal>cpd-check</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <!-- configuration is in pluginManagement section above -->
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>cobertura-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>clean</goal>
-                                    <goal>check</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <!--
-            This profile activates all site-related plugins. To activate
-            this profile run: "mvn -Dsite"
-            -->
-            <id>live-site</id>
-            <activation>
-                <property><name>site</name></property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-site-plugin</artifactId>
-                        <configuration>
-                            <reportPlugins>
-                                <plugin>
-                                    <artifactId>maven-project-info-reports-plugin</artifactId>
-                                    <!-- version is specified in plugins -->
-                                    <reports>
-                                        <report>cim</report>
-                                        <report>dependencies</report>
-                                        <report>issue-tracking</report>
-                                        <report>license</report>
-                                        <report>mailing-list</report>
-                                        <report>plugins</report>
-                                        <report>project-team</report>
-                                        <report>scm</report>
-                                        <report>summary</report>
-                                    </reports>
-                                </plugin>
-                                <plugin>
-                                    <groupId>org.codehaus.mojo</groupId>
-                                    <artifactId>taglist-maven-plugin</artifactId>
-                                    <version>2.4</version> <!-- 15 Nov 2010 -->
-                                    <configuration>
-                                        <tagListOptions>
-                                            <tagClasses>
-                                                <tagClass>
-                                                    <displayName>ToDo</displayName>
-                                                    <tags>
-                                                        <tag>
-                                                            <matchString>@todo</matchString>
-                                                            <matchType>exact</matchType>
-                                                        </tag>
-                                                    </tags>
-                                                </tagClass>
-                                            </tagClasses>
-                                        </tagListOptions>
-                                    </configuration>
-                                </plugin>
-                                <plugin>
-                                    <artifactId>maven-javadoc-plugin</artifactId>
-                                    <!-- version is specified in build/plugins -->
-                                    <configuration>
-                                        <tags>
-                                            <tag>
-                                                <name>todo</name>
-                                                <placement>a</placement>
-                                                <head>To do:</head>
-                                            </tag>
-                                        </tags>
-                                        <reportSets>
-                                            <reportSet>
-                                                <id>html</id>
-                                                <reports>
-                                                    <report>javadoc</report>
-                                                </reports>
-                                            </reportSet>
-                                        </reportSets>
-                                    </configuration>
-                                </plugin>
-                                <plugin>
-                                    <groupId>org.codehaus.mojo</groupId>
-                                    <artifactId>cobertura-maven-plugin</artifactId>
-                                    <!-- version is specified in build/plugins -->
-                                </plugin>
-                            </reportPlugins>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>attach-descriptor</id>
-                                <goals>
-                                    <goal>attach-descriptor</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
                     <plugin>
                         <!--
                         Process LaTeX documentation in order to produce PDF
@@ -671,7 +186,7 @@
                         -->
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>latex-maven-plugin</artifactId>
-                        <version>1.0</version> <!-- 24 Dec 2010 -->
+                        <version since="9 Dec 2012">1.1</version>
                         <inherited>false</inherited>
                         <configuration>
                             <buildDir>${project.build.directory}/site/pdf</buildDir>
@@ -686,447 +201,8 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <plugin>
-                        <!--
-                        @todo #2 These groovy scripts shall be placed into
-                                 rempl-tk src/main/resources/groovy directory.
-                        -->
-                        <!-- version and configuration is in pluginManagement section -->
-                        <groupId>org.codehaus.gmaven</groupId>
-                        <artifactId>gmaven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <!--
-                                For every sub-module we create placeholders, which will
-                                be FTP-deployed to the web server, BEFORE the sub-module. This
-                                is required in order to avoid problem with "non existing directory"
-                                when we're starting to deploy a sub-module into a directory which
-                                is currently absent.
-                                -->
-                                <id>site-placeholders</id>
-                                <phase>post-site</phase>
-                                <goals>
-                                    <goal>execute</goal>
-                                </goals>
-                                <configuration>
-                                    <classpath>
-                                        <element>
-                                            <!-- this is where placeholders directory is located -->
-                                            <groupId>com.rqdql</groupId>
-                                            <artifactId>rqdql-tk</artifactId>
-                                            <version>2.0-SNAPSHOT</version>
-                                        </element>
-                                        <element>
-                                            <!-- for file manipulations -->
-                                            <groupId>commons-io</groupId>
-                                            <artifactId>commons-io</artifactId>
-                                            <version>2.0.1</version> <!-- 7 Mar 2011 -->
-                                        </element>
-                                        <element>
-                                            <!-- for manipulations with strings -->
-                                            <groupId>commons-lang</groupId>
-                                            <artifactId>commons-lang</artifactId>
-                                            <version>2.5</version> <!-- 15 Oct 2010 -->
-                                        </element>
-                                    </classpath>
-                                    <properties>
-                                        <placeholders>
-                                            site-placeholders/.htaccess,
-                                            site-placeholders/placeholder.html
-                                        </placeholders>
-                                        <target>${project.build.directory}/site</target>
-                                    </properties>
-                                    <source>
-                                        <![CDATA[
-                                        import org.apache.commons.lang.StringUtils;
-                                        import org.apache.commons.io.FileUtils;
-                                        def target = new File(project.properties['target'])
-                                        if (!target.exists()) {
-                                            fail("Can't find target: " + project.properties['target'])
-                                        }
-                                        for (module in project.modules) {
-                                            def dir = new File(target.getPath(), module)
-                                            dir.mkdir()
-                                            for (ph in StringUtils.split(project.properties['placeholders'], ",")) {
-                                                ph = StringUtils.trim(ph)
-                                                def phfile = new File(ph);
-                                                def url = getClass().getClassLoader().getResource(ph);
-                                                if (url == null) {
-                                                    fail("Can't find placeholder " + ph)
-                                                }
-                                                log.info("Placeholder " + ph + " found at " + url);
-                                                def dest = new File(
-                                                    dir.toString(),
-                                                    StringUtils.substringAfterLast(ph, "/")
-                                                )
-                                                if (dest.exists()) {
-                                                    fail("Placeholder already exists: " + dest)
-                                                }
-                                                FileUtils.copyURLToFile(
-                                                    url, // JAR-related URL of the found file
-                                                    dest // destination file
-                                                )
-                                                log.info("Placeholder " + ph + " copied to " + dir);
-                                            }
-                                        }
-                                        ]]>
-                                    </source>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <!--
-                                Here we process all available .tex files located in
-                                "src/main/tikz" directory and add them to the project
-                                site. This operation is done during "site" lifecycle.
-                                TEX is a LaTeX format with extensive usage of TikZ/PGF.
-                                @see http://sourceforge.net/projects/pgf/
-                                -->
-                                <id>tikz</id>
-                                <phase>pre-site</phase>
-                                <goals>
-                                    <goal>execute</goal>
-                                </goals>
-                                <configuration>
-                                    <properties>
-                                        <src>${basedir}/src/main/tikz</src>
-                                        <output>${project.build.directory}/site/tikz</output>
-                                        <temp>${project.build.directory}/tikz-processing</temp>
-                                        <scale>0.5</scale>
-                                        <!-- these files are in rempl-tk module -->
-                                        <closures>tikz/header.tex</closures>
-                                    </properties>
-                                    <classpath>
-                                        <element>
-                                            <!-- for TIKZ closures -->
-                                            <groupId>com.rqdql</groupId>
-                                            <artifactId>rqdql-tk</artifactId>
-                                            <version>2.0-SNAPSHOT</version>
-                                        </element>
-                                        <element>
-                                            <!-- for execution of shell commands -->
-                                            <groupId>org.apache.commons</groupId>
-                                            <artifactId>commons-exec</artifactId>
-                                            <version>1.1</version> <!-- 22 Feb 2011 -->
-                                        </element>
-                                        <element>
-                                            <!-- for file manipulations -->
-                                            <groupId>commons-io</groupId>
-                                            <artifactId>commons-io</artifactId>
-                                            <version>2.0.1</version> <!-- 7 Mar 2011 -->
-                                        </element>
-                                        <element>
-                                            <!-- for manipulations with strings -->
-                                            <groupId>commons-lang</groupId>
-                                            <artifactId>commons-lang</artifactId>
-                                            <version>2.5</version> <!-- 15 Oct 2010 -->
-                                        </element>
-                                    </classpath>
-                                    <source>
-                                        <![CDATA[
-                                        import org.apache.commons.lang.StringUtils;
-                                        import org.apache.commons.io.FileUtils;
-                                        import org.apache.commons.io.FilenameUtils;
-                                        import org.apache.commons.exec.CommandLine;
-                                        import org.apache.commons.exec.DefaultExecutor;
-                                        def srcDir = new File(project.properties['src'])
-                                        def outputDir = new File(project.properties['output'])
-                                        if (!srcDir.exists()) {
-                                            log.info("Directory is absent, nothing to compile: " + srcDir)
-                                            return
-                                        }
-                                        log.info("Reading TIKZ files from " + srcDir)
-                                        if (!outputDir.exists()) {
-                                            FileUtils.forceMkdir(outputDir)
-                                            log.info("Directory created: " + outputDir)
-                                        }
-                                        log.info("Writing PNG files to " + outputDir)
-                                        tempDir = new File(project.properties['temp'])
-                                        FileUtils.forceMkdir(tempDir)
-                                        FileUtils.copyDirectory(srcDir, tempDir)
-                                        for (closure in StringUtils.split(project.properties['closures'], ",")) {
-                                            def cfile = new File(closure);
-                                            if (!cfile.exists()) {
-                                                def url = getClass().getClassLoader().getResource(closure);
-                                                if (url == null) {
-                                                    fail("Can't find closure " + closure)
-                                                }
-                                                log.info("Closure " + closure + " found at " + url);
-                                                FileUtils.copyURLToFile(
-                                                    url, // JAR-related URL of the found file
-                                                    new File(
-                                                        tempDir.toString(),
-                                                        StringUtils.substringAfterLast(closure, "/")
-                                                    )
-                                                )
-                                            } else {
-                                                FileUtils.copyFileToDirectory(cfile, tempDir)
-                                            }
-                                            log.info("Closure " + closure + " copied to " + tempDir);
-                                        }
-                                        def files = FileUtils.listFiles(srcDir, ["tex"] as String[], false)
-                                        for (src in files) {
-                                            if (!FilenameUtils.getBaseName(src.getPath()).contains("-")) {
-                                                continue
-                                            }
-                                            def dest = new File(
-                                                outputDir.getPath(),
-                                                FilenameUtils.getBaseName(src.getPath())
-                                                + ".png"
-                                            )
-                                            if (dest.exists() && !FileUtils.isFileNewer(src, dest)) {
-                                                continue
-                                            }
-                                            FileUtils.copyFile(src, new File(tempDir.getPath(), "a.tex"))
-                                            def cmd = new String(
-                                                "latex -halt-on-error -interaction=nonstopmode a.tex && "
-                                                + "dvips -o a.ps a.dvi && "
-                                                + "echo quit "
-                                                + "| gs -q -dNOPAUSE -sDEVICE=ppmraw -sOutputFile=- -r300 a.ps"
-                                                + "| pnmalias -bgcolor rgb:ff/ff/ff -falias -fgcolor rgb:00/00/00 -weight 0.6"
-                                                + "| pnmcrop -white"
-                                                + "| pnmscale " + project.properties['scale']
-                                                + "| pnmtopng -interlace > a.png"
-                                            )
-                                            def line = new CommandLine("/bin/sh")
-                                            line.addArgument("-c")
-                                            line.addArgument(cmd, false)
-                                            def executor = new DefaultExecutor()
-                                            executor.setWorkingDirectory(tempDir)
-                                            executor.execute(line);
-                                            FileUtils.copyFile(new File(tempDir.getPath(), "a.png"), dest)
-                                        }
-                                        FileUtils.deleteDirectory(tempDir)
-                                        ]]>
-                                    </source>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <!--
-                                When site is ready we need to replace certain strings
-                                inside its HTML files, in order to improve readability
-                                of the output.
-                                -->
-                                <id>site-markers</id>
-                                <phase>post-site</phase>
-                                <goals>
-                                    <goal>execute</goal>
-                                </goals>
-                                <configuration>
-                                    <classpath>
-                                        <element>
-                                            <!-- for file manipulations -->
-                                            <groupId>commons-io</groupId>
-                                            <artifactId>commons-io</artifactId>
-                                            <version>2.0.1</version> <!-- 7 Mar 2011 -->
-                                        </element>
-                                        <element>
-                                            <!-- for manipulations with strings -->
-                                            <groupId>commons-lang</groupId>
-                                            <artifactId>commons-lang</artifactId>
-                                            <version>2.5</version> <!-- 15 Oct 2010 -->
-                                        </element>
-                                    </classpath>
-                                    <properties>
-                                        <find>
-                                            <![CDATA[
-                                            Version: ${project.version}
-                                            <title>Coverage Report</title>
-                                            ]]>
-                                        </find>
-                                        <replace>
-                                            <![CDATA[
-                                            Version: ${project.version}/${buildNumber}
-                                            <title>Coverage Report (${project.version}/${buildNumber})</title>
-                                            ]]>
-                                        </replace>
-                                        <target>${project.build.directory}/site</target>
-                                    </properties>
-                                    <source>
-                                        <![CDATA[
-                                        import org.apache.commons.io.FileUtils;
-                                        import org.apache.commons.io.filefilter.*;
-                                        import org.apache.commons.lang.StringUtils;
-                                        def dir = new File(project.properties['target'])
-                                        if (!dir.exists()) {
-                                            log.info("Directory is absent: " + dir)
-                                            return
-                                        }
-                                        def it = FileUtils.iterateFiles(
-                                            dir,
-                                            new SuffixFileFilter(".html"),
-                                            TrueFileFilter.INSTANCE
-                                        )
-                                        def find = StringUtils.stripAll(
-                                            StringUtils.split(project.properties['find'], "\n")
-                                        )
-                                        def replace = StringUtils.stripAll(
-                                            StringUtils.split(project.properties['replace'], "\n")
-                                        )
-                                        while (it.hasNext()) {
-                                            def File file = it.next()
-                                            def contents = FileUtils.readFileToString(file)
-                                            contents = StringUtils.replaceEach(contents, find, replace)
-                                            FileUtils.writeStringToFile(file, contents)
-                                        }
-                                        ]]>
-                                    </source>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
                 </plugins>
             </build>
         </profile>
     </profiles>
-
-    <build>
-        <resources>
-            <!--
-            To enable filtering of resources
-            @link http://maven.apache.org/guides/getting-started/index.html#How_do_I_filter_resource_files
-            -->
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-        <extensions>
-            <extension>
-                <groupId>org.kuali.maven.wagons</groupId>
-                <artifactId>maven-s3-wagon</artifactId>
-                <version since="20 Sep 2012">1.1.14</version>
-            </extension>
-        </extensions>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <version>2.2</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>2.5</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>2.1</version> <!-- 6 Feb 2011 -->
-                </plugin>
-                <plugin>
-                    <artifactId>maven-install-plugin</artifactId>
-                    <version>2.2</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-project-info-reports-plugin</artifactId>
-                    <version>2.2</version> <!-- 7 Nov 2010 -->
-                    <configuration>
-                        <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
-                        <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>2.1</version> <!-- 2 Dec 2010 -->
-                    <configuration>
-                        <archive>
-                            <manifestEntries>
-                                <SCM-Revision>${buildNumber}</SCM-Revision>
-                            </manifestEntries>
-                        </archive>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>2.4.3</version>
-                </plugin>
-                <plugin>
-                    <!--
-                    Starts unit tests, protocols their results and creates
-                    a summary report. It is required to send testing protocol
-                    to the STDOUT as well, not only to the file.
-                    -->
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.5</version> <!-- 1 Oct 2010 -->
-                    <configuration>
-                        <useFile>false</useFile>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.3.2</version> <!-- 27 Oct 2010 -->
-                    <configuration>
-                        <source>${jdk.version}</source>
-                        <target>${jdk.version}</target>
-                        <optimize>true</optimize>
-                        <showWarnings>true</showWarnings>
-                        <showDeprecation>true</showDeprecation>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <!--
-                    This plugin helps to manage releases and new versions
-                    of the product.
-                    @link http://maven.apache.org/plugins/maven-release-plugin/usage.html
-                    -->
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.1</version>
-                    <configuration>
-                        <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>xml-maven-plugin</artifactId>
-                    <version>1.0-beta-3-SNAPSHOT</version>
-                    <configuration>
-                        <validationSets>
-                            <validationSet>
-                                <dir>src/main/resources</dir>
-                                <validating>true</validating>
-                                <includes>
-                                    <include>.xml</include>
-                                </includes>
-                            </validationSet>
-                        </validationSets>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>3.2</version>
-                    <configuration>
-                        <reportPlugins>
-                        </reportPlugins>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <!--
-                    To GPG-sign the artifact before deployment to foreign
-                    repository. GPG keys have to be provided in CI
-                    environment, and published beforehand.
-                    @link http://www.sonatype.com/people/2010/01/how-to-generate-pgp-signatures-with-maven/
-                    -->
-                    <artifactId>maven-gpg-plugin</artifactId>
-                    <version>1.1</version> <!-- 21 Dec 2010 -->
-                    <executions>
-                        <execution>
-                            <id>sign-artifacts</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>sign</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <!--
-                    To enable on-fly script executions.
-                    @link http://docs.codehaus.org/display/GMAVEN/Executing+Groovy+Code
-                    -->
-                    <groupId>org.codehaus.gmaven</groupId>
-                    <artifactId>gmaven-plugin</artifactId>
-                    <version>1.3</version> <!-- 23 Nov 2010 -->
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
-
 </project>

@@ -29,49 +29,64 @@
  */
 package com.rqdql.cli;
 
-import com.rqdql.tk.ResourceLoader;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Nodes;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
+ * Test case for {@link Dispatcher}.
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
 public final class DispatcherTest {
 
+    /**
+     * Dispatcher can work.
+     * @throws Exception When necessary
+     */
     @Test
     public void testGetsVersionNumber() throws Exception {
         final String out = new Dispatcher().dispatch(
             new String[] {"-v"},
             ""
         );
-        assertThat(out, containsString("2.0"));
+        MatcherAssert.assertThat(out, Matchers.containsString("-SNAPSHOT"));
     }
 
+    /**
+     * Dispatcher can work.
+     * @throws Exception When necessary
+     */
     @Test
     public void testGetsHelpMessage() throws Exception {
         final String out = new Dispatcher().dispatch(
             new String[] {"-?"},
             ""
         );
-        assertThat(out, containsString("usage:"));
+        MatcherAssert.assertThat(out, Matchers.containsString("usage:"));
     }
 
+    /**
+     * Dispatcher can work.
+     * @throws Exception When necessary
+     */
     @Test
     public void testRunsSimpleReportSet() throws Exception {
         final String[] args = {"errors", "metrics"};
         final String input = "ActorUser is a \"human being\".";
         final String xml = new Dispatcher().dispatch(args, input);
-        assertThat(xml, containsString("<?xml"));
+        MatcherAssert.assertThat(xml, Matchers.containsString("<?xml"));
     }
 
     /**
+     * Dispatcher can work.
+     * @throws Exception When necessary
      * @todo #3 Resolve the ticket, and implement everything
-     *          properly with ANTLR3 parser.
+     *  properly with ANTLR3 parser.
      */
     @Ignore
     @Test
@@ -84,24 +99,30 @@ public final class DispatcherTest {
         }
     }
 
+    /**
+     * Parse resource file.
+     * @param file The file name (resource)
+     * @throws Exception When necessary
+     */
     private void parse(final String file) throws Exception {
-        final Document dom = new Builder().build(ResourceLoader.find(file));
+        final Document dom = new Builder().build(
+            this.getClass().getResourceAsStream(file)
+        );
         final String input = dom.query("//SRS").get(0).getValue();
         final Nodes reporters = dom.query("//reporters/reporter");
         final int total = reporters.size();
         final String[] reports = new String[total];
-        for (int i = 0; i < total; i += 1) {
-            reports[i] = reporters.get(i).getValue();
+        for (int idx = 0; idx < total; idx += 1) {
+            reports[idx] = reporters.get(idx).getValue();
         }
         final String xml = new Dispatcher().dispatch(reports, input);
         final Document report = new Builder().build(xml, null);
-
         final Nodes invariants = dom.query("//invariants/invariant");
-        for (int i = 0; i < invariants.size(); i += 1) {
-            final String xpath = invariants.get(i).getValue();
-            assertThat(
+        for (int idx = 0; idx < invariants.size(); idx += 1) {
+            final String xpath = invariants.get(idx).getValue();
+            MatcherAssert.assertThat(
                 report.query(xpath).size(),
-                describedAs(xpath, is(greaterThan(0)))
+                Matchers.describedAs(xpath, Matchers.greaterThan(0))
             );
         }
     }

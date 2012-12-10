@@ -29,22 +29,27 @@
  */
 package com.rqdql.cli;
 
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
+ * Test case for {@link Main}.
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
 public final class MainTest {
 
+    /**
+     * Main can work.
+     * @throws Exception When necessary
+     */
     @Test(expected = IllegalAccessException.class)
     public void testMakesAnIncorrectAttemptToInstantiateClass()
         throws Exception {
         final String name = "com.rqdql.cli.Main";
-        final Class cls = Class.forName(name);
-        assertThat(cls, is(not(nullValue())));
+        final Class<?> cls = Class.forName(name);
+        MatcherAssert.assertThat(cls, Matchers.notNullValue());
         cls.newInstance();
     }
 

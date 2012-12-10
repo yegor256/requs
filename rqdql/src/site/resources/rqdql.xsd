@@ -26,36 +26,25 @@
  * Copyright (c) 2010, rqdql.com, Inc.
  * @version $Id$
  -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    elementFormDefault="qualified"
-    targetNamespace="http://rqdql.com/" xmlns="http://rqdql.com/">
-
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://rqdql.com/" elementFormDefault="qualified" targetNamespace="http://rqdql.com/">
     <xs:element name="rqdql" type="RQDQL">
         <xs:annotation>
             <xs:documentation source="version">3.0.0+</xs:documentation>
-            <xs:documentation source="description">
-                <![CDATA[
+            <xs:documentation source="description"><![CDATA[
                 The <rqdql> element is the root of the descriptor.
-                ]]>
-            </xs:documentation>
+                ]]></xs:documentation>
         </xs:annotation>
     </xs:element>
-
     <xs:complexType name="RQDQL">
         <xs:annotation>
             <xs:documentation source="version">3.0.0+</xs:documentation>
-            <xs:documentation source="description">
-                <![CDATA[
+            <xs:documentation source="description"><![CDATA[
                 The <rqdql> element is the root of the descriptor.
-                ]]>
-            </xs:documentation>
+                ]]></xs:documentation>
         </xs:annotation>
-
         <!--
         @todo #3 The document is not yet ready! This is just
                  a draft that has to be finished.
         -->
-
     </xs:complexType>
-
 </xs:schema>

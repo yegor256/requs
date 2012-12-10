@@ -39,7 +39,7 @@ Requirements Definition and Query Language (RQDQL)
   Download executable JAR
   {{{https://oss.sonatype.org/content/groups/public/com/rqdql/rqdql/}here}}.
 
-  Try online {{{./example.html}instant example}}.
+  Try online demo: {{{http://demo.rqdql.com/}demo.rqdql.com}}.
 
   This software was initially developed in C++. Now we're transferring it
   to Java and this work is not finished yet. A complete (compilable and working)

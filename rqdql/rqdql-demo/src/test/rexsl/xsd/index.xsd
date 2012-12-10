@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+ * Copyright (c) 2011-2012, ReXSL.com
+ * All rights reserved.
+ -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:complexType name="link">
+        <xs:attribute name="href" type="xs:anyURI"/>
+        <xs:attribute name="rel" type="xs:string"/>
+    </xs:complexType>
+    <xs:element name="page">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="links" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="link" type="link" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

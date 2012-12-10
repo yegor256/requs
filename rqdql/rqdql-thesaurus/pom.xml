@@ -31,47 +31,41 @@
  * Copyright (c) 2009-2011, RQDQL.com.
  * @version $Id$
  -->
-<project
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.rqdql</groupId>
         <artifactId>rqdql</artifactId>
-        <version>2.0-SNAPSHOT</version>
+        <version rqdql="yes">2.0-SNAPSHOT</version>
     </parent>
     <artifactId>rqdql-thesaurus</artifactId>
     <packaging>jar</packaging>
     <name>rqdql-thesaurus</name>
-
     <dependencies>
         <dependency>
-            <groupId>com.rqdql</groupId>
-            <artifactId>rqdql-commons</artifactId>
-            <version>2.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.rqdql</groupId>
-            <artifactId>rqdql-solm</artifactId>
-            <version>2.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <!-- other details are in parent pom dependencyManagement -->
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <!-- other details are in parent pom dependencyManagement -->
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <!-- other details are in parent pom dependencyManagement -->
+            <!--
+            ANTLR3 Parser/Lexer
+            @link http://www.antlr.org/
+            -->
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr-runtime</artifactId>
+            <version since="13 Oct 2010">3.3</version>
         </dependency>
     </dependencies>
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr3-maven-plugin</artifactId>
+                <version>3.1.3-1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>antlr</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

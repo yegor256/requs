@@ -29,11 +29,7 @@
  */
 package com.rqdql.facts;
 
-// commons from com.rqdql:rqdql-commons
-import com.rqdql.commons.Origin;
-
-// commons from com.rqdql:rqdql-planner
-import com.rqdql.planner.TestPlan;
+import com.rqdql.thesaurus.Type;
 
 /**
  * Outcome of a predicate.
@@ -44,24 +40,24 @@ import com.rqdql.planner.TestPlan;
 public final class Outcome {
 
     /**
-     * The origin of the outcome.
+     * Type to work with.
      */
-    private final Origin origin;
+    private final transient Type type;
 
     /**
      * Public ctor.
-     * @param orgn The origin of this outcome
+     * @param tpe Type to analyze
      */
-    public Outcome(final Origin orgn) {
-        this.origin = orgn;
+    public Outcome(final Type tpe) {
+        this.type = tpe;
     }
 
     /**
-     * Convert this outcome to a Test Plan.
-     * @return The test plan
+     * {@inheritDoc}
      */
-    public TestPlan toTestPlan() {
-        return new TestPlan(this.origin.sub(null));
+    @Override
+    public String toString() {
+        return this.type.toString();
     }
 
 }
