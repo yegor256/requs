@@ -28,6 +28,7 @@
         <table style="width: 100%;">
             <colgroup>
                 <col style="width: 50%;"/>
+                <col style="width: 50%;"/>
             </colgroup>
             <thead>
                 <tr>
@@ -37,8 +38,8 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><textarea id="example" style="width: 100%; height: 40em;"></textarea></td>
-                    <td id="output"></td>
+                    <td><textarea id="example" style="width: 100%; height: 40em;">start typing...</textarea></td>
+                    <td id="output">...</td>
                 </tr>
             </tbody>
         </table>

@@ -55,6 +55,7 @@ public final class RqdqlText {
      * @return Type found
      */
     public Type sud() {
+        assert this.text != null;
         return null;
     }
 

@@ -61,6 +61,10 @@
             <artifactId>jcabi-manifests</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-log</artifactId>
+        </dependency>
+        <dependency>
             <groupId>xom</groupId>
             <artifactId>xom</artifactId>
         </dependency>

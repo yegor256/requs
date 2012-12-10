@@ -52,4 +52,12 @@ public final class Outcome {
         this.type = tpe;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return this.type.toString();
+    }
+
 }

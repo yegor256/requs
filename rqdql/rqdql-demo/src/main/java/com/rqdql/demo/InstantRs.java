@@ -29,6 +29,7 @@
  */
 package com.rqdql.demo;
 
+import com.jcabi.log.Logger;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -48,6 +49,7 @@ public final class InstantRs extends BaseRs {
 
     /**
      * Parse text.
+     * @param text RQDQL syntax to parse
      * @return The JAX-RS response
      * @throws Exception If some problem inside
      */
@@ -56,6 +58,7 @@ public final class InstantRs extends BaseRs {
     @Produces(MediaType.APPLICATION_XML)
     public String post(@FormParam("text") final String text)
         throws Exception {
+        Logger.info(this, "#post(%[text]s): validated", text);
         return "<rqdql/>";
     }
 

@@ -41,7 +41,7 @@ import javax.ws.rs.core.Response;
  * <p>The class is mutable and NOT thread-safe.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id: IndexRs.java 2298 2012-12-09 17:27:45Z yegor@tpc2.com $
+ * @version $Id$
  */
 @Path("/")
 public final class IndexRs extends BaseRs {

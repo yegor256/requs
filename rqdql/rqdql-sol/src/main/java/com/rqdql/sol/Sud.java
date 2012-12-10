@@ -52,4 +52,12 @@ public final class Sud implements Formula {
         this.type = sud;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return this.type.toString();
+    }
+
 }
