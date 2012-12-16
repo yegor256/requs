@@ -107,9 +107,9 @@
         <url>http://ci.rqdql.com:8080/job/rqdql</url>
     </ciManagement>
     <scm>
-        <connection>scm:svn:http://svn.fazend.com/rqdql/trunk/rqdql</connection>
-        <developerConnection>scm:svn:http://svn.fazend.com/rqdql/trunk/rqdql</developerConnection>
-        <url>http://svn.fazend.com/rqdql/trunk/rqdql</url>
+        <connection>scm:svn:svn://svn.rqdql.com/rqdql/trunk/rqdql</connection>
+        <developerConnection>scm:svn:svn://svn.rqdql.com/rqdql/trunk/rqdql</developerConnection>
+        <url>http://trac.rqdql.com/rqdql/browse/rqdql/trunk/rqdql</url>
     </scm>
     <distributionManagement>
         <site>
