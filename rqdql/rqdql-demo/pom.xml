@@ -33,14 +33,28 @@
     <parent>
         <groupId>com.rqdql</groupId>
         <artifactId>rqdql</artifactId>
-        <version rqdql="yes">2.0-SNAPSHOT</version>
+        <version>2.0-SNAPSHOT</version>
     </parent>
     <artifactId>rqdql-demo</artifactId>
     <packaging>war</packaging>
     <name>rqdql-demo</name>
     <properties>
-        <rexsl.version since="9 Dec 2012">1.0-SNAPSHOT</rexsl.version>
+        <rexsl.version>1.0-SNAPSHOT</rexsl.version>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>1.7.2</version>
+            </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.17</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>com.jcabi</groupId>
@@ -84,21 +98,14 @@
             <!-- JAX-RS API -->
             <groupId>javax.ws.rs</groupId>
             <artifactId>jsr311-api</artifactId>
-            <version since="2 Sep 2011">1.1.1</version>
+            <version>1.1.1</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <!-- JAX-RS implementation -->
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-core</artifactId>
-            <version since="22 Aug 2012">1.12</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <!-- JAXB 2.0 API -->
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <version since="2 Sep 2011">2.0</version>
+            <version>2.2.7</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.xml.bind</groupId>
@@ -117,26 +124,10 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit-dep</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-        </dependency>
-        <dependency>
             <!-- Javax Servlet API 2.4. -->
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
-            <version since="26 Oct 2011">2.4</version>
+            <version>3.0-alpha-1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -209,9 +200,9 @@
                         <configuration>
                             <name>rqdql-demo</name>
                             <artifacts>
-                                <artifact>com.rqdql:rqdql-demo:war::${project.version}</artifact>
+                                <artifact>${project.groupId}:${project.artifactId}:war::${project.version}</artifact>
                             </artifacts>
-                            <procfile>web: java -Xmx256m -jar ./${artfactId}.war ${PORT}</procfile>
+                            <procfile>web: java -Xmx256m -jar ./${project.artfactId}.war ${PORT}</procfile>
                         </configuration>
                     </execution>
                 </executions>
