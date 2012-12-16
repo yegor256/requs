@@ -41,6 +41,13 @@
     <properties>
         <rexsl.version>1.0-SNAPSHOT</rexsl.version>
     </properties>
+    <repositories>
+        <!-- https://github.com/yegor256/jcabi/issues/118 -->
+        <repository>
+            <id>oss.sonatype.org</id>
+            <url>https://oss.sonatype.org/content/groups/public</url>
+        </repository>
+    </repositories>
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -202,7 +209,7 @@
                             <artifacts>
                                 <artifact>${project.groupId}:${project.artifactId}:war::${project.version}</artifact>
                             </artifacts>
-                            <procfile>web: java -Xmx256m -jar ./${project.artfactId}.war ${PORT}</procfile>
+                            <procfile>web: java -Xmx256m -jar ./${project.artifactId}.war ${PORT}</procfile>
                         </configuration>
                     </execution>
                 </executions>
