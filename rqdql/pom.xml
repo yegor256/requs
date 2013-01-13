@@ -48,11 +48,8 @@
     <packaging>pom</packaging>
     <name>rqdql</name>
     <modules>
-        <module>rqdql-thesaurus</module>
-        <module>rqdql-sol</module>
-        <module>rqdql-facts</module>
+        <module>rqdql-core</module>
         <module>rqdql-cli</module>
-        <module>rqdql-xmi</module>
         <module>rqdql-trac-plugin</module>
         <module>rqdql-demo</module>
     </modules>
@@ -132,6 +129,13 @@
                 <artifactId>xom</artifactId>
                 <version since="13 Oct 2010">1.2.5</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <!-- see https://github.com/yegor256/jcabi/issues/113 -->
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>3.0-alpha-1</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

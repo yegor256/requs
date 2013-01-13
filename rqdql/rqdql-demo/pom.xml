@@ -111,11 +111,8 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <!-- Javax Servlet API 2.4. -->
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
-            <version>3.0-alpha-1</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
     <build>
