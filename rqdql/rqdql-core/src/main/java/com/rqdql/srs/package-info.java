@@ -34,4 +34,4 @@
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-package com.rqdql.thesaurus;
+package com.rqdql.srs;

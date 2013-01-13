@@ -27,36 +27,38 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.thesaurus;
+grammar SRS;
 
-/**
- * RQDQL Text.
- *
- * @author Yegor Bugayenko (yegor@rqdql.com)
- * @version $Id$
- */
-public final class RqdqlText {
-
-    /**
-     * Text to parse.
-     */
-    private final transient String text;
-
-    /**
-     * Public ctor.
-     * @param content The text to parse
-     */
-    public RqdqlText(final String content) {
-        this.text = content;
-    }
-
-    /**
-     * Get System under Development (SuD).
-     * @return Type found
-     */
-    public Type sud() {
-        assert this.text != null;
-        return null;
-    }
-
+@header {
+    package com.rqdql.srs;
 }
+
+@lexer::header {
+    package com.rqdql.srs;
+}
+
+@lexer::members {
+    @Override
+    public void emitErrorMessage(String msg) {
+        throw new IllegalArgumentException(msg);
+    }
+}
+
+@parser::members {
+    @Override
+    public void emitErrorMessage(String msg) {
+        throw new IllegalArgumentException(msg);
+    }
+}
+
+document returns [String context]
+    :
+    'test'
+    ;
+
+NAME: ( 'a' .. 'z' | 'A' .. 'Z' )*;
+SPACE
+    :
+    ( ' ' | '\t' | '\n' | '\r' )+
+    { skip(); }
+    ;
