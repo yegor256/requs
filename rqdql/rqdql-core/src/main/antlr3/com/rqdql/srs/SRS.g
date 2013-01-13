@@ -51,7 +51,7 @@ grammar SRS;
     }
 }
 
-document returns [String context]
+sud returns [Type type]
     :
     'test'
     ;
