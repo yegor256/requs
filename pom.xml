@@ -33,7 +33,7 @@
     <parent>
         <groupId>com.jcabi</groupId>
         <artifactId>parent</artifactId>
-        <version>0.7.4</version>
+        <version>0.7.6</version>
     </parent>
     <groupId>com.rqdql</groupId>
     <artifactId>rqdql-bundle</artifactId>
