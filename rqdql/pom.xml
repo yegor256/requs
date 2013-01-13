@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- * Copyright (c) 2009-2011, RQDQL.com
+ * Copyright (c) 2009-2013, RQDQL.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Copyright (c) 2009-2011, RQDQL.com.
+ * Copyright (c) 2009-2013, RQDQL.com.
  * @version $Id$
  *
  * @todo #3 The architecture is not defined yet. We need to prototype
@@ -40,7 +40,7 @@
     <parent>
         <groupId>com.jcabi</groupId>
         <artifactId>parent</artifactId>
-        <version>0.2</version>
+        <version>0.7.6</version>
     </parent>
     <groupId>com.rqdql</groupId>
     <artifactId>rqdql</artifactId>
@@ -107,9 +107,9 @@
         <url>http://ci.rqdql.com:8080/job/rqdql</url>
     </ciManagement>
     <scm>
-        <connection>scm:svn:http://svn.fazend.com/rqdql/trunk/rqdql</connection>
-        <developerConnection>scm:svn:http://svn.fazend.com/rqdql/trunk/rqdql</developerConnection>
-        <url>http://svn.fazend.com/rqdql/trunk/rqdql</url>
+        <connection>scm:svn:svn://svn.rqdql.com/rqdql/trunk/rqdql</connection>
+        <developerConnection>scm:svn:svn://svn.rqdql.com/rqdql/trunk/rqdql</developerConnection>
+        <url>http://trac.rqdql.com/rqdql/browse/rqdql/trunk/rqdql</url>
     </scm>
     <distributionManagement>
         <site>
@@ -118,24 +118,6 @@
             <url>s3://www.rqdql.com/</url>
         </site>
     </distributionManagement>
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit-dep</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-core</artifactId>
-        </dependency>
-    </dependencies>
     <dependencyManagement>
         <dependencies>
             <dependency>
