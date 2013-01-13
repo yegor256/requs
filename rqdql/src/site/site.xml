@@ -49,14 +49,7 @@
             <item name="Introduction" href="index.html"/>
             <item name="Grammar" href="syntax.html"/>
             <item name="Usage" href="usage.html"/>
-            <item name="Release History" href="./changes-report.html"/>
-        </menu>
-        <menu name="Reporters">
-            <item name="errors" href="errors.html"/>
-            <item name="links" href="links.html"/>
-            <item name="metrics" href="metrics.html"/>
-            <item name="tc" href="tc.html"/>
-            <item name="uml" href="uml.html"/>
+            <item name="Release History" href="changes-report.html"/>
         </menu>
         <menu ref="modules"/>
         <menu ref="reports"/>

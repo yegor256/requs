@@ -1,5 +1,5 @@
  ------
- RQDQL Thesaurus
+ Command Line Interface
  ------
  Yegor Bugayenko
  ------
@@ -26,6 +26,6 @@
 ~~ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 ~~ OF SUCH DAMAGE.
 
-RQDQL Thesaurus
+RQDQL, Command Line Interface
 
   TBD...
