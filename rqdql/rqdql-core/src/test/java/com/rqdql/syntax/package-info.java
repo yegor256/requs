@@ -27,50 +27,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.srs;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import org.antlr.runtime.ANTLRStringStream;
-import org.antlr.runtime.CharStream;
-import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.TokenStream;
 
 /**
- * RQDQL Text.
+ * Syntax analysis, tests.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public final class SRS {
-
-    /**
-     * Text to parse.
-     */
-    private final transient String text;
-
-    /**
-     * Public ctor.
-     * @param content The text to parse
-     */
-    public SRS(@NotNull @Pattern(regexp = ".+") final String content) {
-        this.text = content;
-    }
-
-    /**
-     * Get System under Development (SuD).
-     * @return Type found
-     */
-    public Type sud() {
-        final CharStream input = new ANTLRStringStream(this.text.toString());
-        final SRSLexer lexer = new SRSLexer(input);
-        final TokenStream tokens = new CommonTokenStream(lexer);
-        final SRSParser parser = new SRSParser(tokens);
-        try {
-            return parser.sud();
-        } catch (org.antlr.runtime.RecognitionException ex) {
-            throw new IllegalArgumentException(ex);
-        }
-    }
-
-}
+package com.rqdql.syntax;

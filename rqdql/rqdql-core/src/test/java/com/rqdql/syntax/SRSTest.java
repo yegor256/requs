@@ -27,11 +27,27 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.rqdql.syntax;
+
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
- * Thesaurus, tests.
- *
+ * Test case for {@link SRS}.
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-package com.rqdql.srs;
+public final class SRSTest {
+
+    /**
+     * SRS can parse input text and produce types.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void parsesInputAndProducesTypes() throws Exception {
+        final Clause sud = new SRS("SuD includes: test.").sud();
+        MatcherAssert.assertThat(sud, Matchers.notNullValue());
+    }
+
+}

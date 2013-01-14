@@ -27,20 +27,14 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.srs;
+package com.rqdql.syntax;
 
 /**
- * Type.
+ * Clause.
  *
  * @author Yegor Bugayenko (yegor@rqdql.com)
  * @version $Id$
  */
-public interface Type {
-
-    /**
-     * What types it requires for constructor.
-     * @return Set of required variables
-     */
-    Set<Variable>
+public interface Clause {
 
 }

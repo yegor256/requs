@@ -30,11 +30,11 @@
 grammar SRS;
 
 @header {
-    package com.rqdql.srs;
+    package com.rqdql.syntax;
 }
 
 @lexer::header {
-    package com.rqdql.srs;
+    package com.rqdql.syntax;
 }
 
 @lexer::members {
