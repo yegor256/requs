@@ -51,9 +51,99 @@ grammar SRS;
     }
 }
 
-sud returns [Type type]
+clauses returns [List<Clause> ret]
+    @init { $ret = new LinkedList<Clause>(); }
     :
-    'test'
+    (
+        clause
+        { $ret.add(clause.ret); }
+        '.'
+    )*
+    EOF
+    ;
+
+clause returns [Clause ret]
+    :
+    desriptor
+    |
+    constructor
+    |
+    operation
+    ;
+
+descriptor returns [Clause ret]
+    :
+    object
+    'is'
+    ( 'a' | 'an' )
+    ( INFORMAL | object )
+    ;
+
+constructor returns [Clause ret]
+    :
+    object
+    ( 'includes?' | 'needs?' | 'contains?' | 'requires?' )
+    ':'
+    slots
+    { $ret = new Clause(); }
+    ;
+
+slots returns [List<Slot> ret]
+    @init { $ret = new LinkedList<Slot>(); }
+    :
+    first
+    { $ret.add(first.ret); }
+    (
+        ( ';' | ',' )
+        ( 'and' )?
+        slot
+        { $ret.add(slot.ret); }
+    )*
+    ;
+
+slot returns [Slot ret]
+    :
+    variable
+    ':'
+    ( INFORMAL | object )
+    ;
+
+operation returns [Clause ret]
+    :
+    signature
+    ':'
+    ( INFORMAL | flows )
+    { $ret = new Clause(); }
+    ;
+
+flows returns [List<Flow> ret]
+    @init { $ret = new LinkedList<Flow>(); }
+    :
+    first
+    { $ret.add(first.ret); }
+    (
+        ';'
+        flow
+        { $ret.add(flow.ret); }
+    )+
+    ;
+
+flow returns [Flow ret]
+    :
+    ( '0' .. '9' )+
+    signature
+    ;
+
+signature returns [Signature ret]
+    :
+    object
+    verb
+    ( 'the' variable | object '(' 'a' variable ')' )
+    ( 'using' /* ? */ )?
+    ;
+
+variable returns [Variable ret]
+    :
     ;
 
 NAME: ( 'a' .. 'z' | 'A' .. 'Z' )*;

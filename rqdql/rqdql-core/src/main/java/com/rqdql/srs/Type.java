@@ -37,4 +37,10 @@ package com.rqdql.srs;
  */
 public interface Type {
 
+    /**
+     * What types it requires for constructor.
+     * @return Set of required variables
+     */
+    Set<Variable>
+
 }
