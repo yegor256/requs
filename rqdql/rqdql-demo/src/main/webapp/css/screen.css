@@ -34,23 +34,20 @@ body {
     color: gray;
 }
 
-h1 {
-    color: #2276A4;
-    font-weight: normal;
+#content {
+    position: relative;
 }
 
-table {
+#example {
+    font-family: 'Consolas', 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-size: 1.1em;
+    border: 1px solid gray;
+    padding: 1em;
 }
 
-    table td,
-    table th {
-        padding: 0.5em;
-        vertical-align: top;
-    }
-
-    table th {
-        text-align: left;
-        background-color: #2276A4;
-        color: white;
-        font-weight: normal;
-    }
+#output {
+    border: 1px solid gray;
+    min-height: 200px;
+    padding: 1em;
+    background-color: #eee;
+}

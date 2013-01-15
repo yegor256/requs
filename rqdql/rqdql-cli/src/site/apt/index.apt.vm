@@ -28,4 +28,13 @@
 
 RQDQL, Command Line Interface
 
-  TBD...
+  Command line interface to the RQDQL engine. Download
+  {{{http://repo1.maven.org/maven2/com/rqdql/${project.artifactId}/${project.version}/${project.artifactId}-${project.version}.jar}<<<rqdql-cli-${project.version}.jar>>>}}
+  and run:
+
++--
+java -jar ${project.artifactId}-${project.version}.jar < text.rqdql
++--
+
+  File <<<text.rqdql>>> should contain RQDQL requirements document.
+  The output will contain XMI document with UML of the requirements.

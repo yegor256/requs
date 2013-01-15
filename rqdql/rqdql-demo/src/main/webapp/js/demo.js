@@ -27,115 +27,36 @@
  */
 
 /**
- * Render the content received from RQDQL
- */
-function render()
-{
-    // we already rendered it
-    if ((render.rendered != undefined) && render.rendered == this.value) {
-        return;
-    }
-    // save it for the future, to avoid double renderings
-    render.rendered = this.value;
-    rqdql.parse(
-        render.rendered,
-        function(scope)
-        {
-            $('#output').html(scope.toString());
-        }
-    );
-
-    // rqdql.parse(
-    //     render.rendered,
-    //     function(scope)
-    //     {
-    //         $('#output')
-    //             .empty()
-    //             .append('<span/>')
-    //                 .find(':last')
-    //                 .html(scope.isValid() ? '&#x2714;' : '&#x2718;')
-    //                 .css('font-size', '3em')
-    //                 .css('color', scope.isValid() ? 'green' : 'red')
-    //                 .parent()
-    //             .append('<br/>')
-    //             .append('<span/>')
-    //                 .find(':last')
-    //                 .text('RQDQL version:')
-    //                 .addClass('header')
-    //                 .parent()
-    //             .append('<span/>')
-    //                 .find(':last')
-    //                 .text(scope.getRqdqlVersion())
-    //                 .parent()
-    //             .append('<br/>')
-    //             .append('<span/>')
-    //                 .find(':last')
-    //                 .text('Ambiguity:')
-    //                 .addClass('header')
-    //                 .parent()
-    //             .append('<span/>')
-    //                 .find(':last')
-    //                 .text(scope.getAmbiguity())
-    //                 .parent()
-    //             .append('<br/>')
-    //             .append('<span/>')
-    //                 .find(':last')
-    //                 .text('Errors total:')
-    //                 .addClass('header')
-    //                 .parent()
-    //             .append('<span/>')
-    //                 .find(':last')
-    //                 .text(scope.getErrorsCount())
-    //                 .parent();
-    //
-    //         // clean the table
-    //         $('#lines tbody').empty();
-    //         var lines = render.rendered.split("\n");
-    //         lines[lines.length] = '';
-    //         for (i in lines) {
-    //             var line = parseInt(i) + 1;
-    //             $('#lines tbody')
-    //                 .append('<tr/>')
-    //                     .find(':last')
-    //                     .append('<td/>')
-    //                         .find(':last')
-    //                         .text(line.toString())
-    //                         .parent()
-    //                     .append('<td/>')
-    //                         .find(':last')
-    //                         .text(lines[i])
-    //                         .parent()
-    //                     .append('<td/>');
-    //
-    //             var errors = scope.getErrorsByLine(line);
-    //             for (err in errors) {
-    //                 $('#lines tbody tr:last td:last')
-    //                     .append('<span/>')
-    //                     .find(':last')
-    //                     .html('&#x24ba;')
-    //                     .addClass('marker')
-    //                     .attr('title', errors[err]);
-    //             }
-    //
-    //             var objects = scope.getObjectsByLine(line);
-    //             for (obj in objects) {
-    //                 $('#lines tbody tr:last td:last')
-    //                     .append('<span/>')
-    //                     .find(':last')
-    //                     .addClass('ref')
-    //                     .text(objects[obj]);
-    //             }
-    //         }
-    //     }
-    // );
-};
-
-/**
  * Run this method when the document is loaded
  */
 $(document).ready(
-    function()
-    {
-        $("#example").keyup(render);
+    function() {
+        $("#example").keyup(
+            function() {
+                if ((this.rendered != undefined) && this.rendered == this.value) {
+                    return;
+                }
+                this.rendered = this.value;
+                if (this.rendered == null) {
+                    this.rendered = "";
+                }
+                $.ajax(
+                    {
+                        url: "/instant",
+                        data: { 'text': this.rendered },
+                        type: 'POST',
+                        dataType: 'text',
+                        success: function(data)
+                        {
+                            $('#output').text(data);
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown)
+                        {
+                            $('#output').html(textStatus);
+                        }
+                    }
+                );
+            }
+        );
     }
 );

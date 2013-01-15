@@ -30,6 +30,7 @@
 package com.rqdql.demo;
 
 import com.jcabi.aspects.Loggable;
+import com.jcabi.log.Logger;
 import com.rqdql.semantic.Model;
 import com.rqdql.syntax.SRS;
 import com.rqdql.uml.UML;
@@ -60,7 +61,13 @@ public final class InstantRs extends BaseRs {
     @Produces(MediaType.APPLICATION_XML)
     @Loggable(Loggable.INFO)
     public String post(@FormParam("text") final String text) {
-        return new UML(new Model(new SRS(text).clauses()).sud()).xmi();
+        String xmi;
+        try {
+            xmi = new UML(new Model(new SRS(text).clauses()).sud()).xmi();
+        } catch (IllegalArgumentException ex) {
+            xmi = Logger.format("%[exception]s", ex);
+        }
+        return xmi;
     }
 
 }

@@ -11,10 +11,6 @@
             <xsl:text> </xsl:text>
             <!-- this is for W3C compliance -->
         </script>
-        <script type="text/javascript" src="js/rqdql.js">
-            <xsl:text> </xsl:text>
-            <!-- this is for W3C compliance -->
-        </script>
         <script type="text/javascript" src="js/demo.js">
             <xsl:text> </xsl:text>
             <!-- this is for W3C compliance -->
@@ -24,24 +20,19 @@
         </title>
     </xsl:template>
     <xsl:template name="content">
-        <h1>RQDQL Syntax Validation and Parsing</h1>
-        <table style="width: 100%;">
-            <colgroup>
-                <col style="width: 50%;"/>
-                <col style="width: 50%;"/>
-            </colgroup>
-            <thead>
-                <tr>
-                    <th>RQDQL Syntax</th>
-                    <th>Parsing Result</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><textarea id="example" style="width: 100%; height: 40em;">start typing...</textarea></td>
-                    <td id="output">...</td>
-                </tr>
-            </tbody>
-        </table>
+        <div style="float:left; width: 410px;">
+            <p style="margin-top: 0;">
+                <xsl:text>RQDQL Requirements Specification:</xsl:text>
+            </p>
+            <p>
+                <textarea id="example" style="width: 400px; height: 220px;">start typing...</textarea>
+            </p>
+        </div>
+        <div style="margin-left: 460px;">
+            <p style="margin-top: 0;">
+                <xsl:text>XMI output from RQDQL compiler:</xsl:text>
+            </p>
+            <pre id="output">...</pre>
+        </div>
     </xsl:template>
 </xsl:stylesheet>

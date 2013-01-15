@@ -29,14 +29,14 @@
             </head>
             <body>
                 <xsl:apply-templates select="version"/>
-                <div id="content">
-                    <img alt="logo">
+                <p>
+                    <img alt="logo" style="width: 150px;">
                         <xsl:attribute name="src">
                             <xsl:text>http://img.rqdql.com/logo.png</xsl:text>
                         </xsl:attribute>
                     </img>
-                    <xsl:call-template name="content"/>
-                </div>
+                </p>
+                <xsl:call-template name="content"/>
             </body>
         </html>
     </xsl:template>
