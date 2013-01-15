@@ -29,7 +29,10 @@
  */
 package com.rqdql.demo;
 
-import com.jcabi.log.Logger;
+import com.jcabi.aspects.Loggable;
+import com.rqdql.semantic.Model;
+import com.rqdql.syntax.SRS;
+import com.rqdql.uml.UML;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -51,15 +54,13 @@ public final class InstantRs extends BaseRs {
      * Parse text.
      * @param text RQDQL syntax to parse
      * @return The JAX-RS response
-     * @throws Exception If some problem inside
      */
     @POST
     @Path("/")
     @Produces(MediaType.APPLICATION_XML)
-    public String post(@FormParam("text") final String text)
-        throws Exception {
-        Logger.info(this, "#post(%[text]s): validated", text);
-        return "<rqdql/>";
+    @Loggable(Loggable.INFO)
+    public String post(@FormParam("text") final String text) {
+        return new UML(new Model(new SRS(text).clauses()).sud()).xmi();
     }
 
 }

@@ -40,6 +40,11 @@
     <name>rqdql-demo</name>
     <dependencies>
         <dependency>
+            <groupId>com.rqdql</groupId>
+            <artifactId>rqdql-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.jcabi</groupId>
             <artifactId>jcabi-log</artifactId>
         </dependency>
