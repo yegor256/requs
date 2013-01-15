@@ -29,6 +29,7 @@
  */
 package com.rqdql.syntax;
 
+import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -52,4 +53,31 @@ public final class SRSTest {
         );
     }
 
+    /**
+     * Main can compile a more complex document(s).
+     * @throws Exception When necessary
+     */
+    @Test
+    public void compilesANumberOfSpecifications() throws Exception {
+        final String[] files = {
+            "SRS-Simple.rqdql",
+        };
+        for (String file : files) {
+            this.parse(file);
+        }
+    }
+
+    /**
+     * Parse resource file.
+     * @param file The file name (resource)
+     * @throws Exception When necessary
+     */
+    private void parse(final String file) throws Exception {
+        MatcherAssert.assertThat(
+            new SRS(
+                IOUtils.toString(this.getClass().getResourceAsStream(file))
+            ).clauses(),
+            Matchers.not(Matchers.emptyIterable())
+        );
+    }
 }

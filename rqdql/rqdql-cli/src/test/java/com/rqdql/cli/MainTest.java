@@ -106,7 +106,7 @@ public final class MainTest {
         Main.main(new String[] {"-h"});
         MatcherAssert.assertThat(
             this.out.toString(),
-            Matchers.containsString("usage:")
+            Matchers.containsString("Usage:")
         );
     }
 

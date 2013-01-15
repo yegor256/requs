@@ -30,7 +30,6 @@
 package com.rqdql.syntax;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -53,7 +52,7 @@ public final class SRS {
      * Public ctor.
      * @param content The text to parse
      */
-    public SRS(@NotNull @Pattern(regexp = ".+") final String content) {
+    public SRS(@NotNull final String content) {
         this.text = content;
     }
 

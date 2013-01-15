@@ -29,6 +29,7 @@
  */
 package com.rqdql.cli;
 
+import com.rqdql.syntax.SRS;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -57,7 +58,9 @@ final class Specification {
      * @return Compiled output
      */
     public String compile() {
-        return "";
+        final SRS srs = new SRS(this.text);
+        srs.clauses();
+        return "<xmi/>";
     }
 
 }

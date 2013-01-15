@@ -120,6 +120,7 @@ method_declaration returns [Clause ret]
     :
     UC_ID
     'where'
+    class_name
     signature
     ':'
     ( INFORMAL | flows )
@@ -128,8 +129,11 @@ method_declaration returns [Clause ret]
 
 signature returns [Signature ret]
     :
-    class_name
-    WORD+
+    (
+        WORD+
+        |
+        INFORMAL
+    )
     subject?
     using?
     ;
@@ -170,7 +174,7 @@ flows returns [List<Flow> ret]
         ';'
         tail=flow
         { $ret.add($tail.ret); }
-    )+
+    )*
     ;
 
 flow returns [Flow ret]
@@ -178,6 +182,8 @@ flow returns [Flow ret]
     FLOW_ID
     '.'
     (
+        'The'
+        variable
         signature
         |
         'Fail' 'since' INFORMAL

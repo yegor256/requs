@@ -30,6 +30,9 @@
 package com.rqdql.cli;
 
 import com.jcabi.manifests.Manifests;
+import java.util.Map;
+import joptsimple.HelpFormatter;
+import joptsimple.OptionDescriptor;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import org.apache.commons.io.IOUtils;
@@ -41,6 +44,29 @@ import org.apache.commons.io.IOUtils;
  * @version $Id$
  */
 public final class Main {
+
+    /**
+     * Formatter of options.
+     */
+    private static final HelpFormatter FORMATTER = new HelpFormatter() {
+        @Override
+        public String format(final
+            Map<String, ? extends OptionDescriptor> map) {
+            final StringBuilder text = new StringBuilder();
+            text.append("Usage: java -jar ")
+                .append("rqdql-cli.jar")
+                .append(" [-options] < input > output\n")
+                .append("where options include:\n");
+            for (Map.Entry<String, ? extends OptionDescriptor> entry
+                : map.entrySet()) {
+                text.append("    -")
+                    .append(entry.getKey())
+                    .append(entry.getValue().description())
+                    .append('\n');
+            }
+            return text.toString();
+        }
+    };
 
     /**
      * Private ctor, to avoid instantiation of this class.
@@ -68,6 +94,7 @@ public final class Main {
                 System.out
             );
         } else if (options.has("h")) {
+            parser.formatHelpWith(Main.FORMATTER);
             parser.printHelpOn(System.out);
         } else {
             IOUtils.write(
