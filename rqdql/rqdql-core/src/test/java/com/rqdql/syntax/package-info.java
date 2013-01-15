@@ -31,7 +31,7 @@
 /**
  * Syntax analysis, tests.
  *
- * @author Yegor Bugayenko (yegor@rqdql.com)
+ * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
 package com.rqdql.syntax;

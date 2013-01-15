@@ -35,7 +35,7 @@ import org.junit.Test;
 
 /**
  * Test case for {@link XmlSummary}.
- * @author Yegor Bugayenko (yegor@rqdql.com)
+ * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @todo #3 This is just a stub. The test should implement proper
  *  report building and validate whether the resulting XML really

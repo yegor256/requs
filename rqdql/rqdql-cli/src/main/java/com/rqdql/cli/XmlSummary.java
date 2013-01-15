@@ -38,7 +38,7 @@ import com.rqdql.thesaurus.Type;
 /**
  * Convert RQDQL grammar into XML.
  *
- * @author Yegor Bugayenko (yegor@rqdql.com)
+ * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
 public final class XmlSummary {

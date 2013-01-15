@@ -39,7 +39,7 @@ import org.junit.Test;
 
 /**
  * Test case for {@link Dispatcher}.
- * @author Yegor Bugayenko (yegor@rqdql.com)
+ * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
 public final class DispatcherTest {

@@ -32,7 +32,7 @@ package com.rqdql.syntax;
 /**
  * Clause.
  *
- * @author Yegor Bugayenko (yegor@rqdql.com)
+ * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
 public interface Clause {

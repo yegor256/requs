@@ -32,7 +32,7 @@ package com.rqdql.cli;
 /**
  * One report.
  *
- * @author Yegor Bugayenko (yegor@rqdql.com)
+ * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
 interface Report {

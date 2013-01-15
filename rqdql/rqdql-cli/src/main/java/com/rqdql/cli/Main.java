@@ -34,7 +34,7 @@ import org.apache.commons.io.IOUtils;
 /**
  * Entry point of the JAR.
  *
- * @author Yegor Bugayenko (yegor@rqdql.com)
+ * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
 public final class Main {

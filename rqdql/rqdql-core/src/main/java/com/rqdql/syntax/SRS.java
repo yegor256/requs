@@ -39,7 +39,7 @@ import org.antlr.runtime.TokenStream;
 /**
  * Software Requirements Specification syntax analysis.
  *
- * @author Yegor Bugayenko (yegor@rqdql.com)
+ * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
 public final class SRS {

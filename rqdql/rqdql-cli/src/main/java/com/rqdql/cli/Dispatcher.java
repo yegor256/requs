@@ -39,7 +39,7 @@ import com.jcabi.manifests.Manifests;
  * request and return an output string to be rendered to
  * the requester.
  *
- * @author Yegor Bugayenko (yegor@rqdql.com)
+ * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @see Main
  */
