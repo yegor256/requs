@@ -30,6 +30,9 @@
 package com.rqdql.cli;
 
 import com.jcabi.manifests.Manifests;
+import com.rqdql.semantic.Model;
+import com.rqdql.syntax.SRS;
+import com.rqdql.uml.UML;
 import java.util.Map;
 import joptsimple.HelpFormatter;
 import joptsimple.OptionDescriptor;
@@ -98,7 +101,11 @@ public final class Main {
             parser.printHelpOn(System.out);
         } else {
             IOUtils.write(
-                new Specification(IOUtils.toString(System.in)).compile(),
+                new UML(
+                    new Model(
+                        new SRS(IOUtils.toString(System.in)).clauses()
+                    ).sud()
+                ).xmi(),
                 System.out
             );
         }

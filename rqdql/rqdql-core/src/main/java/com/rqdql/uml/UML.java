@@ -27,53 +27,38 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.cli;
+package com.rqdql.uml;
 
-import com.rexsl.test.SimpleXml;
-import com.rexsl.test.XhtmlMatchers;
-import com.rexsl.test.XmlDocument;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
+import com.rqdql.semantic.RqClass;
+import javax.validation.constraints.NotNull;
 
 /**
- * Test case for {@link Main}.
+ * Requirements in UML.
+ *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-public final class SpecificationTest {
+public final class UML {
 
     /**
-     * Main can compile a more complex document(s).
-     * @throws Exception When necessary
+     * SuD.
      */
-    @Test
-    public void compilesANumberOfSpecifications() throws Exception {
-        final String[] files = {
-            "SRS-BookStore.xml",
-        };
-        for (String file : files) {
-            this.parse(file);
-        }
+    private final transient RqClass sud;
+
+    /**
+     * Public ctor.
+     * @param type The SuD
+     */
+    public UML(@NotNull final RqClass type) {
+        this.sud = type;
     }
 
     /**
-     * Parse resource file.
-     * @param file The file name (resource)
-     * @throws Exception When necessary
+     * Convert it to XMI.
+     * @return The XMI
      */
-    private void parse(final String file) throws Exception {
-        final XmlDocument xml = new SimpleXml(
-            this.getClass().getResourceAsStream(file)
-        );
-        final String input = xml.xpath("//SRS/text()").get(0);
-        final String xmi = new Specification(input).compile();
-        for (String xpath : xml.xpath("//invariant/text()")) {
-            MatcherAssert.assertThat(
-                xmi,
-                XhtmlMatchers.hasXPath(xpath)
-            );
-        }
+    public String xmi() {
+        return "<xmi/>";
     }
 
 }

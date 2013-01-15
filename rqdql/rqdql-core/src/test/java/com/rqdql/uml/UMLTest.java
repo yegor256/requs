@@ -27,40 +27,57 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.cli;
+package com.rqdql.uml;
 
+import com.rexsl.test.SimpleXml;
+import com.rexsl.test.XhtmlMatchers;
+import com.rexsl.test.XmlDocument;
+import com.rqdql.semantic.Model;
 import com.rqdql.syntax.SRS;
-import javax.validation.constraints.NotNull;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
- * Requirements specification.
- *
+ * Test case for {@link Main}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-final class Specification {
+public final class UMLTest {
 
     /**
-     * Specification text.
+     * Main can compile a more complex document(s).
+     * @throws Exception When necessary
      */
-    private final transient String text;
-
-    /**
-     * Public ctor.
-     * @param txt The text of the spec
-     */
-    public Specification(@NotNull final String txt) {
-        this.text = txt;
+    @Test
+    public void compilesANumberOfUMLs() throws Exception {
+        final String[] files = {
+            "SRS-BookStore.xml",
+        };
+        for (String file : files) {
+            this.parse(file);
+        }
     }
 
     /**
-     * Compile and return XMI.
-     * @return Compiled output
+     * Parse resource file.
+     * @param file The file name (resource)
+     * @throws Exception When necessary
      */
-    public String compile() {
-        final SRS srs = new SRS(this.text);
-        srs.clauses();
-        return "<xmi/>";
+    private void parse(final String file) throws Exception {
+        final XmlDocument xml = new SimpleXml(
+            this.getClass().getResourceAsStream(file)
+        );
+        final String input = xml.xpath("//SRS/text()").get(0);
+        final String xmi = new UML(
+            new Model(new SRS(input).clauses()).sud()
+        ).xmi();
+        for (String xpath : xml.xpath("//invariant/text()")) {
+            MatcherAssert.assertThat(
+                xmi,
+                XhtmlMatchers.hasXPath(xpath)
+            );
+        }
     }
 
 }
