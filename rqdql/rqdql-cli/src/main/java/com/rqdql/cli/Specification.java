@@ -29,29 +29,35 @@
  */
 package com.rqdql.cli;
 
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
+import javax.validation.constraints.NotNull;
 
 /**
- * Test case for {@link XmlSummary}.
+ * Requirements specification.
+ *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @todo #3 This is just a stub. The test should implement proper
- *  report building and validate whether the resulting XML really
- *  contains all the expected information.
  */
-public final class XmlSummaryTest {
+final class Specification {
 
     /**
-     * XmlSummary can work.
-     * @throws Exception If error
+     * Specification text.
      */
-    @Test
-    public void testSimpleReporting() throws Exception {
-        final XmlSummary summary = new XmlSummary("some text");
-        final String xml = summary.xml();
-        MatcherAssert.assertThat(xml, Matchers.containsString("<?xml"));
+    private final transient String text;
+
+    /**
+     * Public ctor.
+     * @param txt The text of the spec
+     */
+    public Specification(@NotNull final String txt) {
+        this.text = txt;
+    }
+
+    /**
+     * Compile and return XMI.
+     * @return Compiled output
+     */
+    public String compile() {
+        return "";
     }
 
 }

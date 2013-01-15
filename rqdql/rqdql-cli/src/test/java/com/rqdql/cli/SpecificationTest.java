@@ -29,67 +29,51 @@
  */
 package com.rqdql.cli;
 
-import com.jcabi.manifests.Manifests;
+import com.rexsl.test.SimpleXml;
+import com.rexsl.test.XhtmlMatchers;
+import com.rexsl.test.XmlDocument;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
- * Dispatcher of CLI request.
- *
- * <p>The class is instantiated in
- * {@link Main}, in order to dispatch command line interface
- * request and return an output string to be rendered to
- * the requester.
- *
+ * Test case for {@link Main}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @see Main
  */
-final class Dispatcher {
+public final class SpecificationTest {
 
     /**
-     * Entry point of the entire JAR.
-     * @param args List of command-line arguments
-     * @param input Incoming RQDQL stream
-     * @return XML produced
-     * @see Main#main(String[])
+     * Main can compile a more complex document(s).
+     * @throws Exception When necessary
      */
-    public String dispatch(final String[] args, final String input) {
-        final XmlSummary summary = new XmlSummary(input);
-        String output = null;
-        for (String arg : args) {
-            if (arg.charAt(0) == '-') {
-                output = this.option(arg);
-                break;
-            }
+    @Test
+    public void compilesANumberOfSpecifications() throws Exception {
+        final String[] files = {
+            "SRS-BookStore.xml",
+        };
+        for (String file : files) {
+            this.parse(file);
         }
-        if (output == null) {
-            output = summary.xml();
-        }
-        return output;
     }
 
     /**
-     * Parse the argument and return output.
-     * @param arg The argument
-     * @return Output
-     * @see #dispatch(String[], String)
+     * Parse resource file.
+     * @param file The file name (resource)
+     * @throws Exception When necessary
      */
-    private String option(final String arg) {
-        String out;
-        if ("-?".equals(arg)) {
-            // @checkstyle StringLiteralsConcatenation (5 lines)
-            out = "usage: java -jar rqdql-bin.jar [-?v] [reports...]\n"
-                + "Options:\n"
-                + "  -?\tShows this help message\n"
-                + "  -v\tReturns current version of the product\n"
-                + "Report bugs to <bugs@rqdql.com>";
-        } else if ("-v".equals(arg)) {
-            out = Manifests.read("RQDQL-Version");
-        } else {
-            throw new IllegalArgumentException(
-                String.format("Unknown option: %s", arg)
+    private void parse(final String file) throws Exception {
+        final XmlDocument xml = new SimpleXml(
+            this.getClass().getResourceAsStream(file)
+        );
+        final String input = xml.xpath("//SRS/text()").get(0);
+        final String xmi = new Specification(input).compile();
+        for (String xpath : xml.xpath("//invariant/text()")) {
+            MatcherAssert.assertThat(
+                xmi,
+                XhtmlMatchers.hasXPath(xpath)
             );
         }
-        return out;
     }
 
 }

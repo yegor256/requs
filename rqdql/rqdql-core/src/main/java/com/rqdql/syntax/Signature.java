@@ -27,54 +27,14 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.cli;
-
-import com.jcabi.manifests.Manifests;
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
-import org.apache.commons.io.IOUtils;
+package com.rqdql.syntax;
 
 /**
- * Entry point of the JAR.
+ * Signature.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-public final class Main {
-
-    /**
-     * Private ctor, to avoid instantiation of this class.
-     */
-    private Main() {
-        // intentionally empty
-    }
-
-    /**
-     * Entry point of the entire JAR.
-     * @param args List of command-line arguments
-     * @throws Exception If something goes wrong inside
-     */
-    public static void main(final String[] args) throws Exception {
-        final OptionParser parser = new OptionParser("vh");
-        final OptionSet options = parser.parse(args);
-        String out;
-        if (options.has("v")) {
-            IOUtils.write(
-                String.format(
-                    "%s/%s",
-                    Manifests.read("RQDQL-Version"),
-                    Manifests.read("RQDQL-Build")
-                ),
-                System.out
-            );
-        } else if (options.has("h")) {
-            parser.printHelpOn(System.out);
-        } else {
-            IOUtils.write(
-                new Specification(IOUtils.toString(System.in)).compile(),
-                System.out
-            );
-        }
-    }
+public interface Signature {
 
 }

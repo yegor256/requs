@@ -41,13 +41,15 @@ import org.junit.Test;
 public final class SRSTest {
 
     /**
-     * SRS can parse input text and produce types.
+     * SRS can parse input text and produce clauses.
      * @throws Exception When necessary
      */
     @Test
     public void parsesInputAndProducesTypes() throws Exception {
-        final Clause sud = new SRS("SuD includes: test.").sud();
-        MatcherAssert.assertThat(sud, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            new SRS("SuD includes: test.").clauses(),
+            Matchers.not(Matchers.emptyIterable())
+        );
     }
 
 }

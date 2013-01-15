@@ -3,8 +3,7 @@
  * @version $Id$
  -->
 <root>
-    <SRS>
-        <![CDATA[
+    <SRS><![CDATA[
         ActorUser is a "human being with identity".
         ActorUser is an ActorVisitor.
         UC1 where ActorVisitor (the visitor) becomes ActorUser (the user):
@@ -17,34 +16,20 @@
          credentials;
          name: text.
         Credentials of ActorUser include: login and password.
-        ]]>
-    </SRS>
-    <reporters>
-        <reporter>errors:max=5,unique</reporter>
-        <reporter>metrics</reporter>
-        <reporter>links</reporter>
-        <reporter>uml</reporter>
-        <reporter>tc</reporter>
-    </reporters>
+        ]]></SRS>
     <invariants>
         <!-- The XML contains this root element -->
         <invariant>/rqdql</invariant>
-
         <!-- There is a report present in the XML -->
         <invariant>/rqdql/errors/report[@max='5']</invariant>
-
         <!-- The report is empty -->
         <invariant>/rqdql/errors/report[not(exists(error))]</invariant>
-
         <!-- The report is present -->
         <invariant>/rqdql/metrics/report</invariant>
-
         <!-- The report is present -->
         <invariant>/rqdql/links/report</invariant>
-
         <!-- The report is present -->
         <invariant>/rqdql/uml/report</invariant>
-
         <!-- The report is present -->
         <invariant>/rqdql/tc/report</invariant>
     </invariants>

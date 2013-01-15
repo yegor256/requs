@@ -58,16 +58,16 @@ public final class SRS {
     }
 
     /**
-     * Get System under Development (SuD).
-     * @return Clause found
+     * Get all clauses found in the text.
+     * @return Clauses found
      */
-    public Clause sud() {
+    public Iterable<Clause> clauses() {
         final CharStream input = new ANTLRStringStream(this.text.toString());
         final SRSLexer lexer = new SRSLexer(input);
         final TokenStream tokens = new CommonTokenStream(lexer);
         final SRSParser parser = new SRSParser(tokens);
         try {
-            return parser.sud();
+            return parser.clauses();
         } catch (org.antlr.runtime.RecognitionException ex) {
             throw new IllegalArgumentException(ex);
         }

@@ -31,6 +31,8 @@ grammar SRS;
 
 @header {
     package com.rqdql.syntax;
+    import java.util.LinkedList;
+    import java.util.List;
 }
 
 @lexer::header {
@@ -56,7 +58,7 @@ clauses returns [List<Clause> ret]
     :
     (
         clause
-        { $ret.add(clause.ret); }
+        { $ret.add($clause.ret); }
         '.'
     )*
     EOF
@@ -64,89 +66,154 @@ clauses returns [List<Clause> ret]
 
 clause returns [Clause ret]
     :
-    desriptor
+    class_declaration
     |
-    constructor
+    class_construction
     |
-    operation
+    method_declaration
+    |
+    alternative_flow_declaration
     ;
 
-descriptor returns [Clause ret]
+class_declaration returns [Clause ret]
     :
-    object
+    class_name
     'is'
     ( 'a' | 'an' )
-    ( INFORMAL | object )
+    ( INFORMAL | class_name )
+    { $ret = new Clause() {}; }
     ;
 
-constructor returns [Clause ret]
+class_construction returns [Clause ret]
     :
-    object
-    ( 'includes?' | 'needs?' | 'contains?' | 'requires?' )
+    class_name
+    ( 'includes' | 'needs' | 'contains' | 'requires' )
     ':'
     slots
-    { $ret = new Clause(); }
+    { $ret = new Clause() {}; }
     ;
 
 slots returns [List<Slot> ret]
     @init { $ret = new LinkedList<Slot>(); }
     :
-    first
-    { $ret.add(first.ret); }
+    head=slot
+    { $ret.add($head.ret); }
     (
         ( ';' | ',' )
         ( 'and' )?
-        slot
-        { $ret.add(slot.ret); }
+        tail=slot
+        { $ret.add($tail.ret); }
     )*
     ;
 
 slot returns [Slot ret]
     :
     variable
-    ':'
-    ( INFORMAL | object )
+    (
+        'as'
+        class_name
+    )?
+    { $ret = new Slot() {}; }
     ;
 
-operation returns [Clause ret]
+method_declaration returns [Clause ret]
     :
+    UC_ID
+    'where'
     signature
     ':'
     ( INFORMAL | flows )
-    { $ret = new Clause(); }
+    { $ret = new Clause() {}; }
+    ;
+
+signature returns [Signature ret]
+    :
+    class_name
+    WORD+
+    subject?
+    using?
+    ;
+
+subject
+    :
+    class_name
+    binding
+    |
+    'the'
+    variable
+    ;
+
+binding
+    :
+    '('
+    'a'
+    variable
+    ')'
+    ;
+
+using
+    :
+    'using'
+    subject
+    (
+        'and'
+        subject
+    )*
     ;
 
 flows returns [List<Flow> ret]
     @init { $ret = new LinkedList<Flow>(); }
     :
-    first
-    { $ret.add(first.ret); }
+    head=flow
+    { $ret.add($head.ret); }
     (
         ';'
-        flow
-        { $ret.add(flow.ret); }
+        tail=flow
+        { $ret.add($tail.ret); }
     )+
     ;
 
 flow returns [Flow ret]
     :
-    ( '0' .. '9' )+
-    signature
+    FLOW_ID
+    '.'
+    (
+        signature
+        |
+        'Fail' 'since' INFORMAL
+    )
     ;
 
-signature returns [Signature ret]
+alternative_flow_declaration returns [Clause ret]
     :
-    object
-    verb
-    ( 'the' variable | object '(' 'a' variable ')' )
-    ( 'using' /* ? */ )?
+    UC_ID
+    '/'
+    FLOW_ID
+    'when'
+    INFORMAL
+    ':'
+    flows
+    { $ret = new Clause() {}; }
     ;
 
-variable returns [Variable ret]
+class_name
     :
+    CAPITAL_WORD
     ;
 
-NAME: ( 'a' .. 'z' | 'A' .. 'Z' )*;
+variable
+    :
+    WORD
+    ;
+
+UC_ID: 'UC' ( '0' .. '9' )+;
+FLOW_ID: ( '0' .. '9' )+;
+CAPITAL_WORD: 'A' .. 'Z' ( 'a' .. 'z' | 'A' .. 'Z' )+;
+WORD: ( 'a' .. 'z' )+;
+INFORMAL:
+    '"' ('\\"' | ~'"')* '"'
+    { this.setText(this.getText().substring(1, this.getText().length() - 1).replace("\\\"", "\"")); }
+    ;
 SPACE
     :
     ( ' ' | '\t' | '\n' | '\r' )+

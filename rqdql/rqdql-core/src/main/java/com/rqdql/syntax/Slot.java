@@ -27,60 +27,14 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.cli;
-
-import com.jcabi.log.Logger;
-import com.rqdql.sol.Formula;
-import com.rqdql.sol.Sud;
-import com.rqdql.thesaurus.RqdqlText;
-import com.rqdql.thesaurus.Type;
+package com.rqdql.syntax;
 
 /**
- * Convert RQDQL grammar into XML.
+ * Slot.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-public final class XmlSummary {
-
-    /**
-     * The document to work with.
-     */
-    private final transient String document;
-
-    /**
-     * Public ctor.
-     * @param doc The document with grammar
-     */
-    public XmlSummary(final String doc) {
-        this.document = doc;
-    }
-
-    /**
-     * Add new reporter to the summary.
-     * @param report The report
-     */
-    public void add(final Report report) {
-        // todo
-    }
-
-    /**
-     * Get XML summary.
-     * @return The XML report
-     */
-    public String xml() {
-        final RqdqlText text = new RqdqlText(this.document);
-        final Type sud = text.sud();
-        final Formula predicate = new Sud(sud);
-        Logger.info(
-            this,
-            "reporting finished with %s",
-            predicate
-        );
-        return String.format(
-            "<?xml version='1.0'?><rqdql>%d</rqdql>",
-            this.document.length()
-        );
-    }
+public interface Slot {
 
 }

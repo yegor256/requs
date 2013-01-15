@@ -29,8 +29,15 @@
  */
 package com.rqdql.cli;
 
+import com.rexsl.test.XhtmlMatchers;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
+import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -39,6 +46,30 @@ import org.junit.Test;
  * @version $Id$
  */
 public final class MainTest {
+
+    /**
+     * Output stream for tests.
+     */
+    private transient ByteArrayOutputStream out;
+
+    /**
+     * Change system output stream.
+     * @throws Exception When necessary
+     */
+    @Before
+    public void changeSystemOutputSteam() {
+        this.out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(this.out, true));
+    }
+
+    /**
+     * Change system output stream back.
+     * @throws Exception When necessary
+     */
+    @After
+    public void revertChangedSystemOutputSteam() {
+        System.setOut(null);
+    }
 
     /**
      * Main can work.
@@ -51,6 +82,51 @@ public final class MainTest {
         final Class<?> cls = Class.forName(name);
         MatcherAssert.assertThat(cls, Matchers.notNullValue());
         cls.newInstance();
+    }
+
+    /**
+     * Main can show the version of the application.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void displaysVersionNumber() throws Exception {
+        Main.main(new String[] {"-v"});
+        MatcherAssert.assertThat(
+            this.out.toString(),
+            Matchers.containsString("-SNAPSHOT")
+        );
+    }
+
+    /**
+     * Main can show a help message.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void rendersHelpMessage() throws Exception {
+        Main.main(new String[] {"-h"});
+        MatcherAssert.assertThat(
+            this.out.toString(),
+            Matchers.containsString("usage:")
+        );
+    }
+
+    /**
+     * Main can compile a simple SRS document into XMI.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void compilesSimpleDocument() throws Exception {
+        final InputStream origin = System.in;
+        System.setIn(IOUtils.toInputStream("User is a \"human being\"."));
+        Main.main(new String[] {});
+        System.setIn(origin);
+        MatcherAssert.assertThat(
+            this.out.toString(),
+            XhtmlMatchers.hasXPaths(
+                "/xmi",
+                "/xmi/test"
+            )
+        );
     }
 
 }
