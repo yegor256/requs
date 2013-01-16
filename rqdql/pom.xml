@@ -120,19 +120,6 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <!--
-                XOM is used as an alternative to classical Java XML
-                manipulation library, which is difficult to use and
-                very verbose. Other options considered: DOM4J, JDOM.
-                @see http://stackoverflow.com/questions/831865
-                @see http://www.xom.nu
-                -->
-                <groupId>xom</groupId>
-                <artifactId>xom</artifactId>
-                <version since="13 Oct 2010">1.2.5</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <!-- see https://github.com/yegor256/jcabi/issues/113 -->
                 <groupId>javax.servlet</groupId>
                 <artifactId>servlet-api</artifactId>

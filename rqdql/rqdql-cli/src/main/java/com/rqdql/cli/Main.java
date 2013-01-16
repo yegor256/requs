@@ -29,11 +29,18 @@
  */
 package com.rqdql.cli;
 
+import com.jcabi.aspects.Loggable;
 import com.jcabi.manifests.Manifests;
 import com.rqdql.semantic.Model;
 import com.rqdql.syntax.SRS;
 import com.rqdql.uml.UML;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Map;
+import javax.validation.constraints.NotNull;
 import joptsimple.HelpFormatter;
 import joptsimple.OptionDescriptor;
 import joptsimple.OptionParser;
@@ -45,6 +52,9 @@ import org.apache.commons.io.IOUtils;
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @checkstyle ClassDataAbstractionCoupling (500 lines)
+ * @todo #14 The class requires refactoring. It has to be broken down into
+ *  smaller classes and become more object-oriented.
  */
 public final class Main {
 
@@ -82,11 +92,12 @@ public final class Main {
      * Entry point of the entire JAR.
      * @param args List of command-line arguments
      * @throws Exception If something goes wrong inside
+     * @checkstyle MultipleStringLiterals (50 lines)
      */
-    public static void main(final String[] args) throws Exception {
-        final OptionParser parser = new OptionParser("vh");
+    @Loggable(Loggable.INFO)
+    public static void main(@NotNull final String[] args) throws Exception {
+        final OptionParser parser = new OptionParser("vhi:o:");
         final OptionSet options = parser.parse(args);
-        String out;
         if (options.has("v")) {
             IOUtils.write(
                 String.format(
@@ -100,13 +111,29 @@ public final class Main {
             parser.formatHelpWith(Main.FORMATTER);
             parser.printHelpOn(System.out);
         } else {
+            InputStream input;
+            if (options.has("i")) {
+                input = new FileInputStream(
+                    new File(options.valueOf("i").toString())
+                );
+            } else {
+                input = System.in;
+            }
+            OutputStream output;
+            if (options.has("o")) {
+                output = new FileOutputStream(
+                    new File(options.valueOf("o").toString())
+                );
+            } else {
+                output = System.out;
+            }
             IOUtils.write(
                 new UML(
                     new Model(
-                        new SRS(IOUtils.toString(System.in)).clauses()
+                        new SRS(IOUtils.toString(input)).clauses()
                     ).sud()
                 ).xmi(),
-                System.out
+                output
             );
         }
     }

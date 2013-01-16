@@ -58,6 +58,7 @@ public final class UML {
      * @return The XMI
      */
     public String xmi() {
+        assert this.sud != null;
         return "<xmi/>";
     }
 

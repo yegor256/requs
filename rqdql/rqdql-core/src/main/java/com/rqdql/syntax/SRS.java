@@ -61,7 +61,7 @@ public final class SRS {
      * @return Clauses found
      */
     public Iterable<Clause> clauses() {
-        final CharStream input = new ANTLRStringStream(this.text.toString());
+        final CharStream input = new ANTLRStringStream(this.text);
         final SRSLexer lexer = new SRSLexer(input);
         final TokenStream tokens = new CommonTokenStream(lexer);
         final SRSParser parser = new SRSParser(tokens);

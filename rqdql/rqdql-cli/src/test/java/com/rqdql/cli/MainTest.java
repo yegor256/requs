@@ -31,14 +31,16 @@ package com.rqdql.cli;
 
 import com.rexsl.test.XhtmlMatchers;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import java.io.File;
 import java.io.PrintStream;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.FileUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 /**
  * Test case for {@link Main}.
@@ -46,6 +48,13 @@ import org.junit.Test;
  * @version $Id$
  */
 public final class MainTest {
+
+    /**
+     * Temporary folder.
+     * @checkstyle VisibilityModifier (3 lines)
+     */
+    @Rule
+    public transient TemporaryFolder temp = new TemporaryFolder();
 
     /**
      * Output stream for tests.
@@ -57,7 +66,7 @@ public final class MainTest {
      * @throws Exception When necessary
      */
     @Before
-    public void changeSystemOutputSteam() {
+    public void changeSystemOutputSteam() throws Exception {
         this.out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(this.out, true));
     }
@@ -67,7 +76,7 @@ public final class MainTest {
      * @throws Exception When necessary
      */
     @After
-    public void revertChangedSystemOutputSteam() {
+    public void revertChangedSystemOutputSteam() throws Exception {
         System.setOut(null);
     }
 
@@ -116,16 +125,13 @@ public final class MainTest {
      */
     @Test
     public void compilesSimpleDocument() throws Exception {
-        final InputStream origin = System.in;
-        System.setIn(IOUtils.toInputStream("User is a \"human being\"."));
-        Main.main(new String[] {});
-        System.setIn(origin);
+        final File input = this.temp.newFile();
+        final File output = this.temp.newFile();
+        FileUtils.write(input, "User is a \"human being\".");
+        Main.main(new String[] {"-i", input.getPath(), "-o", output.getPath()});
         MatcherAssert.assertThat(
-            this.out.toString(),
-            XhtmlMatchers.hasXPaths(
-                "/xmi",
-                "/xmi/test"
-            )
+            FileUtils.readFileToString(output),
+            XhtmlMatchers.hasXPath("/xmi")
         );
     }
 

@@ -58,7 +58,9 @@ public final class Model {
      * @return SuD
      */
     public RqClass sud() {
-        return new RqClass() {};
+        assert this.clauses != null;
+        return new RqClass() {
+        };
     }
 
 }
