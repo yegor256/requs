@@ -27,40 +27,25 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.rest;
+package com.rqdql.demo.rexsl.scripts
 
-import com.rexsl.page.HttpHeadersMocker;
-import com.rexsl.page.UriInfoMocker;
-import com.rexsl.test.JaxbConverter;
-import com.rexsl.test.XhtmlMatchers;
-import javax.ws.rs.core.Response;
-import org.hamcrest.MatcherAssert;
-import org.junit.Test;
+import com.rexsl.test.RestTester
+import javax.ws.rs.core.UriBuilder
 
-/**
- * Test case for {@link IndexRs}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
- */
-public final class IndexRsTest {
-
-    /**
-     * IndexRs can render front page.
-     * @throws Exception If some problem inside
-     */
-    @Test
-    public void rendersFrontPage() throws Exception {
-        final IndexRs res = new IndexRs();
-        res.setUriInfo(new UriInfoMocker().mock());
-        res.setHttpHeaders(new HttpHeadersMocker().mock());
-        final Response response = res.index();
-        MatcherAssert.assertThat(
-            JaxbConverter.the(response.getEntity()),
-            XhtmlMatchers.hasXPaths(
-                "/page/message[.='Hello, world!']",
-                "/page/version[contains(name,'-SNAPSHOT')]"
-            )
-        );
-    }
-
-}
+def text = """
+    SuD includes: user as User.
+    Fraction is a "math calculator".
+    Fraction needs:
+      numerator as Float, and
+      denominator as Float.
+    UC1 where SuD divides two numbers:
+      1. The user creates Fraction (a fraction);
+      2. The fraction "calculates" Float (a quotient);
+      3. The user "receives results" using the quotient.
+    UC1/2 when "division by zero":
+      1. Fail since "denominator can't be zero".
+    """
+RestTester.start(UriBuilder.fromUri(rexsl.home).path('/instant'))
+    .post('compiles RQDQL', 'text=' + URLEncoder.encode(text))
+    .assertStatus(HttpURLConnection.HTTP_OK)
+    .assertXPath('/xmi')

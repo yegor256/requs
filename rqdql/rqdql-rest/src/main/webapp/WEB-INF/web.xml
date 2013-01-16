@@ -27,7 +27,7 @@
         <servlet-class>com.rexsl.core.ExceptionTrap</servlet-class>
         <init-param>
             <param-name>template</param-name>
-            <param-value>/com/rqdql/demo/exception.html.vm</param-value>
+            <param-value>/com/rqdql/rest/exception.html.vm</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
@@ -53,7 +53,7 @@
         <servlet-class>com.rexsl.core.RestfulServlet</servlet-class>
         <init-param>
             <param-name>com.rexsl.PACKAGES</param-name>
-            <param-value>com.rqdql.demo</param-value>
+            <param-value>com.rqdql.rest</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
