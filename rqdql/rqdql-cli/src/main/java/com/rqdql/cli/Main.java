@@ -29,18 +29,60 @@
  */
 package com.rqdql.cli;
 
+import com.jcabi.aspects.Loggable;
+import com.jcabi.manifests.Manifests;
+import com.rqdql.semantic.Model;
+import com.rqdql.syntax.SRS;
+import com.rqdql.uml.UML;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Map;
+import javax.validation.constraints.NotNull;
+import joptsimple.HelpFormatter;
+import joptsimple.OptionDescriptor;
+import joptsimple.OptionParser;
+import joptsimple.OptionSet;
 import org.apache.commons.io.IOUtils;
 
 /**
  * Entry point of the JAR.
  *
- * @author Yegor Bugayenko (yegor@rqdql.com)
+ * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @checkstyle ClassDataAbstractionCoupling (500 lines)
+ * @todo #14 The class requires refactoring. It has to be broken down into
+ *  smaller classes and become more object-oriented.
  */
 public final class Main {
 
     /**
-     * Private ctor, to avoid instantiation of the class.
+     * Formatter of options.
+     */
+    private static final HelpFormatter FORMATTER = new HelpFormatter() {
+        @Override
+        public String format(final
+            Map<String, ? extends OptionDescriptor> map) {
+            final StringBuilder text = new StringBuilder();
+            text.append("Usage: java -jar ")
+                .append("rqdql-cli.jar")
+                .append(" [-options] < input > output\n")
+                .append("where options include:\n");
+            for (Map.Entry<String, ? extends OptionDescriptor> entry
+                : map.entrySet()) {
+                text.append("    -")
+                    .append(entry.getKey())
+                    .append(entry.getValue().description())
+                    .append('\n');
+            }
+            return text.toString();
+        }
+    };
+
+    /**
+     * Private ctor, to avoid instantiation of this class.
      */
     private Main() {
         // intentionally empty
@@ -50,15 +92,50 @@ public final class Main {
      * Entry point of the entire JAR.
      * @param args List of command-line arguments
      * @throws Exception If something goes wrong inside
-     * @see <a href="http://stackoverflow.com/questions/309424">SO discussion</a>
+     * @checkstyle MultipleStringLiterals (50 lines)
      */
-    @SuppressWarnings("PMD.SystemPrintln")
-    public static void main(final String[] args) throws Exception {
-        final String xml = new Dispatcher().dispatch(
-            args,
-            IOUtils.toString(System.in, "UTF-8")
-        );
-        System.out.println(xml);
+    @Loggable(Loggable.INFO)
+    public static void main(@NotNull final String[] args) throws Exception {
+        final OptionParser parser = new OptionParser("vhi:o:");
+        final OptionSet options = parser.parse(args);
+        if (options.has("v")) {
+            IOUtils.write(
+                String.format(
+                    "%s/%s",
+                    Manifests.read("RQDQL-Version"),
+                    Manifests.read("RQDQL-Build")
+                ),
+                System.out
+            );
+        } else if (options.has("h")) {
+            parser.formatHelpWith(Main.FORMATTER);
+            parser.printHelpOn(System.out);
+        } else {
+            InputStream input;
+            if (options.has("i")) {
+                input = new FileInputStream(
+                    new File(options.valueOf("i").toString())
+                );
+            } else {
+                input = System.in;
+            }
+            OutputStream output;
+            if (options.has("o")) {
+                output = new FileOutputStream(
+                    new File(options.valueOf("o").toString())
+                );
+            } else {
+                output = System.out;
+            }
+            IOUtils.write(
+                new UML(
+                    new Model(
+                        new SRS(IOUtils.toString(input)).clauses()
+                    ).sud()
+                ).xmi(),
+                output
+            );
+        }
     }
 
 }

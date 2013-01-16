@@ -1,0 +1,81 @@
+#!/usr/bin/env perl
+#
+# Copyright (c) 2009-2013, RQDQL.com
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met: 1) Redistributions of source code must retain the above
+# copyright notice, this list of conditions and the following
+# disclaimer. 2) Redistributions in binary form must reproduce the above
+# copyright notice, this list of conditions and the following
+# disclaimer in the documentation and/or other materials provided
+# with the distribution. 3) Neither the name of the RQDQL.com nor
+# the names of its contributors may be used to endorse or promote
+# products derived from this software without specific prior written
+# permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+# NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+# FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+# THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+# INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+# HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+# STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+# OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+use strict;
+
+my $line_count = 0;
+my $mark_trac = 0;
+my $wk;
+
+while (<>)
+{
+    $line_count++;
+
+    # ругается на [такие] слова, указывает тип ошибки "[]" и номер строки
+    if (m(\s?\[([\w-]+)\].*?$)o)
+    {
+	print "[],$line_count: used chars '[' & ']' to wrap word \"$1\"\n";
+	next;
+    }
+
+    # ругается на слово wiki, указывает на тип ошибки "WK", номер строки и позицию в строке
+    $wk = index($_, "wiki");
+    unless ($wk == -1)
+    {
+	select STDERR;
+	print "WK,$line_count,$wk:Found word 'wiki' here\n";
+	select STDOUT;
+	next;
+    }
+
+    # начал новый параграф со строки со словом <start>
+    unless (index($_, "<start>") == -1)
+    {
+	$mark_trac = $line_count;
+	next;
+    }
+
+    # читает этот параграф до строки со словом <end>
+    if ($mark_trac)
+    {
+	unless (index($_, "<end>") == -1)
+	{
+	    # по окончании параграфа сигнализирует об ошибке "TRIANGLE"
+	    # и соообщаяет номера первой и последней строк параграфа
+	    print "TRIANGLE,$mark_trac-$line_count:Trac paragraph has been detected\n";
+	    $mark_trac = 0;
+	    next;
+	} else {
+	    # шагаю по москве
+	    next;
+	}
+    }
+}

@@ -29,16 +29,56 @@
  */
 package com.rqdql.cli;
 
+import com.rexsl.test.XhtmlMatchers;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.PrintStream;
+import org.apache.commons.io.FileUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 /**
  * Test case for {@link Main}.
- * @author Yegor Bugayenko (yegor@rqdql.com)
+ * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
 public final class MainTest {
+
+    /**
+     * Temporary folder.
+     * @checkstyle VisibilityModifier (3 lines)
+     */
+    @Rule
+    public transient TemporaryFolder temp = new TemporaryFolder();
+
+    /**
+     * Output stream for tests.
+     */
+    private transient ByteArrayOutputStream out;
+
+    /**
+     * Change system output stream.
+     * @throws Exception When necessary
+     */
+    @Before
+    public void changeSystemOutputSteam() throws Exception {
+        this.out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(this.out, true));
+    }
+
+    /**
+     * Change system output stream back.
+     * @throws Exception When necessary
+     */
+    @After
+    public void revertChangedSystemOutputSteam() throws Exception {
+        System.setOut(null);
+    }
 
     /**
      * Main can work.
@@ -51,6 +91,48 @@ public final class MainTest {
         final Class<?> cls = Class.forName(name);
         MatcherAssert.assertThat(cls, Matchers.notNullValue());
         cls.newInstance();
+    }
+
+    /**
+     * Main can show the version of the application.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void displaysVersionNumber() throws Exception {
+        Main.main(new String[] {"-v"});
+        MatcherAssert.assertThat(
+            this.out.toString(),
+            Matchers.containsString("-SNAPSHOT")
+        );
+    }
+
+    /**
+     * Main can show a help message.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void rendersHelpMessage() throws Exception {
+        Main.main(new String[] {"-h"});
+        MatcherAssert.assertThat(
+            this.out.toString(),
+            Matchers.containsString("Usage:")
+        );
+    }
+
+    /**
+     * Main can compile a simple SRS document into XMI.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void compilesSimpleDocument() throws Exception {
+        final File input = this.temp.newFile();
+        final File output = this.temp.newFile();
+        FileUtils.write(input, "User is a \"human being\".");
+        Main.main(new String[] {"-i", input.getPath(), "-o", output.getPath()});
+        MatcherAssert.assertThat(
+            FileUtils.readFileToString(output),
+            XhtmlMatchers.hasXPath("/xmi")
+        );
     }
 
 }
