@@ -197,7 +197,7 @@
                             <goal>deploy</goal>
                         </goals>
                         <configuration>
-                            <name>rqdql-demo</name>
+                            <name>rqdql-rest</name>
                             <artifacts>
                                 <artifact>${project.groupId}:${project.artifactId}:war::${project.version}</artifact>
                             </artifacts>
