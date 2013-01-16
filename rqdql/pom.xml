@@ -51,7 +51,7 @@
         <module>rqdql-core</module>
         <module>rqdql-cli</module>
         <module>rqdql-trac-plugin</module>
-        <module>rqdql-demo</module>
+        <module>rqdql-rest</module>
     </modules>
     <description><![CDATA[
         Requirements Definition and Query Language (RQDQL).

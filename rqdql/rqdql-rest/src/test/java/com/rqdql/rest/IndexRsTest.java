@@ -27,52 +27,41 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.demo;
+package com.rqdql.rest;
 
-import com.rexsl.page.PageBuilder;
-import java.net.HttpURLConnection;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import com.rqdql.rest.IndexRs;
+import com.rexsl.page.HttpHeadersMocker;
+import com.rexsl.page.UriInfoMocker;
+import com.rexsl.test.JaxbConverter;
+import com.rexsl.test.XhtmlMatchers;
 import javax.ws.rs.core.Response;
+import org.hamcrest.MatcherAssert;
+import org.junit.Test;
 
 /**
- * Error-catching resource.
- *
- * <p>The class is mutable and NOT thread-safe.
- *
+ * Test case for {@link IndexRs}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-@Path("/error")
-public final class ErrorRs extends BaseRs {
+public final class IndexRsTest {
 
     /**
-     * Show errror, on GET.
-     * @return The JAX-RS response
+     * IndexRs can render front page.
+     * @throws Exception If some problem inside
      */
-    @GET
-    @Path("/")
-    public Response get() {
-        return new PageBuilder()
-            .stylesheet("/xsl/error.xsl")
-            .build(BasePage.class)
-            .init(this)
-            .render()
-            .status(HttpURLConnection.HTTP_NOT_FOUND)
-            .build();
-    }
-
-    /**
-     * Show errror, on POST.
-     * @return The JAX-RS response
-     */
-    @POST
-    @Path("/")
-    public Response post() {
-        return Response.status(Response.Status.SEE_OTHER).location(
-            this.uriInfo().getBaseUriBuilder().clone().path("/error").build()
-        ).build();
+    @Test
+    public void rendersFrontPage() throws Exception {
+        final IndexRs res = new IndexRs();
+        res.setUriInfo(new UriInfoMocker().mock());
+        res.setHttpHeaders(new HttpHeadersMocker().mock());
+        final Response response = res.index();
+        MatcherAssert.assertThat(
+            JaxbConverter.the(response.getEntity()),
+            XhtmlMatchers.hasXPaths(
+                "/page/message[.='Hello, world!']",
+                "/page/version[contains(name,'-SNAPSHOT')]"
+            )
+        );
     }
 
 }

@@ -29,9 +29,9 @@
  */
 
 /**
- * Demo web interface.
+ * Demo web interface, tests.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-package com.rqdql.demo;
+package com.rqdql.rest;

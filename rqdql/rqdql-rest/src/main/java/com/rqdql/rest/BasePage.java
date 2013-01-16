@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.demo;
+package com.rqdql.rest;
 
 import com.jcabi.manifests.Manifests;
 import com.rexsl.page.JaxbBundle;

@@ -27,11 +27,47 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.rqdql.rest;
+
+import com.jcabi.aspects.Loggable;
+import com.jcabi.log.Logger;
+import com.rqdql.semantic.Model;
+import com.rqdql.syntax.SRS;
+import com.rqdql.uml.UML;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 /**
- * Demo web interface, tests.
+ * Instant syntax parser.
+ *
+ * <p>The class is mutable and NOT thread-safe.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-package com.rqdql.demo;
+@Path("/instant")
+public final class InstantRs extends BaseRs {
+
+    /**
+     * Parse text.
+     * @param text RQDQL syntax to parse
+     * @return The JAX-RS response
+     */
+    @POST
+    @Path("/")
+    @Produces(MediaType.APPLICATION_XML)
+    @Loggable(Loggable.INFO)
+    public String post(@FormParam("text") final String text) {
+        String xmi;
+        try {
+            xmi = new UML(new Model(new SRS(text).clauses()).sud()).xmi();
+        } catch (IllegalArgumentException ex) {
+            xmi = Logger.format("%[exception]s", ex);
+        }
+        return xmi;
+    }
+
+}

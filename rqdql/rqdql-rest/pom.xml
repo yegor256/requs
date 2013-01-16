@@ -35,9 +35,9 @@
         <artifactId>rqdql</artifactId>
         <version>2.0-SNAPSHOT</version>
     </parent>
-    <artifactId>rqdql-demo</artifactId>
+    <artifactId>rqdql-rest</artifactId>
     <packaging>war</packaging>
-    <name>rqdql-demo</name>
+    <name>rqdql-rest</name>
     <dependencies>
         <dependency>
             <groupId>com.rqdql</groupId>
