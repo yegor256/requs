@@ -27,6 +27,13 @@
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Copyright (c) 2009-2013, RQDQL.com.
+ * @version $Id$
+ *
+ * @todo #3 The architecture is not defined yet. We need to prototype
+ *       the entire system and create a proof-of-concept with key classes
+ *       and relationships between them.
  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -36,29 +43,183 @@
         <version>0.7.6</version>
     </parent>
     <groupId>com.rqdql</groupId>
-    <artifactId>rqdql-bundle</artifactId>
-    <version>2.0-SNAPSHOT</version>
+    <artifactId>rqdql</artifactId>
+    <version rqdql="yes">2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>rqdql-bundle</name>
+    <name>rqdql</name>
     <modules>
-        <module>rqdql</module>
+        <module>rqdql-core</module>
+        <module>rqdql-cli</module>
+        <module>rqdql-rest</module>
     </modules>
+    <description><![CDATA[
+        Requirements Definition and Query Language (RQDQL).
+        ]]></description>
+    <url>http://www.rqdql.com</url>
+    <inceptionYear>2009</inceptionYear>
+    <organization>
+        <name>RQDQL.com</name>
+        <url>http://www.rqdql.com</url>
+    </organization>
+    <licenses>
+        <license>
+            <name>BSD</name>
+            <url>http://www.rqdql.com/LICENSE.txt</url>
+            <distribution>repo</distribution>
+            <comments><![CDATA[
+                This is free open source project, feel free to redistribute it
+                ]]></comments>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>1</id>
+            <name>Yegor Bugayenko</name>
+            <email>yegor@tpc2.com</email>
+            <organization>TPC2.com</organization>
+            <organizationUrl>http://www.tpc2.com</organizationUrl>
+            <roles>
+                <role>Architect</role>
+                <role>Developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
+    <mailingLists>
+        <mailingList>
+            <name>RQDQL Discussions</name>
+            <subscribe>rqdql@googlegroups.com</subscribe>
+            <unsubscribe>rqdql@googlegroups.com</unsubscribe>
+            <post>rqdql@googlegroups.com</post>
+            <archive>http://groups.google.com/group/rqdql</archive>
+        </mailingList>
+    </mailingLists>
+    <issueManagement>
+        <system>Trac 0.12</system>
+        <url>http://trac.fazend.com/rqdql</url>
+    </issueManagement>
+    <ciManagement>
+        <system>jenkins</system>
+        <url>http://ci.rqdql.com:8080/job/rqdql</url>
+    </ciManagement>
+    <scm>
+        <connection>scm:svn:svn://svn.rqdql.com/rqdql/trunk/rqdql</connection>
+        <developerConnection>scm:svn:svn://svn.rqdql.com/rqdql/trunk/rqdql</developerConnection>
+        <url>http://trac.rqdql.com/rqdql/browse/rqdql/trunk/rqdql</url>
+    </scm>
+    <distributionManagement>
+        <site>
+            <id>www.rqdql.com</id>
+            <name>RQDQL.com Project Site</name>
+            <url>s3://www.rqdql.com/</url>
+        </site>
+    </distributionManagement>
+    <properties>
+        <rexsl.version>0.4.5</rexsl.version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <!-- see https://github.com/yegor256/jcabi/issues/113 -->
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>3.0-alpha-1</version>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <configuration>
-                        <skip>true</skip>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <configuration>
-                        <skipDeploy>true</skipDeploy>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+        <plugins>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <RQDQL-Version>${project.version}</RQDQL-Version>
+                            <RQDQL-Revision>${buildNumber}</RQDQL-Revision>
+                            <RQDQL-Build>${buildNumber}</RQDQL-Build>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>site</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <artifactId>maven-site-plugin</artifactId>
+                            <configuration>
+                                <reportPlugins combine.children="append">
+                                    <plugin>
+                                        <artifactId>maven-changes-plugin</artifactId>
+                                        <configuration>
+                                            <tracUser>${trac.user}</tracUser>
+                                            <tracPassword>${trac.password}</tracPassword>
+                                            <query>component=${project.artifactId}&amp;status=closed&amp;desc=1&amp;order=id</query>
+                                            <columnNames>Id, Priority, Summary, Reporter, Resolution</columnNames>
+                                        </configuration>
+                                        <reportSets>
+                                            <reportSet>
+                                                <reports>
+                                                    <report>trac-report</report>
+                                                    <report>changes-report</report>
+                                                </reports>
+                                            </reportSet>
+                                        </reportSets>
+                                    </plugin>
+                                    <plugin>
+                                        <groupId>com.rempl.plugins</groupId>
+                                        <artifactId>rempl-maven-plugin</artifactId>
+                                        <version>1.1.3</version>
+                                        <configuration>
+                                            <rom>${basedir}/src/rempl/rom.xml</rom>
+                                        </configuration>
+                                    </plugin>
+                                </reportPlugins>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <!--
+            This PDF generator doesn't work at the moment because
+            there is no ability to specify
+            "-shell-escape -enable-write18"
+            for pdflatex. I already reported this issue to the plugin team:
+            @see https://jira.codehaus.org/browse/MLATEX-16 -->
+            <id>site-disabled</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!--
+                        Process LaTeX documentation in order to produce PDF
+                        @see http://mojo.codehaus.org/latex-maven-plugin
+                        -->
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>latex-maven-plugin</artifactId>
+                        <version since="9 Dec 2012">1.1</version>
+                        <inherited>false</inherited>
+                        <configuration>
+                            <buildDir>${project.build.directory}/site/pdf</buildDir>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>latex-documents</id>
+                                <phase>post-site</phase>
+                                <goals>
+                                    <goal>latex</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
