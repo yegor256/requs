@@ -95,18 +95,18 @@
         </mailingList>
     </mailingLists>
     <issueManagement>
-        <system>Trac 0.12</system>
-        <url>http://trac.fazend.com/rqdql</url>
+        <system>github</system>
+        <url>https://github.com/yegor256/rqdql/issues</url>
     </issueManagement>
+    <scm>
+        <connection>scm:git:github.com:yegor256/rqdql.git</connection>
+        <developerConnection>scm:git:github.com:yegor256/rqdql.git</developerConnection>
+        <url>https://github.com/yegor256/rqdql</url>
+    </scm>
     <ciManagement>
         <system>jenkins</system>
         <url>http://ci.rqdql.com:8080/job/rqdql</url>
     </ciManagement>
-    <scm>
-        <connection>scm:svn:svn://svn.rqdql.com/rqdql/trunk/rqdql</connection>
-        <developerConnection>scm:svn:svn://svn.rqdql.com/rqdql/trunk/rqdql</developerConnection>
-        <url>http://trac.rqdql.com/rqdql/browse/rqdql/trunk/rqdql</url>
-    </scm>
     <distributionManagement>
         <site>
             <id>www.rqdql.com</id>
