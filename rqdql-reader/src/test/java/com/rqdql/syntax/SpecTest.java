@@ -54,13 +54,33 @@ public final class SpecTest {
     }
 
     /**
+     * Spec can compile a complex document.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void compilesComplexSpec() throws Exception {
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(
+                new Spec(
+                    IOUtils.toString(
+                        this.getClass().getResourceAsStream("example.rqdql")
+                    )
+                ).xml()
+            ),
+            XhtmlMatchers.hasXPaths(
+                "/spec/types/type[name='SuD']",
+                "/spec/types/type[name='Fraction']/info[informal='a math calculator']"
+            )
+        );
+    }
+
+    /**
      * Main can compile a more complex document(s).
      * @throws Exception When necessary
      */
     @Test
     public void compilesANumberOfSpecifications() throws Exception {
         final String[] files = {
-            "example.rqdql",
         };
         for (final String file : files) {
             this.parse(file);

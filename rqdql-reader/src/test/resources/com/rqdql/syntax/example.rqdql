@@ -1,6 +1,6 @@
 SuD includes: user as User.
 
-Fraction is a "math calculator".
+Fraction is "a math calculator".
 
 Fraction needs:
   numerator as Float, and

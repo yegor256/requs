@@ -35,16 +35,16 @@ import lombok.ToString;
 import org.xembly.Directives;
 
 /**
- * Xembly use case.
+ * Xembly slot in a type.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.1
  */
 @ToString
-@EqualsAndHashCode(callSuper = false, of = { "dirs", "start" })
+@EqualsAndHashCode(callSuper = false, of = "dirs")
 @Loggable(Loggable.DEBUG)
-final class XeUseCase extends XeMentioned implements UseCase {
+final class XeSlot extends XeMentioned implements Slot {
 
     /**
      * All directives.
@@ -61,36 +61,23 @@ final class XeUseCase extends XeMentioned implements UseCase {
      * @param directives Directives to extend
      * @param xpath XPath to start with
      */
-    XeUseCase(final Directives directives, final String xpath) {
+    XeSlot(final Directives directives, final String xpath) {
         super(directives, xpath);
         this.dirs = directives;
         this.start = xpath;
     }
 
     @Override
-    public Signature signature() {
-        throw new UnsupportedOperationException("#signature()");
+    public void explain(final String informal) {
+        assert informal != null;
+        this.dirs.xpath(this.start)
+            .addIf("info").add("informal").set(informal);
     }
 
     @Override
-    public Step step(final int number) {
-        this.dirs.xpath(this.start).addIf("steps").add("step")
-            .add("number").set(Integer.toString(number));
-        return new XeStep(
-            this.dirs,
-            String.format("%s/steps/step[number=%d]", this.start, number)
-        );
+    public void assign(final String type) {
+        assert type != null;
+        this.dirs.xpath(this.start).add("type").set(type);
     }
 
-    @Override
-    public Step when(final int number, final String text) {
-        assert text != null;
-        this.dirs.addIf("alternatives").add("alternative")
-            .add("step").set(Integer.toString(number)).up()
-            .add("when").set(text);
-        return new XeStep(
-            this.dirs,
-            String.format("%s/steps/step[number=%d]", this.start, number)
-        );
-    }
 }

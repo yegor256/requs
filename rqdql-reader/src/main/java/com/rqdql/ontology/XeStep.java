@@ -42,7 +42,7 @@ import org.xembly.Directives;
  * @since 1.1
  */
 @ToString
-@EqualsAndHashCode(callSuper = false, of = "dirs")
+@EqualsAndHashCode(callSuper = false, of = { "dirs", "start" })
 @Loggable(Loggable.DEBUG)
 final class XeStep extends XeMentioned implements Step {
 
@@ -52,34 +52,46 @@ final class XeStep extends XeMentioned implements Step {
     private final transient Directives dirs;
 
     /**
+     * Starting XPath.
+     */
+    private final transient String start;
+
+    /**
      * Ctor.
      * @param directives Directives to extend
+     * @param xpath XPath to start with
      */
-    XeStep(final Directives directives) {
-        super(directives);
+    XeStep(final Directives directives, final String xpath) {
+        super(directives, xpath);
         this.dirs = directives;
+        this.start = xpath;
     }
 
     @Override
     public void object(final String name, final String type) {
-        this.dirs.add("object")
+        assert name != null;
+        assert type != null;
+        this.dirs.xpath(this.start).add("object")
             .add("name").set(name).up()
-            .add("type").set(type).up().up();
+            .add("type").set(type);
     }
 
     @Override
     public void object(final String name) {
-        this.dirs.add("object").add("name").set(name).up();
+        assert name != null;
+        this.dirs.xpath(this.start).add("object").add("name").set(name);
     }
 
     @Override
     public void formal(final String text) {
-        this.dirs.add("formal").set(text).up();
+        assert text != null;
+        this.dirs.xpath(this.start).add("formal").set(text);
     }
 
     @Override
     public void informal(final String text) {
-        this.dirs.add("informal").set(text).up();
+        assert text != null;
+        this.dirs.xpath(this.start).add("informal").set(text);
     }
 
 }

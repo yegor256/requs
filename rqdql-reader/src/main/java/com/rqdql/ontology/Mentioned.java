@@ -42,6 +42,6 @@ public interface Mentioned {
      * Mention it in the given lines of source.
      * @param where Where was it mentioned
      */
-    void mention(String where);
+    void mention(int where);
 
 }

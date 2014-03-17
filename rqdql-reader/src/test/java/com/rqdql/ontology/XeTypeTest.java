@@ -29,46 +29,47 @@
  */
 package com.rqdql.ontology;
 
-import com.jcabi.aspects.Loggable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import com.rexsl.test.XhtmlMatchers;
+import org.hamcrest.MatcherAssert;
+import org.junit.Test;
 import org.xembly.Directives;
+import org.xembly.Xembler;
 
 /**
- * Xembly property in a type.
- *
+ * Test case for {@link XeType}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.1
  */
-@ToString
-@EqualsAndHashCode(callSuper = false, of = "dirs")
-@Loggable(Loggable.DEBUG)
-final class XeProperty extends XeMentioned implements Property {
+public final class XeTypeTest {
 
     /**
-     * All directives.
+     * XeType can do type manipulations.
+     * @throws Exception When necessary
      */
-    private final transient Directives dirs;
-
-    /**
-     * Ctor.
-     * @param directives Directives to extend
-     */
-    XeProperty(final Directives directives) {
-        super(directives);
-        this.dirs = directives;
-    }
-
-    @Override
-    public void explain(final String informal) {
-        this.dirs.addIf("info").add("informal").set(informal)
-            .up().up().up().up();
-    }
-
-    @Override
-    public void assign(final String type) {
-        this.dirs.add("type").set(type).up().up().up();
+    @Test
+    public void manipulatesWithType() throws Exception {
+        final Directives dirs = new Directives().add("t");
+        final Type type = new XeType(dirs, "/t");
+        type.explain("first text");
+        type.explain("second text");
+        type.parent("Root");
+        type.slot("one").assign("E");
+        type.mention(2);
+        type.mention(4);
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
+            XhtmlMatchers.hasXPaths(
+                "/t",
+                "/t/info",
+                "/t/info[informal='first text']",
+                "/t/info[informal='second text']",
+                "/t/parents[parent='Root']",
+                "/t/mentioned[where='2']",
+                "/t/mentioned[where='4']",
+                "/t/slots/slot[type='E']"
+            )
+        );
     }
 
 }

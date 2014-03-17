@@ -29,68 +29,25 @@
  */
 package com.rqdql.ontology;
 
-import com.jcabi.aspects.Loggable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.xembly.Directives;
-
 /**
- * Xembly use case.
+ * Slot of a type.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.1
  */
-@ToString
-@EqualsAndHashCode(callSuper = false, of = { "dirs", "start" })
-@Loggable(Loggable.DEBUG)
-final class XeUseCase extends XeMentioned implements UseCase {
+public interface Slot extends Mentioned {
 
     /**
-     * All directives.
+     * Explain this slot.
+     * @param informal Informal explanation
      */
-    private final transient Directives dirs;
+    void explain(String informal);
 
     /**
-     * Starting XPath.
+     * Assign a type to the slot.
+     * @param type Type to assign
      */
-    private final transient String start;
+    void assign(String type);
 
-    /**
-     * Ctor.
-     * @param directives Directives to extend
-     * @param xpath XPath to start with
-     */
-    XeUseCase(final Directives directives, final String xpath) {
-        super(directives, xpath);
-        this.dirs = directives;
-        this.start = xpath;
-    }
-
-    @Override
-    public Signature signature() {
-        throw new UnsupportedOperationException("#signature()");
-    }
-
-    @Override
-    public Step step(final int number) {
-        this.dirs.xpath(this.start).addIf("steps").add("step")
-            .add("number").set(Integer.toString(number));
-        return new XeStep(
-            this.dirs,
-            String.format("%s/steps/step[number=%d]", this.start, number)
-        );
-    }
-
-    @Override
-    public Step when(final int number, final String text) {
-        assert text != null;
-        this.dirs.addIf("alternatives").add("alternative")
-            .add("step").set(Integer.toString(number)).up()
-            .add("when").set(text);
-        return new XeStep(
-            this.dirs,
-            String.format("%s/steps/step[number=%d]", this.start, number)
-        );
-    }
 }

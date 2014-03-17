@@ -32,8 +32,12 @@ grammar Spec;
 @header {
     package com.rqdql.syntax;
     import com.rqdql.ontology.Ontology;
+    import com.rqdql.ontology.Slot;
+    import com.rqdql.ontology.Type;
+    import java.util.Collection;
     import java.util.LinkedList;
     import java.util.List;
+    import org.antlr.runtime.tree.CommonTree;
 }
 
 @lexer::header {
@@ -48,6 +52,11 @@ grammar Spec;
 }
 
 @parser::members {
+    private static class SlotItem {
+        public String name;
+        public String type;
+        public int line;
+    }
     private Ontology onto;
     public void setOntology(Ontology ont) {
         this.onto = ont;
@@ -80,11 +89,24 @@ clause
 
 class_declaration
     :
-    class_name
+    self=class_name
     'is'
-    ( 'a' | 'an' )
-    ( INFORMAL | class_name )
-    { ; }
+    (
+        INFORMAL
+        {
+            Type type = this.onto.type($self.ret);
+            type.explain($INFORMAL.text);
+            type.mention(input.LT(1).getLine());
+        }
+        |
+        ( 'a' | 'an' )
+        parent=class_name
+        {
+            Type type = this.onto.type($self.ret);
+            type.parent($parent.text);
+            type.mention(input.LT(1).getLine());
+        }
+    )
     ;
 
 class_construction
@@ -93,29 +115,41 @@ class_construction
     ( 'includes' | 'needs' | 'contains' | 'requires' )
     ':'
     slots
-    { ; }
+    {
+        for (SlotItem item : $slots.ret) {
+            Slot slot = this.onto.type($class_name.ret).slot(item.name);
+            slot.assign(item.type);
+            slot.mention(item.line);
+        }
+    }
     ;
 
-slots
+slots returns [Collection<SlotItem> ret]
+    @init { $ret = new LinkedList<SlotItem>(); }
     :
     head=slot
-    { ; }
+    { $ret.add($head.ret); }
     (
         ( ';' | ',' )
         ( 'and' )?
         tail=slot
-        { ; }
+        { $ret.add($tail.ret); }
     )*
     ;
 
-slot
+slot returns [SlotItem ret]
     :
     variable
     (
         'as'
         class_name
     )?
-    { ; }
+    {
+        $ret = new SlotItem();
+        $ret.name = $variable.text;
+        $ret.type = $class_name.text;
+        $ret.line = input.LT(1).getLine();
+    }
     ;
 
 method_declaration
@@ -203,9 +237,10 @@ alternative_flow_declaration
     { ; }
     ;
 
-class_name
+class_name returns [String ret]
     :
     CAPITAL_WORD
+    { $ret = $CAPITAL_WORD.text; }
     ;
 
 variable

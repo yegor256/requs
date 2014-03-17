@@ -42,7 +42,7 @@ import org.xembly.Directives;
  * @since 1.1
  */
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false, of = { "dirs", "start" })
 @Loggable(Loggable.DEBUG)
 class XeMentioned implements Mentioned {
 
@@ -52,15 +52,23 @@ class XeMentioned implements Mentioned {
     private final transient Directives dirs;
 
     /**
+     * Starting XPath.
+     */
+    private final transient String start;
+
+    /**
      * Ctor.
      * @param directives Directives to extend
+     * @param xpath XPath to start with
      */
-    XeMentioned(final Directives directives) {
+    XeMentioned(final Directives directives, final String xpath) {
         this.dirs = directives;
+        this.start = xpath;
     }
 
     @Override
-    public final void mention(final String where) {
-        this.dirs.addIf("mentioned").add("where").set(where).up().up();
+    public final void mention(final int where) {
+        this.dirs.xpath(this.start).addIf("mentioned")
+            .add("where").set(Integer.toString(where));
     }
 }

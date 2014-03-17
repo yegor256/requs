@@ -42,7 +42,7 @@ import org.xembly.Directives;
  * @since 1.1
  */
 @ToString
-@EqualsAndHashCode(callSuper = false, of = "dirs")
+@EqualsAndHashCode(callSuper = false, of = { "dirs", "start" })
 @Loggable(Loggable.DEBUG)
 final class XeType extends XeMentioned implements Type {
 
@@ -52,22 +52,42 @@ final class XeType extends XeMentioned implements Type {
     private final transient Directives dirs;
 
     /**
+     * Starting XPath.
+     */
+    private final transient String start;
+
+    /**
      * Ctor.
      * @param directives Directives to extend
+     * @param xpath XPath to start with
      */
-    XeType(final Directives directives) {
-        super(directives);
+    XeType(final Directives directives, final String xpath) {
+        super(directives, xpath);
         this.dirs = directives;
+        this.start = xpath;
+    }
+
+    @Override
+    public void parent(final String type) {
+        assert type != null;
+        this.dirs.xpath(this.start).addIf("parents").add("parent").set(type);
     }
 
     @Override
     public void explain(final String informal) {
-        this.dirs.addIf("info").add("informal").set(informal).up().up();
+        assert informal != null;
+        this.dirs.xpath(this.start).addIf("info").add("informal").set(informal);
     }
 
     @Override
-    public Property property(final String name) {
-        return new XeProperty(this.dirs);
+    public Slot slot(final String name) {
+        assert name != null;
+        this.dirs.xpath(this.start)
+            .addIf("slots").add("slot").add("name").set(name);
+        return new XeSlot(
+            this.dirs,
+            String.format("%s/slots/slot[name='%s']", this.start, name)
+        );
     }
 
 }

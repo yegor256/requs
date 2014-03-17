@@ -29,68 +29,45 @@
  */
 package com.rqdql.ontology;
 
-import com.jcabi.aspects.Loggable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import com.rexsl.test.XhtmlMatchers;
+import org.hamcrest.MatcherAssert;
+import org.junit.Test;
 import org.xembly.Directives;
+import org.xembly.Xembler;
 
 /**
- * Xembly use case.
- *
+ * Test case for {@link XeSlot}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.1
  */
-@ToString
-@EqualsAndHashCode(callSuper = false, of = { "dirs", "start" })
-@Loggable(Loggable.DEBUG)
-final class XeUseCase extends XeMentioned implements UseCase {
+public final class XeSlotTest {
 
     /**
-     * All directives.
+     * XeSlot can do slot manipulations.
+     * @throws Exception When necessary
      */
-    private final transient Directives dirs;
-
-    /**
-     * Starting XPath.
-     */
-    private final transient String start;
-
-    /**
-     * Ctor.
-     * @param directives Directives to extend
-     * @param xpath XPath to start with
-     */
-    XeUseCase(final Directives directives, final String xpath) {
-        super(directives, xpath);
-        this.dirs = directives;
-        this.start = xpath;
-    }
-
-    @Override
-    public Signature signature() {
-        throw new UnsupportedOperationException("#signature()");
-    }
-
-    @Override
-    public Step step(final int number) {
-        this.dirs.xpath(this.start).addIf("steps").add("step")
-            .add("number").set(Integer.toString(number));
-        return new XeStep(
-            this.dirs,
-            String.format("%s/steps/step[number=%d]", this.start, number)
+    @Test
+    public void manipulatesWithProperty() throws Exception {
+        final Directives dirs = new Directives().add("p");
+        final Slot slot = new XeSlot(dirs, "/p");
+        slot.explain("first text");
+        slot.explain("second text");
+        slot.assign("Employee");
+        slot.mention(2);
+        slot.mention(4);
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
+            XhtmlMatchers.hasXPaths(
+                "/p",
+                "/p/info",
+                "/p/info[informal='first text']",
+                "/p/info[informal='second text']",
+                "/p[type='Employee']",
+                "/p/mentioned[where='2']",
+                "/p/mentioned[where='4']"
+            )
         );
     }
 
-    @Override
-    public Step when(final int number, final String text) {
-        assert text != null;
-        this.dirs.addIf("alternatives").add("alternative")
-            .add("step").set(Integer.toString(number)).up()
-            .add("when").set(text);
-        return new XeStep(
-            this.dirs,
-            String.format("%s/steps/step[number=%d]", this.start, number)
-        );
-    }
 }

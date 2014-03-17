@@ -29,25 +29,39 @@
  */
 package com.rqdql.ontology;
 
+import com.rexsl.test.XhtmlMatchers;
+import org.hamcrest.MatcherAssert;
+import org.junit.Test;
+import org.xembly.Xembler;
+
 /**
- * Property of a type.
- *
+ * Test case for {@link XeOntology}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.1
  */
-public interface Property extends Mentioned {
+public final class XeOntologyTest {
 
     /**
-     * Explain this property.
-     * @param informal Informal explanation
+     * XeOntology can do manipulations.
+     * @throws Exception When necessary
      */
-    void explain(String informal);
-
-    /**
-     * Assign a type to the property.
-     * @param type Type to assign
-     */
-    void assign(String type);
+    @Test
+    public void manipulatesWithTypesAndUseCases() throws Exception {
+        final XeOntology onto = new XeOntology();
+        final Type type = onto.type("First");
+        type.explain("first text");
+        type.parent("Root");
+        type.slot("one").assign("E");
+        onto.type("Second").explain("second text");
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(new Xembler(onto).xml()),
+            XhtmlMatchers.hasXPaths(
+                "/spec",
+                "/spec/types/type[name='First']",
+                "/spec/types/type[name='Second']"
+            )
+        );
+    }
 
 }
