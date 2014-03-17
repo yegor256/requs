@@ -43,6 +43,15 @@
     <name>rqdql-reader</name>
     <dependencies>
         <dependency>
+            <groupId>com.jcabi.incubator</groupId>
+            <artifactId>xembly</artifactId>
+            <version>0.15.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr-runtime</artifactId>
         </dependency>
@@ -62,6 +71,11 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-xml</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.rexsl</groupId>

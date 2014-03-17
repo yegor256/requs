@@ -120,7 +120,7 @@ public final class MainTest {
     }
 
     /**
-     * Main can compile a simple SRS document into XMI.
+     * Main can compile a simple Spec document into XMI.
      * @throws Exception When necessary
      */
     @Test

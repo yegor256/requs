@@ -27,10 +27,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-grammar SRS;
+grammar Spec;
 
 @header {
     package com.rqdql.syntax;
+    import com.rqdql.ontology.Ontology;
     import java.util.LinkedList;
     import java.util.List;
 }
@@ -47,24 +48,26 @@ grammar SRS;
 }
 
 @parser::members {
+    private Ontology onto;
+    public void setOntology(Ontology ont) {
+        this.onto = ont;
+    }
     @Override
     public void emitErrorMessage(String msg) {
         throw new IllegalArgumentException(msg);
     }
 }
 
-clauses returns [List<Clause> ret]
-    @init { $ret = new LinkedList<Clause>(); }
+clauses
     :
     (
         clause
-        { $ret.add($clause.ret); }
         '.'
     )*
     EOF
     ;
 
-clause returns [Clause ret]
+clause
     :
     class_declaration
     |
@@ -75,48 +78,47 @@ clause returns [Clause ret]
     alternative_flow_declaration
     ;
 
-class_declaration returns [Clause ret]
+class_declaration
     :
     class_name
     'is'
     ( 'a' | 'an' )
     ( INFORMAL | class_name )
-    { $ret = new Clause() {}; }
+    { ; }
     ;
 
-class_construction returns [Clause ret]
+class_construction
     :
     class_name
     ( 'includes' | 'needs' | 'contains' | 'requires' )
     ':'
     slots
-    { $ret = new Clause() {}; }
+    { ; }
     ;
 
-slots returns [List<Slot> ret]
-    @init { $ret = new LinkedList<Slot>(); }
+slots
     :
     head=slot
-    { $ret.add($head.ret); }
+    { ; }
     (
         ( ';' | ',' )
         ( 'and' )?
         tail=slot
-        { $ret.add($tail.ret); }
+        { ; }
     )*
     ;
 
-slot returns [Slot ret]
+slot
     :
     variable
     (
         'as'
         class_name
     )?
-    { $ret = new Slot() {}; }
+    { ; }
     ;
 
-method_declaration returns [Clause ret]
+method_declaration
     :
     UC_ID
     'where'
@@ -124,10 +126,10 @@ method_declaration returns [Clause ret]
     signature
     ':'
     ( INFORMAL | flows )
-    { $ret = new Clause() {}; }
+    { ; }
     ;
 
-signature returns [Signature ret]
+signature
     :
     (
         WORD+
@@ -165,19 +167,18 @@ using
     )*
     ;
 
-flows returns [List<Flow> ret]
-    @init { $ret = new LinkedList<Flow>(); }
+flows
     :
     head=flow
-    { $ret.add($head.ret); }
+    { ; }
     (
         ';'
         tail=flow
-        { $ret.add($tail.ret); }
+        { ; }
     )*
     ;
 
-flow returns [Flow ret]
+flow
     :
     FLOW_ID
     '.'
@@ -190,7 +191,7 @@ flow returns [Flow ret]
     )
     ;
 
-alternative_flow_declaration returns [Clause ret]
+alternative_flow_declaration
     :
     UC_ID
     '/'
@@ -199,7 +200,7 @@ alternative_flow_declaration returns [Clause ret]
     INFORMAL
     ':'
     flows
-    { $ret = new Clause() {}; }
+    { ; }
     ;
 
 class_name

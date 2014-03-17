@@ -27,47 +27,59 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.rest;
+package com.rqdql.ontology;
 
 import com.jcabi.aspects.Loggable;
-import com.jcabi.log.Logger;
-import com.rqdql.semantic.Model;
-import com.rqdql.syntax.Spec;
-import com.rqdql.uml.UML;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.xembly.Directives;
 
 /**
- * Instant syntax parser.
- *
- * <p>The class is mutable and NOT thread-safe.
+ * Xembly step.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.1
  */
-@Path("/instant")
-public final class InstantRs extends BaseRs {
+@ToString
+@EqualsAndHashCode(callSuper = false, of = "dirs")
+@Loggable(Loggable.DEBUG)
+final class XeStep extends XeMentioned implements Step {
 
     /**
-     * Parse text.
-     * @param text RQDQL syntax to parse
-     * @return The JAX-RS response
+     * All directives.
      */
-    @POST
-    @Path("/")
-    @Produces(MediaType.APPLICATION_XML)
-    @Loggable(Loggable.INFO)
-    public String post(@FormParam("text") final String text) {
-        String xmi;
-        try {
-            xmi = new UML(new Model(new Spec(text).clauses()).sud()).xmi();
-        } catch (IllegalArgumentException ex) {
-            xmi = Logger.format("%[exception]s", ex);
-        }
-        return xmi;
+    private final transient Directives dirs;
+
+    /**
+     * Ctor.
+     * @param directives Directives to extend
+     */
+    XeStep(final Directives directives) {
+        super(directives);
+        this.dirs = directives;
+    }
+
+    @Override
+    public void object(final String name, final String type) {
+        this.dirs.add("object")
+            .add("name").set(name).up()
+            .add("type").set(type).up().up();
+    }
+
+    @Override
+    public void object(final String name) {
+        this.dirs.add("object").add("name").set(name).up();
+    }
+
+    @Override
+    public void formal(final String text) {
+        this.dirs.add("formal").set(text).up();
+    }
+
+    @Override
+    public void informal(final String text) {
+        this.dirs.add("informal").set(text).up();
     }
 
 }

@@ -32,7 +32,7 @@ package com.rqdql.cli;
 import com.jcabi.aspects.Loggable;
 import com.jcabi.manifests.Manifests;
 import com.rqdql.semantic.Model;
-import com.rqdql.syntax.SRS;
+import com.rqdql.syntax.Spec;
 import com.rqdql.uml.UML;
 import java.io.File;
 import java.io.FileInputStream;
@@ -130,7 +130,7 @@ public final class Main {
             IOUtils.write(
                 new UML(
                     new Model(
-                        new SRS(IOUtils.toString(input)).clauses()
+                        new Spec(IOUtils.toString(input)).clauses()
                     ).sud()
                 ).xmi(),
                 output

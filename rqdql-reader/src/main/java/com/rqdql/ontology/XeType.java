@@ -27,49 +27,47 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.syntax;
+package com.rqdql.ontology;
 
-import javax.validation.constraints.NotNull;
-import org.antlr.runtime.ANTLRStringStream;
-import org.antlr.runtime.CharStream;
-import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.TokenStream;
+import com.jcabi.aspects.Loggable;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.xembly.Directives;
 
 /**
- * Software Requirements Specification syntax analysis.
+ * Xembly type.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.1
  */
-public final class SRS {
+@ToString
+@EqualsAndHashCode(callSuper = false, of = "dirs")
+@Loggable(Loggable.DEBUG)
+final class XeType extends XeMentioned implements Type {
 
     /**
-     * Text to parse.
+     * All directives.
      */
-    private final transient String text;
+    private final transient Directives dirs;
 
     /**
-     * Public ctor.
-     * @param content The text to parse
+     * Ctor.
+     * @param directives Directives to extend
      */
-    public SRS(@NotNull final String content) {
-        this.text = content;
+    XeType(final Directives directives) {
+        super(directives);
+        this.dirs = directives;
     }
 
-    /**
-     * Get all clauses found in the text.
-     * @return Clauses found
-     */
-    public Iterable<Clause> clauses() {
-        final CharStream input = new ANTLRStringStream(this.text);
-        final SRSLexer lexer = new SRSLexer(input);
-        final TokenStream tokens = new CommonTokenStream(lexer);
-        final SRSParser parser = new SRSParser(tokens);
-        try {
-            return parser.clauses();
-        } catch (org.antlr.runtime.RecognitionException ex) {
-            throw new IllegalArgumentException(ex);
-        }
+    @Override
+    public void explain(final String informal) {
+        this.dirs.addIf("info").add("informal").set(informal).up().up();
+    }
+
+    @Override
+    public Property property(final String name) {
+        return new XeProperty(this.dirs);
     }
 
 }

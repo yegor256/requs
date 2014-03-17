@@ -27,14 +27,33 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.semantic;
+package com.rqdql.ontology;
 
 /**
- * Class in RQDQL.
+ * Signature.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.1
  */
-public interface RqClass {
+public interface Signature {
+
+    /**
+     * Append type.
+     * @param type Type to add
+     */
+    void type(String type);
+
+    /**
+     * Append formal text.
+     * @param text Text to append
+     */
+    void formal(String text);
+
+    /**
+     * Append informal text.
+     * @param text Text to append
+     */
+    void informal(String text);
 
 }

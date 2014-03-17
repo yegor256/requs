@@ -27,11 +27,48 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.rqdql.ontology;
+
+import com.jcabi.aspects.Loggable;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.xembly.Directives;
 
 /**
- * XMI/UML presentation.
+ * Xembly property in a type.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.1
  */
-package com.rqdql.uml;
+@ToString
+@EqualsAndHashCode(callSuper = false, of = "dirs")
+@Loggable(Loggable.DEBUG)
+final class XeProperty extends XeMentioned implements Property {
+
+    /**
+     * All directives.
+     */
+    private final transient Directives dirs;
+
+    /**
+     * Ctor.
+     * @param directives Directives to extend
+     */
+    XeProperty(final Directives directives) {
+        super(directives);
+        this.dirs = directives;
+    }
+
+    @Override
+    public void explain(final String informal) {
+        this.dirs.addIf("info").add("informal").set(informal)
+            .up().up().up().up();
+    }
+
+    @Override
+    public void assign(final String type) {
+        this.dirs.add("type").set(type).up().up().up();
+    }
+
+}

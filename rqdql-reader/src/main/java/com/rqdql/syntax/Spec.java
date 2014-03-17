@@ -29,12 +29,58 @@
  */
 package com.rqdql.syntax;
 
+import com.rqdql.ontology.XeOntology;
+import javax.validation.constraints.NotNull;
+import org.antlr.runtime.ANTLRStringStream;
+import org.antlr.runtime.CharStream;
+import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.TokenStream;
+import org.xembly.ImpossibleModificationException;
+import org.xembly.Xembler;
+
 /**
- * Flow.
+ * Syntax analysis.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-public interface Flow {
+public final class Spec {
+
+    /**
+     * Text to parse.
+     */
+    private final transient String text;
+
+    /**
+     * Public ctor.
+     * @param content The text to parse
+     */
+    public Spec(@NotNull final String content) {
+        this.text = content;
+    }
+
+    /**
+     * Get all clauses found in the text.
+     * @return Clauses found
+     */
+    public String xml() {
+        final CharStream input = new ANTLRStringStream(this.text);
+        final SpecLexer lexer = new SpecLexer(input);
+        final TokenStream tokens = new CommonTokenStream(lexer);
+        final SpecParser parser = new SpecParser(tokens);
+        final XeOntology onto = new XeOntology();
+        parser.setOntology(onto);
+        try {
+            parser.clauses();
+        } catch (final RecognitionException ex) {
+            throw new IllegalArgumentException(ex);
+        }
+        try {
+            return new Xembler(onto).xml();
+        } catch (ImpossibleModificationException ex) {
+            throw new IllegalStateException(ex);
+        }
+    }
 
 }

@@ -27,57 +27,34 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.syntax;
-
-import org.apache.commons.io.IOUtils;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
+package com.rqdql.ontology;
 
 /**
- * Test case for {@link SRS}.
+ * Use case.
+ *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.1
  */
-public final class SRSTest {
+public interface UseCase extends Mentioned {
 
     /**
-     * SRS can parse input text and produce clauses.
-     * @throws Exception When necessary
+     * Create new type.
+     * @return Signature
      */
-    @Test
-    public void parsesInputAndProducesTypes() throws Exception {
-        MatcherAssert.assertThat(
-            new SRS("SuD includes: test.").clauses(),
-            Matchers.not(Matchers.emptyIterable())
-        );
-    }
+    Signature signature();
 
     /**
-     * Main can compile a more complex document(s).
-     * @throws Exception When necessary
+     * Register and return a step.
+     * @param number Step number
      */
-    @Test
-    public void compilesANumberOfSpecifications() throws Exception {
-        final String[] files = {
-            "SRS-Simple.rqdql",
-        };
-        for (String file : files) {
-            this.parse(file);
-        }
-    }
+    Step step(int number);
 
     /**
-     * Parse resource file.
-     * @param file The file name (resource)
-     * @throws Exception When necessary
+     * Exception at a step.
+     * @param number Step number
+     * @param text Exception text
      */
-    private void parse(final String file) throws Exception {
-        MatcherAssert.assertThat(
-            new SRS(
-                IOUtils.toString(this.getClass().getResourceAsStream(file))
-            ).clauses(),
-            Matchers.not(Matchers.emptyIterable())
-        );
-    }
+    Step when(int number, String text);
+
 }

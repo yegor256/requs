@@ -27,11 +27,40 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.rqdql.ontology;
 
 /**
- * XMI/UML presentation, tests.
+ * Step.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.1
  */
-package com.rqdql.uml;
+public interface Step extends Mentioned {
+
+    /**
+     * Append object.
+     * @param name Name of the object
+     * @param type Type to add
+     */
+    void object(String name, String type);
+
+    /**
+     * Append object.
+     * @param name Name of the object
+     */
+    void object(String name);
+
+    /**
+     * Append formal text.
+     * @param text Text to append
+     */
+    void formal(String text);
+
+    /**
+     * Append informal text.
+     * @param text Text to append
+     */
+    void informal(String text);
+
+}

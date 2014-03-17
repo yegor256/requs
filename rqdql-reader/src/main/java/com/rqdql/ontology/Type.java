@@ -27,47 +27,27 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.rest;
-
-import com.jcabi.aspects.Loggable;
-import com.jcabi.log.Logger;
-import com.rqdql.semantic.Model;
-import com.rqdql.syntax.Spec;
-import com.rqdql.uml.UML;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+package com.rqdql.ontology;
 
 /**
- * Instant syntax parser.
- *
- * <p>The class is mutable and NOT thread-safe.
+ * Type.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.1
  */
-@Path("/instant")
-public final class InstantRs extends BaseRs {
+public interface Type extends Mentioned {
 
     /**
-     * Parse text.
-     * @param text RQDQL syntax to parse
-     * @return The JAX-RS response
+     * Found an explanation.
+     * @param informal Informal explanation of it
      */
-    @POST
-    @Path("/")
-    @Produces(MediaType.APPLICATION_XML)
-    @Loggable(Loggable.INFO)
-    public String post(@FormParam("text") final String text) {
-        String xmi;
-        try {
-            xmi = new UML(new Model(new Spec(text).clauses()).sud()).xmi();
-        } catch (IllegalArgumentException ex) {
-            xmi = Logger.format("%[exception]s", ex);
-        }
-        return xmi;
-    }
+    void explain(String informal);
+
+    /**
+     * Found a property of the type.
+     * @param name Property name
+     */
+    Property property(String name);
 
 }

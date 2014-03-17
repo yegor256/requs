@@ -27,39 +27,35 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.uml;
-
-import com.rqdql.semantic.RqClass;
-import javax.validation.constraints.NotNull;
+package com.rqdql.ontology;
 
 /**
- * Requirements in UML.
+ * Ontology.
+ *
+ * <p>The ontology is write-only. This is how you're supposed to use it:
+ *
+ * <pre>
+ * Ontology onto = // make it
+ * Type type = onto.type("Employee");
+ * type.mention("3-5");
+ * type.explain("a person working in a Company");
+ * </pre>
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.1
  */
-public final class UML {
+public interface Ontology {
 
     /**
-     * SuD.
+     * Found new type.
      */
-    private final transient RqClass sud;
+    Type type(String name);
 
     /**
-     * Public ctor.
-     * @param type The SuD
+     * Found a use case.
+     * @param number Use case number
      */
-    public UML(@NotNull final RqClass type) {
-        this.sud = type;
-    }
-
-    /**
-     * Convert it to XMI.
-     * @return The XMI
-     */
-    public String xmi() {
-        assert this.sud != null;
-        return "<xmi/>";
-    }
+    UseCase useCase(int number);
 
 }

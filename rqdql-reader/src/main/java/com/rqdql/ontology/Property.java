@@ -27,14 +27,27 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.syntax;
+package com.rqdql.ontology;
 
 /**
- * Slot.
+ * Property of a type.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.1
  */
-public interface Slot {
+public interface Property extends Mentioned {
+
+    /**
+     * Explain this property.
+     * @param informal Informal explanation
+     */
+    void explain(String informal);
+
+    /**
+     * Assign a type to the property.
+     * @param type Type to assign
+     */
+    void assign(String type);
 
 }

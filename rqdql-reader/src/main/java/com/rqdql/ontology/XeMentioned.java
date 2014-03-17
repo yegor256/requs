@@ -27,14 +27,40 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.syntax;
+package com.rqdql.ontology;
+
+import com.jcabi.aspects.Loggable;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.xembly.Directives;
 
 /**
- * Signature.
+ * Xembly mentioned.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.1
  */
-public interface Signature {
+@ToString
+@EqualsAndHashCode
+@Loggable(Loggable.DEBUG)
+class XeMentioned implements Mentioned {
 
+    /**
+     * All directives.
+     */
+    private final transient Directives dirs;
+
+    /**
+     * Ctor.
+     * @param directives Directives to extend
+     */
+    XeMentioned(final Directives directives) {
+        this.dirs = directives;
+    }
+
+    @Override
+    public final void mention(final String where) {
+        this.dirs.addIf("mentioned").add("where").set(where).up().up();
+    }
 }

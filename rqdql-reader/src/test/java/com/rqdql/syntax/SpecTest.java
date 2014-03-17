@@ -29,12 +29,55 @@
  */
 package com.rqdql.syntax;
 
+import com.rexsl.test.XhtmlMatchers;
+import org.apache.commons.io.IOUtils;
+import org.hamcrest.MatcherAssert;
+import org.junit.Test;
+
 /**
- * Clause.
- *
+ * Test case for {@link Spec}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-public interface Clause {
+public final class SpecTest {
 
+    /**
+     * Spec can parse input text and produce clauses.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void parsesInputAndProducesTypes() throws Exception {
+        MatcherAssert.assertThat(
+            new Spec("SuD includes: test.").xml(),
+            XhtmlMatchers.hasXPaths("/spec/a")
+        );
+    }
+
+    /**
+     * Main can compile a more complex document(s).
+     * @throws Exception When necessary
+     */
+    @Test
+    public void compilesANumberOfSpecifications() throws Exception {
+        final String[] files = {
+            "example.rqdql",
+        };
+        for (final String file : files) {
+            this.parse(file);
+        }
+    }
+
+    /**
+     * Parse resource file.
+     * @param file The file name (resource)
+     * @throws Exception When necessary
+     */
+    private void parse(final String file) throws Exception {
+        MatcherAssert.assertThat(
+            new Spec(
+                IOUtils.toString(this.getClass().getResourceAsStream(file))
+            ).xml(),
+            XhtmlMatchers.hasXPath("/spec")
+        );
+    }
 }

@@ -27,11 +27,21 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.rqdql.ontology;
 
 /**
- * Semantic analysis.
+ * Something mentioned in source code.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.1
  */
-package com.rqdql.semantic;
+public interface Mentioned {
+
+    /**
+     * Mention it in the given lines of source.
+     * @param where Where was it mentioned
+     */
+    void mention(String where);
+
+}

@@ -27,40 +27,46 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.semantic;
+package com.rqdql.ontology;
 
-import com.rqdql.syntax.Clause;
-import javax.validation.constraints.NotNull;
+import com.jcabi.aspects.Loggable;
+import java.util.Iterator;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.xembly.Directive;
+import org.xembly.Directives;
 
 /**
- * Software Requirements Specification syntax analysis.
+ * Xembly Ontology.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.1
  */
-public final class Model {
+@ToString
+@EqualsAndHashCode
+@Loggable(Loggable.DEBUG)
+public final class XeOntology implements Ontology, Iterable<Directive> {
 
     /**
-     * Clauses to work with.
+     * All directives.
      */
-    private final transient Iterable<Clause> clauses;
+    private final transient Directives dirs = new Directives().add("spec");
 
-    /**
-     * Public ctor.
-     * @param cls Clauses to use
-     */
-    public Model(@NotNull final Iterable<Clause> cls) {
-        this.clauses = cls;
+    @Override
+    public Type type(final String name) {
+        this.dirs.addIf("types").add("type")
+            .add("name").set(name).up();
+        return new XeType(this.dirs);
     }
 
-    /**
-     * Get SuD as a main class.
-     * @return SuD
-     */
-    public RqClass sud() {
-        assert this.clauses != null;
-        return new RqClass() {
-        };
+    @Override
+    public UseCase useCase(final int number) {
+        return new XeUseCase(this.dirs);
     }
 
+    @Override
+    public Iterator<Directive> iterator() {
+        return this.dirs.iterator();
+    }
 }

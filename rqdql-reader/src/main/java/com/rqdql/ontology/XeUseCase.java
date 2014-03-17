@@ -27,57 +27,56 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.uml;
+package com.rqdql.ontology;
 
-import com.rexsl.test.SimpleXml;
-import com.rexsl.test.XhtmlMatchers;
-import com.rexsl.test.XmlDocument;
-import com.rqdql.semantic.Model;
-import com.rqdql.syntax.SRS;
-import org.hamcrest.MatcherAssert;
-import org.junit.Test;
+import com.jcabi.aspects.Loggable;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.xembly.Directives;
 
 /**
- * Test case for {@link Main}.
+ * Xembly use case.
+ *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.1
  */
-public final class UMLTest {
+@ToString
+@EqualsAndHashCode(callSuper = false, of = "dirs")
+@Loggable(Loggable.DEBUG)
+final class XeUseCase extends XeMentioned implements UseCase {
 
     /**
-     * Main can compile a more complex document(s).
-     * @throws Exception When necessary
+     * All directives.
      */
-    @Test
-    @org.junit.Ignore
-    public void compilesANumberOfUMLs() throws Exception {
-        final String[] files = {
-            "SRS-BookStore.xml",
-        };
-        for (String file : files) {
-            this.parse(file);
-        }
-    }
+    private final transient Directives dirs;
 
     /**
-     * Parse resource file.
-     * @param file The file name (resource)
-     * @throws Exception When necessary
+     * Ctor.
+     * @param directives Directives to extend
      */
-    private void parse(final String file) throws Exception {
-        final XmlDocument xml = new SimpleXml(
-            this.getClass().getResourceAsStream(file)
-        );
-        final String input = xml.xpath("//SRS/text()").get(0);
-        final String xmi = new UML(
-            new Model(new SRS(input).clauses()).sud()
-        ).xmi();
-        for (String xpath : xml.xpath("//invariant/text()")) {
-            MatcherAssert.assertThat(
-                xmi,
-                XhtmlMatchers.hasXPath(xpath)
-            );
-        }
+    XeUseCase(final Directives directives) {
+        super(directives);
+        this.dirs = directives;
     }
 
+    @Override
+    public Signature signature() {
+        throw new UnsupportedOperationException("#signature()");
+    }
+
+    @Override
+    public Step step(final int number) {
+        this.dirs.addIf("steps").add("step")
+            .add("number").set(Integer.toString(number)).up();
+        return new XeStep(this.dirs);
+    }
+
+    @Override
+    public Step when(final int number, final String text) {
+        this.dirs.addIf("alternatives").add("alternative")
+            .add("step").set(Integer.toString(number)).up()
+            .add("when").set(text).up();
+        return new XeStep(this.dirs);
+    }
 }
