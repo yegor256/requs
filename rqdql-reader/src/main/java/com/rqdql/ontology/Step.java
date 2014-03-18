@@ -45,27 +45,27 @@ public interface Step extends Mentioned, Informal {
     Flow exception(String text);
 
     /**
-     * Set the object.
-     * @param type Name of the object (starts with "a " or type)
-     */
-    void object(String type);
-
-    /**
-     * Result.
-     * @param type Name of the result
-     */
-    void result(String type);
-
-    /**
-     * Arguments of the call.
-     * @param types Text to append
-     */
-    void arguments(Iterable<String> types);
-
-    /**
      * Signature of the method to call, in quotes if informal.
      * @param text Text to append
      */
     void signature(String text);
+
+    /**
+     * Set the object.
+     * @param var Variable of the object
+     */
+    void object(String var);
+
+    /**
+     * Result variable.
+     * @param var Variable of the result
+     */
+    void result(String var);
+
+    /**
+     * Arguments of the call.
+     * @param vars Name of vars to use
+     */
+    void arguments(Iterable<String> vars);
 
 }

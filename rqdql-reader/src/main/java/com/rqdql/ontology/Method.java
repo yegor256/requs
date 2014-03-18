@@ -44,16 +44,4 @@ public interface Method extends Flow, Mentioned {
      */
     void signature(String text);
 
-    /**
-     * Declare its result type ("void" by default).
-     * @param type Type of result
-     */
-    void result(String type);
-
-    /**
-     * Declare its argument types.
-     * @param types Types of arguments
-     */
-    void arguments(Iterable<String> types);
-
 }

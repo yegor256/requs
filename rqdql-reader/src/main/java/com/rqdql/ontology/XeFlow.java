@@ -92,4 +92,16 @@ final class XeFlow implements Flow {
         this.informal.explain(info);
     }
 
+    @Override
+    public void variable(final Flow.Kind kind, final String name,
+        final String type) {
+        assert name != null;
+        assert name.matches("[a-z]+") : "invalid argument name";
+        assert type.matches("[A-Z][a-z]+") : "invalid type";
+        this.dirs.xpath(this.start).addIf("args").add("arg")
+            .add("name").set(name).up()
+            .add("type").set(type).up()
+            .add("kind").set(kind.toString()).up().up();
+    }
+
 }

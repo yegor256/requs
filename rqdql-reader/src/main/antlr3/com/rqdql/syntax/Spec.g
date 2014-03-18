@@ -31,13 +31,16 @@ grammar Spec;
 
 @header {
     package com.rqdql.syntax;
+    import com.rqdql.ontology.Flow;
+    import com.rqdql.ontology.Method;
     import com.rqdql.ontology.Ontology;
     import com.rqdql.ontology.Slot;
+    import com.rqdql.ontology.Step;
     import com.rqdql.ontology.Type;
     import java.util.Collection;
     import java.util.LinkedList;
     import java.util.List;
-    import org.antlr.runtime.tree.CommonTree;
+    import org.apache.commons.lang3.StringUtils;
 }
 
 @lexer::header {
@@ -52,11 +55,6 @@ grammar Spec;
 }
 
 @parser::members {
-    private static class SlotItem {
-        public String name;
-        public String type;
-        public int line;
-    }
     private Ontology onto;
     public void setOntology(Ontology ont) {
         this.onto = ont;
@@ -90,12 +88,9 @@ clause
 class_declaration
     :
     self=class_name
-    {
-        Type type = this.onto.type($self.ret);
-        type.mention(input.LT(1).getLine());
-    }
-    'is'
-    ( 'a' | 'an' )
+    { Type type = this.onto.type($self.ret); }
+    { type.mention(input.LT(1).getLine()); }
+    'is' ( 'a' | 'an' )
     (
         INFORMAL
         { type.explain($INFORMAL.text); }
@@ -108,44 +103,31 @@ class_declaration
 class_construction
     :
     class_name
+    { Type type = this.onto.type($class_name.ret); }
     ( 'includes' | 'needs' | 'contains' | 'requires' )
     ':'
-    slots
-    {
-        for (SlotItem item : $slots.ret) {
-            Slot slot = this.onto.type($class_name.ret).slot(item.name);
-            slot.assign(item.type);
-            slot.mention(item.line);
-        }
-    }
+    slots[type]
     ;
 
-slots returns [Collection<SlotItem> ret]
-    @init { $ret = new LinkedList<SlotItem>(); }
+slots [Type type]
     :
-    head=slot
-    { $ret.add($head.ret); }
+    head=slot[type]
     (
         ( ';' | ',' )
         ( 'and' )?
-        tail=slot
-        { $ret.add($tail.ret); }
+        tail=slot[type]
     )*
     ;
 
-slot returns [SlotItem ret]
-    @init {
-        $ret = new SlotItem();
-        $ret.line = input.LT(1).getLine();
-        $ret.type = "Void";
-    }
+slot [Type type]
     :
     variable
-    { $ret.name = $variable.text; }
+    { Slot slot = type.slot($variable.ret); }
+    { slot.mention(input.LT(1).getLine()); }
     (
         'as'
         class_name
-        { $ret.type = $class_name.text; }
+        { slot.assign($class_name.text); }
     )?
     ;
 
@@ -153,74 +135,131 @@ method_declaration
     :
     UC_ID
     'where'
-    class_name
-    binding?
-    signature
-    ':'
-    ( INFORMAL | flows )
-    { ; }
-    ;
-
-signature
-    :
+    self=class_name
+    { Type type = this.onto.type($self.text); }
+    { Method method = type.method($UC_ID.text); }
+    { method.mention(input.LT(1).getLine()); }
     (
-        WORD+
+        slf=binding
+        { method.variable(Flow.Kind.SELF, $slf.ret, $self.ret); }
+    )?
+    msig=signature
+    { method.signature($msig.ret); }
+    (
+        rslt=class_name
+        (
+            res=binding
+            { method.variable(Flow.Kind.SELF, $res.ret, $rslt.ret); }
+        )?
+    )?
+    (
+        'using'
+        hclass=class_name
+        hbind=binding?
+        {
+            final String hname;
+            if ($hbind.ret == null) {
+                hname = "__arg0";
+            } else {
+                hname = $hbind.ret;
+            }
+            method.variable(Flow.Kind.INPUT, hname, $hclass.ret);
+            int idx = 1;
+        }
+        (
+            'and'
+            tclass=class_name
+            tbind=binding?
+            {
+                final String tname;
+                if ($tbind.ret == null) {
+                    tname = "__arg" + idx;
+                } else {
+                    tname = $tbind.ret;
+                }
+                method.variable(Flow.Kind.INPUT, tname, $tclass.ret);
+                ++idx;
+            }
+        )?
+    )?
+    ':'
+    (
+        flow_informal=INFORMAL
+        { method.explain($flow_informal.text); }
         |
-        INFORMAL
+        (
+            FLOW_ID
+            '.'
+            { Step step = method.step(Integer.parseInt($FLOW_ID.text)); }
+            { step.mention(input.LT(1).getLine()); }
+            (
+                'The'
+                variable
+                { step.object($variable.ret); }
+                step_sig=signature
+                { step.signature($step_sig.ret); }
+                (
+                    result=subject[method, Flow.Kind.RESULT]
+                    { step.result($result.ret); }
+                )?
+                (
+                    { Collection<String> args = new LinkedList<String>(); }
+                    'using'
+                    head=subject[method, Flow.Kind.LOCAL]
+                    { args.add($head.ret); }
+                    (
+                        'and'
+                        tail=subject[method, Flow.Kind.LOCAL]
+                        { args.add($tail.ret); }
+                    )?
+                    { step.arguments(args); }
+                )?
+                |
+                'Fail'
+                'since'
+                ex_informal=INFORMAL
+                { step.explain($ex_informal.text); }
+                |
+                step_informal=INFORMAL
+                { step.explain($step_informal.text); }
+            )
+            ';'
+        )+
     )
-    subject?
-    using?
     ;
 
-subject
+signature returns [String ret]
     :
-    class_name
-    binding
+    { Collection<String> words = new LinkedList<String>(); }
+    (
+        WORD
+        { words.add($WORD.text); }
+    )+
+    { $ret = StringUtils.join(words, ""); }
     |
-    'the'
-    variable
+    INFORMAL
+    { $ret = '"' + $INFORMAL.text + '"'; }
     ;
 
-binding
+binding returns [String ret]
     :
     '('
     'a'
     variable
     ')'
+    { $ret = $variable.ret; }
     ;
 
-using
+subject [Method method, Flow.Kind kind] returns [String ret]
     :
-    'using'
-    subject
-    (
-        'and'
-        subject
-    )*
-    ;
-
-flows
-    :
-    head=flow
-    { ; }
-    (
-        ';'
-        tail=flow
-        { ; }
-    )*
-    ;
-
-flow
-    :
-    FLOW_ID
-    '.'
-    (
-        'The'
-        variable
-        signature
-        |
-        'Fail' 'since' INFORMAL
-    )
+    class_name
+    binding
+    { $ret = $binding.ret; }
+    { method.variable(kind, $binding.ret, $class_name.ret); }
+    |
+    'the'
+    variable
+    { $ret = $variable.ret; }
     ;
 
 alternative_flow_declaration
@@ -231,7 +270,7 @@ alternative_flow_declaration
     'when'
     INFORMAL
     ':'
-    flows
+    'hi'
     { ; }
     ;
 
@@ -241,9 +280,10 @@ class_name returns [String ret]
     { $ret = $CAPITAL_WORD.text; }
     ;
 
-variable
+variable returns [String ret]
     :
     WORD
+    { $ret = $WORD.text; }
     ;
 
 UC_ID: 'UC' ( '0' .. '9' )+;

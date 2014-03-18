@@ -30,7 +30,6 @@
 package com.rqdql.ontology;
 
 import com.rexsl.test.XhtmlMatchers;
-import java.util.Arrays;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.xembly.Directives;
@@ -53,8 +52,8 @@ public final class XeMethodTest {
         final Directives dirs = new Directives().add("m");
         final Method method = new XeMethod(dirs, "/m");
         method.signature("\"informal one\"");
-        method.arguments(Arrays.asList("One", "Two"));
-        method.result("Employee");
+        method.variable(Flow.Kind.RESULT, "result", "Employee");
+        method.variable(Flow.Kind.INPUT, "one", "One");
         method.mention(2);
         method.mention(4);
         MatcherAssert.assertThat(

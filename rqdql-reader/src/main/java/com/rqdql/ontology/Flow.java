@@ -39,10 +39,40 @@ package com.rqdql.ontology;
 public interface Flow extends Informal {
 
     /**
+     * Kind of variable.
+     */
+    enum Kind {
+        /**
+         * Input argument.
+         */
+        INPUT,
+        /**
+         * Result of the method.
+         */
+        RESULT,
+        /**
+         * Object the method being call at.
+         */
+        SELF,
+        /**
+         * Temporary variable, inside a flow.
+         */
+        LOCAL
+    }
+
+    /**
      * Get its step by number.
      * @param number Number of the step
      * @return Step
      */
     Step step(int number);
+
+    /**
+     * Declare a variable used in the method.
+     * @param kind Kind of the variable
+     * @param name Unique name of it
+     * @param type Type of result
+     */
+    void variable(Flow.Kind kind, String name, String type);
 
 }

@@ -79,26 +79,26 @@ final class XeStep implements Step {
     }
 
     @Override
-    public void object(final String type) {
-        assert type != null;
-        assert type.matches("[A-Z][a-z]+|a [a-z]+");
-        this.dirs.xpath(this.start).add("object").add("name").set(type);
+    public void object(final String variable) {
+        assert variable != null;
+        assert variable.matches("[a-z]+");
+        this.dirs.xpath(this.start).add("object").add("name").set(variable);
     }
 
     @Override
-    public void result(final String type) {
-        assert type != null;
-        assert type.matches("[A-Z][a-z]+|a [a-z]+");
-        this.dirs.xpath(this.start).add("result").set(type);
+    public void result(final String variable) {
+        assert variable != null;
+        assert variable.matches("[a-z]+");
+        this.dirs.xpath(this.start).add("result").set(variable);
     }
 
     @Override
-    public void arguments(final Iterable<String> types) {
-        assert types != null;
-        this.dirs.xpath(this.start).add("arguments");
-        for (final String type : types) {
-            assert type.matches("[A-Z][a-z]+|a [a-z]+");
-            this.dirs.add("argument").set(type).up();
+    public void arguments(final Iterable<String> vars) {
+        assert vars != null;
+        this.dirs.xpath(this.start).add("args");
+        for (final String type : vars) {
+            assert type.matches("[a-z]+");
+            this.dirs.add("arg").set(type).up();
         }
     }
 

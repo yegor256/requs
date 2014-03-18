@@ -85,25 +85,13 @@ final class XeMethod implements Method {
     }
 
     @Override
-    public void result(final String type) {
-        assert type != null;
-        assert type.matches("[A-Z][a-z]+");
-        this.dirs.xpath(this.start).add("result").set(type);
-    }
-
-    @Override
-    public void arguments(final Iterable<String> types) {
-        assert types != null;
-        this.dirs.xpath(this.start).add("arguments");
-        for (final String type : types) {
-            assert type.matches("[A-Z][a-z]+") : "invalid argument";
-            this.dirs.add("argument").set(type).up();
-        }
-    }
-
-    @Override
     public Step step(final int number) {
         return this.flow.step(number);
+    }
+
+    @Override
+    public void variable(final Kind kind, final String name, final String type) {
+        this.flow.variable(kind, name, type);
     }
 
     @Override
