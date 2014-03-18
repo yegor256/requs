@@ -90,22 +90,18 @@ clause
 class_declaration
     :
     self=class_name
+    {
+        Type type = this.onto.type($self.ret);
+        type.mention(input.LT(1).getLine());
+    }
     'is'
+    ( 'a' | 'an' )
     (
         INFORMAL
-        {
-            Type type = this.onto.type($self.ret);
-            type.explain($INFORMAL.text);
-            type.mention(input.LT(1).getLine());
-        }
+        { type.explain($INFORMAL.text); }
         |
-        ( 'a' | 'an' )
         parent=class_name
-        {
-            Type type = this.onto.type($self.ret);
-            type.parent($parent.text);
-            type.mention(input.LT(1).getLine());
-        }
+        { type.parent($parent.text); }
     )
     ;
 
@@ -138,18 +134,19 @@ slots returns [Collection<SlotItem> ret]
     ;
 
 slot returns [SlotItem ret]
+    @init {
+        $ret = new SlotItem();
+        $ret.line = input.LT(1).getLine();
+        $ret.type = "Void";
+    }
     :
     variable
+    { $ret.name = $variable.text; }
     (
         'as'
         class_name
+        { $ret.type = $class_name.text; }
     )?
-    {
-        $ret = new SlotItem();
-        $ret.name = $variable.text;
-        $ret.type = $class_name.text;
-        $ret.line = input.LT(1).getLine();
-    }
     ;
 
 method_declaration
@@ -157,6 +154,7 @@ method_declaration
     UC_ID
     'where'
     class_name
+    binding?
     signature
     ':'
     ( INFORMAL | flows )

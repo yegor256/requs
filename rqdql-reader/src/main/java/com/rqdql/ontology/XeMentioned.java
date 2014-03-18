@@ -44,7 +44,7 @@ import org.xembly.Directives;
 @ToString
 @EqualsAndHashCode(callSuper = false, of = { "dirs", "start" })
 @Loggable(Loggable.DEBUG)
-class XeMentioned implements Mentioned {
+final class XeMentioned implements Mentioned {
 
     /**
      * All directives.
@@ -67,7 +67,7 @@ class XeMentioned implements Mentioned {
     }
 
     @Override
-    public final void mention(final int where) {
+    public void mention(final int where) {
         this.dirs.xpath(this.start).addIf("mentioned")
             .add("where").set(Integer.toString(where));
     }

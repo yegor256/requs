@@ -30,45 +30,60 @@
 package com.rqdql.ontology;
 
 import com.rexsl.test.XhtmlMatchers;
+import java.util.Arrays;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.xembly.Directives;
 import org.xembly.Xembler;
 
 /**
- * Test case for {@link XeType}.
+ * Test case for {@link XeMethod}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.1
  */
-public final class XeTypeTest {
+public final class XeMethodTest {
 
     /**
-     * XeType can do type manipulations.
+     * XeMethod can do type manipulations.
      * @throws Exception When necessary
      */
     @Test
-    public void manipulatesWithType() throws Exception {
-        final Directives dirs = new Directives().add("t");
-        final Type type = new XeType(dirs, "/t");
-        type.explain("first text");
-        type.explain("second text");
-        type.parent("Root");
-        type.slot("one").assign("Emp");
-        type.mention(2);
-        type.mention(4);
+    public void manipulatesWithMethod() throws Exception {
+        final Directives dirs = new Directives().add("m");
+        final Method method = new XeMethod(dirs, "/m");
+        method.signature("\"informal one\"");
+        method.arguments(Arrays.asList("One", "Two"));
+        method.result("Employee");
+        method.mention(2);
+        method.mention(4);
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
-                "/t",
-                "/t/info",
-                "/t/info[informal='first text']",
-                "/t/info[informal='second text']",
-                "/t/parents[parent='Root']",
-                "/t/mentioned[where='2']",
-                "/t/mentioned[where='4']",
-                "/t/slots/slot[type='Emp']"
+                "/m",
+                "/m[signature='\"informal one\"']",
+                "/m/arguments[argument='One']",
+                "/m/arguments[argument='Two']",
+                "/m[result='Employee']",
+                "/m/mentioned[where='2']",
+                "/m/mentioned[where='4']"
             )
+        );
+    }
+
+    /**
+     * XeMethod can avoid creating duplicate steps.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void avoidsDuplicateSteps() throws Exception {
+        final Directives dirs = new Directives().add("mtd");
+        final Method method = new XeMethod(dirs, "/mtd");
+        method.step(1);
+        method.step(1);
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
+            XhtmlMatchers.hasXPath("/mtd/steps[count(step)=1]")
         );
     }
 

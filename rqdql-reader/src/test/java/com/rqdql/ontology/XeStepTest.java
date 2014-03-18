@@ -30,44 +30,42 @@
 package com.rqdql.ontology;
 
 import com.rexsl.test.XhtmlMatchers;
+import java.util.Arrays;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.xembly.Directives;
 import org.xembly.Xembler;
 
 /**
- * Test case for {@link XeType}.
+ * Test case for {@link XeStep}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.1
  */
-public final class XeTypeTest {
+public final class XeStepTest {
 
     /**
      * XeType can do type manipulations.
      * @throws Exception When necessary
      */
     @Test
-    public void manipulatesWithType() throws Exception {
-        final Directives dirs = new Directives().add("t");
-        final Type type = new XeType(dirs, "/t");
-        type.explain("first text");
-        type.explain("second text");
-        type.parent("Root");
-        type.slot("one").assign("Emp");
-        type.mention(2);
-        type.mention(4);
+    public void manipulatesWithSteps() throws Exception {
+        final Directives dirs = new Directives().add("s");
+        final Step step = new XeStep(dirs, "/s");
+        step.result("Data");
+        step.signature("\"do something\"");
+        step.arguments(Arrays.asList("a file", "Document"));
+        step.exception("division by zero").step(1).explain("foo...");
+        step.mention(2);
+        step.mention(4);
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
-                "/t",
-                "/t/info",
-                "/t/info[informal='first text']",
-                "/t/info[informal='second text']",
-                "/t/parents[parent='Root']",
-                "/t/mentioned[where='2']",
-                "/t/mentioned[where='4']",
-                "/t/slots/slot[type='Emp']"
+                "/s",
+                "/s[result='Data']",
+                "/s[signature='\"do something\"']",
+                "/s/exceptions/exception[when='division by zero']",
+                "/s/exceptions/exception/steps/step/info[informal='foo...']"
             )
         );
     }

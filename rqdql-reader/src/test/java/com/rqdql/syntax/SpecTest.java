@@ -49,7 +49,7 @@ public final class SpecTest {
     public void parsesInputAndProducesTypes() throws Exception {
         MatcherAssert.assertThat(
             new Spec("SuD includes: test.").xml(),
-            XhtmlMatchers.hasXPaths("/spec/a")
+            XhtmlMatchers.hasXPaths("/spec/types")
         );
     }
 
@@ -68,7 +68,6 @@ public final class SpecTest {
                 ).xml()
             ),
             XhtmlMatchers.hasXPaths(
-                "/spec/types/type[name='SuD']",
                 "/spec/types/type[name='Fraction']/info[informal='a math calculator']"
             )
         );

@@ -55,21 +55,15 @@ public final class XeOntology implements Ontology, Iterable<Directive> {
 
     @Override
     public Type type(final String name) {
-        this.dirs.xpath("/spec").addIf("types").add("type")
-            .add("name").set(name);
+        assert name != null : "type name can't be NULL";
+        assert name.matches("[A-Z][a-z]+") : "wrong type";
+        this.dirs.xpath("/spec").addIf("types")
+            .xpath(String.format("/spec/types[not(type/name='%s')]", name))
+            .add("type").add("name").set(name)
+            .xpath(String.format("/spec/types/type[name='%s']", name));
         return new XeType(
             this.dirs,
             String.format("/spec/types/type[name='%s']", name)
-        );
-    }
-
-    @Override
-    public UseCase useCase(final int number) {
-        this.dirs.xpath("/spec").addIf("ucs").add("uc")
-            .add("number").set(Integer.toString(number));
-        return new XeUseCase(
-            this.dirs,
-            String.format("/spec/ucs/uc[number=%d]", number)
         );
     }
 

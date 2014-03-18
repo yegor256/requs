@@ -36,7 +36,7 @@ package com.rqdql.ontology;
  * @version $Id$
  * @since 1.1
  */
-public interface Type extends Mentioned {
+public interface Type extends Mentioned, Informal {
 
     /**
      * Set parent.
@@ -45,15 +45,15 @@ public interface Type extends Mentioned {
     void parent(String type);
 
     /**
-     * Found an explanation.
-     * @param informal Informal explanation of it
-     */
-    void explain(String informal);
-
-    /**
      * Found a slot of the type.
      * @param name Slot name
      */
     Slot slot(String name);
+
+    /**
+     * Found a method.
+     * @param name Unique name of it
+     */
+    Method method(String name);
 
 }

@@ -121,7 +121,6 @@
                         <manifestEntries>
                             <RQDQL-Version>${project.version}</RQDQL-Version>
                             <RQDQL-Revision>${buildNumber}</RQDQL-Revision>
-                            <RQDQL-Build>${buildNumber}</RQDQL-Build>
                         </manifestEntries>
                     </archive>
                 </configuration>

@@ -52,7 +52,7 @@ public final class XeOntologyTest {
         final Type type = onto.type("First");
         type.explain("first text");
         type.parent("Root");
-        type.slot("one").assign("E");
+        type.slot("one").assign("Emp");
         onto.type("Second").explain("second text");
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(new Xembler(onto).xml()),
@@ -61,6 +61,22 @@ public final class XeOntologyTest {
                 "/spec/types/type[name='First']",
                 "/spec/types/type[name='Second']"
             )
+        );
+    }
+
+    /**
+     * XeOntology can avoid duplication.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void avoidsDuplication() throws Exception {
+        final XeOntology onto = new XeOntology();
+        final String name = "Alpha";
+        onto.type(name);
+        onto.type(name);
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(new Xembler(onto).xml()),
+            XhtmlMatchers.hasXPath("/spec/types[count(type)=1]")
         );
     }
 

@@ -44,7 +44,7 @@ import org.xembly.Directives;
 @ToString
 @EqualsAndHashCode(callSuper = false, of = { "dirs", "start" })
 @Loggable(Loggable.DEBUG)
-final class XeType extends XeMentioned implements Type {
+final class XeType implements Type {
 
     /**
      * All directives.
@@ -57,12 +57,23 @@ final class XeType extends XeMentioned implements Type {
     private final transient String start;
 
     /**
+     * Mentioned helper.
+     */
+    private final transient Mentioned mentioned;
+
+    /**
+     * Informal helper.
+     */
+    private final transient Informal informal;
+
+    /**
      * Ctor.
      * @param directives Directives to extend
      * @param xpath XPath to start with
      */
     XeType(final Directives directives, final String xpath) {
-        super(directives, xpath);
+        this.mentioned = new XeMentioned(directives, xpath);
+        this.informal = new XeInformal(directives, xpath);
         this.dirs = directives;
         this.start = xpath;
     }
@@ -70,18 +81,14 @@ final class XeType extends XeMentioned implements Type {
     @Override
     public void parent(final String type) {
         assert type != null;
+        assert type.matches("[A-Z][a-z]+") : "test";
         this.dirs.xpath(this.start).addIf("parents").add("parent").set(type);
-    }
-
-    @Override
-    public void explain(final String informal) {
-        assert informal != null;
-        this.dirs.xpath(this.start).addIf("info").add("informal").set(informal);
     }
 
     @Override
     public Slot slot(final String name) {
         assert name != null;
+        assert name.matches("[a-z][a-z ]+");
         this.dirs.xpath(this.start)
             .addIf("slots").add("slot").add("name").set(name);
         return new XeSlot(
@@ -90,4 +97,24 @@ final class XeType extends XeMentioned implements Type {
         );
     }
 
+    @Override
+    public Method method(final String name) {
+        assert name != null;
+        this.dirs.xpath(this.start)
+            .addIf("methods").add("method").add("name").set(name);
+        return new XeMethod(
+            this.dirs,
+            String.format("%s/methods/method[name='%s']", this.start, name)
+        );
+    }
+
+    @Override
+    public void explain(final String info) {
+        this.informal.explain(info);
+    }
+
+    @Override
+    public void mention(final int where) {
+        this.mentioned.mention(where);
+    }
 }

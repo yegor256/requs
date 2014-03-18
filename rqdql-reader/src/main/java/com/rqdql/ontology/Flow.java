@@ -29,68 +29,20 @@
  */
 package com.rqdql.ontology;
 
-import com.jcabi.aspects.Loggable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.xembly.Directives;
-
 /**
- * Xembly use case.
+ * Flow.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.1
  */
-@ToString
-@EqualsAndHashCode(callSuper = false, of = { "dirs", "start" })
-@Loggable(Loggable.DEBUG)
-final class XeUseCase extends XeMentioned implements UseCase {
+public interface Flow extends Informal {
 
     /**
-     * All directives.
+     * Get its step by number.
+     * @param number Number of the step
+     * @return Step
      */
-    private final transient Directives dirs;
+    Step step(int number);
 
-    /**
-     * Starting XPath.
-     */
-    private final transient String start;
-
-    /**
-     * Ctor.
-     * @param directives Directives to extend
-     * @param xpath XPath to start with
-     */
-    XeUseCase(final Directives directives, final String xpath) {
-        super(directives, xpath);
-        this.dirs = directives;
-        this.start = xpath;
-    }
-
-    @Override
-    public Signature signature() {
-        throw new UnsupportedOperationException("#signature()");
-    }
-
-    @Override
-    public Step step(final int number) {
-        this.dirs.xpath(this.start).addIf("steps").add("step")
-            .add("number").set(Integer.toString(number));
-        return new XeStep(
-            this.dirs,
-            String.format("%s/steps/step[number=%d]", this.start, number)
-        );
-    }
-
-    @Override
-    public Step when(final int number, final String text) {
-        assert text != null;
-        this.dirs.addIf("alternatives").add("alternative")
-            .add("step").set(Integer.toString(number)).up()
-            .add("when").set(text);
-        return new XeStep(
-            this.dirs,
-            String.format("%s/steps/step[number=%d]", this.start, number)
-        );
-    }
 }

@@ -30,31 +30,18 @@
 package com.rqdql.ontology;
 
 /**
- * Use case.
+ * Can be informal.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.1
  */
-public interface UseCase extends Mentioned {
+public interface Informal {
 
     /**
-     * Create new type.
-     * @return Signature
+     * Explain this slot.
+     * @param informal Informal explanation
      */
-    Signature signature();
-
-    /**
-     * Register and return a step.
-     * @param number Step number
-     */
-    Step step(int number);
-
-    /**
-     * Exception at a step.
-     * @param number Step number
-     * @param text Exception text
-     */
-    Step when(int number, String text);
+    void explain(String informal);
 
 }

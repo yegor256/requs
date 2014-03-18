@@ -36,13 +36,7 @@ package com.rqdql.ontology;
  * @version $Id$
  * @since 1.1
  */
-public interface Slot extends Mentioned {
-
-    /**
-     * Explain this slot.
-     * @param informal Informal explanation
-     */
-    void explain(String informal);
+public interface Slot extends Mentioned, Informal {
 
     /**
      * Assign a type to the slot.

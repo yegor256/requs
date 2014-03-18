@@ -52,10 +52,4 @@ public interface Ontology {
      */
     Type type(String name);
 
-    /**
-     * Found a use case.
-     * @param number Use case number
-     */
-    UseCase useCase(int number);
-
 }

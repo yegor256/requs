@@ -36,31 +36,36 @@ package com.rqdql.ontology;
  * @version $Id$
  * @since 1.1
  */
-public interface Step extends Mentioned {
+public interface Step extends Mentioned, Informal {
 
     /**
-     * Append object.
-     * @param name Name of the object
-     * @param type Type to add
+     * Exception at a step.
+     * @param text Exception text
      */
-    void object(String name, String type);
+    Flow exception(String text);
 
     /**
-     * Append object.
-     * @param name Name of the object
+     * Set the object.
+     * @param type Name of the object (starts with "a " or type)
      */
-    void object(String name);
+    void object(String type);
 
     /**
-     * Append formal text.
+     * Result.
+     * @param type Name of the result
+     */
+    void result(String type);
+
+    /**
+     * Arguments of the call.
+     * @param types Text to append
+     */
+    void arguments(Iterable<String> types);
+
+    /**
+     * Signature of the method to call, in quotes if informal.
      * @param text Text to append
      */
-    void formal(String text);
-
-    /**
-     * Append informal text.
-     * @param text Text to append
-     */
-    void informal(String text);
+    void signature(String text);
 
 }

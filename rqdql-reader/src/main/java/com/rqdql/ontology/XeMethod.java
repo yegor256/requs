@@ -35,7 +35,7 @@ import lombok.ToString;
 import org.xembly.Directives;
 
 /**
- * Xembly step.
+ * Xembly use case.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
@@ -44,7 +44,7 @@ import org.xembly.Directives;
 @ToString
 @EqualsAndHashCode(callSuper = false, of = { "dirs", "start" })
 @Loggable(Loggable.DEBUG)
-final class XeStep implements Step {
+final class XeMethod implements Method {
 
     /**
      * All directives.
@@ -62,44 +62,20 @@ final class XeStep implements Step {
     private final transient Mentioned mentioned;
 
     /**
-     * Informal helper.
+     * Flow helper.
      */
-    private final transient Informal informal;
+    private final transient Flow flow;
 
     /**
      * Ctor.
      * @param directives Directives to extend
      * @param xpath XPath to start with
      */
-    XeStep(final Directives directives, final String xpath) {
+    XeMethod(final Directives directives, final String xpath) {
         this.mentioned = new XeMentioned(directives, xpath);
-        this.informal = new XeInformal(directives, xpath);
+        this.flow = new XeFlow(directives, xpath);
         this.dirs = directives;
         this.start = xpath;
-    }
-
-    @Override
-    public void object(final String type) {
-        assert type != null;
-        assert type.matches("[A-Z][a-z]+|a [a-z]+");
-        this.dirs.xpath(this.start).add("object").add("name").set(type);
-    }
-
-    @Override
-    public void result(final String type) {
-        assert type != null;
-        assert type.matches("[A-Z][a-z]+|a [a-z]+");
-        this.dirs.xpath(this.start).add("result").set(type);
-    }
-
-    @Override
-    public void arguments(final Iterable<String> types) {
-        assert types != null;
-        this.dirs.xpath(this.start).add("arguments");
-        for (final String type : types) {
-            assert type.matches("[A-Z][a-z]+|a [a-z]+");
-            this.dirs.add("argument").set(type).up();
-        }
     }
 
     @Override
@@ -109,26 +85,30 @@ final class XeStep implements Step {
     }
 
     @Override
-    public Flow exception(final String text) {
-        assert text != null;
-        this.dirs.xpath(this.start).addIf("exceptions")
-            .xpath(this.start)
-            .xpath(String.format("exceptions[not(exception/when='%s')]", text))
-            .add("exception").add("when").set(text)
-            .xpath(this.start)
-            .xpath(String.format("exceptions[not(exception/when='%s')]", text));
-        return new XeFlow(
-            this.dirs,
-            String.format(
-                "%s/exceptions/exception[when='%s']",
-                this.start, text
-            )
-        );
+    public void result(final String type) {
+        assert type != null;
+        assert type.matches("[A-Z][a-z]+");
+        this.dirs.xpath(this.start).add("result").set(type);
+    }
+
+    @Override
+    public void arguments(final Iterable<String> types) {
+        assert types != null;
+        this.dirs.xpath(this.start).add("arguments");
+        for (final String type : types) {
+            assert type.matches("[A-Z][a-z]+") : "invalid argument";
+            this.dirs.add("argument").set(type).up();
+        }
+    }
+
+    @Override
+    public Step step(final int number) {
+        return this.flow.step(number);
     }
 
     @Override
     public void explain(final String info) {
-        this.informal.explain(info);
+        this.flow.explain(info);
     }
 
     @Override

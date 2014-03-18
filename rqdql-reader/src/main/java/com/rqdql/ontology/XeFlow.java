@@ -29,47 +29,67 @@
  */
 package com.rqdql.ontology;
 
-import com.rexsl.test.XhtmlMatchers;
-import org.hamcrest.MatcherAssert;
-import org.junit.Test;
+import com.jcabi.aspects.Loggable;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.xembly.Directives;
-import org.xembly.Xembler;
 
 /**
- * Test case for {@link XeType}.
+ * Xembly use case.
+ *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.1
  */
-public final class XeTypeTest {
+@ToString
+@EqualsAndHashCode(callSuper = false, of = { "dirs", "start" })
+@Loggable(Loggable.DEBUG)
+final class XeFlow implements Flow {
 
     /**
-     * XeType can do type manipulations.
-     * @throws Exception When necessary
+     * All directives.
      */
-    @Test
-    public void manipulatesWithType() throws Exception {
-        final Directives dirs = new Directives().add("t");
-        final Type type = new XeType(dirs, "/t");
-        type.explain("first text");
-        type.explain("second text");
-        type.parent("Root");
-        type.slot("one").assign("Emp");
-        type.mention(2);
-        type.mention(4);
-        MatcherAssert.assertThat(
-            XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
-            XhtmlMatchers.hasXPaths(
-                "/t",
-                "/t/info",
-                "/t/info[informal='first text']",
-                "/t/info[informal='second text']",
-                "/t/parents[parent='Root']",
-                "/t/mentioned[where='2']",
-                "/t/mentioned[where='4']",
-                "/t/slots/slot[type='Emp']"
-            )
+    private final transient Directives dirs;
+
+    /**
+     * Starting XPath.
+     */
+    private final transient String start;
+
+    /**
+     * Informal helper.
+     */
+    private final transient Informal informal;
+
+    /**
+     * Ctor.
+     * @param directives Directives to extend
+     * @param xpath XPath to start with
+     */
+    XeFlow(final Directives directives, final String xpath) {
+        this.informal = new XeInformal(directives, xpath);
+        this.dirs = directives;
+        this.start = xpath;
+    }
+
+    @Override
+    public Step step(final int number) {
+        assert number >= 0;
+        this.dirs.xpath(this.start).addIf("steps")
+            .xpath(this.start)
+            .xpath(String.format("steps[not(step/number=%d)]", number))
+            .add("step").add("number").set(Integer.toString(number))
+            .xpath(this.start)
+            .xpath(String.format("steps[not(step/number=%d)]", number));
+        return new XeStep(
+            this.dirs,
+            String.format("%s/steps/step[number=%d]", this.start, number)
         );
+    }
+
+    @Override
+    public void explain(final String info) {
+        this.informal.explain(info);
     }
 
 }

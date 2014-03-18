@@ -30,30 +30,30 @@
 package com.rqdql.ontology;
 
 /**
- * Signature.
+ * Use case.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.1
  */
-public interface Signature {
+public interface Method extends Flow, Mentioned {
 
     /**
-     * Append type.
-     * @param type Type to add
+     * Declare its signature, in quotes if it's informal.
+     * @param text Signature
      */
-    void type(String type);
+    void signature(String text);
 
     /**
-     * Append formal text.
-     * @param text Text to append
+     * Declare its result type ("void" by default).
+     * @param type Type of result
      */
-    void formal(String text);
+    void result(String type);
 
     /**
-     * Append informal text.
-     * @param text Text to append
+     * Declare its argument types.
+     * @param types Types of arguments
      */
-    void informal(String text);
+    void arguments(Iterable<String> types);
 
 }

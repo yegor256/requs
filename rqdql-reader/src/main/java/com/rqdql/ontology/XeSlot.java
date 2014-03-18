@@ -44,7 +44,7 @@ import org.xembly.Directives;
 @ToString
 @EqualsAndHashCode(callSuper = false, of = "dirs")
 @Loggable(Loggable.DEBUG)
-final class XeSlot extends XeMentioned implements Slot {
+final class XeSlot implements Slot {
 
     /**
      * All directives.
@@ -57,27 +57,42 @@ final class XeSlot extends XeMentioned implements Slot {
     private final transient String start;
 
     /**
+     * Mentioned helper.
+     */
+    private final transient Mentioned mentioned;
+
+    /**
+     * Informal helper.
+     */
+    private final transient Informal informal;
+
+    /**
      * Ctor.
      * @param directives Directives to extend
      * @param xpath XPath to start with
      */
     XeSlot(final Directives directives, final String xpath) {
-        super(directives, xpath);
+        this.mentioned = new XeMethod(directives, xpath);
+        this.informal = new XeInformal(directives, xpath);
         this.dirs = directives;
         this.start = xpath;
     }
 
     @Override
-    public void explain(final String informal) {
-        assert informal != null;
-        this.dirs.xpath(this.start)
-            .addIf("info").add("informal").set(informal);
+    public void assign(final String type) {
+        assert type != null;
+        assert type.matches("[A-Z][a-z]+") : "wrong type name";
+        this.dirs.xpath(this.start).add("type").set(type);
     }
 
     @Override
-    public void assign(final String type) {
-        assert type != null;
-        this.dirs.xpath(this.start).add("type").set(type);
+    public void mention(final int where) {
+        this.mentioned.mention(where);
+    }
+
+    @Override
+    public void explain(final String info) {
+        this.informal.explain(info);
     }
 
 }
