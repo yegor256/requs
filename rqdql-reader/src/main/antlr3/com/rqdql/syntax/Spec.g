@@ -183,49 +183,7 @@ method_declaration
         )?
     )?
     ':'
-    (
-        flow_informal=INFORMAL
-        { method.explain($flow_informal.text); }
-        |
-        (
-            FLOW_ID
-            '.'
-            { Step step = method.step(Integer.parseInt($FLOW_ID.text)); }
-            { step.mention(input.LT(1).getLine()); }
-            (
-                'The'
-                variable
-                { step.object($variable.ret); }
-                step_sig=signature
-                { step.signature($step_sig.ret); }
-                (
-                    result=subject[method, Flow.Kind.RESULT]
-                    { step.result($result.ret); }
-                )?
-                (
-                    { Collection<String> args = new LinkedList<String>(); }
-                    'using'
-                    head=subject[method, Flow.Kind.LOCAL]
-                    { args.add($head.ret); }
-                    (
-                        'and'
-                        tail=subject[method, Flow.Kind.LOCAL]
-                        { args.add($tail.ret); }
-                    )?
-                    { step.arguments(args); }
-                )?
-                |
-                'Fail'
-                'since'
-                ex_informal=INFORMAL
-                { step.explain($ex_informal.text); }
-                |
-                step_informal=INFORMAL
-                { step.explain($step_informal.text); }
-            )
-            ';'
-        )+
-    )
+    steps[method]
     ;
 
 signature returns [String ret]
@@ -235,7 +193,7 @@ signature returns [String ret]
         WORD
         { words.add($WORD.text); }
     )+
-    { $ret = StringUtils.join(words, ""); }
+    { $ret = StringUtils.join(words, " "); }
     |
     INFORMAL
     { $ret = '"' + $INFORMAL.text + '"'; }
@@ -250,12 +208,12 @@ binding returns [String ret]
     { $ret = $variable.ret; }
     ;
 
-subject [Method method, Flow.Kind kind] returns [String ret]
+subject [Flow flow, Flow.Kind kind] returns [String ret]
     :
     class_name
     binding
     { $ret = $binding.ret; }
-    { method.variable(kind, $binding.ret, $class_name.ret); }
+    { flow.variable(kind, $binding.ret, $class_name.ret); }
     |
     'the'
     variable
@@ -270,8 +228,63 @@ alternative_flow_declaration
     'when'
     INFORMAL
     ':'
-    'hi'
-    { ; }
+    { Method method = this.onto.method($UC_ID.text); }
+    { Flow flow = method.step(Integer.parseInt($FLOW_ID.text)).exception($INFORMAL.text); }
+    steps[flow]
+    ;
+
+steps [Flow flow]
+    :
+    INFORMAL
+    { flow.explain($INFORMAL.text); }
+    |
+    step[flow]
+    (
+        ';'
+        step[flow]
+    )*
+    ;
+
+step [Flow flow]
+    :
+    FLOW_ID
+    '.'
+    { Step step = flow.step(Integer.parseInt($FLOW_ID.text)); }
+    { step.mention(input.LT(1).getLine()); }
+    (
+        'The'
+        variable
+        { step.object($variable.ret); }
+        step_sig=signature
+        { step.signature($step_sig.ret); }
+        (
+            result=subject[flow, Flow.Kind.RESULT]
+            { step.result($result.ret); }
+        )?
+        using[flow, step]?
+        |
+        'Fail'
+        'since'
+        ex_informal=INFORMAL
+        { step.explain($ex_informal.text); }
+        |
+        step_informal=INFORMAL
+        { step.explain($step_informal.text); }
+        )
+    ;
+
+using [Flow flow, Step step]
+    @init{ Collection<String> args = new LinkedList<String>(); }
+    :
+    'using'
+    head=subject[flow, Flow.Kind.LOCAL]
+    { args.add($head.ret); }
+    (
+        'and'
+        tail=subject[flow, Flow.Kind.LOCAL]
+        { args.add($tail.ret); }
+    )?
+    { step.arguments(args); }
     ;
 
 class_name returns [String ret]

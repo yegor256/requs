@@ -49,7 +49,16 @@ public interface Ontology {
 
     /**
      * Found new type.
+     * @param name Name of it
+     * @return Type
      */
     Type type(String name);
+
+    /**
+     * Find method.
+     * @param name Name of it
+     * @return Method
+     */
+    Method method(String name);
 
 }

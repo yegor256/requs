@@ -68,6 +68,14 @@ public final class XeOntology implements Ontology, Iterable<Directive> {
     }
 
     @Override
+    public Method method(final String name) {
+        return new XeType(
+            this.dirs,
+            String.format("/spec/types/type[methods/method/name='%s']", name)
+        ).method(name);
+    }
+
+    @Override
     public Iterator<Directive> iterator() {
         return this.dirs.iterator();
     }
