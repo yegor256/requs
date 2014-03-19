@@ -35,33 +35,33 @@ import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
 /**
- * Test case for {@link Spec}.
+ * Test case for {@link AntlrSpec}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-public final class SpecTest {
+public final class AntlrSpecTest {
 
     /**
-     * Spec can parse input text and produce clauses.
+     * AntlrSpec can parse input text and produce clauses.
      * @throws Exception When necessary
      */
     @Test
     public void parsesInputAndProducesTypes() throws Exception {
         MatcherAssert.assertThat(
-            new Spec("Sud includes: test.").xml(),
+            new AntlrSpec("Sud includes: test.").xml(),
             XhtmlMatchers.hasXPaths("/spec/types")
         );
     }
 
     /**
-     * Spec can compile a complex document.
+     * AntlrSpec can compile a complex document.
      * @throws Exception When necessary
      */
     @Test
     public void compilesComplexSpec() throws Exception {
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(
-                new Spec(
+                new AntlrSpec(
                     IOUtils.toString(
                         this.getClass().getResourceAsStream("example.rqdql")
                     )
@@ -97,7 +97,7 @@ public final class SpecTest {
      */
     private void parse(final String file) throws Exception {
         MatcherAssert.assertThat(
-            new Spec(
+            new AntlrSpec(
                 IOUtils.toString(this.getClass().getResourceAsStream(file))
             ).xml(),
             XhtmlMatchers.hasXPath("/spec")

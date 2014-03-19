@@ -31,7 +31,7 @@ package com.rqdql.cli;
 
 import com.jcabi.aspects.Loggable;
 import com.jcabi.manifests.Manifests;
-import com.rqdql.syntax.Spec;
+import com.rqdql.Spec;
 import java.io.IOException;
 import java.util.Map;
 import javax.validation.constraints.NotNull;

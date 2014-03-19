@@ -29,8 +29,15 @@
  */
 package com.rqdql.rest;
 
+import com.jcabi.manifests.Manifests;
+import com.rexsl.page.BasePage;
 import com.rexsl.page.BaseResource;
+import com.rexsl.page.Inset;
 import com.rexsl.page.Resource;
+import com.rexsl.page.inset.VersionInset;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * Abstract RESTful resource.
@@ -42,5 +49,34 @@ import com.rexsl.page.Resource;
  */
 @Resource.Forwarded
 public class BaseRs extends BaseResource {
+
+    /**
+     * Inset with a version of the product.
+     * @return The inset
+     */
+    @Inset.Runtime
+    public final Inset insetVersion() {
+        return new VersionInset(
+            Manifests.read("RQDQL-Version"),
+            Manifests.read("RQDQL-Revision"),
+            Manifests.read("RQDQL-Date")
+        );
+    }
+
+    /**
+     * Supplementary inset.
+     * @return The inset
+     */
+    @Inset.Runtime
+    public final Inset insetSupplementary() {
+        return new Inset() {
+            @Override
+            public void render(final BasePage<?, ?> page,
+                final Response.ResponseBuilder builder) {
+                builder.type(MediaType.TEXT_XML);
+                builder.header(HttpHeaders.VARY, "Cookie");
+            }
+        };
+    }
 
 }

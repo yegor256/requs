@@ -31,9 +31,7 @@ package com.rqdql.rest;
 
 import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
-import com.rqdql.semantic.Model;
-import com.rqdql.syntax.Spec;
-import com.rqdql.uml.UML;
+import com.rqdql.Spec;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -61,13 +59,13 @@ public final class InstantRs extends BaseRs {
     @Produces(MediaType.APPLICATION_XML)
     @Loggable(Loggable.INFO)
     public String post(@FormParam("text") final String text) {
-        String xmi;
+        String xml;
         try {
-            xmi = new UML(new Model(new Spec(text).clauses()).sud()).xmi();
-        } catch (IllegalArgumentException ex) {
-            xmi = Logger.format("%[exception]s", ex);
+            xml = new Spec(text).xml().toString();
+        } catch (final IllegalArgumentException ex) {
+            xml = Logger.format("%[exception]s", ex);
         }
-        return xmi;
+        return xml;
     }
 
 }
