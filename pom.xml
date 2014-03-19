@@ -47,6 +47,7 @@
         <module>rqdql-reader</module>
         <module>rqdql-cli</module>
         <module>rqdql-demo</module>
+        <module>rqdql-maven-plugin</module>
     </modules>
     <description><![CDATA[
         Requirements Definition and Query Language (RQDQL).
