@@ -29,23 +29,30 @@
  */
 package com.rqdql.demo.rexsl.scripts
 
-import com.rexsl.test.RestTester
-import javax.ws.rs.core.UriBuilder
+import com.jcabi.http.Request
+import com.jcabi.http.request.JdkRequest
+import com.jcabi.http.response.HttpResponse
+import com.jcabi.http.response.XmlResponse
 
 def text = """
     SuD includes: user as User.
-    Fraction is a "math calculator".
+    Fraction is a \"math calculator\".
     Fraction needs:
       numerator as Float, and
       denominator as Float.
     UC1 where SuD divides two numbers:
       1. The user creates Fraction (a fraction);
-      2. The fraction "calculates" Float (a quotient);
-      3. The user "receives results" using the quotient.
-    UC1/2 when "division by zero":
-      1. Fail since "denominator can't be zero".
+      2. The fraction \"calculates\" Float (a quotient);
+      3. The user \"receives results\" using the quotient.
+    UC1/2 when \"division by zero\":
+      1. Fail since \"denominator can't be zero\".
     """
-RestTester.start(UriBuilder.fromUri(rexsl.home).path('/instant'))
-    .post('compiles RQDQL', 'text=' + URLEncoder.encode(text))
+new JdkRequest(rexsl.home)
+    .uri().path('/instant').back()
+    .body().postParam('text', text).back()
+    .method(Request.POST)
+    .fetch()
+    .as(HttpResponse)
     .assertStatus(HttpURLConnection.HTTP_OK)
+    .as(XmlResponse)
     .assertXPath('/xmi')

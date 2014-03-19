@@ -29,15 +29,19 @@
  */
 package com.rqdql.demo.rexsl.scripts
 
+import com.jcabi.http.request.JdkRequest
+import com.jcabi.http.response.HttpResponse
+import com.jcabi.http.response.XmlResponse
 import com.jcabi.manifests.Manifests
-import com.rexsl.test.RestTester
 import javax.ws.rs.core.HttpHeaders
 import javax.ws.rs.core.MediaType
 
 Manifests.append(new File(rexsl.basedir, 'src/test/resources/META-INF/MANIFEST.MF'))
 
-RestTester.start(rexsl.home)
+new JdkRequest(rexsl.home)
     .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML)
-    .get('reading version')
+    .fetch()
+    .as(HttpResponse)
     .assertStatus(HttpURLConnection.HTTP_OK)
+    .as(XmlResponse)
     .assertXPath('/page/version[contains(.,"-SNAPSHOT")]')

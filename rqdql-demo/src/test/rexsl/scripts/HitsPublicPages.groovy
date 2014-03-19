@@ -29,7 +29,8 @@
  */
 package com.rqdql.demo.rexsl.scripts
 
-import com.rexsl.test.RestTester
+import com.jcabi.http.request.JdkRequest
+import com.jcabi.http.response.HttpResponse
 import javax.ws.rs.core.UriBuilder
 
 [
@@ -39,7 +40,9 @@ import javax.ws.rs.core.UriBuilder
     '/xsl/index.xsl',
     '/css/screen.css',
 ].each {
-    RestTester.start(UriBuilder.fromUri(rexsl.home).path(it))
-        .get('hits existing page')
+    new JdkRequest(rexsl.home)
+        .uri().path(it).back()
+        .fetch()
+        .as(HttpResponse)
         .assertStatus(HttpURLConnection.HTTP_OK)
 }

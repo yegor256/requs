@@ -29,7 +29,9 @@
  */
 package com.rqdql.demo.rexsl.scripts
 
-import com.rexsl.test.RestTester
+import com.jcabi.http.request.JdkRequest
+import com.jcabi.http.response.HttpResponse
+import com.jcabi.http.response.XmlResponse
 import javax.ws.rs.core.UriBuilder
 
 [
@@ -37,8 +39,11 @@ import javax.ws.rs.core.UriBuilder
     '/xsl/xsl-stylesheet-doesnt-exist.xsl',
     '/css/stylesheet-is-absent.css',
 ].each {
-    RestTester.start(UriBuilder.fromUri(rexsl.home).path(it))
-        .get('hits non-found page')
+    new JdkRequest(rexsl.home)
+        .uri().path(it).back()
+        .fetch()
+        .as(HttpResponse)
         .assertStatus(HttpURLConnection.HTTP_NOT_FOUND)
+        .as(XmlResponse)
         .assertXPath('//xhtml:h1[contains(.,"Page not found")]')
 }

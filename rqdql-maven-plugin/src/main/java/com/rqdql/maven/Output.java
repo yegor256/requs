@@ -86,7 +86,7 @@ final class Output {
         }
         final StringBuilder text = new StringBuilder(0);
         final Collection<File> files = FileUtils.listFiles(
-            this.dir, new String[] {".r"}, true
+            this.dir, new String[] {"r"}, true
         );
         for (final File file : files) {
             text.append(

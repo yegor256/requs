@@ -29,10 +29,15 @@
  */
 package com.rqdql.demo.rexsl.scripts
 
-import com.rexsl.test.RestTester
+import com.jcabi.http.request.JdkRequest
+import com.jcabi.http.response.HttpResponse
+import com.jcabi.http.response.XmlResponse
 import javax.ws.rs.core.UriBuilder
 
-RestTester.start(UriBuilder.fromUri(rexsl.home).path('/trap'))
-    .get('hits exception trap')
+new JdkRequest(rexsl.home)
+    .uri().path('/trap').back()
+    .fetch()
+    .as(HttpResponse)
     .assertStatus(HttpURLConnection.HTTP_OK)
+    .as(XmlResponse)
     .assertXPath('//xhtml:title[.="Internal application error"]')

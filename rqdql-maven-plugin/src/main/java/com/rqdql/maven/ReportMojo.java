@@ -29,6 +29,7 @@
  */
 package com.rqdql.maven;
 
+import com.jcabi.aspects.Tv;
 import com.jcabi.log.Logger;
 import com.jcabi.xml.XML;
 import java.io.File;
@@ -39,6 +40,7 @@ import java.util.Locale;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkFactory;
@@ -190,7 +192,18 @@ public final class ReportMojo extends AbstractMavenReport {
         try {
             FileUtils.write(
                 new File(dir, "srs/index.xml"),
-                xml.toString(),
+                new StringBuilder(Tv.HUNDRED)
+                    .append("<?xml-stylesheet type='text/xsl' href='srs.xsl'?>")
+                    .append(xml.toString())
+                    .toString(),
+                CharEncoding.UTF_8
+            );
+            FileUtils.write(
+                new File(dir, "srs/srs.xsl"),
+                IOUtils.toString(
+                    this.getClass().getResourceAsStream("srs.xsl"),
+                    CharEncoding.UTF_8
+                ),
                 CharEncoding.UTF_8
             );
         } catch (final IOException ex) {

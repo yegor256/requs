@@ -26,15 +26,16 @@
  * @version $Id$
  */
 
-/*globals $: false */
+/*globals $: false, document: false */
 
 /**
  * Run this method when the document is loaded
  */
 $(document).ready(
-    function() {
+    function () {
+        "use strict";
         $("#example").keyup(
-            function() {
+            function () {
                 if ((this.rendered !== undefined) && this.rendered === this.value) {
                     return;
                 }
@@ -48,10 +49,10 @@ $(document).ready(
                         data: { 'text': this.rendered },
                         type: 'POST',
                         dataType: 'text',
-                        success: function(data) {
+                        success: function (data) {
                             $('#output').text(data);
                         },
-                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
                             $('#output').html(textStatus);
                         }
                     }
