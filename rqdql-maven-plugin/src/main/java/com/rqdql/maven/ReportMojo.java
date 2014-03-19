@@ -33,6 +33,8 @@ import com.jcabi.log.Logger;
 import com.jcabi.xml.XML;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Locale;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -124,27 +126,77 @@ public final class ReportMojo extends AbstractMavenReport {
         throw new MavenReportException("not supported");
     }
 
+    // @checkstyle ExecutableStatementCountCheck (100 lines)
     @Override
     public void generate(final Sink snk, final SinkFactory factory,
         final Locale locale) throws MavenReportException {
+        final File home = new File(
+            this.getOutputDirectory(),
+            this.getOutputName()
+        );
+        if (home.mkdirs()) {
+            Logger.info(this, "Home directory %s created", home);
+        }
+        snk.section1();
+        snk.sectionTitle1();
+        snk.text("RQDQL Reports");
+        snk.sectionTitle1_();
+        snk.table();
+        snk.tableRow();
+        snk.tableHeaderCell();
+        snk.text("Report");
+        snk.tableHeaderCell_();
+        snk.tableRow_();
+        for (final String report : this.reports(home)) {
+            snk.tableRow();
+            snk.tableCell();
+            snk.link(
+                String.format(
+                    "%s/%s/index.xml",
+                    this.getOutputName(),
+                    report
+                )
+            );
+            snk.text(report);
+            snk.link_();
+            snk.tableCell_();
+            snk.tableRow_();
+        }
+        snk.table_();
+        snk.paragraph();
+        snk.text("More information you can get at ");
+        snk.link("http://www.rqdql.com");
+        snk.text("www.rqdql.com");
+        snk.link_();
+        snk.text(".");
+        snk.paragraph_();
+        snk.section1_();
+    }
+
+    /**
+     * All reports.
+     * @param dir Where to save them
+     * @return Names of reports
+     * @throws MavenReportException If fails
+     */
+    private Collection<String> reports(final File dir)
+        throws MavenReportException {
         final XML xml;
         try {
             xml = new Output(this.source).build();
         } catch (final IOException ex) {
             throw new MavenReportException("failed to compile", ex);
         }
-        if (new File(this.getOutputDirectory()).mkdirs()) {
-            Logger.info(this, "%s created", this.getOutputDirectory());
-        }
         try {
             FileUtils.write(
-                new File(this.getOutputDirectory(), this.getOutputName()),
+                new File(dir, "srs/index.html"),
                 xml.toString(),
                 CharEncoding.UTF_8
             );
         } catch (final IOException ex) {
             throw new MavenReportException("failed to save", ex);
         }
+        return Collections.singleton("srs");
     }
 
 }
