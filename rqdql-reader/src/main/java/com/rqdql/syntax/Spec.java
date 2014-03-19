@@ -29,6 +29,8 @@
  */
 package com.rqdql.syntax;
 
+import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
 import com.rqdql.ontology.XeOntology;
 import javax.validation.constraints.NotNull;
 import org.antlr.runtime.ANTLRStringStream;
@@ -64,7 +66,7 @@ public final class Spec {
      * Get all clauses found in the text.
      * @return Clauses found
      */
-    public String xml() {
+    public XML xml() {
         final CharStream input = new ANTLRStringStream(this.text);
         final SpecLexer lexer = new SpecLexer(input);
         final TokenStream tokens = new CommonTokenStream(lexer);
@@ -77,7 +79,7 @@ public final class Spec {
             throw new IllegalArgumentException(ex);
         }
         try {
-            return new Xembler(onto).xml();
+            return new XMLDocument(new Xembler(onto).xml());
         } catch (ImpossibleModificationException ex) {
             throw new IllegalStateException(ex);
         }

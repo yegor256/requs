@@ -82,7 +82,7 @@ final class XeStep implements Step {
     public void object(final String variable) {
         assert variable != null;
         assert variable.matches("[a-z]+");
-        this.dirs.xpath(this.start).add("object").add("name").set(variable);
+        this.dirs.xpath(this.start).add("object").set(variable);
     }
 
     @Override

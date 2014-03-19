@@ -65,10 +65,14 @@ public final class SpecTest {
                     IOUtils.toString(
                         this.getClass().getResourceAsStream("example.rqdql")
                     )
-                ).xml()
+                ).xml().node()
             ),
-            XhtmlMatchers.hasXPaths(
-                "/spec/types/type[name='Fraction']/info[informal='a math calculator']"
+            XhtmlMatchers.hasXPath(
+                "/spec/types[count(type)=2]",
+                "/spec/types/type[name='User']",
+                "/spec/types/type[name='Fraction']",
+                "//type[name='Fraction']/info[informal='math calculator']",
+                "/spec[count(//method)=1]"
             )
         );
     }

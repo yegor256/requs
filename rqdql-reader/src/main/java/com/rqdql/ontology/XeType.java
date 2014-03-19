@@ -100,8 +100,12 @@ final class XeType implements Type {
     @Override
     public Method method(final String name) {
         assert name != null;
-        this.dirs.xpath(this.start)
-            .addIf("methods").add("method").add("name").set(name);
+        this.dirs.xpath(this.start).addIf("methods")
+            .xpath(this.start)
+            .xpath(String.format("methods[not(method/name='%s')]", name))
+            .add("method").add("name").set(name)
+            .xpath(this.start)
+            .xpath(String.format("methods[not(method/name='%s')]", name));
         return new XeMethod(
             this.dirs,
             String.format("%s/methods/method[name='%s']", this.start, name)

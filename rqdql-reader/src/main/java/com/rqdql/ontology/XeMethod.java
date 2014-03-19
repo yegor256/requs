@@ -90,7 +90,8 @@ final class XeMethod implements Method {
     }
 
     @Override
-    public void variable(final Kind kind, final String name, final String type) {
+    public void variable(final Flow.Kind kind,
+        final String name, final String type) {
         this.flow.variable(kind, name, type);
     }
 

@@ -110,7 +110,8 @@
         </site>
     </distributionManagement>
     <properties>
-        <rexsl.version>0.12</rexsl.version>
+        <rexsl.version>0.13.1</rexsl.version>
+        <saxon.version>9.1.0.8</saxon.version>
     </properties>
     <build>
         <plugins>
