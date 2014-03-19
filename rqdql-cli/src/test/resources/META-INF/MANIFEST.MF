@@ -1,1 +1,2 @@
 RQDQL-Version: 1.0-SNAPSHOT
+RQDQL-Revision: 1a2b3e4f

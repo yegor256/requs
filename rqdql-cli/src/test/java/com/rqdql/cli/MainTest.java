@@ -29,11 +29,8 @@
  */
 package com.rqdql.cli;
 
-import com.rexsl.test.XhtmlMatchers;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.PrintStream;
-import org.apache.commons.io.FileUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.After;
@@ -116,22 +113,6 @@ public final class MainTest {
         MatcherAssert.assertThat(
             this.out.toString(),
             Matchers.containsString("Usage:")
-        );
-    }
-
-    /**
-     * Main can compile a simple Spec document into XMI.
-     * @throws Exception When necessary
-     */
-    @Test
-    public void compilesSimpleDocument() throws Exception {
-        final File input = this.temp.newFile();
-        final File output = this.temp.newFile();
-        FileUtils.write(input, "User is a \"human being\".");
-        Main.main(new String[] {"-i", input.getPath(), "-o", output.getPath()});
-        MatcherAssert.assertThat(
-            FileUtils.readFileToString(output),
-            XhtmlMatchers.hasXPath("/xmi")
         );
     }
 

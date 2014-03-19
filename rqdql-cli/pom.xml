@@ -47,6 +47,10 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-log</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <scope>runtime</scope>
@@ -54,7 +58,7 @@
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <scope>runtime</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -106,12 +110,12 @@
                     <dependency>
                         <groupId>com.rexsl</groupId>
                         <artifactId>rexsl-test</artifactId>
-                        <version>0.13</version>
+                        <version>0.13.1</version>
                     </dependency>
                     <dependency>
                         <groupId>com.rexsl</groupId>
                         <artifactId>rexsl-w3c</artifactId>
-                        <version>0.12</version>
+                        <version>0.13.1</version>
                     </dependency>
                     <dependency>
                         <groupId>org.hamcrest</groupId>
