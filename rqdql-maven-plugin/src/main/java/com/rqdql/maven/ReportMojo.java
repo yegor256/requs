@@ -189,7 +189,7 @@ public final class ReportMojo extends AbstractMavenReport {
         }
         try {
             FileUtils.write(
-                new File(dir, "srs/index.html"),
+                new File(dir, "srs/index.xml"),
                 xml.toString(),
                 CharEncoding.UTF_8
             );
