@@ -55,17 +55,15 @@ public final class XeMethodTest {
         method.variable(Flow.Kind.RESULT, "result", "Employee");
         method.variable(Flow.Kind.INPUT, "one", "One");
         method.mention(2);
-        method.mention(4);
+        method.mention(1);
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
-                "/m",
                 "/m[signature='\"informal one\"']",
-                "/m/arguments[argument='One']",
-                "/m/arguments[argument='Two']",
-                "/m[result='Employee']",
+                "/m/args/arg[type='Employee' and kind='RESULT']",
+                "/m/args/arg[type='One' and kind='INPUT']",
                 "/m/mentioned[where='2']",
-                "/m/mentioned[where='4']"
+                "/m/mentioned[where='1']"
             )
         );
     }

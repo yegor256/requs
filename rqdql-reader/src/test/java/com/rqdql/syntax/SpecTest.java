@@ -48,7 +48,7 @@ public final class SpecTest {
     @Test
     public void parsesInputAndProducesTypes() throws Exception {
         MatcherAssert.assertThat(
-            new Spec("SuD includes: test.").xml(),
+            new Spec("Sud includes: test.").xml(),
             XhtmlMatchers.hasXPaths("/spec/types")
         );
     }

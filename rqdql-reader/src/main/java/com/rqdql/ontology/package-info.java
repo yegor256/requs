@@ -27,50 +27,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.rqdql.ontology;
-
-import com.jcabi.aspects.Loggable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.apache.commons.lang3.Validate;
-import org.xembly.Directives;
 
 /**
- * Xembly mentioned.
+ * Ontology.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.1
  */
-@ToString
-@EqualsAndHashCode(callSuper = false, of = { "dirs", "start" })
-@Loggable(Loggable.DEBUG)
-final class XeMentioned implements Mentioned {
-
-    /**
-     * All directives.
-     */
-    private final transient Directives dirs;
-
-    /**
-     * Starting XPath.
-     */
-    private final transient String start;
-
-    /**
-     * Ctor.
-     * @param directives Directives to extend
-     * @param xpath XPath to start with
-     */
-    XeMentioned(final Directives directives, final String xpath) {
-        this.dirs = directives;
-        this.start = xpath;
-    }
-
-    @Override
-    public void mention(final int where) {
-        Validate.isTrue(where > 0, "incorrect line: %d", (long) where);
-        this.dirs.xpath(this.start).addIf("mentioned")
-            .add("where").set(Integer.toString(where));
-    }
-}
+package com.rqdql.ontology;

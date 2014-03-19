@@ -32,6 +32,7 @@ package com.rqdql.ontology;
 import com.jcabi.aspects.Loggable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.commons.lang3.Validate;
 import org.xembly.Directives;
 
 /**
@@ -80,7 +81,7 @@ final class XeMethod implements Method {
 
     @Override
     public void signature(final String text) {
-        assert text != null;
+        Validate.matchesPattern(text, ".+", "invalid: %s", text);
         this.dirs.xpath(this.start).add("signature").set(text);
     }
 

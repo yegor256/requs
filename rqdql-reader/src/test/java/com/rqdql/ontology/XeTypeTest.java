@@ -56,17 +56,16 @@ public final class XeTypeTest {
         type.parent("Root");
         type.slot("one").assign("Emp");
         type.mention(2);
-        type.mention(4);
+        type.mention(1);
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
-                "/t",
                 "/t/info",
                 "/t/info[informal='first text']",
                 "/t/info[informal='second text']",
                 "/t/parents[parent='Root']",
                 "/t/mentioned[where='2']",
-                "/t/mentioned[where='4']",
+                "/t/mentioned[where='1']",
                 "/t/slots/slot[type='Emp']"
             )
         );

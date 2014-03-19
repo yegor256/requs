@@ -32,6 +32,7 @@ package com.rqdql.ontology;
 import com.jcabi.aspects.Loggable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.commons.lang3.Validate;
 import org.xembly.Directives;
 
 /**
@@ -80,15 +81,13 @@ final class XeType implements Type {
 
     @Override
     public void parent(final String type) {
-        assert type != null;
-        assert type.matches("[A-Z][a-z]+") : "test";
+        Validate.matchesPattern(type, "[A-Z][a-z]+", "invalid type: %s", type);
         this.dirs.xpath(this.start).addIf("parents").add("parent").set(type);
     }
 
     @Override
     public Slot slot(final String name) {
-        assert name != null;
-        assert name.matches("[a-z][a-z ]+");
+        Validate.matchesPattern(name, "[a-z][a-z]+", "invalid slot: %s", name);
         this.dirs.xpath(this.start)
             .addIf("slots").add("slot").add("name").set(name);
         return new XeSlot(
@@ -99,16 +98,16 @@ final class XeType implements Type {
 
     @Override
     public Method method(final String name) {
-        assert name != null;
+        Validate.matchesPattern(name, "UC[0-9\\.]+", "invalid UC: %s", name);
         this.dirs.xpath(this.start).addIf("methods")
             .xpath(this.start)
-            .xpath(String.format("methods[not(method/name='%s')]", name))
-            .add("method").add("name").set(name)
+            .xpath(String.format("methods[not(method/id='%s') ]", name))
+            .add("method").add("id").set(name)
             .xpath(this.start)
-            .xpath(String.format("methods[not(method/name='%s')]", name));
+            .xpath(String.format("methods[not(method/id='%s')]", name));
         return new XeMethod(
             this.dirs,
-            String.format("%s/methods/method[name='%s']", this.start, name)
+            String.format("%s/methods/method[id='%s']", this.start, name)
         );
     }
 

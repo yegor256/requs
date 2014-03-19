@@ -52,17 +52,19 @@ public final class XeStepTest {
     public void manipulatesWithSteps() throws Exception {
         final Directives dirs = new Directives().add("s");
         final Step step = new XeStep(dirs, "/s");
-        step.result("Data");
+        step.result("data");
         step.signature("\"do something\"");
-        step.arguments(Arrays.asList("a file", "Document"));
+        step.arguments(Arrays.asList("file", "document"));
         step.exception("division by zero").step(1).explain("foo...");
         step.mention(2);
-        step.mention(4);
+        step.mention(1);
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
-                "/s",
-                "/s[result='Data']",
+                "/s[result='data']",
+                "/s/args[count(arg)=2]",
+                "/s/args[arg='file']",
+                "/s/args[arg='document']",
                 "/s[signature='\"do something\"']",
                 "/s/exceptions/exception[when='division by zero']",
                 "/s/exceptions/exception/steps/step/info[informal='foo...']"

@@ -41,6 +41,7 @@ public interface Step extends Mentioned, Informal {
     /**
      * Exception at a step.
      * @param text Exception text
+     * @return Flow for this exception
      */
     Flow exception(String text);
 

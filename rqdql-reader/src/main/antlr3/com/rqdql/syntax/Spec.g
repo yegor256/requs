@@ -298,7 +298,7 @@ variable returns [String ret]
     { $ret = $WORD.text; }
     ;
 
-UC_ID: 'UC' ( '0' .. '9' )+;
+UC_ID: 'UC' ( '0' .. '9' | '.' )+;
 FLOW_ID: ( '0' .. '9' )+;
 CAPITAL_WORD: 'A' .. 'Z' ( 'a' .. 'z' | 'A' .. 'Z' )+;
 WORD: ( 'a' .. 'z' )+;

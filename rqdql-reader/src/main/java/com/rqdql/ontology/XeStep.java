@@ -32,6 +32,7 @@ package com.rqdql.ontology;
 import com.jcabi.aspects.Loggable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.commons.lang3.Validate;
 import org.xembly.Directives;
 
 /**
@@ -45,6 +46,11 @@ import org.xembly.Directives;
 @EqualsAndHashCode(callSuper = false, of = { "dirs", "start" })
 @Loggable(Loggable.DEBUG)
 final class XeStep implements Step {
+
+    /**
+     * Pattern to match variables.
+     */
+    private static final String VAR = "[a-z]+";
 
     /**
      * All directives.
@@ -80,15 +86,13 @@ final class XeStep implements Step {
 
     @Override
     public void object(final String variable) {
-        assert variable != null;
-        assert variable.matches("[a-z]+");
+        Validate.matchesPattern(variable, XeStep.VAR, "bad obj: %s", variable);
         this.dirs.xpath(this.start).add("object").set(variable);
     }
 
     @Override
     public void result(final String variable) {
-        assert variable != null;
-        assert variable.matches("[a-z]+");
+        Validate.matchesPattern(variable, XeStep.VAR, "bad var: %s", variable);
         this.dirs.xpath(this.start).add("result").set(variable);
     }
 
@@ -96,9 +100,9 @@ final class XeStep implements Step {
     public void arguments(final Iterable<String> vars) {
         assert vars != null;
         this.dirs.xpath(this.start).add("args");
-        for (final String type : vars) {
-            assert type.matches("[a-z]+");
-            this.dirs.add("arg").set(type).up();
+        for (final String var : vars) {
+            Validate.matchesPattern(var, XeStep.VAR, "bad argument: %s", var);
+            this.dirs.add("arg").set(var).up();
         }
     }
 
@@ -113,7 +117,7 @@ final class XeStep implements Step {
         assert text != null;
         this.dirs.xpath(this.start).addIf("exceptions")
             .xpath(this.start)
-            .xpath(String.format("exceptions[not(exception/when='%s')]", text))
+            .xpath(String.format("exceptions[not(exception/when='%s' )]", text))
             .add("exception").add("when").set(text)
             .xpath(this.start)
             .xpath(String.format("exceptions[not(exception/when='%s')]", text));

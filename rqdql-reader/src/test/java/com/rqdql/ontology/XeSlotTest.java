@@ -55,17 +55,16 @@ public final class XeSlotTest {
         slot.explain("second text");
         slot.assign("Employee");
         slot.mention(2);
-        slot.mention(4);
+        slot.mention(1);
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
-                "/p",
                 "/p/info",
                 "/p/info[informal='first text']",
                 "/p/info[informal='second text']",
                 "/p[type='Employee']",
                 "/p/mentioned[where='2']",
-                "/p/mentioned[where='4']"
+                "/p/mentioned[where='1']"
             )
         );
     }

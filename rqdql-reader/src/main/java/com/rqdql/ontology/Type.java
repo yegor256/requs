@@ -47,12 +47,14 @@ public interface Type extends Mentioned, Informal {
     /**
      * Found a slot of the type.
      * @param name Slot name
+     * @return Slot
      */
     Slot slot(String name);
 
     /**
      * Found a method.
      * @param name Unique name of it
+     * @return Method
      */
     Method method(String name);
 

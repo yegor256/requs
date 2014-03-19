@@ -80,7 +80,7 @@ public final class Spec {
         }
         try {
             return new XMLDocument(new Xembler(onto).xml());
-        } catch (ImpossibleModificationException ex) {
+        } catch (final ImpossibleModificationException ex) {
             throw new IllegalStateException(ex);
         }
     }
