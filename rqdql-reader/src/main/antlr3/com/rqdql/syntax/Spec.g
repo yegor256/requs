@@ -269,13 +269,13 @@ step [Flow flow]
         |
         step_informal=INFORMAL
         { step.explain($step_informal.text); }
-        )
+    )
     ;
 
 using [Flow flow, Step step]
     @init{ Collection<String> args = new LinkedList<String>(); }
     :
-    'using'
+    ( 'using' | 'with' )
     head=subject[flow, Flow.Kind.LOCAL]
     { args.add($head.ret); }
     (
