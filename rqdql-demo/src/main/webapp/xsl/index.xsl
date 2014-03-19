@@ -30,7 +30,7 @@
         </div>
         <div style="margin-left: 460px;">
             <p style="margin-top: 0;">
-                <xsl:text>XMI output from RQDQL compiler:</xsl:text>
+                <xsl:text>XML output from RQDQL compiler:</xsl:text>
             </p>
             <pre id="output">...</pre>
         </div>

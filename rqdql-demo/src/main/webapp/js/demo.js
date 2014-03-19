@@ -46,12 +46,10 @@ $(document).ready(
                         data: { 'text': this.rendered },
                         type: 'POST',
                         dataType: 'text',
-                        success: function(data)
-                        {
+                        success: function(data) {
                             $('#output').text(data);
                         },
-                        error: function(XMLHttpRequest, textStatus, errorThrown)
-                        {
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
                             $('#output').html(textStatus);
                         }
                     }
