@@ -55,6 +55,7 @@ Usage
       <groupId>rqdql-maven-plugin</groupId>
       <version>${project.version}</version>
     </plugin>
+  </plugins>
 </build>
 +--
 
