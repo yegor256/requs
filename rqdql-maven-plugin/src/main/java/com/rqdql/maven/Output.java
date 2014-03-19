@@ -34,6 +34,7 @@ import com.rqdql.Spec;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.io.FileUtils;
@@ -53,20 +54,20 @@ final class Output {
     /**
      * Source folder.
      */
-    private transient File dir;
+    private final transient File dir;
 
     /**
      * Ctor.
      * @param path Directory path
      */
-    Output(final File path) {
+    Output(@NotNull final File path) {
         this.dir = path;
     }
 
     /**
      * Build output.
      * @return XML
-     * @throws IOException
+     * @throws IOException If fails
      */
     public XML build() throws IOException {
         return new Spec(this.source()).xml();

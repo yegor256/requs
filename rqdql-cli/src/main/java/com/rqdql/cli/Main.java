@@ -62,7 +62,7 @@ public final class Main {
                 .append("rqdql-cli.jar")
                 .append(" [-options] < input > output\n")
                 .append("where options include:\n");
-            for (Map.Entry<String, ? extends OptionDescriptor> entry
+            for (final Map.Entry<String, ? extends OptionDescriptor> entry
                 : map.entrySet()) {
                 text.append("    -")
                     .append(entry.getKey())

@@ -26,6 +26,8 @@
  * @version $Id$
  */
 
+/*globals $: false */
+
 /**
  * Run this method when the document is loaded
  */
@@ -33,11 +35,11 @@ $(document).ready(
     function() {
         $("#example").keyup(
             function() {
-                if ((this.rendered != undefined) && this.rendered == this.value) {
+                if ((this.rendered !== undefined) && this.rendered === this.value) {
                     return;
                 }
                 this.rendered = this.value;
-                if (this.rendered == null) {
+                if (this.rendered === null) {
                     this.rendered = "";
                 }
                 $.ajax(
