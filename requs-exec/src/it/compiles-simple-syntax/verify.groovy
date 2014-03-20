@@ -33,8 +33,9 @@ import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
 
 MatcherAssert.assertThat(
-    new File(basedir, 'output.xmi').text,
+    new File(basedir, 'output.xml').text,
     XhtmlMatchers.hasXPaths(
-        '/xmi'
+        '/spec/types/type[name="Fraction"]',
+        '/spec/types/type[name="User"]'
     )
 )

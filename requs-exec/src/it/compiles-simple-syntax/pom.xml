@@ -34,7 +34,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>@project.groupId@</groupId>
-    <artifactId>@project.artifactId@-compiles-simple-syntax</artifactId>
+    <artifactId>compiles-simple-syntax</artifactId>
     <version>@project.version@</version>
     <packaging>jar</packaging>
     <dependencies>
@@ -64,8 +64,9 @@
                                 <argument>-classpath</argument>
                                 <classpath/>
                                 <argument>org.requs.cli.Main</argument>
+                                <argument>--input=input.requs</argument>
+                                <argument>--output=output.xml</argument>
                             </arguments>
-                            <commandlineArgs>&lt; input.requs &gt; output.xmi</commandlineArgs>
                         </configuration>
                     </execution>
                 </executions>

@@ -29,9 +29,9 @@
  */
 
 /**
- * Command Line Interface (CLI) classes, tests.
+ * Command Line Interface (CLI) classes.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-package org.requs.cli;
+package org.requs.exec;

@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.requs.cli;
+package org.requs.exec;
 
 import com.jcabi.manifests.Manifests;
 import org.requs.Spec;
@@ -99,11 +99,21 @@ public final class Main {
             parser.formatHelpWith(Main.FORMATTER);
             parser.printHelpOn(System.out);
         } else {
+            final InputStream input = .input(options);
             IOUtils.write(
-                new Spec(IOUtils.toString(System.in)).xml().toString(),
-                System.out
+                new Spec(
+                    IOUtils.toString(this.input(options))
+                ).xml().toString(),
+                this.output(options)
             );
         }
     }
+
+    /**
+     * Get input stream.
+     * @param opts Options
+     * @return Input stream
+     */
+    private
 
 }

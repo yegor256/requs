@@ -1,12 +1,10 @@
-SuD includes: user as User.
-
 Fraction is a "math calculator".
 
 Fraction needs:
   numerator as Float, and
   denominator as Float.
 
-UC1 where SuD divides two numbers:
+UC1 where User (a user) divides two numbers:
   1. The user creates Fraction (a fraction);
   2. The fraction "calculates" Float (a quotient);
   3. The user "receives results" using the quotient.
