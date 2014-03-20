@@ -90,12 +90,12 @@
     </mailingLists>
     <issueManagement>
         <system>github</system>
-        <url>https://github.com/yegor256/requs/issues</url>
+        <url>https://github.com/tpc2/requs/issues</url>
     </issueManagement>
     <scm>
-        <connection>scm:git:github.com:yegor256/requs.git</connection>
-        <developerConnection>scm:git:github.com:yegor256/requs.git</developerConnection>
-        <url>https://github.com/yegor256/requs</url>
+        <connection>scm:git:github.com:tpc2/requs.git</connection>
+        <developerConnection>scm:git:github.com:tpc2/requs.git</developerConnection>
+        <url>https://github.com/tpc2/requs</url>
     </scm>
     <ciManagement>
         <system>rultor</system>
