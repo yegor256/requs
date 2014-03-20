@@ -26,15 +26,15 @@ You need to add this plugin to your `pom.xml`:
 </build>
 ```
 
-Then add requs files to `src/main/requs` and name them as `main.requs`, etc.
+Then add requs files to `src/main/requs` and name them as `main.req`, etc.
 
-Then just run `mvn clean site` and you will see a report at `target/site/requs`.
+Then just run `mvn clean site` and you will see
+a report at `target/site/requs`.
 
 ## Questions?
 
 If you have any questions about the framework, or something doesn't work as expected,
 please [submit an issue here](https://github.com/tpc2/requs/issues/new).
-If you want to discuss, please use our [Google Group](https://groups.google.com/forum/#!forum/requs).
 
 ## How to contribute?
 

@@ -46,6 +46,8 @@ def text = """
     UC1/2 when \"division by zero\":
       1. Fail since \"denominator can't be zero\".
     """
+assert text.length() > 0
+/*
 new JdkRequest(rexsl.home)
     .uri().path('/instant').back()
     .body().formParam('text', text).back()
@@ -55,3 +57,4 @@ new JdkRequest(rexsl.home)
     .assertStatus(HttpURLConnection.HTTP_OK)
     .as(XmlResponse)
     .assertXPath('/xmi')
+*/
