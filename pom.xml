@@ -118,8 +118,9 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <requs-Version>${project.version}</requs-Version>
-                            <requs-Revision>${buildNumber}</requs-Revision>
+                            <Requs-Version>${project.version}</Requs-Version>
+                            <Requs-Revision>${buildNumber}</Requs-Revision>
+                            <Requs-Date>${maven.build.timestamp}</Requs-Date>
                         </manifestEntries>
                     </archive>
                 </configuration>

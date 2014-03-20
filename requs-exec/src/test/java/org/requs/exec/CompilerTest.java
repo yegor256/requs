@@ -27,73 +27,50 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.requs.maven;
+package org.requs.exec;
 
-import com.jcabi.xml.XML;
-import org.requs.Spec;
+import com.rexsl.test.XhtmlMatchers;
 import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
-import javax.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.CharEncoding;
+import org.hamcrest.MatcherAssert;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 /**
- * Output XML.
- *
+ * Test case for {@link Compiler}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.1
  */
-@ToString
-@EqualsAndHashCode
-final class Output {
+public final class CompilerTest {
 
     /**
-     * Source folder.
+     * Temporary folder.
+     * @checkstyle VisibilityModifier (3 lines)
      */
-    private final transient File dir;
+    @Rule
+    public transient TemporaryFolder temp = new TemporaryFolder();
 
     /**
-     * Ctor.
-     * @param path Directory path
+     * Compiler can compile.
+     * @throws Exception When necessary
      */
-    Output(@NotNull final File path) {
-        this.dir = path;
-    }
-
-    /**
-     * Build output.
-     * @return XML
-     * @throws IOException If fails
-     */
-    public XML build() throws IOException {
-        return new Spec(this.source()).xml();
-    }
-
-    /**
-     * Read XML.
-     * @return The output
-     * @throws IOException If something goes wrong
-     */
-    private String source() throws IOException {
-        if (!this.dir.exists()) {
-            throw new IOException(
-                String.format("directory %s is absent", this.dir)
-            );
-        }
-        final StringBuilder text = new StringBuilder(0);
-        final Collection<File> files = FileUtils.listFiles(
-            this.dir, new String[] {"r"}, true
+    @Test
+    public void compilesRequsSources() throws Exception {
+        final File input = this.temp.newFolder();
+        final File output = this.temp.newFolder();
+        FileUtils.write(
+            new File(input, "main.req"),
+            "Employee is a \"user of the system\"."
         );
-        for (final File file : files) {
-            text.append(
-                FileUtils.readFileToString(file, CharEncoding.UTF_8)
-            ).append('\n');
-        }
-        return text.toString();
+        new Compiler(input, output).compile();
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(
+                FileUtils.readFileToString(new File(output, "srs.xml"))
+            ),
+            XhtmlMatchers.hasXPaths("/spec/types/type[name='Employee']")
+        );
     }
 
 }

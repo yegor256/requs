@@ -33,8 +33,6 @@ import java.io.File;
 import java.io.IOException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.CharEncoding;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -64,14 +62,14 @@ public final class CompileMojo extends AbstractMojo {
         required = true,
         defaultValue = "${basedir}/src/main/requs"
     )
-    private transient File source;
+    private transient File input;
 
     /**
-     * Output XML file.
+     * Output directory.
      */
     @Parameter(
         required = true,
-        defaultValue = "${project.build.directory}/requs.xml"
+        defaultValue = "${project.build.directory}/requs"
     )
     private transient File output;
 
@@ -79,11 +77,7 @@ public final class CompileMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException {
         StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
         try {
-            FileUtils.write(
-                this.output,
-                new Output(this.source).build().toString(),
-                CharEncoding.UTF_8
-            );
+            new Compiler(this.input, this.output).compile();
         } catch (final IOException ex) {
             throw new MojoExecutionException("IO failure", ex);
         }

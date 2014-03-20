@@ -29,13 +29,15 @@
  */
 package org.requs.exec;
 
+import com.rexsl.test.XhtmlMatchers;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.PrintStream;
+import org.apache.commons.io.FileUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -74,7 +76,7 @@ public final class MainTest {
      * @throws Exception When necessary
      */
     @After
-    public void revertChangedSystemOutputSteam() throws Exception {
+    public void revertChangedSystemOutputStream() throws Exception {
         System.setOut(null);
     }
 
@@ -96,9 +98,8 @@ public final class MainTest {
      * @throws Exception When necessary
      */
     @Test
-    @Ignore
     public void displaysVersionNumber() throws Exception {
-        Main.main(new String[] {"-v"});
+        Main.main(new String[]{"-v"});
         MatcherAssert.assertThat(
             this.out.toString(),
             Matchers.containsString("-SNAPSHOT")
@@ -110,12 +111,41 @@ public final class MainTest {
      * @throws Exception When necessary
      */
     @Test
-    @Ignore
     public void rendersHelpMessage() throws Exception {
         Main.main(new String[] {"-h"});
         MatcherAssert.assertThat(
             this.out.toString(),
             Matchers.containsString("Usage:")
+        );
+    }
+
+    /**
+     * Compiler can compile.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void compilesRequsSources() throws Exception {
+        final File input = this.temp.newFolder();
+        final File output = this.temp.newFolder();
+        FileUtils.write(
+            new File(input, "main.req"),
+            "Employee is a \"user of the system\"."
+        );
+        Main.main(
+            new String[] {
+                "-i", input.getAbsolutePath(),
+                "-o", output.getAbsolutePath()
+            }
+        );
+        MatcherAssert.assertThat(
+            this.out.toString(),
+            Matchers.containsString("compiled and saved to")
+        );
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(
+                FileUtils.readFileToString(new File(output, "srs.xml"))
+            ),
+            XhtmlMatchers.hasXPaths("/spec/types/type[name='Employee']")
         );
     }
 

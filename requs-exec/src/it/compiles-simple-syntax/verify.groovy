@@ -33,7 +33,7 @@ import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
 
 MatcherAssert.assertThat(
-    new File(basedir, 'output.xml').text,
+    new File(basedir, 'target/requs/srs.xml').text,
     XhtmlMatchers.hasXPaths(
         '/spec/types/type[name="Fraction"]',
         '/spec/types/type[name="User"]'

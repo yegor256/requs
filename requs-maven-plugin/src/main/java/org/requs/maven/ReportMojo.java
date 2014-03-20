@@ -137,11 +137,11 @@ public final class ReportMojo extends AbstractMavenReport {
             this.getOutputName()
         );
         if (home.mkdirs()) {
-            Logger.info(this, "Home directory %s created", home);
+            Logger.info(this, "site directory %s created", home);
         }
         snk.section1();
         snk.sectionTitle1();
-        snk.text("requs Reports");
+        snk.text("Requs Reports");
         snk.sectionTitle1_();
         snk.table();
         snk.tableRow();
@@ -183,31 +183,10 @@ public final class ReportMojo extends AbstractMavenReport {
      */
     private Collection<String> reports(final File dir)
         throws MavenReportException {
-        final XML xml;
         try {
-            xml = new Output(this.source).build();
+            new Compiler(this.source, dir).compile();
         } catch (final IOException ex) {
             throw new MavenReportException("failed to compile", ex);
-        }
-        try {
-            FileUtils.write(
-                new File(dir, "srs/index.xml"),
-                new StringBuilder(Tv.HUNDRED)
-                    .append("<?xml-stylesheet type='text/xsl' href='srs.xsl'?>")
-                    .append(xml.toString())
-                    .toString(),
-                CharEncoding.UTF_8
-            );
-            FileUtils.write(
-                new File(dir, "srs/srs.xsl"),
-                IOUtils.toString(
-                    this.getClass().getResourceAsStream("srs.xsl"),
-                    CharEncoding.UTF_8
-                ),
-                CharEncoding.UTF_8
-            );
-        } catch (final IOException ex) {
-            throw new MavenReportException("failed to save", ex);
         }
         return Collections.singleton("srs");
     }

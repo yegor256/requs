@@ -63,9 +63,9 @@
                             <arguments>
                                 <argument>-classpath</argument>
                                 <classpath/>
-                                <argument>org.requs.cli.Main</argument>
-                                <argument>--input=input.requs</argument>
-                                <argument>--output=output.xml</argument>
+                                <argument>org.requs.exec.Main</argument>
+                                <argument>-i=${basedir}/requs-src</argument>
+                                <argument>-o=${project.build.directory}/requs</argument>
                             </arguments>
                         </configuration>
                     </execution>

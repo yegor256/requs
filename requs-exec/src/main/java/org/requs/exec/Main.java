@@ -30,11 +30,9 @@
 package org.requs.exec;
 
 import com.jcabi.manifests.Manifests;
-import org.requs.Spec;
+import java.io.File;
 import java.io.IOException;
-import java.util.Map;
-import joptsimple.HelpFormatter;
-import joptsimple.OptionDescriptor;
+import java.io.PrintStream;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import org.apache.commons.io.IOUtils;
@@ -49,29 +47,6 @@ import org.apache.commons.io.IOUtils;
 public final class Main {
 
     /**
-     * Formatter of options.
-     */
-    private static final HelpFormatter FORMATTER = new HelpFormatter() {
-        @Override
-        public String format(final
-            Map<String, ? extends OptionDescriptor> map) {
-            final StringBuilder text = new StringBuilder();
-            text.append("Usage: java -jar ")
-                .append("requs-cli.jar")
-                .append(" [-options] < input > output\n")
-                .append("where options include:\n");
-            for (final Map.Entry<String, ? extends OptionDescriptor> entry
-                : map.entrySet()) {
-                text.append("    -")
-                    .append(entry.getKey())
-                    .append(entry.getValue().description())
-                    .append('\n');
-            }
-            return text.toString();
-        }
-    };
-
-    /**
      * Private ctor, to avoid instantiation of this class.
      */
     private Main() {
@@ -84,36 +59,29 @@ public final class Main {
      * @throws IOException If something goes wrong inside
      */
     public static void main(final String[] args) throws IOException {
-        final OptionParser parser = new OptionParser("vh");
+        final OptionParser parser = new OptionParser("h*vi:o:");
+        final PrintStream out = System.out;
+        parser.posixlyCorrect(true);
         final OptionSet options = parser.parse(args);
         if (options.has("v")) {
             IOUtils.write(
                 String.format(
                     "%s/%s",
-                    Manifests.read("requs-Version"),
-                    Manifests.read("requs-Revision")
+                    Manifests.read("Requs-Version"),
+                    Manifests.read("Requs-Revision")
                 ),
-                System.out
+                out
             );
-        } else if (options.has("h")) {
-            parser.formatHelpWith(Main.FORMATTER);
-            parser.printHelpOn(System.out);
+        } else if (options.has("i") && options.has("o")) {
+            new Compiler(
+                new File(options.valueOf("i").toString()),
+                new File(options.valueOf("o").toString())
+            ).compile();
         } else {
-            final InputStream input = .input(options);
-            IOUtils.write(
-                new Spec(
-                    IOUtils.toString(this.input(options))
-                ).xml().toString(),
-                this.output(options)
-            );
+            out.println("Usage: java -jar requs-exec.jar [options]");
+            out.println("where options include:\n");
+            parser.printHelpOn(out);
         }
     }
-
-    /**
-     * Get input stream.
-     * @param opts Options
-     * @return Input stream
-     */
-    private
 
 }
