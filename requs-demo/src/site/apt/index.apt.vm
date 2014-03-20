@@ -1,10 +1,10 @@
- ------
- requs RESTful syntax validator
- ------
- Yegor Bugayenko
- ------
- 2012-12-10
- ------
+------
+Requs RESTful syntax validator
+------
+Yegor Bugayenko
+------
+2012-12-10
+------
 
 ~~ This source file is subject to the new BSD license that is bundled
 ~~ with this package in the file LICENSE.txt. It is also available
@@ -26,6 +26,6 @@
 ~~ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 ~~ OF SUCH DAMAGE.
 
-requs RESTful syntax validator
+Requs Demo Syntax Validator
 
-  Check it out at {{{http://rest.requs.org}rest.requs.org}}.
+  Check it out at {{{http://demo.requs.org}demo.requs.org}}.

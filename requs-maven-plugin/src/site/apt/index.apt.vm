@@ -1,10 +1,10 @@
- ------
- Introduction
- ------
- Yegor Bugayenko
- ------
- 2014-03-19
- ------
+------
+Introduction
+------
+Yegor Bugayenko
+------
+2014-03-19
+------
 
 ~~
 ~~ Copyright (c) 2011-2014, requs.org
@@ -40,7 +40,7 @@
 ~~ @version $Id: build.xml 30 2010-12-15 08:08:32Z yegor256@yahoo.com $
 ~~
 
-requs Maven Plugin
+Requs Maven Plugin
 
   The plugin automates requs compilation in Maven build.
 

@@ -1,10 +1,10 @@
- ------
+------
 Usage Examples
- ------
+------
 Yegor Bugayenko
- ------
+------
 2010-12-26
- ------
+------
 
 ~~ This source file is subject to the new BSD license that is bundled
 ~~ with this package in the file LICENSE.txt. It is also available
@@ -26,48 +26,10 @@ Yegor Bugayenko
 ~~ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 ~~ OF SUCH DAMAGE.
 
-Command Line Interface of requs
+Command Line Interface
 
   Download <<<requs-bin.jar>>> and run it:
 
 ---
-java -jar requs-bin.jar [-?v] <report>+ < <input-file>
+java -jar requs-bin.jar -h
 ---
-
-  Every <<<\<report\>>>> is formatted as:
-
----
-<name>:<arg1>[=<value1>][,<arg2>[=<value2>]...]
----
-
-  For example:
-
----
-java -jar requs-bin.jar errors:max=50,unique metrics < srs.txt
----
-
-  This request parses provided <<<srs.txt>>> file and
-  produces an XML output, where <<<errors>>> and <<<metrics>>>
-  reporters inject their data:
-
-+--
-<?xml version="1.0">
-<requs xmlns="http://requs.org/"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://requs.org/ http://requs.org/requs.xsd>
-  <errors>
-    <report max="50" unique="true">
-      <errors>
-        <error line="15">Invalid syntax of entity</error>
-        <error line="54">Missed argument</error>
-      </errors>
-    </report>
-  </errors>
-  <metrics>
-    <report>
-      <version>0.3-SNAPSHOT</version>
-      <ambiguity>0.865</ambiguity>
-    </report>
-  </metrics>
-</requs>
-+--

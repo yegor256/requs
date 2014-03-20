@@ -1,10 +1,10 @@
- ------
- Command Line Interface
- ------
- Yegor Bugayenko
- ------
- 2011-06-01
- ------
+------
+Command Line Interface
+------
+Yegor Bugayenko
+------
+2011-06-01
+------
 
 ~~ This source file is subject to the new BSD license that is bundled
 ~~ with this package in the file LICENSE.txt. It is also available
@@ -26,15 +26,13 @@
 ~~ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 ~~ OF SUCH DAMAGE.
 
-requs, Command Line Interface
+Command Line Interface
 
   Command line interface to the requs engine. Download
-  {{{http://repo1.maven.org/maven2/com/requs/${project.artifactId}/${project.version}/${project.artifactId}-${project.version}.jar}<<<requs-cli-${project.version}.jar>>>}}
+  {{{http://repo1.maven.org/maven2/org/requs/${project.artifactId}/${project.version}/${project.artifactId}-${project.version}.jar}<<<requs-exec-${project.version}.jar>>>}}
   and run:
 
 +--
-java -jar ${project.artifactId}-${project.version}.jar < text.requs
+java -jar ${project.artifactId}-${project.version}.jar -h
 +--
 
-  File <<<text.requs>>> should contain requs requirements document.
-  The output will contain XMI document with UML of the requirements.

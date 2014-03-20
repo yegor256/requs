@@ -1,10 +1,10 @@
- ------
+------
 Syntax and Grammar
- ------
+------
 Yegor Bugayenko
- ------
+------
 2010-12-26
- ------
+------
 
 ~~ This source file is subject to the new BSD license that is bundled
 ~~ with this package in the file LICENSE.txt. It is also available
@@ -26,26 +26,25 @@ Yegor Bugayenko
 ~~ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 ~~ OF SUCH DAMAGE.
 
-Requirements Definition and Query Language (requs)
+Requs Syntax
 
   {{{http://standards.ieee.org/reading/ieee/std_public/description/se/830-1998_desc.html}IEEE 830-1998}}
   says: "SRS (<software requirements specification>) should be
   correct, unambiguous, complete, consistent, ranked for importance and/or stability,
-  verifiable, modifiable, traceable". requs is going to enable the creation
-  of such documents in plain text format. If you're interested to join the group
-  developing requs, email to {{{mailto:team@requs.org}team@requs.org}}
+  verifiable, modifiable, traceable". Requs is enabling the creation
+  of such documents in plain text format.
 
 * Quick Start
 
   The scope definition document consists of <<types>>
-  and <<use cases>>. For example, there are two types
-  (<<<ActorVisitor>>> and <<<ImageFile>>>) and one
+  and <<methods>> (or use cases). For example, there are two types
+  (<<<Visitor>>> and <<<ImageFile>>>) and one
   use case (<<<UC3.2>>>) defined in the snippet:
 
 +--
-ActorVisitor is an "originator of HTTP request".
-UC3.2 where ActorUser (the user) deletes photos of himself:
-"we will define it later...".
+Visitor is an "originator of HTTP request".
+UC3.2 where User (a user) deletes photos:
+  "we will define it later...".
 ImageFile includes: PNG content, name, and size.
 +--
 
@@ -54,21 +53,21 @@ ImageFile includes: PNG content, name, and size.
   any attempt to understand what it means. You can double quote anything
   (except double quotes, of course), and you can place
   informal texts in any place of the document. They are ignored
-  during formal requs analysis.
+  during formal Requs analysis.
 
   Let's consider a bit bigger example of a type <<<ImageFile>>>:
 
 +--
 ImageFile includes:
-  PNG content: "binary content as defined by ISO-15948";
-  name: "a unique alpha-numeric name of the image";
-  size: "total number of bytes in PNG content".
+  PNG content as "binary content as defined by ISO-15948",
+  name as "a unique alpha-numeric name of the image",
+  size as "total number of bytes in PNG content".
 +--
 
   The semantic is the same -- the type still contains three <<slots>>
   (<<<PNG content>>>, <<<name>>> and <<<size>>>). However
   in this example we have added an informal explanation to every one of them.
-  A colon separates the name of the slot and its invariant.
+  An <<<as>>> keyword separates the name of the slot and its invariant.
   Pay attention to the dots, colons, semicolons and commas used above.
   Comma, semicolon and preposition <<<and>>> can replace each other.
   For example, the following declarations are semantically equivalent:
@@ -76,16 +75,7 @@ ImageFile includes:
 +--
 PNG content and name and size
 PNG content, name, size
-PNG content; name; size
-+--
-
-  A slot is a type itself and can be used outside of its parent type
-  by means of a preposition <<<of>>>, for example:
-
-+--
-PNG content of ImageFile is a binary file.
-Name of ImageFile is unique.
-Size of ImageFile is a "size of PNG content of this file".
+PNG content; name; and size
 +--
 
   By means of <<<is>>>/<<<is a>>> we enable a declaration of <<invariants>>
@@ -93,11 +83,10 @@ Size of ImageFile is a "size of PNG content of this file".
   what happens with the system. In the example above it is always true
   that <<<PNG content>>> is a file with binary content (not a readable
   ASCII text). Nobody can break this invariant and put a textual information
-  into this slot. Similarly, the <<<name of ImageFile>>> is
-  always unique in its type. We won't be able to find two identical
-  slots in the type <<<name of ImageFile>>>, never.
+  into this slot.
+
   As you noticed, an invariant could be declared with an informal text, as we've
-  done with <<<size of ImageFile>>>. Such a declaration means
+  done with <<<size>>>. Such a declaration means
   absolutely nothing and will be ignored. But it helps when you're starting
   to develop the scope document.
 
@@ -108,38 +97,26 @@ Size of ImageFile is a "size of PNG content of this file".
   should use informal texts. Later, when you have more information,
   you will replace them.
 
-  As you've already noticed, requs is a case-insensitive language in all places
+  As you've already noticed, Requs is a case-insensitive language in all places
   except one -- type names should use
-  {{{http://en.wikipedia.org/wiki/CamelCase}CamelCase Notation}}. Thus
-  <<<name of ImageFile>>> and <<<Name of ImageFile>>> point
-  us to the same type. However, <<<ImageFile>>> is a valid type
+  {{{http://en.wikipedia.org/wiki/CamelCase}CamelCase Notation}}. Thus,
+  <<<ImageFile>>> is a valid type
   name, and <<<imagefile>>> is just an English word.
 
-  There is one special meta-type, which we should mention -- Actors.
-  Every type that has <<<Actor>>> prefix is an instance of a meta-type
-  called "Actors". In the scope definition document actors represent people,
-  machines, services, databases, etc. -- anything and anyone
-  who interacts with the <<system under development (SUD)>>,
-  crossing the board of the SUD. Important to note that the SUD is
-  an actor itself, and its name in the document is <<<SUD>>>. You
-  are free to use <<<SUD>>> or replace it with more
-  convenient <<<we>>> and <<<us>>>.
-
   To put things together we should declare a use case, which is
-  a step-by-step explanation of interaction between an actor
-  and <<objects>>, for example:
+  a step-by-step explanation of interaction between instances of types
+  (so called <<objects>>), for example:
 
 +--
-UC8.1 where ActorUser (the user) shares ImageFile
-with ActorUser (the friend):
-  1. The user creates ImageFile (the photo).
+UC8.1 where User (a user) shares Image with User (a friend):
+  1. The user creates Image (a photo).
   2. The user updates the friend "selecting one of his contacts".
   3. We convert the photo "to the right PNG format, 600x600 maximum".
   4. We notify the friend by email.
   5. The friend reads the photo "in his own web page".
-UC8.1 0a) If "the user exceeds the maximum possible number of photos":
+UC8.1/1 If "the user exceeds the maximum possible number of photos":
   1. Failure "photos limit exceeded".
-UC8.1 3a) If failed with "invalid format":
+UC8.1/3 If failed with "invalid format":
   1. "We notify user about the problem".
   2. Failure "can't convert photo".
 +--
@@ -154,7 +131,7 @@ UC8.1 3a) If failed with "invalid format":
   signature of this use case is (types are in bold):
 
 +--
-ActorUser shares ImageFile with ActorUser
+User shares Image with User
 +--
 
   In order to include this use case into another one we should use this
@@ -173,9 +150,9 @@ ActorUser shares ImageFile with ActorUser
   what these flows really tell us about:
 
 +--
-1. ActorUser creates ImageFile
-  the user => ActorUser
-  the photo => ImageFile
+1. User creates Image
+  the user => User
+  the photo => Image
 5. SUD converts ImageFile
   the photo => ImageFile
 6. SUD notifies ActorUser by email.
@@ -246,12 +223,6 @@ A = S / (S + M)
   which is an almost impossible situation. In real world projects
   the task of a system analyst is to move <A> from 1 to 0.
 
-* Predicates
-
-  Possible predicates now are: <<<text>>> and <<<number>>>.
-
-  to be continued...
-
 * More Details on Use Cases
 
   This section contains a detailed review of a use cases defined
@@ -316,8 +287,4 @@ UC8.1 3a) If failed with "invalid format":
   <<<2. The friend is one of friend of the user.>>>
   Explicit instantiation of the variable happens here. <<<Friend of the user>>>
   is a slot in <<<the user>>> and
-
-* Appendix A. Formal Grammar
-
-  to be continued...
 

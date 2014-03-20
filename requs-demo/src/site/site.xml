@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
- *
- * requs.org
+ * Copyright (c) 2009-2014, requs.org
+ * All rights reserved.
  *
  * This source file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE.txt. It is also available
@@ -22,18 +22,14 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
- *
- * Copyright (c) 2010, requs.org, Inc.
- * @version $Id$
  -->
-<project xmlns="http://maven.apache.org/DECORATION/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0     http://maven.apache.org/xsd/decoration-1.0.0.xsd" name="requs-rest">
+<project xmlns="http://maven.apache.org/DECORATION/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0     http://maven.apache.org/xsd/decoration-1.0.0.xsd" name="requs-demo">
     <body>
         <menu ref="parent"/>
         <menu name="Overview">
             <item name="Introduction" href="index.html"/>
             <item name="JavaDoc ${project.version}" href="apidocs-${project.version}/index.html"/>
             <item name="Test Coverage" href="cobertura/index.html"/>
-            <item name="Release History" href="changes-report.html"/>
         </menu>
         <menu ref="reports"/>
     </body>
