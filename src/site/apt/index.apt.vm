@@ -8,10 +8,10 @@ Yegor Bugayenko
 
 ~~ This source file is subject to the new BSD license that is bundled
 ~~ with this package in the file LICENSE.txt. It is also available
-~~ through the world-wide-web at this URL: http://www.rqdql.com/LICENSE.txt
+~~ through the world-wide-web at this URL: http://www.requs.org/LICENSE.txt
 ~~ If you did not receive a copy of the license and are unable to
 ~~ obtain it through the world-wide-web, please send an email
-~~ to license@rqdql.com so we can send you a copy immediately.
+~~ to license@requs.org so we can send you a copy immediately.
 ~~
 ~~ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 ~~ "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,22 +26,22 @@ Yegor Bugayenko
 ~~ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 ~~ OF SUCH DAMAGE.
 
-Requirements Definition and Query Language (RQDQL)
+Requirements Definition and Query Language (requs)
 
   IEEE 830-1998 says: "<SRS (software requirements specification) should be
   correct, unambiguous, complete, consistent, ranked for importance and/or stability,
-  verifiable, modifiable, traceable>". RQDQL is going to enable the creation
+  verifiable, modifiable, traceable>". requs is going to enable the creation
   of such documents in plain text format. If you're interested to join the group
-  developing RQDQL, email to {{{mailto:team@rqdql.com}team@rqdql.com}}.
+  developing requs, email to {{{mailto:team@requs.org}team@requs.org}}.
 
   Software Design Document (SDD) is available {{{./pdf/sdd.pdf}in PDF}}.
 
   Download executable JAR
-  {{{https://oss.sonatype.org/content/groups/public/com/rqdql/rqdql/}here}}.
+  {{{https://oss.sonatype.org/content/groups/public/com/requs/requs/}here}}.
 
-  Try online demo: {{{http://demo.rqdql.com/}demo.rqdql.com}}.
+  Try online demo: {{{http://demo.requs.org/}demo.requs.org}}.
 
   This software was initially developed in C++. Now we're transferring it
   to Java and this work is not finished yet. A complete (compilable and working)
   version in C++ is available in Subversion:
-  <<<svn://svn.rqdql.com/rqdql/tags/rqdql-0.4-latest/cpp>>>.
+  <<<svn://svn.requs.org/requs/tags/requs-0.4-latest/cpp>>>.

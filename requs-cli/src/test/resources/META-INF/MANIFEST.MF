@@ -1,0 +1,2 @@
+requs-Version: 1.0-SNAPSHOT
+requs-Revision: 1a2b3e4f

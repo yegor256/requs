@@ -1,0 +1,3 @@
+requs-Version: 1.0-SNAPSHOT
+requs-Revision: 12345
+requs-Date: 9-Dec-2012

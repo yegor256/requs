@@ -8,10 +8,10 @@ Yegor Bugayenko
 
 ~~ This source file is subject to the new BSD license that is bundled
 ~~ with this package in the file LICENSE.txt. It is also available
-~~ through the world-wide-web at this URL: http://www.rqdql.com/LICENSE.txt
+~~ through the world-wide-web at this URL: http://www.requs.org/LICENSE.txt
 ~~ If you did not receive a copy of the license and are unable to
 ~~ obtain it through the world-wide-web, please send an email
-~~ to license@rqdql.com so we can send you a copy immediately.
+~~ to license@requs.org so we can send you a copy immediately.
 ~~
 ~~ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 ~~ "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,14 +26,14 @@ Yegor Bugayenko
 ~~ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 ~~ OF SUCH DAMAGE.
 
-Requirements Definition and Query Language (RQDQL)
+Requirements Definition and Query Language (requs)
 
   {{{http://standards.ieee.org/reading/ieee/std_public/description/se/830-1998_desc.html}IEEE 830-1998}}
   says: "SRS (<software requirements specification>) should be
   correct, unambiguous, complete, consistent, ranked for importance and/or stability,
-  verifiable, modifiable, traceable". RQDQL is going to enable the creation
+  verifiable, modifiable, traceable". requs is going to enable the creation
   of such documents in plain text format. If you're interested to join the group
-  developing RQDQL, email to {{{mailto:team@rqdql.com}team@rqdql.com}}
+  developing requs, email to {{{mailto:team@requs.org}team@requs.org}}
 
 * Quick Start
 
@@ -54,7 +54,7 @@ ImageFile includes: PNG content, name, and size.
   any attempt to understand what it means. You can double quote anything
   (except double quotes, of course), and you can place
   informal texts in any place of the document. They are ignored
-  during formal RQDQL analysis.
+  during formal requs analysis.
 
   Let's consider a bit bigger example of a type <<<ImageFile>>>:
 
@@ -108,7 +108,7 @@ Size of ImageFile is a "size of PNG content of this file".
   should use informal texts. Later, when you have more information,
   you will replace them.
 
-  As you've already noticed, RQDQL is a case-insensitive language in all places
+  As you've already noticed, requs is a case-insensitive language in all places
   except one -- type names should use
   {{{http://en.wikipedia.org/wiki/CamelCase}CamelCase Notation}}. Thus
   <<<name of ImageFile>>> and <<<Name of ImageFile>>> point
@@ -287,7 +287,7 @@ UC8.1 3a) If failed with "invalid format":
   This signature matches the signature of use case <<<UC8.1>>>.
 
   <<<2. "He can do other actions, not defined yet".>>>
-  This flow is informal and doesn't mean anything for the RQDQL parser. It might
+  This flow is informal and doesn't mean anything for the requs parser. It might
   mean something for the reader, but not for the software.
 
   <<<UC8.1 where ActorUser (the user) shares ImageFile with ActorUser (the friend):>>>
@@ -311,7 +311,7 @@ UC8.1 3a) If failed with "invalid format":
   <<<The user>>> was passed as a parameter to this use case
   and there is no information about its status, whether it is <<<NULL>>> or not.
   If it is <<<NULL>>> (not instantiated yet) -- it is an error
-  and it will be found by RQDQL parser and reported.
+  and it will be found by requs parser and reported.
 
   <<<2. The friend is one of friend of the user.>>>
   Explicit instantiation of the variable happens here. <<<Friend of the user>>>

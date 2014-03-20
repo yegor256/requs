@@ -1,12 +1,12 @@
 %%
-%% RQDQL.com
+%% requs.org
 %%
 %% This source file is subject to the new BSD license that is bundled
 %% with this package in the file LICENSE.txt. It is also available
-%% through the world-wide-web at this URL: http://www.rqdql.com/LICENSE.txt
+%% through the world-wide-web at this URL: http://www.requs.org/LICENSE.txt
 %% If you did not receive a copy of the license and are unable to
 %% obtain it through the world-wide-web, please send an email
-%% to license@rqdql.com so we can send you a copy immediately.
+%% to license@requs.org so we can send you a copy immediately.
 %%
 %% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 %% "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -67,7 +67,7 @@
     \usepackage[small,bf]{caption}
 
 \begin{document}
-    \IfFileExists{logo.png}{}{\write18{wget http://img.rqdql.com/logo.png}}
+    \IfFileExists{logo.png}{}{\write18{wget http://img.requs.org/logo.png}}
     \raggedright
     \setlength{\parindent}{0pt}
     \setlength{\parskip}{1em}
@@ -75,7 +75,7 @@
     \newenvironment{maths}
         {\vspace*{0.5em}\begin{tabular}{l>{\raggedright\arraybackslash}p{20em}}}
         {\end{tabular}\vspace*{1em}}
-    \title{RQDQL: White Paper}
+    \title{requs: White Paper}
     \author{
         Yegor Bugayenko\\
         568 9th Str South, 202, \\
@@ -84,7 +84,7 @@
     }
     \maketitle
     \begin{abstract}
-        Requirements Definition and Query Language (RQDQL) is
+        Requirements Definition and Query Language (requs) is
         an experimental set of tools and formats that enable definition of
         SRS documents in a
         human-friendly language at the same time making it understandable
@@ -99,7 +99,7 @@
 
     \citet{ieee830} says: ``\emph{Software Requirements Specification should be
     correct, unambiguous, complete, consistent, ranked for importance and/or stability,
-    verifiable, modifiable, traceable}''. RQDQL enables the creation
+    verifiable, modifiable, traceable}''. requs enables the creation
     of such documents in plain text format.
 
     First, we convert plain English into objects (in terms of object-oriented
@@ -135,7 +135,7 @@
             \path (mof) -- (user);
             \path (mof) -- (computer);
         \end{tikzpicture}
-        \caption{RQDQL highest-level workflow description, where we start
+        \caption{requs highest-level workflow description, where we start
             from plain text and finish with a strict formal description
             of a testing model, visible to an end-user and a computer.}
         \label{fig:Workflow}
@@ -144,7 +144,7 @@
     Section~\ref{sec:to-objects} explains the process of converting plain text
     to ``Object Thesaurus''. We are using
     \href{http://www.altlr.org}{\texttt{antlr3}} grammar analysis toolkit.
-    Moreover, the entire RQDQL product is written in \href{http://www.java.com/en/}{Java}.
+    Moreover, the entire requs product is written in \href{http://www.java.com/en/}{Java}.
 
     Section~\ref{sec:to-solm} explains how objects from the Thesaurus are converted to
     second order logic ``predicates''
@@ -156,7 +156,7 @@
     structure of said facts. We discuss interconnection with Prolog,
     programming language explained by~\cite{shapiro94}.
 
-    Section~\ref{sec:front} is about the interconnection between \type{rqdql-bin.jar}
+    Section~\ref{sec:front} is about the interconnection between \type{requs-bin.jar}
     command-line interface tool and its users.
 
     Section~\ref{sec:test-cases} explains the mechanism of conversion
@@ -172,13 +172,13 @@
 \section{Plain English to Object Thesaurus}
 \label{sec:to-objects}
 
-    Detailed explanation of the RQDQL syntax is given on its
-    website \href{http://www.rqdql.com/syntax.html}{www.rqdql.com}.
+    Detailed explanation of the requs syntax is given on its
+    website \href{http://www.requs.org/syntax.html}{www.requs.org}.
 
     Fig.\ref{fig:Thesaurus-Classes} explains what Java classes we use
-    to store objects retrieved from RQDQL texts. All said Java classes
+    to store objects retrieved from requs texts. All said Java classes
     are declared in the
-    \type{com.rqdql.thesaurus} package.
+    \type{com.requs.thesaurus} package.
 
     \begin{figure}[ht]
         \centering
@@ -232,7 +232,7 @@
 
     \subsection{Types}
 
-    A simplified verbal form of a RQDQL type looks like this:
+    A simplified verbal form of a requs type looks like this:
 
     \begin{textcode}
     User is a "human being".
@@ -274,7 +274,7 @@
             \draw [->] (address) .. controls +(3,1) .. node [slot] {"city"/1} (text);
             \draw [->] (address) .. controls +(5,0) .. node [slot] {"country"/1} (text);
         \end{tikzpicture}
-        \caption{Simple RQDQL type is translated into Thesaurus objects and
+        \caption{Simple requs type is translated into Thesaurus objects and
             relations between them.}
         \label{fig:Simple-Type}
     \end{figure}
@@ -317,7 +317,7 @@
             \draw[->] (place0) -- node[comment] {type} (user);
             \draw[->] (place1) -- node[comment] {type} (user);
         \end{tikzpicture}
-        \caption{Simple RQDQL use case is translated into Thesaurus objects and
+        \caption{Simple requs use case is translated into Thesaurus objects and
             relations between them.}
         \label{fig:Simple-UC}
     \end{figure}
@@ -398,7 +398,7 @@
                 {throw(\texttt{"only PNG images are accepted"}) $\wedge$\\
                     info(\texttt{"Fail with \textbackslash"only PNG images are accepted\textbackslash""})}};
         \end{tikzpicture}
-        \caption{More complex RQDQL use case translated.}
+        \caption{More complex requs use case translated.}
         \label{fig:Complex-UC}
     \end{figure}
 
@@ -409,9 +409,9 @@
 \section{Object Thesaurus to SOL Predicates}
 \label{sec:to-solm}
 
-    \type{com.rqdql.thesaurus.Type} class can be converted
+    \type{com.requs.thesaurus.Type} class can be converted
     into second order logic predicate:
-    \type{com.rqdql.solm.Predicate}. There are
+    \type{com.requs.solm.Predicate}. There are
     three groups of predicates. The first one is ``system predicates'', which
     are Java encoded. The second group includes ``pre-defined predicates'',
     which are injected into \type{Solm} by \type{Thesaurus}. The third group includes
@@ -780,7 +780,7 @@
 
     \begin{xmlcode}
     <?xml version="1.0" ?>
-    <rqdql>
+    <requs>
       <errors>
         <report>
           <error line="23">This is an error</error>
@@ -796,13 +796,13 @@
           <uml><[CDATA[....]]></uml>
         </report>
       </uml>
-    </rqdql>
+    </requs>
     \end{xmlcode}
 
     The script shall be called from command line like this:
 
     \begin{bashcode}
-    $ java -jar rqdql-bin.jar \
+    $ java -jar requs-bin.jar \
         errors uml:uc=UC6.5 \
         metrics \
         < myscope.txt
@@ -827,7 +827,7 @@
 \label{sec:design}
 
     Architectural and design decisions are documented at
-    \href{http://www.rqdql.com}{rqdql.com}.
+    \href{http://www.requs.org}{requs.org}.
 
 
 

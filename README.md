@@ -1,6 +1,6 @@
-<img src="http://img.rqdql.com/rqdql.png" width="214px" height="61px" />
+<img src="http://img.requs.org/requs.png" width="214px" height="61px" />
 
-More details are here: [www.rqdql.com](http://www.rqdql.com/)
+More details are here: [www.requs.org](http://www.requs.org/)
 
 You need to add this plugin to your `pom.xml`:
 
@@ -15,8 +15,8 @@ You need to add this plugin to your `pom.xml`:
       <configuration>
         <reportPlugins combine.children="append">
           <plugin>
-            <groupId>com.rqdql</groupId>
-            <artifactId>rqdql-maven-plugin</artifactId>
+            <groupId>com.requs</groupId>
+            <artifactId>requs-maven-plugin</artifactId>
             <version>1.1</version>
           </plugin>
         </reportPlugins>
@@ -26,15 +26,15 @@ You need to add this plugin to your `pom.xml`:
 </build>
 ```
 
-Then add RQDQL files to `src/main/rqdql` and name them as `main.rqdql`, etc.
+Then add requs files to `src/main/requs` and name them as `main.requs`, etc.
 
-Then just run `mvn clean site` and you will see a report at `target/site/rqdql`.
+Then just run `mvn clean site` and you will see a report at `target/site/requs`.
 
 ## Questions?
 
 If you have any questions about the framework, or something doesn't work as expected,
-please [submit an issue here](https://github.com/tpc2/rqdql/issues/new).
-If you want to discuss, please use our [Google Group](https://groups.google.com/forum/#!forum/rqdql).
+please [submit an issue here](https://github.com/tpc2/requs/issues/new).
+If you want to discuss, please use our [Google Group](https://groups.google.com/forum/#!forum/requs).
 
 ## How to contribute?
 

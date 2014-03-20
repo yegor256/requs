@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <!--
  *
- * RQDQL.com
+ * requs.org
  *
  * This source file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE.txt. It is also available
- * through the world-wide-web at this URL: http://www.rqdql.com/LICENSE.txt
+ * through the world-wide-web at this URL: http://www.requs.org/LICENSE.txt
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
- * to license@rqdql.com so we can send you a copy immediately.
+ * to license@requs.org so we can send you a copy immediately.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,23 +23,23 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  *
- * Copyright (c) 2010, rqdql.com, Inc.
+ * Copyright (c) 2010, requs.org, Inc.
  * @version $Id$
  -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://rqdql.com/" elementFormDefault="qualified" targetNamespace="http://rqdql.com/">
-    <xs:element name="rqdql" type="RQDQL">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://requs.org/" elementFormDefault="qualified" targetNamespace="http://requs.org/">
+    <xs:element name="requs" type="requs">
         <xs:annotation>
             <xs:documentation source="version">3.0.0+</xs:documentation>
             <xs:documentation source="description"><![CDATA[
-                The <rqdql> element is the root of the descriptor.
+                The <requs> element is the root of the descriptor.
                 ]]></xs:documentation>
         </xs:annotation>
     </xs:element>
-    <xs:complexType name="RQDQL">
+    <xs:complexType name="requs">
         <xs:annotation>
             <xs:documentation source="version">3.0.0+</xs:documentation>
             <xs:documentation source="description"><![CDATA[
-                The <rqdql> element is the root of the descriptor.
+                The <requs> element is the root of the descriptor.
                 ]]></xs:documentation>
         </xs:annotation>
         <!--

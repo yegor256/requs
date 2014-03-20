@@ -1,3 +1,0 @@
-RQDQL-Version: 1.0-SNAPSHOT
-RQDQL-Revision: 12345
-RQDQL-Date: 9-Dec-2012

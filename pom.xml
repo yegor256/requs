@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- * Copyright (c) 2009-2013, RQDQL.com
+ * Copyright (c) 2009-2013, requs.org
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,7 +10,7 @@
  * disclaimer. 2) Redistributions in binary form must reproduce the above
  * copyright notice, this list of conditions and the following
  * disclaimer in the documentation and/or other materials provided
- * with the distribution. 3) Neither the name of the RQDQL.com nor
+ * with the distribution. 3) Neither the name of the requs.org nor
  * the names of its contributors may be used to endorse or promote
  * products derived from this software without specific prior written
  * permission.
@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Copyright (c) 2009-2013, RQDQL.com.
+ * Copyright (c) 2009-2013, requs.org.
  * @version $Id$
  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -38,30 +38,30 @@
         <artifactId>parent</artifactId>
         <version>0.18.1</version>
     </parent>
-    <groupId>com.rqdql</groupId>
-    <artifactId>rqdql</artifactId>
-    <version rqdql="yes">2.0-SNAPSHOT</version>
+    <groupId>com.requs</groupId>
+    <artifactId>requs</artifactId>
+    <version requs="yes">2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>rqdql</name>
+    <name>requs</name>
     <modules>
-        <module>rqdql-reader</module>
-        <module>rqdql-cli</module>
-        <module>rqdql-demo</module>
-        <module>rqdql-maven-plugin</module>
+        <module>requs-reader</module>
+        <module>requs-cli</module>
+        <module>requs-demo</module>
+        <module>requs-maven-plugin</module>
     </modules>
     <description><![CDATA[
-        Requirements Definition and Query Language (RQDQL).
+        Requirements Definition and Query Language (requs).
         ]]></description>
-    <url>http://www.rqdql.com</url>
+    <url>http://www.requs.org</url>
     <inceptionYear>2009</inceptionYear>
     <organization>
-        <name>RQDQL.com</name>
-        <url>http://www.rqdql.com</url>
+        <name>requs.org</name>
+        <url>http://www.requs.org</url>
     </organization>
     <licenses>
         <license>
             <name>BSD</name>
-            <url>http://www.rqdql.com/LICENSE.txt</url>
+            <url>http://www.requs.org/LICENSE.txt</url>
             <distribution>repo</distribution>
             <comments><![CDATA[
                 This is free open source project, feel free to redistribute it
@@ -84,30 +84,30 @@
     </developers>
     <mailingLists>
         <mailingList>
-            <name>RQDQL Discussions</name>
-            <subscribe>rqdql@googlegroups.com</subscribe>
-            <unsubscribe>rqdql@googlegroups.com</unsubscribe>
-            <post>rqdql@googlegroups.com</post>
-            <archive>http://groups.google.com/group/rqdql</archive>
+            <name>requs Discussions</name>
+            <subscribe>requs@googlegroups.com</subscribe>
+            <unsubscribe>requs@googlegroups.com</unsubscribe>
+            <post>requs@googlegroups.com</post>
+            <archive>http://groups.google.com/group/requs</archive>
         </mailingList>
     </mailingLists>
     <issueManagement>
         <system>github</system>
-        <url>https://github.com/yegor256/rqdql/issues</url>
+        <url>https://github.com/yegor256/requs/issues</url>
     </issueManagement>
     <scm>
-        <connection>scm:git:github.com:yegor256/rqdql.git</connection>
-        <developerConnection>scm:git:github.com:yegor256/rqdql.git</developerConnection>
-        <url>https://github.com/yegor256/rqdql</url>
+        <connection>scm:git:github.com:yegor256/requs.git</connection>
+        <developerConnection>scm:git:github.com:yegor256/requs.git</developerConnection>
+        <url>https://github.com/yegor256/requs</url>
     </scm>
     <ciManagement>
         <system>rultor</system>
-        <url>http://www.rultor.com/s/rqdql</url>
+        <url>http://www.rultor.com/s/requs</url>
     </ciManagement>
     <distributionManagement>
         <site>
             <id>github</id>
-            <url>http://www.rqdql.com/</url>
+            <url>http://www.requs.org/</url>
         </site>
     </distributionManagement>
     <properties>
@@ -121,8 +121,8 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <RQDQL-Version>${project.version}</RQDQL-Version>
-                            <RQDQL-Revision>${buildNumber}</RQDQL-Revision>
+                            <requs-Version>${project.version}</requs-Version>
+                            <requs-Revision>${buildNumber}</requs-Revision>
                         </manifestEntries>
                     </archive>
                 </configuration>
