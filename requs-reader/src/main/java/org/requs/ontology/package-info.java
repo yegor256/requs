@@ -35,4 +35,4 @@
  * @version $Id$
  * @since 1.1
  */
-package com.requs.ontology;
+package org.regus.ontology;

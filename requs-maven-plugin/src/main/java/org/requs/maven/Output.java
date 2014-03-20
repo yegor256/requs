@@ -27,10 +27,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.requs.maven;
+package org.regus.maven;
 
 import com.jcabi.xml.XML;
-import com.requs.Spec;
+import org.regus.Spec;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;

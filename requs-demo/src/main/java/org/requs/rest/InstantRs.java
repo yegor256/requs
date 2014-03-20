@@ -27,11 +27,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.requs.rest;
+package org.regus.rest;
 
 import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
-import com.requs.Spec;
+import org.regus.Spec;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;

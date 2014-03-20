@@ -34,4 +34,4 @@
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-package com.requs.maven;
+package org.regus.maven;

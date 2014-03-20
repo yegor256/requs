@@ -53,7 +53,7 @@
         <servlet-class>com.rexsl.core.RestfulServlet</servlet-class>
         <init-param>
             <param-name>com.rexsl.PACKAGES</param-name>
-            <param-value>com.requs.rest</param-value>
+            <param-value>org.regus.rest</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

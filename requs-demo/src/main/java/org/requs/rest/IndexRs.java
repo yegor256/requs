@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.requs.rest;
+package org.regus.rest;
 
 import com.rexsl.page.JaxbBundle;
 import com.rexsl.page.PageBuilder;

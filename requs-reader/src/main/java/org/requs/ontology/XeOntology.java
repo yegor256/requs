@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.requs.ontology;
+package org.regus.ontology;
 
 import com.jcabi.aspects.Loggable;
 import java.util.Iterator;

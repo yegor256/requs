@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.requs.demo.rexsl.xhtml
+package org.regus.demo.rexsl.xhtml
 
 import com.rexsl.test.XhtmlMatchers
 import org.hamcrest.MatcherAssert
