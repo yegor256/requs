@@ -29,12 +29,10 @@
  */
 package com.rqdql.cli;
 
-import com.jcabi.aspects.Loggable;
 import com.jcabi.manifests.Manifests;
 import com.rqdql.Spec;
 import java.io.IOException;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
 import joptsimple.HelpFormatter;
 import joptsimple.OptionDescriptor;
 import joptsimple.OptionParser;
@@ -85,8 +83,7 @@ public final class Main {
      * @param args List of command-line arguments
      * @throws IOException If something goes wrong inside
      */
-    @Loggable(Loggable.INFO)
-    public static void main(@NotNull final String[] args) throws IOException {
+    public static void main(final String[] args) throws IOException {
         final OptionParser parser = new OptionParser("vh");
         final OptionSet options = parser.parse(args);
         if (options.has("v")) {

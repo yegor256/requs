@@ -64,9 +64,8 @@
                                 <argument>-classpath</argument>
                                 <classpath/>
                                 <argument>com.rqdql.cli.Main</argument>
-                                <argument>-i=input.rqdql</argument>
-                                <argument>-o=output.xmi</argument>
                             </arguments>
+                            <commandlineArgs>&lt; input.rqdql &gt; output.xmi</commandlineArgs>
                         </configuration>
                     </execution>
                 </executions>
