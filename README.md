@@ -1,4 +1,4 @@
-<img src="http://img.requs.org/requs.png" width="214px" height="61px" />
+<img src="http://img.requs.org/logo-384x128.png" width="192" height="64" />
 
 More details are here: [www.requs.org](http://www.requs.org/)
 

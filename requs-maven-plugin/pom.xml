@@ -185,7 +185,7 @@
                         <id>mojo-descriptor</id>
                         <goals>
                             <goal>descriptor</goal>
-                            <goal>helpmojo</goal>
+                            <!-- <goal>helpmojo</goal> -->
                         </goals>
                     </execution>
                 </executions>
