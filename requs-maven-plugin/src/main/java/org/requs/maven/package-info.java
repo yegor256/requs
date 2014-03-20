@@ -35,4 +35,4 @@
  * @version $Id$
  * @since 1.1
  */
-package org.regus.maven;
+package org.requs.maven;

@@ -34,4 +34,4 @@
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-package org.regus.syntax;
+package org.requs.syntax;

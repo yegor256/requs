@@ -27,10 +27,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.regus.cli;
+package org.requs.cli;
 
 import com.jcabi.manifests.Manifests;
-import org.regus.Spec;
+import org.requs.Spec;
 import java.io.IOException;
 import java.util.Map;
 import joptsimple.HelpFormatter;

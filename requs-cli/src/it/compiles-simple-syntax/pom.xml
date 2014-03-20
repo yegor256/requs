@@ -63,7 +63,7 @@
                             <arguments>
                                 <argument>-classpath</argument>
                                 <classpath/>
-                                <argument>org.regus.cli.Main</argument>
+                                <argument>org.requs.cli.Main</argument>
                             </arguments>
                             <commandlineArgs>&lt; input.requs &gt; output.xmi</commandlineArgs>
                         </configuration>

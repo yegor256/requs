@@ -27,11 +27,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.regus.syntax;
+package org.requs.syntax;
 
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
-import org.regus.ontology.XeOntology;
+import org.requs.ontology.XeOntology;
 import javax.validation.constraints.NotNull;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;

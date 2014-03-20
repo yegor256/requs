@@ -14,7 +14,7 @@
                 <meta charset="UTF-8"/>
                 <meta name="description" content="ReXSL-powered web site, demo version"/>
                 <meta name="keywords" content="Java, XSL, JAXB, JAX-RS, ReXSL"/>
-                <meta name="author" content="org.regus requs-demo"/>
+                <meta name="author" content="org.requs requs-demo"/>
                 <link rel="stylesheet" type="text/css" media="all">
                     <xsl:attribute name="href">
                         <xsl:text>/css/screen.css?</xsl:text>

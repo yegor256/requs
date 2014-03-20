@@ -27,10 +27,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.regus;
+package org.requs;
 
 import com.jcabi.xml.XML;
-import org.regus.syntax.AntlrSpec;
+import org.requs.syntax.AntlrSpec;
 import javax.validation.constraints.NotNull;
 
 /**

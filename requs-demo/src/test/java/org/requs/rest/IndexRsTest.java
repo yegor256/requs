@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.regus.rest;
+package org.requs.rest;
 
 import com.rexsl.page.HttpHeadersMocker;
 import com.rexsl.page.UriInfoMocker;

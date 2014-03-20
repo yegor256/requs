@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.regus.syntax;
+package org.requs.syntax;
 
 import com.rexsl.test.XhtmlMatchers;
 import org.apache.commons.io.IOUtils;
@@ -48,7 +48,7 @@ public final class AntlrSpecTest {
     @Test
     public void parsesInputAndProducesTypes() throws Exception {
         MatcherAssert.assertThat(
-            new AntlrSpec("Sud includes: test.").xml(),
+            new org.requs.syntax.AntlrSpec("Sud includes: test.").xml(),
             XhtmlMatchers.hasXPaths("/spec/types")
         );
     }
@@ -61,7 +61,7 @@ public final class AntlrSpecTest {
     public void compilesComplexSpec() throws Exception {
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(
-                new AntlrSpec(
+                new org.requs.syntax.AntlrSpec(
                     IOUtils.toString(
                         this.getClass().getResourceAsStream("example.requs")
                     )
@@ -97,7 +97,7 @@ public final class AntlrSpecTest {
      */
     private void parse(final String file) throws Exception {
         MatcherAssert.assertThat(
-            new AntlrSpec(
+            new org.requs.syntax.AntlrSpec(
                 IOUtils.toString(this.getClass().getResourceAsStream(file))
             ).xml(),
             XhtmlMatchers.hasXPath("/spec")

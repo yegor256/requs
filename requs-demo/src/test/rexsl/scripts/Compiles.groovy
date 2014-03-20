@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.regus.demo.rexsl.scripts
+package org.requs.demo.rexsl.scripts
 
 import com.jcabi.http.Request
 import com.jcabi.http.request.JdkRequest

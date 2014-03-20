@@ -15,7 +15,7 @@ You need to add this plugin to your `pom.xml`:
       <configuration>
         <reportPlugins combine.children="append">
           <plugin>
-            <groupId>org.regus</groupId>
+            <groupId>org.requs</groupId>
             <artifactId>requs-maven-plugin</artifactId>
             <version>1.1</version>
           </plugin>

@@ -30,20 +30,20 @@
 grammar Spec;
 
 @header {
-    package org.regus.syntax;
-    import org.regus.ontology.Flow;
-    import org.regus.ontology.Method;
-    import org.regus.ontology.Ontology;
-    import org.regus.ontology.Slot;
-    import org.regus.ontology.Step;
-    import org.regus.ontology.Type;
+    package org.requs.syntax;
+    import org.requs.ontology.Flow;
+    import org.requs.ontology.Method;
+    import org.requs.ontology.Ontology;
+    import org.requs.ontology.Slot;
+    import org.requs.ontology.Step;
+    import org.requs.ontology.Type;
     import java.util.Collection;
     import java.util.LinkedList;
     import org.apache.commons.lang3.StringUtils;
 }
 
 @lexer::header {
-    package org.regus.syntax;
+    package org.requs.syntax;
 }
 
 @lexer::members {

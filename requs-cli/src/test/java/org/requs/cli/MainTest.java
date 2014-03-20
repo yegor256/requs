@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.regus.cli;
+package org.requs.cli;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -85,7 +85,7 @@ public final class MainTest {
     @Test(expected = IllegalAccessException.class)
     public void testMakesAnIncorrectAttemptToInstantiateClass()
         throws Exception {
-        final String name = "org.regus.cli.Main";
+        final String name = "org.requs.cli.Main";
         final Class<?> cls = Class.forName(name);
         MatcherAssert.assertThat(cls, Matchers.notNullValue());
         cls.newInstance();

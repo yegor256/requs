@@ -51,7 +51,7 @@ Usage
   <plugins>
     [...]
     <plugin>
-      <artifactId>org.regus</artifactId>
+      <artifactId>org.requs</artifactId>
       <groupId>requs-maven-plugin</groupId>
       <version>${project.version}</version>
     </plugin>
@@ -75,7 +75,7 @@ Usage
       <configuration>
         <reportPlugins combine.children="append">
           <plugin>
-            <groupId>org.regus</groupId>
+            <groupId>org.requs</groupId>
             <artifactId>requs-maven-plugin</artifactId>
             <version>${project.version}</version>
           </plugin>
