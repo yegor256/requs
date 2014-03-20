@@ -29,19 +29,15 @@
  */
 package org.requs.maven;
 
-import com.jcabi.aspects.Tv;
 import com.jcabi.log.Logger;
-import com.jcabi.xml.XML;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
+import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.CharEncoding;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkFactory;
 import org.apache.maven.doxia.siterenderer.Renderer;
@@ -51,6 +47,8 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
+import org.requs.exec.Compiler;
+import org.slf4j.impl.StaticLoggerBinder;
 
 /**
  * Generate site reports.
@@ -70,12 +68,14 @@ public final class ReportMojo extends AbstractMavenReport {
      * The Maven Project.
      */
     @Component
+    @NotNull
     private transient MavenProject project;
 
     /**
      * Output directory.
      */
     @Parameter(property = "project.reporting.outputDirectory", required = true)
+    @NotNull
     private transient File output;
 
     /**
@@ -85,12 +85,14 @@ public final class ReportMojo extends AbstractMavenReport {
         required = true,
         defaultValue = "${basedir}/src/main/requs"
     )
+    @NotNull
     private transient File source;
 
     /**
      * Doxia Site Renderer component.
      */
     @Component
+    @NotNull
     private transient Renderer renderer;
 
     @Override
@@ -100,12 +102,12 @@ public final class ReportMojo extends AbstractMavenReport {
 
     @Override
     public String getName(final Locale locale) {
-        return "requs";
+        return "Requs";
     }
 
     @Override
     public String getDescription(final Locale locale) {
-        return "requs Spec";
+        return "Requs Spec";
     }
 
     @Override
@@ -132,6 +134,7 @@ public final class ReportMojo extends AbstractMavenReport {
     @Override
     public void generate(final Sink snk, final SinkFactory factory,
         final Locale locale) throws MavenReportException {
+        StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
         final File home = new File(
             this.getOutputDirectory(),
             this.getOutputName()

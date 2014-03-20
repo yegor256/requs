@@ -28,19 +28,19 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-def index = new File(basedir, 'target/site/rempl.html')
+def index = new File(basedir, 'target/site/requs.html')
 if (!index.exists()) {
     throw new IllegalStateException(
         'Index was not generated at ' + index
     )
 }
-if (!index.text.contains('com.rempl.pdd.SummaryReport')) {
+if (!index.text.contains('srs')) {
     throw new IllegalStateException(
-        'PDD summary report is not in the index ' + index
+        'SRS is not in the index ' + index
     )
 }
 
-def dir = new File(basedir, 'target/site/rempl')
+def dir = new File(basedir, 'target/site/requs')
 if (!dir.exists()) {
     throw new IllegalStateException(
         'Report was not generated at ' + dir

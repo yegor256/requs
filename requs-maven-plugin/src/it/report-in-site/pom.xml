@@ -33,35 +33,16 @@
  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.rempl</groupId>
-    <artifactId>rempl-test</artifactId>
+    <groupId>org.requs</groupId>
+    <artifactId>requs-test</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>report-in-site</name>
     <build>
         <plugins>
             <plugin>
-                <groupId>com.rempl.plugins</groupId>
-                <artifactId>rempl-maven-plugin</artifactId>
+                <groupId>org.requs</groupId>
+                <artifactId>requs-maven-plugin</artifactId>
                 <version>@project.version@</version>
-                <configuration>
-                    <profiles>
-                        <profile>
-                            <type>com.rempl.pdd.PDDProfile</type>
-                            <arguments>
-                                <argument>${basedir}</argument>
-                                <argument>**/*</argument>
-                                <argument>.git/**,target/**</argument>
-                            </arguments>
-                        </profile>
-                    </profiles>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.rempl.profiles</groupId>
-                        <artifactId>rempl-pdd-profile</artifactId>
-                        <version>1.4</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <plugin>
                 <artifactId>maven-site-plugin</artifactId>
@@ -69,26 +50,12 @@
                 <configuration>
                     <reportPlugins>
                         <plugin>
-                            <groupId>com.rempl.plugins</groupId>
-                            <artifactId>rempl-maven-plugin</artifactId>
+                            <groupId>org.requs</groupId>
+                            <artifactId>requs-maven-plugin</artifactId>
                             <version>@project.version@</version>
-                            <configuration>
-                                <reports>
-                                    <report>
-                                        <type>com.rempl.pdd.SummaryReport</type>
-                                    </report>
-                                </reports>
-                            </configuration>
                         </plugin>
                     </reportPlugins>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.rempl.profiles</groupId>
-                        <artifactId>rempl-pdd-profile</artifactId>
-                        <version>1.2</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>

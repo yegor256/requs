@@ -28,9 +28,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-def xmi = new File(basedir, 'target/result.xmi')
+def xmi = new File(basedir, 'target/requs/srs.xml')
 if (!xmi.exists()) {
     throw new IllegalStateException(
-        'XMI was not generated at ' + xmi
+        'XML was not generated at ' + xmi
     )
 }

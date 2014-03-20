@@ -31,6 +31,7 @@ package org.requs.maven;
 
 import java.io.File;
 import java.io.IOException;
+import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.maven.plugin.AbstractMojo;
@@ -38,6 +39,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.requs.exec.Compiler;
 import org.slf4j.impl.StaticLoggerBinder;
 
 /**
@@ -62,6 +64,7 @@ public final class CompileMojo extends AbstractMojo {
         required = true,
         defaultValue = "${basedir}/src/main/requs"
     )
+    @NotNull
     private transient File input;
 
     /**
@@ -71,6 +74,7 @@ public final class CompileMojo extends AbstractMojo {
         required = true,
         defaultValue = "${project.build.directory}/requs"
     )
+    @NotNull
     private transient File output;
 
     @Override

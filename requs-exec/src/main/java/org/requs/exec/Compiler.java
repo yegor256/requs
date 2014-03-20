@@ -73,7 +73,7 @@ public final class Compiler {
      * @param dest Directory to write output
      * @throws IOException If fails
      */
-    Compiler(@NotNull final File src, @NotNull final File dest)
+    public Compiler(@NotNull final File src, @NotNull final File dest)
         throws IOException {
         this.input = src.getAbsolutePath();
         this.output = dest.getAbsolutePath();
