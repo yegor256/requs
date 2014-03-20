@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2013, requs.org
+ * Copyright (c) 2009-2014, requs.org
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,7 +48,7 @@ public final class AntlrSpecTest {
     @Test
     public void parsesInputAndProducesTypes() throws Exception {
         MatcherAssert.assertThat(
-            new org.requs.syntax.AntlrSpec("Sud includes: test.").xml(),
+            new AntlrSpec("Sud includes: test.").xml(),
             XhtmlMatchers.hasXPaths("/spec/types")
         );
     }
@@ -61,9 +61,9 @@ public final class AntlrSpecTest {
     public void compilesComplexSpec() throws Exception {
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(
-                new org.requs.syntax.AntlrSpec(
+                new AntlrSpec(
                     IOUtils.toString(
-                        this.getClass().getResourceAsStream("example.requs")
+                        this.getClass().getResourceAsStream("example.req")
                     )
                 ).xml().node()
             ),
@@ -97,7 +97,7 @@ public final class AntlrSpecTest {
      */
     private void parse(final String file) throws Exception {
         MatcherAssert.assertThat(
-            new org.requs.syntax.AntlrSpec(
+            new AntlrSpec(
                 IOUtils.toString(this.getClass().getResourceAsStream(file))
             ).xml(),
             XhtmlMatchers.hasXPath("/spec")

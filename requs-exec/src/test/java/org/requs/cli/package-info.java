@@ -1,6 +1,5 @@
-<?xml version="1.0"?>
-<!--
- * Copyright (c) 2009-2013, requs.org
+/**
+ * Copyright (c) 2009-2014, requs.org
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,41 +26,12 @@
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/**
+ * Command Line Interface (CLI) classes, tests.
  *
- * Copyright (c) 2009-2013, requs.org.
+ * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- -->
-<settings>
-    <profiles>
-        <profile>
-            <id>it-repo</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <repositories>
-                <repository>
-                    <id>local.central</id>
-                    <url>@localRepositoryUrl@</url>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                    <snapshots>
-                        <enabled>true</enabled>
-                    </snapshots>
-                </repository>
-            </repositories>
-            <pluginRepositories>
-                <pluginRepository>
-                    <id>local.central</id>
-                    <url>@localRepositoryUrl@</url>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                    <snapshots>
-                        <enabled>true</enabled>
-                    </snapshots>
-                </pluginRepository>
-            </pluginRepositories>
-        </profile>
-    </profiles>
-</settings>
+ */
+package org.requs.cli;

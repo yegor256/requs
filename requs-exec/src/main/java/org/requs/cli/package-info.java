@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2013, requs.org
+ * Copyright (c) 2009-2014, requs.org
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,13 +28,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.rexsl.test.XhtmlMatchers
-import org.hamcrest.MatcherAssert
-import org.hamcrest.Matchers
-
-MatcherAssert.assertThat(
-    new File(basedir, 'output.xmi').text,
-    XhtmlMatchers.hasXPaths(
-        '/xmi'
-    )
-)
+/**
+ * Command Line Interface (CLI) classes.
+ *
+ * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @version $Id$
+ */
+package org.requs.cli;
