@@ -134,7 +134,7 @@ public final class MainTest {
         Main.main(
             new String[] {
                 "-i", input.getAbsolutePath(),
-                "-o", output.getAbsolutePath()
+                "-o", output.getAbsolutePath(),
             }
         );
         MatcherAssert.assertThat(

@@ -30,8 +30,8 @@
 package org.requs;
 
 import com.jcabi.xml.XML;
-import org.requs.syntax.AntlrSpec;
 import javax.validation.constraints.NotNull;
+import org.requs.syntax.AntlrSpec;
 
 /**
  * Spec.

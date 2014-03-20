@@ -42,7 +42,8 @@ import org.apache.commons.io.IOUtils;
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
+ * @checkstyle MultipleStringLiteralsCheck (500 lines)
+ * @since 1.1
  */
 public final class Main {
 

@@ -31,13 +31,13 @@ package org.requs.syntax;
 
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
-import org.requs.ontology.XeOntology;
 import javax.validation.constraints.NotNull;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.TokenStream;
+import org.requs.ontology.XeOntology;
 import org.xembly.ImpossibleModificationException;
 import org.xembly.Xembler;
 

@@ -29,7 +29,7 @@
  */
 
 /**
- * requs.
+ * Requs.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$

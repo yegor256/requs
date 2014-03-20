@@ -101,6 +101,7 @@ public final class Compiler {
             CharEncoding.UTF_8
         );
         FileUtils.write(
+            // @checkstyle MultipleStringLiteralsCheck (1 line)
             new File(this.output, "srs.xsl"),
             IOUtils.toString(
                 this.getClass().getResourceAsStream("srs.xsl"),
