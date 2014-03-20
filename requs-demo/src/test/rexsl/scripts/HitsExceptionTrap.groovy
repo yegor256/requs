@@ -30,14 +30,13 @@
 package org.requs.demo.rexsl.scripts
 
 import com.jcabi.http.request.JdkRequest
-import com.jcabi.http.response.HttpResponse
+import com.jcabi.http.response.RestResponse
 import com.jcabi.http.response.XmlResponse
-import javax.ws.rs.core.UriBuilder
 
 new JdkRequest(rexsl.home)
     .uri().path('/trap').back()
     .fetch()
-    .as(HttpResponse)
+    .as(RestResponse)
     .assertStatus(HttpURLConnection.HTTP_OK)
     .as(XmlResponse)
     .assertXPath('//xhtml:title[.="Internal application error"]')

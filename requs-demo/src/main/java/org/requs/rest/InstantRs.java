@@ -31,12 +31,12 @@ package org.requs.rest;
 
 import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
-import org.requs.Spec;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import org.requs.Spec;
 
 /**
  * Instant syntax parser.
@@ -51,7 +51,7 @@ public final class InstantRs extends BaseRs {
 
     /**
      * Parse text.
-     * @param text requs syntax to parse
+     * @param text Requs syntax to parse
      * @return The JAX-RS response
      */
     @POST

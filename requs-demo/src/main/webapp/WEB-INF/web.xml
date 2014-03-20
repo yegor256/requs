@@ -27,7 +27,7 @@
         <servlet-class>com.rexsl.core.ExceptionTrap</servlet-class>
         <init-param>
             <param-name>template</param-name>
-            <param-value>/com/requs/rest/exception.html.vm</param-value>
+            <param-value>/org/requs/rest/exception.html.vm</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

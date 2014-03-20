@@ -30,7 +30,7 @@
 package org.requs.demo.rexsl.scripts
 
 import com.jcabi.http.request.JdkRequest
-import com.jcabi.http.response.HttpResponse
+import com.jcabi.http.response.RestResponse
 import com.jcabi.http.response.XmlResponse
 import com.jcabi.manifests.Manifests
 import javax.ws.rs.core.HttpHeaders
@@ -41,7 +41,7 @@ Manifests.append(new File(rexsl.basedir, 'src/test/resources/META-INF/MANIFEST.M
 new JdkRequest(rexsl.home)
     .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML)
     .fetch()
-    .as(HttpResponse)
+    .as(RestResponse)
     .assertStatus(HttpURLConnection.HTTP_OK)
     .as(XmlResponse)
     .assertXPath('/page/version[contains(.,"-SNAPSHOT")]')

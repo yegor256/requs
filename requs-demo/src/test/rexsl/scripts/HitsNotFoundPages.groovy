@@ -30,9 +30,8 @@
 package org.requs.demo.rexsl.scripts
 
 import com.jcabi.http.request.JdkRequest
-import com.jcabi.http.response.HttpResponse
+import com.jcabi.http.response.RestResponse
 import com.jcabi.http.response.XmlResponse
-import javax.ws.rs.core.UriBuilder
 
 [
     '/page-doesnt-exist',
@@ -42,7 +41,7 @@ import javax.ws.rs.core.UriBuilder
     new JdkRequest(rexsl.home)
         .uri().path(it).back()
         .fetch()
-        .as(HttpResponse)
+        .as(RestResponse)
         .assertStatus(HttpURLConnection.HTTP_NOT_FOUND)
         .as(XmlResponse)
         .assertXPath('//xhtml:h1[contains(.,"Page not found")]')

@@ -27,31 +27,39 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.requs.demo.rexsl.scripts
+package org.requs.rest;
 
-import com.jcabi.http.Request
-import com.jcabi.http.request.JdkRequest
-import com.jcabi.http.response.RestResponse
-import com.jcabi.http.response.XmlResponse
+import com.rexsl.page.HttpHeadersMocker;
+import com.rexsl.page.UriInfoMocker;
+import com.rexsl.test.XhtmlMatchers;
+import javax.ws.rs.core.SecurityContext;
+import org.hamcrest.MatcherAssert;
+import org.junit.Test;
+import org.mockito.Mockito;
 
-def text = """
-    Fraction is a \"math calculator\".
-    Fraction needs:
-      numerator as Float, and
-      denominator as Float.
-    UC1 where User (a user) divides two numbers:
-      1. The user creates Fraction (a fraction);
-      2. The fraction \"calculates\" Float (a quotient);
-      3. The user \"receives results\" using the quotient.
-    UC1/2 when \"division by zero\":
-      1. Fail since \"denominator can't be zero\".
-    """
-new JdkRequest(rexsl.home)
-    .uri().path('/instant').back()
-    .body().formParam('text', text).back()
-    .method(Request.POST)
-    .fetch()
-    .as(RestResponse)
-    .assertStatus(HttpURLConnection.HTTP_OK)
-    .as(XmlResponse)
-    .assertXPath('/xmi')
+/**
+ * Test case for {@link InstantRs}.
+ * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @version $Id$
+ */
+public final class InstantRsTest {
+
+    /**
+     * InstantRs can process a Requs spec.
+     * @throws Exception If some problem inside
+     */
+    @Test
+    public void processesRequsSpec() throws Exception {
+        final InstantRs res = new InstantRs();
+        res.setUriInfo(new UriInfoMocker().mock());
+        res.setHttpHeaders(new HttpHeadersMocker().mock());
+        final SecurityContext sec = Mockito.mock(SecurityContext.class);
+        res.setSecurityContext(sec);
+        final String xml = res.post("User is a \"type\".");
+        MatcherAssert.assertThat(
+            xml,
+            XhtmlMatchers.hasXPath("/spec/types/type[name='User']")
+        );
+    }
+
+}

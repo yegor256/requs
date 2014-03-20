@@ -30,8 +30,7 @@
 package org.requs.demo.rexsl.scripts
 
 import com.jcabi.http.request.JdkRequest
-import com.jcabi.http.response.HttpResponse
-import javax.ws.rs.core.UriBuilder
+import com.jcabi.http.response.RestResponse
 
 [
     '/',
@@ -43,6 +42,6 @@ import javax.ws.rs.core.UriBuilder
     new JdkRequest(rexsl.home)
         .uri().path(it).back()
         .fetch()
-        .as(HttpResponse)
+        .as(RestResponse)
         .assertStatus(HttpURLConnection.HTTP_OK)
 }
