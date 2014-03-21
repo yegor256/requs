@@ -157,7 +157,7 @@ public final class ReportMojo extends AbstractMavenReport {
             snk.tableCell();
             snk.link(
                 String.format(
-                    "%s/%s/index.xml",
+                    "%s/%s.xml",
                     this.getOutputName(),
                     report
                 )
