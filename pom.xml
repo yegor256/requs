@@ -41,7 +41,7 @@
     <packaging>pom</packaging>
     <name>requs</name>
     <modules>
-        <module>requs-reader</module>
+        <module>requs-core</module>
         <module>requs-exec</module>
         <module>requs-demo</module>
         <module>requs-maven-plugin</module>
@@ -111,6 +111,25 @@
         <rexsl.version>0.13.1</rexsl.version>
         <saxon.version>9.1.0.8</saxon.version>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>net.sourceforge.saxon</groupId>
+                <artifactId>saxon</artifactId>
+                <version>${saxon.version}</version>
+                <scope>provided</scope>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>net.sourceforge.saxon</groupId>
+                <artifactId>saxon</artifactId>
+                <version>${saxon.version}</version>
+                <scope>provided</scope>
+                <classifier>dom</classifier>
+                <optional>true</optional>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <build>
         <plugins>
             <plugin>

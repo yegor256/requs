@@ -47,7 +47,7 @@
     <dependencies>
         <dependency>
             <groupId>org.requs</groupId>
-            <artifactId>requs-reader</artifactId>
+            <artifactId>requs-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

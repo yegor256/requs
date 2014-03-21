@@ -43,7 +43,7 @@
     <dependencies>
         <dependency>
             <groupId>org.requs</groupId>
-            <artifactId>requs-reader</artifactId>
+            <artifactId>requs-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -104,6 +104,15 @@
             <artifactId>rexsl-test</artifactId>
             <version>${rexsl.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.saxon</groupId>
+            <artifactId>saxon</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.saxon</groupId>
+            <artifactId>saxon</artifactId>
+            <classifier>dom</classifier>
         </dependency>
     </dependencies>
     <build>

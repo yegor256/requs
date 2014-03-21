@@ -69,7 +69,10 @@ public final class CompilerTest {
             XhtmlMatchers.xhtml(
                 FileUtils.readFileToString(new File(output, "srs.xml"))
             ),
-            XhtmlMatchers.hasXPaths("/spec/types/type[name='Employee']")
+            XhtmlMatchers.hasXPaths(
+                "/spec[processing-instruction('xml-stylesheet')]",
+                "/spec/types/type[name='Employee']"
+            )
         );
     }
 
