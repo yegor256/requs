@@ -32,6 +32,8 @@ package org.requs.exec;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
+import com.jcabi.xml.XSL;
+import com.jcabi.xml.XSLDocument;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -56,6 +58,13 @@ import org.requs.Spec;
 @EqualsAndHashCode(of = { "input", "output" })
 @Loggable(Loggable.DEBUG)
 public final class Compiler {
+
+    /**
+     * XSL.
+     */
+    private static final XSL DELIVERY = XSLDocument.make(
+        Compiler.class.getResource("delivery.xsl")
+    );
 
     /**
      * Source folder.
@@ -97,7 +106,9 @@ public final class Compiler {
     public void compile() throws IOException {
         FileUtils.write(
             new File(this.output, "srs.xml"),
-            new Spec(this.source()).xml().toString(),
+            Compiler.DELIVERY.transform(
+                new Spec(this.source()).xml()
+            ).toString(),
             CharEncoding.UTF_8
         );
         FileUtils.write(
