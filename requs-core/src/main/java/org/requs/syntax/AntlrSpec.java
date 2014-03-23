@@ -74,6 +74,7 @@ public final class AntlrSpec {
         final TokenStream tokens = new CommonTokenStream(lexer);
         final SpecParser parser = new SpecParser(tokens);
         final Errors errors = new Errors();
+        parser.removeErrorListeners();
         parser.addErrorListener(errors);
         final XeOntology onto = new XeOntology();
         parser.setOntology(onto);
