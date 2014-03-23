@@ -31,6 +31,8 @@ package org.requs;
 
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
+import com.jcabi.xml.XSL;
+import com.jcabi.xml.XSLDocument;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -47,6 +49,13 @@ import org.xembly.Xembler;
  * @version $Id$
  */
 public final class Spec {
+
+    /**
+     * XSL.
+     */
+    private static final XSL METRICS = XSLDocument.make(
+        Spec.class.getResource("metrics.xsl")
+    );
 
     /**
      * Text to parse.
@@ -67,7 +76,9 @@ public final class Spec {
      */
     public XML xml() {
         final long start = System.currentTimeMillis();
-        final Node node = new AntlrSpec(this.text).xml().node();
+        final Node node = Spec.METRICS.transform(
+            new AntlrSpec(this.text).xml()
+        ).node();
         try {
             new Xembler(
                 new Directives().xpath("/spec").add("build")

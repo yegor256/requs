@@ -42,7 +42,14 @@
             <xsl:value-of select="build/duration"/>
             <xsl:text>msec.</xsl:text>
         </p>
+        <xsl:apply-templates select="metrics"/>
         <xsl:apply-templates select="types/type"/>
+    </xsl:template>
+    <xsl:template match="metrics">
+        <p>
+            <xsl:text>Ambiguity: </xsl:text>
+            <xsl:value-of select="ambiguity.overall"/>
+        </p>
     </xsl:template>
     <xsl:template match="types/type">
         <div class="type">

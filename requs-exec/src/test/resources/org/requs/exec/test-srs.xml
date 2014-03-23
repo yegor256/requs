@@ -10,6 +10,9 @@
         <duration>485</duration>
         <time>2014-03-23T16:51:48</time>
     </build>
+    <metrics>
+        <ambiguity.overall>0.954</ambiguity.overall>
+    </metrics>
     <types>
         <type>
             <name>SuD</name>

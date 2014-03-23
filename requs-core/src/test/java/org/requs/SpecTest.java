@@ -51,7 +51,8 @@ public final class SpecTest {
             XhtmlMatchers.hasXPaths(
                 "/spec/types",
                 "/spec/requs[version and revision and date]",
-                "/spec/build[duration and time]"
+                "/spec/build[duration and time]",
+                "/spec/metrics/ambiguity.overall"
             )
         );
     }
