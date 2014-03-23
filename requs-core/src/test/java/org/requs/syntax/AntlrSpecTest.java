@@ -70,6 +70,8 @@ public final class AntlrSpecTest {
             XhtmlMatchers.hasXPath(
                 "/spec/types[count(type)=2]",
                 "/spec/types/type[name='User']",
+                "//type[name='User']/slots/slot[name='photo' and arity='ANY']",
+                "//type[name='User']/slots/slot[name='SSN' and arity='OPT']",
                 "/spec/types/type[name='Fraction']",
                 "//type[name='Fraction']/info[informal='math calculator']",
                 "/spec[count(//method)=1]"

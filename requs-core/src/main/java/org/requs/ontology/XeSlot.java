@@ -86,6 +86,11 @@ final class XeSlot implements Slot {
     }
 
     @Override
+    public void arity(final Slot.Arity arity) {
+        this.dirs.xpath(this.start).add("arity").set(arity.toString());
+    }
+
+    @Override
     public void mention(final int where) {
         this.mentioned.mention(where);
     }

@@ -39,9 +39,33 @@ package org.requs.ontology;
 public interface Slot extends Mentioned, Informal {
 
     /**
+     * Arity.
+     */
+    enum Arity {
+        /**
+         * One or many.
+         */
+        MANY,
+        /**
+         * Zero or many.
+         */
+        ANY,
+        /**
+         * Zero of one.
+         */
+        OPT
+    }
+
+    /**
      * Assign a type to the slot.
      * @param type Type to assign
      */
     void assign(String type);
+
+    /**
+     * Set its arity.
+     * @param arity Arity to set
+     */
+    void arity(Slot.Arity arity);
 
 }

@@ -124,6 +124,19 @@ slot [Type type]
     { Slot slot = type.slot($variable.ret); }
     { slot.mention(input.LT(1).getLine()); }
     (
+        '-'
+        (
+            's'
+            { slot.arity(Slot.Arity.MANY); }
+            |
+            's?'
+            { slot.arity(Slot.Arity.ANY); }
+            |
+            '?'
+            { slot.arity(Slot.Arity.OPT); }
+        )
+    )?
+    (
         'as'
         class_name
         { slot.assign($class_name.text); }
