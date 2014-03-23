@@ -32,11 +32,11 @@ package org.requs.syntax;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import javax.validation.constraints.NotNull;
-import org.antlr.runtime.ANTLRStringStream;
-import org.antlr.runtime.CharStream;
-import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.RecognitionException;
-import org.antlr.runtime.TokenStream;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.TokenStream;
 import org.requs.ontology.XeOntology;
 import org.xembly.ImpossibleModificationException;
 import org.xembly.Xembler;
@@ -67,7 +67,7 @@ public final class AntlrSpec {
      * @return Clauses found
      */
     public XML xml() {
-        final CharStream input = new ANTLRStringStream(this.text);
+        final CharStream input = new ANTLRInputStream(this.text);
         final SpecLexer lexer = new SpecLexer(input);
         final TokenStream tokens = new CommonTokenStream(lexer);
         final SpecParser parser = new SpecParser(tokens);

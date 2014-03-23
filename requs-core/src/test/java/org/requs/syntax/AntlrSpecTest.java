@@ -54,6 +54,21 @@ public final class AntlrSpecTest {
     }
 
     /**
+     * AntlrSpec can report syntax/grammar errors found.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void reportsErrorsFound() throws Exception {
+        MatcherAssert.assertThat(
+            new AntlrSpec("User is ?. Employee is a User.").xml(),
+            XhtmlMatchers.hasXPaths(
+                "/spec/types/type[name='Employee']",
+                "/spec/errors/error[@type='syntax']"
+            )
+        );
+    }
+
+    /**
      * AntlrSpec can compile a complex document.
      * @throws Exception When necessary
      */
@@ -79,30 +94,4 @@ public final class AntlrSpecTest {
         );
     }
 
-    /**
-     * Main can compile a more complex document(s).
-     * @throws Exception When necessary
-     */
-    @Test
-    public void compilesANumberOfSpecifications() throws Exception {
-        final String[] files = {
-        };
-        for (final String file : files) {
-            this.parse(file);
-        }
-    }
-
-    /**
-     * Parse resource file.
-     * @param file The file name (resource)
-     * @throws Exception When necessary
-     */
-    private void parse(final String file) throws Exception {
-        MatcherAssert.assertThat(
-            new AntlrSpec(
-                IOUtils.toString(this.getClass().getResourceAsStream(file))
-            ).xml(),
-            XhtmlMatchers.hasXPath("/spec")
-        );
-    }
 }

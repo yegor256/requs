@@ -30,7 +30,6 @@
 grammar Spec;
 
 @header {
-    package org.requs.syntax;
     import org.requs.ontology.Flow;
     import org.requs.ontology.Method;
     import org.requs.ontology.Ontology;
@@ -42,25 +41,10 @@ grammar Spec;
     import org.apache.commons.lang3.StringUtils;
 }
 
-@lexer::header {
-    package org.requs.syntax;
-}
-
-@lexer::members {
-    @Override
-    public void emitErrorMessage(String msg) {
-        throw new IllegalArgumentException(msg);
-    }
-}
-
 @parser::members {
     private Ontology onto;
     public void setOntology(Ontology ont) {
         this.onto = ont;
-    }
-    @Override
-    public void emitErrorMessage(String msg) {
-        throw new IllegalArgumentException(msg);
     }
 }
 
@@ -88,7 +72,7 @@ class_declaration
     :
     self=class_name
     { Type type = this.onto.type($self.ret); }
-    { type.mention(input.LT(1).getLine()); }
+    { type.mention(_input.LT(1).getLine()); }
     'is' ( 'a' | 'an' )
     (
         INFORMAL
@@ -122,7 +106,7 @@ slot [Type type]
     :
     variable
     { Slot slot = type.slot($variable.ret); }
-    { slot.mention(input.LT(1).getLine()); }
+    { slot.mention(_input.LT(1).getLine()); }
     (
         '-'
         (
@@ -150,7 +134,7 @@ method_declaration
     self=class_name
     { Type type = this.onto.type($self.text); }
     { Method method = type.method($UC_ID.text); }
-    { method.mention(input.LT(1).getLine()); }
+    { method.mention(_input.LT(1).getLine()); }
     (
         slf=binding
         { method.variable(Flow.Kind.SELF, $slf.ret, $self.ret); }
@@ -262,7 +246,7 @@ step [Flow flow]
     FLOW_ID
     '.'
     { Step step = flow.step(Integer.parseInt($FLOW_ID.text)); }
-    { step.mention(input.LT(1).getLine()); }
+    { step.mention(_input.LT(1).getLine()); }
     (
         'The'
         variable
@@ -285,7 +269,7 @@ step [Flow flow]
     )
     ;
 
-using [Flow flow, Step step]
+using [Flow flow, Step stp]
     @init{ Collection<String> args = new LinkedList<String>(); }
     :
     ( 'using' | 'with' )
@@ -296,7 +280,7 @@ using [Flow flow, Step step]
         tail=subject[flow, Flow.Kind.LOCAL]
         { args.add($tail.ret); }
     )?
-    { step.arguments(args); }
+    { stp.arguments(args); }
     ;
 
 class_name returns [String ret]

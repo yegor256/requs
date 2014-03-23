@@ -52,10 +52,6 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr-runtime</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.jcabi</groupId>
             <artifactId>jcabi-aspects</artifactId>
         </dependency>
@@ -120,6 +116,38 @@
                                 <exclude>findbugs:.*</exclude>
                             </excludes>
                         </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>antlr4</id>
+            <activation>
+                <file><exists>pom.xml</exists></file>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.antlr</groupId>
+                    <artifactId>antlr4-runtime</artifactId>
+                    <version>4.0</version>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.antlr</groupId>
+                        <artifactId>antlr4-maven-plugin</artifactId>
+                        <version>4.0</version>
+                        <configuration>
+                            <sourceDirectory>src/main/antlr4</sourceDirectory>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>antlr4</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
