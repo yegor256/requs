@@ -29,18 +29,12 @@
  */
 package org.requs.syntax;
 
-import com.jcabi.xml.XML;
-import com.jcabi.xml.XMLDocument;
-import javax.validation.constraints.NotNull;
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CommonTokenStream;
+import java.util.Iterator;
+import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.TokenStream;
-import org.requs.ontology.XeOntology;
+import org.antlr.v4.runtime.Recognizer;
+import org.xembly.Directive;
 import org.xembly.Directives;
-import org.xembly.ImpossibleModificationException;
-import org.xembly.Xembler;
 
 /**
  * Syntax analysis.
@@ -48,46 +42,24 @@ import org.xembly.Xembler;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-public final class AntlrSpec {
+final class Errors extends BaseErrorListener implements Iterable<Directive> {
 
-    /**
-     * Text to parse.
-     */
-    private final transient String text;
+    private final transient Directives dirs =
+        new Directives().xpath("/spec").addIf("errors");
 
-    /**
-     * Public ctor.
-     * @param content The text to parse
-     */
-    public AntlrSpec(@NotNull final String content) {
-        this.text = content;
+    @Override
+    public void syntaxError(final Recognizer<?, ?> recognizer,
+        final Object symbol, final int line, final int pos, final String msg,
+        final RecognitionException exc) {
+        this.dirs.add("error")
+            .attr("type", "syntax")
+            .attr("line", Integer.toString(line))
+            .attr("pos", Integer.toString(pos))
+            .set(msg);
     }
 
-    /**
-     * Get all clauses found in the text.
-     * @return Clauses found
-     */
-    public XML xml() {
-        final CharStream input = new ANTLRInputStream(this.text);
-        final SpecLexer lexer = new SpecLexer(input);
-        final TokenStream tokens = new CommonTokenStream(lexer);
-        final SpecParser parser = new SpecParser(tokens);
-        final Errors errors = new Errors();
-        parser.addErrorListener(errors);
-        final XeOntology onto = new XeOntology();
-        parser.setOntology(onto);
-        try {
-            parser.clauses();
-        } catch (final RecognitionException ex) {
-            throw new IllegalArgumentException(ex);
-        }
-        try {
-            return new XMLDocument(
-                new Xembler(new Directives().append(onto).append(errors)).xml()
-            );
-        } catch (final ImpossibleModificationException ex) {
-            throw new IllegalStateException(ex);
-        }
+    @Override
+    public Iterator<Directive> iterator() {
+        return this.dirs.iterator();
     }
-
 }
