@@ -62,7 +62,7 @@ public final class AntlrSpecTest {
         MatcherAssert.assertThat(
             new AntlrSpec("User is ?. Site is ?. Employee is a User.").xml(),
             XhtmlMatchers.hasXPaths(
-                "/spec/types[count(type)=3]",
+                "/spec/types[count(type) = 3]",
                 "//type[name='User']",
                 "//type[name='Employee' and parents/parent='User']",
                 "/spec/errors[count(error)=2]",
@@ -86,7 +86,7 @@ public final class AntlrSpecTest {
                 ).xml().node()
             ),
             XhtmlMatchers.hasXPath(
-                "/spec/types[count(type)=2]",
+                "/spec/types[count(type)=3]",
                 "/spec/types/type[name='User']",
                 "//type[name='User']/slots/slot[name='photo' and arity='ANY']",
                 "//type[name='User']/slots/slot[name='SSN' and arity='OPT']",

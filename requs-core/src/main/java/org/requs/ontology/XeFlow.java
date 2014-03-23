@@ -32,7 +32,6 @@ package org.requs.ontology;
 import com.jcabi.aspects.Loggable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.lang3.Validate;
 import org.xembly.Directives;
 
 /**
@@ -75,7 +74,6 @@ final class XeFlow implements Flow {
 
     @Override
     public Step step(final int number) {
-        Validate.isTrue(number > 0, "invalid step %d", (long) number);
         this.dirs.xpath(this.start).addIf("steps")
             .xpath(this.start)
             .xpath(String.format("steps[not(step/number=%d)]", number))
@@ -96,8 +94,6 @@ final class XeFlow implements Flow {
     @Override
     public void variable(final Flow.Kind kind, final String name,
         final String type) {
-        Validate.matchesPattern(name, "[a-z]+", "bad variable: %s", name);
-        Validate.matchesPattern(type, "[A-Z][a-z]+", "bad type: %s", type);
         this.dirs.xpath(this.start).addIf("args").add("arg")
             .add("name").set(name).up()
             .add("type").set(type).up()

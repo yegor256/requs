@@ -32,7 +32,6 @@ package org.requs.ontology;
 import com.jcabi.aspects.Loggable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.lang3.Validate;
 import org.xembly.Directives;
 
 /**
@@ -69,7 +68,6 @@ final class XeInformal implements Informal {
 
     @Override
     public void explain(final String informal) {
-        Validate.matchesPattern(informal, ".+", "invalid: %s", informal);
         this.dirs.xpath(this.start).addIf("info").add("informal").set(informal);
     }
 

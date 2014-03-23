@@ -73,11 +73,12 @@ class_declaration
     self=class_name
     { Type type = this.onto.type($self.ret); }
     { type.mention(_input.LT(1).getLine()); }
-    'is' ( 'a' | 'an' )
+    'is'
     (
         INFORMAL
         { type.explain($INFORMAL.text); }
         |
+        ( 'a' | 'an' )
         parent=class_name
         { type.parent($parent.text); }
     )
@@ -122,8 +123,13 @@ slot [Type type]
     )?
     (
         'as'
-        class_name
-        { slot.assign($class_name.text); }
+        (
+            class_name
+            { slot.assign($class_name.text); }
+            |
+            INFORMAL
+            { slot.explain($INFORMAL.text); }
+        )
     )?
     ;
 
@@ -287,6 +293,9 @@ class_name returns [String ret]
     :
     CAMEL
     { $ret = $CAMEL.text; }
+    |
+    'SuD'
+    { $ret = "SuD"; }
     ;
 
 variable returns [String ret]

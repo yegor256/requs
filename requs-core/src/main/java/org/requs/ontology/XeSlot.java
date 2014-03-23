@@ -32,7 +32,6 @@ package org.requs.ontology;
 import com.jcabi.aspects.Loggable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.lang3.Validate;
 import org.xembly.Directives;
 
 /**
@@ -81,7 +80,6 @@ final class XeSlot implements Slot {
 
     @Override
     public void assign(final String type) {
-        Validate.matchesPattern(type, "[A-Z][a-z]+", "invalid type: %s", type);
         this.dirs.xpath(this.start).add("type").set(type);
     }
 

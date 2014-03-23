@@ -33,7 +33,6 @@ import com.jcabi.aspects.Loggable;
 import java.util.Iterator;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.lang3.Validate;
 import org.xembly.Directive;
 import org.xembly.Directives;
 
@@ -56,7 +55,6 @@ public final class XeOntology implements Ontology, Iterable<Directive> {
 
     @Override
     public Type type(final String name) {
-        Validate.matchesPattern(name, "[A-Z][a-z]+", "invalid type: %s", name);
         this.dirs.xpath("/spec").addIf("types")
             .xpath(String.format("/spec/types[not(type/name='%s')]", name))
             .add("type").add("name").set(name)

@@ -32,7 +32,6 @@ package org.requs.ontology;
 import com.jcabi.aspects.Loggable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.lang3.Validate;
 import org.xembly.Directives;
 
 /**
@@ -69,7 +68,6 @@ final class XeMentioned implements Mentioned {
 
     @Override
     public void mention(final int where) {
-        Validate.isTrue(where > 0, "incorrect line: %d", (long) where);
         this.dirs.xpath(this.start).addIf("mentioned")
             .add("where").set(Integer.toString(where));
     }

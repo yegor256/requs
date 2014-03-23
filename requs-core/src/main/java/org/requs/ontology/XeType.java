@@ -32,7 +32,6 @@ package org.requs.ontology;
 import com.jcabi.aspects.Loggable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.lang3.Validate;
 import org.xembly.Directives;
 
 /**
@@ -81,13 +80,11 @@ final class XeType implements Type {
 
     @Override
     public void parent(final String type) {
-        Validate.matchesPattern(type, "[A-Z][a-z]+", "invalid type: %s", type);
         this.dirs.xpath(this.start).addIf("parents").add("parent").set(type);
     }
 
     @Override
     public Slot slot(final String name) {
-        Validate.matchesPattern(name, "[a-zA-Z0-9]+", "invalid slot: %s", name);
         this.dirs.xpath(this.start)
             .addIf("slots").add("slot").add("name").set(name);
         return new XeSlot(
@@ -98,7 +95,6 @@ final class XeType implements Type {
 
     @Override
     public Method method(final String name) {
-        Validate.matchesPattern(name, "UC[0-9\\.]+", "invalid UC: %s", name);
         this.dirs.xpath(this.start).addIf("methods")
             .xpath(this.start)
             .xpath(String.format("methods[not(method/id='%s') ]", name))
