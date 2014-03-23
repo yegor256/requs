@@ -47,6 +47,7 @@ import org.xembly.Xembler;
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  */
 public final class AntlrSpec {
 

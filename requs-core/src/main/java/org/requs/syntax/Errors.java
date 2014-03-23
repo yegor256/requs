@@ -44,9 +44,13 @@ import org.xembly.Directives;
  */
 final class Errors extends BaseErrorListener implements Iterable<Directive> {
 
+    /**
+     * All directives collected.
+     */
     private final transient Directives dirs =
         new Directives().xpath("/spec").addIf("errors");
 
+    // @checkstyle ParameterNumberCheck (6 lines)
     @Override
     public void syntaxError(final Recognizer<?, ?> recognizer,
         final Object symbol, final int line, final int pos, final String msg,

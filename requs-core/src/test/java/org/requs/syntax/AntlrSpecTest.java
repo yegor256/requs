@@ -62,8 +62,9 @@ public final class AntlrSpecTest {
         MatcherAssert.assertThat(
             new AntlrSpec("User is ?. Employee is a User.").xml(),
             XhtmlMatchers.hasXPaths(
-                "/spec/types/type[name='User']",
-                "/spec/types/type[name='Employee' and parents/parent='User']",
+                "/spec/types[count(type) = 2]",
+                "//type[name='User']",
+                "//type[name='Employee' and parents/parent='User']",
                 "/spec/errors/error[@type='syntax' and @line='1']"
             )
         );
