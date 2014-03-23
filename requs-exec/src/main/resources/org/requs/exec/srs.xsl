@@ -11,9 +11,12 @@
                 <meta name="description" content="SRS"/>
                 <meta name="keywords" content="SRS, software requirements specification"/>
                 <meta name="author" content="requs"/>
-                <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet"/>
-                <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <style>
+                    body { margin: 2em; font-family: Ubuntu; font-size: 16px; }
+                    .type { margin-top: 2em; }
+                    .methods { margin-left: 2em; }
+                </style>
             </head>
             <body>
                 <xsl:apply-templates select="types/type"/>
@@ -21,13 +24,19 @@
         </html>
     </xsl:template>
     <xsl:template match="types/type">
-        <div>
+        <div class="type">
             <xsl:value-of select="name"/>
-            <xsl:text> is a </xsl:text>
-            <xsl:apply-templates select="methods/method"/>
+            <xsl:if test="info/informal">
+                <xsl:text> is a </xsl:text>
+            </xsl:if>
+            <xsl:apply-templates select="methods"/>
         </div>
     </xsl:template>
-    <xsl:template match="methods/method">
+    <xsl:template match="methods">
+        <div class="methods">
+        </div>
+    </xsl:template>
+    <xsl:template match="method">
         <div>
             <div>
                 <xsl:value-of select="id"/>

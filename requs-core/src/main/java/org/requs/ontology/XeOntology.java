@@ -30,6 +30,7 @@
 package org.requs.ontology;
 
 import com.jcabi.aspects.Loggable;
+import com.jcabi.manifests.Manifests;
 import java.util.Iterator;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -51,7 +52,12 @@ public final class XeOntology implements Ontology, Iterable<Directive> {
     /**
      * All directives.
      */
-    private final transient Directives dirs = new Directives().add("spec");
+    private final transient Directives dirs = new Directives()
+        .add("spec")
+        .add("requs")
+        .add("version").set(Manifests.read("Requs-Version")).up()
+        .add("revision").set(Manifests.read("Requs-Revision")).up()
+        .add("date").set(Manifests.read("Requs-Date")).up().up();
 
     @Override
     public Type type(final String name) {
