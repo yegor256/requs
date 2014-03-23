@@ -301,8 +301,8 @@ using [Flow flow, Step step]
 
 class_name returns [String ret]
     :
-    CAPITAL_WORD
-    { $ret = $CAPITAL_WORD.text; }
+    CAMEL
+    { $ret = $CAMEL.text; }
     ;
 
 variable returns [String ret]
@@ -313,8 +313,8 @@ variable returns [String ret]
 
 UC_ID: 'UC' ( '0' .. '9' | '.' )+;
 FLOW_ID: ( '0' .. '9' )+;
-CAPITAL_WORD: 'A' .. 'Z' ( 'a' .. 'z' | 'A' .. 'Z' )+;
-WORD: ( 'a' .. 'z' )+;
+CAMEL: ( 'A' .. 'Z' ( 'a' .. 'z' )+ )+;
+WORD: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )+;
 INFORMAL:
     '"' ('\\"' | ~'"')* '"'
     { this.setText(this.getText().substring(1, this.getText().length() - 1).replace("\\\"", "\"")); }

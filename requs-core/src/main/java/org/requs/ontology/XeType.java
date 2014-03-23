@@ -87,7 +87,7 @@ final class XeType implements Type {
 
     @Override
     public Slot slot(final String name) {
-        Validate.matchesPattern(name, "[a-z][a-z]+", "invalid slot: %s", name);
+        Validate.matchesPattern(name, "[a-zA-Z0-9]+", "invalid slot: %s", name);
         this.dirs.xpath(this.start)
             .addIf("slots").add("slot").add("name").set(name);
         return new XeSlot(
