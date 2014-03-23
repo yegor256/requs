@@ -155,7 +155,7 @@ method_declaration
         )?
     )?
     (
-        'using'
+        ( 'using' | 'of' | 'with' )
         hclass=class_name
         hbind=binding?
         {
