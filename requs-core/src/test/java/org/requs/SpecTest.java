@@ -29,57 +29,31 @@
  */
 package org.requs;
 
-import com.jcabi.xml.XML;
-import com.jcabi.xml.XMLDocument;
-import java.util.Date;
-import javax.validation.constraints.NotNull;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.requs.syntax.AntlrSpec;
-import org.w3c.dom.Node;
-import org.xembly.Directives;
-import org.xembly.ImpossibleModificationException;
-import org.xembly.Xembler;
+import com.rexsl.test.XhtmlMatchers;
+import org.hamcrest.MatcherAssert;
+import org.junit.Test;
 
 /**
- * Spec.
- *
+ * Test case for {@link Spec}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-public final class Spec {
+public final class SpecTest {
 
     /**
-     * Text to parse.
+     * Spec can parse input text and produce XML.
+     * @throws Exception When necessary
      */
-    private final transient String text;
-
-    /**
-     * Public ctor.
-     * @param content The text to parse
-     */
-    public Spec(@NotNull final String content) {
-        this.text = content;
-    }
-
-    /**
-     * Get all clauses found in the text.
-     * @return Clauses found
-     */
-    public XML xml() {
-        final long start = System.currentTimeMillis();
-        final Node node = new AntlrSpec(this.text).xml().node();
-        try {
-            new Xembler(
-                new Directives().xpath("/spec").add("build")
-                    .add("duration")
-                    .set(Long.toString(System.currentTimeMillis() - start)).up()
-                    .add("time")
-                    .set(DateFormatUtils.ISO_DATETIME_FORMAT.format(new Date()))
-            ).apply(node);
-        } catch (final ImpossibleModificationException ex) {
-            throw new IllegalStateException(ex);
-        }
-        return new XMLDocument(node);
+    @Test
+    public void parsesInputAndProducesXml() throws Exception {
+        MatcherAssert.assertThat(
+            new Spec("Sud includes: test.").xml(),
+            XhtmlMatchers.hasXPaths(
+                "/spec/types",
+                "/spec/requs[version and revision and date]",
+                "/spec/build[duration and time]"
+            )
+        );
     }
 
 }

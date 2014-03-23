@@ -27,59 +27,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.requs;
-
-import com.jcabi.xml.XML;
-import com.jcabi.xml.XMLDocument;
-import java.util.Date;
-import javax.validation.constraints.NotNull;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.requs.syntax.AntlrSpec;
-import org.w3c.dom.Node;
-import org.xembly.Directives;
-import org.xembly.ImpossibleModificationException;
-import org.xembly.Xembler;
 
 /**
- * Spec.
+ * Requs, tests.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-public final class Spec {
-
-    /**
-     * Text to parse.
-     */
-    private final transient String text;
-
-    /**
-     * Public ctor.
-     * @param content The text to parse
-     */
-    public Spec(@NotNull final String content) {
-        this.text = content;
-    }
-
-    /**
-     * Get all clauses found in the text.
-     * @return Clauses found
-     */
-    public XML xml() {
-        final long start = System.currentTimeMillis();
-        final Node node = new AntlrSpec(this.text).xml().node();
-        try {
-            new Xembler(
-                new Directives().xpath("/spec").add("build")
-                    .add("duration")
-                    .set(Long.toString(System.currentTimeMillis() - start)).up()
-                    .add("time")
-                    .set(DateFormatUtils.ISO_DATETIME_FORMAT.format(new Date()))
-            ).apply(node);
-        } catch (final ImpossibleModificationException ex) {
-            throw new IllegalStateException(ex);
-        }
-        return new XMLDocument(node);
-    }
-
-}
+package org.requs;
