@@ -283,7 +283,7 @@ step [Flow flow]
 using [Flow flow, Step stp]
     @init{ Collection<String> args = new LinkedList<String>(); }
     :
-    ( 'using' | 'with' )
+    ( 'using' | 'with' | 'of' )
     head=subject[flow, Flow.Kind.LOCAL]
     { args.add($head.ret); }
     (

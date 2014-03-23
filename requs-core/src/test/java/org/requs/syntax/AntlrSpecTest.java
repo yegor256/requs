@@ -98,4 +98,22 @@ public final class AntlrSpecTest {
         );
     }
 
+    /**
+     * AntlrSpec can parse all possible cases.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void parsesAllPossibleCases() throws Exception {
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(
+                new AntlrSpec(
+                    IOUtils.toString(
+                        this.getClass().getResourceAsStream("all-cases.req")
+                    )
+                ).xml().node()
+            ),
+            XhtmlMatchers.hasXPath("/spec[not(errors/error)]")
+        );
+    }
+
 }
