@@ -15,7 +15,7 @@
                             <xsl:text>0.000</xsl:text>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="$crud div $total"/>
+                            <xsl:value-of select="$informal div $total"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </ambiguity.overall>

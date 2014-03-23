@@ -30,6 +30,7 @@
 package org.requs;
 
 import com.rexsl.test.XhtmlMatchers;
+import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
@@ -47,12 +48,16 @@ public final class SpecTest {
     @Test
     public void parsesInputAndProducesXml() throws Exception {
         MatcherAssert.assertThat(
-            new Spec("Sud includes: test.").xml(),
+            new Spec(
+                IOUtils.toString(
+                    this.getClass().getResourceAsStream("syntax/example.req")
+                )
+            ).xml(),
             XhtmlMatchers.hasXPaths(
                 "/spec/types",
                 "/spec/requs[version and revision and date]",
                 "/spec/build[duration and time]",
-                "/spec/metrics/ambiguity.overall"
+                "/spec/metrics/ambiguity.overall[. > 0]"
             )
         );
     }
