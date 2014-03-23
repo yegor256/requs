@@ -231,7 +231,7 @@ A = S / (S + M)
   are four possible options:
 
 +--
-User includes: photo-s, SSN-?,
+User includes: name, address-s, photo-s?, and SSN-?.
 +--
 
   <<<-s>>> means "one or many" or <<<1..*>>> in UML.
@@ -240,4 +240,4 @@ User includes: photo-s, SSN-?,
 
   <<<-s?>>> means "zero or many" or <<<0..*>>> in UML.
 
-  No suffix means exactly one.
+  No suffix means exactly one, or <<<1..1>>> in UML.
