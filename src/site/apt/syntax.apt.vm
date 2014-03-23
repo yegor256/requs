@@ -61,9 +61,9 @@ Image includes: PNG content, name, and size.
 
 +--
 Image includes:
-  PNG content as "binary content as defined by ISO-15948",
+  PNG content as File "a binary content as defined by ISO-15948",
   name as "a unique alpha-numeric name of the image",
-  size as "total number of bytes in PNG content".
+  size as "the total number of bytes in PNG content".
 +--
 
   The semantic is the same -- the type still contains three <<slots>>
@@ -76,9 +76,9 @@ Image includes:
   For example, the following declarations are semantically equivalent:
 
 +--
-PNG content and name and size
-PNG content, name, size
-PNG content; name; and size
+PNG content as File and name and size
+PNG content as File, name, size
+PNG content as File; name; and size
 +--
 
   By means of <<<is>>>/<<<is a>>> we enable a declaration of <<invariants>>
@@ -131,7 +131,7 @@ UC8.1/3 If failed with "invalid format":
   concept is very similar to
   {{{http://en.wikipedia.org/wiki/Signature_(computer_science)}function signature}}
   in programming. The
-  signature of this use case is (types are in bold):
+  signature of this use case is:
 
 +--
 User shares Image with User
@@ -139,8 +139,10 @@ User shares Image with User
 
   In order to include this use case into another one we should use this
   signature, filling it with particular objects. Objects start with
-  article <<<the>>> and on their first occurrence they appear in round brackets. In our
-  use case there are three objects: <<<the user>>>,
+  article <<<the>>>. On their first occurrence they appear in round brackets
+  and start with <<<a>>> or <<<an>>>.
+
+  In our use case there are three objects: <<<the user>>>,
   <<<the friend>>> and <<<the photo>>>. An object could be
   either received by a use case or created inside it. However, there is no grammar
   difference between objects received and objects created. We assume
@@ -156,15 +158,15 @@ User shares Image with User
 1. User creates Image
   the user => User
   the photo => Image
-5. SUD converts ImageFile
-  the photo => ImageFile
-6. SUD notifies ActorUser by email.
-  the user => ActorUser
-7. ActorUser reads ImageFile.
-  the photo => ImageFile
+5. SUD converts Image
+  the photo => Image
+6. SUD notifies User by email.
+  the user => User
+7. User reads Image.
+  the photo => Image
 +--
 
-  There are four use cases that our use case <<<UC8.1>>> includes.
+  There are four use cases that are included by <<<UC8.1>>>.
   They have to be defined somewhere else in the document,
   otherwise the document would be invalid. But not all four are
   mandatory, because there is a number of <<elementary use cases>>,
@@ -173,23 +175,20 @@ User shares Image with User
   ({{{http://en.wikipedia.org/wiki/Create,_read,_update_and_delete}CRUD}} requirements pattern):
 
 +--
-Somebody creates something
-Somebody reads something
-Somebody updates something
-Somebody deletes something
-Something is something
-Somebody turns into somebody
+Something creates something
+Something reads something
+Something updates something
+Something deletes something
+Something turns into somebody
 +--
 
-  As you understand, <<<somebody>>> means "any actor",
-  and <<<something>>> means "object of any type".
-  <<<create>>> means to make a new object.
-  <<<read>>> means to read all and any slots of an object, and all their slots, etc.
-  <<<update>>> means to change values of slots of an object.
-  <<<delete>>> means to remove an object from a persistent storage.
+  As you understand, <<<something>>> means "object of any type".
+  <<<create>>> means making/instantiating of a new object.
+  <<<read>>> means reading of all and any slots of an object, and all their slots, etc.
+  <<<update>>> means changing of values of slots of an object.
+  <<<delete>>> means removing an object from a persistent storage.
 
-  With <<<turns into>>> elementary use case we convert one
-  actor to another.
+  With <<<turns into>>> elementary use case we do type casting.
 
   Thus, a valid flow either points us to another use case
   defined somewhere else in the document, or points us to
@@ -197,13 +196,13 @@ Somebody turns into somebody
   (<<informal flow>>).
 
   Besides that, a flow might have a special instruction, which we've seen
-  in alternative flow <<<1a1>>> and <<<5a2>>>. <<<failure>>>
+  in alternative flow <<<UC8.3/1>>> and <<<UC8.3/3>>>. <<<failure>>>
   means that a use case should be stopped at this point and the
   reason of this termination is explained right after the word <<<failure>>>
   as an informal text.
 
   Reason of failure is used by a parent use case, which included the
-  current one. This is exactly what happens in <<<5a>>>. We are
+  current one. This is exactly what happens in <<<UC8.3/3>>>. We are
   waiting for a failure from <<<we convert the photo>>>, and
   we're ready to accept a failure called <<<invalid format>>>.
   This approach is very similar to
@@ -226,68 +225,19 @@ A = S / (S + M)
   which is an almost impossible situation. In real world projects
   the task of a system analyst is to move <A> from 1 to 0.
 
-* More Details on Use Cases
+* Arity of Slots
 
-  This section contains a detailed review of a use cases defined
-  above:
+  A slot may have an "arity", determined by a suffix attached to its name. There
+  are four possible options:
 
 +--
-UC4 where ActorUser (the user) communicates:
-  1. The user shares ImageFile with ActorUser.
-  2. "He can do other actions, not defined yet".
-UC8.1 where ActorUser (the user) shares ImageFile
-with ActorUser (the friend):
-  1. The user creates ImageFile (the photo).
-  2. The friend is friend of the user.
-  3. We convert the photo "to the right PNG format, 600x600 maximum".
-  4. We notify the friend by email.
-  5. The friend reads the photo "in his own web page".
-UC8.1 0a) If "the user exceeds the maximum possible number of photos":
-  1. Failure "photos limit exceeded".
-UC8.1 3a) If failed with "invalid format":
-  1. "We notify user about the problem".
- 2. Failure "can't convert photo".
+User includes: photo-s, SSN-?,
 +--
 
-  <<<UC4 where ActorUser (the user) communicates:>>>
-  <<<UC4>>> is defined with a signature <<<{...} communicates>>>, which
-  is unique in the scope and explicitly identifies the use case. This signature
-  has only one parameter that has to be of type <<<ActorUser>>>.
+  <<<-s>>> means "one or many" or <<<1..*>>> in UML.
 
-  <<<1. The user shares ImageFile with ActorUser.>>>
-  First flow of the use case <<<UC4>>> points to another use
-  case, which has to be found by signature <<<{...} shares {...} with {...}>>>,
-  and types of parameters are <<<ActorUser>>>, <<<ImageFile>>> and <<<ActorUser>>>.
-  This signature matches the signature of use case <<<UC8.1>>>.
+  <<<-?>>> means "zero or one" or <<<0..1>>> in UML.
 
-  <<<2. "He can do other actions, not defined yet".>>>
-  This flow is informal and doesn't mean anything for the requs parser. It might
-  mean something for the reader, but not for the software.
+  <<<-s?>>> means "zero or many" or <<<0..*>>> in UML.
 
-  <<<UC8.1 where ActorUser (the user) shares ImageFile with ActorUser (the friend):>>>
-  The declaration of another use case <<<UC8.1>>> with a signature
-  <<<{...} shares {...} with {...}>>> that exactly matches the first
-  flow of <<<UC4>>>. The use case instantiates two objects:
-  <<<the user>>> of type <<<ActorUser>>> and
-  <<<the friend>>> of the same type. <<<ImageFile>>> (the
-  second parameter of the use case) does not instantiate anything, and
-  it means that <<<UC4>>>, which is calling <<<UC8.1>>>, won't be able
-  to retrieve the <<<ImageFile>>> created/managed here.
-
-  <<<1. The user creates ImageFile (the photo).>>>
-  The first flow of this use case points to an elementary use case
-  <<<{...} creates {...}>>>. Two parameters of this elementary
-  use case have to be provided, and they are:
-  <<<the user>>> and <<<the photo>>>. It is assumed that
-  <<<the user>>> was instantiated before and is not <<<NULL>>>, and <<<the photo>>> will
-  be instantiated in this elementary use case. <<<The photo>>>
-  was just declared in this flow and it means that it's <<<NULL>>> so far.
-  <<<The user>>> was passed as a parameter to this use case
-  and there is no information about its status, whether it is <<<NULL>>> or not.
-  If it is <<<NULL>>> (not instantiated yet) -- it is an error
-  and it will be found by requs parser and reported.
-
-  <<<2. The friend is one of friend of the user.>>>
-  Explicit instantiation of the variable happens here. <<<Friend of the user>>>
-  is a slot in <<<the user>>> and
-
+  No suffix means exactly one.

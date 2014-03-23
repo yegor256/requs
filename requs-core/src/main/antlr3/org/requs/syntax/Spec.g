@@ -201,7 +201,7 @@ signature returns [String ret]
 binding returns [String ret]
     :
     '('
-    'a'
+    ( 'a' | 'an' )
     variable
     ')'
     { $ret = $variable.ret; }
