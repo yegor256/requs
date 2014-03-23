@@ -42,6 +42,6 @@ MatcherAssert.assertThat(
     XhtmlMatchers.xhtml(xml.text),
     XhtmlMatchers.hasXPaths(
         '/spec/types/type[name="Fraction"]',
-        '/spec/types/type[name="User"]'
+        '/spec/errors/error'
     )
 )
