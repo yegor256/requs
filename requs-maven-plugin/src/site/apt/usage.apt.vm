@@ -40,7 +40,7 @@
 ~~ @version $Id$
 ~~
 
-Usage
+Usage with Maven 3+
 
   Add the following to your <<<pom.xml>>>:
 
@@ -59,8 +59,8 @@ Usage
 </build>
 +--
 
-  Running <<<mvn requs:compile>>> will create a summary report
-  <<<requs.xml>>> in <<<${sign}{project.build.directory}>>>.
+  Running <<<mvn requs:compile>>> will create compile reports
+  in project build directory, inside <<<requs>>> sub-directory.
 
   Add the following to your <<<pom.xml>>> (Maven 3.0+):
 
@@ -87,5 +87,5 @@ Usage
 +--
 
   Running <<<mvn site>>> will create a summary report
-  in <<<target/site>>>.
+  in <<<target/site/requs>>>.
 
