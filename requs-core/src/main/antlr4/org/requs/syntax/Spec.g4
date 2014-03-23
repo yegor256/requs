@@ -151,7 +151,7 @@ method_declaration
         rslt=class_name
         (
             res=binding
-            { method.variable(Flow.Kind.SELF, $res.ret, $rslt.ret); }
+            { method.variable(Flow.Kind.RESULT, $res.ret, $rslt.ret); }
         )?
     )?
     (
