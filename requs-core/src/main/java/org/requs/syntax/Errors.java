@@ -59,7 +59,7 @@ final class Errors extends BaseErrorListener implements Iterable<Directive> {
             .attr("type", "syntax")
             .attr("line", Integer.toString(line))
             .attr("pos", Integer.toString(pos))
-            .set(msg);
+            .set(msg).up();
     }
 
     @Override

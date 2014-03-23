@@ -60,11 +60,12 @@ public final class AntlrSpecTest {
     @Test
     public void reportsErrorsFound() throws Exception {
         MatcherAssert.assertThat(
-            new AntlrSpec("User is ?. Employee is a User.").xml(),
+            new AntlrSpec("User is ?. Site is ?. Employee is a User.").xml(),
             XhtmlMatchers.hasXPaths(
-                "/spec/types[count(type) = 2]",
+                "/spec/types[count(type)=3]",
                 "//type[name='User']",
                 "//type[name='Employee' and parents/parent='User']",
+                "/spec/errors[count(error)=2]",
                 "/spec/errors/error[@type='syntax' and @line='1']"
             )
         );

@@ -29,13 +29,17 @@
  */
 package org.requs.maven;
 
+import com.jcabi.log.Logger;
+import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -78,12 +82,30 @@ public final class CompileMojo extends AbstractMojo {
     private transient File output;
 
     @Override
-    public void execute() throws MojoExecutionException {
+    public void execute() throws MojoFailureException {
         StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
         try {
             new Compiler(this.input, this.output).compile();
+            final XML srs = new XMLDocument(new File(this.output, "srs.xml"));
+            final Collection<XML> errors = srs.nodes("//errors/error");
+            if (!errors.isEmpty()) {
+                for (final XML error : errors) {
+                    Logger.error(
+                        this, "%s:%s %s",
+                        error.xpath("@line").get(0),
+                        error.xpath("@pos").get(0),
+                        error.xpath("text()").get(0)
+                    );
+                }
+                throw new MojoFailureException(
+                    String.format(
+                        "%d requs error(s), see log above",
+                        errors.size()
+                    )
+                );
+            }
         } catch (final IOException ex) {
-            throw new MojoExecutionException("IO failure", ex);
+            throw new IllegalArgumentException("IO failure", ex);
         }
     }
 

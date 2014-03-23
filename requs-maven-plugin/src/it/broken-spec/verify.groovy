@@ -32,6 +32,11 @@ import com.rexsl.test.XhtmlMatchers
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
 
+def log = new File(basedir, 'build.log')
+MatcherAssert.assertThat(
+    log.text,
+    Matchers.containsString('3 requs error(s)')
+)
 def xml = new File(basedir, 'target/requs/srs.xml')
 if (!xml.exists()) {
     throw new IllegalStateException(
