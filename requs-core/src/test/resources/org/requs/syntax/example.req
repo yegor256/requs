@@ -18,3 +18,6 @@ User includes: name, address-s, photo-s?, SSN-?.
 
 UC2 where Fraction calculates Float:
   "just divide numerator to denominator".
+
+UC3 where SuD archives data:
+  1. SuD "archives all data".

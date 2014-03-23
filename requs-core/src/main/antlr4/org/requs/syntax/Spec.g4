@@ -254,9 +254,14 @@ step [Flow flow]
     { Step step = flow.step(Integer.parseInt($FLOW_ID.text)); }
     { step.mention(_input.LT(1).getLine()); }
     (
-        'The'
-        variable
-        { step.object($variable.ret); }
+        (
+            'The'
+            variable
+            { step.object($variable.ret); }
+            |
+            SUD
+            { step.object("SuD"); }
+        )
         step_sig=signature
         { step.signature($step_sig.ret); }
         (
@@ -294,8 +299,8 @@ class_name returns [String ret]
     CAMEL
     { $ret = $CAMEL.text; }
     |
-    'SuD'
-    { $ret = "SuD"; }
+    SUD
+    { $ret = $SUD.text; }
     ;
 
 variable returns [String ret]
@@ -306,6 +311,7 @@ variable returns [String ret]
 
 UC_ID: 'UC' ( '0' .. '9' | '.' )+;
 FLOW_ID: ( '0' .. '9' )+;
+SUD: 'SuD' | 'We' | 'we';
 CAMEL: ( 'A' .. 'Z' ( 'a' .. 'z' )+ )+;
 WORD: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )+;
 INFORMAL:

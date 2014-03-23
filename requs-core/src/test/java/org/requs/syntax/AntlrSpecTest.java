@@ -86,6 +86,7 @@ public final class AntlrSpecTest {
                 ).xml().node()
             ),
             XhtmlMatchers.hasXPath(
+                "/spec/errors[not(error)]",
                 "/spec/types[count(type)=3]",
                 "/spec/types/type[name='User']",
                 "//type[name='User']/slots/slot[name='photo' and arity='ANY']",
