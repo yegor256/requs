@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?xml-stylesheet href="../../../../../main/resources/org/requs/exec/srs.xsl" type="text/xsl"?>
 <spec>
+    <requs>
+        <version>2.0-SNAPSHOT</version>
+        <revision>26172a6</revision>
+        <date>2014-03-23 16:51</date>
+    </requs>
+    <build>
+        <duration>485</duration>
+        <time>2014-03-23T16:51:48</time>
+    </build>
     <types>
         <type>
             <name>SuD</name>

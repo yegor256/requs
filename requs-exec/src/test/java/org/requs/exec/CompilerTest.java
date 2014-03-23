@@ -29,6 +29,9 @@
  */
 package org.requs.exec;
 
+import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
+import com.jcabi.xml.XSLDocument;
 import com.rexsl.test.XhtmlMatchers;
 import java.io.File;
 import org.apache.commons.io.FileUtils;
@@ -65,14 +68,21 @@ public final class CompilerTest {
             "Employee is a \"user of the system\"."
         );
         new Compiler(input, output).compile();
+        final XML srs = new XMLDocument(new File(output, "srs.xml"));
         MatcherAssert.assertThat(
-            XhtmlMatchers.xhtml(
-                FileUtils.readFileToString(new File(output, "srs.xml"))
-            ),
+            XhtmlMatchers.xhtml(srs.toString()),
             XhtmlMatchers.hasXPaths(
                 "processing-instruction('xml-stylesheet')",
                 "/spec/types/type[name='Employee']"
             )
+        );
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(
+                new XSLDocument(
+                    this.getClass().getResourceAsStream("srs.xsl")
+                ).transform(srs)
+            ),
+            XhtmlMatchers.hasXPath("/xhtml:html/xhtml:body")
         );
     }
 
