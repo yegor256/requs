@@ -28,6 +28,8 @@
 
 Requs Syntax
 
+  <It's a draft!>
+
   {{{http://standards.ieee.org/reading/ieee/std_public/description/se/830-1998_desc.html}IEEE 830-1998}}
   says: "SRS (<software requirements specification>) should be
   correct, unambiguous, complete, consistent, ranked for importance and/or stability,
@@ -38,14 +40,14 @@ Requs Syntax
 
   The scope definition document consists of <<types>>
   and <<methods>> (or use cases). For example, there are two types
-  (<<<Visitor>>> and <<<ImageFile>>>) and one
+  (<<<Visitor>>> and <<<Image>>>) and one
   use case (<<<UC3.2>>>) defined in the snippet:
 
 +--
 Visitor is an "originator of HTTP request".
 UC3.2 where User (a user) deletes photos:
   "we will define it later...".
-ImageFile includes: PNG content, name, and size.
+Image includes: PNG content, name, and size.
 +--
 
   Everything inside double quotes is considered as
@@ -55,10 +57,10 @@ ImageFile includes: PNG content, name, and size.
   informal texts in any place of the document. They are ignored
   during formal Requs analysis.
 
-  Let's consider a bit bigger example of a type <<<ImageFile>>>:
+  Let's consider a bit bigger example of a type <<<Image>>>:
 
 +--
-ImageFile includes:
+Image includes:
   PNG content as "binary content as defined by ISO-15948",
   name as "a unique alpha-numeric name of the image",
   size as "total number of bytes in PNG content".
@@ -68,6 +70,7 @@ ImageFile includes:
   (<<<PNG content>>>, <<<name>>> and <<<size>>>). However
   in this example we have added an informal explanation to every one of them.
   An <<<as>>> keyword separates the name of the slot and its invariant.
+
   Pay attention to the dots, colons, semicolons and commas used above.
   Comma, semicolon and preposition <<<and>>> can replace each other.
   For example, the following declarations are semantically equivalent:

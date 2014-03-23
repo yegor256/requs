@@ -31,12 +31,12 @@
     </skin>
     <bannerLeft>
         <name>requs</name>
-        <src>http://img.requs.org/logo.png</src>
+        <src>http://img.requs.org/logo-.png</src>
         <href>http://www.requs.org</href>
         <width>64</width>
         <height>64</height>
     </bannerLeft>
-    <googleAnalyticsAccountId>UA-1963507-18</googleAnalyticsAccountId>
+    <googleAnalyticsAccountId>UA-1963507-31</googleAnalyticsAccountId>
     <body>
         <head>
             <link href="http://img.requs.org/favicon.gif" rel="shortcut icon"/>
@@ -47,7 +47,6 @@
         <menu name="Overview">
             <item name="Introduction" href="index.html"/>
             <item name="Grammar" href="syntax.html"/>
-            <item name="Usage" href="usage.html"/>
             <item name="Release History" href="https://github.com/tpc2/requs/releases"/>
         </menu>
         <menu ref="modules"/>
