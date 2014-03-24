@@ -241,3 +241,16 @@ User includes: name, address-s, photo-s?, and SSN-?.
   <<<-s?>>> means "zero or many" or <<<0..*>>> in UML.
 
   No suffix means exactly one, or <<<1..1>>> in UML.
+
+* Attributes
+
+  Any use case may have attributes assigned to it. Attributes
+  may be used, for example, for
+  {{{http://en.wikipedia.org/wiki/Requirement_prioritization}requirements prioritization}}.
+
++--
+UC3.2 is Priority:.
++--
+
+
+

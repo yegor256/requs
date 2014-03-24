@@ -23,3 +23,7 @@ UC3 where SuD archives data:
   1. SuD "archives all data";
   2. The user "reads some data" of the file;
   3. The file saves itself in binary form using the encoding and the system.
+
+UC5 where User reads important information of SuD:
+    "this is a multi-line
+    informal use case".

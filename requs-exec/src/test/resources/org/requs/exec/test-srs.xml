@@ -40,7 +40,7 @@
                         <arg>
                             <name>repo</name>
                             <type>Repository</type>
-                            <kind>SELF</kind>
+                            <kind>RESULT</kind>
                         </arg>
                     </args>
                     <signature>hosts</signature>

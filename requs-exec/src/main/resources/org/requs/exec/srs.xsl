@@ -53,6 +53,12 @@
     </xsl:template>
     <xsl:template match="types/type">
         <div class="type">
+            <a>
+                <xsl:attribute name="name">
+                    <xsl:text>#</xsl:text>
+                    <xsl:value-of select="name"/>
+                </xsl:attribute>
+            </a>
             <strong><xsl:value-of select="name"/></strong>
             <xsl:choose>
                 <xsl:when test="info/informal">
@@ -98,7 +104,10 @@
             <xsl:choose>
                 <xsl:when test="type">
                     <xsl:text> as </xsl:text>
-                    <xsl:value-of select="type"/>
+                    <xsl:call-template name="type">
+                        <xsl:with-param name="type" select="type"/>
+                        <xsl:with-param name="label" select="type"/>
+                    </xsl:call-template>
                 </xsl:when>
             </xsl:choose>
             <xsl:apply-templates select="info/informal"/>
@@ -111,6 +120,12 @@
     </xsl:template>
     <xsl:template match="method">
         <div class="method">
+            <a>
+                <xsl:attribute name="name">
+                    <xsl:text>#</xsl:text>
+                    <xsl:value-of select="id"/>
+                </xsl:attribute>
+            </a>
             <div>
                 <xsl:value-of select="id"/>
                 <xsl:text> where </xsl:text>
@@ -159,5 +174,16 @@
             <xsl:value-of select="."/>
         </span>
         <xsl:text>"</xsl:text>
+    </xsl:template>
+    <xsl:template name="type">
+        <xsl:param name="label" />
+        <xsl:param name="type" />
+        <a>
+            <xsl:attribute name="href">
+                <xsl:text>#</xsl:text>
+                <xsl:value-of select="$type"/>
+            </xsl:attribute>
+            <xsl:value-of select="$label"/>
+        </a>
     </xsl:template>
 </xsl:stylesheet>

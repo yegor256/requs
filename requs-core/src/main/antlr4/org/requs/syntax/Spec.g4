@@ -160,7 +160,7 @@ method_declaration
         hbind=binding?
         {
             final String hname;
-            if ($hbind.ret == null) {
+            if ($hbind.ctx == null) {
                 hname = "__arg0";
             } else {
                 hname = $hbind.ret;
@@ -174,7 +174,7 @@ method_declaration
             tbind=binding?
             {
                 final String tname;
-                if ($tbind.ret == null) {
+                if ($tbind.ctx == null) {
                     tname = "__arg" + idx;
                 } else {
                     tname = $tbind.ret;
