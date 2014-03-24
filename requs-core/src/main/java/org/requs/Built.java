@@ -30,49 +30,51 @@
 package org.requs;
 
 import com.jcabi.xml.XML;
-import org.requs.syntax.AntlrSpec;
+import com.jcabi.xml.XMLDocument;
+import java.util.Date;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.w3c.dom.Node;
+import org.xembly.Directives;
+import org.xembly.ImpossibleModificationException;
+import org.xembly.Xembler;
 
 /**
- * Spec.
+ * Built.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-public interface Spec {
+final class Built implements Spec {
 
     /**
-     * Get XML.
-     * @return XML
+     * Encapsulated original spec.
      */
-    XML xml();
+    private final transient Spec origin;
 
     /**
-     * All inclusive.
+     * Ctor.
+     * @param spec Original spec
      */
-    final class Ultimate implements Spec {
-        /**
-         * Encapsulated Requs source.
-         */
-        private final transient String src;
-        /**
-         * Ctor.
-         * @param req Requs source
-         */
-        public Ultimate(final String req) {
-            this.src = req;
+    Built(final Spec spec) {
+        this.origin = spec;
+    }
+
+    @Override
+    public XML xml() {
+        final long start = System.currentTimeMillis();
+        final Node node = this.origin.xml().node();
+        try {
+            new Xembler(
+                new Directives().xpath("/spec").add("build")
+                    .add("duration")
+                    .set(Long.toString(System.currentTimeMillis() - start)).up()
+                    .add("time")
+                    .set(DateFormatUtils.ISO_DATETIME_FORMAT.format(new Date()))
+            ).apply(node);
+        } catch (final ImpossibleModificationException ex) {
+            throw new IllegalStateException(ex);
         }
-        @Override
-        public XML xml() {
-            return new Validated(
-                new Built(
-                    new Measured(
-                        new Sealed(
-                            new AntlrSpec(this.src)
-                        )
-                    )
-                )
-            ).xml();
-        }
+        return new XMLDocument(new XMLDocument(node).toString());
     }
 
 }

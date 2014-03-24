@@ -30,49 +30,40 @@
 package org.requs;
 
 import com.jcabi.xml.XML;
-import org.requs.syntax.AntlrSpec;
+import com.jcabi.xml.XSL;
+import com.jcabi.xml.XSLDocument;
 
 /**
- * Spec.
+ * Measured.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-public interface Spec {
+final class Measured implements Spec {
 
     /**
-     * Get XML.
-     * @return XML
+     * XSL.
      */
-    XML xml();
+    private static final XSL METRICS = XSLDocument.make(
+        Spec.class.getResource("metrics.xsl")
+    );
 
     /**
-     * All inclusive.
+     * Original spec.
      */
-    final class Ultimate implements Spec {
-        /**
-         * Encapsulated Requs source.
-         */
-        private final transient String src;
-        /**
-         * Ctor.
-         * @param req Requs source
-         */
-        public Ultimate(final String req) {
-            this.src = req;
-        }
-        @Override
-        public XML xml() {
-            return new Validated(
-                new Built(
-                    new Measured(
-                        new Sealed(
-                            new AntlrSpec(this.src)
-                        )
-                    )
-                )
-            ).xml();
-        }
+    private final transient Spec origin;
+
+    /**
+     * Public ctor.
+     * @param spec Original spec
+     */
+    Measured(final Spec spec) {
+        this.origin = spec;
+    }
+
+    @Override
+    public XML xml() {
+        return Measured.METRICS.transform(this.origin.xml());
     }
 
 }

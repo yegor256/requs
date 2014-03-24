@@ -30,49 +30,31 @@
 package org.requs;
 
 import com.jcabi.xml.XML;
-import org.requs.syntax.AntlrSpec;
 
 /**
- * Spec.
+ * Sealed spec.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-public interface Spec {
+final class Sealed implements Spec {
 
     /**
-     * Get XML.
-     * @return XML
+     * Original spec.
      */
-    XML xml();
+    private final transient Spec origin;
 
     /**
-     * All inclusive.
+     * Public ctor.
+     * @param spec Original spec
      */
-    final class Ultimate implements Spec {
-        /**
-         * Encapsulated Requs source.
-         */
-        private final transient String src;
-        /**
-         * Ctor.
-         * @param req Requs source
-         */
-        public Ultimate(final String req) {
-            this.src = req;
-        }
-        @Override
-        public XML xml() {
-            return new Validated(
-                new Built(
-                    new Measured(
-                        new Sealed(
-                            new AntlrSpec(this.src)
-                        )
-                    )
-                )
-            ).xml();
-        }
+    Sealed(final Spec spec) {
+        this.origin = spec;
+    }
+
+    @Override
+    public XML xml() {
+        return this.origin.xml();
     }
 
 }

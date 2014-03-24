@@ -37,6 +37,7 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.TokenStream;
+import org.requs.Spec;
 import org.requs.ontology.XeOntology;
 import org.xembly.Directives;
 import org.xembly.ImpossibleModificationException;
@@ -49,7 +50,7 @@ import org.xembly.Xembler;
  * @version $Id$
  * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  */
-public final class AntlrSpec {
+public final class AntlrSpec implements Spec {
 
     /**
      * Text to parse.
@@ -64,10 +65,7 @@ public final class AntlrSpec {
         this.text = content;
     }
 
-    /**
-     * Get all clauses found in the text.
-     * @return Clauses found
-     */
+    @Override
     public XML xml() {
         final CharStream input = new ANTLRInputStream(this.text);
         final SpecLexer lexer = new SpecLexer(input);

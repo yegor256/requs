@@ -29,50 +29,42 @@
  */
 package org.requs;
 
+import com.jcabi.xml.StrictXML;
 import com.jcabi.xml.XML;
-import org.requs.syntax.AntlrSpec;
+import com.jcabi.xml.XSD;
+import com.jcabi.xml.XSDDocument;
 
 /**
- * Spec.
+ * Validated.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-public interface Spec {
+final class Validated implements Spec {
 
     /**
-     * Get XML.
-     * @return XML
+     * XSD.
      */
-    XML xml();
+    private static final XSD SCHEMA = XSDDocument.make(
+        Spec.class.getResource("spec.xsd")
+    );
 
     /**
-     * All inclusive.
+     * Original spec.
      */
-    final class Ultimate implements Spec {
-        /**
-         * Encapsulated Requs source.
-         */
-        private final transient String src;
-        /**
-         * Ctor.
-         * @param req Requs source
-         */
-        public Ultimate(final String req) {
-            this.src = req;
-        }
-        @Override
-        public XML xml() {
-            return new Validated(
-                new Built(
-                    new Measured(
-                        new Sealed(
-                            new AntlrSpec(this.src)
-                        )
-                    )
-                )
-            ).xml();
-        }
+    private final transient Spec origin;
+
+    /**
+     * Public ctor.
+     * @param spec Original spec
+     */
+    Validated(final Spec spec) {
+        this.origin = spec;
+    }
+
+    @Override
+    public XML xml() {
+        return new StrictXML(this.origin.xml(), Validated.SCHEMA);
     }
 
 }

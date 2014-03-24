@@ -107,7 +107,7 @@ public final class Compiler {
         FileUtils.write(
             new File(this.output, "srs.xml"),
             Compiler.DELIVERY.transform(
-                new Spec(this.source()).xml()
+                new Spec.Ultimate(this.source()).xml()
             ).toString(),
             CharEncoding.UTF_8
         );

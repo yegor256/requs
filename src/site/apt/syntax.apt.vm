@@ -249,8 +249,19 @@ User includes: name, address-s, photo-s?, and SSN-?.
   {{{http://en.wikipedia.org/wiki/Requirement_prioritization}requirements prioritization}}.
 
 +--
-UC3.2 is Priority:.
+:UC3.2 is a must.
+:UC8 is delivered.
+:UC2 is specified.
 +--
 
+  You can "seal" your statement with a hash code:
+
++--
+af63e2:UC3.2 is a must.
++--
+
+  This hash code <<<af63e2>>> is calculated from the content of <<<UC3.2>>>.
+  If the content is changed, this statement becomes invalid and the entire
+  document can't be compiled any more.
 
 

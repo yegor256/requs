@@ -48,7 +48,7 @@ public final class SpecTest {
     @Test
     public void parsesInputAndProducesXml() throws Exception {
         MatcherAssert.assertThat(
-            new Spec(
+            new Spec.Ultimate(
                 IOUtils.toString(
                     this.getClass().getResourceAsStream("syntax/all-cases.req")
                 )
