@@ -127,6 +127,13 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="parents" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="parent" type="class" maxOccurs="unbounded" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
         </xs:all>
     </xs:complexType>
     <xs:element name="spec">
@@ -152,7 +159,7 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="types">
+                <xs:element name="types" minOccurs="0">
                     <xs:complexType>
                         <xs:sequence maxOccurs="unbounded">
                             <xs:element name="type" type="type" minOccurs="0" maxOccurs="unbounded"/>

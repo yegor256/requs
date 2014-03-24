@@ -18,6 +18,8 @@ UC1/2 when "division by zero":
 
 User includes: name, address-s, photo-s?, SSN-?.
 
+User is a Visitor.
+
 UC2 where Fraction calculates Float:
   "just divide numerator to denominator".
 
