@@ -68,6 +68,8 @@ clause
     method_declaration
     |
     alternative_flow_declaration
+    |
+    attribute_setting
     ;
 
 class_declaration
@@ -319,6 +321,16 @@ variable returns [String ret]
     :
     WORD
     { $ret = $WORD.text; }
+    ;
+
+attribute_setting
+    :
+    COLON
+    UC_ID
+    IS
+    A?
+    WORD
+    { this.onto.method($UC_ID.text).attribute($WORD.text); }
     ;
 
 UC_ID: 'UC' ( '0' .. '9' | '.' )+;

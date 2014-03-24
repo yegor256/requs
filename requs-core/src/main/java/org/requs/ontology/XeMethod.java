@@ -47,6 +47,16 @@ import org.xembly.Directives;
 final class XeMethod implements Method {
 
     /**
+     * All directives.
+     */
+    private final transient Directives dirs;
+
+    /**
+     * Starting XPath.
+     */
+    private final transient String start;
+
+    /**
      * Mentioned helper.
      */
     private final transient Mentioned mentioned;
@@ -70,6 +80,21 @@ final class XeMethod implements Method {
         this.mentioned = new XeMentioned(directives, xpath);
         this.flow = new XeFlow(directives, xpath);
         this.signature = new XeSignature(directives, xpath);
+        this.dirs = directives;
+        this.start = xpath;
+    }
+
+    @Override
+    public void attribute(final String name) {
+        this.dirs.xpath(this.start)
+            .addIf("attributes")
+            .xpath(
+                String.format(
+                    "%s/attributes[not(attribute='%s')]",
+                    this.start, name
+                )
+            )
+            .add("attribute").set(name);
     }
 
     @Override
@@ -111,4 +136,5 @@ final class XeMethod implements Method {
     public void mention(final int where) {
         this.mentioned.mention(where);
     }
+
 }

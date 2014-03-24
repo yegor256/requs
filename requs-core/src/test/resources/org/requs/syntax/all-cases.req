@@ -31,3 +31,6 @@ UC3 where SuD archives data:
 UC5 where User reads important information of SuD:
     "this is a multi-line
     informal use case".
+
+:UC5 is a must.
+:UC3 is delivered.

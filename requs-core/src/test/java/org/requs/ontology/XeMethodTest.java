@@ -88,4 +88,25 @@ public final class XeMethodTest {
         );
     }
 
+    /**
+     * XeMethod can set attributes.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void setsAttributes() throws Exception {
+        final Directives dirs = new Directives().add("x");
+        final Method method = new XeMethod(dirs, "/x");
+        final String name = "attr-1";
+        method.attribute(name);
+        method.attribute(name);
+        method.attribute("another");
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
+            XhtmlMatchers.hasXPaths(
+                "/x/attributes[count(attribute)=2]",
+                "/x/attributes[attribute='attr-1' and attribute='another']"
+            )
+        );
+    }
+
 }

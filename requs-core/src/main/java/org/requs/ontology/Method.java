@@ -38,4 +38,10 @@ package org.requs.ontology;
  */
 public interface Method extends Flow, Mentioned, Signature {
 
+    /**
+     * Add an attributes.
+     * @param name Attribute name
+     */
+    void attribute(String name);
+
 }

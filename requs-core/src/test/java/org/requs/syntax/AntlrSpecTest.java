@@ -93,7 +93,8 @@ public final class AntlrSpecTest {
                 "//type[name='User']/slots/slot[name='SSN' and arity='OPT']",
                 "/spec/types/type[name='Fraction']",
                 "//type[name='Fraction']/info[informal='math calculator']",
-                "/spec[count(//method)=1]"
+                "/spec[count(//method)=1]",
+                "//method[id='UC1']/attributes[attribute='must']"
             )
         );
     }
