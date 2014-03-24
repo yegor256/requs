@@ -22,9 +22,9 @@
                     .slots { margin-left: 1em; margin-top: 1em; }
                     .method { margin-top: 1em; margin-left: 1em; }
                     .steps { margin-top: 1em; margin-left: 1em }
-                    .step {  }
                     .informal { color: #777; }
                     .warning { color: #e22; }
+                    .attribute { margin-left: 0.5em; color: white; background-color: #aaa; border-radius: .25em; font-size: 0.85em; padding: .1em .3em .15em; }
                 </style>
             </head>
             <body>
@@ -134,12 +134,18 @@
                     <xsl:with-param name="home" select="."/>
                 </xsl:call-template>
                 <xsl:text>:</xsl:text>
+                <xsl:apply-templates select="attributes/attribute"/>
             </div>
             <div class="steps">
                 <xsl:apply-templates select="info/informal"/>
                 <xsl:apply-templates select="steps/step"/>
             </div>
         </div>
+    </xsl:template>
+    <xsl:template match="attribute">
+        <span class="attribute">
+            <xsl:value-of select="."/>
+        </span>
     </xsl:template>
     <xsl:template match="steps/step">
         <div class="step">
