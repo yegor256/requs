@@ -29,8 +29,11 @@
  */
 package org.requs;
 
+import com.jcabi.xml.StrictXML;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
+import com.jcabi.xml.XSD;
+import com.jcabi.xml.XSDDocument;
 import com.jcabi.xml.XSL;
 import com.jcabi.xml.XSLDocument;
 import java.util.Date;
@@ -55,6 +58,13 @@ public final class Spec {
      */
     private static final XSL METRICS = XSLDocument.make(
         Spec.class.getResource("metrics.xsl")
+    );
+
+    /**
+     * XSD.
+     */
+    private static final XSD SCHEMA = XSDDocument.make(
+        Spec.class.getResource("spec.xsd")
     );
 
     /**
@@ -90,7 +100,7 @@ public final class Spec {
         } catch (final ImpossibleModificationException ex) {
             throw new IllegalStateException(ex);
         }
-        return new XMLDocument(node);
+        return new StrictXML(new XMLDocument(node), Spec.SCHEMA);
     }
 
 }

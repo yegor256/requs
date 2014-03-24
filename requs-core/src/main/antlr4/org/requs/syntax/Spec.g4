@@ -90,6 +90,7 @@ class_construction
     :
     class_name
     { Type type = this.onto.type($class_name.ret); }
+    { type.mention(_input.LT(1).getLine()); }
     INCLUDES
     COLON
     slots[type]
@@ -140,15 +141,19 @@ method_declaration
     WHERE
     self=class_name
     { Type type = this.onto.type($self.text); }
+    { type.mention(_input.LT(1).getLine()); }
     { Method method = type.method($UC_ID.text); }
     { method.mention(_input.LT(1).getLine()); }
     slf=binding?
     {
+        final String self;
         if ($slf.ctx == null) {
-            method.binding("_self", $self.ret);
+            self = "_self";
         } else {
-            method.binding($slf.ret, $self.ret);
+            self = $slf.ret;
         }
+        method.binding(self, $self.ret);
+        method.object(self);
     }
     msig=signature
     { method.sign($msig.ret); }
@@ -239,6 +244,7 @@ alternative_flow_declaration
     INFORMAL
     COLON
     { Method method = this.onto.method($UC_ID.text); }
+    { method.mention(_input.LT(1).getLine()); }
     { Flow flow = method.step(Integer.parseInt($FLOW_ID.text)).exception($INFORMAL.text); }
     steps[flow]
     ;

@@ -6,22 +6,108 @@
         <revision>26172a6</revision>
         <date>2014-03-23 16:51</date>
     </requs>
-    <build>
-        <duration>485</duration>
-        <time>2014-03-23T16:51:48</time>
-    </build>
-    <metrics>
-        <ambiguity.overall>0.954</ambiguity.overall>
-    </metrics>
     <types>
         <type>
             <name>SuD</name>
             <mentioned>
-                <where>1</where>
+                <where>3</where>
             </mentioned>
             <info>
-                <informal>a web hosting that deploys itself</informal>
+                <informal>a simple calculator app</informal>
             </info>
+            <methods>
+                <method>
+                    <id>UC3</id>
+                    <mentioned>
+                        <where>24</where>
+                    </mentioned>
+                    <bindings>
+                        <binding>
+                            <name>_self</name>
+                            <type>SuD</type>
+                        </binding>
+                    </bindings>
+                    <object>_self</object>
+                    <signature>archives data</signature>
+                    <steps>
+                        <step>
+                            <number>1</number>
+                            <mentioned>
+                                <where>25</where>
+                            </mentioned>
+                            <object>SuD</object>
+                            <signature>"archives all data"</signature>
+                        </step>
+                        <step>
+                            <number>2</number>
+                            <mentioned>
+                                <where>26</where>
+                            </mentioned>
+                            <object>user</object>
+                            <signature>"reads some data"</signature>
+                            <args>
+                                <arg>file</arg>
+                            </args>
+                        </step>
+                        <step>
+                            <number>3</number>
+                            <mentioned>
+                                <where>27</where>
+                            </mentioned>
+                            <object>file</object>
+                            <signature>saves itself in binary form</signature>
+                            <args>
+                                <arg>encoding</arg>
+                                <arg>system</arg>
+                            </args>
+                        </step>
+                    </steps>
+                </method>
+            </methods>
+        </type>
+        <type>
+            <name>Fraction</name>
+            <mentioned>
+                <where>5</where>
+            </mentioned>
+            <info>
+                <informal>a math calculator</informal>
+            </info>
+            <slots>
+                <slot>
+                    <name>numerator</name>
+                    <mentioned>
+                        <where>8</where>
+                    </mentioned>
+                    <type>Float</type>
+                </slot>
+                <slot>
+                    <name>denominator</name>
+                    <mentioned>
+                        <where>9</where>
+                    </mentioned>
+                    <type>Float</type>
+                </slot>
+            </slots>
+            <methods>
+                <method>
+                    <id>UC2</id>
+                    <mentioned>
+                        <where>21</where>
+                    </mentioned>
+                    <bindings>
+                        <binding>
+                            <name>_self</name>
+                            <type>Fraction</type>
+                        </binding>
+                    </bindings>
+                    <object>_self</object>
+                    <signature>calculates</signature>
+                    <info>
+                        <informal>just divide numerator to denominator</informal>
+                    </info>
+                </method>
+            </methods>
         </type>
         <type>
             <name>User</name>
@@ -29,136 +115,119 @@
                 <method>
                     <id>UC1</id>
                     <mentioned>
-                        <where>3</where>
+                        <where>11</where>
                     </mentioned>
-                    <args>
-                        <arg>
+                    <bindings>
+                        <binding>
                             <name>user</name>
                             <type>User</type>
-                            <kind>SELF</kind>
-                        </arg>
-                        <arg>
-                            <name>repo</name>
-                            <type>Repository</type>
-                            <kind>RESULT</kind>
-                        </arg>
-                    </args>
-                    <signature>hosts</signature>
+                        </binding>
+                        <binding>
+                            <name>fraction</name>
+                            <type>Fraction</type>
+                        </binding>
+                        <binding>
+                            <name>quotient</name>
+                            <type>Float</type>
+                        </binding>
+                    </bindings>
+                    <object>user</object>
+                    <signature>divides two numbers</signature>
                     <steps>
                         <step>
                             <number>1</number>
                             <mentioned>
-                                <where>4</where>
+                                <where>12</where>
                             </mentioned>
                             <object>user</object>
                             <signature>creates</signature>
-                            <result>repo</result>
+                            <result>fraction</result>
                         </step>
                         <step>
                             <number>2</number>
                             <mentioned>
-                                <where>5</where>
+                                <where>13</where>
                             </mentioned>
-                            <object>SuD</object>
-                            <signature>"deploys"</signature>
-                            <result>repo</result>
+                            <object>fraction</object>
+                            <signature>calculates</signature>
+                            <result>quotient</result>
                         </step>
                         <step>
                             <number>3</number>
                             <mentioned>
-                                <where>6</where>
+                                <where>14</where>
                             </mentioned>
                             <object>user</object>
-                            <signature>"reads deployment logs"</signature>
+                            <signature>"receives results"</signature>
                             <args>
-                                <arg>repo</arg>
+                                <arg>quotient</arg>
                             </args>
-                        </step>
-                        <step>
-                            <number>4</number>
-                            <mentioned>
-                                <where>7</where>
-                            </mentioned>
-                            <object>user</object>
-                            <signature>"reads traffic stats"</signature>
-                            <args>
-                                <arg>repo</arg>
-                            </args>
-                        </step>
-                        <step>
-                            <number>5</number>
-                            <mentioned>
-                                <where>8</where>
-                            </mentioned>
-                            <object>user</object>
-                            <signature>deletes</signature>
-                            <result>repo</result>
                         </step>
                     </steps>
                 </method>
                 <method>
-                    <id>UC3</id>
+                    <id>UC5</id>
                     <mentioned>
-                        <where>44</where>
+                        <where>29</where>
                     </mentioned>
-                    <signature>deploys</signature>
+                    <bindings>
+                        <binding>
+                            <name>_self</name>
+                            <type>User</type>
+                        </binding>
+                        <binding>
+                            <name>_arg0</name>
+                            <type>SuD</type>
+                        </binding>
+                    </bindings>
+                    <object>_self</object>
+                    <signature>reads important information</signature>
+                    <args>
+                        <arg>_arg0</arg>
+                    </args>
                     <info>
-                        <informal>We do something here...</informal>
+                        <informal>this is a multi-line
+                            informal use case</informal>
                     </info>
                 </method>
             </methods>
             <slots>
                 <slot>
-                    <name>repo</name>
-                    <mentioned>
-                        <where>11</where>
-                    </mentioned>
-                    <arity>ANY</arity>
-                    <type>Repository</type>
-                </slot>
-                <slot>
-                    <name>URN</name>
-                    <mentioned>
-                        <where>12</where>
-                    </mentioned>
-                    <info>
-                        <informal>a unique identifier of itself, for example urn:github:526301</informal>
-                    </info>
-                </slot>
-            </slots>
-        </type>
-        <type>
-            <name>Repository</name>
-            <slots>
-                <slot>
                     <name>name</name>
                     <mentioned>
-                        <where>15</where>
+                        <where>19</where>
                     </mentioned>
-                    <info>
-                        <informal>a unique name of the repo in Thindeck</informal>
-                    </info>
                 </slot>
                 <slot>
-                    <name>URI</name>
+                    <name>address</name>
                     <mentioned>
-                        <where>16</where>
+                        <where>19</where>
                     </mentioned>
-                    <info>
-                        <informal>a non-ambiguous descriptor of a repo, for example ssh://git@github:yegor256/thindeck.git</informal>
-                    </info>
+                    <arity>MANY</arity>
                 </slot>
                 <slot>
-                    <name>key</name>
+                    <name>photo</name>
                     <mentioned>
-                        <where>17</where>
+                        <where>19</where>
                     </mentioned>
-                    <info>
-                        <informal>a private SSH key, see http://en.wikipedia.org/wiki/Public-key_cryptography</informal>
-                    </info>
+                    <arity>ANY</arity>
+                </slot>
+                <slot>
+                    <name>SSN</name>
+                    <mentioned>
+                        <where>19</where>
+                    </mentioned>
+                    <arity>OPT</arity>
                 </slot>
             </slots>
         </type>
     </types>
     <errors/>
+    <metrics>
+        <ambiguity.overall>1</ambiguity.overall>
+    </metrics>
+    <build>
+        <duration>540</duration>
+        <time>2014-03-24T11:04:51</time>
+    </build>
 </spec>

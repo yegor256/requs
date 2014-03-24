@@ -15,13 +15,17 @@
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <style type="text/css">
                     body { margin: 2em; font-family: Ubuntu; font-size: 16px; }
+                    a { color: #22a; text-decoration: none; }
+                    a:hover { text-decoration: underline; }
                     .intro { font-size: 0.9em; color: #777; }
                     .type { margin-top: 2em; }
                     .slots { margin-left: 1em; margin-top: 1em; }
                     .methods { margin-left: 1em; }
                     .method { margin-top: 1em; }
-                    .step { margin-left: 1em; }
-                    .informal { color: #377; }
+                    .steps { margin-top: 1em; margin-left: 1em }
+                    .step {  }
+                    .informal { color: #777; }
+                    .warning { color: #e22; }
                 </style>
             </head>
             <body>
@@ -58,18 +62,19 @@
         <div class="type">
             <a>
                 <xsl:attribute name="name">
-                    <xsl:text>#</xsl:text>
                     <xsl:value-of select="name"/>
                 </xsl:attribute>
             </a>
             <strong><xsl:value-of select="name"/></strong>
+            <xsl:text> is </xsl:text>
             <xsl:choose>
                 <xsl:when test="info/informal">
-                    <xsl:text> is </xsl:text>
                     <xsl:apply-templates select="info/informal"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:text> is an unknown creature</xsl:text>
+                    <span class="warning">
+                        <xsl:text>an unknown creature</xsl:text>
+                    </span>
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:choose>
@@ -106,7 +111,13 @@
             </xsl:choose>
             <xsl:if test="type">
                 <xsl:text> as </xsl:text>
-                <xsl:value-of select="type"/>
+                <a>
+                    <xsl:attribute name="href">
+                        <xsl:text>#</xsl:text>
+                        <xsl:value-of select="type"/>
+                    </xsl:attribute>
+                    <xsl:value-of select="type"/>
+                </a>
             </xsl:if>
             <xsl:apply-templates select="info/informal"/>
         </li>
@@ -120,25 +131,22 @@
         <div class="method">
             <a>
                 <xsl:attribute name="name">
-                    <xsl:text>#</xsl:text>
                     <xsl:value-of select="id"/>
                 </xsl:attribute>
             </a>
             <div>
-                <xsl:value-of select="id"/>
+                <strong><xsl:value-of select="id"/></strong>
                 <xsl:text> where </xsl:text>
-                <xsl:text>the </xsl:text>
-                <xsl:value-of select="args/arg[kind='SELF']/name"/>
-                <xsl:text> </xsl:text>
-                <em><xsl:value-of select="signature"/></em>
-                <xsl:if test="args/arg[kind='RESULT']">
-                    <xsl:text> the </xsl:text>
-                    <xsl:value-of select="args/arg[kind='RESULT']/name"/>
-                </xsl:if>
+                <xsl:call-template name="signature">
+                    <xsl:with-param name="bindings" select="bindings"/>
+                    <xsl:with-param name="home" select="."/>
+                </xsl:call-template>
                 <xsl:text>:</xsl:text>
             </div>
-            <xsl:apply-templates select="steps/step"/>
-            <xsl:apply-templates select="info/informal"/>
+            <div class="steps">
+                <xsl:apply-templates select="info/informal"/>
+                <xsl:apply-templates select="steps/step"/>
+            </div>
         </div>
     </xsl:template>
     <xsl:template match="steps/step">
@@ -146,33 +154,50 @@
             <div>
                 <xsl:value-of select="number"/>
                 <xsl:text>. </xsl:text>
-                <xsl:text>The </xsl:text>
-                <xsl:value-of select="object"/>
-                <xsl:text> </xsl:text>
-                <em><xsl:value-of select="signature"/></em>
-                <xsl:if test="result">
-                    <xsl:text> the </xsl:text>
-                    <xsl:value-of select="result"/>
-                </xsl:if>
-                <xsl:if test="args">
-                    <xsl:text> using </xsl:text>
-                    <xsl:for-each select="args/arg">
-                        <xsl:if test="position() != 1">
-                            <xsl:text> and </xsl:text>
-                        </xsl:if>
-                        <xsl:value-of select="."/>
-                    </xsl:for-each>
-                </xsl:if>
+                <xsl:call-template name="signature">
+                    <xsl:with-param name="bindings" select="../../bindings"/>
+                    <xsl:with-param name="home" select="."/>
+                </xsl:call-template>
             </div>
         </div>
     </xsl:template>
     <xsl:template match="informal">
         <xsl:text> </xsl:text>
-        <xsl:text>"</xsl:text>
         <span class="informal">
+            <xsl:text>&quot;</xsl:text>
             <xsl:value-of select="."/>
+            <xsl:text>&quot;</xsl:text>
         </span>
-        <xsl:text>"</xsl:text>
+        <xsl:text> </xsl:text>
+    </xsl:template>
+    <xsl:template name="signature">
+        <xsl:param name="bindings" />
+        <xsl:param name="home" />
+        <xsl:call-template name="ref">
+            <xsl:with-param name="bindings" select="$bindings"/>
+            <xsl:with-param name="name" select="$home/object"/>
+        </xsl:call-template>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="$home/signature"/>
+        <xsl:text> </xsl:text>
+        <xsl:if test="$home/result">
+            <xsl:call-template name="ref">
+                <xsl:with-param name="bindings" select="$bindings"/>
+                <xsl:with-param name="name" select="$home/result"/>
+            </xsl:call-template>
+        </xsl:if>
+        <xsl:if test="$home/args/arg">
+            <xsl:text> using </xsl:text>
+            <xsl:for-each select="$home/args/arg">
+                <xsl:if test="position() > 1">
+                    <xsl:text> and </xsl:text>
+                </xsl:if>
+                <xsl:call-template name="ref">
+                    <xsl:with-param name="bindings" select="$bindings"/>
+                    <xsl:with-param name="name" select="."/>
+                </xsl:call-template>
+            </xsl:for-each>
+        </xsl:if>
     </xsl:template>
     <xsl:template name="ref">
         <xsl:param name="bindings" />

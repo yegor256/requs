@@ -50,7 +50,7 @@ public final class SpecTest {
         MatcherAssert.assertThat(
             new Spec(
                 IOUtils.toString(
-                    this.getClass().getResourceAsStream("syntax/example.req")
+                    this.getClass().getResourceAsStream("syntax/all-cases.req")
                 )
             ).xml(),
             XhtmlMatchers.hasXPaths(
