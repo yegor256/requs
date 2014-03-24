@@ -61,7 +61,7 @@ public final class InstantRs extends BaseRs {
     public String post(@FormParam("text") final String text) {
         String xml;
         try {
-            xml = new Spec(text).xml().toString();
+            xml = new Spec.Ultimate(text).xml().toString();
         } catch (final IllegalArgumentException ex) {
             xml = Logger.format("%[exception]s", ex);
         }

@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:xsl="http://www.w3.org/2001/XMLSchema">
     <xs:complexType name="requs">
         <xs:all>
             <xs:element name="version" type="xs:string"/>
@@ -107,6 +108,7 @@
                 </xs:complexType>
             </xs:element>
         </xs:all>
+        <xsl:attribute name="seal" use="required"/>
     </xs:complexType>
     <xs:complexType name="type">
         <xs:all>

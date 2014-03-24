@@ -29,71 +29,36 @@
  */
 package org.requs;
 
-import com.jcabi.xml.XML;
-import com.jcabi.xml.XMLDocument;
-import org.requs.syntax.AntlrSpec;
+import com.rexsl.test.XhtmlMatchers;
+import org.hamcrest.MatcherAssert;
+import org.junit.Test;
 
 /**
- * Spec.
- *
+ * Test case for {@link Sealed}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-public interface Spec {
+public final class SealedTest {
 
     /**
-     * Get XML.
-     * @return XML
+     * Sealed can seal use cases.
+     * @throws Exception When necessary
      */
-    XML xml();
-
-    /**
-     * Fixed.
-     */
-    final class Fixed implements Spec {
-        /**
-         * Encapsulated XML.
-         */
-        private final transient String xml;
-        /**
-         * Ctor.
-         * @param doc XML to use
-         */
-        public Fixed(final String doc) {
-            this.xml = doc;
-        }
-        @Override
-        public XML xml() {
-            return new XMLDocument(this.xml);
-        }
+    @Test
+    public void sealsUseCases() throws Exception {
+        final Spec sealed = new Sealed(
+            new Spec.Fixed(
+                "<spec><method><id>test</id></method></spec>"
+            )
+        );
+        MatcherAssert.assertThat(
+            sealed.xml(),
+            XhtmlMatchers.hasXPath("/spec/method[@seal='30a527']")
+        );
+        MatcherAssert.assertThat(
+            new Sealed(sealed).xml(),
+            XhtmlMatchers.hasXPath("//method[@seal='30a527']")
+        );
     }
 
-    /**
-     * All inclusive.
-     */
-    final class Ultimate implements Spec {
-        /**
-         * Encapsulated Requs source.
-         */
-        private final transient String src;
-        /**
-         * Ctor.
-         * @param req Requs source
-         */
-        public Ultimate(final String req) {
-            this.src = req;
-        }
-        @Override
-        public XML xml() {
-            return new Validated(
-                new Built(
-                    new Measured(
-                        new Sealed(
-                            new AntlrSpec(this.src)
-                        )
-                    )
-                )
-            ).xml();
-        }
-    }
 }

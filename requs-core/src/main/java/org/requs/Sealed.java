@@ -29,7 +29,14 @@
  */
 package org.requs;
 
+import com.jcabi.aspects.Tv;
 import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.w3c.dom.Node;
+import org.xembly.Directives;
+import org.xembly.ImpossibleModificationException;
+import org.xembly.Xembler;
 
 /**
  * Sealed spec.
@@ -54,7 +61,24 @@ final class Sealed implements Spec {
 
     @Override
     public XML xml() {
-        return this.origin.xml();
+        final XML xml = this.origin.xml();
+        final Directives dirs = new Directives();
+        for (final XML method : xml.nodes("//method[id]")) {
+            final String name = method.xpath("id/text()").get(0);
+            dirs.xpath(String.format("//method[id='%s']", name)).attr(
+                "seal",
+                DigestUtils.md5Hex(
+                    method.nodes("*").toString()
+                ).substring(0, Tv.SIX)
+            );
+        }
+        final Node node = xml.node();
+        try {
+            new Xembler(dirs).apply(node);
+        } catch (final ImpossibleModificationException ex) {
+            throw new IllegalStateException(ex);
+        }
+        return new XMLDocument(new XMLDocument(node).toString());
     }
 
 }
