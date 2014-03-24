@@ -85,7 +85,7 @@ final class XeMethod implements Method {
     }
 
     @Override
-    public void attribute(final String name) {
+    public void attribute(final String name, final String seal) {
         this.dirs.xpath(this.start)
             .addIf("attributes")
             .xpath(
@@ -94,7 +94,14 @@ final class XeMethod implements Method {
                     this.start, name
                 )
             )
-            .add("attribute").set(name);
+            .add("attribute").set(name)
+            .xpath(
+                String.format(
+                    "%s/attributes/attribute[.='%s']",
+                    this.start, name
+                )
+            )
+            .attr("seal", seal);
     }
 
     @Override

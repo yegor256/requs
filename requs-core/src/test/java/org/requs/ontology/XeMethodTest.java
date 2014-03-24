@@ -97,14 +97,15 @@ public final class XeMethodTest {
         final Directives dirs = new Directives().add("x");
         final Method method = new XeMethod(dirs, "/x");
         final String name = "attr-1";
-        method.attribute(name);
-        method.attribute(name);
-        method.attribute("another");
+        method.attribute(name, "");
+        method.attribute(name, "ffa7ed");
+        method.attribute("another", "123456");
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
                 "/x/attributes[count(attribute)=2]",
-                "/x/attributes[attribute='attr-1' and attribute='another']"
+                "/x/attributes[attribute='attr-1' and attribute='another']",
+                "/x/attributes/attribute[.='attr-1' and @seal='ffa7ed']"
             )
         );
     }

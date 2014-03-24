@@ -325,14 +325,29 @@ variable returns [String ret]
 
 attribute_setting
     :
+    SEAL?
     COLON
     UC_ID
     IS
     A?
     WORD
-    { this.onto.method($UC_ID.text).attribute($WORD.text); }
+    {
+        final String seal;
+        if ($SEAL == null) {
+            seal = StringUtils.EMPTY;
+        } else {
+            seal = $SEAL.text;
+        }
+        this.onto.method($UC_ID.text).attribute($WORD.text, seal);
+    }
     ;
 
+SEAL: ('0'..'9' | 'a'..'f')
+    ('0'..'9' | 'a'..'f')
+    ('0'..'9' | 'a'..'f')
+    ('0'..'9' | 'a'..'f')
+    ('0'..'9' | 'a'..'f')
+    ('0'..'9' | 'a'..'f');
 UC_ID: 'UC' ( '0' .. '9' | '.' )+;
 FLOW_ID: ( '0' .. '9' )+;
 COLON: ':';

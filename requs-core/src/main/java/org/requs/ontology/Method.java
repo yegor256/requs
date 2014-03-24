@@ -41,7 +41,8 @@ public interface Method extends Flow, Mentioned, Signature {
     /**
      * Add an attributes.
      * @param name Attribute name
+     * @param seal Seal to attach
      */
-    void attribute(String name);
+    void attribute(String name, String seal);
 
 }
