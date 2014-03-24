@@ -36,12 +36,6 @@ package org.requs.ontology;
  * @version $Id$
  * @since 1.1
  */
-public interface Method extends Flow, Mentioned {
-
-    /**
-     * Declare its signature, in quotes if it's informal.
-     * @param text Signature
-     */
-    void signature(String text);
+public interface Method extends Flow, Mentioned, Signature {
 
 }

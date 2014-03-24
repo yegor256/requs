@@ -42,7 +42,7 @@ import org.xembly.Directives;
  * @since 1.1
  */
 @ToString
-@EqualsAndHashCode(callSuper = false, of = { "dirs", "start" })
+@EqualsAndHashCode(of = { "dirs", "start" })
 @Loggable(Loggable.DEBUG)
 final class XeMentioned implements Mentioned {
 

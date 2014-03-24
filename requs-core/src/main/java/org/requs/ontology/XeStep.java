@@ -42,7 +42,7 @@ import org.xembly.Directives;
  * @since 1.1
  */
 @ToString
-@EqualsAndHashCode(callSuper = false, of = { "dirs", "start" })
+@EqualsAndHashCode(of = { "dirs", "start" })
 @Loggable(Loggable.DEBUG)
 final class XeStep implements Step {
 
@@ -67,6 +67,11 @@ final class XeStep implements Step {
     private final transient Informal informal;
 
     /**
+     * Signature helper.
+     */
+    private final transient Signature signature;
+
+    /**
      * Ctor.
      * @param directives Directives to extend
      * @param xpath XPath to start with
@@ -74,33 +79,9 @@ final class XeStep implements Step {
     XeStep(final Directives directives, final String xpath) {
         this.mentioned = new XeMentioned(directives, xpath);
         this.informal = new XeInformal(directives, xpath);
+        this.signature = new XeSignature(directives, xpath);
         this.dirs = directives;
         this.start = xpath;
-    }
-
-    @Override
-    public void object(final String variable) {
-        this.dirs.xpath(this.start).add("object").set(variable);
-    }
-
-    @Override
-    public void result(final String variable) {
-        this.dirs.xpath(this.start).add("result").set(variable);
-    }
-
-    @Override
-    public void arguments(final Iterable<String> vars) {
-        assert vars != null;
-        this.dirs.xpath(this.start).add("args");
-        for (final String var : vars) {
-            this.dirs.add("arg").set(var).up();
-        }
-    }
-
-    @Override
-    public void signature(final String text) {
-        assert text != null;
-        this.dirs.xpath(this.start).add("signature").set(text);
     }
 
     @Override
@@ -118,6 +99,26 @@ final class XeStep implements Step {
                 this.start, text
             )
         );
+    }
+
+    @Override
+    public void sign(final String text) {
+        this.signature.sign(text);
+    }
+
+    @Override
+    public void object(final String name) {
+        this.signature.object(name);
+    }
+
+    @Override
+    public void result(final String name) {
+        this.signature.result(name);
+    }
+
+    @Override
+    public void input(final String name) {
+        this.signature.input(name);
     }
 
     @Override

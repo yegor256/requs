@@ -42,7 +42,7 @@ import org.xembly.Directives;
  * @since 1.1
  */
 @ToString
-@EqualsAndHashCode(callSuper = false, of = "dirs")
+@EqualsAndHashCode(of = "dirs")
 @Loggable(Loggable.DEBUG)
 final class XeSlot implements Slot {
 

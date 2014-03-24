@@ -96,6 +96,16 @@
                         </step>
                     </steps>
                 </method>
+                <method>
+                    <id>UC3</id>
+                    <mentioned>
+                        <where>44</where>
+                    </mentioned>
+                    <signature>deploys</signature>
+                    <info>
+                        <informal>We do something here...</informal>
+                    </info>
+                </method>
             </methods>
             <slots>
                 <slot>

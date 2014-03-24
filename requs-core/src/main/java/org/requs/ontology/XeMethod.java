@@ -42,19 +42,9 @@ import org.xembly.Directives;
  * @since 1.1
  */
 @ToString
-@EqualsAndHashCode(callSuper = false, of = { "dirs", "start" })
+@EqualsAndHashCode(of = { "mentioned", "flow", "signature" })
 @Loggable(Loggable.DEBUG)
 final class XeMethod implements Method {
-
-    /**
-     * All directives.
-     */
-    private final transient Directives dirs;
-
-    /**
-     * Starting XPath.
-     */
-    private final transient String start;
 
     /**
      * Mentioned helper.
@@ -67,6 +57,11 @@ final class XeMethod implements Method {
     private final transient Flow flow;
 
     /**
+     * Signature helper.
+     */
+    private final transient Signature signature;
+
+    /**
      * Ctor.
      * @param directives Directives to extend
      * @param xpath XPath to start with
@@ -74,13 +69,22 @@ final class XeMethod implements Method {
     XeMethod(final Directives directives, final String xpath) {
         this.mentioned = new XeMentioned(directives, xpath);
         this.flow = new XeFlow(directives, xpath);
-        this.dirs = directives;
-        this.start = xpath;
+        this.signature = new XeSignature(directives, xpath);
     }
 
     @Override
-    public void signature(final String text) {
-        this.dirs.xpath(this.start).add("signature").set(text);
+    public void sign(final String text) {
+        this.signature.sign(text);
+    }
+
+    @Override
+    public void object(final String name) {
+        this.signature.object(name);
+    }
+
+    @Override
+    public void result(final String name) {
+        this.signature.result(name);
     }
 
     @Override
@@ -89,9 +93,13 @@ final class XeMethod implements Method {
     }
 
     @Override
-    public void variable(final Flow.Kind kind,
-        final String name, final String type) {
-        this.flow.variable(kind, name, type);
+    public void binding(final String name, final String type) {
+        this.flow.binding(name, type);
+    }
+
+    @Override
+    public void input(final String name) {
+        this.signature.input(name);
     }
 
     @Override

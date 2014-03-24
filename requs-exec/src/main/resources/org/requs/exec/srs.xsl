@@ -1,16 +1,19 @@
 <?xml version="1.0"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/1999/xhtml" version="2.0" exclude-result-prefixes="xs">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://www.w3.org/1999/xhtml" version="2.0"
+    exclude-result-prefixes="xs">
     <xsl:output method="xml"/>
     <xsl:strip-space elements="*" />
     <xsl:template match="/">
         <html lang="en">
             <head>
-                <meta charset="UTF-8"/>
+                <title>SRS</title>
                 <meta name="description" content="SRS"/>
                 <meta name="keywords" content="SRS, software requirements specification"/>
                 <meta name="author" content="requs"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <style>
+                <style type="text/css">
                     body { margin: 2em; font-family: Ubuntu; font-size: 16px; }
                     .intro { font-size: 0.9em; color: #777; }
                     .type { margin-top: 2em; }
@@ -101,15 +104,10 @@
                     <xsl:text>-?</xsl:text>
                 </xsl:when>
             </xsl:choose>
-            <xsl:choose>
-                <xsl:when test="type">
-                    <xsl:text> as </xsl:text>
-                    <xsl:call-template name="type">
-                        <xsl:with-param name="type" select="type"/>
-                        <xsl:with-param name="label" select="type"/>
-                    </xsl:call-template>
-                </xsl:when>
-            </xsl:choose>
+            <xsl:if test="type">
+                <xsl:text> as </xsl:text>
+                <xsl:value-of select="type"/>
+            </xsl:if>
             <xsl:apply-templates select="info/informal"/>
         </li>
     </xsl:template>
@@ -140,6 +138,7 @@
                 <xsl:text>:</xsl:text>
             </div>
             <xsl:apply-templates select="steps/step"/>
+            <xsl:apply-templates select="info/informal"/>
         </div>
     </xsl:template>
     <xsl:template match="steps/step">
@@ -175,15 +174,23 @@
         </span>
         <xsl:text>"</xsl:text>
     </xsl:template>
-    <xsl:template name="type">
-        <xsl:param name="label" />
-        <xsl:param name="type" />
+    <xsl:template name="ref">
+        <xsl:param name="bindings" />
+        <xsl:param name="name" />
+        <xsl:variable name="type" select="$bindings/binding[name=$name]/type"/>
         <a>
             <xsl:attribute name="href">
                 <xsl:text>#</xsl:text>
                 <xsl:value-of select="$type"/>
             </xsl:attribute>
-            <xsl:value-of select="$label"/>
+            <xsl:choose>
+                <xsl:when test="contains($name,'_')">
+                    <xsl:value-of select="$type"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$name"/>
+                </xsl:otherwise>
+            </xsl:choose>
         </a>
     </xsl:template>
 </xsl:stylesheet>

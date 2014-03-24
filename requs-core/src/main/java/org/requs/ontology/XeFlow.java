@@ -42,7 +42,7 @@ import org.xembly.Directives;
  * @since 1.1
  */
 @ToString
-@EqualsAndHashCode(callSuper = false, of = { "dirs", "start" })
+@EqualsAndHashCode(of = { "dirs", "start" })
 @Loggable(Loggable.DEBUG)
 final class XeFlow implements Flow {
 
@@ -87,17 +87,15 @@ final class XeFlow implements Flow {
     }
 
     @Override
-    public void explain(final String info) {
-        this.informal.explain(info);
+    public void binding(final String name, final String type) {
+        this.dirs.xpath(this.start).addIf("bindings").add("binding")
+            .add("name").set(name).up()
+            .add("type").set(type).up().up();
     }
 
     @Override
-    public void variable(final Flow.Kind kind, final String name,
-        final String type) {
-        this.dirs.xpath(this.start).addIf("args").add("arg")
-            .add("name").set(name).up()
-            .add("type").set(type).up()
-            .add("kind").set(kind.toString()).up().up();
+    public void explain(final String info) {
+        this.informal.explain(info);
     }
 
 }

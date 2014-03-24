@@ -52,7 +52,7 @@ clauses
     :
     (
         clause
-        '.'
+        DOT
     )*
     EOF
     ;
@@ -75,12 +75,12 @@ class_declaration
     self=class_name
     { Type type = this.onto.type($self.ret); }
     { type.mention(_input.LT(1).getLine()); }
-    'is'
+    IS
     (
         INFORMAL
         { type.explain($INFORMAL.text); }
         |
-        ( 'a' | 'an' )
+        A
         parent=class_name
         { type.parent($parent.text); }
     )
@@ -90,8 +90,8 @@ class_construction
     :
     class_name
     { Type type = this.onto.type($class_name.ret); }
-    ( 'includes' | 'needs' | 'contains' | 'requires' )
-    ':'
+    INCLUDES
+    COLON
     slots[type]
     ;
 
@@ -99,8 +99,7 @@ slots [Type type]
     :
     head=slot[type]
     (
-        ( ';' | ',' )
-        ( 'and' )?
+        ( SEMICOLON AND? | COMMA AND? | AND )
         tail=slot[type]
     )*
     ;
@@ -124,7 +123,7 @@ slot [Type type]
         )
     )?
     (
-        'as'
+        AS
         (
             class_name
             { slot.assign($class_name.text); }
@@ -138,55 +137,62 @@ slot [Type type]
 method_declaration
     :
     UC_ID
-    'where'
+    WHERE
     self=class_name
     { Type type = this.onto.type($self.text); }
     { Method method = type.method($UC_ID.text); }
     { method.mention(_input.LT(1).getLine()); }
-    (
-        slf=binding
-        { method.variable(Flow.Kind.SELF, $slf.ret, $self.ret); }
-    )?
+    slf=binding?
+    {
+        if ($slf.ctx == null) {
+            method.binding("_self", $self.ret);
+        } else {
+            method.binding($slf.ret, $self.ret);
+        }
+    }
     msig=signature
-    { method.signature($msig.ret); }
+    { method.sign($msig.ret); }
     (
         rslt=class_name
         (
             res=binding
-            { method.variable(Flow.Kind.RESULT, $res.ret, $rslt.ret); }
+            { method.binding($res.ret, $rslt.ret); }
+            { method.result($res.ret); }
         )?
     )?
     (
-        ( 'using' | 'of' | 'with' )
+        USING
         hclass=class_name
         hbind=binding?
         {
             final String hname;
             if ($hbind.ctx == null) {
-                hname = "__arg0";
+                hname = "_arg0";
             } else {
                 hname = $hbind.ret;
             }
-            method.variable(Flow.Kind.INPUT, hname, $hclass.ret);
+            method.binding(hname, $hclass.ret);
+            method.input(hname);
             int idx = 1;
         }
         (
-            'and'
+            AND
             tclass=class_name
             tbind=binding?
             {
                 final String tname;
                 if ($tbind.ctx == null) {
-                    tname = "__arg" + idx;
+                    tname = "_arg" + idx;
                 } else {
                     tname = $tbind.ret;
                 }
-                method.variable(Flow.Kind.INPUT, tname, $tclass.ret);
+                method.binding(tname, $tclass.ret);
+                method.input(tname);
                 ++idx;
             }
         )?
     )?
-    ':'
+    COLON
     steps[method]
     ;
 
@@ -206,20 +212,20 @@ signature returns [String ret]
 binding returns [String ret]
     :
     '('
-    ( 'a' | 'an' )
+    A
     variable
     ')'
     { $ret = $variable.ret; }
     ;
 
-subject [Flow flow, Flow.Kind kind] returns [String ret]
+subject [Flow flow] returns [String ret]
     :
     class_name
     binding
     { $ret = $binding.ret; }
-    { flow.variable(kind, $binding.ret, $class_name.ret); }
+    { flow.binding($binding.ret, $class_name.ret); }
     |
-    'the'
+    THE
     variable
     { $ret = $variable.ret; }
     ;
@@ -229,9 +235,9 @@ alternative_flow_declaration
     UC_ID
     '/'
     FLOW_ID
-    'when'
+    WHEN
     INFORMAL
-    ':'
+    COLON
     { Method method = this.onto.method($UC_ID.text); }
     { Flow flow = method.step(Integer.parseInt($FLOW_ID.text)).exception($INFORMAL.text); }
     steps[flow]
@@ -244,7 +250,7 @@ steps [Flow flow]
     |
     step[flow]
     (
-        ';'
+        SEMICOLON
         step[flow]
     )*
     ;
@@ -252,12 +258,12 @@ steps [Flow flow]
 step [Flow flow]
     :
     FLOW_ID
-    '.'
+    DOT
     { Step step = flow.step(Integer.parseInt($FLOW_ID.text)); }
     { step.mention(_input.LT(1).getLine()); }
     (
         (
-            'The'
+            THE
             variable
             { step.object($variable.ret); }
             |
@@ -265,9 +271,9 @@ step [Flow flow]
             { step.object("SuD"); }
         )
         step_sig=signature
-        { step.signature($step_sig.ret); }
+        { step.sign($step_sig.ret); }
         (
-            result=subject[flow, Flow.Kind.RESULT]
+            result=subject[flow]
             { step.result($result.ret); }
         )?
         using[flow, step]?
@@ -283,17 +289,15 @@ step [Flow flow]
     ;
 
 using [Flow flow, Step stp]
-    @init{ Collection<String> args = new LinkedList<String>(); }
     :
-    ( 'using' | 'with' | 'of' )
-    head=subject[flow, Flow.Kind.LOCAL]
-    { args.add($head.ret); }
+    USING
+    head=subject[flow]
+    { stp.input($head.ret); }
     (
-        'and'
-        tail=subject[flow, Flow.Kind.LOCAL]
-        { args.add($tail.ret); }
+        AND
+        tail=subject[flow]
+        { stp.input($tail.ret); }
     )?
-    { stp.arguments(args); }
     ;
 
 class_name returns [String ret]
@@ -313,7 +317,20 @@ variable returns [String ret]
 
 UC_ID: 'UC' ( '0' .. '9' | '.' )+;
 FLOW_ID: ( '0' .. '9' )+;
+COLON: ':';
+SEMICOLON: ';';
+DOT: '.';
+COMMA: ',';
 SUD: 'SuD' | 'We' | 'we';
+USING: ( 'using' | 'of' | 'with' );
+A: ( 'a' | 'an' );
+THE: ( 'the' | 'The' );
+AS: 'as';
+IS: 'is';
+WHEN: 'when';
+WHERE: 'where';
+AND: 'and';
+INCLUDES: ( 'includes' | 'needs' | 'contains' | 'requires' | 'has' );
 CAMEL: ( 'A' .. 'Z' ( 'a' .. 'z' )+ )+;
 WORD: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )+;
 INFORMAL:

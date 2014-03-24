@@ -30,7 +30,6 @@
 package org.requs.ontology;
 
 import com.rexsl.test.XhtmlMatchers;
-import java.util.Arrays;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.xembly.Directives;
@@ -53,8 +52,10 @@ public final class XeStepTest {
         final Directives dirs = new Directives().add("s");
         final Step step = new XeStep(dirs, "/s");
         step.result("data");
-        step.signature("\"do something\"");
-        step.arguments(Arrays.asList("file", "document"));
+        step.sign("\"do something\"");
+        step.object("boom");
+        step.input("file");
+        step.input("document");
         step.exception("division by zero").step(1).explain("foo...");
         step.mention(2);
         step.mention(1);
@@ -62,6 +63,7 @@ public final class XeStepTest {
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
                 "/s[result='data']",
+                "/s[object='boom']",
                 "/s/args[count(arg)=2]",
                 "/s/args[arg='file']",
                 "/s/args[arg='document']",

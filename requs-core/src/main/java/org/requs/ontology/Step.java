@@ -36,7 +36,7 @@ package org.requs.ontology;
  * @version $Id$
  * @since 1.1
  */
-public interface Step extends Mentioned, Informal {
+public interface Step extends Mentioned, Informal, Signature {
 
     /**
      * Exception at a step.
@@ -44,29 +44,5 @@ public interface Step extends Mentioned, Informal {
      * @return Flow for this exception
      */
     Flow exception(String text);
-
-    /**
-     * Signature of the method to call, in quotes if informal.
-     * @param text Text to append
-     */
-    void signature(String text);
-
-    /**
-     * Set the object.
-     * @param var Variable of the object
-     */
-    void object(String var);
-
-    /**
-     * Result variable.
-     * @param var Variable of the result
-     */
-    void result(String var);
-
-    /**
-     * Arguments of the call.
-     * @param vars Name of vars to use
-     */
-    void arguments(Iterable<String> vars);
 
 }

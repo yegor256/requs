@@ -51,17 +51,21 @@ public final class XeMethodTest {
     public void manipulatesWithMethod() throws Exception {
         final Directives dirs = new Directives().add("m");
         final Method method = new XeMethod(dirs, "/m");
-        method.signature("\"informal one\"");
-        method.variable(Flow.Kind.RESULT, "result", "Employee");
-        method.variable(Flow.Kind.INPUT, "one", "One");
+        method.sign("\"informal one\"");
+        method.binding("emp", "Employee");
+        method.binding("one", "One");
+        method.result("emp1");
+        method.object("myself");
         method.mention(2);
         method.mention(1);
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
                 "/m[signature='\"informal one\"']",
-                "/m/args/arg[type='Employee' and kind='RESULT']",
-                "/m/args/arg[type='One' and kind='INPUT']",
+                "/m[result='emp1']",
+                "/m[object='myself']",
+                "/m/bindings/binding[name='emp' and type='Employee']",
+                "/m/bindings/binding[name='one' and type='One']",
                 "/m/mentioned[where='2']",
                 "/m/mentioned[where='1']"
             )
