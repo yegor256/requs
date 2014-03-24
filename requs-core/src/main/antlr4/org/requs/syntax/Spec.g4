@@ -59,6 +59,8 @@ clauses
 
 clause
     :
+    INFORMAL
+    |
     class_declaration
     |
     class_construction
