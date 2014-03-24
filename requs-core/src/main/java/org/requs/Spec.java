@@ -100,7 +100,10 @@ public final class Spec {
         } catch (final ImpossibleModificationException ex) {
             throw new IllegalStateException(ex);
         }
-        return new StrictXML(new XMLDocument(node), Spec.SCHEMA);
+        return new StrictXML(
+            new XMLDocument(new XMLDocument(node).toString()),
+            Spec.SCHEMA
+        );
     }
 
 }
