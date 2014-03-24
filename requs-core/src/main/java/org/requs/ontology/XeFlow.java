@@ -74,12 +74,10 @@ final class XeFlow implements Flow {
 
     @Override
     public Step step(final int number) {
-        this.dirs.xpath(this.start).addIf("steps")
+        this.dirs.xpath(this.start).strict(1).addIf("steps")
             .xpath(this.start)
             .xpath(String.format("steps[not(step/number=%d)]", number))
-            .add("step").add("number").set(Integer.toString(number))
-            .xpath(this.start)
-            .xpath(String.format("steps[ not(step/number=%d)]", number));
+            .add("step").add("number").set(Integer.toString(number));
         return new XeStep(
             this.dirs,
             String.format("%s/steps/step[number=%d]", this.start, number)
@@ -88,7 +86,7 @@ final class XeFlow implements Flow {
 
     @Override
     public void binding(final String name, final String type) {
-        this.dirs.xpath(this.start).addIf("bindings").add("binding")
+        this.dirs.xpath(this.start).strict(1).addIf("bindings").add("binding")
             .add("name").set(name).up()
             .add("type").set(type).up().up();
     }

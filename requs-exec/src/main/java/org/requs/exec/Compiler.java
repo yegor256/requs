@@ -134,6 +134,7 @@ public final class Compiler {
             new File(this.input), new String[] {"req"}, true
         );
         for (final File file : files) {
+            Logger.info(this, "source file: %s", file);
             text.append(
                 FileUtils.readFileToString(file, CharEncoding.UTF_8)
             ).append('\n');

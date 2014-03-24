@@ -68,7 +68,8 @@ final class XeInformal implements Informal {
 
     @Override
     public void explain(final String informal) {
-        this.dirs.xpath(this.start).addIf("info").add("informal").set(informal);
+        this.dirs.xpath(this.start).strict(1)
+            .addIf("info").add("informal").set(informal);
     }
 
 }

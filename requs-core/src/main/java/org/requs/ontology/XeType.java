@@ -80,12 +80,13 @@ final class XeType implements Type {
 
     @Override
     public void parent(final String type) {
-        this.dirs.xpath(this.start).addIf("parents").add("parent").set(type);
+        this.dirs.xpath(this.start).strict(1)
+            .addIf("parents").add("parent").set(type);
     }
 
     @Override
     public Slot slot(final String name) {
-        this.dirs.xpath(this.start)
+        this.dirs.xpath(this.start).strict(1)
             .addIf("slots").add("slot").add("name").set(name);
         return new XeSlot(
             this.dirs,
@@ -95,12 +96,10 @@ final class XeType implements Type {
 
     @Override
     public Method method(final String name) {
-        this.dirs.xpath(this.start).addIf("methods")
+        this.dirs.xpath(this.start).strict(1).addIf("methods")
             .xpath(this.start)
             .xpath(String.format("methods[not(method/id='%s') ]", name))
-            .add("method").add("id").set(name)
-            .xpath(this.start)
-            .xpath(String.format("methods[not(method/id='%s')]", name));
+            .add("method").add("id").set(name);
         return new XeMethod(
             this.dirs,
             String.format("%s/methods/method[id='%s']", this.start, name)

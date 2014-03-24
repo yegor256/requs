@@ -61,10 +61,9 @@ public final class XeOntology implements Ontology, Iterable<Directive> {
 
     @Override
     public Type type(final String name) {
-        this.dirs.xpath("/spec").addIf("types")
+        this.dirs.xpath("/spec").strict(1).addIf("types")
             .xpath(String.format("/spec/types[not(type/name='%s')]", name))
-            .add("type").add("name").set(name)
-            .xpath(String.format("/spec/types/type[name='%s' ]", name));
+            .add("type").add("name").set(name);
         return new XeType(
             this.dirs,
             String.format("/spec/types/type[name='%s']", name)
