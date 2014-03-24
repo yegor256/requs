@@ -1,3 +1,5 @@
+:UC1 is a must.
+
 Fraction is "a math calculator".
 
 Fraction needs:
@@ -11,5 +13,3 @@ UC1 where User (a user) divides two numbers:
 
 UC1/2 when "division by zero":
   1. Fail since "denominator can't be zero".
-
-:UC1 is a must.
