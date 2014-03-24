@@ -56,7 +56,7 @@ public final class XeStepTest {
         step.object("boom");
         step.input("file");
         step.input("document");
-        step.exception("division by zero").step(1).explain("foo...");
+        step.exception("division by zero").step(1).sign("hey!");
         step.mention(2);
         step.mention(1);
         MatcherAssert.assertThat(
@@ -69,7 +69,7 @@ public final class XeStepTest {
                 "/s/args[arg='document']",
                 "/s[signature='\"do something\"']",
                 "/s/exceptions/exception[when='division by zero']",
-                "/s/exceptions/exception/steps/step/info[informal='foo...']"
+                "/s/exceptions/exception/steps/step[signature='hey!']"
             )
         );
     }

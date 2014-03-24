@@ -61,6 +61,7 @@ public final class XeOntology implements Ontology, Iterable<Directive> {
 
     @Override
     public Type type(final String name) {
+        // @checkstyle MultipleStringLiterals (1 line)
         this.dirs.xpath("/spec").strict(1).addIf("types")
             .xpath(String.format("/spec/types[not(type/name='%s')]", name))
             .add("type").add("name").set(name);
@@ -72,10 +73,13 @@ public final class XeOntology implements Ontology, Iterable<Directive> {
 
     @Override
     public Method method(final String name) {
-        return new XeType(
+        this.dirs.xpath("/spec").strict(1).addIf("methods")
+            .xpath(String.format("/spec/methods[not(method/id='%s') ]", name))
+            .add("method").add("id").set(name);
+        return new XeMethod(
             this.dirs,
-            String.format("/spec/types/type[methods/method/name='%s']", name)
-        ).method(name);
+            String.format("/spec/methods/method[id='%s']", name)
+        );
     }
 
     @Override

@@ -20,8 +20,7 @@
                     .intro { font-size: 0.9em; color: #777; }
                     .type { margin-top: 2em; }
                     .slots { margin-left: 1em; margin-top: 1em; }
-                    .methods { margin-left: 1em; }
-                    .method { margin-top: 1em; }
+                    .method { margin-top: 1em; margin-left: 1em; }
                     .steps { margin-top: 1em; margin-left: 1em }
                     .step {  }
                     .informal { color: #777; }
@@ -90,9 +89,7 @@
                     <xsl:text>.</xsl:text>
                 </xsl:otherwise>
             </xsl:choose>
-            <xsl:if test="methods/method">
-                <xsl:apply-templates select="methods"/>
-            </xsl:if>
+            <xsl:apply-templates select="/spec/methods/method[bindings/binding[name='_self' and type=current()/name]]"/>
         </div>
     </xsl:template>
     <xsl:template match="slot">
@@ -121,11 +118,6 @@
             </xsl:if>
             <xsl:apply-templates select="info/informal"/>
         </li>
-    </xsl:template>
-    <xsl:template match="methods">
-        <div class="methods">
-            <xsl:apply-templates select="method"/>
-        </div>
     </xsl:template>
     <xsl:template match="method">
         <div class="method">

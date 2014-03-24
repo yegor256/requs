@@ -58,7 +58,7 @@ public final class SpecTest {
                 "/spec/requs[version and revision and date]",
                 "/spec/build[duration and time]",
                 "/spec/metrics/ambiguity.overall[. > 0]",
-                "//method/attributes"
+                "//method/attributesd"
             )
         );
     }

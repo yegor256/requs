@@ -81,6 +81,22 @@ public final class XeOntologyTest {
     }
 
     /**
+     * XeType can avoid duplications.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void avoidsDuplicationOfMethods() throws Exception {
+        final XeOntology onto = new XeOntology();
+        final String name = "UC3";
+        onto.method(name);
+        onto.method(name);
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(new Xembler(onto).xml()),
+            XhtmlMatchers.hasXPath("/spec/methods[count(method)=1]")
+        );
+    }
+
+    /**
      * XeOntology can report Requs version.
      * @throws Exception When necessary
      */

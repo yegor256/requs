@@ -36,7 +36,7 @@ package org.requs.ontology;
  * @version $Id$
  * @since 1.1
  */
-public interface Step extends Mentioned, Informal, Signature {
+public interface Step extends Mentioned, Signature {
 
     /**
      * Exception at a step.

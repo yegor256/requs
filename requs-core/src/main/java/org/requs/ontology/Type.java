@@ -51,11 +51,4 @@ public interface Type extends Mentioned, Informal {
      */
     Slot slot(String name);
 
-    /**
-     * Found a method.
-     * @param name Unique name of it
-     * @return Method
-     */
-    Method method(String name);
-
 }

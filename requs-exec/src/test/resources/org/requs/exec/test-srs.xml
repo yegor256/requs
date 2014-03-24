@@ -11,64 +11,18 @@
             <name>SuD</name>
             <mentioned>
                 <where>3</where>
+                <where>26</where>
             </mentioned>
             <info>
                 <informal>a simple calculator app</informal>
             </info>
-            <methods>
-                <method>
-                    <id>UC3</id>
-                    <mentioned>
-                        <where>24</where>
-                    </mentioned>
-                    <bindings>
-                        <binding>
-                            <name>_self</name>
-                            <type>SuD</type>
-                        </binding>
-                    </bindings>
-                    <object>_self</object>
-                    <signature>archives data</signature>
-                    <steps>
-                        <step>
-                            <number>1</number>
-                            <mentioned>
-                                <where>25</where>
-                            </mentioned>
-                            <object>SuD</object>
-                            <signature>"archives all data"</signature>
-                        </step>
-                        <step>
-                            <number>2</number>
-                            <mentioned>
-                                <where>26</where>
-                            </mentioned>
-                            <object>user</object>
-                            <signature>"reads some data"</signature>
-                            <args>
-                                <arg>file</arg>
-                            </args>
-                        </step>
-                        <step>
-                            <number>3</number>
-                            <mentioned>
-                                <where>27</where>
-                            </mentioned>
-                            <object>file</object>
-                            <signature>saves itself in binary form</signature>
-                            <args>
-                                <arg>encoding</arg>
-                                <arg>system</arg>
-                            </args>
-                        </step>
-                    </steps>
-                </method>
-            </methods>
         </type>
         <type>
             <name>Fraction</name>
             <mentioned>
                 <where>5</where>
+                <where>7</where>
+                <where>23</where>
             </mentioned>
             <info>
                 <informal>a math calculator</informal>
@@ -89,108 +43,15 @@
                     <type>Float</type>
                 </slot>
             </slots>
-            <methods>
-                <method>
-                    <id>UC2</id>
-                    <mentioned>
-                        <where>21</where>
-                    </mentioned>
-                    <bindings>
-                        <binding>
-                            <name>_self</name>
-                            <type>Fraction</type>
-                        </binding>
-                    </bindings>
-                    <object>_self</object>
-                    <signature>calculates</signature>
-                    <info>
-                        <informal>just divide numerator to denominator</informal>
-                    </info>
-                </method>
-            </methods>
         </type>
         <type>
             <name>User</name>
-            <methods>
-                <method>
-                    <id>UC1</id>
-                    <mentioned>
-                        <where>11</where>
-                    </mentioned>
-                    <bindings>
-                        <binding>
-                            <name>user</name>
-                            <type>User</type>
-                        </binding>
-                        <binding>
-                            <name>fraction</name>
-                            <type>Fraction</type>
-                        </binding>
-                        <binding>
-                            <name>quotient</name>
-                            <type>Float</type>
-                        </binding>
-                    </bindings>
-                    <object>user</object>
-                    <signature>divides two numbers</signature>
-                    <steps>
-                        <step>
-                            <number>1</number>
-                            <mentioned>
-                                <where>12</where>
-                            </mentioned>
-                            <object>user</object>
-                            <signature>creates</signature>
-                            <result>fraction</result>
-                        </step>
-                        <step>
-                            <number>2</number>
-                            <mentioned>
-                                <where>13</where>
-                            </mentioned>
-                            <object>fraction</object>
-                            <signature>calculates</signature>
-                            <result>quotient</result>
-                        </step>
-                        <step>
-                            <number>3</number>
-                            <mentioned>
-                                <where>14</where>
-                            </mentioned>
-                            <object>user</object>
-                            <signature>"receives results"</signature>
-                            <args>
-                                <arg>quotient</arg>
-                            </args>
-                        </step>
-                    </steps>
-                </method>
-                <method>
-                    <id>UC5</id>
-                    <mentioned>
-                        <where>29</where>
-                    </mentioned>
-                    <bindings>
-                        <binding>
-                            <name>_self</name>
-                            <type>User</type>
-                        </binding>
-                        <binding>
-                            <name>_arg0</name>
-                            <type>SuD</type>
-                        </binding>
-                    </bindings>
-                    <object>_self</object>
-                    <signature>reads important information</signature>
-                    <args>
-                        <arg>_arg0</arg>
-                    </args>
-                    <info>
-                        <informal>this is a multi-line
-                            informal use case</informal>
-                    </info>
-                </method>
-            </methods>
+            <mentioned>
+                <where>11</where>
+                <where>19</where>
+                <where>21</where>
+                <where>31</where>
+            </mentioned>
             <slots>
                 <slot>
                     <name>name</name>
@@ -220,14 +81,183 @@
                     <arity>OPT</arity>
                 </slot>
             </slots>
+            <parents>
+                <parent>Visitor</parent>
+            </parents>
         </type>
     </types>
+    <methods>
+        <method seal="152a04">
+            <id>UC1</id>
+            <mentioned>
+                <where>11</where>
+                <where>17</where>
+            </mentioned>
+            <bindings>
+                <binding>
+                    <name>user</name>
+                    <type>User</type>
+                </binding>
+                <binding>
+                    <name>fraction</name>
+                    <type>Fraction</type>
+                </binding>
+                <binding>
+                    <name>quotient</name>
+                    <type>Float</type>
+                </binding>
+            </bindings>
+            <object>user</object>
+            <signature>divides two numbers</signature>
+            <steps>
+                <step>
+                    <number>1</number>
+                    <mentioned>
+                        <where>12</where>
+                    </mentioned>
+                    <object>user</object>
+                    <signature>creates</signature>
+                    <result>fraction</result>
+                </step>
+                <step>
+                    <number>2</number>
+                    <mentioned>
+                        <where>13</where>
+                    </mentioned>
+                    <object>fraction</object>
+                    <signature>calculates</signature>
+                    <result>quotient</result>
+                    <exceptions>
+                        <exception>
+                            <when>division by zero</when>
+                            <steps>
+                                <step>
+                                    <number>1</number>
+                                    <mentioned>
+                                        <where>17</where>
+                                    </mentioned>
+                                    <object>_sud</object>
+                                    <signature>"denominator can't be zero"</signature>
+                                </step>
+                            </steps>
+                        </exception>
+                    </exceptions>
+                </step>
+                <step>
+                    <number>3</number>
+                    <mentioned>
+                        <where>14</where>
+                    </mentioned>
+                    <object>user</object>
+                    <signature>"receives results"</signature>
+                    <args>
+                        <arg>quotient</arg>
+                    </args>
+                </step>
+            </steps>
+        </method>
+        <method seal="4396b1">
+            <id>UC2</id>
+            <mentioned>
+                <where>23</where>
+            </mentioned>
+            <bindings>
+                <binding>
+                    <name>_self</name>
+                    <type>Fraction</type>
+                </binding>
+            </bindings>
+            <object>_self</object>
+            <signature>calculates</signature>
+            <info>
+                <informal>just divide numerator to denominator</informal>
+            </info>
+        </method>
+        <method seal="af291d">
+            <id>UC3</id>
+            <mentioned>
+                <where>26</where>
+            </mentioned>
+            <bindings>
+                <binding>
+                    <name>_self</name>
+                    <type>SuD</type>
+                </binding>
+            </bindings>
+            <object>_self</object>
+            <signature>archives data</signature>
+            <steps>
+                <step>
+                    <number>1</number>
+                    <mentioned>
+                        <where>27</where>
+                    </mentioned>
+                    <object>_sud</object>
+                    <signature>"archives all data"</signature>
+                </step>
+                <step>
+                    <number>2</number>
+                    <mentioned>
+                        <where>28</where>
+                    </mentioned>
+                    <object>user</object>
+                    <signature>"reads some data"</signature>
+                    <args>
+                        <arg>file</arg>
+                    </args>
+                </step>
+                <step>
+                    <number>3</number>
+                    <mentioned>
+                        <where>29</where>
+                    </mentioned>
+                    <object>file</object>
+                    <signature>saves itself in binary form</signature>
+                    <args>
+                        <arg>encoding</arg>
+                        <arg>system</arg>
+                    </args>
+                </step>
+            </steps>
+            <attributes>
+                <attribute seal="">delivered</attribute>
+            </attributes>
+        </method>
+        <method seal="599fa6">
+            <id>UC5</id>
+            <mentioned>
+                <where>31</where>
+            </mentioned>
+            <bindings>
+                <binding>
+                    <name>_self</name>
+                    <type>User</type>
+                </binding>
+                <binding>
+                    <name>_arg0</name>
+                    <type>SuD</type>
+                </binding>
+            </bindings>
+            <object>_self</object>
+            <signature>reads important information</signature>
+            <args>
+                <arg>_arg0</arg>
+            </args>
+            <info>
+                <informal>this is a multi-line
+                    informal use case</informal>
+            </info>
+            <attributes>
+                <attribute seal="">must</attribute>
+            </attributes>
+        </method>
+    </methods>
     <errors/>
     <metrics>
         <ambiguity.overall>1</ambiguity.overall>
     </metrics>
     <build>
-        <duration>540</duration>
-        <time>2014-03-24T11:04:51</time>
+        <duration>878</duration>
+        <time>2014-03-24T17:00:15</time>
     </build>
 </spec>

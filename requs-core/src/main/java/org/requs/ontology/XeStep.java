@@ -62,11 +62,6 @@ final class XeStep implements Step {
     private final transient Mentioned mentioned;
 
     /**
-     * Informal helper.
-     */
-    private final transient Informal informal;
-
-    /**
      * Signature helper.
      */
     private final transient Signature signature;
@@ -78,7 +73,6 @@ final class XeStep implements Step {
      */
     XeStep(final Directives directives, final String xpath) {
         this.mentioned = new XeMentioned(directives, xpath);
-        this.informal = new XeInformal(directives, xpath);
         this.signature = new XeSignature(directives, xpath);
         this.dirs = directives;
         this.start = xpath;
@@ -117,11 +111,6 @@ final class XeStep implements Step {
     @Override
     public void input(final String name) {
         this.signature.input(name);
-    }
-
-    @Override
-    public void explain(final String info) {
-        this.informal.explain(info);
     }
 
     @Override

@@ -71,21 +71,4 @@ public final class XeTypeTest {
         );
     }
 
-    /**
-     * XeType can avoid duplications.
-     * @throws Exception When necessary
-     */
-    @Test
-    public void avoidsDuplicationOfMethods() throws Exception {
-        final Directives dirs = new Directives().add("tp");
-        final Type type = new XeType(dirs, "/tp");
-        final String name = "UC3";
-        type.method(name);
-        type.method(name);
-        MatcherAssert.assertThat(
-            XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
-            XhtmlMatchers.hasXPath("/tp/methods[count(method)=1]")
-        );
-    }
-
 }

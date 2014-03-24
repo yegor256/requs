@@ -140,12 +140,12 @@ slot [Type type]
 method_declaration
     :
     UC_ID
+    { Method method = this.onto.method($UC_ID.text); }
+    { method.mention(_input.LT(1).getLine()); }
     WHERE
     self=class_name
     { Type type = this.onto.type($self.text); }
     { type.mention(_input.LT(1).getLine()); }
-    { Method method = type.method($UC_ID.text); }
-    { method.mention(_input.LT(1).getLine()); }
     slf=binding?
     {
         final String self;
@@ -276,7 +276,7 @@ step [Flow flow]
             { step.object($variable.ret); }
             |
             SUD
-            { step.object("SuD"); }
+            { step.object("_sud"); }
         )
         step_sig=signature
         { step.sign($step_sig.ret); }
@@ -288,11 +288,13 @@ step [Flow flow]
         |
         'Fail'
         'since'
-        ex_informal=INFORMAL
-        { step.explain($ex_informal.text); }
+        ex_informal=signature
+        { step.object("_sud"); }
+        { step.sign($ex_informal.ret); }
         |
-        step_informal=INFORMAL
-        { step.explain($step_informal.text); }
+        step_informal=signature
+        { step.object("_sud"); }
+        { step.sign($step_informal.ret); }
     )
     ;
 
