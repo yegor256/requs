@@ -68,7 +68,7 @@ final class Sealed implements Spec {
             dirs.xpath(String.format("//method[id='%s']", name)).attr(
                 "seal",
                 DigestUtils.md5Hex(
-                    method.nodes("*").toString()
+                    method.nodes("*[not(name()='attributes')]").toString()
                 ).substring(0, Tv.SIX)
             );
         }
