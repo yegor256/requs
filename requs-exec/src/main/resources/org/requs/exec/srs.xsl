@@ -15,16 +15,19 @@
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <style type="text/css">
                     body { margin: 2em; font-family: Ubuntu; font-size: 16px; }
-                    a { color: #22a; text-decoration: none; }
+                    a { color: #428bca; text-decoration: none; }
                     a:hover { text-decoration: underline; }
-                    .intro { font-size: 0.9em; color: #777; }
+                    .intro { font-size: 0.9em; color: #999; }
                     .type { margin-top: 2em; }
                     .slots { margin-left: 1em; margin-top: 1em; }
                     .method { margin-top: 1em; margin-left: 1em; }
                     .steps { margin-top: 1em; margin-left: 1em }
-                    .informal { color: #777; }
-                    .warning { color: #e22; }
-                    .attribute { margin-left: 0.5em; color: white; background-color: #aaa; border-radius: .25em; font-size: 0.85em; padding: .1em .3em .15em; }
+                    .informal { color: #; }
+                    .warning { color: #d9534f; }
+                    .label { margin-left: 0.5em; color: white; border-radius: .25em; font-size: 0.85em; padding: .1em .3em .15em; }
+                    .attribute { background-color: #999; }
+                    .sealed { background-color: #5cb85c; }
+                    .seal { background-color: #5bc0de; }
                 </style>
             </head>
             <body>
@@ -134,6 +137,9 @@
                     <xsl:with-param name="home" select="."/>
                 </xsl:call-template>
                 <xsl:text>:</xsl:text>
+                <span class="label seal">
+                    <xsl:value-of select="@seal"/>
+                </span>
                 <xsl:apply-templates select="attributes/attribute"/>
             </div>
             <div class="steps">
@@ -143,7 +149,18 @@
         </div>
     </xsl:template>
     <xsl:template match="attribute">
-        <span class="attribute">
+        <span>
+            <xsl:attribute name="class">
+                <xsl:text>label </xsl:text>
+                <xsl:choose>
+                    <xsl:when test="@seal = ../../@seal">
+                        <xsl:text>sealed</xsl:text>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:text>attribute</xsl:text>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
             <xsl:value-of select="."/>
         </span>
     </xsl:template>

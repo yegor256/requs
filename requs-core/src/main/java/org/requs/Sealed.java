@@ -29,11 +29,15 @@
  */
 package org.requs;
 
+import com.google.common.base.Functions;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Tv;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Node;
 import org.xembly.Directives;
 import org.xembly.ImpossibleModificationException;
@@ -68,10 +72,7 @@ final class Sealed implements Spec {
         for (final XML method : xml.nodes("//method[id]")) {
             final String name = method.xpath("id/text()").get(0);
             dirs.xpath(String.format("//method[id='%s']", name)).attr(
-                "seal",
-                DigestUtils.md5Hex(
-                    method.nodes("*[not(name()='attributes')]").toString()
-                ).substring(0, Tv.SIX)
+                "seal", Sealed.seal(method)
             );
         }
         final Node node = xml.node();
@@ -81,6 +82,27 @@ final class Sealed implements Spec {
             throw new IllegalStateException(ex);
         }
         return new XMLDocument(new XMLDocument(node).toString());
+    }
+
+    /**
+     * Seal the method.
+     * @param xml Xml to seal
+     * @return Seal as a string
+     */
+    private static String seal(final XML xml) {
+        return DigestUtils.md5Hex(
+            Sets.newHashSet(
+                Iterables.transform(
+                    xml.nodes(
+                        StringUtils.join(
+                            "*[not(name()='attributes')",
+                            " and not(name()='mentioned')]"
+                        )
+                    ),
+                    Functions.toStringFunction()
+                )
+            ).toString()
+        ).substring(0, Tv.SIX);
     }
 
 }

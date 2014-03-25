@@ -29,8 +29,9 @@
  */
 package org.requs;
 
-import com.rexsl.test.XhtmlMatchers;
+import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
@@ -46,18 +47,23 @@ public final class SealedTest {
      */
     @Test
     public void sealsUseCases() throws Exception {
-        final Spec sealed = new Sealed(
-            new Spec.Fixed(
-                "<spec><method><id>test</id></method></spec>"
+        MatcherAssert.assertThat(
+            new Sealed(
+                new Spec.Fixed(
+                    StringUtils.join(
+                        "<spec><method><id>test</id>",
+                        "<attributes>hey</attributes>",
+                        "<mentioned>1</mentioned></method></spec>"
+                    )
+                )
+            ).xml().xpath("/spec/method/@seal").get(0),
+            Matchers.equalTo(
+                new Sealed(
+                    new Spec.Fixed(
+                        "<spec><method><id>test</id></method></spec>"
+                    )
+                ).xml().xpath("//method/@seal").get(0)
             )
-        );
-        MatcherAssert.assertThat(
-            sealed.xml(),
-            XhtmlMatchers.hasXPath("/spec/method[@seal='30a527']")
-        );
-        MatcherAssert.assertThat(
-            new Sealed(sealed).xml(),
-            XhtmlMatchers.hasXPath("//method[@seal='30a527']")
         );
     }
 
