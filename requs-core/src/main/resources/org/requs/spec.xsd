@@ -82,7 +82,12 @@
                             <xs:complexType>
                                 <xs:all>
                                     <xs:element name="when" type="xs:string"/>
-                                    <xs:element name="steps" type="steps" minOccurs="0"/>
+                                    <xs:element name="steps" type="steps" minOccurs="0">
+                                        <xs:unique name="uniqueStep">
+                                            <xs:selector xpath="./step" />
+                                            <xs:field xpath="number" />
+                                        </xs:unique>
+                                    </xs:element>
                                 </xs:all>
                             </xs:complexType>
                         </xs:element>
@@ -105,7 +110,12 @@
             <xs:element name="result" type="object" minOccurs="0"/>
             <xs:element name="args" type="arguments" minOccurs="0"/>
             <xs:element name="info" type="info" minOccurs="0"/>
-            <xs:element name="steps" type="steps" minOccurs="0"/>
+            <xs:element name="steps" type="steps" minOccurs="0">
+                <xs:unique name="uniqueStepNumber">
+                    <xs:selector xpath="./step" />
+                    <xs:field xpath="number" />
+                </xs:unique>
+            </xs:element>
             <xs:element name="bindings" minOccurs="0">
                 <xs:complexType>
                     <xs:sequence>
@@ -149,6 +159,10 @@
                         <xs:element name="slot" type="slot" maxOccurs="unbounded" minOccurs="0"/>
                     </xs:sequence>
                 </xs:complexType>
+                <xs:unique name="uniqueSlotName">
+                    <xs:selector xpath="./slot" />
+                    <xs:field xpath="name" />
+                </xs:unique>
             </xs:element>
             <xs:element name="parents" minOccurs="0">
                 <xs:complexType>
@@ -205,6 +219,10 @@
         <xs:unique name="uniqueTypeName">
             <xs:selector xpath="./types/type" />
             <xs:field xpath="name" />
+        </xs:unique>
+        <xs:unique name="uniqueMethodSignature">
+            <xs:selector xpath="./methods/method" />
+            <xs:field xpath="signature" />
         </xs:unique>
     </xs:element>
 </xs:schema>
