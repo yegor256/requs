@@ -81,7 +81,7 @@ final class XeType implements Type {
     @Override
     public void parent(final String type) {
         this.dirs.xpath(this.start).strict(1)
-            .addIf("parents").add("parent").set(type);
+            .addIf("parents").add("type").set(type);
     }
 
     @Override

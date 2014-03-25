@@ -78,11 +78,11 @@ class_declaration
     { Type type = this.onto.type($self.ret); }
     { type.mention(_input.LT(1).getLine()); }
     IS
+    A?
     (
         INFORMAL
         { type.explain($INFORMAL.text); }
         |
-        A
         parent=class_name
         { type.parent($parent.text); }
     )

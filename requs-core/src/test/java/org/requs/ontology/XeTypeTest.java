@@ -63,7 +63,7 @@ public final class XeTypeTest {
                 "/t/info",
                 "/t/info[informal='first text']",
                 "/t/info[informal='second text']",
-                "/t/parents[parent='Root']",
+                "/t/parents[type='Root']",
                 "/t/mentioned[where='2']",
                 "/t/mentioned[where='1']",
                 "/t/slots/slot[type='Emp']"

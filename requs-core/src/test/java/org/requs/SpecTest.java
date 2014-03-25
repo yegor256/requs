@@ -43,7 +43,7 @@ import org.junit.Test;
 public final class SpecTest {
 
     /**
-     * Spec can parse input text and produce XML.
+     * Spec.Ultimate can parse input text and produce XML.
      * @throws IOException When necessary
      */
     @Test
@@ -62,6 +62,24 @@ public final class SpecTest {
                 "//method/attributes"
             )
         );
+    }
+
+    /**
+     * Spec.Ultimate can parse all possible errors.
+     * @throws Exception When necessary
+     */
+    @Test
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    public void parsesAllPossibleErrors() throws Exception {
+        final String[] specs = {
+            "User is a",
+        };
+        for (final String spec : specs) {
+            MatcherAssert.assertThat(
+                new Spec.Ultimate(spec).xml(),
+                XhtmlMatchers.hasXPath("/spec/errors/error")
+            );
+        }
     }
 
 }

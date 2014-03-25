@@ -64,7 +64,6 @@ $(document).ready(
                     }
                 );
             }
-        );
-        $('#example').keyup();
+        ).keyup();
     }
 );

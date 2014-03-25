@@ -42,6 +42,21 @@
                     </error>
                 </xsl:if>
             </xsl:for-each>
+            <xsl:for-each select="/spec/types/type/parents/type">
+                <xsl:variable name="type" select="."/>
+                <xsl:if test="/spec[not(types/type/name=$type)]">
+                    <error type="seal" pos="0">
+                        <xsl:attribute name="line">
+                            <xsl:value-of select="$type/../../mentioned/where[position()=1]"/>
+                        </xsl:attribute>
+                        <xsl:text>Parent of type &quot;</xsl:text>
+                        <xsl:value-of select="$type/../../name"/>
+                        <xsl:text>&quot; refers to a non-existing type &quot;</xsl:text>
+                        <xsl:value-of select="$type"/>
+                        <xsl:text>&quot;</xsl:text>
+                    </error>
+                </xsl:if>
+            </xsl:for-each>
         </xsl:copy>
     </xsl:template>
 </xsl:stylesheet>
