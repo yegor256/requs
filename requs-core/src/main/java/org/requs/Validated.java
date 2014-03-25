@@ -29,6 +29,7 @@
  */
 package org.requs;
 
+import com.jcabi.aspects.Immutable;
 import com.jcabi.xml.StrictXML;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XSD;
@@ -40,6 +41,7 @@ import com.jcabi.xml.XSDDocument;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
+@Immutable
 final class Validated implements Spec {
 
     /**

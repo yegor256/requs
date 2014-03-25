@@ -29,8 +29,10 @@
  */
 package org.requs;
 
+import com.jcabi.aspects.Immutable;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
+import java.util.Arrays;
 import org.requs.syntax.AntlrSpec;
 
 /**
@@ -39,6 +41,7 @@ import org.requs.syntax.AntlrSpec;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
+@Immutable
 public interface Spec {
 
     /**
@@ -50,6 +53,7 @@ public interface Spec {
     /**
      * Fixed.
      */
+    @Immutable
     final class Fixed implements Spec {
         /**
          * Encapsulated XML.
@@ -71,6 +75,7 @@ public interface Spec {
     /**
      * All inclusive.
      */
+    @Immutable
     final class Ultimate implements Spec {
         /**
          * Encapsulated Requs source.
@@ -87,10 +92,11 @@ public interface Spec {
         public XML xml() {
             return new Validated(
                 new Built(
-                    new Measured(
+                    new Transformed(
                         new Sealed(
                             new AntlrSpec(this.src)
-                        )
+                        ),
+                        Arrays.asList("metrics.xsl", "seals-check.xsl")
                     )
                 )
             ).xml();

@@ -30,25 +30,53 @@
 package org.requs;
 
 import com.rexsl.test.XhtmlMatchers;
+import java.util.Collections;
+import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
 /**
- * Test case for {@link Measured}.
+ * Test case for {@link Transformed}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-public final class MeasuredTest {
+public final class TransformedTest {
 
     /**
-     * Measured can add metrics.
-     * @throws Exception When necessary
+     * Transformed can add metrics.
      */
     @Test
-    public void addsMetrics() throws Exception {
+    public void addsMetrics() {
         MatcherAssert.assertThat(
-            new Measured(new Spec.Fixed("<spec a='x'/>")).xml(),
+            new Transformed(
+                new Spec.Fixed("<spec a='x'/>"),
+                Collections.singleton("metrics.xsl")
+            ).xml(),
             XhtmlMatchers.hasXPath("/spec[@a]/metrics[ambiguity.overall]")
+        );
+    }
+
+    /**
+     * Transformed can check seals.
+     */
+    @Test
+    public void checksSeals() {
+        MatcherAssert.assertThat(
+            new Transformed(
+                new Spec.Fixed(
+                    StringUtils.join(
+                        "<spec><method seal='a12ef4'><id>UC5</id><attributes>",
+                        "<attribute seal='b89e4e'>invalid</attribute>",
+                        "<attribute seal='a12ef4'>valid</attribute>",
+                        "</attributes></method><errors/></spec>"
+                    )
+                ),
+                Collections.singleton("seals-check.xsl")
+            ).xml(),
+            XhtmlMatchers.hasXPaths(
+                "/spec/errors[count(error)=1]",
+                "/spec/errors/error[contains(.,'a12ef4')]"
+            )
         );
     }
 

@@ -29,24 +29,20 @@
  */
 package org.requs;
 
+import com.jcabi.aspects.Immutable;
+import com.jcabi.immutable.Array;
 import com.jcabi.xml.XML;
-import com.jcabi.xml.XSL;
 import com.jcabi.xml.XSLDocument;
+import java.util.Collection;
 
 /**
- * Measured.
+ * Transformed.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-final class Measured implements Spec {
-
-    /**
-     * XSL.
-     */
-    private static final XSL METRICS = XSLDocument.make(
-        Spec.class.getResource("metrics.xsl")
-    );
+@Immutable
+final class Transformed implements Spec {
 
     /**
      * Original spec.
@@ -54,16 +50,29 @@ final class Measured implements Spec {
     private final transient Spec origin;
 
     /**
+     * List of XSL stylesheets to apply.
+     */
+    private final transient Array<String> sheets;
+
+    /**
      * Public ctor.
      * @param spec Original spec
+     * @param xsls Name of XSL resources
      */
-    Measured(final Spec spec) {
+    Transformed(final Spec spec, final Collection<String> xsls) {
         this.origin = spec;
+        this.sheets = new Array<String>(xsls);
     }
 
     @Override
     public XML xml() {
-        return Measured.METRICS.transform(this.origin.xml());
+        XML xml = this.origin.xml();
+        for (final String sheet : this.sheets) {
+            xml = XSLDocument.make(
+                Transformed.class.getResource(sheet)
+            ).transform(xml);
+        }
+        return xml;
     }
 
 }

@@ -30,6 +30,7 @@
 package org.requs;
 
 import com.rexsl.test.XhtmlMatchers;
+import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
@@ -43,10 +44,10 @@ public final class SpecTest {
 
     /**
      * Spec can parse input text and produce XML.
-     * @throws Exception When necessary
+     * @throws IOException When necessary
      */
     @Test
-    public void parsesInputAndProducesXml() throws Exception {
+    public void parsesInputAndProducesXml() throws IOException {
         MatcherAssert.assertThat(
             new Spec.Ultimate(
                 IOUtils.toString(

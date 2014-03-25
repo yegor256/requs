@@ -29,6 +29,7 @@
  */
 package org.requs;
 
+import com.jcabi.aspects.Immutable;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import java.util.Date;
@@ -44,6 +45,7 @@ import org.xembly.Xembler;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
+@Immutable
 final class Built implements Spec {
 
     /**
