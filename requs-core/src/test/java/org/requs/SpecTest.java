@@ -72,7 +72,10 @@ public final class SpecTest {
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public void parsesAllPossibleErrors() throws Exception {
         final String[] specs = {
+            "\"alpha",
             "User is a",
+            "User needs: a as",
+            "UC1 where",
         };
         for (final String spec : specs) {
             MatcherAssert.assertThat(
