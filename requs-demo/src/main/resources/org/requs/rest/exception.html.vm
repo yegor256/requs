@@ -11,7 +11,7 @@
         <div id="content">
             <p>
                 <a href="http://www.requs.org/">
-                    <img src="http://img.requs.com/logo-384x128.png?${buildNumber}"
+                    <img src="http://img.requs.org/logo-384x128.png?${buildNumber}"
                         style="width:192px;height:64px;"/>
                 </a>
             </p>
