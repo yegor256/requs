@@ -22,7 +22,7 @@
                     .slots { margin-left: 1em; margin-top: 1em; }
                     .method { margin-top: 1em; margin-left: 1em; }
                     .steps { margin-top: 1em; margin-left: 1em }
-                    .informal { color: #; }
+                    .informal { color: #666; }
                     .warning { color: #d9534f; }
                     .label { margin-left: 0.5em; color: white; border-radius: .25em; font-size: 0.85em; padding: .1em .3em .15em; }
                     .attribute { background-color: #999; }
