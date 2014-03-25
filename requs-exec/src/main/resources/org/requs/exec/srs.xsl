@@ -18,13 +18,15 @@
                     a { color: #428bca; text-decoration: none; }
                     a:hover { text-decoration: underline; }
                     .intro { font-size: 0.9em; color: #999; }
-                    .type { margin-top: 2em; }
+                    .type { margin-top: 3em; }
                     .slots { margin-left: 1em; margin-top: 1em; }
                     .method { margin-top: 1em; margin-left: 1em; }
                     .steps { margin-top: 1em; margin-left: 1em }
+                    .step { margin-top: 0.25em; }
                     .exception { margin-left: 1em; margin-top: 1em; margin-bottom: 1em; }
                     .informal { color: #666; }
                     .warning { color: #d9534f; }
+                    .crud { color: #5cb85c; }
                     .label { margin-left: 0.5em; color: white; border-radius: .25em; font-size: 0.85em; padding: .1em .3em .15em; }
                     .attribute { background-color: #999; }
                     .sealed { background-color: #5cb85c; }
@@ -206,7 +208,28 @@
             <xsl:with-param name="name" select="$home/object"/>
         </xsl:call-template>
         <xsl:text> </xsl:text>
-        <xsl:value-of select="$home/signature"/>
+        <xsl:variable name="uc" select="/spec/methods/method[signature=$home/signature]/id"/>
+        <xsl:choose>
+            <xsl:when test="$home/signature='creates' or $home/signature='reads' or $home/signature='updates' or $home/signature='deletes'">
+                <span class="crud">
+                    <xsl:value-of select="$home/signature"/>
+                </span>
+            </xsl:when>
+            <xsl:when test="$uc">
+                <a>
+                    <xsl:attribute name="href">
+                        <xsl:text>#</xsl:text>
+                        <xsl:value-of select="$uc"/>
+                    </xsl:attribute>
+                    <xsl:value-of select="$home/signature"/>
+                </a>
+            </xsl:when>
+            <xsl:otherwise>
+                <span class="warning">
+                    <xsl:value-of select="$home/signature"/>
+                </span>
+            </xsl:otherwise>
+        </xsl:choose>
         <xsl:text> </xsl:text>
         <xsl:if test="$home/result">
             <xsl:call-template name="ref">
