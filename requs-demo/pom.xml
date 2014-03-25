@@ -57,7 +57,7 @@
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -139,7 +139,7 @@
                 <plugin>
                     <artifactId>maven-war-plugin</artifactId>
                     <configuration>
-                        <warSourceExcludes>js/**, css/**, xsl/**</warSourceExcludes>
+                        <warSourceExcludes>css/**, xsl/**</warSourceExcludes>
                         <archive>
                             <manifestEntries>
                                 <requs-Version>${project.version}</requs-Version>

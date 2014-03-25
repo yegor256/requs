@@ -12,9 +12,9 @@
         <html lang="en">
             <head>
                 <meta charset="UTF-8"/>
-                <meta name="description" content="ReXSL-powered web site, demo version"/>
-                <meta name="keywords" content="Java, XSL, JAXB, JAX-RS, ReXSL"/>
-                <meta name="author" content="org.requs requs-demo"/>
+                <meta name="description" content="Requs Demo"/>
+                <meta name="keywords" content="requs"/>
+                <meta name="author" content="www.requs.org"/>
                 <link rel="stylesheet" type="text/css" media="all">
                     <xsl:attribute name="href">
                         <xsl:text>/css/screen.css?</xsl:text>
@@ -30,9 +30,9 @@
             <body>
                 <xsl:apply-templates select="version"/>
                 <p>
-                    <img alt="logo" style="width: 150px;">
+                    <img alt="logo" style="width: 192px; height: 64px;">
                         <xsl:attribute name="src">
-                            <xsl:text>http://img.requs.org/logo.png</xsl:text>
+                            <xsl:text>http://img.requs.org/logo-384x128.png</xsl:text>
                         </xsl:attribute>
                     </img>
                 </p>

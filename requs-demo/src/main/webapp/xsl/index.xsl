@@ -7,7 +7,7 @@
     <xsl:output method="xml" omit-xml-declaration="yes"/>
     <xsl:include href="/xsl/layout.xsl"/>
     <xsl:template name="head">
-        <script type="text/javascript" src="http://code.jquery.com/jquery.min.js">
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js">
             <xsl:text> </xsl:text>
             <!-- this is for W3C compliance -->
         </script>
