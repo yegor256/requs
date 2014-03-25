@@ -49,11 +49,17 @@ $(document).ready(
                         data: { 'text': this.rendered },
                         type: 'POST',
                         dataType: 'text',
+                        beforeSend: function (data) {
+                            $('#arrow').show();
+                        },
                         success: function (data) {
                             $('#output').text(data);
                         },
                         error: function (XMLHttpRequest, textStatus, errorThrown) {
                             $('#output').html(textStatus);
+                        },
+                        complete: function () {
+                            $('#arrow').hide();
                         }
                     }
                 );
