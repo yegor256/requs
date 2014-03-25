@@ -52,6 +52,11 @@
                 </xsl:attribute>
             </img>
         </p>
+        <p>
+            <a href="http://www.requs.org/syntax.html">
+                <xsl:text>syntax explained</xsl:text>
+            </a>
+        </p>
         <table style="width:100%;table-layout:fixed;">
             <thead>
                 <tr>
