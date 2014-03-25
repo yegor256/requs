@@ -105,4 +105,28 @@ public final class TransformedTest {
         );
     }
 
+    /**
+     * Transformed can check signatures.
+     */
+    @Test
+    public void checksSignatures() {
+        MatcherAssert.assertThat(
+            new Transformed(
+                new Spec.Fixed(
+                    StringUtils.join(
+                        "<spec><methods><method><signature>abc</signature>",
+                        "</method><method><steps><step><signature>cde",
+                        "</signature></step></steps></method></methods>",
+                        "<errors/></spec>"
+                    )
+                ),
+                Collections.singleton("signatures-check.xsl")
+            ).xml(),
+            XhtmlMatchers.hasXPaths(
+                "/spec/errors[count(error)=1 ]",
+                "/spec/errors/error[contains(.,'cde')]"
+            )
+        );
+    }
+
 }

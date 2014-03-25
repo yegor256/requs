@@ -98,7 +98,7 @@ public interface Spec {
                         ),
                         Arrays.asList(
                             "metrics.xsl", "seals-check.xsl",
-                            "types-check.xsl"
+                            "types-check.xsl", "signatures-check.xsl"
                         )
                     )
                 )
