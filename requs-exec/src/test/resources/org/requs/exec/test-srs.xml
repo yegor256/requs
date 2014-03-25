@@ -95,6 +95,10 @@
             </mentioned>
             <bindings>
                 <binding>
+                    <name>_self</name>
+                    <type>User</type>
+                </binding>
+                <binding>
                     <name>user</name>
                     <type>User</type>
                 </binding>

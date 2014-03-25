@@ -22,6 +22,7 @@
                     .slots { margin-left: 1em; margin-top: 1em; }
                     .method { margin-top: 1em; margin-left: 1em; }
                     .steps { margin-top: 1em; margin-left: 1em }
+                    .exception { margin-left: 1em; margin-top: 1em; margin-bottom: 1em; }
                     .informal { color: #666; }
                     .warning { color: #d9534f; }
                     .label { margin-left: 0.5em; color: white; border-radius: .25em; font-size: 0.85em; padding: .1em .3em .15em; }
@@ -144,7 +145,7 @@
             </div>
             <div class="steps">
                 <xsl:apply-templates select="info/informal"/>
-                <xsl:apply-templates select="steps/step"/>
+                <xsl:apply-templates select="steps"/>
             </div>
         </div>
     </xsl:template>
@@ -164,16 +165,28 @@
             <xsl:value-of select="."/>
         </span>
     </xsl:template>
-    <xsl:template match="steps/step">
+    <xsl:template match="steps">
+        <div class="steps">
+            <xsl:apply-templates select="step"/>
+        </div>
+    </xsl:template>
+    <xsl:template match="step">
         <div class="step">
-            <div>
-                <xsl:value-of select="number"/>
-                <xsl:text>. </xsl:text>
-                <xsl:call-template name="signature">
-                    <xsl:with-param name="bindings" select="../../bindings"/>
-                    <xsl:with-param name="home" select="."/>
-                </xsl:call-template>
-            </div>
+            <xsl:value-of select="number"/>
+            <xsl:text>. </xsl:text>
+            <xsl:call-template name="signature">
+                <xsl:with-param name="bindings" select="../../bindings"/>
+                <xsl:with-param name="home" select="."/>
+            </xsl:call-template>
+            <xsl:apply-templates select="exceptions/exception"/>
+        </div>
+    </xsl:template>
+    <xsl:template match="exception">
+        <div class="exception">
+            <xsl:text>when &quot;</xsl:text>
+            <xsl:value-of select="when"/>
+            <xsl:text>&quot;:</xsl:text>
+            <xsl:apply-templates select="steps"/>
         </div>
     </xsl:template>
     <xsl:template match="informal">
