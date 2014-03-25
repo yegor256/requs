@@ -96,7 +96,10 @@ public interface Spec {
                         new Sealed(
                             new AntlrSpec(this.src)
                         ),
-                        Arrays.asList("metrics.xsl", "seals-check.xsl")
+                        Arrays.asList(
+                            "metrics.xsl", "seals-check.xsl",
+                            "types-check.xsl"
+                        )
                     )
                 )
             ).xml();

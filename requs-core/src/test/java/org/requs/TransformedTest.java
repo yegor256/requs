@@ -80,4 +80,29 @@ public final class TransformedTest {
         );
     }
 
+    /**
+     * Transformed can check seals.
+     */
+    @Test
+    public void checksTypes() {
+        MatcherAssert.assertThat(
+            new Transformed(
+                new Spec.Fixed(
+                    StringUtils.join(
+                        "<spec><types><type><name>User</name>",
+                        "<slots><slot><type>Alpha</type></slot></slots>",
+                        "</type></types><methods><method><bindings>",
+                        "<binding><type>Beta</type></binding>",
+                        "</bindings></method></methods><errors/></spec>"
+                    )
+                ),
+                Collections.singleton("types-check.xsl")
+            ).xml(),
+            XhtmlMatchers.hasXPaths(
+                "/spec/errors[count(error)=2]",
+                "/spec/errors/error[contains(.,'Alpha')]"
+            )
+        );
+    }
+
 }
