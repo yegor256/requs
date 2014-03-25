@@ -35,7 +35,7 @@ $(document).ready(
     function () {
         'use strict';
         $('#example').keyup(
-            function() {
+            function () {
                 if ((this.rendered !== undefined) && this.rendered === this.value) {
                     return;
                 }
