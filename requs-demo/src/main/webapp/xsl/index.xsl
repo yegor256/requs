@@ -67,9 +67,19 @@
             </thead>
             <tbody>
                 <tr>
-                    <td class="half"><textarea class="box" id="example">start typing...</textarea></td>
-                    <td><span style="color:green;display:none;" id="arrow"><xsl:text>&#x21e2;</xsl:text></span></td>
-                    <td class="half"><pre class="box" id="output">...</pre></td>
+                    <td class="half">
+                        <textarea class="box" id="example">
+                            <xsl:text>User is "a human being".</xsl:text>
+                        </textarea>
+                    </td>
+                    <td>
+                        <span style="color:green;display:none;" id="arrow">
+                            <xsl:text>&#x21e2;</xsl:text>
+                        </span>
+                    </td>
+                    <td class="half">
+                        <pre class="box" id="output">...</pre>
+                    </td>
                 </tr>
             </tbody>
         </table>
