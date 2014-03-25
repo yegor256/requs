@@ -7,7 +7,7 @@
             <xsl:apply-templates select="@*|node()"/>
             <metrics>
                 <ambiguity.overall>
-                    <xsl:variable name="crud" select="count(//signature[.='create' or .='read' or .='update' or .='delete'])"/>
+                    <xsl:variable name="crud" select="count(//signature[.='creates' or .='reads' or .='updates' or .='deletes'])"/>
                     <xsl:variable name="informal" select="count(//signature[starts-with(.,'&quot;')])"/>
                     <xsl:variable name="total" select="$crud + $informal"/>
                     <xsl:choose>
