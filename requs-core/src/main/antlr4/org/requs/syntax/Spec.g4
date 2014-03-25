@@ -142,6 +142,7 @@ method_declaration
     UC_ID
     { Method method = this.onto.method($UC_ID.text); }
     { method.mention(_input.LT(1).getLine()); }
+    { method.binding(Flow.SUD, "SuD"); }
     WHERE
     self=class_name
     { Type type = this.onto.type($self.text); }
@@ -150,9 +151,10 @@ method_declaration
     {
         final String self;
         if ($slf.ctx == null) {
-            self = "_self";
+            self = Flow.SELF;
         } else {
             self = $slf.ret;
+            method.binding(Flow.SELF, $self.ret);
         }
         method.binding(self, $self.ret);
         method.object(self);
@@ -276,7 +278,7 @@ step [Flow flow]
             { step.object($variable.ret); }
             |
             SUD
-            { step.object("_sud"); }
+            { step.object(Flow.SUD); }
         )
         step_sig=signature
         { step.sign($step_sig.ret); }
@@ -289,11 +291,11 @@ step [Flow flow]
         'Fail'
         'since'
         ex_informal=signature
-        { step.object("_sud"); }
+        { step.object(Flow.SUD); }
         { step.sign($ex_informal.ret); }
         |
         step_informal=signature
-        { step.object("_sud"); }
+        { step.object(Flow.SUD); }
         { step.sign($step_informal.ret); }
     )
     ;

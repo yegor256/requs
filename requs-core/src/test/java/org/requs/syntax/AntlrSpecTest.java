@@ -33,6 +33,7 @@ import com.rexsl.test.XhtmlMatchers;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
+import org.requs.ontology.Flow;
 
 /**
  * Test case for {@link AntlrSpec}.
@@ -85,16 +86,24 @@ public final class AntlrSpecTest {
                     )
                 ).xml().node()
             ),
-            XhtmlMatchers.hasXPath(
+            XhtmlMatchers.hasXPaths(
                 "/spec/errors[not(error)]",
-                "/spec/types[count(type)=3]",
+                "/spec/types[count(type)=2]",
                 "/spec/types/type[name='User']",
-                "//type[name='User']/slots/slot[name='photo' and arity='ANY']",
-                "//type[name='User']/slots/slot[name='SSN' and arity='OPT']",
                 "/spec/types/type[name='Fraction']",
-                "//type[name='Fraction']/info[informal='math calculator']",
+                "//type[name='Fraction']/slots/slot[name='numerator']",
+                "//type[name='Fraction']/slots/slot[name='denominator']",
+                "//type[name='Fraction']/info[informal='a math calculator']",
                 "/spec[count(//method)=1]",
-                "//method[id='UC1']/attributes[attribute='must']"
+                "//method[id='UC1']/attributes[attribute='must']",
+                String.format(
+                    "//method[id='UC1']/bindings/binding[name='%s']",
+                    Flow.SELF
+                ),
+                String.format(
+                    "//method[id='UC1']/bindings/binding[ name='%s']",
+                    Flow.SUD
+                )
             )
         );
     }

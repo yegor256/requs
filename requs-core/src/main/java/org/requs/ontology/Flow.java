@@ -39,6 +39,16 @@ package org.requs.ontology;
 public interface Flow extends Informal {
 
     /**
+     * SELF binding.
+     */
+    String SELF = "_self";
+
+    /**
+     * SUD binding.
+     */
+    String SUD = "_sud";
+
+    /**
      * Get its step by number.
      * @param number Number of the step
      * @return Step
