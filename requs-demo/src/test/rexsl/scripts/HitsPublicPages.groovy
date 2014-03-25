@@ -41,6 +41,7 @@ import com.jcabi.http.response.RestResponse
 ].each {
     new JdkRequest(rexsl.home)
         .uri().path(it).back()
+        .header('accept', 'text/plain')
         .fetch()
         .as(RestResponse)
         .assertStatus(HttpURLConnection.HTTP_OK)

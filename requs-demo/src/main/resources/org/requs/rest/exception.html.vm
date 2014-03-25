@@ -5,13 +5,14 @@
         <link href="/css/screen.css?${buildNumber}"
             rel="stylesheet" type="text/css"></link>
         <link rel="icon" type="image/gif"
-            href="http://img.rexsl.com/favicon.gif?${buildNumber}"/>
+            href="http://img.requs.org/favicon.gif?${buildNumber}"/>
     </head>
     <body>
         <div id="content">
             <p>
-                <a href="http://www.rexsl.com/">
-                    <img src="http://img.rexsl.com/logo.png?${buildNumber}"/>
+                <a href="http://www.requs.org/">
+                    <img src="http://img.requs.com/logo-384x128.png?${buildNumber}"
+                        style="width:192px;height:64px;"/>
                 </a>
             </p>
             <p>
@@ -19,7 +20,7 @@
                     Internal application error (${buildNumber}).
                 </b>
             </p>
-            <pre style="display:none;">${text}</pre>
+            <pre>${text}</pre>
         </div>
     </body>
 </html>
