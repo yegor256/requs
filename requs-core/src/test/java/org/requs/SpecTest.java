@@ -33,6 +33,7 @@ import com.rexsl.test.XhtmlMatchers;
 import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -69,6 +70,7 @@ public final class SpecTest {
      * @throws Exception When necessary
      */
     @Test
+    @Ignore
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public void parsesAllPossibleErrors() throws Exception {
         final String[] specs = {
