@@ -26,10 +26,12 @@ You need to add this plugin to your `pom.xml`:
 </build>
 ```
 
-Then add requs files to `src/main/requs` and name them as `main.req`, etc.
+Then add Requs files to `src/main/requs` and name them as `main.req`, etc.
 
 Then just run `mvn clean site` and you will see
 a report at `target/site/requs`.
+
+Requg syntax explained [here](http://www.requs.org/syntax.html).
 
 ## Questions?
 
