@@ -31,6 +31,7 @@ package org.requs.rest;
 
 import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -58,7 +59,7 @@ public final class InstantRs extends BaseRs {
     @Path("/")
     @Produces(MediaType.APPLICATION_XML)
     @Loggable(Loggable.INFO)
-    public String post(@FormParam("text") final String text) {
+    public String post(@NotNull @FormParam("text") final String text) {
         String xml;
         try {
             xml = new Spec.Ultimate(text).xml().toString();

@@ -29,7 +29,6 @@
  */
 package org.requs.rest;
 
-import com.rexsl.page.JaxbBundle;
 import com.rexsl.page.PageBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -58,7 +57,6 @@ public final class IndexRs extends BaseRs {
             .stylesheet("/xsl/index.xsl")
             .build(DemoPage.class)
             .init(this)
-            .append(new JaxbBundle("message", "Hello, world!"))
             .render()
             .build();
     }
