@@ -29,15 +29,19 @@
  */
 package org.requs.maven;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
 import com.jcabi.log.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Locale;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.CharEncoding;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkFactory;
 import org.apache.maven.doxia.siterenderer.Renderer;
@@ -144,26 +148,32 @@ public final class ReportMojo extends AbstractMavenReport {
         }
         snk.section1();
         snk.sectionTitle1();
-        snk.text("Requs Reports");
+        snk.text("Requs Facets");
         snk.sectionTitle1_();
         snk.table();
         snk.tableRow();
         snk.tableHeaderCell();
-        snk.text("Report");
+        snk.text("Facet");
+        snk.tableHeaderCell_();
+        snk.tableHeaderCell();
+        snk.text("Description");
         snk.tableHeaderCell_();
         snk.tableRow_();
-        for (final String report : this.reports(home)) {
+        for (final String[] facet : this.facets(home)) {
             snk.tableRow();
             snk.tableCell();
             snk.link(
                 String.format(
-                    "%s/%s.xml",
+                    "%s/%s",
                     this.getOutputName(),
-                    report
+                    facet[0]
                 )
             );
-            snk.text(report);
+            snk.text(facet[1]);
             snk.link_();
+            snk.tableCell_();
+            snk.tableCell();
+            snk.text(facet[2]);
             snk.tableCell_();
             snk.tableRow_();
         }
@@ -179,19 +189,41 @@ public final class ReportMojo extends AbstractMavenReport {
     }
 
     /**
-     * All reports.
+     * All facets.
      * @param dir Where to save them
-     * @return Names of reports
+     * @return Names of facets (id, name, description)
      * @throws MavenReportException If fails
      */
-    private Collection<String> reports(final File dir)
+    private Collection<String[]> facets(final File dir)
         throws MavenReportException {
         try {
             new Compiler(this.source, dir).compile();
+            return Collections2.transform(
+                Collections2.filter(
+                    Collections2.transform(
+                        FileUtils.readLines(
+                            new File(dir, "facets.csv"),
+                            CharEncoding.UTF_8
+                        ),
+                        new Function<String, String>() {
+                            @Override
+                            public String apply(final String input) {
+                                return input.trim();
+                            }
+                        }
+                    ),
+                    Predicates.not(Predicates.equalTo(""))
+                ),
+                new Function<String, String[]>() {
+                    @Override
+                    public String[] apply(final String input) {
+                        return input.split(",");
+                    }
+                }
+            );
         } catch (final IOException ex) {
             throw new MavenReportException("failed to compile", ex);
         }
-        return Collections.singleton("srs");
     }
 
 }

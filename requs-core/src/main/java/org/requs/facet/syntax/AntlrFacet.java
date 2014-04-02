@@ -44,6 +44,7 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.TokenStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
+import org.requs.Doc;
 import org.requs.Docs;
 import org.requs.Facet;
 import org.requs.facet.syntax.ontology.XeOntology;
@@ -72,9 +73,9 @@ public final class AntlrFacet implements Facet {
 
     @Override
     public void touch(final Docs docs) throws IOException {
-        docs.get("main.xml").write(
-            this.compile(docs.get("input.req").read()).toString()
-        );
+        final Doc main = docs.get("main.xml");
+        main.write(this.compile(docs.get("input.req").read()).toString());
+        main.name("SRS", "SRS Main Document");
         // @checkstyle MultipleStringLiteralsCheck (1 line)
         docs.get("main.xsl").write(
             IOUtils.toString(

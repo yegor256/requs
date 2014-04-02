@@ -106,7 +106,7 @@ public final class Compiler {
         final Docs docs = new Docs.InDir(new File(this.output));
         for (final Facet facet : facets) {
             facet.touch(docs);
-            Logger.info(this, "%s: done", facet);
+            Logger.info(this, "%s done", facet);
         }
         Logger.info(this, "compiled and saved to %s", this.output);
     }

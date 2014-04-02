@@ -70,7 +70,19 @@ public interface Docs {
         public Doc get(final String name) throws IOException {
             final File file = new File(this.dir, name);
             FileUtils.touch(file);
+            // @checkstyle AnonInnerLengthCheck (50 lines)
             return new Doc() {
+                @Override
+                public void name(final String label, final String desc)
+                    throws IOException {
+                    final Doc csv = Docs.InDir.this.get("facets.csv");
+                    csv.write(
+                        String.format(
+                            "%s\n%s,%s,%s",
+                            csv.read(), name, label, desc
+                        )
+                    );
+                }
                 @Override
                 public String read() throws IOException {
                     return FileUtils.readFileToString(file, CharEncoding.UTF_8);

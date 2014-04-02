@@ -43,6 +43,14 @@ import java.io.IOException;
 public interface Doc {
 
     /**
+     * Give it a name and a description.
+     * @param label Name of the document
+     * @param desc Description
+     * @throws IOException If fails
+     */
+    void name(String label, String desc) throws IOException;
+
+    /**
      * Read its content.
      * @return Content read
      * @throws IOException If fails
