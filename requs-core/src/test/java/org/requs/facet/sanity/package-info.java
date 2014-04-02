@@ -27,60 +27,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.requs;
-
-import java.io.File;
-import java.io.IOException;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.CharEncoding;
 
 /**
- * Docs.
+ * Sanity facets, tests.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.2
  */
-public interface Docs {
-
-    /**
-     * Get one doc.
-     * @param name Name of the document
-     * @return Doc
-     * @throws IOException If fails
-     */
-    Doc get(String name) throws IOException;
-
-    /**
-     * In directory.
-     */
-    final class InDir implements Docs {
-        /**
-         * Directory to keep files in.
-         */
-        private final transient File dir;
-        /**
-         * Ctor.
-         * @param path Directory path
-         */
-        public InDir(final File path) {
-            this.dir = path;
-        }
-        @Override
-        public Doc get(final String name) throws IOException {
-            final File file = new File(this.dir, name);
-            FileUtils.touch(file);
-            return new Doc() {
-                @Override
-                public String read() throws IOException {
-                    return FileUtils.readFileToString(file, CharEncoding.UTF_8);
-                }
-                @Override
-                public void write(final String content) throws IOException {
-                    FileUtils.write(file, content, CharEncoding.UTF_8);
-                }
-            };
-        }
-    }
-
-}
+package org.requs.facet.sanity;

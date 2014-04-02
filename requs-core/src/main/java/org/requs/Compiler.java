@@ -101,7 +101,7 @@ public final class Compiler {
             new Transform("ambiguity/metrics.xsl"),
             new Transform("sanity/signatures-check.xsl"),
             new Transform("sanity/types-check.xsl"),
-            new Transform("sanity/seals-check.xsl")
+            new Transform("sanity/seals-check.xsl"),
         };
         final Docs docs = new Docs.InDir(new File(this.output));
         for (final Facet facet : facets) {
@@ -109,6 +109,5 @@ public final class Compiler {
         }
         Logger.info(this, "compiled and saved to %s", this.output);
     }
-
 
 }

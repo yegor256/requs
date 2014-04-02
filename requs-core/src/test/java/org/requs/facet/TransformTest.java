@@ -49,6 +49,7 @@ public final class TransformTest {
 
     /**
      * Transform can check seals.
+     * @throws IOException If fails
      */
     @Test
     public void checksSeals() throws IOException {
@@ -71,6 +72,7 @@ public final class TransformTest {
 
     /**
      * Transform can check seals.
+     * @throws IOException If fails
      */
     @Test
     public void checksTypes() throws IOException {
@@ -94,6 +96,7 @@ public final class TransformTest {
 
     /**
      * Transform can check signatures.
+     * @throws IOException If fails
      */
     @Test
     public void checksSignatures() throws IOException {

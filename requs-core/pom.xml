@@ -54,7 +54,7 @@
         </dependency>
         <dependency>
             <groupId>com.jcabi</groupId>
-            <artifactId>jcabi-immutable</artifactId>
+            <artifactId>jcabi-log</artifactId>
         </dependency>
         <dependency>
             <groupId>com.jcabi</groupId>

@@ -69,6 +69,7 @@ public final class AntlrFacet implements Facet {
         docs.get("main.xml").write(
             this.compile(docs.get("input.req").read()).toString()
         );
+        // @checkstyle MultipleStringLiteralsCheck (1 line)
         docs.get("main.xsl").write(
             IOUtils.toString(
                 this.getClass().getResourceAsStream("main.xsl"),
