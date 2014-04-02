@@ -128,7 +128,7 @@ public final class MainTest {
         final File input = this.temp.newFolder();
         final File output = this.temp.newFolder();
         FileUtils.write(
-            new File(input, "main.req"),
+            new File(input, "employee.req"),
             "Employee is a \"user of the system\"."
         );
         Main.main(
@@ -143,7 +143,7 @@ public final class MainTest {
         );
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(
-                FileUtils.readFileToString(new File(output, "srs.xml"))
+                FileUtils.readFileToString(new File(output, "main.xml"))
             ),
             XhtmlMatchers.hasXPaths("/spec/types/type[name='Employee']")
         );
