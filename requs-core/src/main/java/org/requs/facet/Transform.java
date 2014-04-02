@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<!--
+/**
  * Copyright (c) 2009-2014, requs.org
  * All rights reserved.
  *
@@ -27,27 +26,62 @@
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
- -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.requs</groupId>
-    <artifactId>requs-test</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <name>broken-facet</name>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.requs</groupId>
-                <artifactId>requs-maven-plugin</artifactId>
-                <version>@project.version@</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-</project>
+ */
+package org.requs.facet;
+
+import com.jcabi.aspects.Immutable;
+import com.jcabi.xml.XMLDocument;
+import com.jcabi.xml.XSLDocument;
+import java.io.IOException;
+import org.requs.Doc;
+import org.requs.Docs;
+import org.requs.Facet;
+
+/**
+ * Transform.
+ *
+ * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @version $Id$
+ */
+@Immutable
+public final class Transform implements Facet {
+
+    /**
+     * Name of the document.
+     */
+    private final transient String name;
+
+    /**
+     * XSL sheet to apply.
+     */
+    private final transient String sheet;
+
+    /**
+     * Public ctor.
+     * @param xsl Name of XSL resource
+     */
+    public Transform(final String xsl) {
+        this("main.xml", xsl);
+    }
+
+    /**
+     * Public ctor.
+     * @param doc Name of the name
+     * @param xsl Name of XSL resource
+     */
+    public Transform(final String doc, final String xsl) {
+        this.name = doc;
+        this.sheet = xsl;
+    }
+
+    @Override
+    public void touch(final Docs docs) throws IOException {
+        final Doc doc = docs.get(this.name);
+        doc.write(
+            XSLDocument.make(
+                Transform.class.getResource(this.sheet)
+            ).transform(new XMLDocument(doc.read())).toString()
+        );
+    }
+
+}

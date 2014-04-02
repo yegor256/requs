@@ -27,62 +27,80 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.requs.exec;
+package org.requs.facet.syntax.ontology;
 
-import com.jcabi.manifests.Manifests;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
-import org.apache.commons.io.IOUtils;
+import com.jcabi.aspects.Loggable;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.xembly.Directives;
 
 /**
- * Entry point of the JAR.
+ * Xembly type.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @checkstyle MultipleStringLiteralsCheck (500 lines)
  * @since 1.1
  */
-public final class Main {
+@ToString
+@EqualsAndHashCode(of = { "dirs", "start" })
+@Loggable(Loggable.DEBUG)
+final class XeType implements Type {
 
     /**
-     * Private ctor, to avoid instantiation of this class.
+     * All directives.
      */
-    private Main() {
-        // intentionally empty
-    }
+    private final transient Directives dirs;
 
     /**
-     * Entry point of the entire JAR.
-     * @param args List of command-line arguments
-     * @throws IOException If something goes wrong inside
+     * Starting XPath.
      */
-    public static void main(final String[] args) throws IOException {
-        final OptionParser parser = new OptionParser("h*vi:o:");
-        final PrintStream out = System.out;
-        parser.posixlyCorrect(true);
-        final OptionSet options = parser.parse(args);
-        if (options.has("v")) {
-            IOUtils.write(
-                String.format(
-                    "%s/%s",
-                    Manifests.read("Requs-Version"),
-                    Manifests.read("Requs-Revision")
-                ),
-                out
-            );
-        } else if (options.has("i") && options.has("o")) {
-            new org.requs.Compiler(
-                new File(options.valueOf("i").toString()),
-                new File(options.valueOf("o").toString())
-            ).compile();
-        } else {
-            out.println("Usage: java -jar requs-exec.jar [options]");
-            out.println("where options include:\n");
-            parser.printHelpOn(out);
-        }
+    private final transient String start;
+
+    /**
+     * Mentioned helper.
+     */
+    private final transient Mentioned mentioned;
+
+    /**
+     * Informal helper.
+     */
+    private final transient Informal informal;
+
+    /**
+     * Ctor.
+     * @param directives Directives to extend
+     * @param xpath XPath to start with
+     */
+    XeType(final Directives directives, final String xpath) {
+        this.mentioned = new XeMentioned(directives, xpath);
+        this.informal = new XeInformal(directives, xpath);
+        this.dirs = directives;
+        this.start = xpath;
     }
 
+    @Override
+    public void parent(final String type) {
+        this.dirs.xpath(this.start).strict(1)
+            .addIf("parents").add("type").set(type);
+    }
+
+    @Override
+    public Slot slot(final String name) {
+        this.dirs.xpath(this.start).strict(1)
+            .addIf("slots").add("slot").add("name").set(name);
+        return new XeSlot(
+            this.dirs,
+            String.format("%s/slots/slot[name='%s']", this.start, name)
+        );
+    }
+
+    @Override
+    public void explain(final String info) {
+        this.informal.explain(info);
+    }
+
+    @Override
+    public void mention(final int where) {
+        this.mentioned.mention(where);
+    }
 }

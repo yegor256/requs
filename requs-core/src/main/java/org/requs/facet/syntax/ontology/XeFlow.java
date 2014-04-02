@@ -27,62 +27,73 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.requs.exec;
+package org.requs.facet.syntax.ontology;
 
-import com.jcabi.manifests.Manifests;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
-import org.apache.commons.io.IOUtils;
+import com.jcabi.aspects.Loggable;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.xembly.Directives;
 
 /**
- * Entry point of the JAR.
+ * Xembly use case.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @checkstyle MultipleStringLiteralsCheck (500 lines)
  * @since 1.1
  */
-public final class Main {
+@ToString
+@EqualsAndHashCode(of = { "dirs", "start" })
+@Loggable(Loggable.DEBUG)
+final class XeFlow implements Flow {
 
     /**
-     * Private ctor, to avoid instantiation of this class.
+     * All directives.
      */
-    private Main() {
-        // intentionally empty
+    private final transient Directives dirs;
+
+    /**
+     * Starting XPath.
+     */
+    private final transient String start;
+
+    /**
+     * Informal helper.
+     */
+    private final transient Informal informal;
+
+    /**
+     * Ctor.
+     * @param directives Directives to extend
+     * @param xpath XPath to start with
+     */
+    XeFlow(final Directives directives, final String xpath) {
+        this.informal = new XeInformal(directives, xpath);
+        this.dirs = directives;
+        this.start = xpath;
     }
 
-    /**
-     * Entry point of the entire JAR.
-     * @param args List of command-line arguments
-     * @throws IOException If something goes wrong inside
-     */
-    public static void main(final String[] args) throws IOException {
-        final OptionParser parser = new OptionParser("h*vi:o:");
-        final PrintStream out = System.out;
-        parser.posixlyCorrect(true);
-        final OptionSet options = parser.parse(args);
-        if (options.has("v")) {
-            IOUtils.write(
-                String.format(
-                    "%s/%s",
-                    Manifests.read("Requs-Version"),
-                    Manifests.read("Requs-Revision")
-                ),
-                out
-            );
-        } else if (options.has("i") && options.has("o")) {
-            new org.requs.Compiler(
-                new File(options.valueOf("i").toString()),
-                new File(options.valueOf("o").toString())
-            ).compile();
-        } else {
-            out.println("Usage: java -jar requs-exec.jar [options]");
-            out.println("where options include:\n");
-            parser.printHelpOn(out);
-        }
+    @Override
+    public Step step(final int number) {
+        this.dirs.xpath(this.start).strict(1).addIf("steps")
+            .xpath(this.start)
+            .xpath(String.format("steps[not(step/number=%d)]", number))
+            .add("step").add("number").set(Integer.toString(number));
+        return new XeStep(
+            this.dirs,
+            String.format("%s/steps/step[number=%d]", this.start, number)
+        );
+    }
+
+    @Override
+    public void binding(final String name, final String type) {
+        this.dirs.xpath(this.start).strict(1).addIf("bindings").add("binding")
+            .add("name").set(name).up()
+            .add("type").set(type).up().up();
+    }
+
+    @Override
+    public void explain(final String info) {
+        this.informal.explain(info);
     }
 
 }

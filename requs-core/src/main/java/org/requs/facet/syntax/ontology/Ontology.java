@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<!--
+/**
  * Copyright (c) 2009-2014, requs.org
  * All rights reserved.
  *
@@ -27,27 +26,39 @@
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
- -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.requs</groupId>
-    <artifactId>requs-test</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <name>broken-facet</name>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.requs</groupId>
-                <artifactId>requs-maven-plugin</artifactId>
-                <version>@project.version@</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-</project>
+ */
+package org.requs.facet.syntax.ontology;
+
+/**
+ * Ontology.
+ *
+ * <p>The ontology is write-only. This is how you're supposed to use it:
+ *
+ * <pre>
+ * Ontology onto = // make it
+ * Type type = onto.type("Employee");
+ * type.mention("3-5");
+ * type.explain("a person working in a Company");
+ * </pre>
+ *
+ * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @version $Id$
+ * @since 1.1
+ */
+public interface Ontology {
+
+    /**
+     * Found new type.
+     * @param name Name of it
+     * @return Type
+     */
+    Type type(String name);
+
+    /**
+     * Find method.
+     * @param name Name of it
+     * @return Method
+     */
+    Method method(String name);
+
+}

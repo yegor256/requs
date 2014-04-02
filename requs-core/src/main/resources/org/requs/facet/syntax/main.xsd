@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:xsl="http://www.w3.org/2001/XMLSchema">
+    <xs:complexType name="requs">
+        <xs:all>
+            <xs:element name="version" type="xs:string"/>
+            <xs:element name="revision" type="xs:string"/>
+            <xs:element name="date" type="xs:string"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="metrics">
+        <xs:all>
+            <xs:element name="ambiguity.overall" type="xs:float"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="info">
+        <xs:sequence>
+            <xs:element name="informal" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="mentioned">
+        <xs:sequence>
+            <xs:element name="where" type="xs:integer" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="slot">
+        <xs:all>
+            <xs:element name="name" type="object"/>
+            <xs:element name="type" type="class" minOccurs="0"/>
+            <xs:element name="arity" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="ANY"/>
+                        <xs:enumeration value="MANY"/>
+                        <xs:enumeration value="OPT"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="mentioned" type="mentioned"/>
+            <xs:element name="info" type="info" minOccurs="0"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:simpleType name="uc">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="class">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="object">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="arguments">
+        <xs:sequence>
+            <xs:element name="arg" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="step">
+        <xs:all>
+            <xs:element name="number" type="xs:integer"/>
+            <xs:element name="object" type="object"/>
+            <xs:element name="signature" type="xs:string"/>
+            <xs:element name="mentioned" type="mentioned"/>
+            <xs:element name="result" type="object" minOccurs="0"/>
+            <xs:element name="info" type="info" minOccurs="0"/>
+            <xs:element name="args" type="arguments" minOccurs="0"/>
+            <xs:element name="exceptions" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="exception" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                                <xs:all>
+                                    <xs:element name="when" type="xs:string"/>
+                                    <xs:element name="steps" type="steps" minOccurs="0">
+                                        <xs:unique name="uniqueStep">
+                                            <xs:selector xpath="./step" />
+                                            <xs:field xpath="number" />
+                                        </xs:unique>
+                                    </xs:element>
+                                </xs:all>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="steps">
+        <xs:sequence>
+            <xs:element name="step" type="step" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="method">
+        <xs:all>
+            <xs:element name="mentioned" type="mentioned"/>
+            <xs:element name="id" type="uc"/>
+            <xs:element name="object" type="object"/>
+            <xs:element name="signature" type="xs:string"/>
+            <xs:element name="result" type="object" minOccurs="0"/>
+            <xs:element name="args" type="arguments" minOccurs="0"/>
+            <xs:element name="info" type="info" minOccurs="0"/>
+            <xs:element name="steps" type="steps" minOccurs="0">
+                <xs:unique name="uniqueStepNumber">
+                    <xs:selector xpath="./step" />
+                    <xs:field xpath="number" />
+                </xs:unique>
+            </xs:element>
+            <xs:element name="bindings" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="binding" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:all>
+                                    <xs:element name="name" type="object"/>
+                                    <xs:element name="type" type="class"/>
+                                </xs:all>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="attributes" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="attribute" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:string">
+                                        <xs:attribute name="seal" type="xs:string"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+        <xs:attribute name="seal" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="[a-f0-9]{6}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="type">
+        <xs:all>
+            <xs:element name="mentioned" type="mentioned"/>
+            <xs:element name="name" type="class"/>
+            <xs:element name="info" type="info" minOccurs="0"/>
+            <xs:element name="slots" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="slot" type="slot" maxOccurs="unbounded" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+                <xs:unique name="uniqueSlotName">
+                    <xs:selector xpath="./slot" />
+                    <xs:field xpath="name" />
+                </xs:unique>
+            </xs:element>
+            <xs:element name="parents" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="type" type="class" maxOccurs="unbounded" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+    <xs:element name="spec">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="requs" type="requs"/>
+                <xs:element name="errors">
+                    <xs:complexType>
+                        <xs:sequence maxOccurs="unbounded">
+                            <xs:element name="error" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:string">
+                                            <xs:attribute name="type" type="xs:string"/>
+                                            <xs:attribute name="line" type="xs:integer"/>
+                                            <xs:attribute name="pos" type="xs:integer"/>
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="types" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence maxOccurs="unbounded">
+                            <xs:element name="type" type="type" minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="methods" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="method" type="method" maxOccurs="unbounded" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:all>
+            <xsl:attribute name="time" use="required" type="xs:dateTime"/>
+        </xs:complexType>
+        <xs:unique name="uniqueMethodId">
+            <xs:selector xpath="./methods/method" />
+            <xs:field xpath="id" />
+        </xs:unique>
+        <xs:unique name="uniqueTypeName">
+            <xs:selector xpath="./types/type" />
+            <xs:field xpath="name" />
+        </xs:unique>
+        <xs:unique name="uniqueMethodSignature">
+            <xs:selector xpath="./methods/method" />
+            <xs:field xpath="signature" />
+        </xs:unique>
+    </xs:element>
+</xs:schema>

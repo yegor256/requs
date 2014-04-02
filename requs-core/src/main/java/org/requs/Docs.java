@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<!--
+/**
  * Copyright (c) 2009-2014, requs.org
  * All rights reserved.
  *
@@ -27,27 +26,54 @@
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
- -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.requs</groupId>
-    <artifactId>requs-test</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <name>broken-facet</name>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.requs</groupId>
-                <artifactId>requs-maven-plugin</artifactId>
-                <version>@project.version@</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-</project>
+ */
+package org.requs;
+
+import java.io.File;
+import java.io.IOException;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.CharEncoding;
+
+/**
+ * Docs.
+ *
+ * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @version $Id$
+ * @since 1.2
+ */
+public interface Docs {
+
+    /**
+     * Get one doc.
+     * @param name Name of the document
+     * @return Doc
+     * @throws IOException If fails
+     */
+    Doc get(String name) throws IOException;
+
+    /**
+     * In directory.
+     */
+    final class InDir implements Docs {
+        private final transient File dir;
+        public InDir(final File path) {
+            this.dir = path;
+        }
+        @Override
+        public Doc get(final String name) throws IOException {
+            final File file = new File(this.dir, name);
+            FileUtils.touch(file);
+            return new Doc() {
+                @Override
+                public String read() throws IOException {
+                    return FileUtils.readFileToString(file, CharEncoding.UTF_8);
+                }
+                @Override
+                public void write(final String content) throws IOException {
+                    FileUtils.write(file, content, CharEncoding.UTF_8);
+                }
+            };
+        }
+    }
+
+}

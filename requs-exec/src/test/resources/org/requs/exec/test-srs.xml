@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?xml-stylesheet href="../../../../../main/resources/org/requs/exec/srs.xsl" type="text/xsl"?>
-<spec>
+<facet>
     <requs>
         <version>2.0-SNAPSHOT</version>
         <revision>26172a6</revision>
@@ -264,4 +264,4 @@
         <duration>878</duration>
         <time>2014-03-24T17:00:15</time>
     </build>
-</spec>
+</facet>

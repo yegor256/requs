@@ -37,7 +37,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.requs.Spec;
+import org.requs.Facet;
 
 /**
  * Instant syntax parser.
@@ -62,7 +62,7 @@ public final class InstantRs extends BaseRs {
     public String post(@NotNull @FormParam("text") final String text) {
         String xml;
         try {
-            xml = new Spec.Ultimate(text).xml().toString();
+            xml = new Facet.Ultimate(text).xml().toString();
         } catch (final IllegalArgumentException ex) {
             xml = Logger.format("%[exception]s", ex);
         }

@@ -47,7 +47,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
-import org.requs.exec.Compiler;
+import org.requs.Compiler;
 import org.slf4j.impl.StaticLoggerBinder;
 
 /**
@@ -107,7 +107,7 @@ public final class ReportMojo extends AbstractMavenReport {
 
     @Override
     public String getDescription(final Locale locale) {
-        return "Requs Spec";
+        return "Requs Facet";
     }
 
     @Override
