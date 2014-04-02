@@ -37,10 +37,10 @@ MatcherAssert.assertThat(
     log.text,
     Matchers.containsString('3 requs error(s)')
 )
-def xml = new File(basedir, 'target/requs/srs.xml')
+def xml = new File(basedir, 'target/requs/main.xml')
 if (!xml.exists()) {
     throw new IllegalStateException(
-        'XML was not generated at ' + xmi
+        'XML was not generated at ' + xml
     )
 }
 MatcherAssert.assertThat(

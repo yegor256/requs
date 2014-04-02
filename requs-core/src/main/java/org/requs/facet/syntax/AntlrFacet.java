@@ -29,12 +29,15 @@
  */
 package org.requs.facet.syntax;
 
+import com.jcabi.aspects.Immutable;
 import com.jcabi.xml.StrictXML;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import com.jcabi.xml.XSD;
 import com.jcabi.xml.XSDDocument;
 import java.io.IOException;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
@@ -55,6 +58,9 @@ import org.xembly.Xembler;
  * @version $Id$
  * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  */
+@Immutable
+@ToString(of = { })
+@EqualsAndHashCode
 public final class AntlrFacet implements Facet {
 
     /**

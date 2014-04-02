@@ -31,6 +31,8 @@ package org.requs.facet.decor;
 
 import com.jcabi.aspects.Immutable;
 import java.io.IOException;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.requs.Docs;
 import org.requs.Facet;
 
@@ -42,6 +44,8 @@ import org.requs.Facet;
  * @since 1.2
  */
 @Immutable
+@ToString(of = { })
+@EqualsAndHashCode
 public final class Scaffolding implements Facet {
 
     @Override

@@ -47,7 +47,7 @@
     <dependencies>
         <dependency>
             <groupId>org.requs</groupId>
-            <artifactId>requs-exec</artifactId>
+            <artifactId>requs-core</artifactId>
             <version>${project.version}</version>
             <exclusions>
                 <exclusion>

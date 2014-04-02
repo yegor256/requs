@@ -33,6 +33,8 @@ import com.jcabi.aspects.Immutable;
 import com.jcabi.xml.XMLDocument;
 import com.jcabi.xml.XSLDocument;
 import java.io.IOException;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.requs.Doc;
 import org.requs.Docs;
 import org.requs.Facet;
@@ -44,6 +46,8 @@ import org.requs.Facet;
  * @version $Id$
  */
 @Immutable
+@ToString(includeFieldNames = false)
+@EqualsAndHashCode(of = { "name", "sheet" })
 public final class Transform implements Facet {
 
     /**

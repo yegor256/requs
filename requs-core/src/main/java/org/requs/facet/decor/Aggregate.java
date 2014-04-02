@@ -34,6 +34,8 @@ import com.jcabi.log.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.CharEncoding;
 import org.requs.Docs;
@@ -47,6 +49,8 @@ import org.requs.Facet;
  * @since 1.2
  */
 @Immutable
+@ToString(of = { })
+@EqualsAndHashCode(of = "dir")
 public final class Aggregate implements Facet {
 
     /**

@@ -111,17 +111,17 @@ public final class ReportMojo extends AbstractMavenReport {
     }
 
     @Override
-    protected Renderer getSiteRenderer() {
+    public Renderer getSiteRenderer() {
         return this.renderer;
     }
 
     @Override
-    protected String getOutputDirectory() {
+    public String getOutputDirectory() {
         return this.output.getAbsolutePath();
     }
 
     @Override
-    protected MavenProject getProject() {
+    public MavenProject getProject() {
         return this.project;
     }
 
