@@ -142,7 +142,6 @@ method_declaration
     UC_ID
     { Method method = this.onto.method($UC_ID.text); }
     { method.mention(_input.LT(1).getLine()); }
-    { method.binding(Flow.SUD, "SuD"); }
     WHERE
     self=class_name
     { Type type = this.onto.type($self.text); }
@@ -272,14 +271,9 @@ step [Flow flow]
     { Step step = flow.step(Integer.parseInt($FLOW_ID.text)); }
     { step.mention(_input.LT(1).getLine()); }
     (
-        (
-            THE
-            variable
-            { step.object($variable.ret); }
-            |
-            SUD
-            { step.object(Flow.SUD); }
-        )
+        THE
+        variable
+        { step.object($variable.ret); }
         step_sig=signature
         { step.sign($step_sig.ret); }
         (
@@ -288,14 +282,14 @@ step [Flow flow]
         )?
         using[flow, step]?
         |
-        'Fail'
-        'since'
+        FAIL
+        SINCE
         ex_informal=signature
-        { step.object(Flow.SUD); }
+        { step.object(Flow.SELF); }
         { step.sign($ex_informal.ret); }
         |
         step_informal=signature
-        { step.object(Flow.SUD); }
+        { step.object(Flow.SELF); }
         { step.sign($step_informal.ret); }
     )
     ;
@@ -358,10 +352,11 @@ COLON: ':';
 SEMICOLON: ';';
 DOT: '.';
 COMMA: ',';
-SUD: 'SuD' | 'We' | 'we';
 USING: ( 'using' | 'of' | 'with' );
 A: ( 'a' | 'an' );
 THE: ( 'the' | 'The' );
+FAIL: ( 'Fail' | 'fail' );
+SINCE: 'since';
 AS: 'as';
 IS: 'is';
 WHEN: 'when';

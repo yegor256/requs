@@ -34,14 +34,14 @@
                 </style>
             </head>
             <body>
-                <xsl:apply-templates select="facet"/>
+                <xsl:apply-templates select="spec"/>
             </body>
         </html>
     </xsl:template>
-    <xsl:template match="facet">
+    <xsl:template match="spec">
         <p class="intro">
             <xsl:text>This document was built on </xsl:text>
-            <xsl:value-of select="build/time"/>
+            <xsl:value-of select="@time"/>
             <xsl:text> by </xsl:text>
             <a href="http://www.requs.org">
                 <xsl:text>Requs</xsl:text>
@@ -50,18 +50,9 @@
             <xsl:value-of select="requs/version"/>
             <xsl:text>/</xsl:text>
             <xsl:value-of select="requs/revision"/>
-            <xsl:text> in </xsl:text>
-            <xsl:value-of select="build/duration"/>
-            <xsl:text>msec.</xsl:text>
+            <xsl:text>.</xsl:text>
         </p>
-        <xsl:apply-templates select="metrics"/>
         <xsl:apply-templates select="types/type"/>
-    </xsl:template>
-    <xsl:template match="metrics">
-        <p>
-            <xsl:text>Ambiguity: </xsl:text>
-            <xsl:value-of select="ambiguity.overall"/>
-        </p>
     </xsl:template>
     <xsl:template match="types/type">
         <div class="type">
@@ -95,7 +86,7 @@
                     <xsl:text>.</xsl:text>
                 </xsl:otherwise>
             </xsl:choose>
-            <xsl:apply-templates select="/facet/methods/method[bindings/binding[name='_self' and type=current()/name]]"/>
+            <xsl:apply-templates select="/spec/methods/method[bindings/binding[name='_self' and type=current()/name]]"/>
         </div>
     </xsl:template>
     <xsl:template match="slot">
@@ -208,7 +199,7 @@
             <xsl:with-param name="name" select="$home/object"/>
         </xsl:call-template>
         <xsl:text> </xsl:text>
-        <xsl:variable name="uc" select="/facet/methods/method[signature=$home/signature]/id"/>
+        <xsl:variable name="uc" select="/spec/methods/method[signature=$home/signature]/id"/>
         <xsl:choose>
             <xsl:when test="$home/signature='creates' or $home/signature='reads' or $home/signature='updates' or $home/signature='deletes'">
                 <span class="crud">

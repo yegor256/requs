@@ -112,10 +112,6 @@ public final class AntlrFacetTest {
                 String.format(
                     "//method[id='UC1']/bindings/binding[name='%s']",
                     Flow.SELF
-                ),
-                String.format(
-                    "//method[id='UC1']/bindings/binding[ name='%s']",
-                    Flow.SUD
                 )
             )
         );
@@ -146,6 +142,7 @@ public final class AntlrFacetTest {
     public void parsesAllPossibleErrors() throws Exception {
         final String[] specs = {
             "\"alpha",
+            "BrokenA is a 'file'.",
             "User is a",
             "User needs: a as",
             "UC1 where",

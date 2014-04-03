@@ -27,34 +27,30 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.requs.facet.syntax.ontology;
+package org.requs.facet.uc;
+
+import com.jcabi.aspects.Immutable;
+import java.io.IOException;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.requs.Docs;
+import org.requs.Facet;
 
 /**
- * Flow.
+ * Main use case in UML.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @since 1.1
+ * @since 1.2
  */
-public interface Flow extends Informal {
+@Immutable
+@ToString(of = { })
+@EqualsAndHashCode
+public final class MainUML implements Facet {
 
-    /**
-     * SELF binding.
-     */
-    String SELF = "_self";
-
-    /**
-     * Get its step by number.
-     * @param number Number of the step
-     * @return Step
-     */
-    Step step(int number);
-
-    /**
-     * Declare a binding used in the method.
-     * @param name Unique name of it
-     * @param type Type of it
-     */
-    void binding(String name, String type);
+    @Override
+    public void touch(final Docs docs) throws IOException {
+        // to do
+    }
 
 }
