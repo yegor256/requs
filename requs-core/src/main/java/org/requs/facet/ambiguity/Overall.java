@@ -73,8 +73,15 @@ public final class Overall implements Facet {
         } else {
             overall = (double) informal / (double) total;
         }
-        final Directives dirs = new Directives().add("metrics")
-            .add("metric").attr("id", "overall").set(Double.toString(overall));
+        final Directives dirs = new Directives()
+            .xpath("/")
+            .pi(
+                "xml-stylesheet",
+                "href='ambiguity.xsl' type='text/xsl'"
+            )
+            .add("metrics")
+            .add("metric")
+            .attr("id", "overall").set(Double.toString(overall));
         final Doc index = docs.get("ambiguity.xml");
         try {
             index.write(new Xembler(dirs).xml());

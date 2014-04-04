@@ -79,7 +79,13 @@ public final class MdMethods implements Facet {
         final XML pages = MdMethods.SHEET.transform(
             new XMLDocument(docs.get("main.xml").read())
         );
-        final Directives dirs = new Directives().add("pages").add("methods");
+        final Directives dirs = new Directives()
+            .xpath("/")
+            .pi(
+                "xml-stylesheet",
+                "href='markdown.xsl' type='text/xsl'"
+            )
+            .add("pages").add("methods");
         for (final XML method : pages.nodes("/pages/methods/method")) {
             final Matcher matcher = MdMethods.PTN.matcher(
                 method.nodes("text").get(0).toString()
