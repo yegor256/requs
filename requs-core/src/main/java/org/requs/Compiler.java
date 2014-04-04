@@ -40,6 +40,7 @@ import lombok.ToString;
 import org.requs.facet.Transform;
 import org.requs.facet.decor.Aggregate;
 import org.requs.facet.decor.Scaffolding;
+import org.requs.facet.markdown.MdMethods;
 import org.requs.facet.syntax.AntlrFacet;
 
 /**
@@ -102,6 +103,7 @@ public final class Compiler {
             new Transform("sanity/signatures-check.xsl"),
             new Transform("sanity/types-check.xsl"),
             new Transform("sanity/seals-check.xsl"),
+            new MdMethods(),
         };
         final Docs docs = new Docs.InDir(new File(this.output));
         for (final Facet facet : facets) {
