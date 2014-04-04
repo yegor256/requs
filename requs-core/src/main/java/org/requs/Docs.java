@@ -85,9 +85,8 @@ public interface Docs {
                     try {
                         new Xembler(
                             new Directives().xpath("/index").addIf("facets")
-                                .add("facet")
+                                .add("facet").attr("id", label)
                                 .add("file").set(name).up()
-                                .add("name").set(label).up()
                                 .add("description").set(desc)
                         ).apply(node);
                     } catch (final ImpossibleModificationException ex) {

@@ -165,7 +165,7 @@ public final class ReportMojo extends AbstractMavenReport {
                     facet.xpath("file/text()").get(0)
                 )
             );
-            snk.text(facet.xpath("name/text()").get(0));
+            snk.text(facet.xpath("@id").get(0));
             snk.link_();
             snk.tableCell_();
             snk.tableCell();
