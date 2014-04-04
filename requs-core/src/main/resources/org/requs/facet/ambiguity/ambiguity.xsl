@@ -25,6 +25,7 @@
         </html>
     </xsl:template>
     <xsl:template match="metrics">
+        <h1><xsl:text>Ambiguity Metrics</xsl:text></h1>
         <ul>
             <xsl:apply-templates select="metric"/>
         </ul>
