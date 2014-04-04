@@ -29,10 +29,15 @@
  */
 package org.requs;
 
+import com.jcabi.xml.XMLDocument;
 import java.io.File;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.CharEncoding;
+import org.w3c.dom.Node;
+import org.xembly.Directives;
+import org.xembly.ImpossibleModificationException;
+import org.xembly.Xembler;
 
 /**
  * Docs.
@@ -75,13 +80,20 @@ public interface Docs {
                 @Override
                 public void name(final String label, final String desc)
                     throws IOException {
-                    final Doc csv = Docs.InDir.this.get("facets.csv");
-                    csv.write(
-                        String.format(
-                            "%s\n%s,%s,%s",
-                            csv.read(), name, label, desc
-                        )
-                    );
+                    final Doc index = Docs.InDir.this.get("index.xml");
+                    final Node node = new XMLDocument(index.read()).node();
+                    try {
+                        new Xembler(
+                            new Directives().xpath("/index").addIf("facets")
+                                .add("facet")
+                                .add("file").set(name).up()
+                                .add("name").set(label).up()
+                                .add("description").set(desc)
+                        ).apply(node);
+                    } catch (final ImpossibleModificationException ex) {
+                        throw new IllegalStateException(ex);
+                    }
+                    index.write(new XMLDocument(node).toString());
                 }
                 @Override
                 public String read() throws IOException {

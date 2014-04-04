@@ -164,6 +164,7 @@ public final class AntlrFacetTest {
     private Source parse(final String input) throws IOException {
         final Docs docs = new Docs.InDir(this.temp.newFolder());
         docs.get("input.req").write(input);
+        docs.get("index.xml").write("<index/>");
         new AntlrFacet().touch(docs);
         return XhtmlMatchers.xhtml(docs.get("main.xml").read());
     }

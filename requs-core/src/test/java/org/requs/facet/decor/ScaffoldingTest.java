@@ -29,56 +29,40 @@
  */
 package org.requs.facet.decor;
 
-import com.jcabi.aspects.Immutable;
-import java.io.IOException;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.CharEncoding;
-import org.requs.Doc;
+import com.rexsl.test.XhtmlMatchers;
+import org.hamcrest.MatcherAssert;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.requs.Docs;
-import org.requs.Facet;
-import org.xembly.Directives;
-import org.xembly.ImpossibleModificationException;
-import org.xembly.Xembler;
 
 /**
- * Scaffolding.
- *
+ * Test case for {@link Scaffolding}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.2
  */
-@Immutable
-@ToString(of = { })
-@EqualsAndHashCode
-public final class Scaffolding implements Facet {
+public final class ScaffoldingTest {
 
-    @Override
-    public void touch(final Docs docs) throws IOException {
-        final Doc index = docs.get("index.xml");
-        try {
-            index.write(
-                new Xembler(
-                    new Directives()
-                        .xpath("/")
-                        .pi(
-                            "xml-stylesheet",
-                            "href='index.xsl' type='text/xsl'"
-                        )
-                        .add("index")
-                ).xml()
-            );
-        } catch (final ImpossibleModificationException ex) {
-            throw new IllegalStateException(ex);
-        }
-        index.name("Index", "List of all facets");
-        // @checkstyle MultipleStringLiteralsCheck (1 line)
-        docs.get("index.xsl").write(
-            IOUtils.toString(
-                this.getClass().getResourceAsStream("index.xsl"),
-                CharEncoding.UTF_8
-            )
+    /**
+     * Temporary folder.
+     * @checkstyle VisibilityModifier (3 lines)
+     */
+    @Rule
+    public transient TemporaryFolder temp = new TemporaryFolder();
+
+    /**
+     * Scaffolding can create an index file.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void createsIndexFile() throws Exception {
+        final Docs docs = new Docs.InDir(this.temp.newFolder());
+        new Scaffolding().touch(docs);
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(docs.get("index.xml").read()),
+            XhtmlMatchers.hasXPaths("/index")
         );
     }
+
 }

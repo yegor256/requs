@@ -60,6 +60,7 @@ public final class MdMethodsTest {
     @Test
     public void generatesMarkdownForMethods() throws IOException {
         final Docs docs = new Docs.InDir(this.temp.newFolder());
+        docs.get("index.xml").write("<index/>");
         docs.get("main.xml").write(
             IOUtils.toString(
                 this.getClass().getResourceAsStream("example.xml")
@@ -75,7 +76,6 @@ public final class MdMethodsTest {
                 "/pages/methods/method[@id and .='md/methods/UC1.md']"
             )
         );
-        System.out.println(docs.get("md/methods/UC5.md").read());
         MatcherAssert.assertThat(
             docs.get("md/methods/UC5.md").read(),
             Matchers.containsString("UC5")

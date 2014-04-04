@@ -29,19 +29,15 @@
  */
 package org.requs.maven;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 import com.jcabi.log.Logger;
+import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Locale;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.CharEncoding;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkFactory;
 import org.apache.maven.doxia.siterenderer.Renderer;
@@ -159,21 +155,21 @@ public final class ReportMojo extends AbstractMavenReport {
         snk.text("Description");
         snk.tableHeaderCell_();
         snk.tableRow_();
-        for (final String[] facet : this.facets(home)) {
+        for (final XML facet : this.facets(home)) {
             snk.tableRow();
             snk.tableCell();
             snk.link(
                 String.format(
                     "%s/%s",
                     this.getOutputName(),
-                    facet[0]
+                    facet.xpath("file/text()").get(0)
                 )
             );
-            snk.text(facet[1]);
+            snk.text(facet.xpath("name/text()").get(0));
             snk.link_();
             snk.tableCell_();
             snk.tableCell();
-            snk.text(facet[2]);
+            snk.text(facet.xpath("description/text()").get(0));
             snk.tableCell_();
             snk.tableRow_();
         }
@@ -194,33 +190,12 @@ public final class ReportMojo extends AbstractMavenReport {
      * @return Names of facets (id, name, description)
      * @throws MavenReportException If fails
      */
-    private Collection<String[]> facets(final File dir)
+    private Iterable<XML> facets(final File dir)
         throws MavenReportException {
         try {
             new Compiler(this.source, dir).compile();
-            return Collections2.transform(
-                Collections2.filter(
-                    Collections2.transform(
-                        FileUtils.readLines(
-                            new File(dir, "facets.csv"),
-                            CharEncoding.UTF_8
-                        ),
-                        new Function<String, String>() {
-                            @Override
-                            public String apply(final String input) {
-                                return input.trim();
-                            }
-                        }
-                    ),
-                    Predicates.not(Predicates.equalTo(""))
-                ),
-                new Function<String, String[]>() {
-                    @Override
-                    public String[] apply(final String input) {
-                        return input.split(",");
-                    }
-                }
-            );
+            return new XMLDocument(new File(dir, "index.xml"))
+                .nodes("/index/facets/facet");
         } catch (final IOException ex) {
             throw new MavenReportException("failed to compile", ex);
         }

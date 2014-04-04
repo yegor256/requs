@@ -39,6 +39,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.requs.Doc;
 import org.requs.Docs;
 import org.requs.Facet;
 import org.xembly.Directives;
@@ -78,24 +79,24 @@ public final class MdMethods implements Facet {
         );
         final Directives dirs = new Directives().add("pages").add("methods");
         for (final XML method : pages.nodes("/pages/methods/method")) {
-            final String name = method.xpath("id/text()").get(0);
-            final String path = String.format("md/methods/%s.md", name);
             final Matcher matcher = MdMethods.PTN.matcher(
                 method.nodes("md").get(0).toString()
             );
             if (!matcher.matches()) {
                 throw new IllegalStateException("internal trouble");
             }
+            final String name = method.xpath("id/text()").get(0);
+            final String path = String.format("md/methods/%s.md", name);
             docs.get(path).write(matcher.group(1));
             dirs.add("method").attr("id", name).set(path).up();
         }
+        final Doc index = docs.get("markdown.xml");
         try {
-            docs.get("markdown.xml").write(
-                new Xembler(dirs).xml()
-            );
+            index.write(new Xembler(dirs).xml());
         } catch (final ImpossibleModificationException ex) {
             throw new IllegalStateException(ex);
         }
+        index.name("Markdown", "Use Cases and Entities in Markdown");
     }
 
 }
