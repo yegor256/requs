@@ -38,6 +38,7 @@ import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.requs.facet.Transform;
+import org.requs.facet.ambiguity.Overall;
 import org.requs.facet.decor.Aggregate;
 import org.requs.facet.decor.Scaffolding;
 import org.requs.facet.markdown.MdMethods;
@@ -99,11 +100,11 @@ public final class Compiler {
             new Scaffolding(),
             new Aggregate(new File(this.input)),
             new AntlrFacet(),
-            new Transform("ambiguity/metrics.xsl"),
             new Transform("sanity/signatures-check.xsl"),
             new Transform("sanity/types-check.xsl"),
             new Transform("sanity/seals-check.xsl"),
             new MdMethods(),
+            new Overall(),
         };
         final Docs docs = new Docs.InDir(new File(this.output));
         for (final Facet facet : facets) {
