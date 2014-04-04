@@ -131,9 +131,11 @@
                     <xsl:with-param name="home" select="."/>
                 </xsl:call-template>
                 <xsl:text>:</xsl:text>
-                <span class="label seal">
-                    <xsl:value-of select="@seal"/>
-                </span>
+                <xsl:if test="@seal">
+                    <span class="label seal">
+                        <xsl:value-of select="@seal"/>
+                    </span>
+                </xsl:if>
                 <xsl:apply-templates select="attributes/attribute"/>
             </div>
             <div class="steps">
