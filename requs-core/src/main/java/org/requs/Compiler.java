@@ -42,6 +42,7 @@ import org.requs.facet.ambiguity.Overall;
 import org.requs.facet.decor.Aggregate;
 import org.requs.facet.decor.Scaffolding;
 import org.requs.facet.markdown.MdMethods;
+import org.requs.facet.sanity.Sealed;
 import org.requs.facet.syntax.AntlrFacet;
 
 /**
@@ -100,6 +101,7 @@ public final class Compiler {
             new Scaffolding(),
             new Aggregate(new File(this.input)),
             new AntlrFacet(),
+            new Sealed(),
             new Transform("sanity/signatures-check.xsl"),
             new Transform("sanity/types-check.xsl"),
             new Transform("sanity/seals-check.xsl"),
