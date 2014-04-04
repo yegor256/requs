@@ -25,7 +25,7 @@
                 </script>
             </head>
             <body>
-                <xsl:apply-templates select="methods"/>
+                <xsl:apply-templates select="pages/methods"/>
             </body>
         </html>
     </xsl:template>

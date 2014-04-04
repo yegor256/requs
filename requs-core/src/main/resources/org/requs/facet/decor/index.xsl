@@ -20,7 +20,7 @@
                 </style>
             </head>
             <body>
-                <xsl:apply-templates select="facets"/>
+                <xsl:apply-templates select="index/facets"/>
             </body>
         </html>
     </xsl:template>

@@ -29,6 +29,8 @@
  */
 package org.requs.facet.markdown;
 
+import com.jcabi.xml.XMLDocument;
+import com.jcabi.xml.XSLDocument;
 import com.rexsl.test.XhtmlMatchers;
 import java.io.IOException;
 import org.apache.commons.io.IOUtils;
@@ -79,6 +81,30 @@ public final class MdMethodsTest {
         MatcherAssert.assertThat(
             docs.get("md/methods/UC5.md").read(),
             Matchers.containsString("UC5")
+        );
+    }
+
+    /**
+     * MdMethods can render XML into XHTML.
+     * @throws IOException If fails
+     */
+    @Test
+    public void rendersXhtml() throws IOException {
+        final Docs docs = new Docs.InDir(this.temp.newFolder());
+        docs.get("index.xml").write("<index/>");
+        docs.get("main.xml").write(
+            IOUtils.toString(
+                this.getClass().getResourceAsStream("example.xml")
+            )
+        );
+        new MdMethods().touch(docs);
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(
+                XSLDocument.make(
+                    this.getClass().getResourceAsStream("markdown.xsl")
+                ).transform(new XMLDocument(docs.get("markdown.xml").read()))
+            ),
+            XhtmlMatchers.hasXPaths("//xhtml:ul")
         );
     }
 

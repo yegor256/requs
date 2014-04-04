@@ -29,6 +29,8 @@
  */
 package org.requs.facet.decor;
 
+import com.jcabi.xml.XMLDocument;
+import com.jcabi.xml.XSLDocument;
 import com.rexsl.test.XhtmlMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.Rule;
@@ -62,6 +64,24 @@ public final class ScaffoldingTest {
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(docs.get("index.xml").read()),
             XhtmlMatchers.hasXPaths("/index")
+        );
+    }
+
+    /**
+     * Scaffolding can build a renderable XML+XSL.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void rendersXslt() throws Exception {
+        final Docs docs = new Docs.InDir(this.temp.newFolder());
+        new Scaffolding().touch(docs);
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(
+                XSLDocument.make(
+                    this.getClass().getResourceAsStream("index.xsl")
+                ).transform(new XMLDocument(docs.get("index.xml").read()))
+            ),
+            XhtmlMatchers.hasXPaths("//xhtml:table")
         );
     }
 
