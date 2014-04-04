@@ -48,10 +48,10 @@
                             <td>
                                 <xsl:for-each select="bindings/binding[name!='_self']">
                                     <xsl:if test="position() != 1">
-                                        <br/>
+                                        <xsl:text>; </xsl:text>
                                     </xsl:if>
                                     <code><xsl:value-of select="name"/></code>
-                                    <xsl:text>: </xsl:text>
+                                    <xsl:text> as </xsl:text>
                                     <xsl:value-of select="type"/>
                                 </xsl:for-each>
                             </td>
