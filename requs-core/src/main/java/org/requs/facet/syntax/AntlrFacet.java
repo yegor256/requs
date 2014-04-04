@@ -75,7 +75,7 @@ public final class AntlrFacet implements Facet {
     public void touch(final Docs docs) throws IOException {
         final Doc main = docs.get("main.xml");
         main.write(this.compile(docs.get("input.req").read()).toString());
-        main.name("SRS", "SRS Main Document");
+        main.name("srs", "Software Requirements Specification, Main Document");
         // @checkstyle MultipleStringLiteralsCheck (1 line)
         docs.get("main.xsl").write(
             IOUtils.toString(

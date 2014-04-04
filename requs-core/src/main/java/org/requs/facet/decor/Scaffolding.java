@@ -72,7 +72,7 @@ public final class Scaffolding implements Facet {
         } catch (final ImpossibleModificationException ex) {
             throw new IllegalStateException(ex);
         }
-        index.name("Index", "List of all facets");
+        index.name("toc", "Table of Contents, List of all facets");
         // @checkstyle MultipleStringLiteralsCheck (1 line)
         docs.get("index.xsl").write(
             IOUtils.toString(

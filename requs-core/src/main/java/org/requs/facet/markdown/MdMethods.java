@@ -71,7 +71,7 @@ public final class MdMethods implements Facet {
      * Pattern to match markdown node.
      */
     private static final Pattern PTN = Pattern.compile(
-        "<md>(.*)</md>", Pattern.DOTALL | Pattern.MULTILINE
+        "<text>(.*)</text>", Pattern.DOTALL | Pattern.MULTILINE
     );
 
     @Override
@@ -82,7 +82,7 @@ public final class MdMethods implements Facet {
         final Directives dirs = new Directives().add("pages").add("methods");
         for (final XML method : pages.nodes("/pages/methods/method")) {
             final Matcher matcher = MdMethods.PTN.matcher(
-                method.nodes("md").get(0).toString()
+                method.nodes("text").get(0).toString()
             );
             if (!matcher.matches()) {
                 throw new IllegalStateException("internal trouble");
@@ -98,7 +98,7 @@ public final class MdMethods implements Facet {
         } catch (final ImpossibleModificationException ex) {
             throw new IllegalStateException(ex);
         }
-        index.name("Markdown", "Use Cases and Entities in Markdown");
+        index.name("md", "Use Cases and Entities in Markdown");
         // @checkstyle MultipleStringLiteralsCheck (1 line)
         docs.get("markdown.xsl").write(
             IOUtils.toString(

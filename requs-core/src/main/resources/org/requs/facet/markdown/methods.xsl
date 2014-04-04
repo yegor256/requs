@@ -15,7 +15,7 @@
     <xsl:template match="method">
         <xsl:copy>
             <id><xsl:value-of select="id"/></id>
-            <md>
+            <text>
                 <xsl:text>The following table describes all technical details of Use Case `</xsl:text>
                 <xsl:value-of select="id"/>
                 <xsl:text>`:&#10;&#10;</xsl:text>
@@ -100,7 +100,7 @@
                         </xsl:for-each>
                     </tbody>
                 </table>
-            </md>
+            </text>
         </xsl:copy>
     </xsl:template>
     <xsl:template match="steps">
