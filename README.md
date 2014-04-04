@@ -17,7 +17,7 @@ You need to add this plugin to your `pom.xml`:
           <plugin>
             <groupId>org.requs</groupId>
             <artifactId>requs-maven-plugin</artifactId>
-            <version>1.1</version>
+            <version>1.2</version>
           </plugin>
         </reportPlugins>
       </configuration>
