@@ -78,7 +78,7 @@ public final class XeOntology implements Ontology, Iterable<Directive> {
     public Method method(final String name) {
         this.dirs.xpath("/spec").strict(1).addIf("methods")
             .xpath(String.format("/spec/methods[not(method/id='%s') ]", name))
-            .add("method").attr("seal", "ffffff").add("id").set(name);
+            .add("method").add("id").set(name);
         return new XeMethod(
             this.dirs,
             String.format("/spec/methods/method[id='%s']", name)

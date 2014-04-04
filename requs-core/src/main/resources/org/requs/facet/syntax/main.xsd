@@ -131,7 +131,7 @@
                             <xs:complexType>
                                 <xs:simpleContent>
                                     <xs:extension base="xs:string">
-                                        <xs:attribute name="seal" type="xs:string"/>
+                                        <xs:attribute name="seal" type="xs:string" use="optional"/>
                                     </xs:extension>
                                 </xs:simpleContent>
                             </xs:complexType>
@@ -140,7 +140,7 @@
                 </xs:complexType>
             </xs:element>
         </xs:all>
-        <xs:attribute name="seal" use="required">
+        <xs:attribute name="seal" use="optional">
             <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:pattern value="[a-f0-9]{6}" />
