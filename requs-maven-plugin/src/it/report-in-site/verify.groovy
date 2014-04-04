@@ -34,7 +34,7 @@ if (!index.exists()) {
         'Index was not generated at ' + index
     )
 }
-if (!index.text.contains('SRS')) {
+if (!index.text.contains('srs')) {
     throw new IllegalStateException(
         'SRS is not in the index ' + index
     )
