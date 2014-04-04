@@ -39,6 +39,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.CharEncoding;
 import org.requs.Doc;
 import org.requs.Docs;
 import org.requs.Facet;
@@ -97,6 +99,13 @@ public final class MdMethods implements Facet {
             throw new IllegalStateException(ex);
         }
         index.name("Markdown", "Use Cases and Entities in Markdown");
+        // @checkstyle MultipleStringLiteralsCheck (1 line)
+        docs.get("markdown.xsl").write(
+            IOUtils.toString(
+                this.getClass().getResourceAsStream("markdown.xsl"),
+                CharEncoding.UTF_8
+            )
+        );
     }
 
 }
