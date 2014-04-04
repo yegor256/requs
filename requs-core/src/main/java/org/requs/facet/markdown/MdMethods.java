@@ -96,7 +96,10 @@ public final class MdMethods implements Facet {
             final String name = method.xpath("id/text()").get(0);
             final String path = String.format("md/methods/%s.md", name);
             docs.get(path).write(matcher.group(1));
-            dirs.add("method").attr("id", name).set(path).up();
+            dirs.add("method")
+                .attr("id", name)
+                .attr("file", path)
+                .set(matcher.group(1)).up();
         }
         final Doc index = docs.get("markdown.xml");
         try {

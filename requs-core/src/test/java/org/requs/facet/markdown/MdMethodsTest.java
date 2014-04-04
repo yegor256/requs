@@ -73,7 +73,7 @@ public final class MdMethodsTest {
             ),
             XhtmlMatchers.hasXPaths(
                 "/pages/methods[count(method)=8]",
-                "/pages/methods/method[@id and .='md/methods/UC1.md']"
+                "/pages/methods/method[@id and @file='md/methods/UC1.md']"
             )
         );
         MatcherAssert.assertThat(
