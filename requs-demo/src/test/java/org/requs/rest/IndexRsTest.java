@@ -62,7 +62,7 @@ public final class IndexRsTest {
             JaxbConverter.the(response.getEntity()),
             XhtmlMatchers.hasXPaths(
                 "/page/millis",
-                "/page/version[contains(name,'-SNAPSHOT')]"
+                "/page/version/name"
             )
         );
     }
