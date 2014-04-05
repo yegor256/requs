@@ -40,6 +40,7 @@ import org.hamcrest.MatcherAssert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.phandom.Phandom;
 
 /**
  * Test case for {@link org.requs.Compiler}.
@@ -79,14 +80,16 @@ public final class CompilerTest {
         );
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(
-                new XSLDocument(
-                    FileUtils.readFileToString(
-                        new File(output, "main.xsl"),
-                        CharEncoding.UTF_8
-                    )
-                ).transform(srs)
+                new Phandom(
+                    new XSLDocument(
+                        FileUtils.readFileToString(
+                            new File(output, "main.xsl"),
+                            CharEncoding.UTF_8
+                        )
+                    ).transform(srs).nodes("/*").get(0).toString()
+                ).dom()
             ),
-            XhtmlMatchers.hasXPath("/xhtml:html/xhtml:body")
+            XhtmlMatchers.hasXPath("//p")
         );
     }
 

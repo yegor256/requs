@@ -45,6 +45,7 @@ import org.requs.Docs;
  * Test case for {@link MdMethods}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
 public final class MdMethodsTest {
 
@@ -87,6 +88,11 @@ public final class MdMethodsTest {
     /**
      * MdMethods can render XML into XHTML.
      * @throws IOException If fails
+     * @todo #18 The test doesn't use Phandom, but it should. For some
+     *  strange reason Phandom doesn't work. It is getting only a part
+     *  of HTML from phantomjs. Needs further investigation. To remove
+     *  this puzzle wrap the "html" variable in "new Phandom(html).dom()",
+     *  in the latest MatcherAssert.
      */
     @Test
     public void rendersXhtml() throws IOException {
@@ -98,13 +104,13 @@ public final class MdMethodsTest {
             )
         );
         new MdMethods().touch(docs);
+        final String html = XSLDocument
+            .make(this.getClass().getResourceAsStream("markdown.xsl"))
+            .transform(new XMLDocument(docs.get("markdown.xml").read()))
+            .nodes("/*").get(0).toString();
         MatcherAssert.assertThat(
-            XhtmlMatchers.xhtml(
-                XSLDocument.make(
-                    this.getClass().getResourceAsStream("markdown.xsl")
-                ).transform(new XMLDocument(docs.get("markdown.xml").read()))
-            ),
-            XhtmlMatchers.hasXPaths("//xhtml:ul")
+            XhtmlMatchers.xhtml(html),
+            XhtmlMatchers.hasXPaths("//xhtml:h1[.='UC8']")
         );
     }
 

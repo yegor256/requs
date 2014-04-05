@@ -36,6 +36,7 @@ import org.hamcrest.MatcherAssert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.phandom.Phandom;
 import org.requs.Docs;
 
 /**
@@ -43,6 +44,7 @@ import org.requs.Docs;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.2
+ * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
 public final class ScaffoldingTest {
 
@@ -75,13 +77,13 @@ public final class ScaffoldingTest {
     public void rendersXslt() throws Exception {
         final Docs docs = new Docs.InDir(this.temp.newFolder());
         new Scaffolding().touch(docs);
+        final String html = XSLDocument
+            .make(this.getClass().getResourceAsStream("index.xsl"))
+            .transform(new XMLDocument(docs.get("index.xml").read()))
+            .nodes("/*").get(0).toString();
         MatcherAssert.assertThat(
-            XhtmlMatchers.xhtml(
-                XSLDocument.make(
-                    this.getClass().getResourceAsStream("index.xsl")
-                ).transform(new XMLDocument(docs.get("index.xml").read()))
-            ),
-            XhtmlMatchers.hasXPaths("//xhtml:table")
+            XhtmlMatchers.xhtml(new Phandom(html).dom()),
+            XhtmlMatchers.hasXPaths("//table")
         );
     }
 

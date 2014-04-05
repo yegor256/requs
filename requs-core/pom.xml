@@ -96,6 +96,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.jcabi.incubator</groupId>
+            <artifactId>phandom</artifactId>
+            <version>0.2.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>net.sourceforge.saxon</groupId>
             <artifactId>saxon</artifactId>
         </dependency>
