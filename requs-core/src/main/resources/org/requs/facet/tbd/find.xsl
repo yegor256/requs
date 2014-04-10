@@ -8,7 +8,7 @@
     <xsl:strip-space elements="*" />
     <xsl:template match="/">
         <xsl:processing-instruction name="xml-stylesheet">
-            <xsl:text>href="/tbds.xsl" type="text/xsl"</xsl:text>
+            <xsl:text>href="tbds.xsl" type="text/xsl"</xsl:text>
         </xsl:processing-instruction>
         <xsl:apply-templates select="spec/methods"/>
     </xsl:template>

@@ -80,5 +80,12 @@ public final class Scaffolding implements Facet {
                 CharEncoding.UTF_8
             )
         );
+        // @checkstyle MultipleStringLiteralsCheck (1 line)
+        docs.get("requs.css").write(
+            IOUtils.toString(
+                this.getClass().getResourceAsStream("requs.css"),
+                CharEncoding.UTF_8
+            )
+        );
     }
 }
