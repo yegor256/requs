@@ -25,6 +25,7 @@
         </html>
     </xsl:template>
     <xsl:template match="facets">
+        <h1>Facets</h1>
         <table>
             <thead>
                 <tr>
@@ -44,7 +45,7 @@
                     <xsl:attribute name="href">
                         <xsl:value-of select="file"/>
                     </xsl:attribute>
-                    <xsl:value-of select="name"/>
+                    <xsl:value-of select="@id"/>
                 </a>
             </td>
             <td><xsl:value-of select="description"/></td>
