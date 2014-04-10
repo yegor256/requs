@@ -3,16 +3,14 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:digest="org.apache.commons.codec.digest.DigestUtils"
     xmlns:r="http://www.requs.org/" version="2.0"
-    exclude-result-prefixes="xs r">
+    exclude-result-prefixes="xs r digest">
     <xsl:output method="xml"/>
     <xsl:strip-space elements="*" />
     <xsl:template match="/">
-        <xsl:if test="not(/processing-instruction('xml-stylesheet'))">
-            <xsl:processing-instruction name="xml-stylesheet">
-                <xsl:text>href="/tbds.xsl" type="text/xsl"</xsl:text>
-            </xsl:processing-instruction>
-        </xsl:if>
-        <xsl:apply-templates select="/spec/methods"/>
+        <xsl:processing-instruction name="xml-stylesheet">
+            <xsl:text>href="/tbds.xsl" type="text/xsl"</xsl:text>
+        </xsl:processing-instruction>
+        <xsl:apply-templates select="spec/methods"/>
     </xsl:template>
     <xsl:template match="methods">
         <tbds>
