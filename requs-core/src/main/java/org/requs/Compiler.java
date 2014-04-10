@@ -44,6 +44,7 @@ import org.requs.facet.decor.Scaffolding;
 import org.requs.facet.markdown.MdMethods;
 import org.requs.facet.sanity.Sealed;
 import org.requs.facet.syntax.AntlrFacet;
+import org.requs.facet.tbd.Tbds;
 
 /**
  * Compiler.
@@ -107,6 +108,7 @@ public final class Compiler {
             new Transform("sanity/seals-check.xsl"),
             new MdMethods(),
             new Overall(),
+            new Tbds(),
         };
         final Docs docs = new Docs.InDir(new File(this.output));
         for (final Facet facet : facets) {
