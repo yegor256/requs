@@ -13,10 +13,8 @@
                 <meta name="keywords" content="SRS, software requirements specification"/>
                 <meta name="author" content="requs"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <link rel="stylesheet" type="text/css" href="requs.css"/>
                 <style type="text/css">
-                    body { margin: 2em; font-family: Ubuntu; font-size: 16px; }
-                    a { color: #428bca; text-decoration: none; }
-                    a:hover { text-decoration: underline; }
                     .intro { font-size: 0.9em; color: #999; }
                     .type { margin-top: 3em; }
                     .slots { margin-left: 1em; margin-top: 1em; }

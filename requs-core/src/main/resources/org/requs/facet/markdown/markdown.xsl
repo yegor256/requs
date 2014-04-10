@@ -13,11 +13,7 @@
                 <meta name="keywords" content="software requirements specification"/>
                 <meta name="author" content="requs"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <style type="text/css">
-                    body { margin: 2em; font-family: Ubuntu; font-size: 16px; }
-                    a { color: #428bca; text-decoration: none; }
-                    a:hover { text-decoration: underline; }
-                </style>
+                <link rel="stylesheet" type="text/css" href="requs.css"/>
                 <script type="text/javascript">
                     function show(name) {
                         alert("This feature doesn't work yet. Check the file manually: " + name);
