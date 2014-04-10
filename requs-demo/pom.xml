@@ -172,13 +172,6 @@
         </pluginManagement>
         <plugins>
             <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <configuration>
-                    <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>com.rexsl</groupId>
                 <artifactId>rexsl-maven-plugin</artifactId>
                 <version>${rexsl.version}</version>
@@ -245,6 +238,20 @@
                                 <exclude>checkstyle:/src/main/webapp/.*</exclude>
                                 <exclude>findbugs:.*</exclude>
                             </excludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>sonatype</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <configuration>
+                            <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
                         </configuration>
                     </plugin>
                 </plugins>
