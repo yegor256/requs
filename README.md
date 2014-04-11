@@ -1,5 +1,7 @@
 <img src="http://img.requs.org/logo-384x128.png" width="192" height="64" />
 
+[![Build Status](https://travis-ci.org/tpc2/requs.svg?branch=master)](https://travis-ci.org/tpc2/requs)
+
 More details are here: [www.requs.org](http://www.requs.org/)
 
 You need to add this plugin to your `pom.xml`:
