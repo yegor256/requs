@@ -13,7 +13,14 @@
             <xsl:for-each select="//step[exceptions/exception and not(signature) and not(object)]">
                 <error type="lost" pos="0">
                     <xsl:attribute name="line">
-                        <xsl:value-of select="exceptions/exception/steps/step/mentioned/where"/>
+                        <xsl:choose>
+                            <xsl:when test="exceptions/exception/steps/step/mentioned/where">
+                                <xsl:value-of select="exceptions/exception/steps/step/mentioned/where"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:text>0</xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </xsl:attribute>
                     <xsl:text>step </xsl:text>
                     <xsl:value-of select="number"/>
@@ -30,7 +37,16 @@
             <signature>"undefined"</signature>
             <object>_self</object>
             <mentioned>
-                <where><xsl:value-of select="exceptions/exception/steps/step/mentioned/where"/></where>
+                <where>
+                    <xsl:choose>
+                        <xsl:when test="exceptions/exception/steps/step/mentioned/where">
+                            <xsl:value-of select="exceptions/exception/steps/step/mentioned/where"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:text>0</xsl:text>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </where>
             </mentioned>
         </xsl:copy>
     </xsl:template>

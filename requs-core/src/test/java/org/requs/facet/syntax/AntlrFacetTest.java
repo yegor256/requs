@@ -142,9 +142,11 @@ public final class AntlrFacetTest {
             "\"alpha",
             "BrokenA is a 'file'.",
             "User is a",
-            "User needs: a as",
-            "UC1 where",
+//            "User needs: a as",
+//            "UC1 where",
             "UC4/2 when \"hello\": 1. \"test\".",
+            "UC4/2 when \"some problem\": ",
+            "UC4/2 when \"",
         };
         for (final String spec : specs) {
             MatcherAssert.assertThat(
