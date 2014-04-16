@@ -20,6 +20,16 @@
                     <xsl:text> was mentioned by never declared</xsl:text>
                 </error>
             </xsl:for-each>
+            <xsl:for-each select="//method[not(signature)]">
+                <error type="lost" pos="0">
+                    <xsl:attribute name="line">
+                        <xsl:value-of select="mentioned/where"/>
+                    </xsl:attribute>
+                    <xsl:text>method </xsl:text>
+                    <xsl:value-of select="id"/>
+                    <xsl:text> doesn't have a signature</xsl:text>
+                </error>
+            </xsl:for-each>
         </xsl:copy>
     </xsl:template>
     <xsl:template match="method[not(signature) and not(object)]">
@@ -27,6 +37,12 @@
             <xsl:apply-templates select="node()|@*"/>
             <signature>"undefined"</signature>
             <object>_self</object>
+        </xsl:copy>
+    </xsl:template>
+    <xsl:template match="method[object and not(signature)]">
+        <xsl:copy>
+            <xsl:apply-templates select="node()|@*"/>
+            <signature>"undefined"</signature>
         </xsl:copy>
     </xsl:template>
 </xsl:stylesheet>

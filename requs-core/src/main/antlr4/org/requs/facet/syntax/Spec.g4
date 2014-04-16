@@ -110,7 +110,7 @@ slots [Type type]
 slot [Type type]
     :
     variable
-    { if ($variable.ret == null) throw new IllegalArgumentException("invalid slot"); }
+    { if ($variable.ret == null) throw new SyntaxException("invalid slot"); }
     { Slot slot = type.slot($variable.ret); }
     { slot.mention(_input.LT(1).getLine()); }
     (
@@ -130,6 +130,7 @@ slot [Type type]
         AS
         (
             class_name
+            { if ($class_name.ret == null) throw new SyntaxException("invalid class name"); }
             { slot.assign($class_name.text); }
             |
             INFORMAL
@@ -145,7 +146,7 @@ method_declaration
     { method.mention(_input.LT(1).getLine()); }
     WHERE
     self=class_name
-    { if ($self.ret == null) throw new IllegalArgumentException("invalid method"); }
+    { if ($self.ret == null) throw new SyntaxException("invalid method"); }
     { Type type = this.onto.type($self.text); }
     { type.mention(_input.LT(1).getLine()); }
     slf=binding?
@@ -161,11 +162,14 @@ method_declaration
         method.object(self);
     }
     msig=signature
+    { if ($msig.ret == null) throw new SyntaxException("invalid signature"); }
     { method.sign($msig.ret); }
     (
         rslt=class_name
+        { if ($rslt.ret == null) throw new SyntaxException("invalid result"); }
         (
             res=binding
+            { if ($res.ret == null) throw new SyntaxException("invalid result"); }
             { method.binding($res.ret, $rslt.ret); }
             { method.result($res.ret); }
         )?
@@ -173,6 +177,7 @@ method_declaration
     (
         USING
         hclass=class_name
+        { if ($hclass.ret == null) throw new SyntaxException("invalid subject"); }
         hbind=binding?
         {
             final String hname;
@@ -188,6 +193,7 @@ method_declaration
         (
             AND
             tclass=class_name
+            { if ($tclass.ret == null) throw new SyntaxException("invalid list of subjects"); }
             tbind=binding?
             {
                 final String tname;
@@ -224,6 +230,7 @@ binding returns [String ret]
     '('
     A
     variable
+    { if ($variable.ret == null) throw new SyntaxException("invalid variable"); }
     ')'
     { $ret = $variable.ret; }
     ;
@@ -231,12 +238,15 @@ binding returns [String ret]
 subject [Flow flow] returns [String ret]
     :
     class_name
+    { if ($class_name.ret == null) throw new SyntaxException("invalid class name"); }
     binding
+    { if ($binding.ret == null) throw new SyntaxException("invalid binding"); }
     { $ret = $binding.ret; }
     { flow.binding($binding.ret, $class_name.ret); }
     |
     THE
     variable
+    { if ($variable.ret == null) throw new SyntaxException("invalid variable"); }
     { $ret = $variable.ret; }
     ;
 
@@ -275,11 +285,14 @@ step [Flow flow]
     (
         THE
         variable
+        { if ($variable.ret == null) throw new SyntaxException("invalid variable"); }
         { step.object($variable.ret); }
         step_sig=signature
+        { if ($step_sig.ret == null) throw new SyntaxException("invalid signature"); }
         { step.sign($step_sig.ret); }
         (
             result=subject[flow]
+            { if ($result.ret == null) throw new SyntaxException("invalid result"); }
             { step.result($result.ret); }
         )?
         using[flow, step]?
@@ -287,10 +300,12 @@ step [Flow flow]
         FAIL
         SINCE
         ex_informal=signature
+        { if ($ex_informal.ret == null) throw new SyntaxException("invalid signature"); }
         { step.object(Flow.SELF); }
         { step.sign($ex_informal.ret); }
         |
         step_informal=signature
+        { if ($step_informal.ret == null) throw new SyntaxException("invalid signature"); }
         { step.object(Flow.SELF); }
         { step.sign($step_informal.ret); }
     )
@@ -300,10 +315,12 @@ using [Flow flow, Step stp]
     :
     USING
     head=subject[flow]
+    { if ($head.ret == null) throw new SyntaxException("invalid subject"); }
     { stp.input($head.ret); }
     (
         AND
         tail=subject[flow]
+        { if ($tail.ret == null) throw new SyntaxException("invalid subject"); }
         { stp.input($tail.ret); }
     )?
     ;

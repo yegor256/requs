@@ -120,7 +120,9 @@ public final class AntlrFacet implements Facet {
         try {
             parser.clauses();
         } catch (final RecognitionException ex) {
-            throw new IllegalArgumentException(ex);
+            errors.add(ex);
+        } catch (final SyntaxException ex) {
+            errors.add(ex);
         }
         final XML xml;
         try {

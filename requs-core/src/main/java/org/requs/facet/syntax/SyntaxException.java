@@ -29,56 +29,26 @@
  */
 package org.requs.facet.syntax;
 
-import java.util.Iterator;
-import org.antlr.v4.runtime.BaseErrorListener;
-import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Recognizer;
-import org.xembly.Directive;
-import org.xembly.Directives;
-
 /**
- * Syntax analysis.
+ * Syntax exception.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @checkstyle MultipleStringLiteralsCheck (500 lines)
+ * @since 1.4
  */
-final class Errors extends BaseErrorListener implements Iterable<Directive> {
+final class SyntaxException extends RuntimeException {
 
     /**
-     * All directives collected.
+     * Serialization marker.
      */
-    private final transient Directives dirs =
-        new Directives().xpath("/spec").addIf("errors");
-
-    // @checkstyle ParameterNumberCheck (6 lines)
-    @Override
-    public void syntaxError(final Recognizer<?, ?> recognizer,
-        final Object symbol, final int line, final int pos, final String msg,
-        final RecognitionException exc) {
-        this.dirs.add("error")
-            .attr("type", "syntax")
-            .attr("line", Integer.toString(line))
-            .attr("pos", Integer.toString(pos))
-            .set(msg).up();
-    }
-
-    @Override
-    public Iterator<Directive> iterator() {
-        return this.dirs.iterator();
-    }
+    private static final long serialVersionUID = 1497953278746134529L;
 
     /**
-     * Add an exception.
-     * @param error Exception to add
-     * @since 1.4
+     * Ctor.
+     * @param cause Cause of it
      */
-    public void add(final Exception error) {
-        this.dirs.add("error")
-            .attr("type", "exception")
-            .attr("line", "0")
-            .attr("pos", "0")
-            .set(error.getLocalizedMessage()).up();
+    SyntaxException(final String cause) {
+        super(cause);
     }
 
 }
