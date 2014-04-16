@@ -34,7 +34,6 @@ import java.io.IOException;
 import javax.xml.transform.Source;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -138,7 +137,6 @@ public final class AntlrFacetTest {
      * @throws Exception When necessary
      */
     @Test
-    @Ignore
     public void parsesAllPossibleErrors() throws Exception {
         final String[] specs = {
             "\"alpha",
@@ -146,6 +144,7 @@ public final class AntlrFacetTest {
             "User is a",
             "User needs: a as",
             "UC1 where",
+            "UC4/2 when \"hello\": 1. \"test\".",
         };
         for (final String spec : specs) {
             MatcherAssert.assertThat(

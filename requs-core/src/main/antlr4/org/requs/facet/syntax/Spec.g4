@@ -110,6 +110,7 @@ slots [Type type]
 slot [Type type]
     :
     variable
+    { if ($variable.ret == null) throw new IllegalArgumentException("invalid slot"); }
     { Slot slot = type.slot($variable.ret); }
     { slot.mention(_input.LT(1).getLine()); }
     (
@@ -144,6 +145,7 @@ method_declaration
     { method.mention(_input.LT(1).getLine()); }
     WHERE
     self=class_name
+    { if ($self.ret == null) throw new IllegalArgumentException("invalid method"); }
     { Type type = this.onto.type($self.text); }
     { type.mention(_input.LT(1).getLine()); }
     slf=binding?

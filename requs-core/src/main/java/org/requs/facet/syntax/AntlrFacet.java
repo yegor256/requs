@@ -35,6 +35,8 @@ import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import com.jcabi.xml.XSD;
 import com.jcabi.xml.XSDDocument;
+import com.jcabi.xml.XSL;
+import com.jcabi.xml.XSLDocument;
 import java.io.IOException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -71,6 +73,20 @@ public final class AntlrFacet implements Facet {
         AntlrFacet.class.getResource("main.xsd")
     );
 
+    /**
+     * XSL to resolve lost methods.
+     */
+    private static final XSL LOST_METHODS = XSLDocument.make(
+        AntlrFacet.class.getResource("lost-methods.xsl")
+    );
+
+    /**
+     * XSL to resolve lost steps.
+     */
+    private static final XSL LOST_STEPS = XSLDocument.make(
+        AntlrFacet.class.getResource("lost-steps.xsl")
+    );
+
     @Override
     public void touch(final Docs docs) throws IOException {
         final Doc main = docs.get("main.xml");
@@ -95,6 +111,8 @@ public final class AntlrFacet implements Facet {
         final TokenStream tokens = new CommonTokenStream(lexer);
         final SpecParser parser = new SpecParser(tokens);
         final Errors errors = new Errors();
+        lexer.removeErrorListeners();
+        lexer.addErrorListener(errors);
         parser.removeErrorListeners();
         parser.addErrorListener(errors);
         final XeOntology onto = new XeOntology();
@@ -104,24 +122,28 @@ public final class AntlrFacet implements Facet {
         } catch (final RecognitionException ex) {
             throw new IllegalArgumentException(ex);
         }
+        final XML xml;
         try {
-            return new StrictXML(
-                new XMLDocument(
-                    new Xembler(
-                        new Directives()
-                            .xpath("/")
-                            .pi(
-                                "xml-stylesheet",
-                                "href='main.xsl' type='text/xsl'"
-                            )
-                            .append(onto).append(errors)
-                    ).xml()
-                ),
-                AntlrFacet.SCHEMA
+            xml = new XMLDocument(
+                new Xembler(
+                    new Directives()
+                        .xpath("/")
+                        .pi(
+                            "xml-stylesheet",
+                            "href='main.xsl' type='text/xsl'"
+                        )
+                        .append(onto).append(errors)
+                ).xml()
             );
         } catch (final ImpossibleModificationException ex) {
             throw new IllegalStateException(ex);
         }
+        return new StrictXML(
+            AntlrFacet.LOST_METHODS.transform(
+                AntlrFacet.LOST_STEPS.transform(xml)
+            ),
+            AntlrFacet.SCHEMA
+        );
     }
 
 }
