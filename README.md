@@ -4,6 +4,8 @@
 
 More details are here: [www.requs.org](http://www.requs.org/)
 
+Check this online demo: [demo.requs.org](http://demo.requs.org/)
+
 You need to add this plugin to your `pom.xml`:
 
 ```xml
