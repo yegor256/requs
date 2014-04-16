@@ -2,4 +2,4 @@ language: java
 env:
   global:
     - MAVEN_OPTS="-XX:MaxPermSize=512m -Xmx4g"
-script: mvn clean install -Pqulice
+script: mvn clean install -Pqulice --batch-mode --errors
