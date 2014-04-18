@@ -12,17 +12,9 @@
                 <meta name="description" content="markdown"/>
                 <meta name="keywords" content="software requirements specification"/>
                 <meta name="author" content="requs"/>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <meta name="viewport" content="width=device-width" />
                 <link rel="stylesheet" type="text/css" href="requs.css"/>
-                <script type="text/javascript">
-                    function show(name) {
-                        alert("This feature doesn't work yet. Check the file manually: " + name);
-                    }
-                </script>
-                <script src="http://code.jquery.com/jquery-2.1.0.min.js">
-                    <!-- nothing -->
-                </script>
-                <script src="http://img.requs.org/markdown.min.js">
+                <script src="https://code.jquery.com/jquery-2.1.0.js">
                     <!-- nothing -->
                 </script>
                 <script>//<![CDATA[
@@ -36,6 +28,9 @@
                         }
                     );
                 //]]></script>
+                <script src="http://img.requs.org/markdown.min.js">
+                    <!-- nothing -->
+                </script>
             </head>
             <body>
                 <xsl:apply-templates select="pages/methods/method"/>
