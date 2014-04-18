@@ -70,6 +70,8 @@ clause
     alternative_flow_declaration
     |
     attribute_setting
+    |
+    nfr_declaration
     ;
 
 class_declaration
@@ -216,8 +218,8 @@ signature returns [String ret]
     :
     { Collection<String> words = new LinkedList<String>(); }
     (
-        WORD
-        { words.add($WORD.text); }
+        word
+        { words.add($word.text); }
     )+
     { $ret = StringUtils.join(words, " "); }
     |
@@ -253,7 +255,7 @@ subject [Flow flow] returns [String ret]
 alternative_flow_declaration
     :
     UC_ID
-    '/'
+    SLASH
     FLOW_ID
     WHEN
     INFORMAL
@@ -336,8 +338,8 @@ class_name returns [String ret]
 
 variable returns [String ret]
     :
-    WORD
-    { $ret = $WORD.text; }
+    word
+    { $ret = $word.text; }
     ;
 
 attribute_setting
@@ -347,7 +349,7 @@ attribute_setting
     UC_ID
     IS
     A?
-    WORD
+    word
     {
         final String seal;
         if ($SEAL == null) {
@@ -355,8 +357,40 @@ attribute_setting
         } else {
             seal = $SEAL.text;
         }
-        this.onto.method($UC_ID.text).attribute($WORD.text, seal);
+        this.onto.method($UC_ID.text).attribute($word.text, seal);
     }
+    ;
+
+nfr_declaration
+    :
+    UC_ID
+    SLASH
+    NFR
+    MUST
+    INFORMAL
+    ;
+
+word
+    :
+    WORD
+    |
+    NFR
+    |
+    MUST
+    |
+    A
+    |
+    THE
+    |
+    FAIL
+    |
+    SINCE
+    |
+    AS
+    |
+    IS
+    |
+    WHEN
     ;
 
 SEAL: ('0'..'9' | 'a'..'f')
@@ -366,8 +400,10 @@ SEAL: ('0'..'9' | 'a'..'f')
     ('0'..'9' | 'a'..'f')
     ('0'..'9' | 'a'..'f');
 UC_ID: 'UC' ( '0' .. '9' | '.' )+;
+NFR: ( 'A' .. 'Z' )+;
 FLOW_ID: ( '0' .. '9' )+;
 COLON: ':';
+SLASH: '/';
 SEMICOLON: ';';
 DOT: '.';
 COMMA: ',';
@@ -378,6 +414,7 @@ FAIL: ( 'Fail' | 'fail' );
 SINCE: 'since';
 AS: 'as';
 IS: 'is';
+MUST: 'must';
 WHEN: 'when';
 WHERE: 'where';
 AND: 'and';
