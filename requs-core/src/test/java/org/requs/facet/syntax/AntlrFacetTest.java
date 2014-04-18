@@ -29,8 +29,11 @@
  */
 package org.requs.facet.syntax;
 
+import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
 import com.rexsl.test.XhtmlMatchers;
 import java.io.IOException;
+import java.util.Collection;
 import javax.xml.transform.Source;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
@@ -157,6 +160,32 @@ public final class AntlrFacetTest {
             MatcherAssert.assertThat(
                 this.parse(spec),
                 XhtmlMatchers.hasXPath("/spec/errors/error")
+            );
+        }
+    }
+
+    /**
+     * AntlrFacet can parse all samples.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void parsesAllSamples() throws Exception {
+        final String[] files = {
+            "samples/nfr.xml",
+            "samples/method.xml",
+        };
+        for (final String file : files) {
+            final XML xml = new XMLDocument(
+                this.getClass().getResourceAsStream(file)
+            );
+            final Collection<String> xpaths = xml.xpath(
+                "/sample/xpaths/xpath/text()"
+            );
+            MatcherAssert.assertThat(
+                this.parse(xml.xpath("/sample/spec/text()").get(0)),
+                XhtmlMatchers.hasXPaths(
+                    xpaths.toArray(new String[xpaths.size()])
+                )
             );
         }
     }

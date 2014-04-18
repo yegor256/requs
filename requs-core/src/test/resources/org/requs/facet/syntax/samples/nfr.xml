@@ -1,0 +1,14 @@
+<sample>
+    <spec>
+        UC1 where User saves file: "empty".
+        UC1/UX must "be awesome".
+    </spec>
+    <xpaths>
+        <xpath>/spec/errors[not(error)]</xpath>
+        <xpath>/spec/methods[count(method)=1]</xpath>
+        <xpath>//method[id='UC1']</xpath>
+        <xpath>//method/nfrs[count(nfr)=1]</xpath>
+        <xpath>//nfr[id='UX']</xpath>
+        <xpath>//nfr/info[informal='be awesome']</xpath>
+    </xpaths>
+</sample>
