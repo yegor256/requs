@@ -2,7 +2,8 @@
     <spec>
         UC1 where User (a user) saves a very complex File (a file):
           1. The user "opens Excel";
-          2. The user "clicks SAVE and saves the content" using the file.
+          2. The user "clicks SAVE and saves the content" using the file;
+          3. The user validates the file.
     </spec>
     <xpaths>
         <xpath>/spec/errors[not(error)]</xpath>
@@ -18,5 +19,6 @@
         <xpath>//method/steps[count(step)=2]</xpath>
         <xpath>//method/steps/step[number=1 and object='user' and signature='&quot;opens Excel&quot;']</xpath>
         <xpath>//method/steps/step[number=2 and object='user' and signature='&quot;clicks SAVE and saves the content&quot;']</xpath>
+        <xpath>//method/steps/step[number=3 and object='user' and signature='validates']</xpath>
     </xpaths>
 </sample>
