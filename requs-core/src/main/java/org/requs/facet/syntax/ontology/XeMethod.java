@@ -108,15 +108,15 @@ final class XeMethod implements Method {
 
     @Override
     public Nfr nfr(final String name) {
-        this.dirs
-            .xpath(this.start).strict(1).addIf("nfrs").strict(1)
+        this.dirs.xpath(this.start)
+            .strict(1).addIf("nfrs").strict(1)
             .xpath(
                 String.format(
-                    "%s/nfrs[not(nfr/id='%s') ]",
+                    "%s/nfrs[not(nfr/id='%s')]",
                     this.start, name
                 )
             )
-            .add("nfr").add("name").set(name);
+            .add("nfr").add("id").set(name);
         return new XeNfr(
             this.dirs,
             String.format("%s/nfrs/nfr[id='%s']", this.start, name)

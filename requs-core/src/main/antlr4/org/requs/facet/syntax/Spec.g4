@@ -368,6 +368,7 @@ nfr_declaration
     NFR
     MUST
     INFORMAL
+    { this.onto.method($UC_ID.text).nfr($NFR.text).explain($INFORMAL.text); }
     ;
 
 word

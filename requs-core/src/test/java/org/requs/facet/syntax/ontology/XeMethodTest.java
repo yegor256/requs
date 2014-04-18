@@ -122,13 +122,12 @@ public final class XeMethodTest {
         method.nfr(name).explain("how are you?");
         method.nfr(name).explain("very good");
         method.nfr("UX");
-        System.out.println(dirs);
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
                 "/xx/nfrs[count(nfr)=2]",
-                "/xs/nfrs/nfr[id='PERF']",
-                "/xs/nfrs/nfr[id='UX']"
+                "/xx/nfrs/nfr[id='PERF']",
+                "/xx/nfrs/nfr[id='UX']"
             )
         );
     }

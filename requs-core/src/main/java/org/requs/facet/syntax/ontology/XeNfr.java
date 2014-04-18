@@ -85,6 +85,8 @@ final class XeNfr implements Nfr {
 
     @Override
     public void explain(final String info) {
+        assert this.dirs != null;
+        assert this.start != null;
         this.informal.explain(info);
     }
 
