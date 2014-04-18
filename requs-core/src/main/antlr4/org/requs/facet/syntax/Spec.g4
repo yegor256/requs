@@ -357,7 +357,9 @@ attribute_setting
         } else {
             seal = $SEAL.text;
         }
-        this.onto.method($UC_ID.text).attribute($word.text, seal);
+        Method method = this.onto.method($UC_ID.text);
+        method.attribute($word.text, seal);
+        method.mention(_input.LT(1).getLine());
     }
     ;
 
@@ -368,7 +370,11 @@ nfr_declaration
     NFR
     MUST
     INFORMAL
-    { this.onto.method($UC_ID.text).nfr($NFR.text).explain($INFORMAL.text); }
+    {
+        Method method = this.onto.method($UC_ID.text);
+        method.nfr($NFR.text).explain($INFORMAL.text);
+        method.mention(_input.LT(1).getLine());
+    }
     ;
 
 word

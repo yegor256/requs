@@ -95,6 +95,18 @@
             <xs:element name="step" type="step" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
+    <xs:complexType name="nfr">
+        <xs:all>
+            <xs:element name="id">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="[A-Z]+" />
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="info" type="info" minOccurs="0"/>
+        </xs:all>
+    </xs:complexType>
     <xs:complexType name="method">
         <xs:all>
             <xs:element name="mentioned" type="mentioned"/>
@@ -136,6 +148,13 @@
                                 </xs:simpleContent>
                             </xs:complexType>
                         </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="nfrs" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="nfr" type="nfr" minOccurs="0" maxOccurs="unbounded"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
