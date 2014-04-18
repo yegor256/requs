@@ -150,6 +150,8 @@ public final class AntlrFacetTest {
             "UC4/2 when \"hello\": 1. \"test\".",
             "UC4/2 when \"some problem\": ",
             "UC4/2 when \"",
+            "UC9.9.2/PERF must",
+            "UC9.9.2/PERF must \"work\".",
         };
         for (final String spec : specs) {
             MatcherAssert.assertThat(
