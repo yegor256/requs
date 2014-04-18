@@ -21,6 +21,8 @@
                     .method { margin-top: 1em; margin-left: 1em; }
                     .steps { margin-top: 1em; margin-left: 1em }
                     .step { margin-top: 0.25em; }
+                    .nfrs { margin-top: 1em; margin-left: 1em }
+                    .nfr { margin-top: 0.25em; }
                     .exception { margin-left: 1em; margin-top: 1em; margin-bottom: 1em; }
                     .informal { color: #666; }
                     .warning { color: #d9534f; }
