@@ -77,6 +77,14 @@
                                 </td>
                             </tr>
                         </xsl:if>
+                        <xsl:if test="nfrs/nfr">
+                            <tr>
+                                <td><xsl:text>NFRs</xsl:text></td>
+                                <td>
+                                    <xsl:apply-templates select="nfrs"/>
+                                </td>
+                            </tr>
+                        </xsl:if>
                     </tbody>
                 </table>
                 <xsl:text>&#10;&#10;Actors taking participation in the Use Case have the following properties:&#10;&#10;</xsl:text>
@@ -156,18 +164,34 @@
                         <code><xsl:value-of select="name"/></code>
                         <xsl:text>: </xsl:text>
                         <xsl:value-of select="type"/>
-                        <xsl:if test="info/informal">
-                            <xsl:text> </xsl:text>
-                            <xsl:for-each select="info/informal">
-                                <xsl:if test="position() > 1">
-                                    <xsl:text> and </xsl:text>
-                                </xsl:if>
-                                <xsl:apply-templates select="."/>
-                            </xsl:for-each>
-                        </xsl:if>
+                        <xsl:apply-templates select="info"/>
                     </li>
                 </xsl:for-each>
             </ul>
+        </xsl:if>
+    </xsl:template>
+    <xsl:template match="nfrs">
+        <xsl:for-each select="nfr">
+            <xsl:if test="position() != 1">
+                <br/>
+            </xsl:if>
+            <xsl:apply-templates select="."/>
+        </xsl:for-each>
+    </xsl:template>
+    <xsl:template match="nfr">
+        <xsl:value-of select="id"/>
+        <xsl:text> must </xsl:text>
+        <xsl:apply-templates select="info"/>
+    </xsl:template>
+    <xsl:template match="info">
+        <xsl:if test="informal">
+            <xsl:text> </xsl:text>
+            <xsl:for-each select="informal">
+                <xsl:if test="position() > 1">
+                    <xsl:text> and </xsl:text>
+                </xsl:if>
+                <xsl:apply-templates select="."/>
+            </xsl:for-each>
         </xsl:if>
     </xsl:template>
 </xsl:stylesheet>
