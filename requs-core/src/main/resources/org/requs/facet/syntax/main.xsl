@@ -140,6 +140,9 @@
                 <xsl:apply-templates select="info/informal"/>
                 <xsl:apply-templates select="steps"/>
             </div>
+            <div class="nfrs">
+                <xsl:apply-templates select="nfrs/nfr"/>
+            </div>
         </div>
     </xsl:template>
     <xsl:template match="attribute">
@@ -180,6 +183,13 @@
             <xsl:value-of select="when"/>
             <xsl:text>&quot;:</xsl:text>
             <xsl:apply-templates select="steps"/>
+        </div>
+    </xsl:template>
+    <xsl:template match="nfr">
+        <div class="nfr">
+            <xsl:value-of select="id"/>
+            <xsl:text> must </xsl:text>
+            <xsl:apply-templates select="info/informal"/>
         </div>
     </xsl:template>
     <xsl:template match="informal">
