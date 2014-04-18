@@ -35,7 +35,7 @@ import org.hamcrest.Matchers
 def log = new File(basedir, 'build.log')
 MatcherAssert.assertThat(
     log.text,
-    Matchers.containsString('3 requs error(s)')
+    Matchers.containsString(' requs error(s)')
 )
 def xml = new File(basedir, 'target/requs/main.xml')
 if (!xml.exists()) {
