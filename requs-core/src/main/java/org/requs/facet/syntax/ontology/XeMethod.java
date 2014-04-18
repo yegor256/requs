@@ -107,6 +107,23 @@ final class XeMethod implements Method {
     }
 
     @Override
+    public Nfr nfr(final String name) {
+        this.dirs
+            .xpath(this.start).strict(1).addIf("nfrs").strict(1)
+            .xpath(
+                String.format(
+                    "%s/nfrs[not(nfr/id='%s') ]",
+                    this.start, name
+                )
+            )
+            .add("nfr").add("name").set(name);
+        return new XeNfr(
+            this.dirs,
+            String.format("%s/nfrs/nfr[id='%s']", this.start, name)
+        );
+    }
+
+    @Override
     public void sign(final String text) {
         this.signature.sign(text);
     }

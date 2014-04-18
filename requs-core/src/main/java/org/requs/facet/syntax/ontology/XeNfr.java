@@ -29,27 +29,63 @@
  */
 package org.requs.facet.syntax.ontology;
 
+import com.jcabi.aspects.Loggable;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.xembly.Directives;
+
 /**
- * Use case.
+ * Xembly NFR.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @since 1.1
+ * @since 1.5
  */
-public interface Method extends Flow, Mentioned, Signature {
+@ToString
+@EqualsAndHashCode(of = "dirs")
+@Loggable(Loggable.DEBUG)
+final class XeNfr implements Nfr {
 
     /**
-     * Add an attributes.
-     * @param name Attribute name
-     * @param seal Seal to attach
+     * All directives.
      */
-    void attribute(String name, String seal);
+    private final transient Directives dirs;
 
     /**
-     * Get an NFR by name.
-     * @param name NFR name
-     * @return NFR
+     * Starting XPath.
      */
-    Nfr nfr(String name);
+    private final transient String start;
+
+    /**
+     * Mentioned helper.
+     */
+    private final transient Mentioned mentioned;
+
+    /**
+     * Informal helper.
+     */
+    private final transient Informal informal;
+
+    /**
+     * Ctor.
+     * @param directives Directives to extend
+     * @param xpath XPath to start with
+     */
+    XeNfr(final Directives directives, final String xpath) {
+        this.mentioned = new XeMethod(directives, xpath);
+        this.informal = new XeInformal(directives, xpath);
+        this.dirs = directives;
+        this.start = xpath;
+    }
+
+    @Override
+    public void mention(final int where) {
+        this.mentioned.mention(where);
+    }
+
+    @Override
+    public void explain(final String info) {
+        this.informal.explain(info);
+    }
 
 }

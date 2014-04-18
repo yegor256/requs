@@ -30,26 +30,12 @@
 package org.requs.facet.syntax.ontology;
 
 /**
- * Use case.
+ * Non-functional requirement.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @since 1.1
+ * @since 1.5
  */
-public interface Method extends Flow, Mentioned, Signature {
-
-    /**
-     * Add an attributes.
-     * @param name Attribute name
-     * @param seal Seal to attach
-     */
-    void attribute(String name, String seal);
-
-    /**
-     * Get an NFR by name.
-     * @param name NFR name
-     * @return NFR
-     */
-    Nfr nfr(String name);
+public interface Nfr extends Mentioned, Informal {
 
 }
