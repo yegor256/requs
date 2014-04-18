@@ -45,7 +45,7 @@ def text = """
       3. The user \"receives results\" using the quotient.
     UC1/2 when \"division by zero\":
       1. Fail since \"denominator can't be zero\".
-    UC1/PERF must be \"700 msec per HTTP request\".
+    UC1/PERF must \"be 700 msec per HTTP request\".
     """
 assert text.length() > 0
 /*

@@ -270,8 +270,8 @@ af63e2:UC3.2 is a must.
   in the following format:
 
 +--
-UC3.2/MTBF must be "5 minutes on a standard equipment".
-UC7/PERF must be "less than 500 msec per request".
+UC3.2/MTBF must "be 5 minutes on a standard equipment".
+UC7/PERF must "be less than 500 msec per request".
 +--
 
   After the name of the use case you put a forward slash and then

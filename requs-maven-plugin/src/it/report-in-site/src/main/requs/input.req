@@ -12,4 +12,4 @@ UC1 where User (a user) divides two numbers:
 UC1/2 when "division by zero":
   1. Fail since "denominator can't be zero".
 
-UC1/MTBF must be "3 minutes".
+UC1/MTBF must "be 3 minutes".
