@@ -1,6 +1,6 @@
 <sample>
     <spec>
-        UC1 where User (a user) saves a very complex File (a file):
+        UC1 where User (a user) saves very complex File (a file):
           1. The user "opens Excel";
           2. The user "clicks SAVE and saves the content" using the file;
           3. The user validates the file.
@@ -14,9 +14,9 @@
         <xpath>//method/bindings/binding[name='user' and type='User']</xpath>
         <xpath>//method/bindings/binding[name='file' and type='File']</xpath>
         <xpath>//method[object='user']</xpath>
-        <xpath>//method[signature='saves a very complex']</xpath>
+        <xpath>//method[signature='saves very complex']</xpath>
         <xpath>//method[result='file']</xpath>
-        <xpath>//method/steps[count(step)=2]</xpath>
+        <xpath>//method/steps[count(step)=3]</xpath>
         <xpath>//method/steps/step[number=1 and object='user' and signature='&quot;opens Excel&quot;']</xpath>
         <xpath>//method/steps/step[number=2 and object='user' and signature='&quot;clicks SAVE and saves the content&quot;']</xpath>
         <xpath>//method/steps/step[number=3 and object='user' and signature='validates']</xpath>

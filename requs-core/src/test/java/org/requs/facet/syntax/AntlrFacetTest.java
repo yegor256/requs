@@ -169,6 +169,7 @@ public final class AntlrFacetTest {
      * @throws Exception When necessary
      */
     @Test
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public void parsesAllSamples() throws Exception {
         final String[] files = {
             "samples/nfr.xml",

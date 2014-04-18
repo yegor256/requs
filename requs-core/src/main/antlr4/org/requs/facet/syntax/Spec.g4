@@ -384,20 +384,6 @@ word
     NFR
     |
     MUST
-    |
-    A
-    |
-    THE
-    |
-    FAIL
-    |
-    SINCE
-    |
-    AS
-    |
-    IS
-    |
-    WHEN
     ;
 
 SEAL: ('0'..'9' | 'a'..'f')
