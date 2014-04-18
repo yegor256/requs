@@ -1,4 +1,7 @@
 language: java
+branches:
+  only:
+    - master
 env:
   global:
     - MAVEN_OPTS="-XX:MaxPermSize=2g -Xmx4g"
