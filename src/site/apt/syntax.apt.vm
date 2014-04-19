@@ -33,31 +33,31 @@ Requs Syntax
   {{{http://standards.ieee.org/reading/ieee/std_public/description/se/830-1998_desc.html}IEEE 830-1998}}
   says: "SRS (<software requirements specification>) should be
   correct, unambiguous, complete, consistent, ranked for importance and/or stability,
-  verifiable, modifiable, traceable". Requs is enabling the creation
-  of such documents in plain text format.
+  verifiable, modifiable, traceable". Requs is a Controlled Natural Language
+  that enables the creation of such documents in plain text format.
 
 * Quick Start
 
   The scope definition document consists of <<types>>
-  and <<methods>> (or use cases). For example, there are two types
+  and <<methods>> (aka "use cases"). For example, there are two types
   (<<<Visitor>>> and <<<Image>>>) and one
   use case (<<<UC3.2>>>) defined in the snippet:
 
 +--
-Visitor is an "originator of HTTP request".
+Visitor is "an originator of HTTP request".
 UC3.2 where User (a user) deletes photos:
   "we will define it later...".
 Image includes: PNG content, name, and size.
 +--
 
-  Everything inside double quotes is considered as
+  Anything inside double quotes is considered as
   informal content, which we take "as is", without
   any attempt to understand what it means. You can double quote anything
   (except double quotes, of course), and you can place
   informal texts in any place of the document. They are ignored
   during formal Requs analysis.
 
-  Let's consider a bit bigger example of a type <<<Image>>>:
+  Let's consider a bigger example of a type <<<Image>>>:
 
 +--
 Image includes:
@@ -68,7 +68,7 @@ Image includes:
 
   The semantic is the same -- the type still contains three <<slots>>
   (<<<PNG content>>>, <<<name>>> and <<<size>>>). However
-  in this example we have added an informal explanation to every one of them.
+  in this example we added an informal explanation to every one of them.
   An <<<as>>> keyword separates the name of the slot and its invariant.
 
   Pay attention to the dots, colons, semicolons and commas used above.
@@ -88,10 +88,10 @@ PNG content as File; name; and size
   ASCII text). Nobody can break this invariant and put a textual information
   into this slot.
 
-  As you noticed, an invariant could be declared with an informal text, as we've
+  As you noticed, an invariant can be declared with an informal text, as we've
   done with <<<size>>>. Such a declaration means
   absolutely nothing and will be ignored. But it helps when you're starting
-  to develop the scope document.
+  to develop the SRS document.
 
   In general, <<informal texts>> play an important role during the initial
   development of a requirements document and
@@ -100,11 +100,11 @@ PNG content as File; name; and size
   should use informal texts. Later, when you have more information,
   you will replace them.
 
-  As you've already noticed, Requs is a case-insensitive language in all places
+  Requs is a case-insensitive language in all places
   except one -- type names should use
   {{{http://en.wikipedia.org/wiki/CamelCase}CamelCase Notation}}. Thus,
-  <<<ImageFile>>> is a valid type
-  name, and <<<imagefile>>> is just an English word.
+  <<<Fie>>>, <<<ImageFile>>>, and <<<VeryBigImageFile>>> are valid type
+  names, while <<<imagefile>>> is just an English word.
 
   To put things together we should declare a use case, which is
   a step-by-step explanation of interaction between instances of types
@@ -114,14 +114,14 @@ PNG content as File; name; and size
 UC8.1 where User (a user) shares Image with User (a friend):
   1. The user creates Image (a photo).
   2. The user updates the friend "selecting one of his contacts".
-  3. We convert the photo "to the right PNG format, 600x600 maximum".
-  4. We notify the friend by email.
+  3. The photo converts "to the right PNG format, 600x600 maximum".
+  4. The user notifies the friend by email.
   5. The friend reads the photo "in his own web page".
-UC8.1/1 If "the user exceeds the maximum possible number of photos":
-  1. Failure "photos limit exceeded".
-UC8.1/3 If failed with "invalid format":
+UC8.1/1 when "the user exceeds the maximum possible number of photos":
+  1. Fail since "photos limit exceeded".
+UC8.1/3 when "invalid format":
   1. "We notify user about the problem".
-  2. Failure "can't convert photo".
+  2. Fail since "can't convert photo".
 +--
 
   First line in this example is a declaration of a use case,
@@ -130,8 +130,7 @@ UC8.1/3 If failed with "invalid format":
   ID of the use case, but the signature, which is important. This
   concept is very similar to
   {{{http://en.wikipedia.org/wiki/Signature_(computer_science)}function signature}}
-  in programming. The
-  signature of this use case is:
+  in programming. The signature of this use case is:
 
 +--
 User shares Image with User
@@ -151,24 +150,11 @@ User shares Image with User
   There are seven <<main flows>> in this use case, and five <<alternative
   flows>>. Flows <<<1>>>, <<<5>>>, <<<6>>>, and <<<7>>>
   instruct us to include other use cases that match the signatures
-  provided and pass them the objects we have. Let's see
-  what these flows really tell us about:
-
-+--
-1. User creates Image
-  the user => User
-  the photo => Image
-5. SUD converts Image
-  the photo => Image
-6. SUD notifies User by email.
-  the user => User
-7. User reads Image.
-  the photo => Image
-+--
+  provided and pass them the objects we have.
 
   There are four use cases that are included by <<<UC8.1>>>.
   They have to be defined somewhere else in the document,
-  otherwise the document would be invalid. But not all four are
+  otherwise the document will be semantically incomplete. But not all four are
   mandatory, because there is a number of <<elementary use cases>>,
   which are defined in the system, even if the document is
   empty. The elementary use cases are
@@ -179,7 +165,6 @@ Something creates something
 Something reads something
 Something updates something
 Something deletes something
-Something turns into somebody
 +--
 
   As you understand, <<<something>>> means "object of any type".
@@ -188,17 +173,15 @@ Something turns into somebody
   <<<update>>> means changing of values of slots of an object.
   <<<delete>>> means removing an object from a persistent storage.
 
-  With <<<turns into>>> elementary use case we do type casting.
-
   Thus, a valid flow either points us to another use case
   defined somewhere else in the document, or points us to
   an elementary use case, or points us nowhere with an informal text
   (<<informal flow>>).
 
   Besides that, a flow might have a special instruction, which we've seen
-  in alternative flow <<<UC8.3/1>>> and <<<UC8.3/3>>>. <<<failure>>>
+  in alternative flow <<<UC8.3/1>>> and <<<UC8.3/3>>>. <<<fail since>>>
   means that a use case should be stopped at this point and the
-  reason of this termination is explained right after the word <<<failure>>>
+  reason of this termination is explained right after the word <<<since>>>
   as an informal text.
 
   Reason of failure is used by a parent use case, which included the
