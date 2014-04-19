@@ -106,6 +106,8 @@ PNG content as File; name; and size
   <<<Fie>>>, <<<ImageFile>>>, and <<<VeryBigImageFile>>> are valid type
   names, while <<<imagefile>>> is just an English word.
 
+* Bigger Example
+
   To put things together we should declare a use case, which is
   a step-by-step explanation of interaction between instances of types
   (so called <<objects>>), for example:
@@ -115,7 +117,7 @@ UC8.1 where User (a user) shares Image with User (a friend):
   1. The user creates Image (a photo).
   2. The user updates the friend "selecting one of his contacts".
   3. The photo converts "to the right PNG format, 600x600 maximum".
-  4. The user notifies the friend by email.
+  4. The friend receives email using SmtpServer.
   5. The friend reads the photo "in his own web page".
 UC8.1/1 when "the user exceeds the maximum possible number of photos":
   1. Fail since "photos limit exceeded".
@@ -152,6 +154,24 @@ User shares Image with User
   instruct us to include other use cases that match the signatures
   provided and pass them the objects we have.
 
+* USING
+
+  In the example above, one of the use case steps
+  mentioned <<using>> operator:
+
++--
+The friend receives email using SmtpServer.
++--
+
+  This is similar to sending arguments to a method. In this line
+  we're calling a method "receives" on "the friend" object like this:
+
++--
+friend.receives_email(smtp_server);
++--
+
+* CRUDL
+
   There are four use cases that are included by <<<UC8.1>>>.
   They have to be defined somewhere else in the document,
   otherwise the document will be semantically incomplete. But not all four are
@@ -165,6 +185,7 @@ Something creates something
 Something reads something
 Something updates something
 Something deletes something
+Something lists something
 +--
 
   As you understand, <<<something>>> means "object of any type".
@@ -177,6 +198,8 @@ Something deletes something
   defined somewhere else in the document, or points us to
   an elementary use case, or points us nowhere with an informal text
   (<<informal flow>>).
+
+* Exceptions
 
   Besides that, a flow might have a special instruction, which we've seen
   in alternative flow <<<UC8.3/1>>> and <<<UC8.3/3>>>. <<<fail since>>>
