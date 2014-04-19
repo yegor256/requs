@@ -1,0 +1,42 @@
+<spec>
+    <requs>
+        <version>1.1</version>
+        <revision>4893d06</revision>
+        <date>2014-03-25 16:10</date>
+    </requs>
+    <methods>
+        <method seal="7ab935">
+            <id>UC1</id>
+            <mentioned>
+                <where>6</where>
+            </mentioned>
+            <object>_self</object>
+            <signature>install</signature>
+            <nfrs>
+                <nfr>
+                    <id>UX</id>
+                    <info>
+                        <informal>be amazing</informal>
+                    </info>
+                </nfr>
+            </nfrs>
+        </method>
+        <method seal="7ab935">
+            <id>UC5.5</id>
+            <mentioned>
+                <where>6</where>
+            </mentioned>
+            <object>_self</object>
+            <signature>install</signature>
+            <nfrs>
+                <nfr>
+                    <id>MTBF</id>
+                    <info>
+                        <informal>be amazing</informal>
+                    </info>
+                </nfr>
+            </nfrs>
+        </method>
+    </methods>
+    <errors/>
+</spec>
