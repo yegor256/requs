@@ -14,7 +14,7 @@
                 <meta name="author" content="requs"/>
                 <meta name="viewport" content="width=device-width" />
                 <link rel="stylesheet" type="text/css" href="requs.css"/>
-                <script src="https://code.jquery.com/jquery-2.1.0.js">
+                <script src="https://code.jquery.com/jquery-2.1.1-rc1.js">
                     <!-- nothing -->
                 </script>
                 <script>//<![CDATA[
