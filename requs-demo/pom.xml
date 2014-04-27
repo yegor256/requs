@@ -137,6 +137,12 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <artifactId>maven-deloy-plugin</artifactId>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
+                </plugin>
+                <plugin>
                     <artifactId>maven-war-plugin</artifactId>
                     <configuration>
                         <warSourceExcludes>js/**, css/**</warSourceExcludes>
