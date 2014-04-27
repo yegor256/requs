@@ -47,7 +47,7 @@
                 </link>
                 <link rel="icon" type="image/gif">
                     <xsl:attribute name="href">
-                        <xsl:text>http://img.requs.org/favicon.gif</xsl:text>
+                        <xsl:text>http://img.requs.org/logo-128x128.png</xsl:text>
                     </xsl:attribute>
                 </link>
                 <xsl:call-template name="head"/>

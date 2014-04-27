@@ -32,7 +32,9 @@ package org.requs.rest;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import com.jcabi.http.response.XmlResponse;
+import com.rexsl.test.html.NoBrokenLinks;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import org.junit.Test;
@@ -106,6 +108,7 @@ public final class IndexRsITCase {
             .fetch()
             .as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
+            .assertThat(new NoBrokenLinks(URI.create(IndexRsITCase.HOME)))
             .as(XmlResponse.class)
             .assertXPath("/page/version");
     }
