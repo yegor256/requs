@@ -45,6 +45,7 @@ import org.junit.Test;
  * @version $Id$
  * @since 1.6
  */
+@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 public final class IndexRsITCase {
 
     /**
