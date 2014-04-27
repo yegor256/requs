@@ -32,6 +32,7 @@ package org.requs.rest;
 import com.google.common.io.Files;
 import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
+import com.jcabi.xml.XMLDocument;
 import java.io.File;
 import java.io.IOException;
 import javax.validation.constraints.NotNull;
@@ -62,7 +63,7 @@ public final class InstantRs extends BaseRs {
      */
     @POST
     @Path("/")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_XML)
     @Loggable(Loggable.INFO)
     public String post(@NotNull @FormParam("text") final String text)
         throws IOException {
@@ -81,7 +82,7 @@ public final class InstantRs extends BaseRs {
         }
         FileUtils.deleteDirectory(input);
         FileUtils.deleteDirectory(output);
-        return xml;
+        return new XMLDocument(xml).nodes("/spec").get(0).toString();
     }
 
 }
