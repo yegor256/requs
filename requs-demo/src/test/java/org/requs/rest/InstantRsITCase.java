@@ -29,42 +29,54 @@
  */
 package org.requs.rest;
 
-import com.rexsl.mock.HttpHeadersMocker;
-import com.rexsl.mock.UriInfoMocker;
-import com.rexsl.test.JaxbConverter;
-import com.rexsl.test.XhtmlMatchers;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
-import org.hamcrest.MatcherAssert;
+import com.jcabi.http.Request;
+import com.jcabi.http.request.JdkRequest;
+import com.jcabi.http.response.RestResponse;
+import com.jcabi.http.response.XmlResponse;
+import java.net.HttpURLConnection;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 /**
- * Test case for {@link IndexRs}.
+ * Integration case for {@link InstantRs}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-public final class IndexRsTest {
+public final class InstantRsITCase {
 
     /**
-     * IndexRs can render front page.
+     * Tomcat home.
+     */
+    private static final String HOME = System.getProperty("tomcat.home");
+
+    /**
+     * InstantRs can process a Requs spec.
      * @throws Exception If some problem inside
      */
     @Test
-    public void rendersFrontPage() throws Exception {
-        final IndexRs res = new IndexRs();
-        res.setUriInfo(new UriInfoMocker().mock());
-        res.setHttpHeaders(new HttpHeadersMocker().mock());
-        final SecurityContext sec = Mockito.mock(SecurityContext.class);
-        res.setSecurityContext(sec);
-        final Response response = res.index();
-        MatcherAssert.assertThat(
-            JaxbConverter.the(response.getEntity()),
-            XhtmlMatchers.hasXPaths(
-                "/page/millis",
-                "/page/version/name"
-            )
+    public void processesRequsSpec() throws Exception {
+        final String spec = StringUtils.join(
+            "Fraction is a \"math calculator\".",
+            "Fraction needs:",
+            "numerator as Float, and",
+            "denominator as Float.",
+            "UC1 where User (a user) divides two numbers:",
+            "1. The user creates Fraction (a fraction);",
+            "2. The fraction \"calculates\" Float (a quotient);",
+            "3. The user \"receives results\" using the quotient.",
+            "UC1/2 when \"division by zero\":",
+            "1. Fail since \"denominator can't be zero\".",
+            "UC1/PERF must \"be 700 msec per HTTP request\"."
         );
+        new JdkRequest(InstantRsITCase.HOME)
+            .uri().path("/instant").back()
+            .body().formParam("text", spec).back()
+            .method(Request.POST)
+            .fetch()
+            .as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK)
+            .as(XmlResponse.class)
+            .assertXPath("/xmi");
     }
 
 }

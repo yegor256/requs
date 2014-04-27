@@ -62,7 +62,7 @@ public final class InstantRs extends BaseRs {
      */
     @POST
     @Path("/")
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces(MediaType.TEXT_PLAIN)
     @Loggable(Loggable.INFO)
     public String post(@NotNull @FormParam("text") final String text)
         throws IOException {
