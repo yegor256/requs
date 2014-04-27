@@ -139,7 +139,7 @@
                 <plugin>
                     <artifactId>maven-war-plugin</artifactId>
                     <configuration>
-                        <warSourceExcludes>js/**, css/**, xsl/**</warSourceExcludes>
+                        <warSourceExcludes>js/**, css/**</warSourceExcludes>
                         <archive>
                             <manifestEntries>
                                 <Requs-Version>${project.version}</Requs-Version>
@@ -168,7 +168,7 @@
                             </jsSourceIncludes>
                             <jsEngine>CLOSURE</jsEngine>
                             <nosuffix>true</nosuffix>
-                            <verbose>true</verbose>
+                            <skipMerge>true</skipMerge>
                         </configuration>
                         <goals>
                             <goal>minify</goal>

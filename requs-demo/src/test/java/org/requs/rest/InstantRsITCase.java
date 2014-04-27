@@ -77,7 +77,7 @@ public final class InstantRsITCase {
             .as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
             .as(XmlResponse.class)
-            .assertXPath("/xmi");
+            .assertXPath("/spec/types/type[name='Fraction']");
     }
 
 }
