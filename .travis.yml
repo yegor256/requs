@@ -4,6 +4,5 @@ branches:
     - master
 env:
   global:
-    - MAVEN_OPTS="-XX:MaxPermSize=2g -Xmx4g"
-    - JAVA_OPTS="-XX:MaxPermSize=2g -Xmx4g"
+    - MAVEN_OPTS="-XX:MaxPermSize=512m -Xmx2g"
 script: mvn clean install -Pqulice --batch-mode --errors
