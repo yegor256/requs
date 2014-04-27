@@ -137,7 +137,7 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <artifactId>maven-deloy-plugin</artifactId>
+                    <artifactId>maven-deploy-plugin</artifactId>
                     <configuration>
                         <skip>true</skip>
                     </configuration>
