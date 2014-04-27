@@ -22,7 +22,11 @@
                         function () {
                             $('.md').each(
                                 function () {
-                                    $(this).html(markdown.toHTML($(this).html()));
+                                    $(this).html(
+                                        markdown.toHTML(
+                                            $('<div/>').html($(this).html()).text()
+                                        )
+                                    );
                                 }
                             );
                         }

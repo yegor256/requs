@@ -331,9 +331,6 @@ class_name returns [String ret]
     :
     CAMEL
     { $ret = $CAMEL.text; }
-    |
-    SUD
-    { $ret = $SUD.text; }
     ;
 
 variable returns [String ret]
