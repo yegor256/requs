@@ -31,16 +31,13 @@ package org.requs;
 
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
-import com.jcabi.xml.XSLDocument;
 import com.rexsl.test.XhtmlMatchers;
 import java.io.File;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.CharEncoding;
 import org.hamcrest.MatcherAssert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.phandom.Phandom;
 
 /**
  * Test case for {@link org.requs.Compiler}.
@@ -77,19 +74,6 @@ public final class CompilerTest {
                 "processing-instruction('xml-stylesheet')",
                 "/spec/types/type[name='Employee']"
             )
-        );
-        MatcherAssert.assertThat(
-            XhtmlMatchers.xhtml(
-                new Phandom(
-                    new XSLDocument(
-                        FileUtils.readFileToString(
-                            new File(output, "main.xsl"),
-                            CharEncoding.UTF_8
-                        )
-                    ).transform(srs).nodes("/*").get(0).toString()
-                ).dom()
-            ),
-            XhtmlMatchers.hasXPath("//p")
         );
     }
 

@@ -29,8 +29,6 @@
  */
 package org.requs.facet.nfr;
 
-import com.jcabi.xml.XMLDocument;
-import com.jcabi.xml.XSLDocument;
 import com.rexsl.test.XhtmlMatchers;
 import java.io.IOException;
 import org.apache.commons.io.IOUtils;
@@ -79,30 +77,6 @@ public final class NfrsTest {
                 "/nfrs/nfr[@id='UC1/UX']/method",
                 "/nfrs/nfr[@id='UC5.5/MTBF']/name"
             )
-        );
-    }
-
-    /**
-     * Nfrs can render XML into XHTML.
-     * @throws IOException If fails
-     */
-    @Test
-    public void rendersXhtml() throws IOException {
-        final Docs docs = new Docs.InDir(this.temp.newFolder());
-        docs.get("index.xml").write("<index/>");
-        docs.get("main.xml").write(
-            IOUtils.toString(
-                this.getClass().getResourceAsStream("example.xml")
-            )
-        );
-        new Nfrs().touch(docs);
-        final String html = XSLDocument
-            .make(this.getClass().getResourceAsStream("nfrs.xsl"))
-            .transform(new XMLDocument(docs.get("nfrs.xml").read()))
-            .nodes("/*").get(0).toString();
-        MatcherAssert.assertThat(
-            XhtmlMatchers.xhtml(html),
-            XhtmlMatchers.hasXPaths("//xhtml:td")
         );
     }
 

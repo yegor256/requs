@@ -29,8 +29,6 @@
  */
 package org.requs.facet.tbd;
 
-import com.jcabi.xml.XMLDocument;
-import com.jcabi.xml.XSLDocument;
 import com.rexsl.test.XhtmlMatchers;
 import java.io.IOException;
 import org.apache.commons.io.IOUtils;
@@ -78,30 +76,6 @@ public final class TbdsTest {
                 "/tbds[count(tbd)=8]",
                 "/tbds/tbd[@id='TBD-39a52f4e9']"
             )
-        );
-    }
-
-    /**
-     * Tbds can render XML into XHTML.
-     * @throws IOException If fails
-     */
-    @Test
-    public void rendersXhtml() throws IOException {
-        final Docs docs = new Docs.InDir(this.temp.newFolder());
-        docs.get("index.xml").write("<index/>");
-        docs.get("main.xml").write(
-            IOUtils.toString(
-                this.getClass().getResourceAsStream("example.xml")
-            )
-        );
-        new Tbds().touch(docs);
-        final String html = XSLDocument
-            .make(this.getClass().getResourceAsStream("tbds.xsl"))
-            .transform(new XMLDocument(docs.get("tbds.xml").read()))
-            .nodes("/*").get(0).toString();
-        MatcherAssert.assertThat(
-            XhtmlMatchers.xhtml(html),
-            XhtmlMatchers.hasXPaths("//xhtml:td")
         );
     }
 

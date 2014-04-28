@@ -1,42 +1,30 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns="http://www.w3.org/1999/xhtml" version="2.0"
-    exclude-result-prefixes="xs">
-    <xsl:output method="xml"/>
-    <xsl:strip-space elements="*" />
-    <xsl:template match="/">
-        <html lang="en">
-            <head>
-                <title>SRS</title>
-                <meta name="description" content="SRS"/>
-                <meta name="keywords" content="SRS, software requirements specification"/>
-                <meta name="author" content="requs"/>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <link rel="stylesheet" type="text/css" href="requs.css"/>
-                <style type="text/css">
-                    .intro { font-size: 0.9em; color: #999; }
-                    .type { margin-top: 3em; }
-                    .slots { margin-left: 1em; margin-top: 1em; }
-                    .method { margin-top: 1em; margin-left: 1em; }
-                    .steps { margin-top: 1em; margin-left: 1em }
-                    .step { margin-top: 0.25em; }
-                    .nfrs { margin-top: 1em; margin-left: 1em }
-                    .nfr { margin-top: 0.25em; }
-                    .exception { margin-left: 1em; margin-top: 1em; margin-bottom: 1em; }
-                    .informal { color: #666; }
-                    .warning { color: #d9534f; }
-                    .crud { color: #5cb85c; }
-                    .label { margin-left: 0.5em; color: white; border-radius: .25em; font-size: 0.85em; padding: .1em .3em .15em; }
-                    .attribute { background-color: #999; }
-                    .sealed { background-color: #5cb85c; }
-                    .seal { background-color: #5bc0de; }
-                </style>
-            </head>
-            <body>
-                <xsl:apply-templates select="spec"/>
-            </body>
-        </html>
+    xmlns="http://www.w3.org/1999/xhtml" version="2.0">
+    <xsl:include href="_layout.xsl"/>
+    <xsl:template name="head">
+        <title>SRS</title>
+        <style type="text/css">
+            .intro { font-size: 0.9em; color: #999; }
+            .type { margin-top: 3em; }
+            .slots { margin-left: 1em; margin-top: 1em; }
+            .method { margin-top: 1em; margin-left: 1em; }
+            .steps { margin-top: 1em; margin-left: 1em }
+            .step { margin-top: 0.25em; }
+            .nfrs { margin-top: 1em; margin-left: 1em }
+            .nfr { margin-top: 0.25em; }
+            .exception { margin-left: 1em; margin-top: 1em; margin-bottom: 1em; }
+            .informal { color: #666; }
+            .warning { color: #d9534f; }
+            .crud { color: #5cb85c; }
+            .label { margin-left: 0.5em; color: white; border-radius: .25em; font-size: 0.85em; padding: .1em .3em .15em; }
+            .attribute { background-color: #999; }
+            .sealed { background-color: #5cb85c; }
+            .seal { background-color: #5bc0de; }
+        </style>
+    </xsl:template>
+    <xsl:template name="body">
+        <xsl:apply-templates select="/spec"/>
     </xsl:template>
     <xsl:template match="spec">
         <p class="intro">
