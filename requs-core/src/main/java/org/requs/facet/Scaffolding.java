@@ -73,7 +73,7 @@ public final class Scaffolding implements Facet {
             throw new IllegalStateException(ex);
         }
         index.name("toc", "Table of Contents, List of all facets");
-        final String[] files = {"index.xsl", "requs.css", "_layout.xsl"};
+        final String[] files = {"index.xsl", "requs.css", "layout.xsl"};
         for (final String file : files) {
             docs.get(file).write(
                 IOUtils.toString(
