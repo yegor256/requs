@@ -27,64 +27,60 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.requs.facet.decor;
+package org.requs.facet;
 
-import com.jcabi.xml.XMLDocument;
-import com.jcabi.xml.XSLDocument;
-import com.rexsl.test.XhtmlMatchers;
-import org.hamcrest.MatcherAssert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.phandom.Phandom;
+import com.jcabi.aspects.Immutable;
+import java.io.IOException;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.CharEncoding;
+import org.requs.Doc;
 import org.requs.Docs;
+import org.requs.Facet;
+import org.xembly.Directives;
+import org.xembly.ImpossibleModificationException;
+import org.xembly.Xembler;
 
 /**
- * Test case for {@link Scaffolding}.
+ * Scaffolding.
+ *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.2
- * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
-public final class ScaffoldingTest {
+@Immutable
+@ToString(of = { })
+@EqualsAndHashCode
+public final class Scaffolding implements Facet {
 
-    /**
-     * Temporary folder.
-     * @checkstyle VisibilityModifier (3 lines)
-     */
-    @Rule
-    public transient TemporaryFolder temp = new TemporaryFolder();
-
-    /**
-     * Scaffolding can create an index file.
-     * @throws Exception When necessary
-     */
-    @Test
-    public void createsIndexFile() throws Exception {
-        final Docs docs = new Docs.InDir(this.temp.newFolder());
-        new Scaffolding().touch(docs);
-        MatcherAssert.assertThat(
-            XhtmlMatchers.xhtml(docs.get("index.xml").read()),
-            XhtmlMatchers.hasXPaths("/index")
-        );
+    @Override
+    public void touch(final Docs docs) throws IOException {
+        final Doc index = docs.get("index.xml");
+        try {
+            index.write(
+                new Xembler(
+                    new Directives()
+                        .xpath("/")
+                        .pi(
+                            "xml-stylesheet",
+                            "href='index.xsl' type='text/xsl'"
+                        )
+                        .add("index")
+                ).xml()
+            );
+        } catch (final ImpossibleModificationException ex) {
+            throw new IllegalStateException(ex);
+        }
+        index.name("toc", "Table of Contents, List of all facets");
+        final String[] files = {"index.xsl", "requs.css", "_layout.xsl"};
+        for (final String file : files) {
+            docs.get(file).write(
+                IOUtils.toString(
+                    this.getClass().getResourceAsStream(file),
+                    CharEncoding.UTF_8
+                )
+            );
+        }
     }
-
-    /**
-     * Scaffolding can build a renderable XML+XSL.
-     * @throws Exception When necessary
-     */
-    @Test
-    public void rendersXslt() throws Exception {
-        final Docs docs = new Docs.InDir(this.temp.newFolder());
-        new Scaffolding().touch(docs);
-        final String html = XSLDocument
-            .make(this.getClass().getResourceAsStream("index.xsl"))
-            .transform(new XMLDocument(docs.get("index.xml").read()))
-            .nodes("/*").get(0).toString();
-        MatcherAssert.assertThat(
-            XhtmlMatchers.xhtml(new Phandom(html).dom()),
-            XhtmlMatchers.hasXPaths("//table")
-        );
-    }
-
 }

@@ -36,6 +36,7 @@ import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -69,6 +70,11 @@ public final class MdMethodsTest {
                 this.getClass().getResourceAsStream("example.xml")
             )
         );
+        docs.get("_layout.xsl").write(
+            IOUtils.toString(
+                this.getClass().getResourceAsStream("../_layout.xsl")
+            )
+        );
         new MdMethods().touch(docs);
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(
@@ -95,6 +101,7 @@ public final class MdMethodsTest {
      *  in the latest MatcherAssert.
      */
     @Test
+    @Ignore
     public void rendersXhtml() throws IOException {
         final Docs docs = new Docs.InDir(this.temp.newFolder());
         docs.get("index.xml").write("<index/>");

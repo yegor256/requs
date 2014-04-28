@@ -27,65 +27,64 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.requs.facet.decor;
+package org.requs.facet;
 
-import com.jcabi.aspects.Immutable;
-import java.io.IOException;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.CharEncoding;
-import org.requs.Doc;
+import com.jcabi.xml.XMLDocument;
+import com.jcabi.xml.XSLDocument;
+import com.rexsl.test.XhtmlMatchers;
+import org.hamcrest.MatcherAssert;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.phandom.Phandom;
 import org.requs.Docs;
-import org.requs.Facet;
-import org.xembly.Directives;
-import org.xembly.ImpossibleModificationException;
-import org.xembly.Xembler;
 
 /**
- * Scaffolding.
- *
+ * Test case for {@link Scaffolding}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.2
+ * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
-@Immutable
-@ToString(of = { })
-@EqualsAndHashCode
-public final class Scaffolding implements Facet {
+public final class ScaffoldingTest {
 
-    @Override
-    public void touch(final Docs docs) throws IOException {
-        final Doc index = docs.get("index.xml");
-        try {
-            index.write(
-                new Xembler(
-                    new Directives()
-                        .xpath("/")
-                        .pi(
-                            "xml-stylesheet",
-                            "href='index.xsl' type='text/xsl'"
-                        )
-                        .add("index")
-                ).xml()
-            );
-        } catch (final ImpossibleModificationException ex) {
-            throw new IllegalStateException(ex);
-        }
-        index.name("toc", "Table of Contents, List of all facets");
-        // @checkstyle MultipleStringLiteralsCheck (1 line)
-        docs.get("index.xsl").write(
-            IOUtils.toString(
-                this.getClass().getResourceAsStream("index.xsl"),
-                CharEncoding.UTF_8
-            )
-        );
-        // @checkstyle MultipleStringLiteralsCheck (1 line)
-        docs.get("requs.css").write(
-            IOUtils.toString(
-                this.getClass().getResourceAsStream("requs.css"),
-                CharEncoding.UTF_8
-            )
+    /**
+     * Temporary folder.
+     * @checkstyle VisibilityModifier (3 lines)
+     */
+    @Rule
+    public transient TemporaryFolder temp = new TemporaryFolder();
+
+    /**
+     * Scaffolding can create an index file.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void createsIndexFile() throws Exception {
+        final Docs docs = new Docs.InDir(this.temp.newFolder());
+        new Scaffolding().touch(docs);
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(docs.get("index.xml").read()),
+            XhtmlMatchers.hasXPaths("/index")
         );
     }
+
+    /**
+     * Scaffolding can build a renderable XML+XSL.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void rendersXslt() throws Exception {
+        final Docs docs = new Docs.InDir(this.temp.newFolder());
+        new Scaffolding().touch(docs);
+        final String html = XSLDocument
+            .make(this.getClass().getResourceAsStream("index.xsl"))
+            .transform(new XMLDocument(docs.get("index.xml").read()))
+            .nodes("/*").get(0).toString();
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(new Phandom(html).dom()),
+            XhtmlMatchers.hasXPaths("//table")
+        );
+    }
+
 }
