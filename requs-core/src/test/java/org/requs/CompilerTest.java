@@ -29,12 +29,14 @@
  */
 package org.requs;
 
+import com.jcabi.log.VerboseProcess;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import com.rexsl.test.XhtmlMatchers;
 import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -75,6 +77,44 @@ public final class CompilerTest {
                 "/spec/types/type[name='Employee']"
             )
         );
+    }
+
+    /**
+     * Compiler can produce renderable XML+XSL resources.
+     * @throws Exception When necessary
+     */
+    @Test
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    public void producesRenderableXml() throws Exception {
+        final File input = this.temp.newFolder();
+        final File output = this.temp.newFolder();
+        FileUtils.write(
+            new File(input, "a.req"),
+            "Employee is a \"user of this perfect system\"."
+        );
+        new Compiler(input, output).compile();
+        final String[] names = {"main", "tbds", "index", "nfrs", "markdown"};
+        for (final String name : names) {
+            final String html = String.format("%s.html", name);
+            MatcherAssert.assertThat(
+                new VerboseProcess(
+                    new ProcessBuilder()
+                        .directory(output)
+                        .command(
+                            "xsltproc",
+                            "-o",
+                            html,
+                            String.format("%s.xml", name)
+                        )
+                        .start()
+                ).stdout(),
+                Matchers.isEmptyString()
+            );
+            MatcherAssert.assertThat(
+                FileUtils.readFileToString(new File(output, html)),
+                XhtmlMatchers.hasXPath("//xhtml:body")
+            );
+        }
     }
 
 }
