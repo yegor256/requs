@@ -34,6 +34,7 @@ import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import com.jcabi.xml.XSL;
 import com.jcabi.xml.XSLDocument;
+import com.petebevin.markdown.MarkdownProcessor;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -99,7 +100,8 @@ public final class MdMethods implements Facet {
             dirs.add("method")
                 .attr("id", name)
                 .attr("file", path)
-                .set(matcher.group(1)).up();
+                .add("markdown").set(matcher.group(1)).up()
+                .add("html").set(MdMethods.html(matcher.group(1))).up().up();
         }
         final Doc index = docs.get("markdown.xml");
         try {
@@ -115,6 +117,15 @@ public final class MdMethods implements Facet {
                 CharEncoding.UTF_8
             )
         );
+    }
+
+    /**
+     * Convert markdown to HTML.
+     * @param markdown Markdown
+     * @return HTML
+     */
+    private static String html(final String markdown) {
+        return new MarkdownProcessor().markdown(markdown);
     }
 
 }

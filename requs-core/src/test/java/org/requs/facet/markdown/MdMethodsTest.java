@@ -67,11 +67,6 @@ public final class MdMethodsTest {
                 this.getClass().getResourceAsStream("example.xml")
             )
         );
-        docs.get("_layout.xsl").write(
-            IOUtils.toString(
-                this.getClass().getResourceAsStream("../_layout.xsl")
-            )
-        );
         new MdMethods().touch(docs);
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(
