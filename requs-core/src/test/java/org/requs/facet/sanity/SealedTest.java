@@ -69,4 +69,35 @@ public final class SealedTest {
         );
     }
 
+    /**
+     * Sealed can ignore non-important elements.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void ignoresNonImportantElements() throws Exception {
+        final Docs docs = Mockito.mock(Docs.class);
+        final Doc doc = Mockito.mock(Doc.class);
+        Mockito.doReturn(doc).when(docs).get(Mockito.anyString());
+        Mockito.doReturn(
+            StringUtils.join(
+                "<spec><method><id>UC1</id>",
+                "<steps><step><number>55</number></step></steps></method>",
+                "<method><id>UC2</id>",
+                "<attributes>hey</attributes>",
+                "<mentioned>1</mentioned>",
+                "<steps>\n<step><number>55</number>",
+                "<mentioned>3</mentioned>  </step>\n</steps>",
+                "</method></spec>"
+            )
+        ).when(doc).read();
+        new Sealed().touch(docs);
+        Mockito.verify(doc).write(
+            Mockito.argThat(
+                XhtmlMatchers.<String>hasXPath(
+                    "/spec[method[id='UC1']/@seal = method[id='UC2']/@seal]"
+                )
+            )
+        );
+    }
+
 }
