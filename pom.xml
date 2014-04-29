@@ -95,7 +95,7 @@
     <scm>
         <connection>scm:git:github.com:teamed/requs.git</connection>
         <developerConnection>scm:git:github.com:teamed/requs.git</developerConnection>
-        <url>https://github.com/tpc2/teamed</url>
+        <url>https://github.com/teamed/requs</url>
     </scm>
     <ciManagement>
         <system>rultor</system>
