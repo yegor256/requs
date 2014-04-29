@@ -1,6 +1,6 @@
 <img src="http://img.requs.org/logo-384x128.png" width="192" height="64" />
 
-[![Build Status](https://travis-ci.org/tpc2/requs.svg?branch=master)](https://travis-ci.org/tpc2/requs)
+[![Build Status](https://travis-ci.org/teamed/requs.svg?branch=master)](https://travis-ci.org/teamed/requs)
 
 More details are here: [www.requs.org](http://www.requs.org/)
 
@@ -39,7 +39,7 @@ Requg syntax is explained [here](http://www.requs.org/syntax.html).
 ## Questions?
 
 If you have any questions about the framework, or something doesn't work as expected,
-please [submit an issue here](https://github.com/tpc2/requs/issues/new).
+please [submit an issue here](https://github.com/teamed/requs/issues/new).
 
 ## How to contribute?
 

@@ -47,7 +47,7 @@
         <menu name="Overview">
             <item name="Introduction" href="index.html"/>
             <item name="Grammar" href="syntax.html"/>
-            <item name="Release History" href="https://github.com/tpc2/requs/releases"/>
+            <item name="Release History" href="https://github.com/teamed/requs/releases"/>
         </menu>
         <menu ref="modules"/>
         <menu ref="reports"/>
