@@ -36,11 +36,12 @@ import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Tv;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
+import com.jcabi.xml.XSL;
+import com.jcabi.xml.XSLDocument;
 import java.io.IOException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.requs.Doc;
 import org.requs.Docs;
 import org.requs.Facet;
@@ -59,6 +60,13 @@ import org.xembly.Xembler;
 @ToString(of = { })
 @EqualsAndHashCode
 public final class Sealed implements Facet {
+
+    /**
+     * Strip XSL.
+     */
+    private static final XSL STRIP = XSLDocument.make(
+        Sealed.class.getResourceAsStream("strip.xsl")
+    );
 
     @Override
     public void touch(final Docs docs) throws IOException {
@@ -89,12 +97,7 @@ public final class Sealed implements Facet {
         return DigestUtils.md5Hex(
             Sets.newHashSet(
                 Iterables.transform(
-                    xml.nodes(
-                        StringUtils.join(
-                            "*[not(name()='attributes')",
-                            " and not(name()='mentioned')]"
-                        )
-                    ),
+                    Sealed.STRIP.transform(xml).nodes("/*"),
                     Functions.toStringFunction()
                 )
             ).toString()
