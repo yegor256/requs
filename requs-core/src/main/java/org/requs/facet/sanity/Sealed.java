@@ -29,6 +29,8 @@
  */
 package org.requs.facet.sanity;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Tv;
 import com.jcabi.log.Logger;
@@ -41,6 +43,7 @@ import java.util.Collection;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.requs.Doc;
 import org.requs.Docs;
@@ -94,8 +97,15 @@ public final class Sealed implements Facet {
      * @return Seal as a string
      */
     private static String seal(final XML xml) {
-        final Collection<String> parts =
-            Sealed.STRIP.transform(xml).xpath("//*/text()");
+        final Collection<String> parts = Collections2.transform(
+            Sealed.STRIP.transform(xml).xpath("//*/text()"),
+            new Function<String, String>() {
+                @Override
+                public String apply(final String input) {
+                    return StringEscapeUtils.escapeJava(input);
+                }
+            }
+        );
         final String seal = DigestUtils.md5Hex(
             StringUtils.join(parts, "")
         ).substring(0, Tv.SIX);
