@@ -102,7 +102,9 @@ public final class Sealed implements Facet {
             new Function<String, String>() {
                 @Override
                 public String apply(final String input) {
-                    return StringEscapeUtils.escapeJava(input);
+                    return StringEscapeUtils.escapeJava(
+                        input.replaceAll("\\s+", " ")
+                    );
                 }
             }
         );

@@ -65,7 +65,7 @@ public final class SealedTest {
         Mockito.verify(doc).write(
             Mockito.argThat(
                 XhtmlMatchers.<String>hasXPaths(
-                    "/spec/method[@seal='d2f806']"
+                    "/spec/method[@seal='6365ab']"
                 )
             )
         );
@@ -83,8 +83,10 @@ public final class SealedTest {
         Mockito.doReturn(
             StringUtils.join(
                 "<spec><method><id>UC1</id>",
+                "<info>line\n\n\nfirst</info>",
                 "<steps><step><number>55</number></step></steps></method>",
                 "<method><id>UC2</id>",
+                "<info>line \r\t\n first</info>",
                 "<attributes>hey</attributes>",
                 "<mentioned>1</mentioned>",
                 "<steps>\n<step><number>55</number>",
@@ -97,7 +99,7 @@ public final class SealedTest {
             Mockito.argThat(
                 XhtmlMatchers.<String>hasXPaths(
                     "/spec[method[id='UC1']/@seal = method[id='UC2']/@seal]",
-                    "/spec/method[@seal='b53b3a']"
+                    "/spec/method[@seal='96823f']"
                 )
             )
         );

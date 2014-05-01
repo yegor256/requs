@@ -51,6 +51,11 @@ import org.junit.rules.TemporaryFolder;
 public final class CompilerTest {
 
     /**
+     * XSTLPROC binary.
+     */
+    private static final String BIN = "xsltproc";
+
+    /**
      * Temporary folder.
      * @checkstyle VisibilityModifier (3 lines)
      */
@@ -103,7 +108,7 @@ public final class CompilerTest {
                     new ProcessBuilder()
                         .directory(output)
                         .command(
-                            "xsltproc",
+                            CompilerTest.BIN,
                             "-o",
                             html,
                             String.format("%s.xml", name)
@@ -127,7 +132,7 @@ public final class CompilerTest {
         try {
             ver = new VerboseProcess(
                 new ProcessBuilder()
-                    .command("xsltproc", "-version")
+                    .command(CompilerTest.BIN, "-version")
                     .redirectErrorStream(true)
             ).stdoutQuietly();
         } catch (final IllegalStateException ex) {
