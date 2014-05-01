@@ -87,14 +87,7 @@ public final class CompilerTest {
     @Test
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public void producesRenderableXml() throws Exception {
-        Assume.assumeThat(
-            new VerboseProcess(
-                new ProcessBuilder()
-                    .command("xsltproc", "-version")
-                    .redirectErrorStream(true)
-            ).stdoutQuietly(),
-            Matchers.containsString("libxml")
-        );
+        CompilerTest.assumeXsltproc();
         final File input = this.temp.newFolder();
         final File output = this.temp.newFolder();
         FileUtils.write(
@@ -124,6 +117,26 @@ public final class CompilerTest {
                 XhtmlMatchers.hasXPath("//xhtml:body")
             );
         }
+    }
+
+    /**
+     * Assume that it is installed.
+     */
+    private static void assumeXsltproc() {
+        String ver;
+        try {
+            ver = new VerboseProcess(
+                new ProcessBuilder()
+                    .command("xsltproc", "-version")
+                    .redirectErrorStream(true)
+            ).stdoutQuietly();
+        } catch (final IllegalStateException ex) {
+            ver = "";
+        }
+        Assume.assumeThat(
+            ver,
+            Matchers.containsString("libxml")
+        );
     }
 
 }
