@@ -37,6 +37,7 @@ import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -86,6 +87,14 @@ public final class CompilerTest {
     @Test
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public void producesRenderableXml() throws Exception {
+        Assume.assumeThat(
+            new VerboseProcess(
+                new ProcessBuilder()
+                    .command("xsltproc", "-version")
+                    .redirectErrorStream(true)
+            ).stdoutQuietly(),
+            Matchers.containsString("libxml")
+        );
         final File input = this.temp.newFolder();
         final File output = this.temp.newFolder();
         FileUtils.write(
