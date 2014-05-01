@@ -55,7 +55,7 @@ public final class SealedTest {
         Mockito.doReturn(
             StringUtils.join(
                 "<spec><method><id>test</id>",
-                "<attributes>hey</attributes>",
+                "<attributes>hello</attributes>",
                 "<info><informal>a\t\r\n\nff&#x20ac;</informal></info>",
                 "<mentioned>1</mentioned></method></spec>"
             )
