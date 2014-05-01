@@ -29,9 +29,6 @@
  */
 package org.requs.facet.sanity;
 
-import com.google.common.base.Functions;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Tv;
 import com.jcabi.xml.XML;
@@ -42,6 +39,7 @@ import java.io.IOException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.requs.Doc;
 import org.requs.Docs;
 import org.requs.Facet;
@@ -95,12 +93,10 @@ public final class Sealed implements Facet {
      */
     private static String seal(final XML xml) {
         return DigestUtils.md5Hex(
-            Sets.newHashSet(
-                Iterables.transform(
-                    Sealed.STRIP.transform(xml).nodes("/*"),
-                    Functions.toStringFunction()
-                )
-            ).toString()
+            StringUtils.join(
+                Sealed.STRIP.transform(xml).xpath("//*/text()"),
+                ""
+            )
         ).substring(0, Tv.SIX);
     }
 
