@@ -31,11 +31,13 @@ package org.requs.facet.sanity;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Tv;
+import com.jcabi.log.Logger;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import com.jcabi.xml.XSL;
 import com.jcabi.xml.XSLDocument;
 import java.io.IOException;
+import java.util.Collection;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -92,12 +94,13 @@ public final class Sealed implements Facet {
      * @return Seal as a string
      */
     private static String seal(final XML xml) {
-        return DigestUtils.md5Hex(
-            StringUtils.join(
-                Sealed.STRIP.transform(xml).xpath("//*/text()"),
-                ""
-            )
+        final Collection<String> parts =
+            Sealed.STRIP.transform(xml).xpath("//*/text()");
+        final String seal = DigestUtils.md5Hex(
+            StringUtils.join(parts, "")
         ).substring(0, Tv.SIX);
+        Logger.debug(Sealed.class, "seal %s: %s", seal, parts);
+        return seal;
     }
 
 }
