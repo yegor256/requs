@@ -59,8 +59,16 @@ Image includes: PNG content, name, and size.
 
   Let's consider a bigger example of a type <<<Image>>>:
 
+In describing type properties we are using word "using" or "needs":
 +--
 Image includes:
+  PNG content as File "a binary content as defined by ISO-15948",
+  name as "a unique alpha-numeric name of the image",
+  size as "the total number of bytes in PNG content".
++--
+  or
+  +--
+Image needs:
   PNG content as File "a binary content as defined by ISO-15948",
   name as "a unique alpha-numeric name of the image",
   size as "the total number of bytes in PNG content".
