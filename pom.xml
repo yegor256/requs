@@ -37,7 +37,7 @@
     </parent>
     <groupId>org.requs</groupId>
     <artifactId>requs</artifactId>
-    <version requs="yes">1.0-SNAPSHOT</version>
+    <version requs="yes">2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>requs</name>
     <modules>
