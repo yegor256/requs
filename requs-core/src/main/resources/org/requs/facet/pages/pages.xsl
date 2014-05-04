@@ -18,10 +18,10 @@
             <a>
                 <xsl:attribute name="href">
                     <xsl:text>pages/</xsl:text>
-                    <xsl:value-of select="title"/>
+                    <xsl:value-of select="@title"/>
                     <xsl:text>.html</xsl:text>
                 </xsl:attribute>
-                <xsl:value-of select="title"/>
+                <xsl:value-of select="@title"/>
             </a>
         </li>
     </xsl:template>
