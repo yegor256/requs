@@ -40,6 +40,23 @@
             <xsl:value-of select="requs/revision"/>
             <xsl:text>.</xsl:text>
         </p>
+        <p>
+            <xsl:text>Facets: </xsl:text>
+            <xsl:for-each select="facets/facet">
+                <xsl:if test="position() &gt; 1">
+                    <xsl:text>, </xsl:text>
+                </xsl:if>
+                <a>
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="@file"/>
+                    </xsl:attribute>
+                    <xsl:attribute name="title">
+                        <xsl:value-of select="."/>
+                    </xsl:attribute>
+                    <xsl:value-of select="@id"/>
+                </a>
+            </xsl:for-each>
+        </p>
         <xsl:apply-templates select="types/type"/>
     </xsl:template>
     <xsl:template match="types/type">
