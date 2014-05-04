@@ -294,4 +294,6 @@ Any text you wish, in Markdown format.
 """.
 +--
 
+  Page name should be in CamelCase, as well as type name.
+
   Read on {{{http://daringfireball.net/projects/markdown/syntax}Markdown syntax}}.
