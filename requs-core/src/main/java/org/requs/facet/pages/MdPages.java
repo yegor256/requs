@@ -102,7 +102,9 @@ public final class MdPages implements Facet {
     private static String html(final String markdown) {
         return StringUtils.join(
             "<!DOCTYPE html><html xmlns='http://www.w3.org/1999/xhtml'>",
-            "<head></head><body>",
+            "<head>",
+            "<link rel='stylesheet' type='text/css' href='requs.css'></link>",
+            "</head><body>",
             new MarkdownProcessor().markdown(markdown),
             "</body></html>"
         );
