@@ -41,6 +41,7 @@ import org.requs.facet.Scaffolding;
 import org.requs.facet.Transform;
 import org.requs.facet.ambiguity.Overall;
 import org.requs.facet.decor.Aggregate;
+import org.requs.facet.decor.Catalog;
 import org.requs.facet.markdown.MdMethods;
 import org.requs.facet.nfr.NFRs;
 import org.requs.facet.sanity.Sealed;
@@ -111,6 +112,7 @@ public final class Compiler {
             new Overall(),
             new TBDs(),
             new NFRs(),
+            new Catalog()
         };
         final Docs docs = new Docs.InDir(new File(this.output));
         for (final Facet facet : facets) {
