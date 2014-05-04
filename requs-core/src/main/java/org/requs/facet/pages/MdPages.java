@@ -38,6 +38,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.requs.Doc;
 import org.requs.Docs;
@@ -73,6 +74,7 @@ public final class MdPages implements Facet {
             final String title = page.xpath("title/text()").get(0);
             docs.get(String.format("pages/%s.html", title)).write(
                 MdPages.html(
+                    title,
                     page.xpath("info/informal/text()").get(0)
                 )
             );
@@ -96,15 +98,24 @@ public final class MdPages implements Facet {
 
     /**
      * Convert markdown to HTML.
+     * @param title Title of it
      * @param markdown Markdown
      * @return HTML
      */
-    private static String html(final String markdown) {
+    private static String html(final String title, final String markdown) {
         return StringUtils.join(
             "<!DOCTYPE html><html xmlns='http://www.w3.org/1999/xhtml'>",
             "<head>",
-            "<link rel='stylesheet' type='text/css' href='requs.css'></link>",
+            String.format(
+                "<title>%s</title>",
+                StringEscapeUtils.escapeHtml4(title)
+            ),
+            "<link rel='stylesheet' type='text/css' href='../requs.css'/>",
             "</head><body>",
+            String.format(
+                "<h1>%s</h1>",
+                StringEscapeUtils.escapeHtml4(title)
+            ),
             new MarkdownProcessor().markdown(markdown),
             "</body></html>"
         );
