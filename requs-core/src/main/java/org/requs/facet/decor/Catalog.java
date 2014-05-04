@@ -62,6 +62,7 @@ public final class Catalog implements Facet {
             .xpath("/spec").add("facets");
         for (final XML facet : index.nodes("/index/facets/facet")) {
             dirs.add("facet")
+                .attr("id", facet.xpath("@id").get(0))
                 .attr("file", facet.xpath("file/text()").get(0))
                 .set(facet.xpath("description/text()").get(0)).up();
         }

@@ -77,6 +77,8 @@ public final class CatalogTest {
             XhtmlMatchers.xhtml(main.read()),
             XhtmlMatchers.hasXPaths(
                 "/spec/facets[count(facet)=2]",
+                "/spec/facets/facet[@id='abc']",
+                "/spec/facets/facet[@id='fff']",
                 "/spec/facets/facet[@file='first.xml' and .='the text']",
                 "/spec/facets/facet[@file='second.xml' and .='oops']"
             )
