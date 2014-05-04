@@ -112,7 +112,7 @@ public final class Compiler {
             new Overall(),
             new TBDs(),
             new NFRs(),
-            new Catalog()
+            new Catalog(),
         };
         final Docs docs = new Docs.InDir(new File(this.output));
         for (final Facet facet : facets) {
