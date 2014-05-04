@@ -29,53 +29,52 @@
  */
 package org.requs.facet.nfr;
 
-import com.rexsl.test.XhtmlMatchers;
+import com.jcabi.aspects.Immutable;
+import com.jcabi.xml.XMLDocument;
+import com.jcabi.xml.XSL;
+import com.jcabi.xml.XSLDocument;
 import java.io.IOException;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.apache.commons.io.IOUtils;
-import org.hamcrest.MatcherAssert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.apache.commons.lang3.CharEncoding;
+import org.requs.Doc;
 import org.requs.Docs;
+import org.requs.Facet;
 
 /**
- * Test case for {@link Nfrs}.
+ * NFRs.
+ *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.5
- * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
-public final class NfrsTest {
+@Immutable
+@ToString(of = { })
+@EqualsAndHashCode
+public final class NFRs implements Facet {
 
     /**
-     * Temporary folder.
-     * @checkstyle VisibilityModifier (3 lines)
+     * XSL to find NFRs.
      */
-    @Rule
-    public transient TemporaryFolder temp = new TemporaryFolder();
+    private static final XSL FIND = XSLDocument.make(
+        NFRs.class.getResourceAsStream("find.xsl")
+    );
 
-    /**
-     * Nfrs can find NFRs.
-     * @throws IOException If fails
-     */
-    @Test
-    public void findsNfrs() throws IOException {
-        final Docs docs = new Docs.InDir(this.temp.newFolder());
-        docs.get("index.xml").write("<index/>");
-        docs.get("main.xml").write(
-            IOUtils.toString(
-                this.getClass().getResourceAsStream("example.xml")
-            )
+    @Override
+    public void touch(final Docs docs) throws IOException {
+        final Doc index = docs.get("nfrs.xml");
+        index.write(
+            NFRs.FIND.transform(
+                new XMLDocument(docs.get("main.xml").read())
+            ).toString()
         );
-        new Nfrs().touch(docs);
-        MatcherAssert.assertThat(
-            XhtmlMatchers.xhtml(
-                docs.get("nfrs.xml").read()
-            ),
-            XhtmlMatchers.hasXPaths(
-                "/nfrs[count(nfr)=2]",
-                "/nfrs/nfr[@id='UC1/UX']/method",
-                "/nfrs/nfr[@id='UC5.5/MTBF']/name"
+        index.name("nfr", "Non-Functional Requirements");
+        // @checkstyle MultipleStringLiteralsCheck (1 line)
+        docs.get("nfrs.xsl").write(
+            IOUtils.toString(
+                this.getClass().getResourceAsStream("nfrs.xsl"),
+                CharEncoding.UTF_8
             )
         );
     }

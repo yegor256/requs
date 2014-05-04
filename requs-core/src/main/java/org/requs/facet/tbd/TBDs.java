@@ -29,52 +29,52 @@
  */
 package org.requs.facet.tbd;
 
-import com.rexsl.test.XhtmlMatchers;
+import com.jcabi.aspects.Immutable;
+import com.jcabi.xml.XMLDocument;
+import com.jcabi.xml.XSL;
+import com.jcabi.xml.XSLDocument;
 import java.io.IOException;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.apache.commons.io.IOUtils;
-import org.hamcrest.MatcherAssert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.apache.commons.lang3.CharEncoding;
+import org.requs.Doc;
 import org.requs.Docs;
+import org.requs.Facet;
 
 /**
- * Test case for {@link Tbds}.
+ * TBDs.
+ *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.3
- * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
-public final class TbdsTest {
+@Immutable
+@ToString(of = { })
+@EqualsAndHashCode
+public final class TBDs implements Facet {
 
     /**
-     * Temporary folder.
-     * @checkstyle VisibilityModifier (3 lines)
+     * XSL to find TBDs.
      */
-    @Rule
-    public transient TemporaryFolder temp = new TemporaryFolder();
+    private static final XSL FIND = XSLDocument.make(
+        TBDs.class.getResourceAsStream("find.xsl")
+    );
 
-    /**
-     * Tbds can find TBDs.
-     * @throws IOException If fails
-     */
-    @Test
-    public void findsTbds() throws IOException {
-        final Docs docs = new Docs.InDir(this.temp.newFolder());
-        docs.get("index.xml").write("<index/>");
-        docs.get("main.xml").write(
-            IOUtils.toString(
-                this.getClass().getResourceAsStream("example.xml")
-            )
+    @Override
+    public void touch(final Docs docs) throws IOException {
+        final Doc index = docs.get("tbds.xml");
+        index.write(
+            TBDs.FIND.transform(
+                new XMLDocument(docs.get("main.xml").read())
+            ).toString()
         );
-        new Tbds().touch(docs);
-        MatcherAssert.assertThat(
-            XhtmlMatchers.xhtml(
-                docs.get("tbds.xml").read()
-            ),
-            XhtmlMatchers.hasXPaths(
-                "/tbds[count(tbd)=8]",
-                "/tbds/tbd[@id='TBD-39a52f4e9']"
+        index.name("tbd", "TBDs (to be determined)");
+        // @checkstyle MultipleStringLiteralsCheck (1 line)
+        docs.get("tbds.xsl").write(
+            IOUtils.toString(
+                this.getClass().getResourceAsStream("tbds.xsl"),
+                CharEncoding.UTF_8
             )
         );
     }

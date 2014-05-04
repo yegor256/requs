@@ -27,54 +27,54 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.requs.facet.nfr;
+package org.requs.facet.tbd;
 
-import com.jcabi.aspects.Immutable;
-import com.jcabi.xml.XMLDocument;
-import com.jcabi.xml.XSL;
-import com.jcabi.xml.XSLDocument;
+import com.rexsl.test.XhtmlMatchers;
 import java.io.IOException;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.CharEncoding;
-import org.requs.Doc;
+import org.hamcrest.MatcherAssert;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.requs.Docs;
-import org.requs.Facet;
 
 /**
- * NFRs.
- *
+ * Test case for {@link TBDs}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @since 1.5
+ * @since 1.3
+ * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
-@Immutable
-@ToString(of = { })
-@EqualsAndHashCode
-public final class Nfrs implements Facet {
+public final class TBDsTest {
 
     /**
-     * XSL to find NFRs.
+     * Temporary folder.
+     * @checkstyle VisibilityModifier (3 lines)
      */
-    private static final XSL FIND = XSLDocument.make(
-        Nfrs.class.getResourceAsStream("find.xsl")
-    );
+    @Rule
+    public transient TemporaryFolder temp = new TemporaryFolder();
 
-    @Override
-    public void touch(final Docs docs) throws IOException {
-        final Doc index = docs.get("nfrs.xml");
-        index.write(
-            Nfrs.FIND.transform(
-                new XMLDocument(docs.get("main.xml").read())
-            ).toString()
-        );
-        index.name("nfr", "Non-Functional Requirements");
-        // @checkstyle MultipleStringLiteralsCheck (1 line)
-        docs.get("nfrs.xsl").write(
+    /**
+     * Tbds can find TBDs.
+     * @throws IOException If fails
+     */
+    @Test
+    public void findsTbds() throws IOException {
+        final Docs docs = new Docs.InDir(this.temp.newFolder());
+        docs.get("index.xml").write("<index/>");
+        docs.get("main.xml").write(
             IOUtils.toString(
-                this.getClass().getResourceAsStream("nfrs.xsl"),
-                CharEncoding.UTF_8
+                this.getClass().getResourceAsStream("example.xml")
+            )
+        );
+        new TBDs().touch(docs);
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(
+                docs.get("tbds.xml").read()
+            ),
+            XhtmlMatchers.hasXPaths(
+                "/tbds[count(tbd)=8]",
+                "/tbds/tbd[@id='TBD-39a52f4e9']"
             )
         );
     }
