@@ -194,9 +194,9 @@
     </xs:complexType>
     <xs:complexType name="page">
         <xs:all>
+            <xs:element name="title" type="class"/>
             <xs:element name="mentioned" type="mentioned"/>
-            <xs:element name="name" type="class"/>
-            <xs:element name="markdown" type="xs:string"/>
+            <xs:element name="info" type="info" minOccurs="0"/>
         </xs:all>
     </xs:complexType>
     <xs:element name="spec">

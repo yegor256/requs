@@ -1,13 +1,13 @@
 <sample>
     <spec>
         User is "a human being".
-        Vision: """ this is a test """.
+        Vision: """ this is a "test" """.
     </spec>
     <xpaths>
         <xpath>/spec/errors[not(error)]</xpath>
-        <xpath>/spec/methods[count(method)=0]</xpath>
+        <xpath>/spec[not(methods)]</xpath>
         <xpath>/spec/types[count(type)=1]</xpath>
         <xpath>/spec/pages[count(page)=1]</xpath>
-        <xpath>/spec/pages/page[name='Vision' and markdown=' this is a test '</xpath>
+        <xpath>/spec/pages/page[title='Vision' and info/informal=' this is a "test" ']</xpath>
     </xpaths>
 </sample>

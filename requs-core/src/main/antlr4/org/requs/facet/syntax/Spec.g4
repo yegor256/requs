@@ -379,11 +379,11 @@ nfr_declaration
 
 page_declaration
     :
-    WORD
+    CAMEL
     COLON
     INFORMAL
     {
-        Page page = this.onto.page($WORD.text);
+        Page page = this.onto.page($CAMEL.text);
         page.explain($INFORMAL.text);
         page.mention(_input.LT(1).getLine());
     }
@@ -432,7 +432,7 @@ INFORMAL:
         |
         '"""' .+? '"""'
     )
-    { this.setText(StringUtils.strip(this.getText(), '"')); }
+    { this.setText(StringUtils.strip(this.getText(), "\"")); }
     ;
 SPACE
     :

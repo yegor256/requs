@@ -30,74 +30,49 @@
 package org.requs.facet.syntax.ontology;
 
 import com.jcabi.aspects.Loggable;
-import com.jcabi.manifests.Manifests;
-import java.util.Date;
-import java.util.Iterator;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.xembly.Directive;
 import org.xembly.Directives;
 
 /**
- * Xembly Ontology.
+ * Xembly page.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @since 1.1
+ * @since 1.7
  */
 @ToString
 @EqualsAndHashCode
 @Loggable(Loggable.DEBUG)
-public final class XeOntology implements Ontology, Iterable<Directive> {
+final class XePage implements Page {
 
     /**
-     * All directives.
+     * Mentioned helper.
      */
-    private final transient Directives dirs = new Directives()
-        .add("spec")
-        .attr("time", DateFormatUtils.ISO_DATETIME_FORMAT.format(new Date()))
-        .add("requs")
-        .add("version").set(Manifests.read("Requs-Version")).up()
-        .add("revision").set(Manifests.read("Requs-Revision")).up()
-        .add("date").set(Manifests.read("Requs-Date")).up().up();
+    private final transient Mentioned mentioned;
 
-    @Override
-    public Type type(final String name) {
-        // @checkstyle MultipleStringLiterals (1 line)
-        this.dirs.xpath("/spec").strict(1).addIf("types")
-            .xpath(String.format("/spec/types[not(type/name='%s')]", name))
-            .add("type").add("name").set(name);
-        return new XeType(
-            this.dirs,
-            String.format("/spec/types/type[name='%s']", name)
-        );
+    /**
+     * Informal helper.
+     */
+    private final transient Informal informal;
+
+    /**
+     * Ctor.
+     * @param directives Directives to extend
+     * @param xpath XPath to start with
+     */
+    XePage(final Directives directives, final String xpath) {
+        this.mentioned = new XeMentioned(directives, xpath);
+        this.informal = new XeInformal(directives, xpath);
     }
 
     @Override
-    public Method method(final String name) {
-        this.dirs.xpath("/spec").strict(1).addIf("methods")
-            .xpath(String.format("/spec/methods[not(method/id='%s') ]", name))
-            .add("method").add("id").set(name);
-        return new XeMethod(
-            this.dirs,
-            String.format("/spec/methods/method[id='%s']", name)
-        );
+    public void explain(final String info) {
+        this.informal.explain(info);
     }
 
     @Override
-    public Page page(final String name) {
-        this.dirs.xpath("/spec").strict(1).addIf("pages")
-            .xpath(String.format("/spec/pages[not(page/title='%s') ]", name))
-            .add("page").add("title").set(name);
-        return new XePage(
-            this.dirs,
-            String.format("/spec/pages/page[title='%s']", name)
-        );
-    }
-
-    @Override
-    public Iterator<Directive> iterator() {
-        return this.dirs.iterator();
+    public void mention(final int where) {
+        this.mentioned.mention(where);
     }
 }
