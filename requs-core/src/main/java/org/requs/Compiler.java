@@ -44,6 +44,7 @@ import org.requs.facet.decor.Aggregate;
 import org.requs.facet.decor.Catalog;
 import org.requs.facet.markdown.MdMethods;
 import org.requs.facet.nfr.NFRs;
+import org.requs.facet.pages.MdPages;
 import org.requs.facet.sanity.Sealed;
 import org.requs.facet.syntax.AntlrFacet;
 import org.requs.facet.tbd.TBDs;
@@ -109,6 +110,7 @@ public final class Compiler {
             new Transform("sanity/types-check.xsl"),
             new Transform("sanity/seals-check.xsl"),
             new MdMethods(),
+            new MdPages(),
             new Overall(),
             new TBDs(),
             new NFRs(),
