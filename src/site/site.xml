@@ -31,7 +31,7 @@
     </skin>
     <bannerLeft>
         <name>requs</name>
-        <src>http://img.requs.org/logo-.png</src>
+        <src>http://img.requs.org/logo-128x128.png</src>
         <href>http://www.requs.org</href>
         <width>64</width>
         <height>64</height>
@@ -39,14 +39,14 @@
     <googleAnalyticsAccountId>UA-1963507-31</googleAnalyticsAccountId>
     <body>
         <head>
-            <link href="http://img.requs.org/favicon.gif" rel="shortcut icon"/>
+            <link href="http://img.requs.org/logo-128x128.png" rel="shortcut icon"/>
         </head>
         <breadcrumbs>
             <item name="requs.org" href="http://www.requs.org"/>
         </breadcrumbs>
         <menu name="Overview">
             <item name="Introduction" href="index.html"/>
-            <item name="Grammar" href="syntax.html"/>
+            <item name="Requs Syntax" href="syntax.html"/>
             <item name="Release History" href="https://github.com/teamed/requs/releases"/>
         </menu>
         <menu ref="modules"/>

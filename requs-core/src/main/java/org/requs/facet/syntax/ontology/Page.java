@@ -30,42 +30,12 @@
 package org.requs.facet.syntax.ontology;
 
 /**
- * Ontology.
- *
- * <p>The ontology is write-only. This is how you're supposed to use it:
- *
- * <pre>
- * Ontology onto = // make it
- * Type type = onto.type("Employee");
- * type.mention("3-5");
- * type.explain("a person working in a Company");
- * </pre>
+ * Page in Markdown.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @since 1.1
+ * @since 1.7
  */
-public interface Ontology {
-
-    /**
-     * Found new type.
-     * @param name Name of it
-     * @return Type
-     */
-    Type type(String name);
-
-    /**
-     * Find method.
-     * @param name Name of it
-     * @return Method
-     */
-    Method method(String name);
-
-    /**
-     * Find page.
-     * @param name Name of it
-     * @return Page
-     */
-    Page page(String name);
+public interface Page extends Mentioned, Informal {
 
 }

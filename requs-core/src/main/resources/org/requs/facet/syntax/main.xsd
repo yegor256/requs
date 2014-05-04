@@ -192,6 +192,13 @@
             </xs:element>
         </xs:all>
     </xs:complexType>
+    <xs:complexType name="page">
+        <xs:all>
+            <xs:element name="mentioned" type="mentioned"/>
+            <xs:element name="name" type="class"/>
+            <xs:element name="markdown" type="xs:string"/>
+        </xs:all>
+    </xs:complexType>
     <xs:element name="spec">
         <xs:complexType>
             <xs:all>
@@ -227,6 +234,13 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
+                <xs:element name="pages" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="page" type="page" maxOccurs="unbounded" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
             </xs:all>
             <xsl:attribute name="time" use="required" type="xs:dateTime"/>
         </xs:complexType>
@@ -236,6 +250,10 @@
         </xs:unique>
         <xs:unique name="uniqueTypeName">
             <xs:selector xpath="./types/type" />
+            <xs:field xpath="name" />
+        </xs:unique>
+        <xs:unique name="uniquePageName">
+            <xs:selector xpath="./pages/page" />
             <xs:field xpath="name" />
         </xs:unique>
         <xs:unique name="uniqueMethodSignature">

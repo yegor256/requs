@@ -5,7 +5,7 @@
 
 System is "a simple calculator app".
 
-Fraction is "a math calculator".
+Fraction is """a math calculator""".
 
 Fraction needs:
   numerator as Float, and
@@ -17,7 +17,7 @@ UC1 where User (a user) divides two numbers:
   3. The user "receives results" using the quotient.
 
 UC1/2 when "division by zero":
-  1. Fail since "denominator can't be zero".
+  1. Fail since """denominator can't be zero""".
 
 User includes: name, address-s, photo-s?, SSN-?.
 
@@ -36,3 +36,9 @@ UC5 where User reads important information of System:
     informal use case".
 
 UC5/UX must "be amazing for 90% of our users".
+
+Vision: """
+  This is Markdown.
+
+  <p>This is also</p>
+""".

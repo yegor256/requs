@@ -33,6 +33,7 @@ grammar Spec;
     import org.requs.facet.syntax.ontology.Flow;
     import org.requs.facet.syntax.ontology.Method;
     import org.requs.facet.syntax.ontology.Ontology;
+    import org.requs.facet.syntax.ontology.Page;
     import org.requs.facet.syntax.ontology.Slot;
     import org.requs.facet.syntax.ontology.Step;
     import org.requs.facet.syntax.ontology.Type;
@@ -72,6 +73,8 @@ clause
     attribute_setting
     |
     nfr_declaration
+    |
+    page_declaration
     ;
 
 class_declaration
@@ -374,6 +377,18 @@ nfr_declaration
     }
     ;
 
+page_declaration
+    :
+    WORD
+    COLON
+    INFORMAL
+    {
+        Page page = this.onto.page($WORD.text);
+        page.explain($INFORMAL.text);
+        page.mention(_input.LT(1).getLine());
+    }
+    ;
+
 word
     :
     WORD
@@ -412,8 +427,12 @@ INCLUDES: ( 'includes' | 'needs' | 'contains' | 'requires' | 'has' );
 CAMEL: ( 'A' .. 'Z' ( 'a' .. 'z' )+ )+;
 WORD: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )+;
 INFORMAL:
-    '"' ('\\"' | ~'"')* '"'
-    { this.setText(this.getText().substring(1, this.getText().length() - 1).replace("\\\"", "\"")); }
+    (
+        '"' ('\\"' | ~'"')* '"'
+        |
+        '"""' .+? '"""'
+    )
+    { this.setText(StringUtils.strip(this.getText(), '"')); }
     ;
 SPACE
     :

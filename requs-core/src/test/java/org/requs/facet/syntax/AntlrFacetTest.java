@@ -174,6 +174,7 @@ public final class AntlrFacetTest {
         final String[] files = {
             "samples/nfr.xml",
             "samples/method.xml",
+            "samples/pages.xml",
         };
         for (final String file : files) {
             final XML xml = new XMLDocument(
