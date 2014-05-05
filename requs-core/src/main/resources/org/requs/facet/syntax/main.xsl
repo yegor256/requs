@@ -186,7 +186,7 @@
     </xsl:template>
     <xsl:template match="exception">
         <div class="exception">
-            <xsl:text>when &quot;</xsl:text>
+            <xsl:text>if/when &quot;</xsl:text>
             <xsl:value-of select="when"/>
             <xsl:text>&quot;:</xsl:text>
             <xsl:apply-templates select="steps"/>
