@@ -213,7 +213,9 @@ method_declaration
             }
         )?
     )?
+    INFORMAL*
     COLON
+    INFORMAL*
     steps[method]
     ;
 
@@ -292,6 +294,7 @@ step [Flow flow]
         variable
         { if ($variable.ret == null) throw new SyntaxException("invalid variable"); }
         { step.object($variable.ret); }
+        INFORMAL*
         step_sig=signature
         { if ($step_sig.ret == null) throw new SyntaxException("invalid signature"); }
         { step.sign($step_sig.ret); }
@@ -300,6 +303,7 @@ step [Flow flow]
             { if ($result.ret == null) throw new SyntaxException("invalid result"); }
             { step.result($result.ret); }
         )?
+        INFORMAL*
         using[flow, step]?
         |
         FAIL
@@ -314,6 +318,7 @@ step [Flow flow]
         { step.object(Flow.SELF); }
         { step.sign($step_informal.ret); }
     )
+    INFORMAL*
     ;
 
 using [Flow flow, Step stp]
