@@ -50,6 +50,7 @@
             <item name="Release History" href="https://github.com/teamed/requs/releases"/>
         </menu>
         <menu name="Features">
+            <item name="Types and Slots" href="./feature-types.html"/>
             <item name="Attributes and Seals" href="./feature-attributes.html"/>
         </menu>
         <menu ref="modules"/>
