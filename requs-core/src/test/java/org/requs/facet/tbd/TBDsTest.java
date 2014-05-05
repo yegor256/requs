@@ -73,7 +73,8 @@ public final class TBDsTest {
             XhtmlMatchers.xhtml(docs.get("tbds.xml").read()),
             XhtmlMatchers.hasXPaths(
                 "/tbds[count(tbd)=8]",
-                "/tbds/tbd[@id='TBD-39a52f4e9']"
+                "/tbds/tbd[@id='TBD-c0bf5']",
+                "/tbds/tbd[@id='TBD-247ba']"
             )
         );
     }
@@ -100,6 +101,7 @@ public final class TBDsTest {
             XhtmlMatchers.xhtml(docs.get("tbds.xml").read()),
             XhtmlMatchers.hasXPaths(
                 "/tbds[count(tbd)=2]",
+                "/tbds/tbd[@id = 'TBD-f777a']",
                 "/tbds[tbd[1]/@id = tbd[2]/@id]"
             )
         );

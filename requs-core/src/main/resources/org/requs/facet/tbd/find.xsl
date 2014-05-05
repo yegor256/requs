@@ -18,7 +18,7 @@
         <xsl:for-each select="method[info/informal]">
             <tbd>
                 <xsl:attribute name="id">
-                    <xsl:value-of select="r:identifier(concat(../../id, ':', info/informal))"/>
+                    <xsl:value-of select="r:identifier(id)"/>
                 </xsl:attribute>
                 <subject>
                     <xsl:value-of select="id"/>
@@ -52,7 +52,7 @@
         <xsl:for-each select="method/steps/step[starts-with(signature,'&quot;')]">
             <tbd>
                 <xsl:attribute name="id">
-                    <xsl:value-of select="r:identifier(concat(../../id, '/', number, ':', signature))"/>
+                    <xsl:value-of select="r:identifier(concat(../../id, '/', number))"/>
                 </xsl:attribute>
                 <subject>
                     <xsl:value-of select="../../id"/>
@@ -72,6 +72,6 @@
     </xsl:template>
     <xsl:function name="r:identifier" as="xs:string">
         <xsl:param name="text" as="xs:string"/>
-        <xsl:value-of select="concat('TBD-', substring(digest:md5Hex(xs:string($text)), 24))"/>
+        <xsl:value-of select="concat('TBD-', substring(digest:md5Hex(xs:string($text)), 28))"/>
     </xsl:function>
 </xsl:stylesheet>
