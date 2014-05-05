@@ -45,9 +45,12 @@
             <item name="requs.org" href="http://www.requs.org"/>
         </breadcrumbs>
         <menu name="Overview">
-            <item name="Introduction" href="index.html"/>
-            <item name="Requs Syntax" href="syntax.html"/>
+            <item name="Introduction" href="./index.html"/>
+            <item name="Requs Syntax" href="./syntax.html"/>
             <item name="Release History" href="https://github.com/teamed/requs/releases"/>
+        </menu>
+        <menu name="Features">
+            <item name="Attributes and Seals" href="./feature-attributes.html"/>
         </menu>
         <menu ref="modules"/>
         <menu ref="reports"/>
