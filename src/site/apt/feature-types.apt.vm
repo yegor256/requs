@@ -1,0 +1,58 @@
+ ------
+ Types
+ ------
+ Yegor Bugayenko
+ ------
+ 2014-05-05
+ ------
+
+~~ This source file is subject to the new BSD license that is bundled
+~~ with this package in the file LICENSE.txt. It is also available
+~~ through the world-wide-web at this URL: http://www.requs.org/LICENSE.txt
+~~ If you did not receive a copy of the license and are unable to
+~~ obtain it through the world-wide-web, please send an email
+~~ to license@requs.org so we can send you a copy immediately.
+~~
+~~ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+~~ "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+~~ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+~~ FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+~~ COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+~~ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+~~ BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+~~ OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+~~ AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+~~ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+~~ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+~~ OF SUCH DAMAGE.
+
+Types
+
+  Type in Requs is a creature similar to a class in
+  {{{http://en.wikipedia.org/wiki/Object-oriented_programming}object-oriented programming}}.
+  Type has slots and parent types:
+
++--
+Image is File.
+Image has:
+  width as "pixels",
+  height as "pixels", and
+  format as "PNG, GIF, JPEG, etc".
++--
+
+  Type names are in {{{http://en.wikipedia.org/wiki/CamelCase}CamelCase Notation}}.
+  For example, these words are valid type names:
+  <<<Image>>>, <<<ImageFile>>>, <<<ImageInCustomFormat>>>,
+  <<<GIFImage>>>, <<<PNG>>>.
+
+* Slots
+
+  A type may have a number of slots. A slot is something similar
+  to a private property of a Java class, for example. The syntax is simple,
+  in {{{http://en.wikipedia.org/wiki/Backus%E2%80%93Naur_Form}BNF}}:
+
++--
+<type> ::= <camel> ( "has" | "needs" | "requires" | "includes" ) ":" <slots> "."
+<slots> ::= <slot> (  ( "," | ";" | "and" ) <slot> )*
+<slot> ::= <name> ( "as" <informal> )?
++--
