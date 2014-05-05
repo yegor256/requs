@@ -32,6 +32,7 @@ package org.requs.facet.tbd;
 import com.rexsl.test.XhtmlMatchers;
 import java.io.IOException;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -55,7 +56,7 @@ public final class TBDsTest {
     public transient TemporaryFolder temp = new TemporaryFolder();
 
     /**
-     * Tbds can find TBDs.
+     * TBDs can find TBDs.
      * @throws IOException If fails
      */
     @Test
@@ -69,12 +70,37 @@ public final class TBDsTest {
         );
         new TBDs().touch(docs);
         MatcherAssert.assertThat(
-            XhtmlMatchers.xhtml(
-                docs.get("tbds.xml").read()
-            ),
+            XhtmlMatchers.xhtml(docs.get("tbds.xml").read()),
             XhtmlMatchers.hasXPaths(
                 "/tbds[count(tbd)=8]",
                 "/tbds/tbd[@id='TBD-39a52f4e9']"
+            )
+        );
+    }
+
+    /**
+     * TBDs can produce content-independent identifiers.
+     * @throws IOException If fails
+     */
+    @Test
+    public void identifiersDontDependOnContent() throws IOException {
+        final Docs docs = new Docs.InDir(this.temp.newFolder());
+        docs.get("index.xml").write("<index/>");
+        docs.get("main.xml").write(
+            StringUtils.join(
+                "<spec><methods><method><id>UC1</id>",
+                "<info><informal>aa</informal></info></method>",
+                "<method><id>UC1</id>",
+                "<info><informal>bb</informal></info></method>",
+                "</methods></spec>"
+            )
+        );
+        new TBDs().touch(docs);
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(docs.get("tbds.xml").read()),
+            XhtmlMatchers.hasXPaths(
+                "/tbds[count(tbd)=2]",
+                "/tbds[tbd[1]/@id = tbd[2]/@id]"
             )
         );
     }
