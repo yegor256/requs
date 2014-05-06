@@ -32,7 +32,7 @@ package org.requs.rest;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import com.jcabi.http.response.XmlResponse;
-import com.rexsl.test.html.NoBrokenLinks;
+import com.jcabi.matchers.NoBrokenLinks;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import javax.ws.rs.core.HttpHeaders;

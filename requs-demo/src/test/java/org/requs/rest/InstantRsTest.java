@@ -29,9 +29,9 @@
  */
 package org.requs.rest;
 
+import com.jcabi.matchers.XhtmlMatchers;
 import com.rexsl.mock.HttpHeadersMocker;
 import com.rexsl.mock.UriInfoMocker;
-import com.rexsl.test.XhtmlMatchers;
 import javax.ws.rs.core.SecurityContext;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;

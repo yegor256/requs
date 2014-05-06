@@ -119,9 +119,13 @@ ffffff:UC3 is a must.
   remove the seal from the document.
 
   <<<UC3>>> doesn't have a seal any more. It is clear for the project
-  manager, that it needs to be implemented and delivered to the
+  manager, that this use case needs to be implemented and delivered to the
   product owner again.
 
   Thus, being a system analyst working with the SRS, be aware that
   if any seal doesn't match its expected value after your changes,
   you should just remove the seal.
+
+* Who Seals Use Cases?
+
+  An obvious question is

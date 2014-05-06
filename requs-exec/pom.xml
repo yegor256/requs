@@ -27,9 +27,6 @@
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright (c) 2009-2014, requs.org.
- * @version $Id$
  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -89,12 +86,6 @@
             <version>4.6</version>
         </dependency>
         <dependency>
-            <groupId>com.rexsl</groupId>
-            <artifactId>rexsl-test</artifactId>
-            <version>${rexsl.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>net.sourceforge.saxon</groupId>
             <artifactId>saxon</artifactId>
             <scope>runtime</scope>
@@ -104,6 +95,11 @@
             <artifactId>saxon</artifactId>
             <classifier>dom</classifier>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-matchers</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
@@ -123,9 +119,9 @@
                         <version>0.7.8</version>
                     </dependency>
                     <dependency>
-                        <groupId>com.rexsl</groupId>
-                        <artifactId>rexsl-test</artifactId>
-                        <version>${rexsl.version}</version>
+                        <groupId>com.jcabi</groupId>
+                        <artifactId>jcabi-matchers</artifactId>
+                        <version>1.1</version>
                     </dependency>
                     <dependency>
                         <groupId>org.hamcrest</groupId>

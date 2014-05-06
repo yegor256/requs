@@ -29,7 +29,7 @@
  */
 package org.requs.exec;
 
-import com.rexsl.test.XhtmlMatchers;
+import com.jcabi.matchers.XhtmlMatchers;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;

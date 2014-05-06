@@ -29,7 +29,7 @@
  */
 package org.requs.facet.tbd;
 
-import com.rexsl.test.XhtmlMatchers;
+import com.jcabi.matchers.XhtmlMatchers;
 import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;

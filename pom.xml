@@ -33,7 +33,7 @@
     <parent>
         <groupId>com.jcabi</groupId>
         <artifactId>parent</artifactId>
-        <version>0.18.1</version>
+        <version>0.19.1</version>
     </parent>
     <groupId>org.requs</groupId>
     <artifactId>requs</artifactId>
@@ -108,7 +108,6 @@
         </site>
     </distributionManagement>
     <properties>
-        <rexsl.version>0.13.2</rexsl.version>
         <saxon.version>9.1.0.8</saxon.version>
     </properties>
     <dependencyManagement>

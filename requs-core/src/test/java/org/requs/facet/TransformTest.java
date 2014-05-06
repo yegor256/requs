@@ -29,7 +29,7 @@
  */
 package org.requs.facet;
 
-import com.rexsl.test.XhtmlMatchers;
+import com.jcabi.matchers.XhtmlMatchers;
 import java.io.IOException;
 import javax.xml.transform.Source;
 import org.apache.commons.lang3.StringUtils;

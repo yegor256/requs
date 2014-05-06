@@ -29,9 +29,9 @@
  */
 package org.requs.facet.syntax;
 
+import com.jcabi.matchers.XhtmlMatchers;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
-import com.rexsl.test.XhtmlMatchers;
 import java.io.IOException;
 import java.util.Collection;
 import javax.xml.transform.Source;

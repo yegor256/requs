@@ -95,9 +95,8 @@
             <artifactId>jcabi-xml</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.rexsl</groupId>
-            <artifactId>rexsl-test</artifactId>
-            <version>${rexsl.version}</version>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-matchers</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

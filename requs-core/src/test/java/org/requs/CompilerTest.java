@@ -30,9 +30,9 @@
 package org.requs;
 
 import com.jcabi.log.VerboseProcess;
+import com.jcabi.matchers.XhtmlMatchers;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
-import com.rexsl.test.XhtmlMatchers;
 import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.MatcherAssert;

@@ -29,7 +29,7 @@
  */
 package org.requs.facet.syntax.ontology;
 
-import com.rexsl.test.XhtmlMatchers;
+import com.jcabi.matchers.XhtmlMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.xembly.Xembler;
