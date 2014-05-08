@@ -1,0 +1,12 @@
+<sample>
+    <spec>
+        Test is "a test".
+        "This is an informal text"
+        UC1 where User (a user) saves "a file".
+        UC1 where another User saves.
+        " some user saves something"""...
+    </spec>
+    <xpaths>
+        <xpath>/spec/errors/error</xpath>
+    </xpaths>
+</sample>
