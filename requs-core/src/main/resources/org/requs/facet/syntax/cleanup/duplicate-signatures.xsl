@@ -10,26 +10,31 @@
     <xsl:template match="errors">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
-            <xsl:for-each select="//method[count(signature) &gt; 1]">
-                <error type="duplicate" pos="0">
-                    <xsl:attribute name="line">
-                        <xsl:value-of select="mentioned/where[1]"/>
-                    </xsl:attribute>
-                    <xsl:text>method </xsl:text>
-                    <xsl:value-of select="id"/>
-                    <xsl:text> has multiple declarations: &quot;</xsl:text>
-                    <xsl:value-of select="signature" separator="&quot;, &quot;"/>
-                    <xsl:text>&quot;</xsl:text>
-                </error>
+            <xsl:for-each select="//method">
+                <xsl:variable name="method" select="."/>
+                <xsl:variable name="dups" select="//method[signature=$method/signature and id!=$method/id]"/>
+                <xsl:if test="count($dups) &gt; 0">
+                    <error type="duplicate" pos="0">
+                        <xsl:attribute name="line">
+                            <xsl:value-of select="mentioned/where[1]"/>
+                        </xsl:attribute>
+                        <xsl:text>method </xsl:text>
+                        <xsl:value-of select="id"/>
+                        <xsl:text> has the same signature as </xsl:text>
+                        <xsl:value-of select="$dups/id" separator=", "/>
+                        <xsl:text>: &quot;</xsl:text>
+                        <xsl:value-of select="signature"/>
+                        <xsl:text>&quot;</xsl:text>
+                    </error>
+                </xsl:if>
             </xsl:for-each>
         </xsl:copy>
     </xsl:template>
-    <xsl:template match="method[count(signature) &gt; 1]">
+    <xsl:template match="methods">
         <xsl:copy>
-            <xsl:apply-templates select="(node() except signature)|@*"/>
-            <signature>
-                <xsl:value-of select="signature[1]"/>
-            </signature>
+            <xsl:for-each-group select="method" group-by="signature">
+                <xsl:copy-of select="current-group()[1]"/>
+            </xsl:for-each-group>
         </xsl:copy>
     </xsl:template>
 </xsl:stylesheet>

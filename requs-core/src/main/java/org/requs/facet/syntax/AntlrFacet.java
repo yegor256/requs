@@ -141,6 +141,7 @@ public final class AntlrFacet implements Facet {
             "cleanup/lost-steps.xsl",
             "cleanup/lost-methods.xsl",
             "cleanup/duplicate-signatures.xsl",
+            "cleanup/duplicate-method-signatures.xsl",
             "cleanup/duplicate-method-objects.xsl",
         };
         XML clean = xml;

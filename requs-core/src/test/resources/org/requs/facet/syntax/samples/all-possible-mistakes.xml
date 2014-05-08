@@ -5,10 +5,20 @@
         UC1 where User (a user) saves "a file".
         UC1 where another User saves.
         " some user saves something"""...
+
+        "duplicate signatures of the same method".
         UC5 where User loads file:
         1. User loads.
         UC5 where User loads file:
         1. User loads another file.
+
+        "duplicate signatures of the same methods".
+        UC7 where User loads some file: "something".
+        UC7 where Customer loads some file: "tbd".
+
+        "duplicate signatures of the different methods".
+        UC9 where User saves good file: "something".
+        UC11 where Customer saves good file: "tbd".
     </spec>
     <xpaths>
         <xpath>/spec/errors/error</xpath>

@@ -86,9 +86,12 @@ final class XeFlow implements Flow {
 
     @Override
     public void binding(final String name, final String type) {
-        this.dirs.xpath(this.start).strict(1).addIf("bindings").add("binding")
-            .add("name").set(name).up()
-            .add("type").set(type).up().up();
+        this.dirs.xpath(this.start).strict(1).addIf("bindings").up().xpath(
+            String.format(
+                "bindings[not(binding[name='%s' and type='%s'])]",
+                name, type
+            )
+        ).add("binding").add("name").set(name).up().add("type").set(type);
     }
 
     @Override
