@@ -49,7 +49,7 @@ import org.xembly.Directives;
 @ToString
 @EqualsAndHashCode
 @Loggable(Loggable.DEBUG)
-public final class XeOntology implements Ontology, Iterable<Directive> {
+public final class XeOntology implements Ontology {
 
     /**
      * All directives.

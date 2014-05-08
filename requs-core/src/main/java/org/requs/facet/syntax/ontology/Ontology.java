@@ -29,6 +29,8 @@
  */
 package org.requs.facet.syntax.ontology;
 
+import org.xembly.Directive;
+
 /**
  * Ontology.
  *
@@ -45,7 +47,7 @@ package org.requs.facet.syntax.ontology;
  * @version $Id$
  * @since 1.1
  */
-public interface Ontology {
+public interface Ontology extends Iterable<Directive> {
 
     /**
      * Found new type.

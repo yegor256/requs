@@ -35,7 +35,6 @@ import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import com.jcabi.xml.XSD;
 import com.jcabi.xml.XSDDocument;
-import com.jcabi.xml.XSL;
 import com.jcabi.xml.XSLDocument;
 import java.io.IOException;
 import lombok.EqualsAndHashCode;
@@ -49,6 +48,7 @@ import org.apache.commons.lang3.CharEncoding;
 import org.requs.Doc;
 import org.requs.Docs;
 import org.requs.Facet;
+import org.requs.facet.syntax.ontology.Ontology;
 import org.requs.facet.syntax.ontology.XeOntology;
 import org.xembly.Directives;
 import org.xembly.ImpossibleModificationException;
@@ -71,20 +71,6 @@ public final class AntlrFacet implements Facet {
      */
     private static final XSD SCHEMA = XSDDocument.make(
         AntlrFacet.class.getResource("main.xsd")
-    );
-
-    /**
-     * XSL to resolve lost methods.
-     */
-    private static final XSL LOST_METHODS = XSLDocument.make(
-        AntlrFacet.class.getResource("lost-methods.xsl")
-    );
-
-    /**
-     * XSL to resolve lost steps.
-     */
-    private static final XSL LOST_STEPS = XSLDocument.make(
-        AntlrFacet.class.getResource("lost-steps.xsl")
     );
 
     @Override
@@ -115,7 +101,7 @@ public final class AntlrFacet implements Facet {
         lexer.addErrorListener(errors);
         parser.removeErrorListeners();
         parser.addErrorListener(errors);
-        final XeOntology onto = new XeOntology();
+        final Ontology onto = new XeOntology();
         parser.setOntology(onto);
         try {
             parser.clauses();
@@ -126,26 +112,44 @@ public final class AntlrFacet implements Facet {
         }
         final XML xml;
         try {
-            xml = new XMLDocument(
-                new Xembler(
-                    new Directives()
-                        .xpath("/")
-                        .pi(
-                            "xml-stylesheet",
-                            "href='main.xsl' type='text/xsl'"
-                        )
-                        .append(onto).append(errors)
-                ).xml()
+            xml = AntlrFacet.cleanup(
+                new XMLDocument(
+                    new Xembler(
+                        new Directives()
+                            .xpath("/")
+                            .pi(
+                                "xml-stylesheet",
+                                "href='main.xsl' type='text/xsl'"
+                            )
+                            .append(onto).append(errors)
+                    ).xml()
+                )
             );
         } catch (final ImpossibleModificationException ex) {
             throw new IllegalStateException(ex);
         }
-        return new StrictXML(
-            AntlrFacet.LOST_METHODS.transform(
-                AntlrFacet.LOST_STEPS.transform(xml)
-            ),
-            AntlrFacet.SCHEMA
-        );
+        return new StrictXML(xml, AntlrFacet.SCHEMA);
+    }
+
+    /**
+     * Cleanup the XML.
+     * @param xml Raw xml after syntax processing
+     * @return Clean XML, compliant to XSD
+     */
+    private static XML cleanup(final XML xml) {
+        final String[] sheets = {
+            "cleanup/lost-steps.xsl",
+            "cleanup/lost-methods.xsl",
+            "cleanup/duplicate-signatures.xsl",
+            "cleanup/duplicate-method-objects.xsl",
+        };
+        XML clean = xml;
+        for (final String sheet : sheets) {
+            clean = XSLDocument.make(
+                AntlrFacet.class.getResourceAsStream(sheet)
+            ).transform(clean);
+        }
+        return clean;
     }
 
 }
