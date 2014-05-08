@@ -60,23 +60,4 @@ public final class XeSignatureTest {
         );
     }
 
-    /**
-     * XeSignature can complain about duplicates.
-     * @throws Exception When necessary
-     */
-    @Test
-    public void complainsAboutDuplicates() throws Exception {
-        final Directives dirs = new Directives().add("s1");
-        final Signature signature = new XeSignature(dirs, "/s1");
-        signature.sign("\"first\"");
-        signature.sign("\"second\"");
-        MatcherAssert.assertThat(
-            XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
-            XhtmlMatchers.hasXPaths(
-                "/s1[count(signature)=1]",
-                "/s1[signature='\"first\"']"
-            )
-        );
-    }
-
 }
