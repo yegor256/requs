@@ -128,4 +128,10 @@ ffffff:UC3 is a must.
 
 * Who Seals Use Cases?
 
-  An obvious question is
+  Seals are supposed to be placed in the SRS by a project manager. Well,
+  not necessarily a PM, but a person who is responsible for changing
+  statuses or priorities of requirements.
+
+  Usually it happens on project milestones, when priorities are set and
+  requirements are baselined.
+
