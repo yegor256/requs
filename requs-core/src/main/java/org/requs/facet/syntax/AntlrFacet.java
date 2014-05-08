@@ -144,6 +144,8 @@ public final class AntlrFacet implements Facet {
             "cleanup/duplicate-method-signatures.xsl",
             "cleanup/duplicate-method-objects.xsl",
             "cleanup/duplicate-method-bindings.xsl",
+            "cleanup/incomplete-steps-object.xsl",
+            "cleanup/incomplete-steps-signature.xsl",
         };
         XML clean = xml;
         for (final String sheet : sheets) {
