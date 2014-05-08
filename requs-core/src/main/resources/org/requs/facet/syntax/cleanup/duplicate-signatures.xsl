@@ -17,8 +17,9 @@
                     </xsl:attribute>
                     <xsl:text>method </xsl:text>
                     <xsl:value-of select="id"/>
-                    <xsl:text> has multiple declarations: </xsl:text>
-                    <xsl:value-of select="signature"/>
+                    <xsl:text> has multiple declarations: &quot;</xsl:text>
+                    <xsl:value-of select="signature" separator="&quot;, &quot;"/>
+                    <xsl:text>&quot;</xsl:text>
                 </error>
             </xsl:for-each>
         </xsl:copy>

@@ -135,6 +135,10 @@
                         </xs:element>
                     </xs:sequence>
                 </xs:complexType>
+                <xs:unique name="uniqueBinding">
+                    <xs:selector xpath="./binding" />
+                    <xs:field xpath="name" />
+                </xs:unique>
             </xs:element>
             <xs:element name="attributes" minOccurs="0">
                 <xs:complexType>

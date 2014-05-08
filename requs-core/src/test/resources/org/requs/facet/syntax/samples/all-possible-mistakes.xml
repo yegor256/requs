@@ -5,6 +5,10 @@
         UC1 where User (a user) saves "a file".
         UC1 where another User saves.
         " some user saves something"""...
+        UC5 where User loads file:
+        1. User loads.
+        UC5 where User loads file:
+        1. User loads another file.
     </spec>
     <xpaths>
         <xpath>/spec/errors/error</xpath>

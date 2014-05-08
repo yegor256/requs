@@ -29,6 +29,7 @@
  */
 package org.requs.facet.syntax.ontology;
 
+import com.jcabi.aspects.Tv;
 import com.jcabi.matchers.XhtmlMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
@@ -36,45 +37,48 @@ import org.xembly.Directives;
 import org.xembly.Xembler;
 
 /**
- * Test case for {@link XeSignature}.
+ * Test case for {@link XeFlow}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.8
  */
-public final class XeSignatureTest {
+public final class XeFlowTest {
 
     /**
-     * XeSignature can sign.
+     * XeFlow can do bindings.
      * @throws Exception When necessary
      */
     @Test
-    public void signsMethod() throws Exception {
-        final Directives dirs = new Directives().add("s");
-        final Signature signature = new XeSignature(dirs, "/s");
-        signature.sign("\"informal one\"");
+    public void manipulatesWithBindings() throws Exception {
+        final Directives dirs = new Directives().add("f");
+        final Flow flow = new XeFlow(dirs, "/f");
+        flow.binding("emp", "Employee");
+        flow.binding("one", "One");
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
-                "/s[signature='\"informal one\"']"
+                "/f/bindings/binding[name='emp' and type='Employee']",
+                "/f/bindings/binding[name='one' and type='One']"
             )
         );
     }
 
     /**
-     * XeSignature can complain about duplicates.
+     * XeFlow can avoid duplicate bindings.
      * @throws Exception When necessary
      */
     @Test
-    public void complainsAboutDuplicates() throws Exception {
-        final Directives dirs = new Directives().add("s1");
-        final Signature signature = new XeSignature(dirs, "/s1");
-        signature.sign("\"first\"");
-        signature.sign("\"second\"");
+    public void avoidsDuplicateBindings() throws Exception {
+        final Directives dirs = new Directives().add("f1");
+        final Flow flow = new XeFlow(dirs, "/f1");
+        for (int idx = 0; idx < Tv.FIVE; ++idx) {
+            flow.binding("a", "alpha");
+        }
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
-                "/s1[count(signature)=1]",
-                "/s1[signature='\"first\"']"
+                "/f1/bindings[count(binding)=1]",
+                "/f1/bindings/binding[name='a' and type='alpha']"
             )
         );
     }

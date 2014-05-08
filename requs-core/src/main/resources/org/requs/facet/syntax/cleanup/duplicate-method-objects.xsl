@@ -17,8 +17,9 @@
                     </xsl:attribute>
                     <xsl:text>method </xsl:text>
                     <xsl:value-of select="id"/>
-                    <xsl:text> has multiple objects: </xsl:text>
-                    <xsl:value-of select="object"/>
+                    <xsl:text> has multiple objects: &quot;</xsl:text>
+                    <xsl:value-of select="object" separator="&quot;, &quot;"/>
+                    <xsl:text>&quot;</xsl:text>
                 </error>
             </xsl:for-each>
         </xsl:copy>
