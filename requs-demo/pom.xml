@@ -33,7 +33,7 @@
     <parent>
         <groupId>org.requs</groupId>
         <artifactId>requs</artifactId>
-        <version>1.7.1</version>
+        <version>1.8</version>
     </parent>
     <artifactId>requs-demo</artifactId>
     <packaging>war</packaging>
