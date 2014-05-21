@@ -1,6 +1,7 @@
 <img src="http://img.requs.org/logo-384x128.png" width="192" height="64" />
 
 [![Build Status](https://travis-ci.org/teamed/requs.svg?branch=master)](https://travis-ci.org/teamed/requs)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.requs/requs/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.requs/requs)
 
 More details are here: [www.requs.org](http://www.requs.org/)
 
