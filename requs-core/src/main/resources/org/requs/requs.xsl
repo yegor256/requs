@@ -17,6 +17,7 @@
                         <xsl:text>//img.requs.org/logo-128x128.png</xsl:text>
                     </xsl:attribute>
                 </link>
+                <style>---css---</style>
                 <title>SRS</title>
             </head>
             <body>

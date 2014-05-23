@@ -163,22 +163,26 @@ public final class Compiler {
     }
 
     /**
-     * Copy static resources.
+     * Copy XSL.
      * @throws IOException If fails
      */
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     private void copy() throws IOException {
-        final String[] files = {"requs.xsl", "requs.css"};
-        for (final String file : files) {
-            FileUtils.write(
-                new File(this.output, file),
+        final String file = "requs.xsl";
+        final String xsl = IOUtils.toString(
+            this.getClass().getResourceAsStream(file),
+            CharEncoding.UTF_8
+        );
+        FileUtils.write(
+            new File(this.output, file),
+            xsl.replace(
+                "---css---",
                 IOUtils.toString(
-                    this.getClass().getResourceAsStream(file),
+                    this.getClass().getResourceAsStream("requs.css"),
                     CharEncoding.UTF_8
-                ),
-                CharEncoding.UTF_8
-            );
-        }
+                )
+            ),
+            CharEncoding.UTF_8
+        );
     }
 
     /**
