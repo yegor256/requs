@@ -37,6 +37,11 @@ th {
 }
 h1 {
     margin-top: 2em;
+    font-size: 1.4em;
+}
+h2 {
+    margin-top: 2em;
+    font-size: 1.2em;
 }
 li {
     margin-left: 2em;

@@ -43,7 +43,14 @@
             <xsl:value-of select="requs/revision"/>
             <xsl:text>.</xsl:text>
         </p>
+        <h1><xsl:text>Types and Methods</xsl:text></h1>
         <xsl:apply-templates select="types/type"/>
+        <h1><xsl:text>Markdown Pages</xsl:text></h1>
+        <xsl:apply-templates select="pages/page"/>
+    </xsl:template>
+    <xsl:template match="page">
+        <h2><xsl:value-of select="title"/></h2>
+        <xsl:value-of select="html" disable-output-escaping="yes"/>
     </xsl:template>
     <xsl:template match="types/type">
         <div class="type">
