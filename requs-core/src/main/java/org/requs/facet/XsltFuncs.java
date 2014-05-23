@@ -36,6 +36,8 @@ import com.jcabi.aspects.Tv;
 import com.jcabi.xml.XMLDocument;
 import com.petebevin.markdown.MarkdownProcessor;
 import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -54,6 +56,13 @@ import org.w3c.dom.Node;
 @ToString
 @EqualsAndHashCode
 public final class XsltFuncs {
+
+    /**
+     * Pattern for printing.
+     */
+    private static final Pattern PTN = Pattern.compile(
+        "<x>(.*)</x>", Pattern.DOTALL | Pattern.MULTILINE
+    );
 
     /**
      * Utility class.
@@ -91,6 +100,22 @@ public final class XsltFuncs {
         return DigestUtils.md5Hex(
             StringUtils.join(parts, "")
         ).substring(0, Tv.SIX);
+    }
+
+    /**
+     * Print node content into string.
+     * @param node Node
+     * @return XML
+     */
+    public static String print(final Node node) {
+        final String txt = new XMLDocument(node).nodes("/*").get(0).toString();
+        final Matcher matcher = XsltFuncs.PTN.matcher(txt);
+        if (!matcher.matches()) {
+            throw new IllegalStateException(
+                String.format("invalid XML node: %s", txt)
+            );
+        }
+        return matcher.group(1);
     }
 
 }

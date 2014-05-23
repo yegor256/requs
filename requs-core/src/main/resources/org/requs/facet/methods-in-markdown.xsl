@@ -2,7 +2,8 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:fn="http://www.w3.org/2005/xpath-functions"
-    version="2.0" exclude-result-prefixes="xs fn">
+    xmlns:r="org.requs.facet.XsltFuncs"
+    version="2.0" exclude-result-prefixes="xs fn r">
     <xsl:output method="xml"/>
     <xsl:strip-space elements="*" />
     <xsl:template match="/spec">
@@ -11,103 +12,111 @@
         </xsl:copy>
     </xsl:template>
     <xsl:template match="method">
+        <xsl:variable name="md">
+            <x>
+                <xsl:apply-templates select="." mode="x"/>
+            </x>
+        </xsl:variable>
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
             <markdown>
-                <xsl:text>The following table describes all technical details of Use Case `</xsl:text>
-                <xsl:value-of select="id"/>
-                <xsl:text>`:&#10;&#10;</xsl:text>
-                <table>
-                    <thead>
-                        <tr>
-                            <th><xsl:text>Property</xsl:text></th>
-                            <th><xsl:text>Details</xsl:text></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><xsl:text>ID</xsl:text></td>
-                            <td><xsl:value-of select="id"/></td>
-                        </tr>
-                        <tr>
-                            <td><xsl:text>Signature</xsl:text></td>
-                            <td>
-                                <xsl:call-template name="signature">
-                                    <xsl:with-param name="home" select="."/>
-                                </xsl:call-template>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><xsl:text>Primary</xsl:text></td>
-                            <td><xsl:value-of select="bindings/binding[name='_self']/type"/></td>
-                        </tr>
-                        <tr>
-                            <td><xsl:text>Actors</xsl:text></td>
-                            <td>
-                                <xsl:for-each select="bindings/binding[name!='_self']">
-                                    <xsl:if test="position() != 1">
-                                        <xsl:text>; </xsl:text>
-                                    </xsl:if>
-                                    <code><xsl:value-of select="name"/></code>
-                                    <xsl:text> as </xsl:text>
-                                    <xsl:value-of select="type"/>
-                                </xsl:for-each>
-                            </td>
-                        </tr>
-                        <xsl:if test="info/informal">
-                            <tr>
-                                <td><xsl:text>Brief</xsl:text></td>
-                                <td>
-                                    <xsl:for-each select="info/informal">
-                                        <xsl:if test="position() != 1">
-                                            <br/>
-                                        </xsl:if>
-                                        <xsl:apply-templates select="." mode="x"/>
-                                    </xsl:for-each>
-                                </td>
-                            </tr>
-                        </xsl:if>
-                        <xsl:if test="steps/step">
-                            <tr>
-                                <td><xsl:text>Success Flow</xsl:text></td>
-                                <td>
-                                    <xsl:apply-templates select="steps" mode="x"/>
-                                </td>
-                            </tr>
-                        </xsl:if>
-                        <xsl:if test="nfrs/nfr">
-                            <tr>
-                                <td><xsl:text>NFRs</xsl:text></td>
-                                <td>
-                                    <xsl:apply-templates select="nfrs" mode="x"/>
-                                </td>
-                            </tr>
-                        </xsl:if>
-                    </tbody>
-                </table>
-                <xsl:text>&#10;&#10;Actors taking participation in the Use Case have the following properties:&#10;&#10;</xsl:text>
-                <table>
-                    <thead>
-                        <tr>
-                            <th><xsl:text>Actor</xsl:text></th>
-                            <th><xsl:text>Properties</xsl:text></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <xsl:for-each select="bindings/binding">
-                            <tr>
-                                <td>
-                                    <xsl:value-of select="type"/>
-                                </td>
-                                <td>
-                                    <xsl:apply-templates select="/spec/types/type[name=current()/type]" mode="x"/>
-                                </td>
-                            </tr>
-                        </xsl:for-each>
-                    </tbody>
-                </table>
+                <xsl:value-of select="r:print($md)"/>
             </markdown>
         </xsl:copy>
+    </xsl:template>
+    <xsl:template match="method" mode="x">
+        <xsl:text>The following table describes all technical details of Use Case `</xsl:text>
+        <xsl:value-of select="id"/>
+        <xsl:text>`:&#10;&#10;</xsl:text>
+        <table>
+            <thead>
+                <tr>
+                    <th><xsl:text>Property</xsl:text></th>
+                    <th><xsl:text>Details</xsl:text></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><xsl:text>ID</xsl:text></td>
+                    <td><xsl:value-of select="id"/></td>
+                </tr>
+                <tr>
+                    <td><xsl:text>Signature</xsl:text></td>
+                    <td>
+                        <xsl:call-template name="signature">
+                            <xsl:with-param name="home" select="."/>
+                        </xsl:call-template>
+                    </td>
+                </tr>
+                <tr>
+                    <td><xsl:text>Primary</xsl:text></td>
+                    <td><xsl:value-of select="bindings/binding[name='_self']/type"/></td>
+                </tr>
+                <tr>
+                    <td><xsl:text>Actors</xsl:text></td>
+                    <td>
+                        <xsl:for-each select="bindings/binding[name!='_self']">
+                            <xsl:if test="position() != 1">
+                                <xsl:text>; </xsl:text>
+                            </xsl:if>
+                            <code><xsl:value-of select="name"/></code>
+                            <xsl:text> as </xsl:text>
+                            <xsl:value-of select="type"/>
+                        </xsl:for-each>
+                    </td>
+                </tr>
+                <xsl:if test="info/informal">
+                    <tr>
+                        <td><xsl:text>Brief</xsl:text></td>
+                        <td>
+                            <xsl:for-each select="info/informal">
+                                <xsl:if test="position() != 1">
+                                    <br/>
+                                </xsl:if>
+                                <xsl:apply-templates select="." mode="x"/>
+                            </xsl:for-each>
+                        </td>
+                    </tr>
+                </xsl:if>
+                <xsl:if test="steps/step">
+                    <tr>
+                        <td><xsl:text>Success Flow</xsl:text></td>
+                        <td>
+                            <xsl:apply-templates select="steps" mode="x"/>
+                        </td>
+                    </tr>
+                </xsl:if>
+                <xsl:if test="nfrs/nfr">
+                    <tr>
+                        <td><xsl:text>NFRs</xsl:text></td>
+                        <td>
+                            <xsl:apply-templates select="nfrs" mode="x"/>
+                        </td>
+                    </tr>
+                </xsl:if>
+            </tbody>
+        </table>
+        <xsl:text>&#10;&#10;Actors taking participation in the Use Case have the following properties:&#10;&#10;</xsl:text>
+        <table>
+            <thead>
+                <tr>
+                    <th><xsl:text>Actor</xsl:text></th>
+                    <th><xsl:text>Properties</xsl:text></th>
+                </tr>
+            </thead>
+            <tbody>
+                <xsl:for-each select="bindings/binding">
+                    <tr>
+                        <td>
+                            <xsl:value-of select="type"/>
+                        </td>
+                        <td>
+                            <xsl:apply-templates select="/spec/types/type[name=current()/type]" mode="x"/>
+                        </td>
+                    </tr>
+                </xsl:for-each>
+            </tbody>
+        </table>
     </xsl:template>
     <xsl:template match="steps" mode="x">
         <xsl:for-each select="step">

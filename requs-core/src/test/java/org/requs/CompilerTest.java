@@ -88,6 +88,7 @@ public final class CompilerTest {
 
     /**
      * Compiler can parse given text.
+     * @param text Text to parse
      * @throws Exception When necessary
      */
     private void parses(final String text) throws Exception {
