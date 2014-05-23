@@ -100,7 +100,7 @@ public interface XeFacet {
      * Always returns the same.
      */
     @Immutable
-    @ToString
+    @ToString(of = { })
     @EqualsAndHashCode(of = "dirs")
     @Loggable(Loggable.DEBUG)
     final class Fixed implements XeFacet {

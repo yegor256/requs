@@ -10,12 +10,12 @@
                 <meta name="author" content="requs"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <link rel="stylesheet" type="text/css" href="requs.css"/>
-                <script src="https://code.jquery.com/jquery-2.1.1-rc1.js">
+                <script src="//code.jquery.com/jquery-2.1.1-rc1.js">
                     <!-- nothing -->
                 </script>
                 <link rel="icon" type="image/png">
                     <xsl:attribute name="href">
-                        <xsl:text>http://img.requs.org/logo-128x128.png</xsl:text>
+                        <xsl:text>//img.requs.org/logo-128x128.png</xsl:text>
                     </xsl:attribute>
                 </link>
                 <title>SRS</title>
