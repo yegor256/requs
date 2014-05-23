@@ -30,13 +30,11 @@
 package org.requs.facet;
 
 import com.jcabi.aspects.Immutable;
-import com.jcabi.xml.XMLDocument;
+import com.jcabi.xml.XML;
 import com.jcabi.xml.XSLDocument;
-import java.io.IOException;
+import java.net.URL;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.requs.Doc;
-import org.requs.Docs;
 import org.requs.Facet;
 
 /**
@@ -47,13 +45,8 @@ import org.requs.Facet;
  */
 @Immutable
 @ToString(includeFieldNames = false)
-@EqualsAndHashCode(of = { "name", "sheet" })
+@EqualsAndHashCode(of = "sheet")
 public final class Transform implements Facet {
-
-    /**
-     * Name of the document.
-     */
-    private final transient String name;
 
     /**
      * XSL sheet to apply.
@@ -65,27 +58,18 @@ public final class Transform implements Facet {
      * @param xsl Name of XSL resource
      */
     public Transform(final String xsl) {
-        this("main.xml", xsl);
-    }
-
-    /**
-     * Public ctor.
-     * @param doc Name of the name
-     * @param xsl Name of XSL resource
-     */
-    public Transform(final String doc, final String xsl) {
-        this.name = doc;
         this.sheet = xsl;
     }
 
     @Override
-    public void touch(final Docs docs) throws IOException {
-        final Doc doc = docs.get(this.name);
-        doc.write(
-            XSLDocument.make(
-                Transform.class.getResource(this.sheet)
-            ).transform(new XMLDocument(doc.read())).toString()
-        );
+    public XML touch(final XML spec) {
+        final URL url = Transform.class.getResource(this.sheet);
+        if (url == null) {
+            throw new IllegalArgumentException(
+                String.format("stylesheet '%s' not found", this.sheet)
+            );
+        }
+        return XSLDocument.make(url).transform(spec);
     }
 
 }

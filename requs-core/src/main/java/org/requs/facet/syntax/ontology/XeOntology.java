@@ -30,12 +30,9 @@
 package org.requs.facet.syntax.ontology;
 
 import com.jcabi.aspects.Loggable;
-import com.jcabi.manifests.Manifests;
-import java.util.Date;
 import java.util.Iterator;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.xembly.Directive;
 import org.xembly.Directives;
 
@@ -55,12 +52,7 @@ public final class XeOntology implements Ontology {
      * All directives.
      */
     private final transient Directives dirs = new Directives()
-        .add("spec")
-        .attr("time", DateFormatUtils.ISO_DATETIME_FORMAT.format(new Date()))
-        .add("requs")
-        .add("version").set(Manifests.read("Requs-Version")).up()
-        .add("revision").set(Manifests.read("Requs-Revision")).up()
-        .add("date").set(Manifests.read("Requs-Date")).up().up();
+        .xpath("/").addIf("spec");
 
     @Override
     public Type type(final String name) {

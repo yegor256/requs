@@ -96,22 +96,4 @@ public final class XeOntologyTest {
         );
     }
 
-    /**
-     * XeOntology can report Requs version.
-     * @throws Exception When necessary
-     */
-    @Test
-    public void reportsRequsVersion() throws Exception {
-        final XeOntology onto = new XeOntology();
-        onto.type("Hello");
-        MatcherAssert.assertThat(
-            XhtmlMatchers.xhtml(new Xembler(onto).xml()),
-            XhtmlMatchers.hasXPaths(
-                "/spec/requs/version",
-                "/spec/requs/revision",
-                "/spec/requs/date"
-            )
-        );
-    }
-
 }

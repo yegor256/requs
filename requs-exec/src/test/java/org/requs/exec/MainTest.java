@@ -143,7 +143,7 @@ public final class MainTest {
         );
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(
-                FileUtils.readFileToString(new File(output, "main.xml"))
+                FileUtils.readFileToString(new File(output, "requs.xml"))
             ),
             XhtmlMatchers.hasXPaths("/spec/types/type[name='Employee']")
         );

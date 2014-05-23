@@ -27,28 +27,69 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.requs;
+package org.requs.facet;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import com.jcabi.aspects.Immutable;
-import com.jcabi.xml.XML;
-import java.io.IOException;
+import com.jcabi.aspects.Tv;
+import com.jcabi.xml.XMLDocument;
+import com.petebevin.markdown.MarkdownProcessor;
+import java.util.Collection;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
- * Facet.
+ * XSLT functions (utility class, but this is the only option with Saxon).
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.9
  */
 @Immutable
-public interface Facet {
+@ToString
+@EqualsAndHashCode
+public final class XsltFuncs {
 
     /**
-     * Touch the spec from this facet.
-     * @param spec Spec in XML
-     * @return New XML
-     * @throws IOException If fails on I/O operation
-     * @since 1.9
+     * Utility class.
      */
-    XML touch(XML spec) throws IOException;
+    private XsltFuncs() {
+        // empty intentionally
+    }
+
+    /**
+     * Convert markdown to HTML.
+     * @param markdown Markdown
+     * @return HTML
+     */
+    public static String toHtml(final String markdown) {
+        return new MarkdownProcessor().markdown(markdown);
+    }
+
+    /**
+     * Seal the method.
+     * @param xml Xml to seal
+     * @return Seal as a string
+     */
+    public static String seal(final String xml) {
+        final Collection<String> parts = Collections2.transform(
+            new XMLDocument(xml).xpath("//*/text()"),
+            new Function<String, String>() {
+                @Override
+                public String apply(final String input) {
+                    return StringEscapeUtils.escapeJava(
+                        input.replaceAll("\\s+", " ")
+                    );
+                }
+            }
+        );
+        return DigestUtils.md5Hex(
+            StringUtils.join(parts, "")
+        ).substring(0, Tv.SIX);
+    }
 
 }

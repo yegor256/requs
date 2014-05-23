@@ -27,28 +27,60 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.requs;
+package org.requs.facet;
 
 import com.jcabi.aspects.Immutable;
+import com.jcabi.log.Logger;
 import com.jcabi.xml.XML;
+import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.CharEncoding;
+import org.requs.XeFacet;
+import org.xembly.Directive;
+import org.xembly.Directives;
 
 /**
- * Facet.
+ * Aggregate sources into one file.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.2
  */
 @Immutable
-public interface Facet {
+@ToString(of = { })
+@EqualsAndHashCode(of = "dir")
+public final class Aggregate implements XeFacet {
 
     /**
-     * Touch the spec from this facet.
-     * @param spec Spec in XML
-     * @return New XML
-     * @throws IOException If fails on I/O operation
-     * @since 1.9
+     * Directory with sources.
      */
-    XML touch(XML spec) throws IOException;
+    private final transient String dir;
 
+    /**
+     * Ctor.
+     * @param path Path to the directory with sources
+     */
+    public Aggregate(final File path) {
+        this.dir = path.getAbsolutePath();
+    }
+
+    @Override
+    public Iterable<Directive> touch(final XML spec) throws IOException {
+        final StringBuilder text = new StringBuilder(0);
+        final Collection<File> files = FileUtils.listFiles(
+            new File(this.dir), new String[]{"req"}, true
+        );
+        for (final File file : files) {
+            Logger.info(this, "source file: %s", file);
+            text.append(
+                FileUtils.readFileToString(file, CharEncoding.UTF_8)
+            ).append('\n');
+        }
+        return new Directives().xpath("/spec")
+            .add("input").set(text.toString());
+    }
 }

@@ -30,15 +30,10 @@
 package org.requs.facet;
 
 import com.jcabi.matchers.XhtmlMatchers;
-import java.io.IOException;
-import javax.xml.transform.Source;
+import com.jcabi.xml.XMLDocument;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import org.requs.Doc;
-import org.requs.Docs;
 
 /**
  * Test case for {@link Transform}.
@@ -49,19 +44,22 @@ public final class TransformTest {
 
     /**
      * Transform can check seals.
-     * @throws IOException If fails
      */
     @Test
-    public void checksSeals() throws IOException {
+    public void checksSeals() {
         MatcherAssert.assertThat(
-            TransformTest.transform(
-                StringUtils.join(
-                    "<spec><method seal='a12ef4'><id>UC5</id><attributes>",
-                    "<attribute seal='b89e4e'>invalid</attribute>",
-                    "<attribute seal='a12ef4'>valid</attribute>",
-                    "</attributes></method><errors/></spec>"
-                ),
-                "sanity/seals-check.xsl"
+            XhtmlMatchers.xhtml(
+                new Transform("sanity/seals-check.xsl").touch(
+                    new XMLDocument(
+                        StringUtils.join(
+                            "<spec><method seal='a12ef4'>",
+                            "<id>UC5</id><attributes>",
+                            "<attribute seal='b89e4e'>invalid</attribute>",
+                            "<attribute seal='a12ef4'>valid</attribute>",
+                            "</attributes></method><errors/></spec>"
+                        )
+                    )
+                )
             ),
             XhtmlMatchers.hasXPaths(
                 "/spec/errors[count(error)=1]",
@@ -72,20 +70,22 @@ public final class TransformTest {
 
     /**
      * Transform can check seals.
-     * @throws IOException If fails
      */
     @Test
-    public void checksTypes() throws IOException {
+    public void checksTypes() {
         MatcherAssert.assertThat(
-            TransformTest.transform(
-                StringUtils.join(
-                    "<spec><types><type><name>User</name>",
-                    "<slots><slot><type>Alpha</type></slot></slots>",
-                    "</type></types><methods><method><bindings>",
-                    "<binding><type>Beta</type></binding>",
-                    "</bindings></method></methods><errors/></spec>"
-                ),
-                "sanity/types-check.xsl"
+            XhtmlMatchers.xhtml(
+                new Transform("sanity/types-check.xsl").touch(
+                    new XMLDocument(
+                        StringUtils.join(
+                            "<spec><types><type><name>User</name>",
+                            "<slots><slot><type>Alpha</type></slot></slots>",
+                            "</type></types><methods><method><bindings>",
+                            "<binding><type>Beta</type></binding>",
+                            "</bindings></method></methods><errors/></spec>"
+                        )
+                    )
+                )
             ),
             XhtmlMatchers.hasXPaths(
                 "/spec/errors[count(error)=2]",
@@ -96,19 +96,21 @@ public final class TransformTest {
 
     /**
      * Transform can check signatures.
-     * @throws IOException If fails
      */
     @Test
-    public void checksSignatures() throws IOException {
+    public void checksSignatures() {
         MatcherAssert.assertThat(
-            TransformTest.transform(
-                StringUtils.join(
-                    "<spec><methods><method><signature>abc</signature>",
-                    "</method><method><steps><step><signature>cde",
-                    "</signature></step></steps></method></methods>",
-                    "<errors/></spec>"
-                ),
-                "sanity/signatures-check.xsl"
+            XhtmlMatchers.xhtml(
+                new Transform("sanity/signatures-check.xsl").touch(
+                    new XMLDocument(
+                        StringUtils.join(
+                            "<spec><methods><method><signature>abc</signature>",
+                            "</method><method><steps><step><signature>cde",
+                            "</signature></step></steps></method></methods>",
+                            "<errors/></spec>"
+                        )
+                    )
+                )
             ),
             XhtmlMatchers.hasXPaths(
                 "/spec/errors[count(error)=1 ]",
@@ -117,23 +119,4 @@ public final class TransformTest {
         );
     }
 
-    /**
-     * Transform input.
-     * @param input Input syntax
-     * @param xsl XSL stylesheet resource
-     * @return XML output
-     * @throws IOException If fails
-     */
-    private static Source transform(final String input,
-        final String xsl) throws IOException {
-        final Docs docs = Mockito.mock(Docs.class);
-        final Doc doc = Mockito.mock(Doc.class);
-        Mockito.doReturn(doc).when(docs).get(Mockito.anyString());
-        Mockito.doReturn(input).when(doc).read();
-        new Transform(xsl).touch(docs);
-        final ArgumentCaptor<String> arg =
-            ArgumentCaptor.forClass(String.class);
-        Mockito.verify(doc).write(arg.capture());
-        return XhtmlMatchers.xhtml(arg.getValue());
-    }
 }

@@ -32,7 +32,6 @@ package org.requs.facet.syntax;
 import com.jcabi.matchers.XhtmlMatchers;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
-import java.io.IOException;
 import java.util.Collection;
 import javax.xml.transform.Source;
 import org.apache.commons.io.IOUtils;
@@ -40,8 +39,10 @@ import org.hamcrest.MatcherAssert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.requs.Docs;
+import org.requs.XeFacet;
 import org.requs.facet.syntax.ontology.Flow;
+import org.xembly.Directives;
+import org.xembly.Xembler;
 
 /**
  * Test case for {@link AntlrFacet}.
@@ -64,7 +65,7 @@ public final class AntlrFacetTest {
     @Test
     public void parsesInputAndProducesTypes() throws Exception {
         MatcherAssert.assertThat(
-            this.parse("Sud includes: test."),
+            AntlrFacetTest.parse("Sud includes: test."),
             XhtmlMatchers.hasXPaths("/spec/types")
         );
     }
@@ -76,7 +77,7 @@ public final class AntlrFacetTest {
     @Test
     public void reportsErrorsFound() throws Exception {
         MatcherAssert.assertThat(
-            this.parse(
+            AntlrFacetTest.parse(
                 "User is ?. Site is ?. Employee is a User."
             ),
             XhtmlMatchers.hasXPaths(
@@ -96,7 +97,7 @@ public final class AntlrFacetTest {
     @Test
     public void compilesComplexSpec() throws Exception {
         MatcherAssert.assertThat(
-            this.parse(
+            AntlrFacetTest.parse(
                 IOUtils.toString(
                     this.getClass().getResourceAsStream("example.req")
                 )
@@ -126,7 +127,7 @@ public final class AntlrFacetTest {
     @Test
     public void parsesAllPossibleCases() throws Exception {
         MatcherAssert.assertThat(
-            this.parse(
+            AntlrFacetTest.parse(
                 IOUtils.toString(
                     this.getClass().getResourceAsStream("all-cases.req")
                 )
@@ -158,8 +159,8 @@ public final class AntlrFacetTest {
         };
         for (final String spec : specs) {
             MatcherAssert.assertThat(
-                this.parse(spec),
-                XhtmlMatchers.hasXPath("/spec/errors/error")
+                AntlrFacetTest.parse(spec),
+                XhtmlMatchers.hasXPath("/spec/errors")
             );
         }
     }
@@ -186,7 +187,7 @@ public final class AntlrFacetTest {
                 "/sample/xpaths/xpath/text()"
             );
             MatcherAssert.assertThat(
-                this.parse(xml.xpath("/sample/spec/text()").get(0)),
+                AntlrFacetTest.parse(xml.xpath("/sample/spec/text()").get(0)),
                 XhtmlMatchers.hasXPaths(
                     xpaths.toArray(new String[xpaths.size()])
                 )
@@ -198,14 +199,18 @@ public final class AntlrFacetTest {
      * Parse input.
      * @param input Input syntax
      * @return XML output
-     * @throws IOException If fails
+     * @throws Exception If fails
      */
-    private Source parse(final String input) throws IOException {
-        final Docs docs = new Docs.InDir(this.temp.newFolder());
-        docs.get("input.req").write(input);
-        docs.get("index.xml").write("<index/>");
-        new AntlrFacet().touch(docs);
-        return XhtmlMatchers.xhtml(docs.get("main.xml").read());
+    private static Source parse(final String input) throws Exception {
+        return XhtmlMatchers.xhtml(
+            new XeFacet.Wrap(new AntlrFacet()).touch(
+                new XMLDocument(
+                    new Xembler(
+                        new Directives().add("spec").add("input").set(input)
+                    ).xml()
+                )
+            )
+        );
     }
 
 }

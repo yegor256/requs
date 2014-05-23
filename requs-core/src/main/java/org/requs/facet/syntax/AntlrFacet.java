@@ -30,29 +30,18 @@
 package org.requs.facet.syntax;
 
 import com.jcabi.aspects.Immutable;
-import com.jcabi.xml.StrictXML;
 import com.jcabi.xml.XML;
-import com.jcabi.xml.XMLDocument;
-import com.jcabi.xml.XSD;
-import com.jcabi.xml.XSDDocument;
-import com.jcabi.xml.XSLDocument;
-import java.io.IOException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.TokenStream;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.CharEncoding;
-import org.requs.Doc;
-import org.requs.Docs;
-import org.requs.Facet;
+import org.requs.XeFacet;
 import org.requs.facet.syntax.ontology.Ontology;
 import org.requs.facet.syntax.ontology.XeOntology;
+import org.xembly.Directive;
 import org.xembly.Directives;
-import org.xembly.ImpossibleModificationException;
-import org.xembly.Xembler;
 
 /**
  * Syntax analysis.
@@ -64,36 +53,13 @@ import org.xembly.Xembler;
 @Immutable
 @ToString(of = { })
 @EqualsAndHashCode
-public final class AntlrFacet implements Facet {
-
-    /**
-     * XSD.
-     */
-    private static final XSD SCHEMA = XSDDocument.make(
-        AntlrFacet.class.getResource("main.xsd")
-    );
+public final class AntlrFacet implements XeFacet {
 
     @Override
-    public void touch(final Docs docs) throws IOException {
-        final Doc main = docs.get("main.xml");
-        main.write(this.compile(docs.get("input.req").read()).toString());
-        main.name("srs", "Software Requirements Specification, Main Document");
-        // @checkstyle MultipleStringLiteralsCheck (1 line)
-        docs.get("main.xsl").write(
-            IOUtils.toString(
-                this.getClass().getResourceAsStream("main.xsl"),
-                CharEncoding.UTF_8
-            )
+    public Iterable<Directive> touch(final XML spec) {
+        final SpecLexer lexer = new SpecLexer(
+            new ANTLRInputStream(spec.xpath("/spec/input/text()").get(0))
         );
-    }
-
-    /**
-     * Build main XML.
-     * @param input Requs syntax
-     * @return XML built
-     */
-    private XML compile(final String input) {
-        final SpecLexer lexer = new SpecLexer(new ANTLRInputStream(input));
         final TokenStream tokens = new CommonTokenStream(lexer);
         final SpecParser parser = new SpecParser(tokens);
         final Errors errors = new Errors();
@@ -110,50 +76,7 @@ public final class AntlrFacet implements Facet {
         } catch (final SyntaxException ex) {
             errors.add(ex);
         }
-        final XML xml;
-        try {
-            xml = AntlrFacet.cleanup(
-                new XMLDocument(
-                    new Xembler(
-                        new Directives()
-                            .xpath("/")
-                            .pi(
-                                "xml-stylesheet",
-                                "href='main.xsl' type='text/xsl'"
-                            )
-                            .append(onto).append(errors)
-                    ).xml()
-                )
-            );
-        } catch (final ImpossibleModificationException ex) {
-            throw new IllegalStateException(ex);
-        }
-        return new StrictXML(xml, AntlrFacet.SCHEMA);
-    }
-
-    /**
-     * Cleanup the XML.
-     * @param xml Raw xml after syntax processing
-     * @return Clean XML, compliant to XSD
-     */
-    private static XML cleanup(final XML xml) {
-        final String[] sheets = {
-            "cleanup/lost-steps.xsl",
-            "cleanup/lost-methods.xsl",
-            "cleanup/duplicate-signatures.xsl",
-            "cleanup/duplicate-method-signatures.xsl",
-            "cleanup/duplicate-method-objects.xsl",
-            "cleanup/duplicate-method-bindings.xsl",
-            "cleanup/incomplete-steps-object.xsl",
-            "cleanup/incomplete-steps-signature.xsl",
-        };
-        XML clean = xml;
-        for (final String sheet : sheets) {
-            clean = XSLDocument.make(
-                AntlrFacet.class.getResourceAsStream(sheet)
-            ).transform(clean);
-        }
-        return clean;
+        return new Directives().append(onto).append(errors);
     }
 
 }

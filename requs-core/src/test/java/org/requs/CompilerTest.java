@@ -47,6 +47,7 @@ import org.junit.rules.TemporaryFolder;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.1
+ * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
 public final class CompilerTest {
 
@@ -75,7 +76,7 @@ public final class CompilerTest {
             "Employee is a \"user of the system\"."
         );
         new Compiler(input, output).compile();
-        final XML srs = new XMLDocument(new File(output, "main.xml"));
+        final XML srs = new XMLDocument(new File(output, "requs.xml"));
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(srs.toString()),
             XhtmlMatchers.hasXPaths(
@@ -83,45 +84,25 @@ public final class CompilerTest {
                 "/spec/types/type[name='Employee']"
             )
         );
-    }
-
-    /**
-     * Compiler can produce renderable XML+XSL resources.
-     * @throws Exception When necessary
-     */
-    @Test
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    public void producesRenderableXml() throws Exception {
         CompilerTest.assumeXsltproc();
-        final File input = this.temp.newFolder();
-        final File output = this.temp.newFolder();
-        FileUtils.write(
-            new File(input, "a.req"),
-            "Employee is a \"user of this perfect system\"."
+        MatcherAssert.assertThat(
+            new VerboseProcess(
+                new ProcessBuilder()
+                    .directory(output)
+                    .command(
+                        CompilerTest.BIN,
+                        "-o",
+                        "requs.html",
+                        "requs.xml"
+                    )
+                    .start()
+            ).stdout(),
+            Matchers.isEmptyString()
         );
-        new Compiler(input, output).compile();
-        final String[] names = {"main", "tbds", "index", "nfrs", "markdown"};
-        for (final String name : names) {
-            final String html = String.format("%s.html", name);
-            MatcherAssert.assertThat(
-                new VerboseProcess(
-                    new ProcessBuilder()
-                        .directory(output)
-                        .command(
-                            CompilerTest.BIN,
-                            "-o",
-                            html,
-                            String.format("%s.xml", name)
-                        )
-                        .start()
-                ).stdout(),
-                Matchers.isEmptyString()
-            );
-            MatcherAssert.assertThat(
-                FileUtils.readFileToString(new File(output, html)),
-                XhtmlMatchers.hasXPath("//xhtml:body")
-            );
-        }
+        MatcherAssert.assertThat(
+            FileUtils.readFileToString(new File(output, "requs.html")),
+            XhtmlMatchers.hasXPath("//xhtml:body")
+        );
     }
 
     /**

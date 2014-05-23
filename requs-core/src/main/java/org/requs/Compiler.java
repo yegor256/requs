@@ -32,22 +32,27 @@ package org.requs;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
+import com.jcabi.manifests.Manifests;
+import com.jcabi.xml.StrictXML;
+import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
+import com.jcabi.xml.XSD;
+import com.jcabi.xml.XSDDocument;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.requs.facet.Scaffolding;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.CharEncoding;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.requs.facet.Aggregate;
 import org.requs.facet.Transform;
-import org.requs.facet.ambiguity.Overall;
-import org.requs.facet.decor.Aggregate;
-import org.requs.facet.decor.Catalog;
-import org.requs.facet.markdown.MdMethods;
-import org.requs.facet.nfr.NFRs;
-import org.requs.facet.pages.MdPages;
-import org.requs.facet.sanity.Sealed;
 import org.requs.facet.syntax.AntlrFacet;
-import org.requs.facet.tbd.TBDs;
+import org.xembly.Directive;
+import org.xembly.Directives;
 
 /**
  * Compiler.
@@ -62,6 +67,13 @@ import org.requs.facet.tbd.TBDs;
 @EqualsAndHashCode(of = { "input", "output" })
 @Loggable(Loggable.DEBUG)
 public final class Compiler {
+
+    /**
+     * XSD.
+     */
+    private static final XSD SCHEMA = XSDDocument.make(
+        Compiler.class.getResource("requs.xsd")
+    );
 
     /**
      * Source folder.
@@ -101,27 +113,89 @@ public final class Compiler {
      * @throws IOException If fails
      */
     public void compile() throws IOException {
+        final long start = System.currentTimeMillis();
         final Facet[] facets = {
-            new Scaffolding(),
-            new Aggregate(new File(this.input)),
-            new AntlrFacet(),
-            new Sealed(),
+            new XeFacet.Wrap(new Aggregate(new File(this.input))),
+            new XeFacet.Wrap(new AntlrFacet()),
+            new Transform("cleanup/lost-steps.xsl"),
+            new Transform("cleanup/lost-methods.xsl"),
+            new Transform("cleanup/duplicate-signatures.xsl"),
+            new Transform("cleanup/duplicate-method-signatures.xsl"),
+            new Transform("cleanup/duplicate-method-objects.xsl"),
+            new Transform("cleanup/duplicate-method-bindings.xsl"),
+            new Transform("cleanup/incomplete-steps-object.xsl"),
+            new Transform("cleanup/incomplete-steps-signature.xsl"),
+            new Transform("seal-methods.xsl"),
             new Transform("sanity/signatures-check.xsl"),
             new Transform("sanity/types-check.xsl"),
             new Transform("sanity/seals-check.xsl"),
-            new MdMethods(),
-            new MdPages(),
-            new Overall(),
-            new TBDs(),
-            new NFRs(),
-            new Catalog(),
+            new Transform("methods-in-markdown.xsl"),
+            new Transform("pages-in-html.xsl"),
+            new Transform("count-ambiguity.xsl"),
+            new Transform("find-tbds.xsl"),
+            new XeFacet.Wrap(
+                new XeFacet() {
+                    @Override
+                    public Iterable<Directive> touch(final XML spec) {
+                        return new Directives().xpath("/*").attr(
+                            "msec",
+                            Long.toString(System.currentTimeMillis() - start)
+                        );
+                    }
+                }
+            ),
+            new XeFacet.Wrap(new XeFacet.Fixed(Compiler.decor())),
         };
-        final Docs docs = new Docs.InDir(new File(this.output));
+        XML spec = new XMLDocument(
+            "<?xml-stylesheet href='requs.xsl' type='text/xsl'?><spec/>"
+        );
         for (final Facet facet : facets) {
-            facet.touch(docs);
+            spec = facet.touch(spec);
             Logger.info(this, "%s done", facet);
         }
+        this.copy();
+        FileUtils.write(
+            new File(this.output, "requs.xml"),
+            new StrictXML(spec, Compiler.SCHEMA).toString(),
+            CharEncoding.UTF_8
+        );
         Logger.info(this, "compiled and saved to %s", this.output);
+    }
+
+    /**
+     * Copy static resources.
+     * @throws IOException If fails
+     */
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    private void copy() throws IOException {
+        final String[] files = {"requs.xsl", "requs.css"};
+        for (final String file : files) {
+            FileUtils.write(
+                new File(this.output, file),
+                IOUtils.toString(
+                    this.getClass().getResourceAsStream(file),
+                    CharEncoding.UTF_8
+                ),
+                CharEncoding.UTF_8
+            );
+        }
+    }
+
+    /**
+     * Decorating directives.
+     * @return Directives
+     */
+    private static Iterable<Directive> decor() {
+        return new Directives()
+            .xpath("/spec")
+            .attr(
+                "time",
+                DateFormatUtils.ISO_DATETIME_FORMAT.format(new Date())
+            )
+            .add("requs")
+            .add("version").set(Manifests.read("Requs-Version")).up()
+            .add("revision").set(Manifests.read("Requs-Revision")).up()
+            .add("date").set(Manifests.read("Requs-Date")).up().up();
     }
 
 }
