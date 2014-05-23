@@ -76,7 +76,7 @@ public final class XsltFuncs {
      * @param markdown Markdown
      * @return HTML
      */
-    public static String toHtml(final String markdown) {
+    public static String html(final String markdown) {
         return new MarkdownProcessor().markdown(markdown);
     }
 

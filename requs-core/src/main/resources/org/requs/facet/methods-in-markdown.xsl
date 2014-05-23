@@ -19,9 +19,13 @@
         </xsl:variable>
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
+            <xsl:variable name="markdown" select="r:print($md)"/>
             <markdown>
-                <xsl:value-of select="r:print($md)"/>
+                <xsl:value-of select="$markdown"/>
             </markdown>
+            <html>
+                <xsl:value-of select="r:html($markdown)"/>
+            </html>
         </xsl:copy>
     </xsl:template>
     <xsl:template match="method" mode="x">

@@ -73,7 +73,7 @@ public final class CompilerTest {
     @Test
     public void parsesAllSamples() throws Exception {
         final String[] files = {
-            "samples/seals-work.xml",
+            "samples/all-possible-constructs.xml",
             "samples/all-possible-mistakes.xml",
         };
         for (final String file : files) {

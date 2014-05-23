@@ -117,6 +117,7 @@
             <xs:element name="args" type="arguments" minOccurs="0"/>
             <xs:element name="info" type="info" minOccurs="0"/>
             <xs:element name="markdown" type="xs:string" minOccurs="0"/>
+            <xs:element name="html" type="xs:string" minOccurs="0"/>
             <xs:element name="steps" type="steps" minOccurs="0">
                 <xs:unique name="uniqueStepNumber">
                     <xs:selector xpath="./step" />
@@ -202,6 +203,7 @@
             <xs:element name="title" type="class"/>
             <xs:element name="mentioned" type="mentioned"/>
             <xs:element name="info" type="info" minOccurs="0"/>
+            <xs:element name="html" type="xs:string" minOccurs="0"/>
         </xs:all>
     </xs:complexType>
     <xs:complexType name="metric">
