@@ -22,7 +22,6 @@ You need to add this plugin to your `pom.xml`:
           <plugin>
             <groupId>org.requs</groupId>
             <artifactId>requs-maven-plugin</artifactId>
-            <version>1.6</version>
           </plugin>
         </reportPlugins>
       </configuration>
