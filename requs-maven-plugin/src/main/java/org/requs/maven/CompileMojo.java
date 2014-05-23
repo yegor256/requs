@@ -86,7 +86,7 @@ public final class CompileMojo extends AbstractMojo {
         StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
         try {
             new Compiler(this.input, this.output).compile();
-            final XML srs = new XMLDocument(new File(this.output, "main.xml"));
+            final XML srs = new XMLDocument(new File(this.output, "requs.xml"));
             final Collection<XML> errors = srs.nodes("//errors/error");
             if (!errors.isEmpty()) {
                 for (final XML error : errors) {

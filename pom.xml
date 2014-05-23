@@ -33,11 +33,11 @@
     <parent>
         <groupId>com.jcabi</groupId>
         <artifactId>parent</artifactId>
-        <version>0.19.1</version>
+        <version>0.20</version>
     </parent>
     <groupId>org.requs</groupId>
     <artifactId>requs</artifactId>
-    <version requs="yes">1.9</version>
+    <version>1.9</version>
     <packaging>pom</packaging>
     <name>requs</name>
     <modules>
@@ -46,9 +46,7 @@
         <module>requs-demo</module>
         <module>requs-maven-plugin</module>
     </modules>
-    <description><![CDATA[
-        Requirements Definition and Query Language (requs).
-        ]]></description>
+    <description>Requirements Definition Language</description>
     <url>http://www.requs.org</url>
     <inceptionYear>2009</inceptionYear>
     <organization>
@@ -60,9 +58,7 @@
             <name>BSD</name>
             <url>http://www.requs.org/LICENSE.txt</url>
             <distribution>repo</distribution>
-            <comments><![CDATA[
-                This is free open source project, feel free to redistribute it
-                ]]></comments>
+            <comments>This is free open source project, feel free to redistribute it</comments>
         </license>
     </licenses>
     <developers>
@@ -70,8 +66,8 @@
             <id>1</id>
             <name>Yegor Bugayenko</name>
             <email>yegor@tpc2.com</email>
-            <organization>TPC2.com</organization>
-            <organizationUrl>http://www.tpc2.com</organizationUrl>
+            <organization>teamed.io</organization>
+            <organizationUrl>http://www.teamed.io</organizationUrl>
             <roles>
                 <role>Architect</role>
                 <role>Developer</role>
@@ -131,11 +127,6 @@
     </dependencyManagement>
     <build>
         <plugins>
-            <plugin>
-                <groupId>com.qulice</groupId>
-                <artifactId>qulice-maven-plugin</artifactId>
-                <version>0.7</version>
-            </plugin>
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>

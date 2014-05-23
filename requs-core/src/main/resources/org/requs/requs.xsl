@@ -13,7 +13,7 @@
                 <script src="https://code.jquery.com/jquery-2.1.1-rc1.js">
                     <!-- nothing -->
                 </script>
-                <link rel="icon" type="image/gif">
+                <link rel="icon" type="image/png">
                     <xsl:attribute name="href">
                         <xsl:text>http://img.requs.org/logo-128x128.png</xsl:text>
                     </xsl:attribute>
@@ -29,7 +29,9 @@
     </xsl:template>
     <xsl:template match="spec">
         <p class="intro">
-            <xsl:text>This document was built on </xsl:text>
+            <xsl:text>This document was built in </xsl:text>
+            <xsl:value-of select="@msec"/>
+            <xsl:text> msec on </xsl:text>
             <xsl:value-of select="@time"/>
             <xsl:text> by </xsl:text>
             <a href="http://www.requs.org">
@@ -40,23 +42,6 @@
             <xsl:text>/</xsl:text>
             <xsl:value-of select="requs/revision"/>
             <xsl:text>.</xsl:text>
-        </p>
-        <p>
-            <xsl:text>Facets: </xsl:text>
-            <xsl:for-each select="facets/facet">
-                <xsl:if test="position() &gt; 1">
-                    <xsl:text>, </xsl:text>
-                </xsl:if>
-                <a>
-                    <xsl:attribute name="href">
-                        <xsl:value-of select="@file"/>
-                    </xsl:attribute>
-                    <xsl:attribute name="title">
-                        <xsl:value-of select="."/>
-                    </xsl:attribute>
-                    <xsl:value-of select="@id"/>
-                </a>
-            </xsl:for-each>
         </p>
         <xsl:apply-templates select="types/type"/>
     </xsl:template>

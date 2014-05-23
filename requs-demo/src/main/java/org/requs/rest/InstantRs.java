@@ -74,7 +74,7 @@ public final class InstantRs extends BaseRs {
         try {
             new org.requs.Compiler(input, output).compile();
             xml = FileUtils.readFileToString(
-                new File(output, "main.xml"),
+                new File(output, "requs.xml"),
                 CharEncoding.UTF_8
             );
         } catch (final IllegalArgumentException ex) {

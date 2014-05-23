@@ -158,42 +158,5 @@
                 </plugins>
             </build>
         </profile>
-        <profile>
-            <id>antlr4</id>
-            <activation>
-                <file><exists>pom.xml</exists></file>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>org.antlr</groupId>
-                    <artifactId>antlr4-runtime</artifactId>
-                    <version>4.2.2</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.antlr</groupId>
-                    <artifactId>antlr4-annotations</artifactId>
-                    <version>4.2.2</version>
-                </dependency>
-            </dependencies>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.antlr</groupId>
-                        <artifactId>antlr4-maven-plugin</artifactId>
-                        <version>4.2.2</version>
-                        <configuration>
-                            <sourceDirectory>src/main/antlr4</sourceDirectory>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>antlr4</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
     </profiles>
 </project>

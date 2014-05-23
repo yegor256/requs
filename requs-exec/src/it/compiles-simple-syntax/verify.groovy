@@ -32,7 +32,7 @@ import com.jcabi.matchers.XhtmlMatchers
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
 
-def xml = new File(basedir, 'target/requs/main.xml')
+def xml = new File(basedir, 'target/requs/requs.xml')
 if (!xml.exists()) {
     throw new IllegalStateException(
         'XML was not generated at ' + xml
