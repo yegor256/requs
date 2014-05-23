@@ -53,8 +53,10 @@
         </xsl:if>
         <h1><xsl:text>Types and Methods</xsl:text></h1>
         <xsl:apply-templates select="types/type"/>
-        <h1><xsl:text>Markdown Pages</xsl:text></h1>
-        <xsl:apply-templates select="pages/page"/>
+        <xsl:if test="pages[page]">
+            <h1><xsl:text>Markdown Pages</xsl:text></h1>
+            <xsl:apply-templates select="pages/page"/>
+        </xsl:if>
     </xsl:template>
     <xsl:template match="metric">
         <p>
