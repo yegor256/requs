@@ -109,6 +109,11 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>com.jcabi</groupId>
+                <artifactId>jcabi-xml</artifactId>
+                <version>0.8.1</version>
+            </dependency>
+            <dependency>
                 <groupId>net.sourceforge.saxon</groupId>
                 <artifactId>saxon</artifactId>
                 <version>${saxon.version}</version>

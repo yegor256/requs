@@ -21,6 +21,7 @@
         UC11 where Customer saves good file: "tbd".
     </spec>
     <xpaths>
+        <xpath>/processing-instruction()[contains(.,'href')]</xpath>
         <xpath>/spec/errors/error</xpath>
     </xpaths>
 </sample>

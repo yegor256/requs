@@ -10,6 +10,7 @@
     </spec>
     <xpaths>
         <xpath>/spec/methods[count(method)=1]</xpath>
+        <xpath>/processing-instruction()[contains(.,'href')]</xpath>
         <xpath>//method[id='UC1']</xpath>
         <xpath>//method[@seal='c2ea06']</xpath>
     </xpaths>

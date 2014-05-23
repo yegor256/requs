@@ -33,7 +33,6 @@ import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
 import com.jcabi.manifests.Manifests;
-import com.jcabi.xml.StrictXML;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import com.jcabi.xml.XSD;
@@ -156,7 +155,8 @@ public final class Compiler {
         this.copy();
         FileUtils.write(
             new File(this.output, "requs.xml"),
-            new StrictXML(spec, Compiler.SCHEMA).toString(),
+            spec.toString(),
+//            new StrictXML(spec, Compiler.SCHEMA).toString(),
             CharEncoding.UTF_8
         );
         Logger.info(this, "compiled and saved to %s", this.output);
