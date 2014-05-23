@@ -152,6 +152,9 @@
                         <configuration>
                             <excludes>
                                 <exclude>findbugs:.*</exclude>
+                                <exclude>xml:/src/test/resources/org/requs/facet/syntax/samples/.*</exclude>
+                                <exclude>xml:/src/test/resources/org/requs/facet/syntax/.*</exclude>
+                                <exclude>xml:/src/test/resources/org/requs/samples/.*</exclude>
                             </excludes>
                         </configuration>
                     </plugin>
