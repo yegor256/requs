@@ -33,6 +33,8 @@ import com.jcabi.log.VerboseProcess;
 import com.jcabi.matchers.XhtmlMatchers;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
+import com.jcabi.xml.XSL;
+import com.jcabi.xml.XSLDocument;
 import java.io.File;
 import java.util.Collection;
 import org.apache.commons.io.FileUtils;
@@ -102,6 +104,9 @@ public final class CompilerTest {
         );
         new Compiler(input, output).compile();
         final XML srs = new XMLDocument(new File(output, "requs.xml"));
+        final XSL xsl = new XSLDocument(
+            new XMLDocument(new File(output, "requs.xsl"))
+        );
         final Collection<String> xpaths = xml.xpath(
             "/sample/xpaths/xpath/text()"
         );
@@ -110,6 +115,10 @@ public final class CompilerTest {
             XhtmlMatchers.hasXPaths(
                 xpaths.toArray(new String[xpaths.size()])
             )
+        );
+        MatcherAssert.assertThat(
+            xsl.transform(srs),
+            XhtmlMatchers.hasXPath("//xhtml:body")
         );
         CompilerTest.assumeXsltproc();
         MatcherAssert.assertThat(

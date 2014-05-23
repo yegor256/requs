@@ -32,6 +32,8 @@ package org.requs.rest;
 import com.jcabi.matchers.XhtmlMatchers;
 import com.rexsl.mock.HttpHeadersMocker;
 import com.rexsl.mock.UriInfoMocker;
+import java.io.StringReader;
+import javax.json.Json;
 import javax.ws.rs.core.SecurityContext;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
@@ -55,9 +57,10 @@ public final class InstantRsTest {
         res.setHttpHeaders(new HttpHeadersMocker().mock());
         final SecurityContext sec = Mockito.mock(SecurityContext.class);
         res.setSecurityContext(sec);
-        final String xml = res.post("User is a \"type\".");
+        final String json = res.post("User is a \"type\".");
         MatcherAssert.assertThat(
-            xml,
+            Json.createReader(new StringReader(json))
+                .readObject().getString("spec"),
             XhtmlMatchers.hasXPath("/spec/types/type[name='User']")
         );
     }

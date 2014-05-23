@@ -48,13 +48,18 @@ $(document).ready(
                         url: '/instant',
                         data: { 'text': this.rendered },
                         type: 'POST',
-                        dataType: 'text',
+                        dataType: 'json',
                         beforeSend: function (data) {
                             $('#arrow').show();
                         },
                         success: function (data) {
-                            $('#output').text(data);
+                            $('#output').text(data.spec);
                             $('#output').css('color', 'inherit');
+                            var iframe = document.getElementById('srs');
+                            iframe = (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
+                            iframe.document.open();
+                            iframe.document.write(data.html);
+                            iframe.document.close();
                         },
                         error: function (xhr, textStatus, errorThrown) {
                             $('#output').text(xhr.responseText);

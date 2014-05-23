@@ -57,7 +57,7 @@
                 <xsl:text>syntax explained</xsl:text>
             </a>
         </p>
-        <table style="width:100%;table-layout:fixed;">
+        <table style="width:100%;table-layout:fixed;border-spacing:0;">
             <thead>
                 <tr>
                     <th><xsl:text>Requirements</xsl:text></th>
@@ -78,10 +78,16 @@
                         </span>
                     </td>
                     <td class="half">
-                        <pre class="box" id="output">...</pre>
+                        <pre class="box" id="output">
+                            <xsl:text>...</xsl:text>
+                        </pre>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <strong><xsl:text>SRS</xsl:text></strong>
+        <iframe class="box" id="srs">
+            <xsl:text>...</xsl:text>
+        </iframe>
     </xsl:template>
 </xsl:stylesheet>

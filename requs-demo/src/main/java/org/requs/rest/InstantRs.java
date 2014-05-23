@@ -31,10 +31,14 @@ package org.requs.rest;
 
 import com.google.common.io.Files;
 import com.jcabi.aspects.Loggable;
+import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
+import com.jcabi.xml.XSL;
+import com.jcabi.xml.XSLDocument;
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import javax.json.Json;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -66,7 +70,7 @@ public final class InstantRs extends BaseRs {
      */
     @POST
     @Path("/")
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_JSON)
     @Loggable(Loggable.INFO)
     public String post(@NotNull @FormParam("text") final String text)
         throws IOException {
@@ -75,11 +79,22 @@ public final class InstantRs extends BaseRs {
         final File output = Files.createTempDir();
         try {
             new org.requs.Compiler(input, output).compile();
-            final String xml = FileUtils.readFileToString(
-                new File(output, "requs.xml"),
-                CharEncoding.UTF_8
+            final XML xml = new XMLDocument(
+                FileUtils.readFileToString(
+                    new File(output, "requs.xml"),
+                    CharEncoding.UTF_8
+                )
             );
-            return new XMLDocument(xml).nodes("/spec").get(0).toString();
+            final XSL xsl = new XSLDocument(
+                FileUtils.readFileToString(
+                    new File(output, "requs.xsl"),
+                    CharEncoding.UTF_8
+                )
+            );
+            return Json.createObjectBuilder()
+                .add("spec", xml.nodes("/spec").get(0).toString())
+                .add("html", xsl.transform(xml).toString())
+                .build().toString();
         } catch (final RuntimeException ex) {
             throw new WebApplicationException(
                 Response.status(HttpURLConnection.HTTP_INTERNAL_ERROR)
