@@ -21,8 +21,8 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  *
- * @author Yegor Bugayenko <egor@requs.org>
- * @copyright Copyright (c) requs.org, 2010-2012
+ * @author Yegor Bugayenko <egor@tpc2.com>
+ * @copyright Copyright (c) requs.org, 2010-2014
  * @version $Id$
  */
 
@@ -54,9 +54,11 @@ $(document).ready(
                         },
                         success: function (data) {
                             $('#output').text(data);
+                            $('#output').css('color', 'inherit');
                         },
-                        error: function (XMLHttpRequest, textStatus, errorThrown) {
-                            $('#output').html(textStatus);
+                        error: function (xhr, textStatus, errorThrown) {
+                            $('#output').text(xhr.responseText);
+                            $('#output').css('color', 'red');
                         },
                         complete: function () {
                             $('#arrow').hide();

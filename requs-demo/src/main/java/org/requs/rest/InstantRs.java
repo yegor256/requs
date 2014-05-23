@@ -31,18 +31,21 @@ package org.requs.rest;
 
 import com.google.common.io.Files;
 import com.jcabi.aspects.Loggable;
-import com.jcabi.log.Logger;
 import com.jcabi.xml.XMLDocument;
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.CharEncoding;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 /**
  * Instant syntax parser.
@@ -70,19 +73,23 @@ public final class InstantRs extends BaseRs {
         final File input = Files.createTempDir();
         FileUtils.write(new File(input, "in.req"), text, CharEncoding.UTF_8);
         final File output = Files.createTempDir();
-        String xml;
         try {
             new org.requs.Compiler(input, output).compile();
-            xml = FileUtils.readFileToString(
+            final String xml = FileUtils.readFileToString(
                 new File(output, "requs.xml"),
                 CharEncoding.UTF_8
             );
-        } catch (final IllegalArgumentException ex) {
-            xml = Logger.format("%[exception]s", ex);
+            return new XMLDocument(xml).nodes("/spec").get(0).toString();
+        } catch (final RuntimeException ex) {
+            throw new WebApplicationException(
+                Response.status(HttpURLConnection.HTTP_INTERNAL_ERROR)
+                    .entity(ExceptionUtils.getStackTrace(ex))
+                    .build()
+            );
+        } finally {
+            FileUtils.deleteDirectory(input);
+            FileUtils.deleteDirectory(output);
         }
-        FileUtils.deleteDirectory(input);
-        FileUtils.deleteDirectory(output);
-        return new XMLDocument(xml).nodes("/spec").get(0).toString();
     }
 
 }
