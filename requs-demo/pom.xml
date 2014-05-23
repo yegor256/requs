@@ -323,9 +323,8 @@
                         <artifactId>tomcat7-maven-plugin</artifactId>
                         <version>2.2</version>
                         <configuration>
-                            <port>${tomcat.port}</port>
+                            <port>9099</port>
                             <path>/</path>
-                            <fork>true</fork>
                             <systemProperties>
                                 <log4j.configuration>file:${basedir}/src/test/resources/log4j.properties</log4j.configuration>
                             </systemProperties>
@@ -337,6 +336,10 @@
                                 <goals>
                                     <goal>run-war-only</goal>
                                 </goals>
+                                <configuration>
+                                    <port>${tomcat.port}</port>
+                                    <fork>true</fork>
+                                </configuration>
                             </execution>
                             <execution>
                                 <id>stop-tomcat</id>

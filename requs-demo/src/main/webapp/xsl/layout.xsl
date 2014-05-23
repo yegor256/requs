@@ -50,15 +50,34 @@
                         <xsl:text>http://img.requs.org/logo-128x128.png</xsl:text>
                     </xsl:attribute>
                 </link>
-                <xsl:call-template name="head"/>
+                <xsl:apply-templates select="." mode="head"/>
             </head>
             <body>
-                <xsl:apply-templates select="version"/>
                 <div class="container">
-                    <xsl:call-template name="content"/>
+                    <xsl:apply-templates select="." mode="body"/>
+                    <xsl:apply-templates select="version"/>
                 </div>
             </body>
         </html>
+    </xsl:template>
+    <xsl:template match="version">
+        <footer class="version">
+            <div>
+                <xsl:text>made by </xsl:text>
+                <a href="http://www.teamed.io">
+                    <xsl:text>teamed.io</xsl:text>
+                </a>
+            </div>
+            <div>
+                <span><xsl:value-of select="name"/></span>
+                <span><xsl:value-of select="revision"/></span>
+                <span>
+                    <xsl:call-template name="millis">
+                        <xsl:with-param name="millis" select="/page/millis"/>
+                    </xsl:call-template>
+                </span>
+            </div>
+        </footer>
     </xsl:template>
     <xsl:template name="millis">
         <xsl:param name="millis" as="xs:integer"/>
@@ -72,16 +91,5 @@
                 <xsl:text>ms</xsl:text>
             </xsl:otherwise>
         </xsl:choose>
-    </xsl:template>
-    <xsl:template match="version">
-        <div id="version">
-            <xsl:value-of select="name"/>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="revision"/>
-            <xsl:text> </xsl:text>
-            <xsl:call-template name="millis">
-                <xsl:with-param name="millis" select="/page/millis"/>
-            </xsl:call-template>
-        </div>
     </xsl:template>
 </xsl:stylesheet>

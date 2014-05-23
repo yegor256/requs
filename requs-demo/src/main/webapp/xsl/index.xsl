@@ -31,8 +31,8 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/1999/xhtml" version="2.0" exclude-result-prefixes="xs">
     <xsl:output method="xml" omit-xml-declaration="yes" indent="yes"/>
     <xsl:include href="/xsl/layout.xsl"/>
-    <xsl:template name="head">
-        <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.0.js">
+    <xsl:template match="page" mode="head">
+        <script type="text/javascript" src="//code.jquery.com/jquery-2.0.0.js">
             <xsl:text> </xsl:text>
             <!-- this is for W3C compliance -->
         </script>
@@ -44,11 +44,11 @@
             <xsl:text>requs</xsl:text>
         </title>
     </xsl:template>
-    <xsl:template name="content">
+    <xsl:template match="page" mode="body">
         <p>
             <img alt="logo" style="width: 192px; height: 64px;">
                 <xsl:attribute name="src">
-                    <xsl:text>http://img.requs.org/logo-384x128.png</xsl:text>
+                    <xsl:text>//img.requs.org/logo-384x128.png</xsl:text>
                 </xsl:attribute>
             </img>
         </p>

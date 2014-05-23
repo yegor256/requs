@@ -39,52 +39,36 @@ body {
     border: 0;
     text-decoration: none;
 }
-
 body {
     padding: 2em;
 }
-
-/* bottom right label about deployed version */
-#version {
+.version {
+    margin-top: 2em;
     font-size: 0.8em;
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    padding: 0.4em 0.8em;
-    background-color: #e4e5e3;
     color: gray;
 }
-
 .container {
     position: relative;
     text-align: center;
 }
-
 .half {
     width: 50%;
     vertical-align: top;
     overflow: hidden;
 }
-
 .box {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     font-family: 'Consolas', 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-size: 1em;
     border: 1px solid gray;
     padding: 1em;
+    height: 300px;
     min-height: 300px;
     margin: 0;
     width: 100%;
     text-align: left;
-    overflow: auto;
-}
-
-#example {
-    font-size: 1em;
-}
-
-#output {
-    font-size: 0.8em;
-    background-color: #eee;
+    overflow-x: auto;
+    overflow-y: scroll;
 }
