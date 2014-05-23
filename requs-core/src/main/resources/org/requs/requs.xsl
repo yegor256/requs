@@ -43,10 +43,24 @@
             <xsl:value-of select="requs/revision"/>
             <xsl:text>.</xsl:text>
         </p>
+        <xsl:if test="errors[error]">
+            <h1><xsl:text>Errors</xsl:text></h1>
+            <xsl:apply-templates select="errors/error"/>
+        </xsl:if>
         <h1><xsl:text>Types and Methods</xsl:text></h1>
         <xsl:apply-templates select="types/type"/>
         <h1><xsl:text>Markdown Pages</xsl:text></h1>
         <xsl:apply-templates select="pages/page"/>
+    </xsl:template>
+    <xsl:template match="error">
+        <p>
+            <xsl:text>[</xsl:text>
+            <xsl:value-of select="@line"/>
+            <xsl:text>:</xsl:text>
+            <xsl:value-of select="@pos"/>
+            <xsl:text>] </xsl:text>
+            <xsl:value-of select="."/>
+        </p>
     </xsl:template>
     <xsl:template match="page">
         <h2><xsl:value-of select="title"/></h2>
