@@ -13,7 +13,7 @@
     <xsl:template match="method">
         <xsl:variable name="m">
             <xsl:copy>
-                <xsl:apply-templates select="(node() except (id|mentioned|attributes))|@*"/>
+                <xsl:apply-templates select="(node() except (id|mentioned|attributes|markdown))|@*"/>
             </xsl:copy>
         </xsl:variable>
         <xsl:copy>

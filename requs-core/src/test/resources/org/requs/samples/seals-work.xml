@@ -5,10 +5,12 @@
         1. The user opens "its browser" "for example, Google Chrome";
         2. "The user clicks SAVE" "and waits";
         3. The user "having in mind something" validates the file "and saves".
+        UC1/UX must "look cool".
+        :UC1 is a must.
     </spec>
     <xpaths>
         <xpath>/spec/methods[count(method)=1]</xpath>
         <xpath>//method[id='UC1']</xpath>
-        <xpath>//method[@seal='67b803']</xpath>
+        <xpath>//method[@seal='3543b7']</xpath>
     </xpaths>
 </sample>

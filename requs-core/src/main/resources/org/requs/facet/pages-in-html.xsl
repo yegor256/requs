@@ -5,7 +5,7 @@
     version="2.0" exclude-result-prefixes="xs fn">
     <xsl:output method="xml"/>
     <xsl:strip-space elements="*" />
-    <xsl:template match="page">
+    <xsl:template match="/spec">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
         </xsl:copy>

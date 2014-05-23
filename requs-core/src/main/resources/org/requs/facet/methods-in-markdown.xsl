@@ -177,7 +177,7 @@
             </ul>
         </xsl:if>
     </xsl:template>
-    <xsl:template match="nfrs">
+    <xsl:template match="nfrs" mode="x">
         <xsl:for-each select="nfr">
             <xsl:if test="position() != 1">
                 <br/>
@@ -185,7 +185,7 @@
             <xsl:apply-templates select="." mode="x"/>
         </xsl:for-each>
     </xsl:template>
-    <xsl:template match="nfr">
+    <xsl:template match="nfr" mode="x">
         <xsl:value-of select="id"/>
         <xsl:text> must </xsl:text>
         <xsl:apply-templates select="info" mode="x"/>
