@@ -34,7 +34,10 @@ import com.jcabi.matchers.XhtmlMatchers;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import java.io.File;
+import java.util.Collection;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.CharEncoding;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Assume;
@@ -64,24 +67,47 @@ public final class CompilerTest {
     public transient TemporaryFolder temp = new TemporaryFolder();
 
     /**
-     * Compiler can compile.
+     * Compiler can parse all samples.
      * @throws Exception When necessary
      */
     @Test
-    public void compilesRequsSources() throws Exception {
+    public void parsesAllSamples() throws Exception {
+        final String[] files = {
+            "samples/seals-work.xml",
+            "samples/all-possible-mistakes.xml",
+        };
+        for (final String file : files) {
+            this.parses(
+                IOUtils.toString(
+                    CompilerTest.class.getResourceAsStream(file),
+                    CharEncoding.UTF_8
+                )
+            );
+        }
+    }
+
+    /**
+     * Compiler can parse given text.
+     * @throws Exception When necessary
+     */
+    private void parses(final String text) throws Exception {
+        final XML xml = new XMLDocument(text);
         final File input = this.temp.newFolder();
         final File output = this.temp.newFolder();
         FileUtils.write(
             new File(input, "input.req"),
-            "Employee is a \"user of the system\"."
+            xml.xpath("/sample/spec/text()").get(0),
+            CharEncoding.UTF_8
         );
         new Compiler(input, output).compile();
         final XML srs = new XMLDocument(new File(output, "requs.xml"));
+        final Collection<String> xpaths = xml.xpath(
+            "/sample/xpaths/xpath/text()"
+        );
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(srs.toString()),
             XhtmlMatchers.hasXPaths(
-                "processing-instruction('xml-stylesheet')",
-                "/spec/types/type[name='Employee']"
+                xpaths.toArray(new String[xpaths.size()])
             )
         );
         CompilerTest.assumeXsltproc();

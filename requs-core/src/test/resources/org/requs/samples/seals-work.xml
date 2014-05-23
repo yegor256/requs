@@ -1,0 +1,15 @@
+<sample>
+    <spec>
+        UC1 where User (a user) saves File (a file) "which is not broken":
+        """I'll think about it more"""
+        1. The user opens "its browser" "for example, Google Chrome";
+        2. "The user clicks SAVE" "and waits";
+        3. The user "having in mind something" validates the file "and saves".
+    </spec>
+    <xpaths>
+        <xpath>/spec/errors[not(error)]</xpath>
+        <xpath>/spec/methods[count(method)=1]</xpath>
+        <xpath>//method[id='UC1']</xpath>
+        <xpath>//method[@seal='43423']</xpath>
+    </xpaths>
+</sample>

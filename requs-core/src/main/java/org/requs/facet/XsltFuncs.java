@@ -41,6 +41,7 @@ import lombok.ToString;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.w3c.dom.Node;
 
 /**
  * XSLT functions (utility class, but this is the only option with Saxon).
@@ -75,7 +76,7 @@ public final class XsltFuncs {
      * @param xml Xml to seal
      * @return Seal as a string
      */
-    public static String seal(final String xml) {
+    public static String seal(final Node xml) {
         final Collection<String> parts = Collections2.transform(
             new XMLDocument(xml).xpath("//*/text()"),
             new Function<String, String>() {

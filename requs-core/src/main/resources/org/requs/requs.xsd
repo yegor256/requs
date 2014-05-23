@@ -116,6 +116,7 @@
             <xs:element name="result" type="object" minOccurs="0"/>
             <xs:element name="args" type="arguments" minOccurs="0"/>
             <xs:element name="info" type="info" minOccurs="0"/>
+            <xs:element name="markdown" type="xs:string" minOccurs="0"/>
             <xs:element name="steps" type="steps" minOccurs="0">
                 <xs:unique name="uniqueStepNumber">
                     <xs:selector xpath="./step" />
@@ -211,11 +212,11 @@
         </xs:simpleContent>
     </xs:complexType>
     <xs:complexType name="tbd">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute name="id" type="xs:string" use="required"/>
-            </xs:extension>
-        </xs:simpleContent>
+        <xs:all>
+            <xs:element name="subject" type="xs:string"/>
+            <xs:element name="description" type="xs:string"/>
+        </xs:all>
+        <xsl:attribute name="id" use="required" type="xs:string"/>
     </xs:complexType>
     <xs:element name="spec">
         <xs:complexType>
