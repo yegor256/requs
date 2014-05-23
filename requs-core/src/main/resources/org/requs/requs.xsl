@@ -47,10 +47,21 @@
             <h1><xsl:text>Errors</xsl:text></h1>
             <xsl:apply-templates select="errors/error"/>
         </xsl:if>
+        <xsl:if test="metrics[metric]">
+            <h1><xsl:text>Metrics</xsl:text></h1>
+            <xsl:apply-templates select="metrics/metric"/>
+        </xsl:if>
         <h1><xsl:text>Types and Methods</xsl:text></h1>
         <xsl:apply-templates select="types/type"/>
         <h1><xsl:text>Markdown Pages</xsl:text></h1>
         <xsl:apply-templates select="pages/page"/>
+    </xsl:template>
+    <xsl:template match="metric">
+        <p>
+            <xsl:value-of select="@id"/>
+            <xsl:text> = </xsl:text>
+            <xsl:value-of select="."/>
+        </p>
     </xsl:template>
     <xsl:template match="error">
         <p>
