@@ -72,6 +72,7 @@ public final class InstantRs extends BaseRs {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     @Loggable(Loggable.INFO)
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public String post(@NotNull @FormParam("text") final String text)
         throws IOException {
         final File input = Files.createTempDir();
@@ -95,6 +96,7 @@ public final class InstantRs extends BaseRs {
                 .add("spec", xml.nodes("/spec").get(0).toString())
                 .add("html", xsl.transform(xml).toString())
                 .build().toString();
+        // @checkstyle IllegalCatchCheck (1 line)
         } catch (final RuntimeException ex) {
             throw new WebApplicationException(
                 Response.status(HttpURLConnection.HTTP_INTERNAL_ERROR)

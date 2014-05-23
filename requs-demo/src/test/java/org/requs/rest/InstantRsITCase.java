@@ -31,10 +31,12 @@ package org.requs.rest;
 
 import com.jcabi.http.Request;
 import com.jcabi.http.request.JdkRequest;
+import com.jcabi.http.response.JsonResponse;
 import com.jcabi.http.response.RestResponse;
-import com.jcabi.http.response.XmlResponse;
+import com.jcabi.matchers.XhtmlMatchers;
 import java.net.HttpURLConnection;
 import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
 /**
@@ -69,15 +71,19 @@ public final class InstantRsITCase {
             "1. Fail since \"denominator can't be zero\".",
             "UC1/PERF must \"be 700 msec per HTTP request\"."
         );
-        new JdkRequest(InstantRsITCase.HOME)
-            .uri().path("/instant").back()
-            .body().formParam("text", spec).back()
-            .method(Request.POST)
-            .fetch()
-            .as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .as(XmlResponse.class)
-            .assertXPath("/spec/types/type[name='Fraction']");
+        MatcherAssert.assertThat(
+            new JdkRequest(InstantRsITCase.HOME)
+                .uri().path("/instant").back()
+                .body().formParam("text", spec).back()
+                .method(Request.POST)
+                .fetch()
+                .as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK)
+                .as(JsonResponse.class)
+                .json().readObject()
+                .getString("spec"),
+            XhtmlMatchers.hasXPaths("/spec/types/type[name='Fraction']")
+        );
     }
 
 }
