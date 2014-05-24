@@ -249,6 +249,7 @@
                         <configuration>
                             <excludes>
                                 <exclude>xml:/src/it/settings.xml</exclude>
+                                <exclude>finbugs:.*</exclude>
                                 <exclude>duplicatefinder:.*</exclude>
                             </excludes>
                         </configuration>
