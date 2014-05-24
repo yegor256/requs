@@ -34,7 +34,7 @@ Then, add Requs files to `src/main/requs` and name them as `main.req`, etc.
 
 Then, run `mvn clean site` and you will see a report at `target/site/requs`.
 
-Requg syntax is explained [here](http://www.requs.org/syntax.html).
+See [Requs syntax explained](http://www.requs.org/syntax.html).
 
 ## Questions?
 
