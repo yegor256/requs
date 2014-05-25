@@ -435,7 +435,7 @@ WHEN: 'when';
 WHERE: 'where';
 AND: 'and';
 INCLUDES: ( 'includes' | 'needs' | 'contains' | 'requires' | 'has' );
-CAMEL: ( 'A' .. 'Z' ( 'a' .. 'z' )+ )+;
+CAMEL: ( 'A' .. 'Z' ( 'a' .. 'z' | '0' .. '9' )+ )+;
 WORD: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )+;
 INFORMAL:
     (
