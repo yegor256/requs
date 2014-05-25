@@ -1,6 +1,7 @@
 <sample>
     <spec>
         User is "a human being" "or maybe not".
+        Visitor is User "that doesn't have an email".
         UC1 where User (a user) saves File (a file) "which is not broken":
         """I'll think about it more"""
         1. The user opens "its browser" "for example, Google Chrome";

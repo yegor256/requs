@@ -85,11 +85,17 @@ class_declaration
     IS
     A?
     (
-        INFORMAL
-        { type.explain($INFORMAL.text); }
+        (
+            INFORMAL
+            { type.explain($INFORMAL.text); }
+        )+
         |
         parent=class_name
         { type.parent($parent.text); }
+        (
+            INFORMAL
+            { type.explain($INFORMAL.text); }
+        )*
     )
     ;
 
