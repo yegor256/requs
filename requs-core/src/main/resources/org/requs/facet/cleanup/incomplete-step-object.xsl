@@ -2,15 +2,10 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="2.0" exclude-result-prefixes="xs">
     <xsl:output method="xml"/>
     <xsl:strip-space elements="*" />
-    <xsl:template match="node()|@*">
-        <xsl:copy>
-            <xsl:apply-templates select="node()|@*"/>
-        </xsl:copy>
-    </xsl:template>
     <xsl:template match="errors">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
-            <xsl:for-each select="//step[not(object)]">
+            <xsl:for-each select="//step[empty(object/text())]">
                 <error type="lost" pos="0">
                     <xsl:attribute name="line">
                         <xsl:value-of select="mentioned/where[1]"/>
@@ -22,10 +17,15 @@
             </xsl:for-each>
         </xsl:copy>
     </xsl:template>
-    <xsl:template match="step[not(object)]">
+    <xsl:template match="step[empty(object/text())]">
+        <xsl:copy>
+            <xsl:apply-templates select="(node() except object)|@*"/>
+            <object>_self</object>
+        </xsl:copy>
+    </xsl:template>
+    <xsl:template match="node()|@*">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
-            <object>_self</object>
         </xsl:copy>
     </xsl:template>
 </xsl:stylesheet>
