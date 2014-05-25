@@ -72,7 +72,7 @@ public final class Compiler {
     /**
      * XSD.
      */
-    private static final XSD SCHEMA = XSDDocument.make(
+    public static final XSD SCHEMA = XSDDocument.make(
         Compiler.class.getResource("requs.xsd")
     );
 

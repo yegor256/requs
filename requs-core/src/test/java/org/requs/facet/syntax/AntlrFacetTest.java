@@ -30,6 +30,7 @@
 package org.requs.facet.syntax;
 
 import com.jcabi.matchers.XhtmlMatchers;
+import com.jcabi.xml.StrictXML;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import java.util.Collection;
@@ -204,12 +205,15 @@ public final class AntlrFacetTest {
      */
     private static Source parse(final String input) throws Exception {
         return XhtmlMatchers.xhtml(
-            new XeFacet.Wrap(new AntlrFacet()).touch(
-                new XMLDocument(
-                    new Xembler(
-                        new Directives().add("spec").add("input").set(input)
-                    ).xml()
-                )
+            new StrictXML(
+                new XeFacet.Wrap(new AntlrFacet()).touch(
+                    new XMLDocument(
+                        new Xembler(
+                            new Directives().add("spec").add("input").set(input)
+                        ).xml()
+                    )
+                ),
+                org.requs.Compiler.SCHEMA
             )
         );
     }

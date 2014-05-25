@@ -19,6 +19,14 @@
         "duplicate signatures of the different methods".
         UC9 where User saves good file: "something".
         UC11 where Customer saves good file: "tbd".
+
+        UC1 where System (a system) works:
+        1. The system creates Message (a.
+
+        UC76 where User does it:
+        1. User creates Message (a.
+        UC76/1 when "something happens":
+        1. User send Message (a message).
     </spec>
     <xpaths>
         <xpath>/spec/errors/error</xpath>

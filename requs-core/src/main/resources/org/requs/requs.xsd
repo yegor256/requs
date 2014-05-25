@@ -224,7 +224,7 @@
         <xs:complexType>
             <xs:all>
                 <xs:element name="input" type="xs:string"/>
-                <xs:element name="requs" type="requs"/>
+                <xs:element name="requs" type="requs" minOccurs="0"/>
                 <xs:element name="errors">
                     <xs:complexType>
                         <xs:sequence maxOccurs="unbounded">
@@ -278,8 +278,8 @@
                     </xs:complexType>
                 </xs:element>
             </xs:all>
-            <xsl:attribute name="time" use="required" type="xs:dateTime"/>
-            <xsl:attribute name="msec" use="required" type="xs:integer"/>
+            <xsl:attribute name="time" use="optional" type="xs:dateTime"/>
+            <xsl:attribute name="msec" use="optional" type="xs:integer"/>
         </xs:complexType>
         <xs:unique name="uniqueMethodId">
             <xs:selector xpath="./methods/method" />
