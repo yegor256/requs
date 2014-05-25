@@ -80,8 +80,14 @@ public final class Rules implements XeFacet {
             ),
             new LineRule.Wrap(
                 new RegexRule(
-                    "[,\\.;][^$ ]",
-                    "always use space after comma, dot, semicolon"
+                    ",[^$ ]",
+                    "always use space after comma"
+                )
+            ),
+            new LineRule.Wrap(
+                new RegexRule(
+                    ";[^$ ]",
+                    "always use space after semicolon"
                 )
             ),
         };
