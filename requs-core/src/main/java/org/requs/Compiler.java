@@ -50,6 +50,7 @@ import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.requs.facet.Aggregate;
 import org.requs.facet.Transform;
+import org.requs.facet.sa.Rules;
 import org.requs.facet.syntax.AntlrFacet;
 import org.xembly.Directive;
 import org.xembly.Directives;
@@ -133,6 +134,7 @@ public final class Compiler {
             new Transform("pages-in-html.xsl"),
             new Transform("count-ambiguity.xsl"),
             new Transform("find-tbds.xsl"),
+            new XeFacet.Wrap(new Rules()),
             new XeFacet.Wrap(
                 new XeFacet() {
                     @Override

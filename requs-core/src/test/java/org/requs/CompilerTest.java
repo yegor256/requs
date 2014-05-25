@@ -77,6 +77,7 @@ public final class CompilerTest {
         final String[] files = {
             "samples/all-possible-constructs.xml",
             "samples/all-possible-mistakes.xml",
+            "samples/clean-spec.xml",
         };
         for (final String file : files) {
             this.parses(

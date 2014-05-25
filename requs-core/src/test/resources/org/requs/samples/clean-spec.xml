@@ -1,0 +1,25 @@
+<sample>
+    <spec>
+        User is a "human being".
+
+        File is a "binary object on disc".
+
+        UC1 where User (a user) saves very complex File (a file):
+          1. The user "opens Excel";
+          2. The user "clicks SAVE and saves the content" using the file;
+          3. The user validates the file.
+
+        UC2 where User validates File: "we'll define later".
+
+        """This is a comment""".
+
+        Vision: "some **Markdown** document".
+
+        :UC1 is a must.
+
+        UC1/UX must "be cool".
+    </spec>
+    <xpaths>
+        <xpath>/spec/errors[count(error)=0]</xpath>
+    </xpaths>
+</sample>
