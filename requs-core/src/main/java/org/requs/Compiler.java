@@ -126,6 +126,7 @@ public final class Compiler {
             new Transform("cleanup/duplicate-method-bindings.xsl"),
             new Transform("cleanup/incomplete-steps-object.xsl"),
             new Transform("cleanup/incomplete-steps-signature.xsl"),
+            new Transform("cleanup/incomplete-binding.xsl"),
             new Transform("seal-methods.xsl"),
             new Transform("sanity/signatures-check.xsl"),
             new Transform("sanity/types-check.xsl"),
