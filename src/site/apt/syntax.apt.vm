@@ -155,7 +155,7 @@ User shares Image with User
 * USING
 
   In the example above, one of the use case steps
-  mentioned <<using>> operator:
+  mentioned <<<using>>> operator:
 
 +--
 The friend receives email using SmtpServer.
@@ -167,6 +167,9 @@ The friend receives email using SmtpServer.
 +--
 friend.receives_email(smtp_server);
 +--
+
+  Instead of <<<using>>> you can use <<<of>>> or <<<with>>>. These three
+  keywords are reserved and can't be used as English words.
 
 * CRUDL
 
