@@ -5,7 +5,7 @@
     <xsl:template match="errors">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
-            <xsl:for-each select="//step[empty(result/text())]">
+            <xsl:for-each select="//step[result and empty(result/text())]">
                 <error type="lost" pos="0">
                     <xsl:attribute name="line">
                         <xsl:value-of select="mentioned/where[1]"/>
@@ -17,7 +17,7 @@
             </xsl:for-each>
         </xsl:copy>
     </xsl:template>
-    <xsl:template match="step[empty(result/text())]">
+    <xsl:template match="step[result and empty(result/text())]">
         <xsl:copy>
             <xsl:apply-templates select="(node() except result)|@*"/>
         </xsl:copy>

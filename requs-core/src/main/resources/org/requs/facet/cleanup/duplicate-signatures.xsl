@@ -27,7 +27,7 @@
     </xsl:template>
     <xsl:template match="methods">
         <xsl:copy>
-            <xsl:for-each-group select="method" group-by="signature">
+            <xsl:for-each-group select="method" group-by="signature[1]">
                 <xsl:copy-of select="current-group()[1]"/>
             </xsl:for-each-group>
         </xsl:copy>
