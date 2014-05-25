@@ -33,7 +33,7 @@
     </xsl:template>
     <xsl:template match="step[exceptions/exception and not(signature) and not(object)]">
         <xsl:copy>
-            <xsl:apply-templates select="node()|@*"/>
+            <xsl:apply-templates select="(node() except mentioned)|@*"/>
             <signature>"undefined"</signature>
             <object>_self</object>
             <mentioned>

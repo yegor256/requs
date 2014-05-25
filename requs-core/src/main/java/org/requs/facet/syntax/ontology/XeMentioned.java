@@ -69,6 +69,7 @@ final class XeMentioned implements Mentioned {
     @Override
     public void mention(final int where) {
         this.dirs.xpath(this.start).strict(1).addIf("mentioned")
+            .strict(1)
             .add("where").set(Integer.toString(where));
     }
 }
