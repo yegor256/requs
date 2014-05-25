@@ -204,6 +204,7 @@
                 <xsl:with-param name="bindings" select="../../bindings"/>
                 <xsl:with-param name="home" select="."/>
             </xsl:call-template>
+            <xsl:apply-templates select="info/informal"/>
             <xsl:apply-templates select="exceptions/exception"/>
         </div>
     </xsl:template>
