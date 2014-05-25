@@ -1,0 +1,10 @@
+<sample>
+    <spec>
+        User is a "human being".
+        S3Repo is a "repository".
+    </spec>
+    <xpaths>
+        <xpath>/spec/errors[not(error)]</xpath>
+        <xpath>/spec/methods[count(type)=2]</xpath>
+    </xpaths>
+</sample>
