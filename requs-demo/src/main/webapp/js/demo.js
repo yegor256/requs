@@ -64,6 +64,11 @@ $(document).ready(
                         error: function (xhr, textStatus, errorThrown) {
                             $('#output').text(xhr.responseText);
                             $('#output').css('color', 'red');
+                            var iframe = document.getElementById('srs');
+                            iframe = (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
+                            iframe.document.open();
+                            iframe.document.write('<html><body>internal application error, please report to team@requs.org</body></html>');
+                            iframe.document.close();
                         },
                         complete: function () {
                             $('#arrow').hide();
