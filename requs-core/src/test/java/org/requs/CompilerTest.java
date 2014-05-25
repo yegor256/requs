@@ -75,7 +75,7 @@ public final class CompilerTest {
     @Test
     public void parsesAllSamples() throws Exception {
         final String[] files = {
-//            "samples/all-possible-constructs.xml",
+            "samples/all-possible-constructs.xml",
             "samples/all-possible-mistakes.xml",
             "samples/clean-spec.xml",
         };
