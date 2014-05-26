@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns:xsl="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:complexType name="requs">
         <xs:all>
             <xs:element name="version" type="xs:string"/>
@@ -9,9 +8,16 @@
         </xs:all>
     </xs:complexType>
     <xs:complexType name="metrics">
-        <xs:all>
-            <xs:element name="ambiguity.overall" type="xs:float"/>
-        </xs:all>
+        <xs:sequence>
+            <xs:element name="metric" type="metric" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="metric">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="id" type="xs:string" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
     </xs:complexType>
     <xs:complexType name="info">
         <xs:sequence>
@@ -206,19 +212,12 @@
             <xs:element name="html" type="xs:string" minOccurs="0"/>
         </xs:all>
     </xs:complexType>
-    <xs:complexType name="metric">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute name="id" type="xs:string" use="required"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
     <xs:complexType name="tbd">
         <xs:all>
             <xs:element name="subject" type="xs:string"/>
             <xs:element name="description" type="xs:string"/>
         </xs:all>
-        <xsl:attribute name="id" use="required" type="xs:string"/>
+        <xs:attribute name="id" use="required" type="xs:string"/>
     </xs:complexType>
     <xs:element name="spec">
         <xs:complexType>
@@ -278,8 +277,8 @@
                     </xs:complexType>
                 </xs:element>
             </xs:all>
-            <xsl:attribute name="time" use="optional" type="xs:dateTime"/>
-            <xsl:attribute name="msec" use="optional" type="xs:integer"/>
+            <xs:attribute name="time" use="optional" type="xs:dateTime"/>
+            <xs:attribute name="msec" use="optional" type="xs:integer"/>
         </xs:complexType>
         <xs:unique name="uniqueMethodId">
             <xs:selector xpath="./methods/method" />
