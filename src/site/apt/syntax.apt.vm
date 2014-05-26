@@ -45,7 +45,7 @@ Requs Syntax
 Visitor is "an originator of HTTP request".
 UC3.2 where User (a user) deletes photos:
   "we will define it later...".
-Image includes: PNG content, name, and size.
+Image includes: content, name, and size.
 +--
 
   Anything inside double quotes is considered as

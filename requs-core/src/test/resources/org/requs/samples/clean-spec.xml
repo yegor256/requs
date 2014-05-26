@@ -4,6 +4,12 @@
 
         File is a "binary object on disc".
 
+        File includes:
+          name as "unique text",
+          content as Binary "that complies to our requirements".
+
+        Binary is "a collection of bytes".
+
         UC1 where User (a user) saves very complex File (a file):
           1. The user "opens Excel";
           2. The user "clicks SAVE and saves the content" using the file;
