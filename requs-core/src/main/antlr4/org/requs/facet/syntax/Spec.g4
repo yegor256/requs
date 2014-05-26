@@ -147,6 +147,10 @@ slot [Type type]
             INFORMAL
             { slot.explain($INFORMAL.text); }
         )
+        (
+            INFORMAL
+            { slot.explain($INFORMAL.text); }
+        )*
     )?
     ;
 
