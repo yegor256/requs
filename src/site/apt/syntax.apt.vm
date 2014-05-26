@@ -158,7 +158,7 @@ User shares Image with User
   mentioned <<<using>>> operator:
 
 +--
-The friend receives email using SmtpServer.
+The friend receives email using SmtpServer (a server).
 +--
 
   This is similar to sending arguments to a method. In this line
