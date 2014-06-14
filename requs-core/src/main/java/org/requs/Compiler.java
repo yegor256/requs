@@ -118,6 +118,9 @@ public final class Compiler {
         final Facet[] facets = {
             new XeFacet.Wrap(new Aggregate(new File(this.input))),
             new XeFacet.Wrap(new AntlrFacet()),
+            new Transform("cleanup/duplicate-step-numbers.xsl"),
+            new Transform("cleanup/duplicate-step-signatures.xsl"),
+            new Transform("cleanup/duplicate-step-objects.xsl"),
             new Transform("cleanup/lost-steps.xsl"),
             new Transform("cleanup/lost-methods.xsl"),
             new Transform("cleanup/duplicate-signatures.xsl"),

@@ -84,6 +84,7 @@ public final class CompilerTest {
         };
         for (final String file : files) {
             this.parses(
+                file,
                 IOUtils.toString(
                     CompilerTest.class.getResourceAsStream(file),
                     CharEncoding.UTF_8
@@ -94,10 +95,11 @@ public final class CompilerTest {
 
     /**
      * Compiler can parse given text.
+     * @param file File we're parsing
      * @param text Text to parse
      * @throws Exception When necessary
      */
-    private void parses(final String text) throws Exception {
+    private void parses(final String file, final String text) throws Exception {
         final XML xml = new XMLDocument(text);
         final File input = this.temp.newFolder();
         final File output = this.temp.newFolder();
@@ -116,13 +118,19 @@ public final class CompilerTest {
         );
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(srs.toString()),
-            XhtmlMatchers.hasXPaths(
-                xpaths.toArray(new String[xpaths.size()])
+            Matchers.describedAs(
+                file,
+                XhtmlMatchers.hasXPaths(
+                    xpaths.toArray(new String[xpaths.size()])
+                )
             )
         );
         MatcherAssert.assertThat(
             xsl.transform(srs),
-            XhtmlMatchers.hasXPath("//xhtml:body")
+            Matchers.describedAs(
+                file,
+                XhtmlMatchers.hasXPath("//xhtml:body")
+            )
         );
         CompilerTest.assumeXsltproc();
         MatcherAssert.assertThat(
@@ -137,7 +145,10 @@ public final class CompilerTest {
                     )
                     .start()
             ).stdout(),
-            Matchers.isEmptyString()
+            Matchers.describedAs(
+                file,
+                Matchers.isEmptyString()
+            )
         );
         MatcherAssert.assertThat(
             FileUtils.readFileToString(new File(output, "requs.html")),
