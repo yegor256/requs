@@ -94,6 +94,44 @@ public final class CompilerTest {
     }
 
     /**
+     * Compiler can combine multiple files.
+     * @throws Exception When necessary
+     */
+    @Test
+    public void combinesMultipleFiles() throws Exception {
+        final File input = this.temp.newFolder();
+        final File output = this.temp.newFolder();
+        FileUtils.write(
+            new File(input, "a.req"),
+            "\n\nUser is a \"human being\".",
+            CharEncoding.UTF_8
+        );
+        FileUtils.write(
+            new File(input, "b.req"),
+            "\n\nUser is a \"good human being\".",
+            CharEncoding.UTF_8
+        );
+        FileUtils.write(
+            new File(input, "c.req"),
+            "\n\n\nUser is a \"very good human being\".",
+            CharEncoding.UTF_8
+        );
+        new Compiler(input, output).compile();
+        MatcherAssert.assertThat(
+            XhtmlMatchers.xhtml(new XMLDocument(new File(output, "requs.xml"))),
+            XhtmlMatchers.hasXPaths(
+                "/spec/files/file[@id='0' and @line='1']",
+                "/spec/files/file[@id='1' and @line='4']",
+                "/spec/files/file[@id='2' and @line='7']",
+                "//mentioned/where[.='0:3']",
+                "//mentioned/where[.='1:3']",
+                "//mentioned/where[.='2:4']",
+                "/spec/errors[count(error)=0]"
+            )
+        );
+    }
+
+    /**
      * Compiler can parse given text.
      * @param file File we're parsing
      * @param text Text to parse

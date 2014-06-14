@@ -4,11 +4,11 @@
     <xsl:strip-space elements="*" />
     <xsl:template match="mentioned/where">
         <xsl:copy>
-            <xsl:variable name="line" select="."/>
-            <xsl:variable name="file" select="/spec/files/file[@line &lt;= $line and not(following-sibling::file/@line &lt; $line)]"/>
+            <xsl:variable name="line" select="number(.)"/>
+            <xsl:variable name="file" select="/spec/files/file[@line &lt;= $line and not(following-sibling::file/@line &lt;= $line)]"/>
             <xsl:value-of select="$file/@id"/>
             <xsl:text>:</xsl:text>
-            <xsl:value-of select="$line - $file/@line"/>
+            <xsl:value-of select="$line - $file/@line + 1"/>
         </xsl:copy>
     </xsl:template>
     <xsl:template match="node()|@*">

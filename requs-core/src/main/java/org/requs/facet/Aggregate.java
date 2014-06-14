@@ -79,14 +79,14 @@ public final class Aggregate implements XeFacet {
         int idx = 0;
         final Directives dirs = new Directives().xpath("/spec").addIf("files");
         for (final File file : files) {
-            final int line = StringUtils.countMatches(text.toString(), "\n");
+            final int pos = StringUtils.countMatches(text.toString(), "\n") + 1;
             Logger.info(this, "source file: %s", file);
             text.append(
                 FileUtils.readFileToString(file, CharEncoding.UTF_8)
             ).append('\n');
             dirs.add("file")
                 .attr("id", Integer.toString(idx))
-                .attr("line", Integer.toString(line))
+                .attr("line", Integer.toString(pos))
                 .set(file.getAbsolutePath()).up();
             ++idx;
         }
