@@ -1,0 +1,7 @@
+<sample>
+    <spec> </spec>
+    <xpaths>
+        <xpath>/processing-instruction()[contains(.,'href')]</xpath>
+        <xpath>/spec/errors[count(error)=0]</xpath>
+    </xpaths>
+</sample>
