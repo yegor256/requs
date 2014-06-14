@@ -255,6 +255,7 @@
                                             <xs:attribute name="type" type="xs:string"/>
                                             <xs:attribute name="line" type="lineNo"/>
                                             <xs:attribute name="pos" type="xs:integer"/>
+                                            <xs:attribute name="file" type="xs:integer" use="optional"/>
                                         </xs:extension>
                                     </xs:simpleContent>
                                 </xs:complexType>

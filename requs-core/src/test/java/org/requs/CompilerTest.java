@@ -126,7 +126,7 @@ public final class CompilerTest {
                 "//mentioned/where[.='0:3']",
                 "//mentioned/where[.='1:3']",
                 "//mentioned/where[.='2:4']",
-                "/spec/errors/error[@line='2:4']"
+                "/spec/errors/error[@file='2' and @line='4']"
             )
         );
     }
