@@ -97,7 +97,12 @@ public final class Rules implements XeFacet {
                 )
             ),
         };
-        final String input = spec.xpath("/spec/input/text()").get(0);
+        final String input;
+        if (spec.nodes("/spec/input[.!='']").isEmpty()) {
+            input = "";
+        } else {
+            input = spec.xpath("/spec/input/text()").get(0);
+        }
         final Directives dirs = new Directives().xpath("/spec").addIf("errors");
         for (final Rule rule : rules) {
             for (final Violation violation : rule.enforce(input)) {
