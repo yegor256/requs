@@ -5,7 +5,7 @@
     <xsl:template match="/spec/errors">
         <xsl:copy>
             <xsl:apply-templates select="error"/>
-            <xsl:for-each select="//exception[steps/step[last() and signature!='fail']]">
+            <xsl:for-each select="//exception[steps/step[position()=last() and signature!='fail']]">
                 <xsl:variable name="step" select="steps/step[last()]"/>
                 <error type="semantic" pos="0">
                     <xsl:attribute name="line">
