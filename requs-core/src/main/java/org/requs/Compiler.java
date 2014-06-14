@@ -128,6 +128,7 @@ public final class Compiler {
             new Transform("cleanup/incomplete-step-signature.xsl"),
             new Transform("cleanup/incomplete-step-result.xsl"),
             new Transform("cleanup/incomplete-binding.xsl"),
+            new Transform("cleanup/bindings-in-exception.xsl"),
             new Transform("seal-methods.xsl"),
             new Transform("sanity/signatures-check.xsl"),
             new Transform("sanity/types-check.xsl"),
