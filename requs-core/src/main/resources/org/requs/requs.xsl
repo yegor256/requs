@@ -12,11 +12,7 @@
                 <script src="//code.jquery.com/jquery-2.1.1-rc1.js">
                     <!-- nothing -->
                 </script>
-                <link rel="icon" type="image/png">
-                    <xsl:attribute name="href">
-                        <xsl:text>//img.requs.org/logo-128x128.png</xsl:text>
-                    </xsl:attribute>
-                </link>
+                <link rel="icon" type="image/png" href="//img.requs.org/logo-128x128.png"/>
                 <style>---css---</style>
                 <title>SRS</title>
             </head>
@@ -84,11 +80,7 @@
     </xsl:template>
     <xsl:template match="types/type">
         <div class="type">
-            <a>
-                <xsl:attribute name="name">
-                    <xsl:value-of select="name"/>
-                </xsl:attribute>
-            </a>
+            <a name="{name}"/>
             <strong><xsl:value-of select="name"/></strong>
             <xsl:text> is </xsl:text>
             <xsl:choose>
@@ -133,11 +125,7 @@
             </xsl:choose>
             <xsl:if test="type">
                 <xsl:text> as </xsl:text>
-                <a>
-                    <xsl:attribute name="href">
-                        <xsl:text>#</xsl:text>
-                        <xsl:value-of select="type"/>
-                    </xsl:attribute>
+                <a href="#{type}">
                     <xsl:value-of select="type"/>
                 </a>
             </xsl:if>
@@ -146,11 +134,7 @@
     </xsl:template>
     <xsl:template match="method">
         <div class="method">
-            <a>
-                <xsl:attribute name="name">
-                    <xsl:value-of select="id"/>
-                </xsl:attribute>
-            </a>
+            <a name="{id}"/>
             <div>
                 <strong><xsl:value-of select="id"/></strong>
                 <xsl:text> where </xsl:text>
@@ -251,11 +235,7 @@
                 </span>
             </xsl:when>
             <xsl:when test="$uc">
-                <a>
-                    <xsl:attribute name="href">
-                        <xsl:text>#</xsl:text>
-                        <xsl:value-of select="$uc"/>
-                    </xsl:attribute>
+                <a href="#{$uc}">
                     <xsl:value-of select="$home/signature"/>
                 </a>
             </xsl:when>
@@ -292,11 +272,7 @@
         <xsl:param name="name" />
         <xsl:param name="typed" select="'false'"/>
         <xsl:variable name="type" select="$bindings/binding[name=$name]/type"/>
-        <a>
-            <xsl:attribute name="href">
-                <xsl:text>#</xsl:text>
-                <xsl:value-of select="$type"/>
-            </xsl:attribute>
+        <a href="#{$type}">
             <xsl:choose>
                 <xsl:when test="contains($name,'_')">
                     <xsl:value-of select="$type"/>
