@@ -45,18 +45,6 @@
         </title>
     </xsl:template>
     <xsl:template match="page" mode="body">
-        <p>
-            <img alt="logo" style="width: 192px; height: 64px;">
-                <xsl:attribute name="src">
-                    <xsl:text>//img.requs.org/logo-384x128.png</xsl:text>
-                </xsl:attribute>
-            </img>
-        </p>
-        <p>
-            <a href="http://www.requs.org/syntax.html">
-                <xsl:text>syntax explained</xsl:text>
-            </a>
-        </p>
         <table style="width:100%;table-layout:fixed;border-spacing:0;">
             <thead>
                 <tr>
@@ -85,7 +73,11 @@
                 </tr>
             </tbody>
         </table>
-        <strong><xsl:text>SRS</xsl:text></strong>
+        <p>
+            <a href="http://www.requs.org/syntax.html">
+                <img alt="logo" style="width: 96px; height: 32px;" src="//img.requs.org/logo-384x128.png"/>
+            </a>
+        </p>
         <iframe class="box" id="srs">
             <xsl:text>...</xsl:text>
         </iframe>

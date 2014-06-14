@@ -37,19 +37,12 @@
         <html lang="en">
             <head>
                 <meta charset="UTF-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 <meta name="description" content="Requs Demo"/>
                 <meta name="keywords" content="requs"/>
                 <meta name="author" content="www.requs.org"/>
-                <link rel="stylesheet" type="text/css" media="all">
-                    <xsl:attribute name="href">
-                        <xsl:text>/css/screen.css?</xsl:text>
-                    </xsl:attribute>
-                </link>
-                <link rel="icon" type="image/gif">
-                    <xsl:attribute name="href">
-                        <xsl:text>http://img.requs.org/logo-128x128.png</xsl:text>
-                    </xsl:attribute>
-                </link>
+                <link rel="stylesheet" type="text/css" media="all" href="/css/screen.css"/>
+                <link rel="icon" type="image/gif" href="http://img.requs.org/logo-128x128.png"/>
                 <xsl:apply-templates select="." mode="head"/>
             </head>
             <body>
@@ -70,7 +63,11 @@
             </div>
             <div>
                 <span><xsl:value-of select="name"/></span>
-                <span><xsl:value-of select="revision"/></span>
+                <span>
+                    <a href="https://github.com/teamed/requs/commit/{revision}">
+                        <xsl:value-of select="revision"/>
+                    </a>
+                </span>
                 <span>
                     <xsl:call-template name="millis">
                         <xsl:with-param name="millis" select="/page/millis"/>
