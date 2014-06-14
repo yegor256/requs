@@ -2,9 +2,10 @@
     <spec>
         User is a "human being".
         S3Repo is a "repository".
+        BmwMPower is a "car".
     </spec>
     <xpaths>
         <xpath>/spec/errors[not(error)]</xpath>
-        <xpath>/spec/types[count(type)=2]</xpath>
+        <xpath>/spec/types[count(type)=3]</xpath>
     </xpaths>
 </sample>
