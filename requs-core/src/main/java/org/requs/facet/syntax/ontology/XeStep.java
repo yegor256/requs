@@ -117,4 +117,9 @@ final class XeStep implements Step {
     public void mention(final int where) {
         this.mentioned.mention(where);
     }
+
+    @Override
+    public void explain(final String informal) {
+        this.signature.explain(informal);
+    }
 }

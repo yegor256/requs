@@ -22,6 +22,6 @@
         <xpath>//method/steps/step[number=1 and object='user' and signature='&quot;opens Excel&quot;']</xpath>
         <xpath>//method/steps/step[number=2 and object='user' and signature='&quot;clicks SAVE and saves the content&quot;']</xpath>
         <xpath>//method/steps/step[number=3 and object='user' and signature='validates']</xpath>
-        <xpath>//step[number=1]/exceptions/exception/step[signature='fail']</xpath>
+        <xpath>//step[number=1]/exceptions/exception/steps/step[signature='fail']</xpath>
     </xpaths>
 </sample>

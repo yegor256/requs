@@ -15,7 +15,7 @@
         <xpath>/spec/methods[count(method)=1]</xpath>
         <xpath>/processing-instruction()[contains(.,'href')]</xpath>
         <xpath>//method[id='UC1']</xpath>
-        <xpath>//method[@sealt]</xpath>
+        <xpath>//method[@seal]</xpath>
         <xpath>/spec/pages/page[title='Vision']</xpath>
     </xpaths>
 </sample>

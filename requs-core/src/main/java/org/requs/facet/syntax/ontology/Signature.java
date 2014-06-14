@@ -36,7 +36,7 @@ package org.requs.facet.syntax.ontology;
  * @version $Id$
  * @since 1.1
  */
-public interface Signature {
+public interface Signature extends Informal {
 
     /**
      * Sign it.

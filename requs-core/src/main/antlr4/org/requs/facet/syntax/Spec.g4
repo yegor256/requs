@@ -318,10 +318,11 @@ step [Flow flow]
         |
         FAIL
         SINCE
-        ex_informal=signature
-        { if ($ex_informal.ret == null) throw new SyntaxException("invalid signature"); }
+        failure=INFORMAL
+        { if ($failure == null) throw new SyntaxException("invalid failure message"); }
         { step.object(Flow.SELF); }
-        { step.sign($ex_informal.ret); }
+        { step.sign("fail"); }
+        { step.explain($failure.text); }
         |
         step_informal=signature
         { if ($step_informal.ret == null) throw new SyntaxException("invalid signature"); }

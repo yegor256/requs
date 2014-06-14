@@ -57,6 +57,11 @@ final class XeSignature implements Signature {
     private final transient String start;
 
     /**
+     * Informal helper.
+     */
+    private final transient Informal informal;
+
+    /**
      * Ctor.
      * @param directives Directives to extend
      * @param xpath XPath to start with
@@ -64,6 +69,7 @@ final class XeSignature implements Signature {
     XeSignature(final Directives directives, final String xpath) {
         this.dirs = directives;
         this.start = xpath;
+        this.informal = new XeInformal(directives, xpath);
     }
 
     @Override
@@ -88,6 +94,11 @@ final class XeSignature implements Signature {
     public void input(final String name) {
         this.dirs.xpath(this.start).strict(1)
             .addIf("args").add("arg").set(name);
+    }
+
+    @Override
+    public void explain(final String info) {
+        this.informal.explain(info);
     }
 
 }

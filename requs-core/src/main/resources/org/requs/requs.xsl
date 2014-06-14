@@ -234,6 +234,12 @@
                     <xsl:value-of select="$home/signature"/>
                 </span>
             </xsl:when>
+            <xsl:when test="$home/signature='fail'">
+                <span class="fail">
+                    <xsl:text>Fail since</xsl:text>
+                </span>
+                <xsl:apply-templates select="$home/info/informal"/>
+            </xsl:when>
             <xsl:when test="$uc">
                 <a href="#{$uc}">
                     <xsl:value-of select="$home/signature"/>
