@@ -68,6 +68,12 @@ public final class Rules implements XeFacet {
             ),
             new LineRule.Wrap(
                 new RegexRule(
+                    ".{81,}",
+                    "avoid lines longer than 80 characters"
+                )
+            ),
+            new LineRule.Wrap(
+                new RegexRule(
                     "\t",
                     "avoid TAB characters, use four spaces instead"
                 )
