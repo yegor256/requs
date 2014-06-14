@@ -4,6 +4,8 @@
           1. The user "opens Excel";
           2. The user "clicks SAVE and saves the content" using the file;
           3. The user validates the file.
+        UC1/1 when "file not found":
+          1. Fail since "there is no file found".
     </spec>
     <xpaths>
         <xpath>/spec/errors[not(error)]</xpath>
@@ -20,5 +22,6 @@
         <xpath>//method/steps/step[number=1 and object='user' and signature='&quot;opens Excel&quot;']</xpath>
         <xpath>//method/steps/step[number=2 and object='user' and signature='&quot;clicks SAVE and saves the content&quot;']</xpath>
         <xpath>//method/steps/step[number=3 and object='user' and signature='validates']</xpath>
+        <xpath>//step[number=1]/exceptions/exception/step[signature='fail']</xpath>
     </xpaths>
 </sample>

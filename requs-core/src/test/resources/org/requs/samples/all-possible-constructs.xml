@@ -5,6 +5,8 @@
         1. The user opens "its browser" "for example, Google Chrome";
         2. "The user clicks SAVE" "and waits";
         3. The user "having in mind something" validates the file "and saves".
+        UC1/3 when "some bug inside":
+        1. Fail since "there is a bug!".
         UC1/UX must "look cool".
         :UC1 is a must.
         Vision: """ this is a "test" """.
@@ -13,7 +15,7 @@
         <xpath>/spec/methods[count(method)=1]</xpath>
         <xpath>/processing-instruction()[contains(.,'href')]</xpath>
         <xpath>//method[id='UC1']</xpath>
-        <xpath>//method[@seal='c2ea06']</xpath>
+        <xpath>//method[@sealt]</xpath>
         <xpath>/spec/pages/page[title='Vision']</xpath>
     </xpaths>
 </sample>
