@@ -30,7 +30,7 @@
     <skin>
         <groupId>com.jcabi</groupId>
         <artifactId>jcabi-maven-skin</artifactId>
-        <version>1.3</version>
+        <version>1.3.1</version>
     </skin>
     <bannerLeft>
         <name>requs</name>
@@ -44,9 +44,6 @@
         <head>
             <link href="http://img.requs.org/logo-128x128.png" rel="shortcut icon"/>
         </head>
-        <breadcrumbs>
-            <item name="requs.org" href="http://www.requs.org"/>
-        </breadcrumbs>
         <menu name="Overview">
             <item name="Introduction" href="./index.html"/>
             <item name="Requs Syntax" href="./syntax.html"/>
@@ -55,6 +52,7 @@
         <menu name="Features">
             <item name="Types and Slots" href="./feature-types.html"/>
             <item name="Attributes and Seals" href="./feature-attributes.html"/>
+            <item name="Non-Functional Requirements" href="./feature-nfrs.html"/>
         </menu>
         <menu ref="modules"/>
         <menu ref="reports"/>

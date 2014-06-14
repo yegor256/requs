@@ -287,6 +287,8 @@ UC7/PERF must "be less than 500 msec per request".
   a mnemonic name of a non-functional requirement. Then, you put
   "must be" and an informal text.
 
+  More about it in {{{./feature-nfrs.html}Non-Functional Requirements}}.
+
 * Markdown Pages
 
   Sometimes you may need to add informal pages to your SRS document. For
