@@ -1,5 +1,10 @@
 <sample>
     <spec>
+        UC234 where User (a user) works:
+        1. The user reads;
+        1. The user creates;
+        1. The user lists.
+
         Test is "a test".
         "This is an informal text"
         UC1 where User (a user) saves "a file".
