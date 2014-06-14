@@ -30,6 +30,7 @@
 package org.requs.facet;
 
 import com.jcabi.aspects.Immutable;
+import com.jcabi.aspects.Tv;
 import com.jcabi.log.Logger;
 import com.jcabi.xml.XML;
 import java.io.File;
@@ -39,6 +40,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.CharEncoding;
+import org.apache.commons.lang3.StringUtils;
 import org.requs.XeFacet;
 import org.xembly.Directive;
 import org.xembly.Directives;
@@ -70,17 +72,24 @@ public final class Aggregate implements XeFacet {
 
     @Override
     public Iterable<Directive> touch(final XML spec) throws IOException {
-        final StringBuilder text = new StringBuilder(0);
+        final StringBuilder text = new StringBuilder(Tv.THOUSAND);
         final Collection<File> files = FileUtils.listFiles(
             new File(this.dir), new String[]{"req"}, true
         );
+        int idx = 0;
+        final Directives dirs = new Directives().xpath("/spec").addIf("files");
         for (final File file : files) {
+            final int line = StringUtils.countMatches(text.toString(), "\n");
             Logger.info(this, "source file: %s", file);
             text.append(
                 FileUtils.readFileToString(file, CharEncoding.UTF_8)
             ).append('\n');
+            dirs.add("file")
+                .attr("id", Integer.toString(idx))
+                .attr("line", Integer.toString(line))
+                .set(file.getAbsolutePath()).up();
+            ++idx;
         }
-        return new Directives().xpath("/spec")
-            .add("input").set(text.toString());
+        return dirs.up().add("input").set(text.toString());
     }
 }

@@ -26,7 +26,13 @@
     </xs:complexType>
     <xs:complexType name="mentioned">
         <xs:sequence>
-            <xs:element name="where" type="xs:integer" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element name="where" maxOccurs="unbounded" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="([0-9]+:)?[0-9]+" />
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="slot">
@@ -223,6 +229,22 @@
         <xs:complexType>
             <xs:all>
                 <xs:element name="input" type="xs:string"/>
+                <xs:element name="files">
+                    <xs:complexType>
+                        <xs:sequence maxOccurs="unbounded">
+                            <xs:element name="file" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:string">
+                                            <xs:attribute name="id" type="xs:integer"/>
+                                            <xs:attribute name="line" type="xs:integer"/>
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
                 <xs:element name="requs" type="requs" minOccurs="0"/>
                 <xs:element name="errors">
                     <xs:complexType>
