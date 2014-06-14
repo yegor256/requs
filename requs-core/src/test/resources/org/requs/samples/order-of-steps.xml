@@ -7,6 +7,6 @@
     </spec>
     <xpaths>
         <xpath>/processing-instruction()[contains(.,'href')]</xpath>
-        <xpath>/spec/errors[count(error)=1]</xpath>
+        <xpath>/spec/errors[count(error)=2]</xpath>
     </xpaths>
 </sample>

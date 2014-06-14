@@ -135,6 +135,7 @@ public final class Compiler {
             new Transform("sanity/seals-check.xsl"),
             new Transform("sanity/exception-rethrow-check.xsl"),
             new Transform("sanity/misplaced-failure-check.xsl"),
+            new Transform("sanity/broken-order-of-steps.xsl"),
             new Transform("methods-in-markdown.xsl"),
             new Transform("pages-in-html.xsl"),
             new Transform("count-ambiguity.xsl"),
