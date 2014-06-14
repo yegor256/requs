@@ -54,6 +54,9 @@
             <item name="Attributes and Seals" href="./feature-attributes.html"/>
             <item name="Non-Functional Requirements" href="./feature-nfrs.html"/>
         </menu>
+        <menu name="Examples">
+            <item name="Facebook SRS" href="./example-facebook.html"/>
+        </menu>
         <menu ref="modules"/>
         <menu ref="reports"/>
     </body>
