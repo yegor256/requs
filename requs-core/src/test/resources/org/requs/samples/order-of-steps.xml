@@ -4,6 +4,17 @@
         1. The user creates;
         3. The user reads;
         2. The user lists.
+        UC2 where User (a user) works again:
+        1. The user creates;
+        2. The user reads;
+        3. The user reads;
+        4. The user reads;
+        5. The user reads;
+        6. The user reads;
+        7. The user reads;
+        8. The user reads;
+        9. The user reads;
+        10. The user reads.
     </spec>
     <xpaths>
         <xpath>/processing-instruction()[contains(.,'href')]</xpath>
