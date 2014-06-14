@@ -83,15 +83,25 @@
             <a name="{name}"/>
             <strong><xsl:value-of select="name"/></strong>
             <xsl:text> is </xsl:text>
+            <xsl:if test="parents/type">
+                <xsl:for-each select="parents/type">
+                    <xsl:if test="position() &gt; 1">
+                        <xsl:text> and </xsl:text>
+                    </xsl:if>
+                    <a href="#{.}">
+                        <xsl:value-of select="."/>
+                    </a>
+                </xsl:for-each>
+            </xsl:if>
             <xsl:choose>
                 <xsl:when test="info/informal">
                     <xsl:apply-templates select="info/informal"/>
                 </xsl:when>
-                <xsl:otherwise>
+                <xsl:when test="not(parents/type)">
                     <span class="warning">
                         <xsl:text>an unknown creature</xsl:text>
                     </span>
-                </xsl:otherwise>
+                </xsl:when>
             </xsl:choose>
             <xsl:choose>
                 <xsl:when test="slots/slot">
