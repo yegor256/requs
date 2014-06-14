@@ -86,7 +86,7 @@ public final class Rules implements XeFacet {
             ),
             new LineRule.Wrap(
                 new RegexRule(
-                    ",[^$ ]",
+                    ",[^$ \n\r]",
                     "always use space after comma"
                 )
             ),
