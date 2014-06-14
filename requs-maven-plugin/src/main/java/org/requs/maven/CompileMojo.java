@@ -88,10 +88,17 @@ public final class CompileMojo extends AbstractMojo {
             new Compiler(this.input, this.output).compile();
             final XML srs = new XMLDocument(new File(this.output, "requs.xml"));
             final Collection<XML> errors = srs.nodes("//errors/error");
+            final int prefix = this.input.getAbsolutePath().length() + 1;
             if (!errors.isEmpty()) {
                 for (final XML error : errors) {
                     Logger.error(
-                        this, "%s:%s %s",
+                        this, "%s[%s:%s] %s",
+                        srs.xpath(
+                            String.format(
+                                "/spec/files/file[@id='%d']/text()",
+                                Integer.parseInt(error.xpath("@file").get(0))
+                            )
+                        ).get(0).substring(prefix),
                         error.xpath("@line").get(0),
                         error.xpath("@pos").get(0),
                         error.xpath("text()").get(0)
