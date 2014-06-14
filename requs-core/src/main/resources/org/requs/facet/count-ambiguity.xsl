@@ -17,7 +17,7 @@
                             <xsl:value-of select="$total"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="$informal div $total"/>
+                            <xsl:value-of select="format-number($informal div $total, '0.000')"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </metric>
