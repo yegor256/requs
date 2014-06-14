@@ -79,6 +79,7 @@ public final class CompilerTest {
             "samples/all-possible-mistakes.xml",
             "samples/clean-spec.xml",
             "samples/exceptions.xml",
+            "samples/order-of-steps.xml",
         };
         for (final String file : files) {
             this.parses(
