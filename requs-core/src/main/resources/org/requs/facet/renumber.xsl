@@ -2,7 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
     <xsl:output method="xml"/>
     <xsl:strip-space elements="*" />
-    <xsl:template match="mentioned/where">
+    <xsl:template match="mentioned/where | error/@line">
         <xsl:copy>
             <xsl:variable name="line" select="number(.)"/>
             <xsl:variable name="file" select="/spec/files/file[@line &lt;= $line and not(following-sibling::file/@line &lt;= $line)]"/>

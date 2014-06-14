@@ -113,7 +113,7 @@ public final class CompilerTest {
         );
         FileUtils.write(
             new File(input, "c.req"),
-            "\n\n\nUser is a \"very good human being\".",
+            "\n\n\nUser is a \"very good human being\". bug",
             CharEncoding.UTF_8
         );
         new Compiler(input, output).compile();
@@ -126,7 +126,7 @@ public final class CompilerTest {
                 "//mentioned/where[.='0:3']",
                 "//mentioned/where[.='1:3']",
                 "//mentioned/where[.='2:4']",
-                "/spec/errors[count(error)=0]"
+                "/spec/errors/error[@line='2:4']"
             )
         );
     }

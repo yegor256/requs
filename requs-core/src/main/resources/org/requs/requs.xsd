@@ -24,15 +24,14 @@
             <xs:element name="informal" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
+    <xs:simpleType name="lineNo">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([0-9]+:)?[0-9]+" />
+        </xs:restriction>
+    </xs:simpleType>
     <xs:complexType name="mentioned">
         <xs:sequence>
-            <xs:element name="where" maxOccurs="unbounded" minOccurs="0">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:pattern value="([0-9]+:)?[0-9]+" />
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
+            <xs:element name="where" type="lineNo" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="slot">
@@ -254,7 +253,7 @@
                                     <xs:simpleContent>
                                         <xs:extension base="xs:string">
                                             <xs:attribute name="type" type="xs:string"/>
-                                            <xs:attribute name="line" type="xs:integer"/>
+                                            <xs:attribute name="line" type="lineNo"/>
                                             <xs:attribute name="pos" type="xs:integer"/>
                                         </xs:extension>
                                     </xs:simpleContent>
