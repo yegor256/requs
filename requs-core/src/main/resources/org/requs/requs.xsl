@@ -1,19 +1,21 @@
 <?xml version="1.0"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns="http://www.w3.org/1999/xhtml" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
+    xmlns="http://www.w3.org/1999/xhtml">
+    <xsl:output method="xml" omit-xml-declaration="yes"/>
     <xsl:template match="/">
+        <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;</xsl:text>
         <html lang="en-US">
             <head>
                 <meta charset="UTF-8"/>
                 <meta name="keywords" content="software requirements specification"/>
-                <meta name="author" content="requs"/>
+                <meta name="author" content="requs.org"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <link rel="stylesheet" type="text/css" href="requs.css"/>
-                <script src="//code.jquery.com/jquery-2.1.1-rc1.js">
+                <script src="//code.jquery.com/jquery-2.1.1-rc1.js" type="text/javascript">
                     <!-- nothing -->
                 </script>
                 <link rel="icon" type="image/png" href="//img.requs.org/logo-128x128.png"/>
-                <style>---css---</style>
+                <style type="text/css">---css---</style>
                 <title>SRS</title>
             </head>
             <body>
@@ -161,6 +163,7 @@
                 </xsl:if>
                 <xsl:apply-templates select="attributes/attribute"/>
             </div>
+            <xsl:apply-templates select="svg"/>
             <div class="steps">
                 <xsl:apply-templates select="info/informal"/>
                 <xsl:apply-templates select="steps"/>
@@ -330,5 +333,10 @@
             <td><xsl:value-of select="subject"/></td>
             <td><xsl:value-of select="description"/></td>
         </tr>
+    </xsl:template>
+    <xsl:template match="svg">
+        <div class="uml">
+            <xsl:value-of select="." disable-output-escaping="yes"/>
+        </div>
     </xsl:template>
 </xsl:stylesheet>

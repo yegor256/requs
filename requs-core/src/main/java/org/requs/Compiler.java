@@ -143,6 +143,7 @@ public final class Compiler {
             new Transform("pages-in-html.xsl"),
             new Transform("count-ambiguity.xsl"),
             new Transform("find-tbds.xsl"),
+            new Transform("uml/sequence-diagrams.xsl"),
             new Transform("renumber.xsl"),
             new XeFacet.Wrap(new Rules()),
             new XeFacet.Wrap(
