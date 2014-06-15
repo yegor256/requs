@@ -97,7 +97,7 @@
         <dependency>
             <groupId>net.sourceforge.plantuml</groupId>
             <artifactId>plantuml</artifactId>
-            <version>6703</version>
+            <version>7999</version>
         </dependency>
         <dependency>
             <groupId>com.jcabi</groupId>

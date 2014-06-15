@@ -335,8 +335,12 @@
         </tr>
     </xsl:template>
     <xsl:template match="svg">
+        <!--
+        Doesn't work because of a bug in PlantUML integration,
+        see PlantTest.java for more details.
         <div class="uml">
             <xsl:value-of select="." disable-output-escaping="yes"/>
         </div>
+        -->
     </xsl:template>
 </xsl:stylesheet>
