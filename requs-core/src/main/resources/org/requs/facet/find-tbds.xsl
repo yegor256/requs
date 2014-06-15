@@ -4,7 +4,7 @@
     xmlns:digest="org.apache.commons.codec.digest.DigestUtils"
     xmlns:r="http://www.requs.org/" version="2.0"
     exclude-result-prefixes="xs r digest">
-    <xsl:output method="xml"/>
+    <xsl:output method="xml" cdata-section-elements="svg html"/>
     <xsl:strip-space elements="*" />
     <xsl:template match="/spec">
         <xsl:copy>

@@ -2,7 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:r="org.requs" exclude-result-prefixes="r"
     version="2.0">
-    <xsl:output method="xml"/>
+    <xsl:output method="xml" cdata-section-elements="svg html"/>
     <xsl:strip-space elements="*" />
     <xsl:template match="mentioned/where">
         <xsl:variable name="line" select="number(.)"/>

@@ -3,7 +3,7 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:r="org.requs.facet.XsltFuncs"
     version="2.0" exclude-result-prefixes="xs r">
-    <xsl:output method="xml"/>
+    <xsl:output method="xml" cdata-section-elements="svg html"/>
     <xsl:strip-space elements="*" />
     <xsl:template match="/spec">
         <xsl:copy>
