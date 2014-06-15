@@ -3,7 +3,6 @@
     xmlns="http://www.w3.org/1999/xhtml">
     <xsl:output method="xml" omit-xml-declaration="yes"/>
     <xsl:template match="/">
-        <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;</xsl:text>
         <html lang="en-US">
             <head>
                 <meta charset="UTF-8"/>

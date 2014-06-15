@@ -163,7 +163,6 @@ public final class CompilerTest {
                 )
             )
         );
-        Assume.assumeTrue(false);
         MatcherAssert.assertThat(
             xsl.transform(srs),
             Matchers.describedAs(
