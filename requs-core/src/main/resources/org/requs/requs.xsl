@@ -251,7 +251,6 @@
                 <span class="fail">
                     <xsl:text>Fail since</xsl:text>
                 </span>
-                <xsl:apply-templates select="$home/info/informal"/>
             </xsl:when>
             <xsl:when test="$uc">
                 <a href="#{$uc}">
