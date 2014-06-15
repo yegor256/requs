@@ -29,13 +29,15 @@
  */
 package org.requs.facet;
 
+import com.google.common.collect.Lists;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Tv;
 import com.jcabi.log.Logger;
 import com.jcabi.xml.XML;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.io.FileUtils;
@@ -73,9 +75,12 @@ public final class Aggregate implements XeFacet {
     @Override
     public Iterable<Directive> touch(final XML spec) throws IOException {
         final StringBuilder text = new StringBuilder(Tv.THOUSAND);
-        final Collection<File> files = FileUtils.listFiles(
-            new File(this.dir), new String[]{"req"}, true
+        final List<File> files = Lists.newArrayList(
+            FileUtils.listFiles(
+                new File(this.dir), new String[]{"req"}, true
+            )
         );
+        Collections.sort(files);
         int idx = 0;
         final Directives dirs = new Directives().xpath("/spec").addIf("files");
         for (final File file : files) {

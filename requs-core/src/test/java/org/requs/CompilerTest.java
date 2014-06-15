@@ -102,13 +102,13 @@ public final class CompilerTest {
         final File input = this.temp.newFolder();
         final File output = this.temp.newFolder();
         FileUtils.write(
-            new File(input, "a.req"),
-            "\n\nUser is a \"human being\".",
+            new File(input, "b.req"),
+            "\n\nUser is a \"good human being\".",
             CharEncoding.UTF_8
         );
         FileUtils.write(
-            new File(input, "b.req"),
-            "\n\nUser is a \"good human being\".",
+            new File(input, "a.req"),
+            "\n\nUser is a \"human being\".",
             CharEncoding.UTF_8
         );
         FileUtils.write(
