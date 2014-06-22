@@ -121,6 +121,7 @@ public final class Compiler {
             new Transform("cleanup/duplicate-step-numbers.xsl"),
             new Transform("cleanup/duplicate-step-signatures.xsl"),
             new Transform("cleanup/duplicate-step-objects.xsl"),
+            new Transform("cleanup/duplicate-step-results.xsl"),
             new Transform("cleanup/lost-steps.xsl"),
             new Transform("cleanup/lost-methods.xsl"),
             new Transform("cleanup/duplicate-signatures.xsl"),
