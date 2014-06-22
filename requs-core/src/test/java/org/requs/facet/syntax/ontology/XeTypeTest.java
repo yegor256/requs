@@ -54,7 +54,7 @@ public final class XeTypeTest {
         type.explain("first text");
         type.explain("second text");
         type.parent("Root");
-        type.slot("one").assign("Emp");
+        type.slot("'one").assign("Emp");
         type.mention(2);
         type.mention(1);
         MatcherAssert.assertThat(

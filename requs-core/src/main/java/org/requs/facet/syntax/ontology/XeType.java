@@ -90,7 +90,10 @@ final class XeType implements Type {
             .addIf("slots").add("slot").add("name").set(name);
         return new XeSlot(
             this.dirs,
-            String.format("%s/slots/slot[name='%s']", this.start, name)
+            String.format(
+                "%s/slots/slot[name=%s]", this.start,
+                XeOntology.escapeXPath(name)
+            )
         );
     }
 

@@ -91,15 +91,15 @@ final class XeMethod implements Method {
             .addIf("attributes")
             .xpath(
                 String.format(
-                    "%s/attributes[not(attribute='%s')]",
-                    this.start, name
+                    "%s/attributes[not(attribute=%s)]",
+                    this.start, XeOntology.escapeXPath(name)
                 )
             )
             .add("attribute").set(name)
             .xpath(
                 String.format(
-                    "%s/attributes/attribute[.='%s']",
-                    this.start, name
+                    "%s/attributes/attribute[.=%s]",
+                    this.start, XeOntology.escapeXPath(name)
                 )
             )
             .strict(1)
@@ -112,14 +112,17 @@ final class XeMethod implements Method {
             .strict(1).addIf("nfrs").strict(1)
             .xpath(
                 String.format(
-                    "%s/nfrs[not(nfr/id='%s')]",
-                    this.start, name
+                    "%s/nfrs[not(nfr/id=%s)]",
+                    this.start, XeOntology.escapeXPath(name)
                 )
             )
             .add("nfr").add("id").set(name);
         return new XeNfr(
             this.dirs,
-            String.format("%s/nfrs/nfr[id='%s']", this.start, name)
+            String.format(
+                "%s/nfrs/nfr[id=%s]", this.start,
+                XeOntology.escapeXPath(name)
+            )
         );
     }
 

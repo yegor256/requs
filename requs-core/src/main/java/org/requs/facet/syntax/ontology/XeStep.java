@@ -80,15 +80,21 @@ final class XeStep implements Step {
 
     @Override
     public Flow exception(final String text) {
-        this.dirs.xpath(this.start).strict(1).addIf("exceptions")
+        this.dirs.xpath(this.start)
+            .strict(1).addIf("exceptions")
             .xpath(this.start)
-            .xpath(String.format("exceptions[not(exception/when='%s' )]", text))
+            .xpath(
+                String.format(
+                    "exceptions[not(exception/when=%s)]",
+                    XeOntology.escapeXPath(text)
+                )
+            )
             .add("exception").add("when").set(text);
         return new XeFlow(
             this.dirs,
             String.format(
-                "%s/exceptions/exception[when='%s']",
-                this.start, text
+                "%s/exceptions/exception[when=%s ]",
+                this.start, XeOntology.escapeXPath(text)
             )
         );
     }

@@ -88,8 +88,8 @@ final class XeFlow implements Flow {
     public void binding(final String name, final String type) {
         this.dirs.xpath(this.start).strict(1).addIf("bindings").up().xpath(
             String.format(
-                "bindings[not(binding[name='%s' and type='%s'])]",
-                name, type
+                "bindings[not(binding[name='%s' and type=%s])]",
+                name, XeOntology.escapeXPath(type)
             )
         ).add("binding").add("name").set(name).up().add("type").set(type);
     }

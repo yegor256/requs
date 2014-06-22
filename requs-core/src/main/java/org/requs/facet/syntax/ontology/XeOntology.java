@@ -30,6 +30,7 @@
 package org.requs.facet.syntax.ontology;
 
 import com.jcabi.aspects.Loggable;
+import com.jcabi.aspects.Tv;
 import java.util.Iterator;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -92,4 +93,27 @@ public final class XeOntology implements Ontology {
     public Iterator<Directive> iterator() {
         return this.dirs.iterator();
     }
+
+    /**
+     * Escape XPath string.
+     * @param text Text to escape
+     * @return Escaped
+     * @link https://issues.apache.org/jira/browse/LANG-1019
+     */
+    public static String escapeXPath(final String text) {
+        final String escaped;
+        if (text.indexOf('\'') == -1) {
+            escaped = new StringBuilder(text.length() + 2)
+                .append('\'').append(text).append('\'').toString();
+        } else {
+            final int len = text.length() + Tv.FIFTY;
+            escaped = new StringBuilder(len)
+                .append("concat('")
+                .append(text.replace("'", "', \"'\", '"))
+                .append("')")
+                .toString();
+        }
+        return escaped;
+    }
+
 }
