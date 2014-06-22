@@ -1,0 +1,11 @@
+<sample>
+    <spec>
+        UC1 where User (a user) works:
+        1. The user creates;
+        2. The user reads;
+        5. The user lists.
+    </spec>
+    <xpaths>
+        <xpath>/spec/errors[count(error)=1]</xpath>
+    </xpaths>
+</sample>
