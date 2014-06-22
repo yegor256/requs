@@ -13,7 +13,7 @@ class RequsLexer(RegexLexer):
             (r'"[^"]+"', String),
             (r'\b(includes|requires|contains|needs|using|of|with|when|must|is|a|(T|t)he|as|where|and)\b', Keyword),
             (r'\b(creates|reads|updates|deletes|lists|Fail\s+since)\b', Operator),
-            (r'([A-Z][a-z]+)+', Name),
+            (r'\b([A-Z][a-z]+)+\b', Name),
             (r'[,;:]', Punctuation),
         ],
     }
