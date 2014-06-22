@@ -16,30 +16,30 @@ For example:
 :UC8 is delivered.
 +--
 
-In this example, <<<must>>> is an attribute of <<<UC3.2>>> and
-<<<delivered>>> is an attribute of <<<UC8>>>.
+In this example, `must` is an attribute of `UC3.2` and
+`delivered` is an attribute of `UC8`.
 
 We recommend to use attributes for requirements prioritization,
 according to {{{http://en.wikipedia.org/wiki/MoSCoW_method}MoSCoW method}}:
 
- * <<<must>>>
+ * `must`
 
- * <<<should>>>
+ * `should`
 
- * <<<could>>>
+ * `could`
 
- * <<<would>>>
+ * `would`
 
 We also recommend to use attributes for
 {{{http://en.wikipedia.org/wiki/Requirement_prioritization}requirements prioritization}}:
 
- * <<<specified>>>
+ * `specified`
 
- * <<<implemented>>>
+ * `implemented`
 
- * <<<delivered>>>
+ * `delivered`
 
- * <<<accepted>>>
+ * `accepted`
 
 * Seals
 
@@ -59,8 +59,8 @@ UC3 where nothing really happens: "tbd".
 Their signatures are different, that's why their seals are also different.
 
 In order to calculate a seal for your use case, just add
-a random seal (for example, <<<ffffff>>>)
-and run <<<mvn requs:compile>>>:
+a random seal (for example, `ffffff`)
+and run `mvn requs:compile`:
 
 +--
 ffffff:UC3 is a must.
@@ -72,14 +72,14 @@ You will get an error message, similar to this:
 [ERROR] 17:0 Seal "2edb8f" at the method UC3 doesn't match "ffffff" at the attribute "must"
 +--
 
-The message means that Requs engine is expecting <<<2edb8f>>> as
-a seal for all <<<UC3>>> attributes. We set it to <<<ffffff>>> --- this
+The message means that Requs engine is expecting `2edb8f` as
+a seal for all `UC3` attributes. We set it to `ffffff` --- this
 breaks the build and makes our Requs specification in-compilable.
 
-Now, we can change <<<ffffff>>> to <<<2edb8f>>> in the specification
+Now, we can change `ffffff` to `2edb8f` in the specification
 and Requs won't complain any more.
 
-When, in the future, someone changes the content of <<<UC3>>>, they will
+When, in the future, someone changes the content of `UC3`, they will
 break the build and will have to change the seal for all attributes.
 
 * Baselined Attributes
@@ -88,16 +88,16 @@ This mechanism exists in Requs in order to be able to
 {{{http://en.wikipedia.org/wiki/Baseline_%28configuration_management%29}baseline}}
 individual requirements in a continuously changing document.
 
-Say, use case <<<UC3>>> is already implemented and delivered to
-the product owner. It has an attribute <<<delivered>>> in the SRS,
+Say, use case `UC3` is already implemented and delivered to
+the product owner. It has an attribute `delivered` in the SRS,
 and this attribute is sealed.
 
-Then, someone is changing the description of <<<UC3>>>. The seal
+Then, someone is changing the description of `UC3`. The seal
 doesn't work any more and Requs starts complaining. In order to
 make the build clean again, the author of these changes has to
 remove the seal from the document.
 
-<<<UC3>>> doesn't have a seal any more. It is clear for the project
+`UC3` doesn't have a seal any more. It is clear for the project
 manager, that this use case needs to be implemented and delivered to the
 product owner again.
 

@@ -21,8 +21,8 @@ format as "PNG, GIF, JPEG, etc".
 
 Type names are in {{{http://en.wikipedia.org/wiki/CamelCase}CamelCase Notation}}.
 For example, these words are valid type names:
-<<<Image>>>, <<<ImageFile>>>, <<<ImageInCustomFormat>>>,
-<<<GIFImage>>>, <<<PNG>>>.
+`Image`, `ImageFile`, `ImageInCustomFormat`,
+`GIFImage`, `PNG`.
 
 * Slots
 

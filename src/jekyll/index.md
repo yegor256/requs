@@ -38,7 +38,7 @@ any attempt to understand what it means. You can double quote anything
 informal texts in any place of the document. They are ignored
 during formal Requs analysis.
 
-Let's consider a bigger example of a type <<<Image>>>:
+Let's consider a bigger example of a type `Image`:
 
 +--
 Image includes:
@@ -48,12 +48,12 @@ size as "the total number of bytes in PNG content".
 +--
 
 The semantic is the same -- the type still contains three <<slots>>
-(<<<PNG content>>>, <<<name>>> and <<<size>>>). However
+(`PNG content`, `name` and `size`). However
 in this example we added an informal explanation to every one of them.
-An <<<as>>> keyword separates the name of the slot and its invariant.
+An `as` keyword separates the name of the slot and its invariant.
 
 Pay attention to the dots, colons, semicolons and commas used above.
-Comma, semicolon and preposition <<<and>>> can replace each other.
+Comma, semicolon and preposition `and` can replace each other.
 For example, the following declarations are semantically equivalent:
 
 +--
@@ -62,15 +62,15 @@ Image needs: content, name, size.
 Image needs: content; name; and size.
 +--
 
-By means of <<<is>>>/<<<is a>>> we enable a declaration of <<invariants>>
+By means of `is`/`is a` we enable a declaration of <<invariants>>
 on types. Invariant is a <<predicate>>, which is always true, no matter
 what happens with the system. In the example above it is always true
-that <<<PNG content>>> is a file with binary content (not a readable
+that `PNG content` is a file with binary content (not a readable
 ASCII text). Nobody can break this invariant and put a textual information
 into this slot.
 
 As you noticed, an invariant can be declared with an informal text, as we've
-done with <<<size>>>. Such a declaration means
+done with `size`. Such a declaration means
 absolutely nothing and will be ignored. But it helps when you're starting
 to develop the SRS document.
 
@@ -84,8 +84,8 @@ you will replace them.
 Requs is a case-insensitive language in all places
 except one -- type names should use
 {{{http://en.wikipedia.org/wiki/CamelCase}CamelCase Notation}}. Thus,
-<<<Fie>>>, <<<ImageFile>>>, and <<<VeryBigImageFile>>> are valid type
-names, while <<<imagefile>>> is just an English word.
+`Fie`, `ImageFile`, and `VeryBigImageFile` are valid type
+names, while `imagefile` is just an English word.
 
 * Bigger Example
 
@@ -108,7 +108,7 @@ UC8.1/3 when "invalid format":
 +--
 
 First line in this example is a declaration of a use case,
-which number is <<<UC8.1>>>. The use case has a <<signature>>,
+which number is `UC8.1`. The use case has a <<signature>>,
 which differentiates it from all other use cases. It is not the
 ID of the use case, but the signature, which is important. This
 concept is very similar to
@@ -121,24 +121,24 @@ User shares Image with User
 
 In order to include this use case into another one we should use this
 signature, filling it with particular objects. Objects start with
-article <<<the>>>. On their first occurrence they appear in round brackets
-and start with <<<a>>> or <<<an>>>.
+article `the`. On their first occurrence they appear in round brackets
+and start with `a` or `an`.
 
-In our use case there are three objects: <<<the user>>>,
-<<<the friend>>> and <<<the photo>>>. An object could be
+In our use case there are three objects: `the user`,
+`the friend` and `the photo`. An object could be
 either received by a use case or created inside it. However, there is no grammar
 difference between objects received and objects created. We assume
 that an object is empty until anyone updates or creates it (more on this later).
 
 There are seven <<main flows>> in this use case, and five <<alternative
-flows>>. Flows <<<1>>>, <<<5>>>, <<<6>>>, and <<<7>>>
+flows>>. Flows `1`, `5`, `6`, and `7`
 instruct us to include other use cases that match the signatures
 provided and pass them the objects we have.
 
 * USING
 
 In the example above, one of the use case steps
-mentioned <<<using>>> operator:
+mentioned `using` operator:
 
 +--
 The friend receives email using SmtpServer (a server).
@@ -151,12 +151,12 @@ we're calling a method "receives" on "the friend" object like this:
 friend.receives_email(smtp_server);
 +--
 
-Instead of <<<using>>> you can use <<<of>>> or <<<with>>>. These three
+Instead of `using` you can use `of` or `with`. These three
 keywords are reserved and can't be used as English words.
 
 * CRUDL
 
-There are four use cases that are included by <<<UC8.1>>>.
+There are four use cases that are included by `UC8.1`.
 They have to be defined somewhere else in the document,
 otherwise the document will be semantically incomplete. But not all four are
 mandatory, because there is a number of <<elementary use cases>>,
@@ -172,11 +172,11 @@ Something deletes something
 Something lists something
 +--
 
-As you understand, <<<something>>> means "object of any type".
-<<<create>>> means making/instantiating of a new object.
-<<<read>>> means reading of all and any slots of an object, and all their slots, etc.
-<<<update>>> means changing of values of slots of an object.
-<<<delete>>> means removing an object from a persistent storage.
+As you understand, `something` means "object of any type".
+`create` means making/instantiating of a new object.
+`read` means reading of all and any slots of an object, and all their slots, etc.
+`update` means changing of values of slots of an object.
+`delete` means removing an object from a persistent storage.
 
 Thus, a valid flow either points us to another use case
 defined somewhere else in the document, or points us to
@@ -186,15 +186,15 @@ an elementary use case, or points us nowhere with an informal text
 * Exceptions
 
 Besides that, a flow might have a special instruction, which we've seen
-in alternative flow <<<UC8.3/1>>> and <<<UC8.3/3>>>. <<<fail since>>>
+in alternative flow `UC8.3/1` and `UC8.3/3`. `fail since`
 means that a use case should be stopped at this point and the
-reason of this termination is explained right after the word <<<since>>>
+reason of this termination is explained right after the word `since`
 as an informal text.
 
 Reason of failure is used by a parent use case, which included the
-current one. This is exactly what happens in <<<UC8.3/3>>>. We are
-waiting for a failure from <<<we convert the photo>>>, and
-we're ready to accept a failure called <<<invalid format>>>.
+current one. This is exactly what happens in `UC8.3/3`. We are
+waiting for a failure from `we convert the photo`, and
+we're ready to accept a failure called `invalid format`.
 This approach is very similar to
 {{{http://en.wikipedia.org/wiki/Exception_handling}exception handling paradigm}}
 in object-oriented languages.
@@ -224,13 +224,13 @@ are four possible options:
 User includes: name, address-s, photo-s?, and SSN-?.
 +--
 
-<<<-s>>> means "one or many" or <<<1..*>>> in UML.
+`-s` means "one or many" or `1..*` in UML.
 
-<<<-?>>> means "zero or one" or <<<0..1>>> in UML.
+`-?` means "zero or one" or `0..1` in UML.
 
-<<<-s?>>> means "zero or many" or <<<0..*>>> in UML.
+`-s?` means "zero or many" or `0..*` in UML.
 
-No suffix means exactly one, or <<<1..1>>> in UML.
+No suffix means exactly one, or `1..1` in UML.
 
 * Attributes
 
@@ -250,7 +250,7 @@ You can "seal" your statement with a hash code:
 af63e2:UC3.2 is a must.
 +--
 
-This hash code <<<af63e2>>> is calculated from the content of <<<UC3.2>>>.
+This hash code `af63e2` is calculated from the content of `UC3.2`.
 If the content is changed, this statement becomes invalid and the entire
 document can't be compiled any more.
 
