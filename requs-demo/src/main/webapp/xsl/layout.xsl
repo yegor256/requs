@@ -29,13 +29,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/1999/xhtml"
-    version="2.0" exclude-result-prefixes="xs">
+    xmlns="http://www.w3.org/1999/xhtml" version="2.0">
     <xsl:template match="/">
         <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;</xsl:text>
-        <xsl:apply-templates select="page"/>
-    </xsl:template>
-    <xsl:template match="page">
         <html lang="en">
             <head>
                 <meta charset="UTF-8"/>
@@ -45,10 +41,10 @@
                 <meta name="author" content="www.requs.org"/>
                 <link rel="stylesheet" type="text/css" media="all" href="/css/style.css"/>
                 <link rel="icon" type="image/gif" href="//img.requs.org/logo-128x128.png"/>
-                <xsl:apply-templates select="." mode="head"/>
+                <xsl:apply-templates select="page" mode="head"/>
             </head>
             <body>
-                <xsl:apply-templates select="." mode="body"/>
+                <xsl:apply-templates select="page" mode="body"/>
             </body>
         </html>
     </xsl:template>

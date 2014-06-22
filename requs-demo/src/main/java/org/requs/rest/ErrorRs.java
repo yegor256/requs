@@ -48,7 +48,7 @@ import javax.ws.rs.core.Response;
 public final class ErrorRs extends BaseRs {
 
     /**
-     * Show errror, on GET.
+     * Show error, on GET.
      * @return The JAX-RS response
      */
     @GET
