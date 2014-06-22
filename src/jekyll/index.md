@@ -7,9 +7,9 @@ description:
   software requirements specification
 ---
 
-IEEE 830-1998 says: "<SRS (software requirements specification) should be
+IEEE 830-1998 says: "SRS (software requirements specification) should be
 correct, unambiguous, complete, consistent, ranked for importance and/or stability,
-verifiable, modifiable, traceable>". Requs is enabling the creation
+verifiable, modifiable, traceable". Requs is enabling the creation
 of such documents in plain text format.
 
 Try online demo: [demo.requs.org](http://demo.requs.org/).
@@ -17,7 +17,7 @@ Try online demo: [demo.requs.org](http://demo.requs.org/).
 If you're interested to join the group
 developing Requs, email to [team@requs.org](mailto:team@requs.org).
 
-## Quick Start
+# Quick Start
 
 The scope definition document consists of *types*
 and *methods* (aka "use cases"). For example, there are two types
@@ -87,7 +87,7 @@ except one -- type names should use
 `Fie`, `ImageFile`, and `VeryBigImageFile` are valid type
 names, while `imagefile` is just an English word.
 
-## Bigger Example
+# Bigger Example
 
 To put things together we should declare a use case, which is
 a step-by-step explanation of interaction between instances of types
@@ -135,7 +135,7 @@ flows>>. Flows `1`, `5`, `6`, and `7`
 instruct us to include other use cases that match the signatures
 provided and pass them the objects we have.
 
-## USING
+# USING
 
 In the example above, one of the use case steps
 mentioned `using` operator:
@@ -154,7 +154,7 @@ friend.receives_email(smtp_server);
 Instead of `using` you can use `of` or `with`. These three
 keywords are reserved and can't be used as English words.
 
-## CRUDL
+# CRUDL
 
 There are four use cases that are included by `UC8.1`.
 They have to be defined somewhere else in the document,
@@ -183,7 +183,7 @@ defined somewhere else in the document, or points us to
 an elementary use case, or points us nowhere with an informal text
 (<<informal flow>>).
 
-## Exceptions
+# Exceptions
 
 Besides that, a flow might have a special instruction, which we've seen
 in alternative flow `UC8.3/1` and `UC8.3/3`. `fail since`
@@ -199,7 +199,7 @@ This approach is very similar to
 [exception handling paradigm](http://en.wikipedia.org/wiki/Exception_handling)
 in object-oriented languages.
 
-## Scope Ambiguity
+# Scope Ambiguity
 
 There is only one metric that tells us everything about
 the entire scope definition document. The metric is called
@@ -215,7 +215,7 @@ Thus, if <A> equals to 0, the document is absolutely non-ambiguous,
 which is an almost impossible situation. In real world projects
 the task of a system analyst is to move <A> from 1 to 0.
 
-## Arity of Slots
+# Arity of Slots
 
 A slot may have an "arity", determined by a suffix attached to its name. There
 are four possible options:
@@ -232,7 +232,7 @@ User includes: name, address-s, photo-s?, and SSN-?.
 
 No suffix means exactly one, or `1..1` in UML.
 
-## Attributes
+# Attributes
 
 Any use case may have attributes assigned to it. Attributes
 may be used, for example, for
@@ -256,7 +256,7 @@ document can't be compiled any more.
 
 More about it in [Attributes and Seals](./feature-attributes.html).
 
-## Non-Functional Requirements
+# Non-Functional Requirements
 
 To any use case you can add a number of non-functional requirements (NFR),
 in the following format:
@@ -272,7 +272,7 @@ a mnemonic name of a non-functional requirement. Then, you put
 
 More about it in [Non-Functional Requirements](./feature-nfrs.html).
 
-## Markdown Pages
+# Markdown Pages
 
 Sometimes you may need to add informal pages to your SRS document. For
 example, Vision, Business Case, wireframes, UI mockups, tables,

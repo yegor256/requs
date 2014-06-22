@@ -5,58 +5,31 @@
     <meta name="description" content="{{ page.description }}" />
     <meta name="keywords" content="{{ page.keywords | join:', ' | escape }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="icon" type="image/png" href="http://img.yegor256.com/icon-128x128.png">
-    <link rel="shortcut icon" href="//img.yegor256.com/icon-128x128.png" />
-    <link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yegor256.com/rss.xml"/>
+    <link rel="icon" type="image/png" href="http://img.requs.org/logo-128x128.png">
+    <link rel="shortcut icon" href="//img.requs.org/logo-128x128.png" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.requs.org/rss.xml"/>
     <link rel="author" href="//plus.google.com/u/0/114792568016408327418?rel=author" />
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/layout.css?{{ site.data['hash'] }}"/>
-    <link rel="canonical" href="//www.yegor256.com{{ page.url }}" />
-    <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
-    <script src="/js/all.js?{{ site.data['hash'] }}"></script>
-    <title>{{ page.title }}
-      {% if paginator.page %}
-        (page {{ paginator.page }})
-      {% endif %}</title>
+    <link rel="canonical" href="//www.requs.org{{ page.url }}" />
+    <title>{{ page.title }}</title>
   </head>
   <body>
     <div class="wrapper">
       <header class="header">
-        <div>
-          <a href="/about-me.html">
-            <img src="//img.yegor256.com/yegor-bugayenko.jpg" class="photo" alt="photo"/>
-          </a>
-        </div>
-        <nav role="navigation">
-          <ul class="menu">
-            <li><a href="/" title="home page"><i class="ico ico-home"></i></a></li>
-            <li><a href="http://www.twitter.com/yegor256" title="follow me in Twitter"><i class="ico ico-tweet"></i></a></li>
-            <li><a href="/rss" title="RSS feed"><i class="ico ico-rss"></i></a></li>
-            <li><a href="https://github.com/yegor256" title="my Github profile"><i class="ico ico-x-github"></i></a></li>
-            <li><a href="http://stackoverflow.com/users/187141/yegor256" title="my StackOverflow profile"><i class="ico ico-x-stackoverflow"></i></a></li>
-            <li><a href="https://www.facebook.com/yegor.bugayenko" title="follow me in Facebook"><i class="ico ico-x-facebook"></i></a></li>
-            <li><a href="https://plus.google.com/+YegorBugayenko/posts" title="follow me in Google+"><i class="ico ico-x-google"></i></a></li>
-            <li><a href="https://www.linkedin.com/in/yegor256" title="my LinkedIn profile"><i class="ico ico-x-linkedin"></i></a></li>
-            <li><a href="mailto:yegor@teamed.io" title="yegor@teamed.io"><i class="ico ico-email"></i></a></li>
-          </ul>
-        </nav>
-        <div class="gcse" role="search">
-          <div class="gcse-search"></div>
-        </div>
-      </header>
-    </div>
-    {{ content }}
-    <div class="wrapper">
-      <footer class="footer">
         <p>
-          &copy; <span itemprop="author">Yegor Bugayenko</span>, 2014
-          <br/>
-          this blog is built with <a href="http://jekyllrb.com/">Jekyll</a>
-          and hosted on <a href="https://pages.github.com/">Github Pages</a>
-          <br/>
-          <a href="https://github.com/yegor256/blog/commit/{{ site.data['hash'] }}"><i class="ico ico-x-github"></i></a>
+          <a href="/">
+            <img src="//img.requs.org/logo-384x128.png" class="logo" alt="logo"/>
+          </a>
         </p>
       </header>
+      {{ content }}
+      <div class="wrapper">
+        <footer class="footer">
+          <p>
+            &copy; <span itemprop="author">requs.org</span>, 2009-2014
+          </p>
+        </header>
+      </div>
     </div>
   </body>
 </html>

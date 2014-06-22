@@ -52,3 +52,9 @@ Please run Maven build before submitting a pull request:
 ```
 $ mvn clean install -Pqulice
 ```
+
+Want to edit website pages? Install and run Jekyll:
+
+```
+$ jekyll serve -w -D -s src/jekyll -d target/jekyll
+```

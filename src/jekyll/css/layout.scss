@@ -1,0 +1,68 @@
+@import url(//fonts.googleapis.com/css?family=Source+Code+Pro:400,500);
+@import url(//fonts.googleapis.com/css?family=Ubuntu);
+
+@import "highlight";
+
+$main-font: 'Ubuntu', 'Arial', sans-serif;
+$code-font: 'Source Code Pro', monospace;
+
+$black: #111;
+$gray: lighten($black, 50);
+
+$width: 700px;
+$font-size: 19px;
+
+.desktop-only {
+  @media all and (max-width: $width) {
+    display: none !important;
+  }
+}
+body {
+  height: 100%;
+  font-family: $main-font;
+  font-weight: 400;
+  background-color: #fff;
+  color: $black;
+  font-size: $font-size;
+  margin: 0;
+  padding-top: 2 * $font-size;
+  padding-bottom: 2 * $font-size;
+  position: relative;
+  overflow-x: hidden;
+}
+a, a:visited {
+  color: $black;
+  text-decoration: underline;
+}
+.wrapper {
+  box-sizing: border-box;
+  margin-left: 2 * $font-size;
+  margin-right: 2 * $font-size;
+  width: $width;
+  line-height: 1.4 * $font-size;
+  padding-left: 2 * $font-size;
+  padding-right: 2 * $font-size;
+  @media all and (max-width: $width) {
+    width: 100%;
+    padding-left: $font-size;
+    padding-right: $font-size;
+  }
+}
+.header {
+  .logo {
+    width: 192px;
+    height: 64px;
+  }
+}
+.footer {
+  margin-top: 5 * $font-size;
+}
+h1 {
+  margin-top: 3 * $font-size;
+}
+code {
+  background-color: lighten($black, 80);
+  border-radius: 0.3 * $font-size;
+  padding-left: 0.3 * $font-size;
+  padding-right: 0.3 * $font-size;
+}

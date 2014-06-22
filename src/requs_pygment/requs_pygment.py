@@ -1,19 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import re
-
-from pygments.lexer import Lexer, RegexLexer, do_insertions, bygroups, include
+from pygments.lexer import RegexLexer
 from pygments.token import Punctuation, Text, Keyword, Name, String
 from pygments.util import shebang_matches
 
-line_re  = re.compile('.*?\n')
-
 class RequsLexer(RegexLexer):
-    name = 'Requs'
+    name = 'requs'
     aliases = ['requs']
-    filenames = ['*.req']
-    mimetypes = ['application/x-requs']
-
     tokens = {
         'root': [
             (r'"[^"]+"', String),
@@ -23,7 +16,6 @@ class RequsLexer(RegexLexer):
             (r'[,;:]', Punctuation),
         ],
     }
-
     def analyse_text(text):
         return shebang_matches(text, r'requs')
 
