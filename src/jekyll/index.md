@@ -1,0 +1,289 @@
+---
+layout: default
+title: "Requirements Specifications Automated"
+date: 2014-06-22
+description:
+  Requs is a controlled natural language (CNL) for
+  software requirements specification
+---
+
+IEEE 830-1998 says: "<SRS (software requirements specification) should be
+correct, unambiguous, complete, consistent, ranked for importance and/or stability,
+verifiable, modifiable, traceable>". Requs is enabling the creation
+of such documents in plain text format.
+
+Try online demo: [demo.requs.org](http://demo.requs.org/).
+
+If you're interested to join the group
+developing Requs, email to [team@requs.org](mailto:team@requs.org).
+
+## Quick Start
+
+The scope definition document consists of *types*
+and *methods* (aka "use cases"). For example, there are two types
+(`Visitor` and `Image`) and one
+use case (`UC3.2`) defined in the snippet:
+
++--
+Visitor is "an originator of HTTP request".
+UC3.2 where User (a user) deletes photos:
+  "we will define it later...".
+Image includes: content, name, and size.
++--
+
+Anything inside double quotes is considered as
+informal content, which we take "as is", without
+any attempt to understand what it means. You can double quote anything
+(except double quotes, of course), and you can place
+informal texts in any place of the document. They are ignored
+during formal Requs analysis.
+
+Let's consider a bigger example of a type <<<Image>>>:
+
++--
+Image includes:
+content as File "a binary content as defined by ISO-15948",
+name as "a unique alpha-numeric name of the image",
+size as "the total number of bytes in PNG content".
++--
+
+The semantic is the same -- the type still contains three <<slots>>
+(<<<PNG content>>>, <<<name>>> and <<<size>>>). However
+in this example we added an informal explanation to every one of them.
+An <<<as>>> keyword separates the name of the slot and its invariant.
+
+Pay attention to the dots, colons, semicolons and commas used above.
+Comma, semicolon and preposition <<<and>>> can replace each other.
+For example, the following declarations are semantically equivalent:
+
++--
+Image needs: content and name and size.
+Image needs: content, name, size.
+Image needs: content; name; and size.
++--
+
+By means of <<<is>>>/<<<is a>>> we enable a declaration of <<invariants>>
+on types. Invariant is a <<predicate>>, which is always true, no matter
+what happens with the system. In the example above it is always true
+that <<<PNG content>>> is a file with binary content (not a readable
+ASCII text). Nobody can break this invariant and put a textual information
+into this slot.
+
+As you noticed, an invariant can be declared with an informal text, as we've
+done with <<<size>>>. Such a declaration means
+absolutely nothing and will be ignored. But it helps when you're starting
+to develop the SRS document.
+
+In general, <<informal texts>> play an important role during the initial
+development of a requirements document and
+during a preliminary system analysis. When you don't know for sure
+how to define the information you have in a strict format -- you
+should use informal texts. Later, when you have more information,
+you will replace them.
+
+Requs is a case-insensitive language in all places
+except one -- type names should use
+{{{http://en.wikipedia.org/wiki/CamelCase}CamelCase Notation}}. Thus,
+<<<Fie>>>, <<<ImageFile>>>, and <<<VeryBigImageFile>>> are valid type
+names, while <<<imagefile>>> is just an English word.
+
+* Bigger Example
+
+To put things together we should declare a use case, which is
+a step-by-step explanation of interaction between instances of types
+(so called <<objects>>), for example:
+
++--
+UC8.1 where User (a user) shares Image with User (a friend):
+1. The user creates Image (a photo);
+2. The user updates the friend "selecting one of his contacts";
+3. The photo converts "to the right PNG format, 600x600 maximum";
+4. The friend receives email using SmtpServer (a server);
+5. The friend reads the photo "in his own web page".
+UC8.1/1 when "the user exceeds the maximum possible number of photos":
+1. Fail since "photos limit exceeded".
+UC8.1/3 when "invalid format":
+1. "We notify user about the problem";
+2. Fail since "can't convert photo".
++--
+
+First line in this example is a declaration of a use case,
+which number is <<<UC8.1>>>. The use case has a <<signature>>,
+which differentiates it from all other use cases. It is not the
+ID of the use case, but the signature, which is important. This
+concept is very similar to
+{{{http://en.wikipedia.org/wiki/Signature_(computer_science)}function signature}}
+in programming. The signature of this use case is:
+
++--
+User shares Image with User
++--
+
+In order to include this use case into another one we should use this
+signature, filling it with particular objects. Objects start with
+article <<<the>>>. On their first occurrence they appear in round brackets
+and start with <<<a>>> or <<<an>>>.
+
+In our use case there are three objects: <<<the user>>>,
+<<<the friend>>> and <<<the photo>>>. An object could be
+either received by a use case or created inside it. However, there is no grammar
+difference between objects received and objects created. We assume
+that an object is empty until anyone updates or creates it (more on this later).
+
+There are seven <<main flows>> in this use case, and five <<alternative
+flows>>. Flows <<<1>>>, <<<5>>>, <<<6>>>, and <<<7>>>
+instruct us to include other use cases that match the signatures
+provided and pass them the objects we have.
+
+* USING
+
+In the example above, one of the use case steps
+mentioned <<<using>>> operator:
+
++--
+The friend receives email using SmtpServer (a server).
++--
+
+This is similar to sending arguments to a method. In this line
+we're calling a method "receives" on "the friend" object like this:
+
++--
+friend.receives_email(smtp_server);
++--
+
+Instead of <<<using>>> you can use <<<of>>> or <<<with>>>. These three
+keywords are reserved and can't be used as English words.
+
+* CRUDL
+
+There are four use cases that are included by <<<UC8.1>>>.
+They have to be defined somewhere else in the document,
+otherwise the document will be semantically incomplete. But not all four are
+mandatory, because there is a number of <<elementary use cases>>,
+which are defined in the system, even if the document is
+empty. The elementary use cases are
+({{{http://en.wikipedia.org/wiki/Create,_read,_update_and_delete}CRUD}} requirements pattern):
+
++--
+Something creates something
+Something reads something
+Something updates something
+Something deletes something
+Something lists something
++--
+
+As you understand, <<<something>>> means "object of any type".
+<<<create>>> means making/instantiating of a new object.
+<<<read>>> means reading of all and any slots of an object, and all their slots, etc.
+<<<update>>> means changing of values of slots of an object.
+<<<delete>>> means removing an object from a persistent storage.
+
+Thus, a valid flow either points us to another use case
+defined somewhere else in the document, or points us to
+an elementary use case, or points us nowhere with an informal text
+(<<informal flow>>).
+
+* Exceptions
+
+Besides that, a flow might have a special instruction, which we've seen
+in alternative flow <<<UC8.3/1>>> and <<<UC8.3/3>>>. <<<fail since>>>
+means that a use case should be stopped at this point and the
+reason of this termination is explained right after the word <<<since>>>
+as an informal text.
+
+Reason of failure is used by a parent use case, which included the
+current one. This is exactly what happens in <<<UC8.3/3>>>. We are
+waiting for a failure from <<<we convert the photo>>>, and
+we're ready to accept a failure called <<<invalid format>>>.
+This approach is very similar to
+{{{http://en.wikipedia.org/wiki/Exception_handling}exception handling paradigm}}
+in object-oriented languages.
+
+* Scope Ambiguity
+
+There is only one metric that tells us everything about
+the entire scope definition document. The metric is called
+"<<scope ambiguity>>" and is calculated like:
+
++--
+A = S / (S + M)
++--
+
+<S> stands for a total number of all informal flows,
+and <M> is a total number of CRUD-manipulators.
+Thus, if <A> equals to 0, the document is absolutely non-ambiguous,
+which is an almost impossible situation. In real world projects
+the task of a system analyst is to move <A> from 1 to 0.
+
+* Arity of Slots
+
+A slot may have an "arity", determined by a suffix attached to its name. There
+are four possible options:
+
++--
+User includes: name, address-s, photo-s?, and SSN-?.
++--
+
+<<<-s>>> means "one or many" or <<<1..*>>> in UML.
+
+<<<-?>>> means "zero or one" or <<<0..1>>> in UML.
+
+<<<-s?>>> means "zero or many" or <<<0..*>>> in UML.
+
+No suffix means exactly one, or <<<1..1>>> in UML.
+
+* Attributes
+
+Any use case may have attributes assigned to it. Attributes
+may be used, for example, for
+{{{http://en.wikipedia.org/wiki/Requirement_prioritization}requirements prioritization}}.
+
++--
+:UC3.2 is a must.
+:UC8 is delivered.
+:UC2 is specified.
++--
+
+You can "seal" your statement with a hash code:
+
++--
+af63e2:UC3.2 is a must.
++--
+
+This hash code <<<af63e2>>> is calculated from the content of <<<UC3.2>>>.
+If the content is changed, this statement becomes invalid and the entire
+document can't be compiled any more.
+
+More about it in {{{./feature-attributes.html}Attributes and Seals}}.
+
+* Non-Functional Requirements
+
+To any use case you can add a number of non-functional requirements (NFR),
+in the following format:
+
++--
+UC3.2/MTBF must "be 5 minutes on a standard equipment".
+UC7/PERF must "be less than 500 msec per request".
++--
+
+After the name of the use case you put a forward slash and then
+a mnemonic name of a non-functional requirement. Then, you put
+"must be" and an informal text.
+
+More about it in {{{./feature-nfrs.html}Non-Functional Requirements}}.
+
+* Markdown Pages
+
+Sometimes you may need to add informal pages to your SRS document. For
+example, Vision, Business Case, wireframes, UI mockups, tables,
+research results, supplementary tables, etc. The syntax is simple:
+
++--
+Vision: """
+Any text you wish, in Markdown format.
+""".
++--
+
+Page name should be in CamelCase, as well as type name.
+
+Read on {{{http://daringfireball.net/projects/markdown/syntax}Markdown syntax}}.
