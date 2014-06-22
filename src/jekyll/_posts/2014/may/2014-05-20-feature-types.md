@@ -31,8 +31,16 @@ A type may have a number of slots. A slot is something similar
 to a private property of a Java class, for example. The syntax is simple,
 in [BNF](http://en.wikipedia.org/wiki/Backus%E2%80%93Naur_Form):
 
-{% highlight requs %}
+{% highlight bnf %}
 <type> ::= <camel> ( "has" | "needs" | "requires" | "includes" ) ":" <slots> "."
 <slots> ::= <slot> (  ( "," | ";" | "and" ) <slot> )*
 <slot> ::= <name> ( "as" <informal> )?
 {% endhighlight %}
+
+## Good and Bad Types
+
+Very often we make mistakes when declaring a new type or
+modifying an existing one. Read them carefully and try to avoid
+in your SRS documents.
+
+
