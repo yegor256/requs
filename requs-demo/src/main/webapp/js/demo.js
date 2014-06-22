@@ -34,6 +34,11 @@
 $(document).ready(
     function () {
         'use strict';
+        $('.separator').click(
+            function () {
+                $('#xml').css('height', '50%');
+            }
+        );
         $('#example').keyup(
             function () {
                 if ((this.rendered !== undefined) && this.rendered === this.value) {
@@ -67,7 +72,12 @@ $(document).ready(
                             var iframe = document.getElementById('srs');
                             iframe = (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
                             iframe.document.open();
-                            iframe.document.write('<html><body>internal application error, please report to team@requs.org</body></html>');
+                            iframe.document.write(
+                                '<html><body><span style="color:red">Internal application error</span>.'
+                                + ' Please submit your sources as'
+                                + ' <a href="https://github.com/teamed/requs">a Github issue</a>'
+                                +'</body></html>'
+                            );
                             iframe.document.close();
                         },
                         complete: function () {

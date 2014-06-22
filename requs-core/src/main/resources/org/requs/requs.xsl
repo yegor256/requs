@@ -9,7 +9,6 @@
                 <meta name="keywords" content="software requirements specification"/>
                 <meta name="author" content="requs.org"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <link rel="stylesheet" type="text/css" href="requs.css"/>
                 <script src="//code.jquery.com/jquery-2.1.1-rc1.js" type="text/javascript">
                     <!-- nothing -->
                 </script>

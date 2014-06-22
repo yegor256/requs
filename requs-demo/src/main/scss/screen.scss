@@ -28,47 +28,90 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* all elements */
+$black: #4e4e4e;
+$blue: lighten(#394e63, 20);
+$em: 18px;
+
+* {
+    box-sizing: border-box;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    border-spacing: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
 img,
 body {
     font-family: 'Ubuntu', Verdana, arial, helvetica, sans-serif;
-    font-size: 18px;
-    color: black;
-    padding: 0;
-    margin: 0;
-    border: 0;
+    font-size: $em;
+    color: $black;
     text-decoration: none;
 }
-body {
-    padding: 2em;
-}
-.version {
-    margin-top: 2em;
-    font-size: 0.8em;
-    color: gray;
-}
-.container {
-    position: relative;
-    text-align: center;
-}
-.half {
-    width: 50%;
-    vertical-align: top;
-    overflow: hidden;
+table {
+    width: 100%;
+    height: 100%;
+    table-layout: fixed;
+    thead {
+        tr {
+            height: 4 * $em;
+            th {
+                border-bottom: 2px solid $blue;
+                vertical-align: middle;
+                font-weight: normal;
+                padding: 1em !important;
+                &.left {
+                    text-align: left;
+                }
+                &.right, &.left {
+                    width: 50%;
+                }
+                &.right {
+                    text-align: right;
+                    font-size: 0.8 * $em;
+                }
+            }
+        }
+    }
+    tbody {
+        tr {
+            &.separator {
+                height: 0.3 * $em;
+                cursor: pointer;
+                td {
+                    border-top: 1px solid $blue;
+                }
+            }
+            &.separator:hover {
+                background-color: lighten($black, 50);
+            }
+            &#xml {
+                height: 0;
+            }
+            td {
+                vertical-align: top;
+                &.left {
+                    border-right: 1px solid $blue;
+                }
+            }
+        }
+    }
 }
 .box {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
     font-family: 'Consolas', 'Menlo', 'Monaco', 'Courier New', monospace;
-    font-size: 1em;
-    border: 1px solid gray;
+    font-size: $em;
     padding: 1em;
-    height: 300px;
-    min-height: 300px;
+    height: 100%;
     margin: 0;
     width: 100%;
     text-align: left;
     overflow-x: auto;
     overflow-y: scroll;
+}
+#output {
+    font-size: 0.8 * $em;
 }

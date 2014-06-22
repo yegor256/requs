@@ -45,27 +45,42 @@
         </title>
     </xsl:template>
     <xsl:template match="page" mode="body">
-        <table style="width:100%;table-layout:fixed;border-spacing:0;">
+        <table>
             <thead>
                 <tr>
-                    <th><xsl:text>Requirements</xsl:text></th>
-                    <th style="width: 2em;"><xsl:text> </xsl:text></th>
-                    <th><xsl:text>XML Output</xsl:text></th>
+                    <th class="left">
+                        <a href="http://www.requs.org/syntax.html">
+                            <img alt="logo" style="width: 96px; height: 32px;" src="//img.requs.org/logo-384x128.png"/>
+                        </a>
+                        <span style="color:green;display:none;" id="arrow">
+                            <xsl:text>loading...</xsl:text>
+                        </span>
+                    </th>
+                    <th class="right">
+                        <xsl:apply-templates select="version"/>
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="half">
+                    <td class="left">
                         <textarea class="box" id="example">
                             <xsl:text>User is "a human being".</xsl:text>
                         </textarea>
                     </td>
-                    <td>
-                        <span style="color:green;display:none;" id="arrow">
-                            <xsl:text>&#x21e2;</xsl:text>
-                        </span>
+                    <td class="right">
+                        <iframe class="box" id="srs">
+                            <xsl:text>...</xsl:text>
+                        </iframe>
                     </td>
-                    <td class="half">
+                </tr>
+                <tr class="separator">
+                    <td colspan="2" style="text-align:center">
+                        <xsl:text>...</xsl:text>
+                    </td>
+                </tr>
+                <tr id="xml">
+                    <td colspan="2">
                         <pre class="box" id="output">
                             <xsl:text>...</xsl:text>
                         </pre>
@@ -73,13 +88,39 @@
                 </tr>
             </tbody>
         </table>
-        <p>
-            <a href="http://www.requs.org/syntax.html">
-                <img alt="logo" style="width: 96px; height: 32px;" src="//img.requs.org/logo-384x128.png"/>
+    </xsl:template>
+    <xsl:template match="version">
+        <div>
+            <xsl:text>made by </xsl:text>
+            <a href="http://www.teamed.io">
+                <xsl:text>teamed.io</xsl:text>
             </a>
-        </p>
-        <iframe class="box" id="srs">
-            <xsl:text>...</xsl:text>
-        </iframe>
+        </div>
+        <div>
+            <span><xsl:value-of select="name"/></span>
+            <span>
+                <a href="https://github.com/teamed/requs/commit/{revision}">
+                    <xsl:value-of select="revision"/>
+                </a>
+            </span>
+            <span>
+                <xsl:call-template name="millis">
+                    <xsl:with-param name="millis" select="/page/millis"/>
+                </xsl:call-template>
+            </span>
+        </div>
+    </xsl:template>
+    <xsl:template name="millis">
+        <xsl:param name="millis" as="xs:integer"/>
+        <xsl:choose>
+            <xsl:when test="$millis &gt; 1000">
+                <xsl:value-of select="format-number($millis div 1000, '0.0')"/>
+                <xsl:text>s</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="format-number($millis, '#')"/>
+                <xsl:text>ms</xsl:text>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 </xsl:stylesheet>

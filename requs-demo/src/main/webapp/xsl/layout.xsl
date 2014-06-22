@@ -43,52 +43,13 @@
                 <meta name="description" content="Requs Demo"/>
                 <meta name="keywords" content="requs"/>
                 <meta name="author" content="www.requs.org"/>
-                <link rel="stylesheet" type="text/css" media="all" href="/css/screen.css"/>
-                <link rel="icon" type="image/gif" href="http://img.requs.org/logo-128x128.png"/>
+                <link rel="stylesheet" type="text/css" media="all" href="/css/style.css"/>
+                <link rel="icon" type="image/gif" href="//img.requs.org/logo-128x128.png"/>
                 <xsl:apply-templates select="." mode="head"/>
             </head>
             <body>
-                <div class="container">
-                    <xsl:apply-templates select="." mode="body"/>
-                    <xsl:apply-templates select="version"/>
-                </div>
+                <xsl:apply-templates select="." mode="body"/>
             </body>
         </html>
-    </xsl:template>
-    <xsl:template match="version">
-        <footer class="version">
-            <div>
-                <xsl:text>made by </xsl:text>
-                <a href="http://www.teamed.io">
-                    <xsl:text>teamed.io</xsl:text>
-                </a>
-            </div>
-            <div>
-                <span><xsl:value-of select="name"/></span>
-                <span>
-                    <a href="https://github.com/teamed/requs/commit/{revision}">
-                        <xsl:value-of select="revision"/>
-                    </a>
-                </span>
-                <span>
-                    <xsl:call-template name="millis">
-                        <xsl:with-param name="millis" select="/page/millis"/>
-                    </xsl:call-template>
-                </span>
-            </div>
-        </footer>
-    </xsl:template>
-    <xsl:template name="millis">
-        <xsl:param name="millis" as="xs:integer"/>
-        <xsl:choose>
-            <xsl:when test="$millis &gt; 1000">
-                <xsl:value-of select="format-number($millis div 1000, '0.0')"/>
-                <xsl:text>s</xsl:text>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="format-number($millis, '#')"/>
-                <xsl:text>ms</xsl:text>
-            </xsl:otherwise>
-        </xsl:choose>
     </xsl:template>
 </xsl:stylesheet>
