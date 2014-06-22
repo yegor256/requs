@@ -1,5 +1,11 @@
 <sample>
     <spec>
+        Object is "an object".
+        UC105 where Sys(a system) works:
+        1. The system creates Object(a user).
+        UC105 where Sys(a system) does something else:
+        1. The system deletes Object(a user).
+
         UC234 where User (a user) works:
         1. The user reads;
         1. The user creates;
