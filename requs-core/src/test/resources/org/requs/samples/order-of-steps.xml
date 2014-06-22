@@ -18,6 +18,6 @@
     </spec>
     <xpaths>
         <xpath>/processing-instruction()[contains(.,'href')]</xpath>
-        <xpath>/spec/errors[count(error)=2]</xpath>
+        <xpath>/spec/errors[count(error)=3]</xpath>
     </xpaths>
 </sample>
