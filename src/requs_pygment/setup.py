@@ -5,6 +5,7 @@ setup(
     version = '0.1',
     packages = find_packages(),
     install_requires = ['pygments'],
+    py_modules = ['requs_pygment'],
     author = 'Yegor Bugayenko',
     author_email = 'yegor@tpc2.com',
     description = 'Requs Highlighting Pygment',
@@ -13,7 +14,7 @@ setup(
     url = 'http://www.requs.org/',
     entry_points = {
         'pygments.lexers': [
-            'requs = requs_pygment:requs.RequsLexer'
+            'requs = requs_pygment:RequsLexer'
         ]
     }
 )

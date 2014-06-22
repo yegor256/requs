@@ -6,8 +6,6 @@ from pygments.lexer import Lexer, RegexLexer, do_insertions, bygroups, include
 from pygments.token import Punctuation, Text, Keyword, Name, String
 from pygments.util import shebang_matches
 
-__all__ = ['RequsLexer']
-
 line_re  = re.compile('.*?\n')
 
 class RequsLexer(RegexLexer):
