@@ -50,7 +50,7 @@
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
-            <version>4.2.2</version>
+            <version>4.3</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -165,7 +165,7 @@
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
                 <configuration>
-                    <path>${project.artifactId}</path>
+                    <dryRun>true</dryRun>
                 </configuration>
             </plugin>
         </plugins>

@@ -42,12 +42,7 @@
         <dependency>
             <groupId>com.jcabi.incubator</groupId>
             <artifactId>xembly</artifactId>
-            <version>0.16.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.markdownj</groupId>
-            <artifactId>markdownj</artifactId>
-            <version>0.3.0-1.0.2b4</version>
+            <version>0.17</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -77,6 +72,11 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.pegdown</groupId>
+            <artifactId>pegdown</artifactId>
+            <version>1.4.2</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -131,7 +131,7 @@
         <dependency>
             <groupId>javax.el</groupId>
             <artifactId>javax.el-api</artifactId>
-            <version>3.0.0</version>
+            <version>3.0.1-b04</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -141,7 +141,7 @@
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
                 <configuration>
-                    <path>${project.artifactId}</path>
+                    <dryRun>true</dryRun>
                 </configuration>
             </plugin>
         </plugins>
@@ -160,6 +160,7 @@
                                 <exclude>xml:/src/test/resources/org/requs/facet/syntax/samples/.*</exclude>
                                 <exclude>xml:/src/test/resources/org/requs/facet/syntax/.*</exclude>
                                 <exclude>xml:/src/test/resources/org/requs/samples/.*</exclude>
+                                <exclude>duplicatefinder:.*</exclude>
                             </excludes>
                         </configuration>
                     </plugin>

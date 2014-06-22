@@ -34,7 +34,6 @@ import com.google.common.collect.Collections2;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Tv;
 import com.jcabi.xml.XMLDocument;
-import com.petebevin.markdown.MarkdownProcessor;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,6 +42,7 @@ import lombok.ToString;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.pegdown.PegDownProcessor;
 import org.w3c.dom.Node;
 
 /**
@@ -77,7 +77,7 @@ public final class XsltFuncs {
      * @return HTML
      */
     public static String html(final String markdown) {
-        return new MarkdownProcessor().markdown(markdown);
+        return new PegDownProcessor().markdownToHtml(markdown);
     }
 
     /**
