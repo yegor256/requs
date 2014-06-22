@@ -9,7 +9,7 @@
                 or number(number) &gt; following-sibling::step/number(number)]">
                 <error type="semantic" pos="0">
                     <xsl:attribute name="line">
-                        <xsl:value-of select="mentioned/where[position()=1]"/>
+                        <xsl:value-of select="mentioned/where[1]"/>
                     </xsl:attribute>
                     <xsl:text>Step &quot;</xsl:text>
                     <xsl:value-of select="number"/>

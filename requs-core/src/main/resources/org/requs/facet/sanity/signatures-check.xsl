@@ -11,7 +11,7 @@
                     <xsl:if test="/spec[not(methods/method/signature=$step/signature)]">
                         <error type="seal" pos="0">
                             <xsl:attribute name="line">
-                                <xsl:value-of select="$step/mentioned/where[position()=1]"/>
+                                <xsl:value-of select="$step/mentioned/where[1]"/>
                             </xsl:attribute>
                             <xsl:text>Step &quot;</xsl:text>
                             <xsl:value-of select="$step/number"/>

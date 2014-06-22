@@ -11,7 +11,7 @@
                     <xsl:if test="$method/@seal != @seal">
                         <error type="seal" pos="0">
                             <xsl:attribute name="line">
-                                <xsl:value-of select="$method/mentioned/where[position()=1]"/>
+                                <xsl:value-of select="$method/mentioned/where[1]"/>
                             </xsl:attribute>
                             <xsl:text>Seal &quot;</xsl:text>
                             <xsl:value-of select="$method/@seal"/>

@@ -10,7 +10,7 @@
                 <xsl:if test="/spec[not(types/type/name=$slot/type)]">
                     <error type="seal" pos="0">
                         <xsl:attribute name="line">
-                            <xsl:value-of select="$slot/mentioned/where[position()=1]"/>
+                            <xsl:value-of select="$slot/mentioned/where[1]"/>
                         </xsl:attribute>
                         <xsl:text>Slot &quot;</xsl:text>
                         <xsl:value-of select="$slot/name"/>
@@ -27,7 +27,7 @@
                 <xsl:if test="/spec/types[not(type/name=$binding/type)]">
                     <error type="seal" pos="0">
                         <xsl:attribute name="line">
-                            <xsl:value-of select="$binding/../../mentioned/where[position()=1]"/>
+                            <xsl:value-of select="$binding/../../mentioned/where[1]"/>
                         </xsl:attribute>
                         <xsl:text>Use case &quot;</xsl:text>
                         <xsl:value-of select="$binding/../../id"/>
@@ -42,7 +42,7 @@
                 <xsl:if test="/spec[not(types/type/name=$type)]">
                     <error type="seal" pos="0">
                         <xsl:attribute name="line">
-                            <xsl:value-of select="$type/../../mentioned/where[position()=1]"/>
+                            <xsl:value-of select="$type/../../mentioned/where[1]"/>
                         </xsl:attribute>
                         <xsl:text>Parent of type &quot;</xsl:text>
                         <xsl:value-of select="$type/../../name"/>
