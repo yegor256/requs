@@ -47,7 +47,7 @@ name as "a unique alpha-numeric name of the image",
 size as "the total number of bytes in PNG content".
 {% endhighlight %}
 
-The semantic is the same -- the type still contains three <<slots>>
+The semantic is the same -- the type still contains three *slots*
 (`PNG content`, `name` and `size`). However
 in this example we added an informal explanation to every one of them.
 An `as` keyword separates the name of the slot and its invariant.
@@ -62,8 +62,8 @@ Image needs: content, name, size.
 Image needs: content; name; and size.
 {% endhighlight %}
 
-By means of `is`/`is a` we enable a declaration of <<invariants>>
-on types. Invariant is a <<predicate>>, which is always true, no matter
+By means of `is`/`is a` we enable a declaration of *invariants*
+on types. Invariant is a *predicate*, which is always true, no matter
 what happens with the system. In the example above it is always true
 that `PNG content` is a file with binary content (not a readable
 ASCII text). Nobody can break this invariant and put a textual information
@@ -74,7 +74,7 @@ done with `size`. Such a declaration means
 absolutely nothing and will be ignored. But it helps when you're starting
 to develop the SRS document.
 
-In general, <<informal texts>> play an important role during the initial
+In general, *informal texts* play an important role during the initial
 development of a requirements document and
 during a preliminary system analysis. When you don't know for sure
 how to define the information you have in a strict format -- you
@@ -91,7 +91,7 @@ names, while `imagefile` is just an English word.
 
 To put things together we should declare a use case, which is
 a step-by-step explanation of interaction between instances of types
-(so called <<objects>>), for example:
+(so called *objects*), for example:
 
 {% highlight requs %}
 UC8.1 where User (a user) shares Image with User (a friend):
@@ -108,7 +108,7 @@ UC8.1/3 when "invalid format":
 {% endhighlight %}
 
 First line in this example is a declaration of a use case,
-which number is `UC8.1`. The use case has a <<signature>>,
+which number is `UC8.1`. The use case has a *signature*,
 which differentiates it from all other use cases. It is not the
 ID of the use case, but the signature, which is important. This
 concept is very similar to
@@ -130,8 +130,8 @@ either received by a use case or created inside it. However, there is no grammar
 difference between objects received and objects created. We assume
 that an object is empty until anyone updates or creates it (more on this later).
 
-There are seven <<main flows>> in this use case, and five <<alternative
-flows>>. Flows `1`, `5`, `6`, and `7`
+There are seven *main flows* in this use case, and five *alternative
+flows*. Flows `1`, `5`, `6`, and `7`
 instruct us to include other use cases that match the signatures
 provided and pass them the objects we have.
 
@@ -159,7 +159,7 @@ keywords are reserved and can't be used as English words.
 There are four use cases that are included by `UC8.1`.
 They have to be defined somewhere else in the document,
 otherwise the document will be semantically incomplete. But not all four are
-mandatory, because there is a number of <<elementary use cases>>,
+mandatory, because there is a number of *elementary use cases*,
 which are defined in the system, even if the document is
 empty. The elementary use cases are
 ([CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) requirements pattern):
@@ -181,7 +181,7 @@ As you understand, `something` means "object of any type".
 Thus, a valid flow either points us to another use case
 defined somewhere else in the document, or points us to
 an elementary use case, or points us nowhere with an informal text
-(<<informal flow>>).
+(*informal flow*).
 
 # Exceptions
 
@@ -203,7 +203,7 @@ in object-oriented languages.
 
 There is only one metric that tells us everything about
 the entire scope definition document. The metric is called
-"<<scope ambiguity>>" and is calculated like:
+"*scope ambiguity*" and is calculated like:
 
 {% highlight text %}
 A = S / (S + M)
