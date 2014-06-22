@@ -11,16 +11,16 @@ Any use case may have attributes assigned to it. Attribute
 is a small-caps English word, without spaces or numbers inside.
 For example:
 
-+--
+{% highlight requs lexer=rrr %}
 :UC3.2 is a must.
 :UC8 is delivered.
-+--
+{% endhighlight %}
 
 In this example, `must` is an attribute of `UC3.2` and
 `delivered` is an attribute of `UC8`.
 
 We recommend to use attributes for requirements prioritization,
-according to {{{http://en.wikipedia.org/wiki/MoSCoW_method}MoSCoW method}}:
+according to [MoSCoW method](http://en.wikipedia.org/wiki/MoSCoW_method):
 
  * `must`
 
@@ -31,7 +31,7 @@ according to {{{http://en.wikipedia.org/wiki/MoSCoW_method}MoSCoW method}}:
  * `would`
 
 We also recommend to use attributes for
-{{{http://en.wikipedia.org/wiki/Requirement_prioritization}requirements prioritization}}:
+[requirements prioritization](http://en.wikipedia.org/wiki/Requirement_prioritization):
 
  * `specified`
 
@@ -44,17 +44,17 @@ We also recommend to use attributes for
 * Seals
 
 When attribute is specified, it is possible to "seal" it. A seal is
-a 6-signs {{{http://en.wikipedia.org/wiki/Hexadecimal}hexadecimal}}
+a 6-signs [hexadecimal](http://en.wikipedia.org/wiki/Hexadecimal)
 number, calculated by Requs engine, as an
-{{{http://en.wikipedia.org/wiki/MD5}MD5}} hash function of the use
+[MD5](http://en.wikipedia.org/wiki/MD5) hash function of the use
 case content.
 
 For example, these two use cases will have two different seals:
 
-+--
+{% highlight requs %}
 UC3 where nothing happens: "tbd".
 UC3 where nothing really happens: "tbd".
-+--
+{% endhighlight %}
 
 Their signatures are different, that's why their seals are also different.
 
@@ -62,15 +62,15 @@ In order to calculate a seal for your use case, just add
 a random seal (for example, `ffffff`)
 and run `mvn requs:compile`:
 
-+--
+{% highlight requs %}
 ffffff:UC3 is a must.
-+--
+{% endhighlight %}
 
 You will get an error message, similar to this:
 
-+--
+{% highlight text %}
 [ERROR] 17:0 Seal "2edb8f" at the method UC3 doesn't match "ffffff" at the attribute "must"
-+--
+{% endhighlight %}
 
 The message means that Requs engine is expecting `2edb8f` as
 a seal for all `UC3` attributes. We set it to `ffffff` --- this
@@ -82,10 +82,10 @@ and Requs won't complain any more.
 When, in the future, someone changes the content of `UC3`, they will
 break the build and will have to change the seal for all attributes.
 
-* Baselined Attributes
+## Baselined Attributes
 
 This mechanism exists in Requs in order to be able to
-{{{http://en.wikipedia.org/wiki/Baseline_%28configuration_management%29}baseline}}
+[baseline](http://en.wikipedia.org/wiki/Baseline_%28configuration_management%29)
 individual requirements in a continuously changing document.
 
 Say, use case `UC3` is already implemented and delivered to
@@ -105,7 +105,7 @@ Thus, being a system analyst working with the SRS, be aware that
 if any seal doesn't match its expected value after your changes,
 you should just remove the seal.
 
-* Who Seals Use Cases?
+## Who Seals Use Cases?
 
 Seals are supposed to be placed in the SRS by a project manager. Well,
 not necessarily a PM, but a person who is responsible for changing

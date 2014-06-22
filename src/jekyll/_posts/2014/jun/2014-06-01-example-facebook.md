@@ -8,9 +8,9 @@ description:
 ---
 
 This is an example SRS of Facebook, in
-{{{./syntax.html}Requs syntax}}:
+[Requs syntax](./syntax.html):
 
-+--
+{% highlight requs %}
 User is "a human being".
 User has: email, password, name.
 
@@ -64,4 +64,4 @@ UC1/PERF must "guarantee a delivery of any HTTP response
 
 UC1/SCALE must "handle any number (up to a billion) of users without
   performance degrading".
-+--
+{% endhighlight %}

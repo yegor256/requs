@@ -2,7 +2,15 @@ name: requs.org
 markdown: redcarpet
 highlighter: pygments
 redcarpet:
-  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
+  extensions:
+    # see https://github.com/vmg/redcarpet
+    - no_intra_emphasis
+    - fenced_code_blocks
+    - autolink
+    - tables
+    - space_after_headers
+    - disable_indented_code_blocks
+    - with_toc_data
 permalink: :title.html
 
 # see https://github.com/noct/jekyll-sass

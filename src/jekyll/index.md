@@ -24,12 +24,12 @@ and *methods* (aka "use cases"). For example, there are two types
 (`Visitor` and `Image`) and one
 use case (`UC3.2`) defined in the snippet:
 
-+--
+{% highlight requs hello %}
 Visitor is "an originator of HTTP request".
 UC3.2 where User (a user) deletes photos:
   "we will define it later...".
 Image includes: content, name, and size.
-+--
+{% endhighlight %}
 
 Anything inside double quotes is considered as
 informal content, which we take "as is", without
@@ -40,12 +40,12 @@ during formal Requs analysis.
 
 Let's consider a bigger example of a type `Image`:
 
-+--
+{% highlight requs %}
 Image includes:
 content as File "a binary content as defined by ISO-15948",
 name as "a unique alpha-numeric name of the image",
 size as "the total number of bytes in PNG content".
-+--
+{% endhighlight %}
 
 The semantic is the same -- the type still contains three <<slots>>
 (`PNG content`, `name` and `size`). However
@@ -56,11 +56,11 @@ Pay attention to the dots, colons, semicolons and commas used above.
 Comma, semicolon and preposition `and` can replace each other.
 For example, the following declarations are semantically equivalent:
 
-+--
+{% highlight requs %}
 Image needs: content and name and size.
 Image needs: content, name, size.
 Image needs: content; name; and size.
-+--
+{% endhighlight %}
 
 By means of `is`/`is a` we enable a declaration of <<invariants>>
 on types. Invariant is a <<predicate>>, which is always true, no matter
@@ -83,17 +83,17 @@ you will replace them.
 
 Requs is a case-insensitive language in all places
 except one -- type names should use
-{{{http://en.wikipedia.org/wiki/CamelCase}CamelCase Notation}}. Thus,
+[CamelCase Notation](http://en.wikipedia.org/wiki/CamelCase). Thus,
 `Fie`, `ImageFile`, and `VeryBigImageFile` are valid type
 names, while `imagefile` is just an English word.
 
-* Bigger Example
+## Bigger Example
 
 To put things together we should declare a use case, which is
 a step-by-step explanation of interaction between instances of types
 (so called <<objects>>), for example:
 
-+--
+{% highlight requs %}
 UC8.1 where User (a user) shares Image with User (a friend):
 1. The user creates Image (a photo);
 2. The user updates the friend "selecting one of his contacts";
@@ -105,19 +105,19 @@ UC8.1/1 when "the user exceeds the maximum possible number of photos":
 UC8.1/3 when "invalid format":
 1. "We notify user about the problem";
 2. Fail since "can't convert photo".
-+--
+{% endhighlight %}
 
 First line in this example is a declaration of a use case,
 which number is `UC8.1`. The use case has a <<signature>>,
 which differentiates it from all other use cases. It is not the
 ID of the use case, but the signature, which is important. This
 concept is very similar to
-{{{http://en.wikipedia.org/wiki/Signature_(computer_science)}function signature}}
+[function signature](http://en.wikipedia.org/wiki/Signature_(computer_science))
 in programming. The signature of this use case is:
 
-+--
+{% highlight requs %}
 User shares Image with User
-+--
+{% endhighlight %}
 
 In order to include this use case into another one we should use this
 signature, filling it with particular objects. Objects start with
@@ -135,26 +135,26 @@ flows>>. Flows `1`, `5`, `6`, and `7`
 instruct us to include other use cases that match the signatures
 provided and pass them the objects we have.
 
-* USING
+## USING
 
 In the example above, one of the use case steps
 mentioned `using` operator:
 
-+--
+{% highlight requs %}
 The friend receives email using SmtpServer (a server).
-+--
+{% endhighlight %}
 
 This is similar to sending arguments to a method. In this line
 we're calling a method "receives" on "the friend" object like this:
 
-+--
+{% highlight java %}
 friend.receives_email(smtp_server);
-+--
+{% endhighlight %}
 
 Instead of `using` you can use `of` or `with`. These three
 keywords are reserved and can't be used as English words.
 
-* CRUDL
+## CRUDL
 
 There are four use cases that are included by `UC8.1`.
 They have to be defined somewhere else in the document,
@@ -162,15 +162,15 @@ otherwise the document will be semantically incomplete. But not all four are
 mandatory, because there is a number of <<elementary use cases>>,
 which are defined in the system, even if the document is
 empty. The elementary use cases are
-({{{http://en.wikipedia.org/wiki/Create,_read,_update_and_delete}CRUD}} requirements pattern):
+([CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) requirements pattern):
 
-+--
+{% highlight requs %}
 Something creates something
 Something reads something
 Something updates something
 Something deletes something
 Something lists something
-+--
+{% endhighlight %}
 
 As you understand, `something` means "object of any type".
 `create` means making/instantiating of a new object.
@@ -183,7 +183,7 @@ defined somewhere else in the document, or points us to
 an elementary use case, or points us nowhere with an informal text
 (<<informal flow>>).
 
-* Exceptions
+## Exceptions
 
 Besides that, a flow might have a special instruction, which we've seen
 in alternative flow `UC8.3/1` and `UC8.3/3`. `fail since`
@@ -196,18 +196,18 @@ current one. This is exactly what happens in `UC8.3/3`. We are
 waiting for a failure from `we convert the photo`, and
 we're ready to accept a failure called `invalid format`.
 This approach is very similar to
-{{{http://en.wikipedia.org/wiki/Exception_handling}exception handling paradigm}}
+[exception handling paradigm](http://en.wikipedia.org/wiki/Exception_handling)
 in object-oriented languages.
 
-* Scope Ambiguity
+## Scope Ambiguity
 
 There is only one metric that tells us everything about
 the entire scope definition document. The metric is called
 "<<scope ambiguity>>" and is calculated like:
 
-+--
+{% highlight text %}
 A = S / (S + M)
-+--
+{% endhighlight %}
 
 <S> stands for a total number of all informal flows,
 and <M> is a total number of CRUD-manipulators.
@@ -215,14 +215,14 @@ Thus, if <A> equals to 0, the document is absolutely non-ambiguous,
 which is an almost impossible situation. In real world projects
 the task of a system analyst is to move <A> from 1 to 0.
 
-* Arity of Slots
+## Arity of Slots
 
 A slot may have an "arity", determined by a suffix attached to its name. There
 are four possible options:
 
-+--
+{% highlight requs %}
 User includes: name, address-s, photo-s?, and SSN-?.
-+--
+{% endhighlight %}
 
 `-s` means "one or many" or `1..*` in UML.
 
@@ -232,58 +232,58 @@ User includes: name, address-s, photo-s?, and SSN-?.
 
 No suffix means exactly one, or `1..1` in UML.
 
-* Attributes
+## Attributes
 
 Any use case may have attributes assigned to it. Attributes
 may be used, for example, for
-{{{http://en.wikipedia.org/wiki/Requirement_prioritization}requirements prioritization}}.
+[requirements prioritization](http://en.wikipedia.org/wiki/Requirement_prioritization).
 
-+--
+{% highlight requs %}
 :UC3.2 is a must.
 :UC8 is delivered.
 :UC2 is specified.
-+--
+{% endhighlight %}
 
 You can "seal" your statement with a hash code:
 
-+--
+{% highlight requs %}
 af63e2:UC3.2 is a must.
-+--
+{% endhighlight %}
 
 This hash code `af63e2` is calculated from the content of `UC3.2`.
 If the content is changed, this statement becomes invalid and the entire
 document can't be compiled any more.
 
-More about it in {{{./feature-attributes.html}Attributes and Seals}}.
+More about it in [Attributes and Seals](./feature-attributes.html).
 
-* Non-Functional Requirements
+## Non-Functional Requirements
 
 To any use case you can add a number of non-functional requirements (NFR),
 in the following format:
 
-+--
+{% highlight requs %}
 UC3.2/MTBF must "be 5 minutes on a standard equipment".
 UC7/PERF must "be less than 500 msec per request".
-+--
+{% endhighlight %}
 
 After the name of the use case you put a forward slash and then
 a mnemonic name of a non-functional requirement. Then, you put
 "must be" and an informal text.
 
-More about it in {{{./feature-nfrs.html}Non-Functional Requirements}}.
+More about it in [Non-Functional Requirements](./feature-nfrs.html).
 
-* Markdown Pages
+## Markdown Pages
 
 Sometimes you may need to add informal pages to your SRS document. For
 example, Vision, Business Case, wireframes, UI mockups, tables,
 research results, supplementary tables, etc. The syntax is simple:
 
-+--
+{% highlight requs %}
 Vision: """
 Any text you wish, in Markdown format.
 """.
-+--
+{% endhighlight %}
 
 Page name should be in CamelCase, as well as type name.
 
-Read on {{{http://daringfireball.net/projects/markdown/syntax}Markdown syntax}}.
+Read on [Markdown syntax](http://daringfireball.net/projects/markdown/syntax).
