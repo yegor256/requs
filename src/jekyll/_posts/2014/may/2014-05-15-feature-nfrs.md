@@ -5,6 +5,7 @@ date: 2014-05-15
 description:
   Requs is a controlled natural language (CNL) for
   software requirements specification
+categories: blog
 ---
 
 Any method (use case) may have an unlimited number of non-functional

@@ -5,6 +5,7 @@ date: 2014-05-10
 description:
   Requs is a controlled natural language (CNL) for
   software requirements specification
+categories: blog
 ---
 
 Any use case may have attributes assigned to it. Attribute

@@ -1,14 +1,41 @@
+/**
+ * Copyright (c) 2009-2014, requs.org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met: 1) Redistributions of source code must retain the above
+ * copyright notice, this list of conditions and the following
+ * disclaimer. 2) Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following
+ * disclaimer in the documentation and/or other materials provided
+ * with the distribution. 3) Neither the name of the requs.org nor
+ * the names of its contributors may be used to endorse or promote
+ * products derived from this software without specific prior written
+ * permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+ * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+ * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 @import url(//fonts.googleapis.com/css?family=Source+Code+Pro:400,500);
 @import url(//fonts.googleapis.com/css?family=Ubuntu);
 
+@import "colors";
 @import "highlight";
 
 $main-font: 'Ubuntu', 'Arial', sans-serif;
 $code-font: 'Source Code Pro', monospace;
-
-$black: #111;
-$gray: lighten($black, 50);
-
 $width: 700px;
 $font-size: 19px;
 
@@ -25,27 +52,23 @@ body {
   color: $black;
   font-size: $font-size;
   margin: 0;
-  padding-top: 2 * $font-size;
-  padding-bottom: 2 * $font-size;
   position: relative;
   overflow-x: hidden;
 }
 a, a:visited {
   color: $black;
   text-decoration: underline;
+  &:hover {
+    color: $blue;
+  }
 }
 .wrapper {
+  background-color: $white;
   box-sizing: border-box;
-  margin-left: 2 * $font-size;
-  margin-right: 2 * $font-size;
-  width: $width;
   line-height: 1.4 * $font-size;
-  padding-left: 2 * $font-size;
-  padding-right: 2 * $font-size;
+  padding: 2 * $font-size;
   @media all and (max-width: $width) {
-    width: 100%;
-    padding-left: $font-size;
-    padding-right: $font-size;
+    padding: $font-size;
   }
 }
 .header {
@@ -55,14 +78,44 @@ a, a:visited {
   }
 }
 .footer {
-  margin-top: 5 * $font-size;
+  margin-top: 3 * $font-size;
 }
 h1 {
   margin-top: 3 * $font-size;
+  margin-bottom: 2 * $font-size;
+  color: darken($blue, 20);
+  font-size: 2 * $font-size;
+  line-height: 2 * $font-size;
+}
+h2 {
+  line-height: 1.6 * $font-size;
+  margin-top: 3 * $font-size;
+  color: darken($blue, 20);
+  font-size: 1.6 * $font-size;
+}
+p {
+  width: $width;
+  @media all and (max-width: $width) {
+    width: 100%;
+  }
 }
 code {
-  background-color: lighten($black, 80);
+  background-color: lighten($black, 60);
   border-radius: 0.3 * $font-size;
   padding-left: 0.3 * $font-size;
   padding-right: 0.3 * $font-size;
+}
+pre {
+  overflow-x: auto;
+  background-color: lighten($black, 60);
+  border-radius: 0.3 * $font-size;
+  padding: $font-size;
+  width: auto;
+  @media all and (max-width: $width) {
+    padding: 0.5 * $font-size;
+  }
+  code {
+    background-color: inherit;
+    padding: 0;
+  }
 }

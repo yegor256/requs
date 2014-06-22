@@ -5,6 +5,7 @@ date: 2014-06-01
 description:
   Requs is a controlled natural language (CNL) for
   software requirements specification
+categories: blog
 ---
 
 This is an example SRS of Facebook, in

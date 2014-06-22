@@ -28,25 +28,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@import "colors";
-
-.highlight {
-  .k,
-  .kn,
-  .kd,
-  .kt {
-    font-weight: bold;
-  }
-  .c1 {
-    color: #777;
-  }
-  .n {
-    color: $blue;
-  }
-  .s {
-    color: $red;
-  }
-  .o {
-    color: darken($green, 20);
-  }
-}
+$black: #4e4e4e;
+$blue: lighten(#394e63, 20);
+$red: #fd5559;
+$white: white;
+$green: #62d260;

@@ -5,6 +5,7 @@ date: 2014-05-20
 description:
   Requs is a controlled natural language (CNL) for
   software requirements specification
+categories: blog
 ---
 
 Type in Requs is a creature similar to a class in

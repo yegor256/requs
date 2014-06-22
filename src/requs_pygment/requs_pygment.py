@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from pygments.lexer import RegexLexer
-from pygments.token import Punctuation, Text, Keyword, Name, String
+from pygments.token import Punctuation, Text, Keyword, Name, String, Operator
 from pygments.util import shebang_matches
 
 class RequsLexer(RegexLexer):
@@ -9,9 +9,10 @@ class RequsLexer(RegexLexer):
     aliases = ['requs']
     tokens = {
         'root': [
+            (r'"""[\n.]+"""', Text),
             (r'"[^"]+"', String),
-            (r'""".+"""', Text),
-            (r'\b(needs|includes|requires|when|fail|since|must|is|a|the)\s*\b', Keyword),
+            (r'\b(includes|requires|contains|needs|using|of|with|when|must|is|a|(T|t)he|as|where|and)\b', Keyword),
+            (r'\b(creates|reads|updates|deletes|lists|Fail\s+since)\b', Operator),
             (r'([A-Z][a-z]+)+', Name),
             (r'[,;:]', Punctuation),
         ],
