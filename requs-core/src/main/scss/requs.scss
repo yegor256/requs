@@ -1,0 +1,169 @@
+/**
+ * Copyright (c) 2009-2014, requs.org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met: 1) Redistributions of source code must retain the above
+ * copyright notice, this list of conditions and the following
+ * disclaimer. 2) Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following
+ * disclaimer in the documentation and/or other materials provided
+ * with the distribution. 3) Neither the name of the requs.org nor
+ * the names of its contributors may be used to endorse or promote
+ * products derived from this software without specific prior written
+ * permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+ * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+ * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  margin: 2em;
+  font-family: 'Ubuntu', 'Arial', serif;
+  font-size: 16px;
+  color: #4e4e4e;
+}
+
+a {
+  color: #428bca;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+code, pre {
+  font-family: 'Monaco', 'Courier New', monospace;
+  background-color: #ccc;
+}
+
+code {
+  padding: 0 .4em;
+}
+
+p, ul, ol {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+td, th {
+  padding: .3em;
+  border-bottom: 1px solid #ccc;
+}
+
+th {
+  text-align: left;
+  background-color: #ddd;
+  border-bottom: 1px solid #444;
+  font-weight: 500;
+}
+
+h1 {
+  margin-top: 2em;
+  font-size: 1.4em;
+}
+
+h2 {
+  margin-top: 2em;
+  font-size: 1.2em;
+}
+
+li {
+  margin-left: 2em;
+}
+
+.intro {
+  font-size: 0.9em;
+  color: #999;
+}
+
+.type {
+  margin-top: 3em;
+}
+
+.slots {
+  margin-left: 1em;
+  margin-top: 1em;
+}
+
+.method {
+  margin-top: 1em;
+  margin-left: 1em;
+}
+
+.steps {
+  margin-top: 1em;
+  margin-left: 1em
+}
+
+.step {
+  margin-top: 0.25em;
+}
+
+.nfrs {
+  margin-top: 1em;
+  margin-left: 1em
+}
+
+.nfr {
+  margin-top: 0.25em;
+}
+
+.exception {
+  margin-left: 1em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.informal {
+  color: #666;
+}
+
+.warning {
+  color: #d9534f;
+}
+
+.crud, .fail {
+  color: #5cb85c;
+}
+
+.label {
+  margin-left: 0.5em;
+  color: white;
+  border-radius: .25em;
+  font-size: 0.85em;
+  padding: .1em .3em .15em;
+}
+
+.attribute {
+  background-color: #999;
+}
+
+.sealed {
+  background-color: #5cb85c;
+}
+
+.seal {
+  background-color: #5bc0de;
+}
+
+.svg {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
