@@ -112,16 +112,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <xsl:for-each select="bindings/binding">
+                    <xsl:for-each-group select="bindings/binding" group-by="type">
+                        <xsl:variable name="type" select="fn:current-grouping-key()"/>
                         <tr>
                             <td>
-                                <xsl:value-of select="type"/>
+                                <xsl:value-of select="$type"/>
                             </td>
                             <td>
-                                <xsl:apply-templates select="/spec/types/type[name=current()/type]" mode="x"/>
+                                <xsl:apply-templates select="/spec/types/type[name=$type]" mode="x"/>
                             </td>
                         </tr>
-                    </xsl:for-each>
+                    </xsl:for-each-group>
                 </tbody>
             </table>
         </div>
