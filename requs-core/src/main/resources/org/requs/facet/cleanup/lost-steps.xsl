@@ -15,18 +15,18 @@
                     <xsl:attribute name="line">
                         <xsl:choose>
                             <xsl:when test="exceptions/exception/steps/step/mentioned/where">
-                                <xsl:value-of select="exceptions/exception/steps/step/mentioned/where"/>
+                                <xsl:value-of select="exceptions/exception[1]/steps/step[1]/mentioned/where[1]"/>
                             </xsl:when>
                             <xsl:otherwise>
-                                <xsl:text>0</xsl:text>
+                                <xsl:text>0:0</xsl:text>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:attribute>
-                    <xsl:text>step </xsl:text>
+                    <xsl:text>step &quot;</xsl:text>
                     <xsl:value-of select="number"/>
-                    <xsl:text> of method </xsl:text>
+                    <xsl:text>&quot; of method &quot;</xsl:text>
                     <xsl:value-of select="../../id"/>
-                    <xsl:text> was mentioned by never declared</xsl:text>
+                    <xsl:text>&quot; was mentioned but never declared</xsl:text>
                 </error>
             </xsl:for-each>
         </xsl:copy>
@@ -40,10 +40,10 @@
                 <where>
                     <xsl:choose>
                         <xsl:when test="exceptions/exception/steps/step/mentioned/where">
-                            <xsl:value-of select="exceptions/exception/steps/step/mentioned/where"/>
+                            <xsl:value-of select="exceptions/exception[1]/steps/step[1]/mentioned/where[1]"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:text>0</xsl:text>
+                            <xsl:text>0:0</xsl:text>
                         </xsl:otherwise>
                     </xsl:choose>
                 </where>

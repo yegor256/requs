@@ -1,5 +1,11 @@
 <sample>
     <spec>
+        UC50 where User (a user) does something:
+        1. "Something happens".
+        UC50/3 when "a problem":
+        1. "We notify user about the problem";
+        2. Fail since "the problem".
+
         Object is "an object".
         UC105 where Sys(a system) works:
         1. The system creates Object(a user).
