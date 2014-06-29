@@ -78,8 +78,9 @@
     </xsl:template>
     <xsl:template match="types/type">
         <div class="type">
-            <a name="{name}"/>
-            <strong><xsl:value-of select="name"/></strong>
+            <a name="{name}">
+                <strong><xsl:value-of select="name"/></strong>
+            </a>
             <xsl:text> is </xsl:text>
             <xsl:if test="parents/type">
                 <xsl:for-each select="parents/type">
