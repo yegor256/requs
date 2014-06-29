@@ -210,6 +210,7 @@
             <xs:element name="mentioned" type="mentioned"/>
             <xs:element name="name" type="class"/>
             <xs:element name="info" type="info" minOccurs="0"/>
+            <xs:element name="diagrams" type="diagrams" minOccurs="0"/>
             <xs:element name="slots" minOccurs="0">
                 <xs:complexType>
                     <xs:sequence>

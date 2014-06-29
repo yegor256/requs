@@ -106,6 +106,7 @@
             <xsl:choose>
                 <xsl:when test="slots/slot">
                     <xsl:text> that includes:</xsl:text>
+                    <xsl:apply-templates select="diagrams/diagram"/>
                     <div class="slots">
                         <ul>
                             <xsl:apply-templates select="slots/slot"/>
@@ -161,7 +162,9 @@
                 </xsl:if>
                 <xsl:apply-templates select="attributes/attribute"/>
             </div>
-            <xsl:apply-templates select="diagrams/diagram"/>
+            <xsl:if test="steps/step">
+                <xsl:apply-templates select="diagrams/diagram"/>
+            </xsl:if>
             <div class="steps">
                 <xsl:apply-templates select="info/informal"/>
                 <xsl:apply-templates select="steps"/>

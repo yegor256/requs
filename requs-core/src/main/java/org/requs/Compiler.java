@@ -150,6 +150,7 @@ public final class Compiler {
             new Transform("find-tbds.xsl"),
             new Transform("uml/sequence-diagrams.xsl"),
             new Transform("uml/use-case-diagrams.xsl"),
+            new Transform("uml/class-diagrams.xsl"),
             new Transform("renumber.xsl"),
             new XeFacet.Wrap(new Rules()),
             new XeFacet.Wrap(
