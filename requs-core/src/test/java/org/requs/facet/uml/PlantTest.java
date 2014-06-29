@@ -32,7 +32,6 @@ package org.requs.facet.uml;
 import com.jcabi.matchers.XhtmlMatchers;
 import java.io.IOException;
 import org.hamcrest.MatcherAssert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -46,17 +45,8 @@ public final class PlantTest {
     /**
      * SequenceDiagrams can build SVG.
      * @throws IOException If fails
-     * @todo #38 PlantUML produces broken SVG. It sets empty XMLNS
-     *  to all child nodes of SVG element. Because of that the image
-     *  is not renderable in browsers. I'm not sure how to fix that. Maybe
-     *  the best way would be to report a bug to PlantUML, and ask them
-     *  to fix the root cause. However, I'm not entirely sure they have
-     *  a bug, since their command line tool works fine, in the same
-     *  version 7999. Maybe it's a problem in our DOM implementation, or
-     *  its integration with PlantUML. Let's investigate and fix.
      */
     @Test
-    @Ignore
     public void buildsSVG() throws IOException {
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(

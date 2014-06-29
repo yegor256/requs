@@ -70,7 +70,7 @@ public final class Plant {
         reader.generateImage(baos, new FileFormatOption(FileFormat.SVG));
         return new XMLDocument(
             new String(baos.toByteArray())
-        ).nodes("/*").get(0).toString();
+        ).nodes("/*").get(0).toString().replace("xmlns=\"\"", "");
     }
 
 }
