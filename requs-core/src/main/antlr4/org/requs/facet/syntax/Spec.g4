@@ -182,12 +182,18 @@ method_declaration
     (
         rslt=class_name
         { if ($rslt.ret == null) throw new SyntaxException("invalid result"); }
-        (
-            res=binding
-            { if ($res.ret == null) throw new SyntaxException("invalid result"); }
-            { method.binding($res.ret, $rslt.ret); }
-            { method.result($res.ret); }
-        )?
+        res=binding?
+        {
+            final String rname;
+            if ($res.ctx == null) {
+                rname = "_result";
+            } else {
+                rname = $res.ret;
+            }
+            { if (rname == null) throw new SyntaxException("invalid result"); }
+            { method.binding(rname, $rslt.ret); }
+            { method.result(rname); }
+        }
     )?
     (
         USING
