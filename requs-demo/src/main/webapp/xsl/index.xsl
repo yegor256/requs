@@ -67,7 +67,9 @@
                     </td>
                     <td class="right">
                         <iframe class="box" id="srs">
-                            <xsl:text>...</xsl:text>
+                            <p>
+                                <xsl:text>Your browser doesn't support iframes :(</xsl:text>
+                            </p>
                         </iframe>
                     </td>
                 </tr>

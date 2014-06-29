@@ -165,7 +165,7 @@ public final class CompilerTest {
             )
         );
         MatcherAssert.assertThat(
-            xsl.transform(srs),
+            xsl.applyTo(srs),
             Matchers.describedAs(
                 file,
                 XhtmlMatchers.hasXPath("//xhtml:body")

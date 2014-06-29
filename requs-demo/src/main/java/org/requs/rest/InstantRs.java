@@ -94,7 +94,7 @@ public final class InstantRs extends BaseRs {
             );
             return Json.createObjectBuilder()
                 .add("spec", xml.nodes("/spec").get(0).toString())
-                .add("html", xsl.transform(xml).toString())
+                .add("html", xsl.applyTo(xml))
                 .build().toString();
         // @checkstyle IllegalCatchCheck (1 line)
         } catch (final RuntimeException ex) {

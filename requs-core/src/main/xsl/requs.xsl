@@ -3,15 +3,13 @@
     xmlns="http://www.w3.org/1999/xhtml">
     <xsl:output method="xml" omit-xml-declaration="yes"/>
     <xsl:template match="/">
+        <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;</xsl:text>
         <html lang="en-US">
             <head>
                 <meta charset="UTF-8"/>
                 <meta name="keywords" content="software requirements specification"/>
                 <meta name="author" content="requs.org"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <script src="//code.jquery.com/jquery-2.1.1-rc1.js" type="text/javascript">
-                    <!-- nothing -->
-                </script>
                 <link rel="icon" type="image/png" href="//img.requs.org/ico-64x64.png"/>
                 <style type="text/css">---css---</style>
                 <title>SRS</title>

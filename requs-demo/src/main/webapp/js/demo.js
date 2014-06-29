@@ -30,11 +30,12 @@
 
 function post(html) {
   'use strict';
-  var iframe = document.getElementById('srs');
-  iframe = (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
-  iframe.document.open();
-  iframe.document.write(html);
-  iframe.document.close();
+  var iframe = document.getElementById('srs'),
+    doc = iframe.contentWindow.document;
+  iframe.doctype = 'xhtml';
+  doc.open();
+  doc.write(html);
+  doc.close();
 }
 
 /**
@@ -77,15 +78,12 @@ $(document).ready(
               $output.text(xhr.responseText);
               $output.css('color', 'red');
               post(
-                String.join(
-                  [
-                    '<html><body><span style="color:red">Internal application error</span>.',
-                    ' Please submit your sources as',
-                    ' <a href="https://github.com/teamed/requs">a Github issue</a>',
-                    '</body></html>'
-                  ],
-                  ''
-                )
+                [
+                  '<html><body><span style="color:red">Internal application error</span>.',
+                  ' Please submit your sources as',
+                  ' <a href="https://github.com/teamed/requs">a Github issue</a>',
+                  '</body></html>'
+                ].join('')
               );
             },
             complete: function () {
