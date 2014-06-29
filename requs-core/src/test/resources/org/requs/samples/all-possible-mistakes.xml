@@ -44,6 +44,8 @@
         1. User creates Message (a.
         UC76/1 when "something happens":
         1. User send Message (a message).
+
+        UC1033 where System removes User (a user) using Test (:
     </spec>
     <xpaths>
         <xpath>/processing-instruction()[contains(.,'href')]</xpath>

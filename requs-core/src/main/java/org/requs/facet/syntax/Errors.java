@@ -76,7 +76,7 @@ final class Errors extends BaseErrorListener implements Iterable<Directive> {
     public void add(final Exception error) {
         this.dirs.add("error")
             .attr("type", "exception")
-            .attr("line", "0")
+            .attr("line", "1")
             .attr("pos", "0")
             .set(error.getLocalizedMessage()).up();
     }

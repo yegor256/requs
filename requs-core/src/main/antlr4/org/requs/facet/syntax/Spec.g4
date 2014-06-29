@@ -201,6 +201,7 @@ method_declaration
             } else {
                 hname = $hbind.ret;
             }
+            { if (hname == null) throw new SyntaxException("broken subject"); }
             method.binding(hname, $hclass.ret);
             method.input(hname);
             int idx = 1;
@@ -217,6 +218,7 @@ method_declaration
                 } else {
                     tname = $tbind.ret;
                 }
+                { if (tname == null) throw new SyntaxException("broken subject"); }
                 method.binding(tname, $tclass.ret);
                 method.input(tname);
                 ++idx;
