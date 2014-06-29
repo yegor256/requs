@@ -67,7 +67,6 @@ public final class Plant {
     public static String svg(final String src) throws IOException {
         final SourceStringReader reader = new SourceStringReader(src);
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        System.out.println(src);
         reader.generateImage(baos, new FileFormatOption(FileFormat.SVG));
         return new XMLDocument(
             new String(baos.toByteArray())
