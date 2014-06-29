@@ -9,12 +9,38 @@
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
             <xsl:variable name="uml">
-                @startuml
-                Bob -> Alice : hello
-                @enduml
+                <xsl:text>@startuml&#10;</xsl:text>
+                <xsl:apply-templates select="." mode="uml"/>
+                <xsl:text>&#10;@enduml</xsl:text>
             </xsl:variable>
             <svg><xsl:value-of select="r:svg($uml)"/></svg>
         </xsl:copy>
+    </xsl:template>
+    <xsl:template match="method" mode="uml">
+        <xsl:for-each select="bindings/binding[name!='_self']">
+            <xsl:text>participant &quot;</xsl:text>
+            <xsl:value-of select="name"/>
+            <xsl:text>:</xsl:text>
+            <xsl:value-of select="type"/>
+            <xsl:text>&quot; as </xsl:text>
+            <xsl:value-of select="name"/>
+            <xsl:text>&#10;</xsl:text>
+        </xsl:for-each>
+        <xsl:for-each select="steps/step">
+            <xsl:value-of select="object"/>
+            <xsl:text> -&gt; </xsl:text>
+            <xsl:choose>
+                <xsl:when test="result">
+                    <xsl:value-of select="result"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="object"/>
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:text> : </xsl:text>
+            <xsl:value-of select="signature"/>
+            <xsl:text>&#10;</xsl:text>
+        </xsl:for-each>
     </xsl:template>
     <xsl:template match="node()|@*">
         <xsl:copy>
