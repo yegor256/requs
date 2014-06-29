@@ -64,7 +64,7 @@
             <tbody>
                 <tr>
                     <td class="left">
-                        <textarea class="box" id="example">
+                        <textarea class="box" id="example" style="resize:none">
                             <xsl:text>User is "a human being".</xsl:text>
                         </textarea>
                     </td>
