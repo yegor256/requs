@@ -298,7 +298,11 @@
                     <xsl:choose>
                         <xsl:when test="$typed = 'true'">
                             <xsl:value-of select="$type"/>
-                            <xsl:text> (a </xsl:text>
+                            <xsl:text> (a</xsl:text>
+                            <xsl:if test="substring($name, 1, 1) = 'a'">
+                                <xsl:text>n</xsl:text>
+                            </xsl:if>
+                            <xsl:text> </xsl:text>
                             <xsl:value-of select="$name"/>
                             <xsl:text>)</xsl:text>
                         </xsl:when>
