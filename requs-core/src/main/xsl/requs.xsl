@@ -332,8 +332,10 @@
         </tr>
     </xsl:template>
     <xsl:template match="diagram">
-        <div class="uml">
-            <xsl:value-of select="svg" disable-output-escaping="yes"/>
+        <div>
+            <div class="uml">
+                <xsl:value-of select="svg" disable-output-escaping="yes"/>
+            </div>
         </div>
     </xsl:template>
 </xsl:stylesheet>

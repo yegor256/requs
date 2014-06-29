@@ -12,12 +12,14 @@
         UC1/UX must "look cool".
         :UC1 is a must.
         Vision: """ this is a "test" """.
+        UC7 where User (a user) opens: "tbd".
     </spec>
     <xpaths>
-        <xpath>/spec/methods[count(method)=1]</xpath>
+        <xpath>/spec/methods[count(method)=2]</xpath>
         <xpath>/processing-instruction()[contains(.,'href')]</xpath>
         <xpath>//method[id='UC1']</xpath>
         <xpath>//method[@seal]</xpath>
+        <xpath>//method[id='UC1']/steps/step/signature[@ref='UC7']</xpath>
         <xpath>/spec/pages/page[title='Vision']</xpath>
     </xpaths>
 </sample>

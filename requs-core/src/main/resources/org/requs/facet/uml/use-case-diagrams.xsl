@@ -35,6 +35,11 @@
         <xsl:value-of select="re:signature(signature)"/>
         <xsl:text>) as uc&#10;</xsl:text>
         <xsl:text>primary -> uc&#10;</xsl:text>
+        <xsl:for-each select=".//signature[@ref]">
+            <xsl:text>uc ---> (</xsl:text>
+            <xsl:value-of select="@ref"/>
+            <xsl:text>)&#10;</xsl:text>
+        </xsl:for-each>
     </xsl:template>
     <xsl:template match="node()|@*">
         <xsl:copy>

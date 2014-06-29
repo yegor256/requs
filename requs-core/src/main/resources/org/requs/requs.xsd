@@ -75,7 +75,15 @@
         <xs:all>
             <xs:element name="number" type="xs:integer"/>
             <xs:element name="object" type="object"/>
-            <xs:element name="signature" type="xs:string"/>
+            <xs:element name="signature">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute name="ref" type="xs:string"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
             <xs:element name="mentioned" type="mentioned"/>
             <xs:element name="result" type="object" minOccurs="0"/>
             <xs:element name="info" type="info" minOccurs="0"/>
