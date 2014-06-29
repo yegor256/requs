@@ -30,6 +30,7 @@
 package org.requs.facet;
 
 import com.jcabi.aspects.Immutable;
+import com.jcabi.xml.ClasspathSources;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XSLDocument;
 import java.net.URL;
@@ -69,7 +70,9 @@ public final class Transform implements Facet {
                 String.format("stylesheet '%s' not found", this.sheet)
             );
         }
-        return XSLDocument.make(url).transform(spec);
+        return XSLDocument.make(url)
+            .with(new ClasspathSources(this.getClass()))
+            .transform(spec);
     }
 
 }

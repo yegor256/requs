@@ -12,10 +12,9 @@
             <xsl:apply-templates select="(node() except diagrams)|@*"/>
             <xsl:variable name="uml">
                 <xsl:text>@startuml&#10;</xsl:text>
-                <xsl:text>hide footbox&#10;</xsl:text>
                 <xsl:text>title </xsl:text>
                 <xsl:value-of select="id"/>
-                <xsl:text>: Sequence Diagram&#10;</xsl:text>
+                <xsl:text>: Use Case Diagram&#10;</xsl:text>
                 <xsl:apply-templates select="." mode="uml"/>
                 <xsl:text>&#10;@enduml</xsl:text>
             </xsl:variable>
@@ -29,28 +28,13 @@
         </xsl:copy>
     </xsl:template>
     <xsl:template match="method" mode="uml">
-        <xsl:for-each select="bindings/binding[name!='_self']">
-            <xsl:text>participant &quot;</xsl:text>
-            <xsl:value-of select="name"/>
-            <xsl:text>&quot; as </xsl:text>
-            <xsl:value-of select="name"/>
-            <xsl:text>&#10;</xsl:text>
-        </xsl:for-each>
-        <xsl:for-each select="steps/step">
-            <xsl:value-of select="object"/>
-            <xsl:text> -&gt; </xsl:text>
-            <xsl:choose>
-                <xsl:when test="result">
-                    <xsl:value-of select="result"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="object"/>
-                </xsl:otherwise>
-            </xsl:choose>
-            <xsl:text> : </xsl:text>
-            <xsl:value-of select="re:signature(signature)"/>
-            <xsl:text>&#10;</xsl:text>
-        </xsl:for-each>
+        <xsl:text>actor </xsl:text>
+        <xsl:value-of select="bindings/binding[name='_self']/type"/>
+        <xsl:text> as primary&#10;</xsl:text>
+        <xsl:text>usecase (</xsl:text>
+        <xsl:value-of select="re:signature(signature)"/>
+        <xsl:text>) as uc&#10;</xsl:text>
+        <xsl:text>primary -> uc&#10;</xsl:text>
     </xsl:template>
     <xsl:template match="node()|@*">
         <xsl:copy>

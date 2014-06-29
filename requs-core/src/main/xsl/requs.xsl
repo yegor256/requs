@@ -161,7 +161,7 @@
                 </xsl:if>
                 <xsl:apply-templates select="attributes/attribute"/>
             </div>
-            <xsl:apply-templates select="svg"/>
+            <xsl:apply-templates select="diagrams/diagram"/>
             <div class="steps">
                 <xsl:apply-templates select="info/informal"/>
                 <xsl:apply-templates select="steps"/>
@@ -331,9 +331,9 @@
             <td><xsl:value-of select="description"/></td>
         </tr>
     </xsl:template>
-    <xsl:template match="svg">
+    <xsl:template match="diagram">
         <div class="uml">
-            <xsl:value-of select="." disable-output-escaping="yes"/>
+            <xsl:value-of select="svg" disable-output-escaping="yes"/>
         </div>
     </xsl:template>
 </xsl:stylesheet>

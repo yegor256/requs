@@ -33,7 +33,7 @@
     <parent>
         <groupId>com.jcabi</groupId>
         <artifactId>parent</artifactId>
-        <version>0.22</version>
+        <version>0.25.1</version>
     </parent>
     <groupId>org.requs</groupId>
     <artifactId>requs</artifactId>
@@ -108,11 +108,6 @@
     </properties>
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>com.jcabi</groupId>
-                <artifactId>jcabi-xml</artifactId>
-                <version>0.8.1</version>
-            </dependency>
             <dependency>
                 <groupId>net.sourceforge.saxon</groupId>
                 <artifactId>saxon</artifactId>

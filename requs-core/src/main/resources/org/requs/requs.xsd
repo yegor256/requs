@@ -106,6 +106,18 @@
             <xs:element name="step" type="step" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
+    <xs:complexType name="diagrams">
+        <xs:sequence>
+            <xs:element name="diagram" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                    <xs:all>
+                        <xs:element name="uml" type="xs:string"/>
+                        <xs:element name="svg" type="xs:string"/>
+                    </xs:all>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
     <xs:complexType name="nfr">
         <xs:all>
             <xs:element name="id">
@@ -129,8 +141,7 @@
             <xs:element name="info" type="info" minOccurs="0"/>
             <xs:element name="markdown" type="xs:string" minOccurs="0"/>
             <xs:element name="html" type="xs:string" minOccurs="0"/>
-            <xs:element name="uml" type="xs:string" minOccurs="0"/>
-            <xs:element name="svg" type="xs:string" minOccurs="0"/>
+            <xs:element name="diagrams" type="diagrams" minOccurs="0"/>
             <xs:element name="steps" type="steps" minOccurs="0">
                 <xs:unique name="uniqueStepNumber">
                     <xs:selector xpath="./step" />
