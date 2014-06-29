@@ -40,7 +40,7 @@
                 <meta name="keywords" content="requs"/>
                 <meta name="author" content="www.requs.org"/>
                 <link rel="stylesheet" type="text/css" media="all" href="/css/style.css"/>
-                <link rel="icon" type="image/gif" href="//img.requs.org/logo-128x128.png"/>
+                <link rel="icon" type="image/gif" href="//img.requs.org/ico-64x64.png"/>
                 <xsl:apply-templates select="page" mode="head"/>
             </head>
             <body>

@@ -5,14 +5,14 @@
         <link href="/css/style.css?${buildNumber}"
             rel="stylesheet" type="text/css"></link>
         <link rel="icon" type="image/gif"
-            href="http://img.requs.org/logo-128x128.png?${buildNumber}"/>
+            href="http://img.requs.org/ico-64x64.png?${buildNumber}"/>
     </head>
     <body>
         <div id="content">
             <p>
                 <a href="http://www.requs.org/">
-                    <img src="http://img.requs.org/logo-384x128.png?${buildNumber}"
-                        style="width:192px;height:64px;"/>
+                    <img src="http://img.requs.org/logo.png?${buildNumber}"
+                        style="width:192px;"/>
                 </a>
             </p>
             <p>

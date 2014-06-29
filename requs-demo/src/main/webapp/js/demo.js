@@ -28,64 +28,72 @@
 
 /*globals $: false, document: false */
 
+function post(html) {
+  'use strict';
+  var iframe = document.getElementById('srs');
+  iframe = (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
+  iframe.document.open();
+  iframe.document.write(html);
+  iframe.document.close();
+}
+
 /**
  * Run this method when the document is loaded
  */
 $(document).ready(
-    function () {
-        'use strict';
-        $('.separator').click(
-            function () {
-                $('#xml').css('height', '50%');
+  function () {
+    'use strict';
+    $('.separator').click(
+      function () {
+        $('#annex').toggle();
+      }
+    );
+    $('#example').keyup(
+      function () {
+        if ((this.rendered !== undefined) && this.rendered === this.value) {
+          return;
+        }
+        this.rendered = this.value;
+        if (this.rendered === null) {
+          this.rendered = '';
+        }
+        var $output = $('#output');
+        $.ajax(
+          {
+            url: '/instant',
+            data: { 'text': this.rendered },
+            type: 'POST',
+            dataType: 'json',
+            beforeSend: function () {
+              $('#sep').css('color', 'red');
+            },
+            success: function (data) {
+              $output.text(data.spec);
+              $('#sep').text(data.spec.length + ' bytes in XML');
+              $output.css('color', 'inherit');
+              post(data.html);
+            },
+            error: function (xhr) {
+              $output.text(xhr.responseText);
+              $output.css('color', 'red');
+              post(
+                String.join(
+                  [
+                    '<html><body><span style="color:red">Internal application error</span>.',
+                    ' Please submit your sources as',
+                    ' <a href="https://github.com/teamed/requs">a Github issue</a>',
+                    '</body></html>'
+                  ],
+                  ''
+                )
+              );
+            },
+            complete: function () {
+              $('#sep').css('color', 'inherit');
             }
+          }
         );
-        $('#example').keyup(
-            function () {
-                if ((this.rendered !== undefined) && this.rendered === this.value) {
-                    return;
-                }
-                this.rendered = this.value;
-                if (this.rendered === null) {
-                    this.rendered = '';
-                }
-                $.ajax(
-                    {
-                        url: '/instant',
-                        data: { 'text': this.rendered },
-                        type: 'POST',
-                        dataType: 'json',
-                        beforeSend: function (data) {
-                            $('#arrow').show();
-                        },
-                        success: function (data) {
-                            $('#output').text(data.spec);
-                            $('#output').css('color', 'inherit');
-                            var iframe = document.getElementById('srs');
-                            iframe = (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
-                            iframe.document.open();
-                            iframe.document.write(data.html);
-                            iframe.document.close();
-                        },
-                        error: function (xhr, textStatus, errorThrown) {
-                            $('#output').text(xhr.responseText);
-                            $('#output').css('color', 'red');
-                            var iframe = document.getElementById('srs');
-                            iframe = (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
-                            iframe.document.open();
-                            iframe.document.write(
-                                '<html><body><span style="color:red">Internal application error</span>.'
-                                + ' Please submit your sources as'
-                                + ' <a href="https://github.com/teamed/requs">a Github issue</a>'
-                                +'</body></html>'
-                            );
-                            iframe.document.close();
-                        },
-                        complete: function () {
-                            $('#arrow').hide();
-                        }
-                    }
-                );
-            }
-        ).keyup();
-    }
+      }
+    ).keyup();
+  }
 );

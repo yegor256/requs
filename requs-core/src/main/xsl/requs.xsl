@@ -12,7 +12,7 @@
                 <script src="//code.jquery.com/jquery-2.1.1-rc1.js" type="text/javascript">
                     <!-- nothing -->
                 </script>
-                <link rel="icon" type="image/png" href="//img.requs.org/logo-128x128.png"/>
+                <link rel="icon" type="image/png" href="//img.requs.org/ico-64x64.png"/>
                 <style type="text/css">---css---</style>
                 <title>SRS</title>
             </head>

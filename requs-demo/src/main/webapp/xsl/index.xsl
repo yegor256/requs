@@ -50,11 +50,8 @@
                 <tr>
                     <th class="left">
                         <a href="http://www.requs.org/syntax.html">
-                            <img alt="logo" style="width: 96px; height: 32px;" src="//img.requs.org/logo-384x128.png"/>
+                            <img alt="logo" width="110" src="//img.requs.org/logo-white.svg"/>
                         </a>
-                        <span style="color:green;display:none;" id="arrow">
-                            <xsl:text>loading...</xsl:text>
-                        </span>
                     </th>
                     <th class="right">
                         <xsl:apply-templates select="version"/>
@@ -62,7 +59,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr class="main">
                     <td class="left">
                         <textarea class="box" id="example" style="resize:none">
                             <xsl:text>User is "a human being".</xsl:text>
@@ -75,15 +72,17 @@
                     </td>
                 </tr>
                 <tr class="separator">
-                    <td colspan="2" style="text-align:center">
+                    <td colspan="2" style="text-align:center" id="sep">
                         <xsl:text>...</xsl:text>
                     </td>
                 </tr>
-                <tr id="xml">
+                <tr>
                     <td colspan="2">
-                        <pre class="box" id="output">
-                            <xsl:text>...</xsl:text>
-                        </pre>
+                        <div id="annex">
+                            <pre class="box" id="output">
+                                <xsl:text>...</xsl:text>
+                            </pre>
+                        </div>
                     </td>
                 </tr>
             </tbody>
