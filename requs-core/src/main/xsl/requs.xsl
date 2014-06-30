@@ -88,10 +88,8 @@
         <xsl:value-of select="html" disable-output-escaping="yes"/>
     </xsl:template>
     <xsl:template match="types/type">
-        <div class="type">
-            <a name="{name}">
-                <strong><xsl:value-of select="name"/></strong>
-            </a>
+        <div class="type" id="{name}">
+            <strong><xsl:value-of select="name"/></strong>
             <xsl:text> is </xsl:text>
             <xsl:if test="parents/type">
                 <xsl:for-each select="parents/type">
@@ -155,8 +153,7 @@
     </xsl:template>
     <xsl:template match="method">
         <div class="method">
-            <a name="{id}"/>
-            <div>
+            <div id="{id}">
                 <strong><xsl:value-of select="id"/></strong>
                 <xsl:text> where </xsl:text>
                 <xsl:call-template name="signature">
