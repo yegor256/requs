@@ -165,6 +165,7 @@ public final class Compiler {
             new Transform("sanity/too-many-steps.xsl"),
             new Transform("sanity/empty-re-throws.xsl"),
             new Transform("sanity/orphan-types.xsl"),
+            new Transform("sanity/undeclared-bindings.xsl"),
             new Transform("step-refs.xsl"),
             new Transform("methods-in-markdown.xsl"),
             new Transform("pages-in-html.xsl"),
