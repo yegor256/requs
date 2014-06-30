@@ -61,7 +61,7 @@ $(document).ready(
         if (this.rendered === null) {
           this.rendered = '';
         }
-        var fn = this, $output = $('#output');
+        var fn = this, $output = $('#output'), $sep = $('#sep');
         fn.busy = true;
         $.ajax(
           {
@@ -70,11 +70,12 @@ $(document).ready(
             type: 'POST',
             dataType: 'json',
             beforeSend: function () {
-              $('#sep').css('color', 'red');
+              $sep.css('color', 'red');
+              $sep.text('loading...');
             },
             success: function (data) {
               $output.text(data.spec);
-              $('#sep').text(data.spec.length + ' bytes in XML');
+              $sep.text(data.spec.length + ' bytes in XML');
               $output.css('color', 'inherit');
               post(data.html);
             },
@@ -91,7 +92,7 @@ $(document).ready(
               );
             },
             complete: function () {
-              $('#sep').css('color', 'inherit');
+              $sep.css('color', 'inherit');
               fn.busy = false;
             }
           }
