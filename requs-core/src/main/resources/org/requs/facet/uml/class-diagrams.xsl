@@ -11,6 +11,7 @@
         <xsl:copy>
             <xsl:apply-templates select="(node() except diagrams)|@*"/>
             <xsl:variable name="uml">
+                <xsl:text>hide class circle&#10;</xsl:text>
                 <xsl:text>title </xsl:text>
                 <xsl:value-of select="name"/>
                 <xsl:text>: Class Diagram&#10;</xsl:text>
