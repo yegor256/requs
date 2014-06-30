@@ -3,11 +3,9 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:re="http://www.requs.org" version="2.0"
     exclude-result-prefixes="xs re">
-    <xsl:function name="re:plant">
+    <xsl:function name="re:plant" as="xs:string">
         <xsl:param name="text"/>
-        <xsl:text>@startuml&#10;</xsl:text>
-        <xsl:value-of select="$text"/>
-        <xsl:text>&#10;@enduml</xsl:text>
+        <xsl:value-of select="concat('@startuml&#10;', $text, '&#10;@enduml')"/>
     </xsl:function>
     <xsl:function name="re:signature">
         <xsl:param name="text"/>
