@@ -239,6 +239,19 @@
             <xs:element name="html" type="xs:string" minOccurs="0"/>
         </xs:all>
     </xs:complexType>
+    <xs:complexType name="acronym">
+        <xs:all>
+            <xs:element name="name">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="[A-Z]{2,}" />
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="mentioned" type="mentioned"/>
+            <xs:element name="info" type="info" minOccurs="0"/>
+        </xs:all>
+    </xs:complexType>
     <xs:complexType name="tbd">
         <xs:all>
             <xs:element name="subject" type="xs:string"/>
@@ -303,6 +316,13 @@
                     <xs:complexType>
                         <xs:sequence>
                             <xs:element name="page" type="page" maxOccurs="unbounded" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="acronyms" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="acronym" type="acronym" maxOccurs="unbounded" minOccurs="0"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>

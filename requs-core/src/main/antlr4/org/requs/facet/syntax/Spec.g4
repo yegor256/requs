@@ -30,6 +30,7 @@
 grammar Spec;
 
 @header {
+    import org.requs.facet.syntax.ontology.Acronym;
     import org.requs.facet.syntax.ontology.Flow;
     import org.requs.facet.syntax.ontology.Method;
     import org.requs.facet.syntax.ontology.Ontology;
@@ -75,6 +76,8 @@ clause
     nfr_declaration
     |
     page_declaration
+    |
+    acronym_declaration
     ;
 
 class_declaration
@@ -400,12 +403,12 @@ nfr_declaration
     :
     UC_ID
     SLASH
-    NFR
+    ACRONYM
     MUST
     INFORMAL
     {
         Method method = this.onto.method($UC_ID.text);
-        method.nfr($NFR.text).explain($INFORMAL.text);
+        method.nfr($ACRONYM.text).explain($INFORMAL.text);
         method.mention(_input.LT(1).getLine());
     }
     ;
@@ -422,11 +425,23 @@ page_declaration
     }
     ;
 
+acronym_declaration
+    :
+    ACRONYM
+    MEANS
+    INFORMAL
+    {
+        Acronym acronym = this.onto.acronym($ACRONYM.text);
+        acronym.explain($INFORMAL.text);
+        acronym.mention(_input.LT(1).getLine());
+    }
+    ;
+
 word
     :
     WORD
     |
-    NFR
+    ACRONYM
     |
     MUST
     ;
@@ -438,7 +453,6 @@ SEAL: ('0'..'9' | 'a'..'f')
     ('0'..'9' | 'a'..'f')
     ('0'..'9' | 'a'..'f');
 UC_ID: 'UC' ( '0' .. '9' | '.' )+;
-NFR: ( 'A' .. 'Z' )+;
 FLOW_ID: ( '0' .. '9' )+;
 COLON: ':';
 SLASH: '/';
@@ -455,8 +469,10 @@ IS: 'is';
 MUST: 'must';
 WHEN: 'when';
 WHERE: 'where';
+MEANS: 'means';
 AND: 'and';
 INCLUDES: ( 'includes' | 'needs' | 'contains' | 'requires' | 'has' );
+ACRONYM: 'A' .. 'Z' ( 'A' .. 'Z' )+;
 CAMEL: ( 'A' .. 'Z' ( 'a' .. 'z' | '0' .. '9' )* )+;
 WORD: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )+;
 INFORMAL:

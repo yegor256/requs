@@ -29,52 +29,50 @@
  */
 package org.requs.facet.syntax.ontology;
 
-import org.xembly.Directive;
+import com.jcabi.aspects.Loggable;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.xembly.Directives;
 
 /**
- * Ontology.
- *
- * <p>The ontology is write-only. This is how you're supposed to use it:
- *
- * <pre>
- * Ontology onto = // make it
- * Type type = onto.type("Employee");
- * type.mention("3-5");
- * type.explain("a person working in a Company");
- * </pre>
+ * Xembly acronym.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @since 1.1
+ * @since 1.14
  */
-public interface Ontology extends Iterable<Directive> {
+@ToString
+@EqualsAndHashCode
+@Loggable(Loggable.DEBUG)
+final class XeAcronym implements Acronym {
 
     /**
-     * Found new type.
-     * @param name Name of it
-     * @return Type
+     * Mentioned helper.
      */
-    Type type(String name);
+    private final transient Mentioned mentioned;
 
     /**
-     * Find method.
-     * @param name Name of it
-     * @return Method
+     * Informal helper.
      */
-    Method method(String name);
+    private final transient Informal informal;
 
     /**
-     * Find page.
-     * @param name Name of it
-     * @return Page
+     * Ctor.
+     * @param directives Directives to extend
+     * @param xpath XPath to start with
      */
-    Page page(String name);
+    XeAcronym(final Directives directives, final String xpath) {
+        this.mentioned = new XeMentioned(directives, xpath);
+        this.informal = new XeInformal(directives, xpath);
+    }
 
-    /**
-     * Get acronym.
-     * @param name Name of it
-     * @return Acronym
-     */
-    Acronym acronym(String name);
+    @Override
+    public void explain(final String info) {
+        this.informal.explain(info);
+    }
 
+    @Override
+    public void mention(final int where) {
+        this.mentioned.mention(where);
+    }
 }

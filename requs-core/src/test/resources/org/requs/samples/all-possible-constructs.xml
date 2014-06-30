@@ -1,5 +1,6 @@
 <sample>
     <spec>
+        MTBF means "mean time between failures".
         UC1 where User (a user) saves File (a file) "which is not broken":
         """I'll think about it more"""
         1. The user opens "its browser" "for example, Google Chrome";

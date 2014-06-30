@@ -45,6 +45,10 @@
             <h1><xsl:text>Metrics</xsl:text></h1>
             <xsl:apply-templates select="metrics/metric"/>
         </xsl:if>
+        <xsl:if test="acronyms[acronym]">
+            <h1><xsl:text>Definitions/Acronyms</xsl:text></h1>
+            <xsl:apply-templates select="acronyms/acronym"/>
+        </xsl:if>
         <h1><xsl:text>Types and Methods</xsl:text></h1>
         <xsl:apply-templates select="types/type"/>
         <xsl:if test="pages[page]">
@@ -70,6 +74,13 @@
             <xsl:value-of select="@pos"/>
             <xsl:text>] </xsl:text>
             <xsl:value-of select="."/>
+        </p>
+    </xsl:template>
+    <xsl:template match="acronym">
+        <p>
+            <strong><xsl:value-of select="name"/></strong>
+            <xsl:text> means </xsl:text>
+            <xsl:apply-templates select="info/informal"/>
         </p>
     </xsl:template>
     <xsl:template match="page">

@@ -43,6 +43,7 @@ import org.xembly.Directives;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.1
+ * @checkstyle MultipleStringLiterals (500 lines)
  */
 @ToString
 @EqualsAndHashCode
@@ -57,35 +58,77 @@ public final class XeOntology implements Ontology {
 
     @Override
     public Type type(final String name) {
-        // @checkstyle MultipleStringLiterals (1 line)
-        this.dirs.xpath("/spec").strict(1).addIf("types")
-            .xpath(String.format("/spec/types[not(type/name='%s')]", name))
+        this.root("types")
+            .xpath(
+                String.format(
+                    "/spec/types[not(type/name=%s)]",
+                    XeOntology.escapeXPath(name)
+                )
+            )
             .add("type").add("name").set(name);
         return new XeType(
             this.dirs,
-            String.format("/spec/types/type[name='%s']", name)
+            String.format(
+                "/spec/types/type[name=%s]",
+                XeOntology.escapeXPath(name)
+            )
         );
     }
 
     @Override
     public Method method(final String name) {
-        this.dirs.xpath("/spec").strict(1).addIf("methods")
-            .xpath(String.format("/spec/methods[not(method/id='%s') ]", name))
+        this.root("methods")
+            .xpath(
+                String.format(
+                    "/spec/methods[not(method/id=%s)]",
+                    XeOntology.escapeXPath(name)
+                )
+            )
             .add("method").add("id").set(name);
         return new XeMethod(
             this.dirs,
-            String.format("/spec/methods/method[id='%s']", name)
+            String.format(
+                "/spec/methods/method[id=%s]",
+                XeOntology.escapeXPath(name)
+            )
         );
     }
 
     @Override
     public Page page(final String name) {
-        this.dirs.xpath("/spec").strict(1).addIf("pages")
-            .xpath(String.format("/spec/pages[not(page/title='%s') ]", name))
+        this.root("pages")
+            .xpath(
+                String.format(
+                    "/spec/pages[not(page/title=%s)]",
+                    XeOntology.escapeXPath(name)
+                )
+            )
             .add("page").add("title").set(name);
         return new XePage(
             this.dirs,
-            String.format("/spec/pages/page[title='%s']", name)
+            String.format(
+                "/spec/pages/page[title=%s]",
+                XeOntology.escapeXPath(name)
+            )
+        );
+    }
+
+    @Override
+    public Acronym acronym(final String name) {
+        this.root("acronyms")
+            .xpath(
+                String.format(
+                    "/spec/acronyms[not(acronym/name=%s)]",
+                    XeOntology.escapeXPath(name)
+                )
+            )
+            .add("acronym").add("name").set(name);
+        return new XeAcronym(
+            this.dirs,
+            String.format(
+                "/spec/acronyms/acronym[name=%s]",
+                XeOntology.escapeXPath(name)
+            )
         );
     }
 
@@ -114,6 +157,15 @@ public final class XeOntology implements Ontology {
                 .toString();
         }
         return escaped;
+    }
+
+    /**
+     * Get root.
+     * @param node Node name
+     * @return Directives
+     */
+    private Directives root(final String node) {
+        return this.dirs.xpath("/spec").strict(1).addIf(node);
     }
 
 }
