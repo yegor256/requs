@@ -31,7 +31,9 @@ package org.requs.facet.uml;
 
 import com.jcabi.matchers.XhtmlMatchers;
 import java.io.IOException;
+import org.apache.commons.lang3.SystemUtils;
 import org.hamcrest.MatcherAssert;
+import org.junit.Assume;
 import org.junit.Test;
 
 /**
@@ -48,6 +50,7 @@ public final class PlantTest {
      */
     @Test
     public void buildsSVG() throws IOException {
+        Assume.assumeFalse(SystemUtils.IS_OS_WINDOWS);
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(
                 Plant.svg("@startuml\nBob -> Alice : hello\n@enduml\n")
