@@ -38,6 +38,7 @@ import lombok.ToString;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
+import org.apache.commons.lang3.SystemUtils;
 
 /**
  * Plant UML compiler.
@@ -65,12 +66,18 @@ public final class Plant {
      * @throws IOException If fails
      */
     public static String svg(final String src) throws IOException {
-        final SourceStringReader reader = new SourceStringReader(src);
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        reader.generateImage(baos, new FileFormatOption(FileFormat.SVG));
-        return new XMLDocument(
-            new String(baos.toByteArray())
-        ).nodes("/*").get(0).toString().replace("xmlns=\"\"", "");
+        final String svg;
+        if (SystemUtils.IS_OS_WINDOWS) {
+            svg = "SVG can't be rendered in Windows";
+        } else {
+            final SourceStringReader reader = new SourceStringReader(src);
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            reader.generateImage(baos, new FileFormatOption(FileFormat.SVG));
+            svg = new XMLDocument(
+                new String(baos.toByteArray())
+            ).nodes("/*").get(0).toString().replace("xmlns=\"\"", "");
+        }
+        return svg;
     }
 
 }
