@@ -68,7 +68,7 @@ public final class Plant {
     public static String svg(final String src) throws IOException {
         final String svg;
         if (SystemUtils.IS_OS_WINDOWS) {
-            svg = "SVG can't be rendered in Windows";
+            svg = "<p>SVG can't be rendered in Windows</p>";
         } else {
             final SourceStringReader reader = new SourceStringReader(src);
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
