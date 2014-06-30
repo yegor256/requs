@@ -96,6 +96,7 @@ public final class Rules implements XeFacet {
                     "always use space after semicolon"
                 )
             ),
+            new LineRule.Wrap(new IndentationRule()),
         };
         final String input;
         if (spec.nodes("/spec/input[.!='']").isEmpty()) {
