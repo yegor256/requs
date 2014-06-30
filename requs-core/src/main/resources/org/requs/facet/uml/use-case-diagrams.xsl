@@ -11,18 +11,16 @@
         <xsl:copy>
             <xsl:apply-templates select="(node() except diagrams)|@*"/>
             <xsl:variable name="uml">
-                <xsl:text>@startuml&#10;</xsl:text>
                 <xsl:text>title </xsl:text>
                 <xsl:value-of select="id"/>
                 <xsl:text>: Use Case Diagram&#10;</xsl:text>
                 <xsl:apply-templates select="." mode="uml"/>
-                <xsl:text>&#10;@enduml</xsl:text>
             </xsl:variable>
             <diagrams>
                 <xsl:apply-templates select="diagrams/*"/>
                 <diagram>
                     <uml><xsl:value-of select="$uml"/></uml>
-                    <svg><xsl:value-of select="r:svg($uml)"/></svg>
+                    <svg><xsl:value-of select="r:svg(re:plant($uml))"/></svg>
                 </diagram>
             </diagrams>
         </xsl:copy>
