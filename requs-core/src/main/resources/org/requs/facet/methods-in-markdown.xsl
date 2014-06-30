@@ -5,7 +5,7 @@
     xmlns:r="org.requs.facet.XsltFuncs"
     version="2.0" exclude-result-prefixes="xs fn r">
     <xsl:output method="xml" cdata-section-elements="svg html"/>
-    <xsl:strip-space elements="*" />
+    <xsl:strip-space elements="*"/>
     <xsl:template match="/spec">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
@@ -36,17 +36,27 @@
             <table>
                 <thead>
                     <tr>
-                        <th><xsl:text>Property</xsl:text></th>
-                        <th><xsl:text>Details</xsl:text></th>
+                        <th>
+                            <xsl:text>Property</xsl:text>
+                        </th>
+                        <th>
+                            <xsl:text>Details</xsl:text>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><xsl:text>ID</xsl:text></td>
-                        <td><xsl:value-of select="id"/></td>
+                        <td>
+                            <xsl:text>ID</xsl:text>
+                        </td>
+                        <td>
+                            <xsl:value-of select="id"/>
+                        </td>
                     </tr>
                     <tr>
-                        <td><xsl:text>Signature</xsl:text></td>
+                        <td>
+                            <xsl:text>Signature</xsl:text>
+                        </td>
                         <td>
                             <xsl:call-template name="signature">
                                 <xsl:with-param name="home" select="."/>
@@ -54,17 +64,25 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><xsl:text>Primary</xsl:text></td>
-                        <td><xsl:value-of select="bindings/binding[name='_self']/type"/></td>
+                        <td>
+                            <xsl:text>Primary</xsl:text>
+                        </td>
+                        <td>
+                            <xsl:value-of select="bindings/binding[name='_self']/type"/>
+                        </td>
                     </tr>
                     <tr>
-                        <td><xsl:text>Actors</xsl:text></td>
+                        <td>
+                            <xsl:text>Actors</xsl:text>
+                        </td>
                         <td>
                             <xsl:for-each select="bindings/binding[name!='_self']">
                                 <xsl:if test="position() != 1">
                                     <xsl:text>; </xsl:text>
                                 </xsl:if>
-                                <code><xsl:value-of select="name"/></code>
+                                <code>
+                                    <xsl:value-of select="name"/>
+                                </code>
                                 <xsl:text> as </xsl:text>
                                 <xsl:value-of select="type"/>
                             </xsl:for-each>
@@ -72,7 +90,9 @@
                     </tr>
                     <xsl:if test="info/informal">
                         <tr>
-                            <td><xsl:text>Brief</xsl:text></td>
+                            <td>
+                                <xsl:text>Brief</xsl:text>
+                            </td>
                             <td>
                                 <xsl:for-each select="info/informal">
                                     <xsl:if test="position() != 1">
@@ -85,7 +105,9 @@
                     </xsl:if>
                     <xsl:if test="steps/step">
                         <tr>
-                            <td><xsl:text>Success Flow</xsl:text></td>
+                            <td>
+                                <xsl:text>Success Flow</xsl:text>
+                            </td>
                             <td>
                                 <xsl:apply-templates select="steps" mode="x"/>
                             </td>
@@ -93,7 +115,9 @@
                     </xsl:if>
                     <xsl:if test="nfrs/nfr">
                         <tr>
-                            <td><xsl:text>NFRs</xsl:text></td>
+                            <td>
+                                <xsl:text>NFRs</xsl:text>
+                            </td>
                             <td>
                                 <xsl:apply-templates select="nfrs" mode="x"/>
                             </td>
@@ -107,8 +131,12 @@
             <table>
                 <thead>
                     <tr>
-                        <th><xsl:text>Actor</xsl:text></th>
-                        <th><xsl:text>Properties</xsl:text></th>
+                        <th>
+                            <xsl:text>Actor</xsl:text>
+                        </th>
+                        <th>
+                            <xsl:text>Properties</xsl:text>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -148,13 +176,17 @@
         <xsl:text>&quot;</xsl:text>
     </xsl:template>
     <xsl:template name="signature">
-        <xsl:param name="home" />
-        <code><xsl:value-of select="$home/object"/></code>
+        <xsl:param name="home"/>
+        <code>
+            <xsl:value-of select="$home/object"/>
+        </code>
         <xsl:text> </xsl:text>
         <xsl:value-of select="$home/signature"/>
         <xsl:if test="$home/result">
             <xsl:text> </xsl:text>
-            <code><xsl:value-of select="$home/result"/></code>
+            <code>
+                <xsl:value-of select="$home/result"/>
+            </code>
         </xsl:if>
         <xsl:if test="$home/args/arg">
             <xsl:text> using </xsl:text>
@@ -162,7 +194,9 @@
                 <xsl:if test="position() > 1">
                     <xsl:text> and </xsl:text>
                 </xsl:if>
-                <code><xsl:value-of select="."/></code>
+                <code>
+                    <xsl:value-of select="."/>
+                </code>
             </xsl:for-each>
         </xsl:if>
     </xsl:template>
@@ -177,7 +211,9 @@
             <ul>
                 <xsl:for-each select="slots/slot">
                     <li>
-                        <code><xsl:value-of select="name"/></code>
+                        <code>
+                            <xsl:value-of select="name"/>
+                        </code>
                         <xsl:text>: </xsl:text>
                         <xsl:value-of select="type"/>
                         <xsl:apply-templates select="info" mode="x"/>

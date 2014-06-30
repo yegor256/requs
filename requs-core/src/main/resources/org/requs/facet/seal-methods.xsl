@@ -4,7 +4,7 @@
     xmlns:r="org.requs.facet.XsltFuncs"
     version="2.0" exclude-result-prefixes="xs r">
     <xsl:output method="xml" cdata-section-elements="svg html"/>
-    <xsl:strip-space elements="*" />
+    <xsl:strip-space elements="*"/>
     <xsl:template match="/spec">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>

@@ -6,7 +6,7 @@
     exclude-result-prefixes="xs r re">
     <xsl:import href="uml/functions.xsl"/>
     <xsl:output method="xml" cdata-section-elements="svg html"/>
-    <xsl:strip-space elements="*" />
+    <xsl:strip-space elements="*"/>
     <xsl:template match="method">
         <xsl:copy>
             <xsl:apply-templates select="(node() except diagrams)|@*"/>
@@ -20,8 +20,12 @@
             <diagrams>
                 <xsl:apply-templates select="diagrams/*"/>
                 <diagram>
-                    <uml><xsl:value-of select="$uml"/></uml>
-                    <svg><xsl:value-of select="r:svg(re:plant($uml))"/></svg>
+                    <uml>
+                        <xsl:value-of select="$uml"/>
+                    </uml>
+                    <svg>
+                        <xsl:value-of select="r:svg(re:plant($uml))"/>
+                    </svg>
                 </diagram>
             </diagrams>
         </xsl:copy>

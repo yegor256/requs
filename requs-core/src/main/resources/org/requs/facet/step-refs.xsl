@@ -3,7 +3,7 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     version="2.0" exclude-result-prefixes="xs">
     <xsl:output method="xml" cdata-section-elements="svg html"/>
-    <xsl:strip-space elements="*" />
+    <xsl:strip-space elements="*"/>
     <xsl:template match="step/signature">
         <xsl:copy>
             <xsl:variable name="text" select="."/>
