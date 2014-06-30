@@ -33,6 +33,8 @@ import com.jcabi.log.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -55,6 +57,7 @@ import org.slf4j.impl.StaticLoggerBinder;
  * @version $Id$
  * @since 1.1
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
+ * @checkstyle VisibilityModifierCheck (500 lines)
  */
 @ToString
 @EqualsAndHashCode(callSuper = false)
@@ -67,14 +70,14 @@ public final class ReportMojo extends AbstractMavenReport {
      */
     @Component
     @NotNull
-    private transient MavenProject project;
+    public transient MavenProject project;
 
     /**
      * Output directory.
      */
     @Parameter(property = "project.reporting.outputDirectory", required = true)
     @NotNull
-    private transient File output;
+    public transient File output;
 
     /**
      * The source directory.
@@ -84,14 +87,24 @@ public final class ReportMojo extends AbstractMavenReport {
         defaultValue = "${basedir}/src/main/requs"
     )
     @NotNull
-    private transient File source;
+    public transient File source;
+
+    /**
+     * Optional properties/options.
+     * @since 1.14
+     */
+    @Parameter(required = false)
+    @NotNull
+    @SuppressWarnings("PMD.UseConcurrentHashMap")
+    public transient Map<String, String> options =
+        new ConcurrentHashMap<String, String>(0);
 
     /**
      * Doxia Site Renderer component.
      */
     @Component
     @NotNull
-    private transient Renderer renderer;
+    public transient Renderer renderer;
 
     @Override
     public String getOutputName() {
@@ -140,7 +153,7 @@ public final class ReportMojo extends AbstractMavenReport {
             Logger.info(this, "site directory %s created", home);
         }
         try {
-            new Compiler(this.source, home).compile();
+            new Compiler(this.source, home, this.options).compile();
         } catch (final IOException ex) {
             throw new IllegalStateException(ex);
         }

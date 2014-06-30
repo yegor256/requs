@@ -14,7 +14,7 @@
                         </xsl:attribute>
                         <xsl:text>Type &quot;</xsl:text>
                         <xsl:value-of select="$type/name"/>
-                        <xsl:text>&quot; is not used in any use case</xsl:text>
+                        <xsl:text>&quot; is not used in any slot or a use case</xsl:text>
                     </error>
                 </xsl:if>
             </xsl:for-each>

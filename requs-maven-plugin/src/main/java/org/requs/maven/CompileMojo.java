@@ -35,6 +35,8 @@ import com.jcabi.xml.XMLDocument;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -52,6 +54,7 @@ import org.slf4j.impl.StaticLoggerBinder;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.1
+ * @checkstyle VisibilityModifierCheck (500 lines)
  */
 @ToString
 @EqualsAndHashCode(callSuper = false)
@@ -69,7 +72,7 @@ public final class CompileMojo extends AbstractMojo {
         defaultValue = "${basedir}/src/main/requs"
     )
     @NotNull
-    private transient File input;
+    public transient File input;
 
     /**
      * Output directory.
@@ -79,13 +82,23 @@ public final class CompileMojo extends AbstractMojo {
         defaultValue = "${project.build.directory}/requs"
     )
     @NotNull
-    private transient File output;
+    public transient File output;
+
+    /**
+     * Optional properties/options.
+     * @since 1.14
+     */
+    @Parameter(required = false)
+    @NotNull
+    @SuppressWarnings("PMD.UseConcurrentHashMap")
+    public transient Map<String, String> options =
+        new ConcurrentHashMap<String, String>(0);
 
     @Override
     public void execute() throws MojoFailureException {
         StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
         try {
-            new Compiler(this.input, this.output).compile();
+            new Compiler(this.input, this.output, this.options).compile();
             final XML srs = new XMLDocument(new File(this.output, "requs.xml"));
             final Collection<XML> errors = srs.nodes("//errors/error");
             final int prefix = this.input.getAbsolutePath().length() + 1;

@@ -31,6 +31,7 @@ package org.requs;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
+import com.jcabi.immutable.ArrayMap;
 import com.jcabi.log.Logger;
 import com.jcabi.manifests.Manifests;
 import com.jcabi.xml.StrictXML;
@@ -41,6 +42,7 @@ import com.jcabi.xml.XSDDocument;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -87,15 +89,33 @@ public final class Compiler {
     private final transient String output;
 
     /**
+     * Map of properties.
+     */
+    private final transient ArrayMap<String, String> properties;
+
+    /**
      * Ctor.
      * @param src Directory with sources
      * @param dest Directory to write output
      * @throws IOException If fails
      */
-    public Compiler(@NotNull final File src, @NotNull final File dest)
-        throws IOException {
+    public Compiler(final File src, final File dest) throws IOException {
+        this(src, dest, new ArrayMap<String, String>());
+    }
+
+    /**
+     * Ctor.
+     * @param src Directory with sources
+     * @param dest Directory to write output
+     * @param props Properties
+     * @throws IOException If fails
+     * @since 1.14
+     */
+    public Compiler(@NotNull final File src, @NotNull final File dest,
+        @NotNull final Map<String, String> props) throws IOException {
         this.input = src.getAbsolutePath();
         this.output = dest.getAbsolutePath();
+        this.properties = new ArrayMap<String, String>(props);
         if (!src.exists()) {
             throw new IOException(
                 String.format("directory \"%s\" is absent", this.input)
@@ -114,6 +134,7 @@ public final class Compiler {
      * @throws IOException If fails
      */
     public void compile() throws IOException {
+        assert this.properties != null;
         final long start = System.currentTimeMillis();
         final Facet[] facets = {
             new XeFacet.Wrap(new Aggregate(new File(this.input))),

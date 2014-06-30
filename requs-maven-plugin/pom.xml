@@ -164,6 +164,14 @@
         </pluginManagement>
         <plugins>
             <plugin>
+                <!-- @see https://github.com/github/maven-plugins/issues/22 -->
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <configuration>
+                    <path>${project.artifactId}</path>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-invoker-plugin</artifactId>
                 <dependencies>
                     <dependency>
@@ -227,13 +235,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.github.github</groupId>
-                <artifactId>site-maven-plugin</artifactId>
-                <configuration>
-                    <dryRun>true</dryRun>
-                </configuration>
             </plugin>
         </plugins>
     </build>

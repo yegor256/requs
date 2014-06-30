@@ -48,6 +48,11 @@
                         <goals>
                             <goal>compile</goal>
                         </goals>
+                        <configuration>
+                            <options>
+                                <test.option>hello</test.option>
+                            </options>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
