@@ -51,6 +51,9 @@ $(document).ready(
     );
     $('#example').keyup(
       function () {
+        if (this.busy) {
+          return;
+        }
         if ((this.rendered !== undefined) && this.rendered === this.value) {
           return;
         }
@@ -58,7 +61,8 @@ $(document).ready(
         if (this.rendered === null) {
           this.rendered = '';
         }
-        var $output = $('#output');
+        var fn = this, $output = $('#output');
+        fn.busy = true;
         $.ajax(
           {
             url: '/instant',
@@ -88,6 +92,7 @@ $(document).ready(
             },
             complete: function () {
               $('#sep').css('color', 'inherit');
+              fn.busy = false;
             }
           }
         );
