@@ -13,9 +13,8 @@
         UC1 where User (a user) saves very complex File (a file):
           1. The user "opens Excel";
           2. The user "clicks SAVE and saves the content" using the file;
-          3. The user lists the file;
-          4. The user creates the file;
-          5. The user validates the file.
+          3. The user creates the file;
+          4. The user validates the file.
 
         UC2 where User validates File: "we'll define later".
 

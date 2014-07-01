@@ -3,7 +3,7 @@
         UC1 where User (a user) works:
         1. The user creates;
         3. The user reads;
-        2. The user lists.
+        2. The user updates.
         UC2 where User (a user) works again:
         1. The user creates;
         2. The user reads;

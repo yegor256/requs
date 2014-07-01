@@ -3,7 +3,7 @@
         UC1 where User (a user) works:
         1. The user creates;
         2. The user reads;
-        5. The user lists.
+        5. The user updates.
     </spec>
     <xpaths>
         <xpath>/spec/errors[count(error)=1]</xpath>

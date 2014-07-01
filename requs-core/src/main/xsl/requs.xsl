@@ -247,7 +247,7 @@
         <xsl:text> </xsl:text>
         <xsl:variable name="uc" select="/spec/methods/method[signature=$home/signature]/id"/>
         <xsl:choose>
-            <xsl:when test="$home/signature='creates' or $home/signature='reads' or $home/signature='updates' or $home/signature='deletes' or $home/signature='lists'">
+            <xsl:when test="$home/signature='creates' or $home/signature='reads' or $home/signature='updates' or $home/signature='deletes'">
                 <span class="crud">
                     <xsl:value-of select="$home/signature"/>
                 </span>

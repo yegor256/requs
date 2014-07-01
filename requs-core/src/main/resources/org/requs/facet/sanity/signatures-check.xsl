@@ -6,7 +6,7 @@
         <xsl:copy>
             <xsl:apply-templates select="error"/>
             <xsl:for-each select="//steps/step[signature and not(starts-with(signature,'&quot;') and ends-with(signature,'&quot;'))]">
-                <xsl:if test="signature!='creates' and signature!='reads' and signature!='updates' and signature!='deletes' and signature!='lists' and signature!='fail'">
+                <xsl:if test="signature!='creates' and signature!='reads' and signature!='updates' and signature!='deletes' and signature!='fail'">
                     <xsl:variable name="step" select="."/>
                     <xsl:if test="/spec[not(methods/method/signature=$step/signature)]">
                         <error type="seal" pos="0">

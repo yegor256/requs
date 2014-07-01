@@ -14,8 +14,7 @@
 
         UC234 where User (a user) works:
         1. The user reads;
-        1. The user creates;
-        1. The user lists.
+        1. The user creates.
 
         Test is "a test".
         "This is an informal text"
