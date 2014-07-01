@@ -89,6 +89,7 @@ public interface Slot extends Mentioned, Informal {
     /**
      * Is it a composition?
      * @param cmp TRUE if it's a composition
+     * @since 1.14
      */
     void composition(boolean cmp);
 

@@ -11,7 +11,7 @@ class RequsLexer(RegexLexer):
         'root': [
             (r'"""[\n.]+"""', Text),
             (r'"[^"]+"', String),
-            (r'\b(includes|requires|contains|needs|means|using|of|with|when|must|is|a|(T|t)he|as|where|and)\b', Keyword),
+            (r'\b(includes|requires|contains|actor|needs|means|using|of|with|when|must|is|a|(T|t)he|as|where|and)\b', Keyword),
             (r'\b(creates|reads|updates|deletes|Fail\s+since)\b', Operator),
             (r'\b[A-Z]+\b', Name),
             (r'\b([A-Z][a-z0-9]*)+\b', Name),

@@ -85,6 +85,12 @@ final class XeType implements Type {
     }
 
     @Override
+    public void actor(final boolean act) {
+        this.dirs.xpath(this.start).strict(1)
+            .addIf("actor").set(Boolean.toString(act));
+    }
+
+    @Override
     public Slot slot(final String name) {
         this.dirs.xpath(this.start).strict(1)
             .addIf("slots").add("slot").add("name").set(name);

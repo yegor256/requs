@@ -88,6 +88,9 @@ class_declaration
     IS
     A?
     (
+        ACTOR
+        { type.actor(true); }
+        |
         (
             INFORMAL
             { type.explain($INFORMAL.text); }
@@ -468,6 +471,7 @@ A: ( 'a' | 'an' );
 THE: ( 'the' | 'The' );
 FAIL: ( 'Fail' | 'fail' );
 SINCE: 'since';
+ACTOR: 'actor';
 AS: 'as';
 IS: 'is';
 MUST: 'must';

@@ -9,9 +9,11 @@
                 <meta charset="UTF-8"/>
                 <meta name="keywords" content="software requirements specification"/>
                 <meta name="author" content="requs.org"/>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 <link rel="icon" type="image/png" href="//img.requs.org/ico-64x64.png"/>
-                <style type="text/css">---css---</style>
+                <style type="text/css">-
+                -
+                -css---</style>
                 <title>SRS</title>
             </head>
             <body>
@@ -38,35 +40,45 @@
             <xsl:text>.</xsl:text>
         </p>
         <xsl:if test="errors[error]">
-            <h1><xsl:text>Errors</xsl:text></h1>
+            <h1>
+                <xsl:text>Errors</xsl:text>
+            </h1>
             <xsl:apply-templates select="errors/error"/>
         </xsl:if>
         <xsl:if test="metrics[metric]">
-            <h1><xsl:text>Metrics</xsl:text></h1>
+            <h1>
+                <xsl:text>Metrics</xsl:text>
+            </h1>
             <xsl:apply-templates select="metrics/metric"/>
         </xsl:if>
         <xsl:if test="acronyms[acronym]">
-            <h1><xsl:text>Definitions/Acronyms</xsl:text></h1>
+            <h1>
+                <xsl:text>Definitions/Acronyms</xsl:text>
+            </h1>
             <xsl:apply-templates select="acronyms/acronym"/>
         </xsl:if>
-        <h1><xsl:text>Types and Methods</xsl:text></h1>
+        <h1>
+            <xsl:text>Types and Methods</xsl:text>
+        </h1>
         <xsl:apply-templates select="types/type"/>
         <xsl:if test="pages[page]">
-            <h1><xsl:text>Markdown Pages</xsl:text></h1>
+            <h1>
+                <xsl:text>Markdown Pages</xsl:text>
+            </h1>
             <xsl:apply-templates select="pages/page"/>
         </xsl:if>
         <xsl:if test="tbds[tbd]">
             <xsl:apply-templates select="tbds"/>
         </xsl:if>
     </xsl:template>
-    <xsl:template match="metric">
+    <xsl:template match="metrics/metric">
         <p>
             <xsl:value-of select="@id"/>
             <xsl:text> = </xsl:text>
             <xsl:value-of select="."/>
         </p>
     </xsl:template>
-    <xsl:template match="error">
+    <xsl:template match="errors/error">
         <p>
             <xsl:text>[</xsl:text>
             <xsl:value-of select="@line"/>
@@ -76,20 +88,32 @@
             <xsl:value-of select="."/>
         </p>
     </xsl:template>
-    <xsl:template match="acronym">
+    <xsl:template match="acronyms/acronym">
         <p>
-            <strong><xsl:value-of select="name"/></strong>
+            <strong>
+                <xsl:value-of select="name"/>
+            </strong>
             <xsl:text> means </xsl:text>
             <xsl:apply-templates select="info/informal"/>
         </p>
     </xsl:template>
     <xsl:template match="page">
-        <h2><xsl:value-of select="title"/></h2>
+        <h2>
+            <xsl:value-of select="title"/>
+        </h2>
         <xsl:value-of select="html" disable-output-escaping="yes"/>
     </xsl:template>
     <xsl:template match="types/type">
         <div class="type" id="{name}">
-            <strong><xsl:value-of select="name"/></strong>
+            <xsl:if test="actor='true'">
+                <strong>
+                    <xsl:value-of select="name"/>
+                </strong>
+                <xsl:text> is an actor. </xsl:text>
+            </xsl:if>
+            <strong>
+                <xsl:value-of select="name"/>
+            </strong>
             <xsl:text> is </xsl:text>
             <xsl:if test="parents/type">
                 <xsl:for-each select="parents/type">
@@ -151,7 +175,9 @@
     <xsl:template match="method">
         <div class="method">
             <div id="{id}">
-                <strong><xsl:value-of select="id"/></strong>
+                <strong>
+                    <xsl:value-of select="id"/>
+                </strong>
                 <xsl:text> where </xsl:text>
                 <xsl:call-template name="signature">
                     <xsl:with-param name="bindings" select="bindings"/>
@@ -236,9 +262,9 @@
         <xsl:text> </xsl:text>
     </xsl:template>
     <xsl:template name="signature">
-        <xsl:param name="bindings" />
-        <xsl:param name="home" />
-        <xsl:param name="typed" select="'false'" />
+        <xsl:param name="bindings"/>
+        <xsl:param name="home"/>
+        <xsl:param name="typed" select="'false'"/>
         <xsl:call-template name="ref">
             <xsl:with-param name="bindings" select="$bindings"/>
             <xsl:with-param name="name" select="$home/object"/>
@@ -291,8 +317,8 @@
         </xsl:if>
     </xsl:template>
     <xsl:template name="ref">
-        <xsl:param name="bindings" />
-        <xsl:param name="name" />
+        <xsl:param name="bindings"/>
+        <xsl:param name="name"/>
         <xsl:param name="typed" select="'false'"/>
         <xsl:variable name="type" select="$bindings/binding[name=$name]/type"/>
         <a href="#{$type}">
@@ -321,7 +347,9 @@
         </a>
     </xsl:template>
     <xsl:template match="tbds">
-        <h1><xsl:text>TBDs</xsl:text></h1>
+        <h1>
+            <xsl:text>TBDs</xsl:text>
+        </h1>
         <table>
             <thead>
                 <tr>
@@ -337,9 +365,15 @@
     </xsl:template>
     <xsl:template match="tbd">
         <tr>
-            <td><xsl:value-of select="@id"/></td>
-            <td><xsl:value-of select="subject"/></td>
-            <td><xsl:value-of select="description"/></td>
+            <td>
+                <xsl:value-of select="@id"/>
+            </td>
+            <td>
+                <xsl:value-of select="subject"/>
+            </td>
+            <td>
+                <xsl:value-of select="description"/>
+            </td>
         </tr>
     </xsl:template>
     <xsl:template match="diagram">

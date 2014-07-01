@@ -45,6 +45,13 @@ public interface Type extends Mentioned, Informal {
     void parent(String type);
 
     /**
+     * Set TRUE if it's an actor.
+     * @param act TRUE if an actor
+     * @since 1.14
+     */
+    void actor(boolean act);
+
+    /**
      * Found a slot of the type.
      * @param name Slot name
      * @return Slot
