@@ -31,7 +31,7 @@
         </xsl:copy>
     </xsl:template>
     <xsl:template match="method" mode="uml">
-        <xsl:for-each select="bindings/binding[starts-with(name, '_')]">
+        <xsl:for-each select="bindings/binding[not(starts-with(name, '_'))]">
             <xsl:text>participant &quot;</xsl:text>
             <xsl:value-of select="name"/>
             <xsl:text>&quot; as </xsl:text>
