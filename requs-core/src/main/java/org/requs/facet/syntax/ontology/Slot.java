@@ -45,15 +45,33 @@ public interface Slot extends Mentioned, Informal {
         /**
          * One or many.
          */
-        MANY,
+        MANY("1..*"),
         /**
-         * Zero or many.
+         * Zero or many: 0..*.
          */
-        ANY,
+        ANY("0..*"),
         /**
-         * Zero of one.
+         * Strictly one.
          */
-        OPT
+        ONE("1");
+        /**
+         * Mnemo.
+         */
+        private final transient String text;
+        /**
+         * Ctor.
+         * @param mnemo Mnemo
+         */
+        Arity(final String mnemo) {
+            this.text = mnemo;
+        }
+        /**
+         * Mnemo.
+         * @return Mnemo
+         */
+        public String mnemo() {
+            return this.text;
+        }
     }
 
     /**

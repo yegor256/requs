@@ -132,14 +132,11 @@
         <li>
             <xsl:value-of select="name"/>
             <xsl:choose>
-                <xsl:when test="arity = 'ANY'">
+                <xsl:when test="arity = '0..*'">
                     <xsl:text>-s?</xsl:text>
                 </xsl:when>
-                <xsl:when test="arity = 'MANY'">
+                <xsl:when test="arity = '1..*'">
                     <xsl:text>-s</xsl:text>
-                </xsl:when>
-                <xsl:when test="arity = 'OPT'">
-                    <xsl:text>-?</xsl:text>
                 </xsl:when>
             </xsl:choose>
             <xsl:if test="type">

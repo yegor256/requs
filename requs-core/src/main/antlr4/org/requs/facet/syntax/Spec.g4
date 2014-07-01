@@ -127,6 +127,7 @@ slot [Type type]
     { if ($variable.ret == null) throw new SyntaxException("invalid slot"); }
     { Slot slot = type.slot($variable.ret); }
     { slot.mention(_input.LT(1).getLine()); }
+    { slot.arity(Slot.Arity.ONE); }
     (
         '-'
         (
@@ -135,9 +136,6 @@ slot [Type type]
             |
             's?'
             { slot.arity(Slot.Arity.ANY); }
-            |
-            '?'
-            { slot.arity(Slot.Arity.OPT); }
         )
     )?
     (

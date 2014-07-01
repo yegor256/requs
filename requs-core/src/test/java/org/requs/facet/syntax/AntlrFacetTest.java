@@ -84,7 +84,7 @@ public final class AntlrFacetTest {
                 "/spec/types[count(type) = 3]",
                 "//type[name='User']",
                 "//type[name='Employee' and parents/type='User']",
-                "/spec/errors[count(error)=2]",
+                "/spec/errors[count(error)>2]",
                 "/spec/errors/error[@type='syntax' and @line='1']"
             )
         );

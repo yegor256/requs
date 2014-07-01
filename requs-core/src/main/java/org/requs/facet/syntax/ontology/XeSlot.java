@@ -81,13 +81,13 @@ final class XeSlot implements Slot {
     @Override
     public void assign(final String type) {
         this.dirs.xpath(this.start).strict(1)
-            .add("type").set(type);
+            .addIf("type").set(type);
     }
 
     @Override
     public void arity(final Slot.Arity arity) {
         this.dirs.xpath(this.start).strict(1)
-            .add("arity").set(arity.toString());
+            .addIf("arity").set(arity.mnemo());
     }
 
     @Override
