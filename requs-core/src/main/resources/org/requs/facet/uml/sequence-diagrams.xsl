@@ -32,7 +32,16 @@
     </xsl:template>
     <xsl:template match="method" mode="uml">
         <xsl:for-each select="bindings/binding[not(starts-with(name, '_'))]">
-            <xsl:text>participant &quot;</xsl:text>
+            <xsl:variable name="type" select="type"/>
+            <xsl:choose>
+                <xsl:when test="/spec/types/type[name=$type and actor=true]">
+                    <xsl:text>actor</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:text>participant</xsl:text>
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:text> &quot;</xsl:text>
             <xsl:value-of select="name"/>
             <xsl:text>&quot; as </xsl:text>
             <xsl:value-of select="name"/>
