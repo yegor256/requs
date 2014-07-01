@@ -48,7 +48,7 @@ public final class RegexRuleTest {
     @Test
     public void checksInput() throws Exception {
         MatcherAssert.assertThat(
-            new RegexRule("[a-z]+", "").enforce("abjkljeklsf"),
+            new RegexRule("[a-z]+", "").check("abjkljeklsf"),
             Matchers.not(Matchers.empty())
         );
     }
@@ -60,7 +60,7 @@ public final class RegexRuleTest {
     @Test
     public void checksInvalidInput() throws Exception {
         MatcherAssert.assertThat(
-            new RegexRule("[0-9]", "").enforce("broken input"),
+            new RegexRule("[0-9]", "").check("broken input"),
             Matchers.empty()
         );
     }

@@ -29,46 +29,40 @@
  */
 package org.requs.facet.sa;
 
-import com.jcabi.aspects.Immutable;
-import com.jcabi.aspects.Loggable;
-import java.util.Collection;
-import java.util.LinkedList;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
- * Indentation rule in a single line.
- *
+ * Test case for {@link CascadingRule}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.14
  */
-@Immutable
-@ToString
-@EqualsAndHashCode
-@Loggable(Loggable.DEBUG)
-public final class IndentationRule implements LineRule {
+public final class CascadingRuleTest {
 
-    @Override
-    public Collection<Violation> check(final String line) {
-        int indent;
-        for (indent = 0; indent < line.length(); ++indent) {
-            if (line.charAt(indent) != ' ') {
-                break;
-            }
-        }
-        final Collection<Violation> violations = new LinkedList<Violation>();
-        if (indent % 2 != 0) {
-            violations.add(
-                new Violation.Simple(
-                    String.format(
-                        "indented for %d spaces, must be either %d or %d: %s",
-                        indent, indent / 2, (indent + 1) / 2, line
-                    ),
-                    0, indent
-                )
-            );
-        }
-        return violations;
+    /**
+     * CascadingRule can check input.
+     * @throws Exception If fails
+     */
+    @Test
+    public void checksInput() throws Exception {
+        MatcherAssert.assertThat(
+            new CascadingRule().enforce("hey\n  works\n    fine\nstart"),
+            Matchers.empty()
+        );
     }
+
+    /**
+     * CascadingRule can check invalid input.
+     * @throws Exception If fails
+     */
+    @Test
+    public void checksInvalidInput() throws Exception {
+        MatcherAssert.assertThat(
+            new CascadingRule().enforce("hey\n   three spaces?"),
+            Matchers.not(Matchers.empty())
+        );
+    }
+
 }

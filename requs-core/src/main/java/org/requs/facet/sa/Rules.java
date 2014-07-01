@@ -97,6 +97,7 @@ public final class Rules implements XeFacet {
                 )
             ),
             new LineRule.Wrap(new IndentationRule()),
+            new CascadingRule(),
         };
         final String input;
         if (spec.nodes("/spec/input[.!='']").isEmpty()) {

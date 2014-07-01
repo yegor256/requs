@@ -48,7 +48,7 @@ public final class IndentationRuleTest {
     @Test
     public void checksInput() throws Exception {
         MatcherAssert.assertThat(
-            new IndentationRule().enforce("    works fine"),
+            new IndentationRule().check("    works fine"),
             Matchers.empty()
         );
     }
@@ -60,7 +60,7 @@ public final class IndentationRuleTest {
     @Test
     public void checksInvalidInput() throws Exception {
         MatcherAssert.assertThat(
-            new IndentationRule().enforce("   works fine"),
+            new IndentationRule().check("   works fine"),
             Matchers.not(Matchers.empty())
         );
     }

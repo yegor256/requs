@@ -55,7 +55,7 @@ public interface LineRule {
      * @param line One line
      * @return Violations
      */
-    Collection<Violation> enforce(String line);
+    Collection<Violation> check(String line);
 
     /**
      * Wrap.
@@ -85,7 +85,7 @@ public interface LineRule {
                 final int num = number.getAndIncrement();
                 violations.addAll(
                     Collections2.transform(
-                        this.origin.enforce(line),
+                        this.origin.check(line),
                         new Function<Violation, Violation>() {
                             @Override
                             public Violation apply(final Violation violation) {

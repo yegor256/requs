@@ -73,7 +73,7 @@ public final class RegexRule implements LineRule {
 
     @Override
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    public Collection<Violation> enforce(final String line) {
+    public Collection<Violation> check(final String line) {
         final Pattern ptn = Pattern.compile(this.regex);
         final Matcher matcher = ptn.matcher(line);
         final Collection<Violation> violations = new LinkedList<Violation>();
