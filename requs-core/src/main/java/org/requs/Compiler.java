@@ -166,6 +166,7 @@ public final class Compiler {
             new Transform("sanity/empty-re-throws.xsl"),
             new Transform("sanity/orphan-types.xsl"),
             new Transform("sanity/undeclared-bindings.xsl"),
+            new Transform("sanity/actor-is-singleton.xsl"),
             new Transform("step-refs.xsl"),
             new Transform("methods-in-markdown.xsl"),
             new Transform("pages-in-html.xsl"),

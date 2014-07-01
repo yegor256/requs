@@ -331,7 +331,7 @@
                         <xsl:when test="$typed = 'true'">
                             <xsl:value-of select="$type"/>
                             <xsl:text> (a</xsl:text>
-                            <xsl:if test="substring($name, 1, 1) = 'a'">
+                            <xsl:if test="substring($name, 1, 1) = 'a' or substring($name, 1, 1) = 'i'">
                                 <xsl:text>n</xsl:text>
                             </xsl:if>
                             <xsl:text> </xsl:text>
