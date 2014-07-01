@@ -166,6 +166,9 @@
                 <a href="#{type}">
                     <xsl:value-of select="type"/>
                 </a>
+                <xsl:if test="composition='true'">
+                    <xsl:text>!</xsl:text>
+                </xsl:if>
             </xsl:if>
             <xsl:apply-templates select="info/informal"/>
         </li>

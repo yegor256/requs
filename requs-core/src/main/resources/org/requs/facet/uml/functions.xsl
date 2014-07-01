@@ -5,7 +5,15 @@
     exclude-result-prefixes="xs re">
     <xsl:function name="re:plant" as="xs:string">
         <xsl:param name="text"/>
-        <xsl:value-of select="concat('@startuml&#10;', $text, '&#10;@enduml')"/>
+        <xsl:value-of select="concat(
+            '@startuml&#10;',
+            'skinparam titleFontSize 13&#10;',
+            'skinparam titleFontStyle bold&#10;',
+            'skinparam sequenceTitleFontSize 13&#10;',
+            'skinparam sequenceTitleFontStyle bold&#10;',
+            $text,
+            '&#10;@enduml'
+        )"/>
     </xsl:function>
     <xsl:function name="re:signature">
         <xsl:param name="text"/>

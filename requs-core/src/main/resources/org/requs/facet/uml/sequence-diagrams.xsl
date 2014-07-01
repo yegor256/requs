@@ -34,7 +34,7 @@
         <xsl:for-each select="bindings/binding[not(starts-with(name, '_'))]">
             <xsl:variable name="type" select="type"/>
             <xsl:choose>
-                <xsl:when test="/spec/types/type[name=$type and actor=true]">
+                <xsl:when test="/spec/types/type[name=$type and actor='true']">
                     <xsl:text>actor</xsl:text>
                 </xsl:when>
                 <xsl:otherwise>

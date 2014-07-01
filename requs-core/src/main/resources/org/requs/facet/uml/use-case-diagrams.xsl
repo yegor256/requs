@@ -30,8 +30,9 @@
         </xsl:copy>
     </xsl:template>
     <xsl:template match="method" mode="uml">
+        <xsl:variable name="primary" select="bindings/binding[name='_self']/type"/>
         <xsl:text>actor </xsl:text>
-        <xsl:value-of select="bindings/binding[name='_self']/type"/>
+        <xsl:value-of select="$primary"/>
         <xsl:text> as primary&#10;</xsl:text>
         <xsl:text>usecase (</xsl:text>
         <xsl:value-of select="re:signature(signature)"/>

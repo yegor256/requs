@@ -38,7 +38,7 @@
         <xsl:for-each select="slots/slot[not(type)]">
             <xsl:text>  </xsl:text>
             <xsl:value-of select="name"/>
-            <xsl:if test="arity = 'ANY' or arity = 'MANY'">
+            <xsl:if test="arity != '1'">
                 <xsl:text>[]</xsl:text>
             </xsl:if>
             <xsl:text>&#10;</xsl:text>
