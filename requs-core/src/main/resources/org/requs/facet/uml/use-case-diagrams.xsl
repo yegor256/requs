@@ -11,6 +11,7 @@
         <xsl:copy>
             <xsl:apply-templates select="(node() except diagrams)|@*"/>
             <xsl:variable name="uml">
+                <xsl:text>left to right direction&#10;</xsl:text>
                 <xsl:text>title </xsl:text>
                 <xsl:value-of select="id"/>
                 <xsl:text>: Use Case Diagram&#10;</xsl:text>
