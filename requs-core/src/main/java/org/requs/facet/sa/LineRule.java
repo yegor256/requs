@@ -81,7 +81,8 @@ public interface LineRule {
             final Collection<Violation> violations =
                 new LinkedList<Violation>();
             final AtomicInteger number = new AtomicInteger(1);
-            for (final String line : StringUtils.split(spec, '\n')) {
+            for (final String line
+                : StringUtils.splitPreserveAllTokens(spec, '\n')) {
                 final int num = number.getAndIncrement();
                 violations.addAll(
                     Collections2.transform(
