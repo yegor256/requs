@@ -34,14 +34,24 @@
         <xsl:text>actor </xsl:text>
         <xsl:value-of select="$primary"/>
         <xsl:text> as primary&#10;</xsl:text>
-        <xsl:text>usecase (</xsl:text>
+        <xsl:text>usecase main as</xsl:text>
+        <xsl:text>&quot;</xsl:text>
+        <xsl:value-of select="id"/>
+        <xsl:text>&#10;</xsl:text>
         <xsl:value-of select="re:signature(signature)"/>
-        <xsl:text>) as uc&#10;</xsl:text>
-        <xsl:text>primary -> uc&#10;</xsl:text>
+        <xsl:text>&quot;&#10;</xsl:text>
+        <xsl:text>primary -> main&#10;</xsl:text>
         <xsl:for-each select=".//signature[@ref]">
-            <xsl:text>uc ---> (</xsl:text>
+            <xsl:text>usecase </xsl:text>
             <xsl:value-of select="@ref"/>
-            <xsl:text>)&#10;</xsl:text>
+            <xsl:text>as &quot;</xsl:text>
+            <xsl:value-of select="@ref"/>
+            <xsl:text>&#10;</xsl:text>
+            <xsl:value-of select="re:signature(/spec/methods/method[id=current()/@ref]/signature)"/>
+            <xsl:text>&quot;&#10;</xsl:text>
+            <xsl:text>main ---> </xsl:text>
+            <xsl:value-of select="@ref"/>
+            <xsl:text>&#10;</xsl:text>
         </xsl:for-each>
     </xsl:template>
     <xsl:template match="node()|@*">
