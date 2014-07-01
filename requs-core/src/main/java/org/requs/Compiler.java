@@ -219,7 +219,7 @@ public final class Compiler {
         FileUtils.write(
             new File(this.output, file),
             xsl.replace(
-                "---css---",
+                "css-included-here",
                 IOUtils.toString(
                     this.getClass().getResourceAsStream("requs.css"),
                     CharEncoding.UTF_8

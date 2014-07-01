@@ -11,9 +11,7 @@
                 <meta name="author" content="requs.org"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 <link rel="icon" type="image/png" href="//img.requs.org/ico-64x64.png"/>
-                <style type="text/css">-
-                -
-                -css---</style>
+                <style type="text/css">css-included-here</style>
                 <title>SRS</title>
             </head>
             <body>
