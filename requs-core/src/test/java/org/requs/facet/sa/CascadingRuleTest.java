@@ -62,7 +62,7 @@ public final class CascadingRuleTest {
     public void checksInvalidInput() throws Exception {
         MatcherAssert.assertThat(
             new CascadingRule().enforce(
-                "\n\n\nhey\n   three!"
+                "\n\n\n  hey\n   three!"
             ).iterator().next().line(),
             Matchers.equalTo(Tv.FIVE)
         );

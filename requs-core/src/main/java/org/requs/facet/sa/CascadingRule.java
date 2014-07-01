@@ -58,7 +58,7 @@ public final class CascadingRule implements Rule {
         int indent = 0;
         for (int idx = 0; idx < lines.length; ++idx) {
             final int next = CascadingRule.indent(lines[idx]);
-            if (idx > 0 && next > indent && next != indent + 2) {
+            if (indent > 0 && next > indent && next != indent + 2) {
                 violations.add(
                     new Violation.Simple(
                         String.format(
