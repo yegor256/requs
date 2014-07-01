@@ -12,6 +12,6 @@ UC1 where User (a user) divides two numbers:
   3. The user "receives results" using the quotient.
 
 UC1/2 when "division by zero":
-  1. Fail since "denominator can't be zero".
+  1. Fail as "denominator can't be zero".
 
 UC1/PRF must "be 500 milliseconds per HTTP request".

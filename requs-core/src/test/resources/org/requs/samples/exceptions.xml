@@ -2,10 +2,10 @@
     <spec>
         UC1 where User (a user) works:
           1. The user creates;
-          2. Fail since "it doesn't work";
+          2. Fail as "it doesn't work";
           3. The user reads.
         UC1/1 when "something goes wrong":
-          1. Fail since "something went wrong".
+          1. Fail as "something went wrong".
         UC1/2 when "something goes wrong":
           1. "Do something else".
     </spec>

@@ -339,13 +339,21 @@ step [Flow flow]
         )*
         using[flow, step]?
         |
-        FAIL
-        SINCE
-        failure=INFORMAL
-        { if ($failure == null) throw new SyntaxException("invalid failure message"); }
-        { step.object(Flow.SELF); }
-        { step.sign("fail"); }
-        { step.explain($failure.text); }
+        (
+            FAIL
+            AS
+            cause=INFORMAL
+            { if ($cause == null) throw new SyntaxException("invalid failure message"); }
+            { step.object(Flow.SELF); }
+            { step.sign("fail"); }
+            { step.explain($cause.text); }
+            (
+                WHEN
+                condition=INFORMAL
+                { if ($condition == null) throw new SyntaxException("invalid condition message"); }
+                { step.explain($condition.text); }
+            )?
+        )
         |
         step_informal=signature
         { if ($step_informal.ret == null) throw new SyntaxException("invalid signature"); }
@@ -469,7 +477,6 @@ USING: ( 'using' | 'of' | 'with' );
 A: ( 'a' | 'an' );
 THE: ( 'the' | 'The' );
 FAIL: ( 'Fail' | 'fail' );
-SINCE: 'since';
 ACTOR: 'actor';
 AS: 'as';
 IS: 'is';

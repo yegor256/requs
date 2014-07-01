@@ -12,6 +12,6 @@ UC1 where User (a user) divides two numbers:
 
 UC1/2 when "division by zero":
   1. The user "gets notification";
-  2. Fail since "denominator can't be zero".
+  2. Fail as "denominator can't be zero".
 
 UC1/PERF must "be 500 millisecond per request".

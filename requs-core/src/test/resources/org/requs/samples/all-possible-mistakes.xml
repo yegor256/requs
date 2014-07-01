@@ -4,7 +4,7 @@
         1. "Something happens".
         UC50/3 when "a problem":
         1. "We notify user about the problem";
-        2. Fail since "the problem".
+        2. Fail as "the problem".
 
         Object is "an object".
         UC105 where Sys(a system) works:

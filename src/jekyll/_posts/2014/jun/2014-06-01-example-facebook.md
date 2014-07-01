@@ -41,7 +41,7 @@ UC3 where User (a user) invites User (a friend):
     "finding him in a list of all registered users";
   2. The user creates the invitation.
 UC3/2 when "the user is banned by the friend":
-  1. Fail since "the user is not allowed to invite this friend".
+  1. Fail as "the user is not allowed to invite this friend".
 
 UC4 where User (a user) accepts Invitation (an invitation):
   1. The user reads the invitation;

@@ -280,7 +280,7 @@
             </xsl:when>
             <xsl:when test="$home/signature='fail'">
                 <span class="fail">
-                    <xsl:text>Fail since</xsl:text>
+                    <xsl:text>Fail as</xsl:text>
                 </span>
             </xsl:when>
             <xsl:when test="$uc">

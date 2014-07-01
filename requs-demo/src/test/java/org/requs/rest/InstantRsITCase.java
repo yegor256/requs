@@ -68,7 +68,7 @@ public final class InstantRsITCase {
             "2. The fraction \"calculates\" Float (a quotient);",
             "3. The user \"receives results\" using the quotient.",
             "UC1/2 when \"division by zero\":",
-            "1. Fail since \"denominator can't be zero\".",
+            "1. Fail as \"denominator can't be zero\".",
             "UC1/PERF must \"be 700 msec per HTTP request\"."
         );
         MatcherAssert.assertThat(
