@@ -49,7 +49,16 @@
             <xsl:value-of select="type"/>
             <xsl:text>&#10;</xsl:text>
             <xsl:value-of select="$type"/>
-            <xsl:text> o-- </xsl:text>
+            <xsl:text> </xsl:text>
+            <xsl:choose>
+                <xsl:when test="composition='true'">
+                    <xsl:text> *--</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:text> o--</xsl:text>
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:text> </xsl:text>
             <xsl:value-of select="type"/>
             <xsl:text>: </xsl:text>
             <xsl:value-of select="name"/>
