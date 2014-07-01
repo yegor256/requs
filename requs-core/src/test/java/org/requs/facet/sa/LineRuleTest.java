@@ -35,36 +35,24 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Test case for {@link CascadingRule}.
+ * Test case for {@link LineRule}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.14
  */
-public final class CascadingRuleTest {
+public final class LineRuleTest {
 
     /**
-     * CascadingRule can check input.
-     * @throws Exception If fails
-     */
-    @Test
-    public void checksInput() throws Exception {
-        MatcherAssert.assertThat(
-            new CascadingRule().enforce("hey\n  works\n    fine\nstart"),
-            Matchers.empty()
-        );
-    }
-
-    /**
-     * CascadingRule can check invalid input.
+     * LineRule can check invalid input.
      * @throws Exception If fails
      */
     @Test
     public void checksInvalidInput() throws Exception {
         MatcherAssert.assertThat(
-            new CascadingRule().enforce(
-                "\n\n\nhey\n   three!"
+            new LineRule.Wrap(new RegexRule("[a-z]+", "")).enforce(
+                "\n\n\nhey"
             ).iterator().next().line(),
-            Matchers.equalTo(Tv.FIVE)
+            Matchers.equalTo(Tv.FOUR)
         );
     }
 
