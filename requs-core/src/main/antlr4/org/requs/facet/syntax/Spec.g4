@@ -318,10 +318,9 @@ step [Flow flow]
     { Step step = flow.step(Integer.parseInt($FLOW_ID.text)); }
     { step.mention(_input.LT(1).getLine()); }
     (
-        THE
-        variable
-        { if ($variable.ret == null) throw new SyntaxException("invalid variable"); }
-        { step.object($variable.ret); }
+        object=subject[flow]
+        { if ($object.ret == null) throw new SyntaxException("invalid object"); }
+        { step.object($object.ret); }
         (
             INFORMAL
             { step.explain($INFORMAL.text); }

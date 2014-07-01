@@ -14,7 +14,8 @@
           1. The user "opens Excel";
           2. The user "clicks SAVE and saves the content" using the file;
           3. The user creates the file;
-          4. The user validates the file.
+          4. The user validates the file;
+          5. Storage (a storage) reads the user.
 
         UC2 where User validates File: "we'll define later".
 
@@ -25,6 +26,8 @@
         :UC1 is a must.
 
         UC1/UX must "be cool".
+
+        Storage is an actor.
     </spec>
     <xpaths>
         <xpath>/spec/errors[count(error)=0]</xpath>
