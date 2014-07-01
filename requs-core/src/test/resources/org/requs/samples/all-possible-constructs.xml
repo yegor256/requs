@@ -3,7 +3,7 @@
         MTBF means "mean time between failures".
         UC1 where User (a user) saves File (a file) "which is not broken":
         """I'll think about it more"""
-        1. The user opens "its browser" "for example, Google Chrome";
+         1. The user opens "its browser" "for example, Google Chrome";
         2. "The user clicks SAVE" "and waits";
         3. The user "having in mind something" validates the file "and saves".
         UC1/3 when "some bug inside":

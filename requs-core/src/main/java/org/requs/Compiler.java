@@ -175,8 +175,9 @@ public final class Compiler {
             new Transform("uml/sequence-diagrams.xsl"),
             new Transform("uml/use-case-diagrams.xsl"),
             new Transform("uml/class-diagrams.xsl"),
-            new Transform("renumber.xsl"),
             new XeFacet.Wrap(new Rules()),
+            new XeFacet.Wrap(new XeFacet.Fixed(Compiler.decor())),
+            new Transform("renumber.xsl"),
             new XeFacet.Wrap(
                 new XeFacet() {
                     @Override
@@ -188,7 +189,6 @@ public final class Compiler {
                     }
                 }
             ),
-            new XeFacet.Wrap(new XeFacet.Fixed(Compiler.decor())),
         };
         XML spec = new XMLDocument(
             "<?xml-stylesheet href='requs.xsl' type='text/xsl'?><spec/>"

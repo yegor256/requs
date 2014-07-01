@@ -62,8 +62,10 @@ public final class IndentationRule implements LineRule {
             violations.add(
                 new Violation.Simple(
                     String.format(
-                        "indented for %d spaces, must be either %d or %d: %s",
-                        indent, indent / 2, (indent + 1) / 2, line
+                        "indented for %d spaces, must be either %d or %d: [%s]",
+                        indent,
+                        indent >> 1 << 1,
+                        indent + 1 >> 1 << 1, line
                     ),
                     0, indent
                 )

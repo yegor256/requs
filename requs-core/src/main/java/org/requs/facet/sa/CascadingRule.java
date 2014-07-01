@@ -62,7 +62,7 @@ public final class CascadingRule implements Rule {
                 violations.add(
                     new Violation.Simple(
                         String.format(
-                            "indented for %d spaces, while %d required: %s",
+                            "indented for %d spaces, while %d required: [%s]",
                             next, indent + 2, lines[idx]
                         ),
                         idx + 1, next
