@@ -86,4 +86,10 @@ public interface Slot extends Mentioned, Informal {
      */
     void arity(Slot.Arity arity);
 
+    /**
+     * Is it a composition?
+     * @param cmp TRUE if it's a composition
+     */
+    void composition(boolean cmp);
+
 }

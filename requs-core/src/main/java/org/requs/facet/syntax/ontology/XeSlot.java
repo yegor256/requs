@@ -91,6 +91,12 @@ final class XeSlot implements Slot {
     }
 
     @Override
+    public void composition(final boolean cmp) {
+        this.dirs.xpath(this.start).strict(1)
+            .addIf("composition").set(Boolean.toString(cmp));
+    }
+
+    @Override
     public void mention(final int where) {
         this.mentioned.mention(where);
     }

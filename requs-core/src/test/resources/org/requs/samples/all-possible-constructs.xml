@@ -14,6 +14,7 @@
         :UC1 is a must.
         Vision: """ this is a "test" """.
         UC7 where User (a user) opens: "tbd".
+        User includes: name, URN, and photo-s? as File!.
     </spec>
     <xpaths>
         <xpath>/spec/methods[count(method)=2]</xpath>

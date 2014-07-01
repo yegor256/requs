@@ -128,6 +128,7 @@ slot [Type type]
     { Slot slot = type.slot($variable.ret); }
     { slot.mention(_input.LT(1).getLine()); }
     { slot.arity(Slot.Arity.ONE); }
+    { slot.composition(true); }
     (
         '-'
         (
@@ -144,6 +145,11 @@ slot [Type type]
             class_name
             { if ($class_name.ret == null) throw new SyntaxException("invalid class name"); }
             { slot.assign($class_name.text); }
+            { slot.composition(false); }
+            (
+                '!'
+                { slot.composition(true); }
+            )?
             |
             INFORMAL
             { slot.explain($INFORMAL.text); }
