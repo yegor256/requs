@@ -43,12 +43,10 @@
             </h1>
             <xsl:apply-templates select="errors/error"/>
         </xsl:if>
-        <xsl:if test="metrics[metric]">
-            <h1>
-                <xsl:text>Metrics</xsl:text>
-            </h1>
-            <xsl:apply-templates select="metrics/metric"/>
-        </xsl:if>
+        <h1>
+            <xsl:text>Scope Definition</xsl:text>
+        </h1>
+        <xsl:apply-templates select="." mode="scope"/>
         <xsl:if test="acronyms[acronym]">
             <h1>
                 <xsl:text>Definitions/Acronyms</xsl:text>
@@ -68,6 +66,42 @@
         <xsl:if test="tbds[tbd]">
             <xsl:apply-templates select="tbds"/>
         </xsl:if>
+        <xsl:if test="metrics[metric]">
+            <h1>
+                <xsl:text>Metrics</xsl:text>
+            </h1>
+            <xsl:apply-templates select="metrics/metric"/>
+        </xsl:if>
+    </xsl:template>
+    <xsl:template match="spec" mode="scope">
+        <p>
+            <xsl:value-of select="count(types/type)"/>
+            <xsl:text> type(s): </xsl:text>
+            <xsl:for-each select="types/type">
+                <xsl:if test="position() &gt; 1">
+                    <xsl:text>, </xsl:text>
+                </xsl:if>
+                <a href="#{name}"><xsl:value-of select="name"/></a>
+            </xsl:for-each>
+        </p>
+        <p>
+            <xsl:value-of select="count(methods/method)"/>
+            <xsl:text> Use Case(s): </xsl:text>
+            <xsl:for-each select="methods/method">
+                <xsl:if test="position() &gt; 1">
+                    <xsl:text>, </xsl:text>
+                </xsl:if>
+                <a href="#{id}"><xsl:value-of select="id"/></a>
+            </xsl:for-each>
+        </p>
+        <p>
+            <xsl:value-of select="count(//step[signature='creates' or signature='reads' or signature='updates' or signature='deletes'])"/>
+            <xsl:text> CRUD operator(s)</xsl:text>
+        </p>
+        <p>
+            <xsl:value-of select="count(//slot)"/>
+            <xsl:text> slot(s)</xsl:text>
+        </p>
     </xsl:template>
     <xsl:template match="metrics/metric">
         <p>
