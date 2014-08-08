@@ -1,5 +1,7 @@
 <img src="http://img.requs.org/logo.svg" width="192" />
 
+[![Made By Teamed.io](http://img.teamed.io/btn.svg)](http://www.teamed.io)
+
 [![Build Status](https://travis-ci.org/teamed/requs.svg?branch=master)](https://travis-ci.org/teamed/requs)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.requs/requs/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.requs/requs)
 
