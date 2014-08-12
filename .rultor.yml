@@ -4,24 +4,22 @@ assets:
   secring.gpg: "yegor256/home#assets/secring.gpg"
   s3cfg: "yegor256/home#assets/s3cfg"
 
+env:
+  MAVEN_OPTS: "-XX:MaxPermSize=256m -Xmx1g"
+
 merge:
-  env:
-    MAVEN_OPTS: "-XX:MaxPermSize=256m -Xmx1g"
   script:
     - "mvn clean install -Pqulice --errors --settings ../settings.xml"
     - "mvn clean site -Psite --settings ../settings.xml"
 
 deploy:
-  env:
-    MAVEN_OPTS: "-XX:MaxPermSize=256m -Xmx1g"
   script:
     - "mvn clean deploy -Pqulice --errors --settings ../settings.xml"
+    - "gem install pdd"
     - "pdd --source=$(pwd) --verbose --file=requs.xml"
     - "s3cmd --no-progress put requs.xml --config=../s3cfg s3://pdd.teamed.io/requs.xml > /dev/null"
 
 release:
-  env:
-    MAVEN_OPTS: "-XX:MaxPermSize=256m -Xmx1g"
   script:
     - "mvn versions:set \"-DnewVersion=${tag}\""
     - "git commit -am \"${tag}\""
