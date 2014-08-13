@@ -16,6 +16,7 @@ deploy:
   script:
     - "mvn clean deploy -Pqulice --errors --settings ../settings.xml"
     - "gem install pdd"
+    - "mvn clean"
     - "pdd --source=$(pwd) --verbose --file=requs.xml"
     - "s3cmd --no-progress put requs.xml --config=../s3cfg s3://pdd.teamed.io/requs.xml > /dev/null"
 
