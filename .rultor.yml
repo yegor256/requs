@@ -10,7 +10,7 @@ env:
 install:
   - "sudo gem install pdd"
   - "sudo bundle install"
-  - "easy_install src/requs_pygment"
+  - "sudo easy_install src/requs_pygment"
 
 merge:
   script:
