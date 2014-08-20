@@ -12,6 +12,23 @@
     <link rel="stylesheet" href="/css/layout.css?{{ site.data['hash'] }}"/>
     <link rel="canonical" href="//www.requs.org{{ page.url }}" />
     <title>{{ page.title }}</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.0.0.js"></script>
+    <script style="text/javascript">
+      $(
+        function() {
+          $('h2').each(
+            function (idx, element) {
+              var $element = $(element), id = $element.attr('id');
+              if (id) {
+                $element.append(
+                  $('<a/>').addClass('link').attr('href', '#' + id).html('&#182;')
+                );
+              }
+            }
+          );
+        }
+      );
+    </script>
   </head>
   <body>
     <a href="https://github.com/teamed/requs">

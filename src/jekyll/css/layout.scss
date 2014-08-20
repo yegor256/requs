@@ -91,6 +91,14 @@ h2 {
   margin-top: 3 * $font-size;
   color: darken($blue, 20);
   font-size: 1.6 * $font-size;
+  a.link {
+    margin-left: .3 * $font-size;
+    color: lighten($blue, 20);
+    text-decoration: none;
+    &:hover {
+      color: inherit;
+    }
+  }
 }
 p {
   width: $width;
