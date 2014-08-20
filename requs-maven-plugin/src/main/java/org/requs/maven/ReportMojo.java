@@ -144,6 +144,10 @@ public final class ReportMojo extends AbstractMavenReport {
     @Override
     public void generate(final Sink sink, final SinkFactory factory,
         final Locale locale) {
+        if (!this.source.exists()) {
+            Logger.info(this, "source directory %s is absent", this.source);
+            return;
+        }
         StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
         final File home = new File(
             this.getOutputDirectory(),

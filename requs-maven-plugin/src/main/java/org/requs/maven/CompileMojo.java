@@ -97,6 +97,10 @@ public final class CompileMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoFailureException {
         StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
+        if (!this.input.exists()) {
+            Logger.info(this, "input directory %s is absent", this.input);
+            return;
+        }
         try {
             new Compiler(this.input, this.output, this.options).compile();
             final XML srs = new XMLDocument(new File(this.output, "requs.xml"));
