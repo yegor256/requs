@@ -37,7 +37,7 @@
 $main-font: 'Ubuntu', 'Arial', sans-serif;
 $code-font: 'Source Code Pro', monospace;
 $width: 700px;
-$font-size: 19px;
+$em: 19px;
 
 .desktop-only {
   @media all and (max-width: $width) {
@@ -50,7 +50,7 @@ body {
   font-weight: 400;
   background-color: #fff;
   color: $black;
-  font-size: $font-size;
+  font-size: $em;
   margin: 0;
   position: relative;
   overflow-x: hidden;
@@ -65,10 +65,10 @@ a, a:visited {
 .wrapper {
   background-color: $white;
   box-sizing: border-box;
-  line-height: 1.4 * $font-size;
-  padding: 2 * $font-size;
+  line-height: 1.4 * $em;
+  padding: 2 * $em;
   @media all and (max-width: $width) {
-    padding: $font-size;
+    padding: $em;
   }
 }
 .header {
@@ -77,22 +77,22 @@ a, a:visited {
   }
 }
 .footer {
-  margin-top: 3 * $font-size;
+  margin-top: 3 * $em;
 }
 h1 {
-  margin-top: 3 * $font-size;
-  margin-bottom: 2 * $font-size;
+  margin-top: 3 * $em;
+  margin-bottom: 2 * $em;
   color: darken($blue, 20);
-  font-size: 2 * $font-size;
-  line-height: 2 * $font-size;
+  font-size: 2 * $em;
+  line-height: 2 * $em;
 }
 h2 {
-  line-height: 1.6 * $font-size;
-  margin-top: 3 * $font-size;
+  line-height: 1.6 * $em;
+  margin-top: 3 * $em;
   color: darken($blue, 20);
-  font-size: 1.6 * $font-size;
+  font-size: 1.6 * $em;
   a.link {
-    margin-left: .3 * $font-size;
+    margin-left: .3 * $em;
     color: lighten($blue, 20);
     text-decoration: none;
     &:hover {
@@ -108,18 +108,18 @@ p {
 }
 code {
   background-color: lighten($black, 60);
-  border-radius: 0.3 * $font-size;
-  padding-left: 0.3 * $font-size;
-  padding-right: 0.3 * $font-size;
+  border-radius: 0.3 * $em;
+  padding-left: 0.3 * $em;
+  padding-right: 0.3 * $em;
 }
 pre {
   overflow-x: auto;
   background-color: lighten($black, 60);
-  border-radius: 0.3 * $font-size;
-  padding: $font-size;
+  border-radius: 0.3 * $em;
+  padding: $em;
   width: auto;
   @media all and (max-width: $width) {
-    padding: 0.5 * $font-size;
+    padding: 0.5 * $em;
   }
   code {
     background-color: inherit;
