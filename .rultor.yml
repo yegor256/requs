@@ -11,6 +11,7 @@ merge:
   script:
     - "mvn clean install -Pqulice --errors --settings ../settings.xml"
     - "mvn clean site -Psite --settings ../settings.xml"
+    - "pdd --source=$(pwd) --verbose --file=/dev/null"
 
 deploy:
   script:
@@ -18,7 +19,7 @@ deploy:
     - "gem install pdd"
     - "mvn clean"
     - "pdd --source=$(pwd) --verbose --file=requs.xml"
-    - "s3cmd --no-progress put requs.xml --config=../s3cfg s3://pdd.teamed.io/requs.xml > /dev/null"
+    - "s3cmd --no-progress put requs.xml --config=../s3cfg s3://pdd.teamed.io/requs.xml"
 
 release:
   script:
