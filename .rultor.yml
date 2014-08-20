@@ -7,16 +7,20 @@ assets:
 env:
   MAVEN_OPTS: "-XX:MaxPermSize=256m -Xmx1g"
 
+install:
+  - "sudo gem install pdd"
+  - "sudo bundle install"
+
 merge:
   script:
     - "mvn clean install -Pqulice --errors --settings ../settings.xml"
     - "mvn clean site -Psite --settings ../settings.xml"
+    - "mvn clean"
     - "pdd --source=$(pwd) --verbose --file=/dev/null"
 
 deploy:
   script:
     - "mvn clean deploy -Pqulice --errors --settings ../settings.xml"
-    - "gem install pdd"
     - "mvn clean"
     - "pdd --source=$(pwd) --verbose --file=requs.xml"
     - "s3cmd --no-progress put requs.xml --config=../s3cfg s3://pdd.teamed.io/requs.xml"
