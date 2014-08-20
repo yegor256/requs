@@ -31,4 +31,4 @@ release:
     - "mvn versions:set \"-DnewVersion=${tag}\""
     - "git commit -am \"${tag}\""
     - "mvn clean deploy -Pqulice -Psonatype -Prequs --errors --settings ../settings.xml"
-    - "mvn clean site-deploy -Psite --errors --settings ../settings.xml"
+    - "mvn clean site-deploy -Pgh-pages -Psite --errors --settings ../settings.xml"
