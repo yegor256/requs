@@ -1,34 +1,15 @@
-assets:
-  settings.xml: "yegor256/home#assets/requs/settings.xml"
-  pubring.gpg: "yegor256/home#assets/pubring.gpg"
-  secring.gpg: "yegor256/home#assets/secring.gpg"
-  s3cfg: "yegor256/home#assets/s3cfg"
-
-env:
-  MAVEN_OPTS: "-XX:MaxPermSize=256m -Xmx1g"
-
-install:
-  - "sudo gem install pdd"
-  - "sudo bundle install"
-  - "sudo easy_install src/requs_pygment"
-
+assets: {settings.xml: yegor256/home#assets/requs/settings.xml, pubring.gpg: yegor256/home#assets/pubring.gpg,
+  secring.gpg: yegor256/home#assets/secring.gpg, s3cfg: yegor256/home#assets/s3cfg}
+env: {MAVEN_OPTS: '-XX:MaxPermSize=256m -Xmx1g'}
+install: [sudo gem install pdd, sudo bundle install, sudo easy_install src/requs_pygment]
 merge:
-  script:
-    - "mvn clean install -Pqulice --errors --settings ../settings.xml"
-    - "mvn clean site -Psite --settings ../settings.xml"
-    - "mvn clean"
-    - "pdd --source=$(pwd) --verbose --file=/dev/null"
-
+  script: [mvn clean install -Pqulice --errors --settings ../settings.xml, mvn clean site -Psite --settings ../settings.xml,
+    mvn clean, pdd --source=$(pwd) --verbose --file=/dev/null]
 deploy:
-  script:
-    - "mvn clean deploy -Pqulice --errors --settings ../settings.xml"
-    - "mvn clean"
-    - "pdd --source=$(pwd) --verbose --file=requs.xml"
-    - "s3cmd --no-progress put requs.xml --config=../s3cfg s3://pdd.teamed.io/requs.xml"
-
+  script: [mvn clean deploy -Pqulice --errors --settings ../settings.xml, mvn clean,
+    pdd --source=$(pwd) --verbose --file=requs.xml, 's3cmd --no-progress put requs.xml
+      --config=../s3cfg s3://pdd.teamed.io/requs.xml']
 release:
-  script:
-    - "mvn versions:set \"-DnewVersion=${tag}\""
-    - "git commit -am \"${tag}\""
-    - "mvn clean deploy -Pqulice -Psonatype -Prequs --errors --settings ../settings.xml"
-    - "mvn clean site-deploy -Pgh-pages -Psite --errors --settings ../settings.xml"
+  script: ['mvn versions:set "-DnewVersion=${tag}"', 'git commit -am "${tag}"', mvn clean deploy -Pqulice -Psonatype -Prequs --errors --settings ../settings.xml,
+    mvn clean site-deploy -Pgh-pages -Psite --errors --settings ../settings.xml]
+architect: [yegor256, yegor256, davvd]
