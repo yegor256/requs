@@ -28,6 +28,5 @@ release:
   - mvn clean deploy -Pqulice -Psonatype -Prequs --errors --settings ../settings.xml
   - mvn clean site-deploy -Pgh-pages -Psite --errors --settings ../settings.xml
 architect:
-- yegor256
-- yegor256
 - davvd
+- yegor256
