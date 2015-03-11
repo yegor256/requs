@@ -23,6 +23,8 @@ deploy:
   - mvn clean
   - pdd --source=$(pwd) --verbose --file=requs.xml
   - s3cmd --no-progress put requs.xml --config=../s3cfg s3://pdd.teamed.io/requs.xml
+  commanders:
+  - yegor256
 release:
   script:
   - mvn versions:set "-DnewVersion=${tag}"
