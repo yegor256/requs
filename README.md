@@ -4,6 +4,7 @@
 [![DevOps By Rultor.com](http://www.rultor.com/b/teamed/requs)](http://www.rultor.com/p/teamed/requs)
 
 [![Build Status](https://travis-ci.org/teamed/requs.svg?branch=master)](https://travis-ci.org/teamed/requs)
+[![PDD status](http://www.0pdd.com/svg?name=yegor256/requs)](http://www.0pdd.com/p?name=yegor256/requs)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.requs/requs/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.requs/requs)
 
 More details are here: [www.requs.org](http://www.requs.org/)
