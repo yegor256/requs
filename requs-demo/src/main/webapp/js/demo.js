@@ -22,7 +22,7 @@
  * OF SUCH DAMAGE.
  *
  * @author Yegor Bugayenko <egor@tpc2.com>
- * @copyright Copyright (c) requs.org, 2010-2014
+ * @copyright Copyright (c) requs.org, 2010-2017
  * @version $Id$
  */
 
