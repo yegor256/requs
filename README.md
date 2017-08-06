@@ -1,6 +1,6 @@
 <img src="http://img.requs.org/logo.svg" width="192" />
 
-[![Made By Teamed.io](http://img.teamed.io/btn.svg)](http://www.teamed.io)
+[![Managed by Zerocracy](http://www.zerocracy.com/badge.svg)](http://www.zerocracy.com)
 [![DevOps By Rultor.com](http://www.rultor.com/b/teamed/requs)](http://www.rultor.com/p/teamed/requs)
 
 [![Build Status](https://travis-ci.org/teamed/requs.svg?branch=master)](https://travis-ci.org/teamed/requs)
