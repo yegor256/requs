@@ -1,35 +1,43 @@
+readers:
+  - "urn:github:526301"
+docker:
+  image: yegor256/java8
 assets:
   settings.xml: yegor256/home#assets/requs/settings.xml
   pubring.gpg: yegor256/home#assets/pubring.gpg
   secring.gpg: yegor256/home#assets/secring.gpg
-  s3cfg: yegor256/home#assets/s3cfg
+  id_rsa: yegor256/home#assets/heroku-key
+  id_rsa.pub: yegor256/home#assets/heroku-key.pub
 env:
   MAVEN_OPTS: -XX:MaxPermSize=256m -Xmx1g
-install:
-- sudo gem install pdd -v 0.20.5
-- sudo bundle install
-- sudo easy_install src/requs_pygment
+install: |-
+  sudo gem install pdd -v 0.20.5
+  sudo bundle install
+  sudo easy_install src/requs_pygment
 merge:
-  script:
-  - mvn clean install -Pqulice --errors --settings ../settings.xml
-  - mvn clean site -Psite --settings ../settings.xml
-  - mvn clean
-  - pdd --source=$(pwd) --verbose --file=/dev/null
-  commanders: []
+  script: |-
+    mvn clean install -Pqulice --errors --settings ../settings.xml
+    mvn clean site -Psite --settings ../settings.xml
+    mvn clean
+    pdd --source=$(pwd) --verbose --file=/dev/null
 deploy:
-  script:
-  - mvn clean deploy -Pqulice --errors --settings ../settings.xml
-  - mvn clean
-  - pdd --source=$(pwd) --verbose --file=requs.xml
-  - s3cmd --no-progress put requs.xml --config=../s3cfg s3://pdd.teamed.io/requs.xml
+  script: |-
+    mvn clean deploy -Pqulice --errors --settings ../settings.xml
+    mvn clean
+    pdd --source=$(pwd) --verbose --file=requs.xml
+    s3cmd --no-progress put requs.xml --config=../s3cfg s3://pdd.teamed.io/requs.xml
 release:
-  script:
-  - mvn versions:set "-DnewVersion=${tag}"
-  - git commit -am "${tag}"
-  - mvn clean deploy -Pqulice -Psonatype -Prequs --errors --settings ../settings.xml
-  - mvn clean site-deploy -Pgh-pages -Psite --errors --settings ../settings.xml
-  commanders:
-  - yegor256
-architect:
-- yegor256
-- davvd
+  script: |-
+    mvn versions:set "-DnewVersion=${tag}"
+    git commit -am "${tag}"
+    mvn clean deploy -Pqulice -Psonatype -Prequs --errors --settings ../settings.xml
+    mvn clean site-deploy -Pgh-pages -Psite --errors --settings ../settings.xml
+    git remote add dokku dokku@dokku.requs.org:requs
+    mkdir ~/.ssh
+    mv ../id_rsa ../id_rsa.pub ~/.ssh
+    chmod -R 600 ~/.ssh/*
+    echo -e "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile=/dev/null" > ~/.ssh/config
+    git add settings.xml
+    git fetch
+    git commit -m 'settings.xml' && git push -f dokku $(git symbolic-ref --short HEAD):master && git reset HEAD~1
+    curl -f --connect-timeout 15 --retry 5 --retry-delay 30 http://demo.requs.org > /dev/null

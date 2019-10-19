@@ -38,12 +38,6 @@
     <artifactId>requs-demo</artifactId>
     <packaging>war</packaging>
     <name>requs-demo</name>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>cloudbees-public-release</id>
-            <url>http://repository-cloudbees.forge.cloudbees.com/public-release</url>
-        </pluginRepository>
-    </pluginRepositories>
     <dependencies>
         <dependency>
             <groupId>org.requs</groupId>
@@ -321,29 +315,30 @@
             </build>
         </profile>
         <profile>
-            <id>cloudbees</id>
-            <activation>
-                <property><name>bees.appId</name></property>
-            </activation>
+            <id>dokku</id>
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>com.cloudbees</groupId>
-                        <artifactId>bees-maven-plugin</artifactId>
-                        <version>1.3.2</version>
+                        <groupId>org.apache.tomcat.maven</groupId>
+                        <artifactId>tomcat7-maven-plugin</artifactId>
+                        <version>2.2</version>
                         <configuration>
-                            <appid>${bees.appId}</appid>
-                            <apikey>${bees.apikey}</apikey>
-                            <secret>${bees.secret}</secret>
-                            <message>${buildNumber}</message>
+                            <port>${tomcat.port}</port>
+                            <path>/</path>
+                            <systemProperties>
+                                <log4j.configuration>file:${basedir}/src/main/resources/log4j.properties</log4j.configuration>
+                            </systemProperties>
                         </configuration>
                         <executions>
                             <execution>
-                                <id>deploy-to-production</id>
+                                <id>start-tomcat</id>
                                 <phase>deploy</phase>
                                 <goals>
-                                    <goal>deploy</goal>
+                                    <goal>run-war-only</goal>
                                 </goals>
+                                <configuration>
+                                    <fork>false</fork>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
