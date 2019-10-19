@@ -86,7 +86,7 @@ $(document).ready(
                 [
                   '<html><body><span style="color:red">Internal application error</span>.',
                   ' Please submit your sources as',
-                  ' <a href="https://github.com/teamed/requs">a Github issue</a>',
+                  ' <a href="https://github.com/yegor256/requs">a Github issue</a>',
                   '</body></html>'
                 ].join('')
               );

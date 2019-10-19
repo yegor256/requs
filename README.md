@@ -2,10 +2,10 @@
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
 [![Managed by Zerocracy](https://www.0crat.com/badge/CAZPZR9FS.svg)](https://www.0crat.com/p/CAZPZR9FS)
-[![DevOps By Rultor.com](http://www.rultor.com/b/teamed/requs)](http://www.rultor.com/p/teamed/requs)
+[![DevOps By Rultor.com](http://www.rultor.com/b/yegor256/requs)](http://www.rultor.com/p/yegor256/requs)
 [![We recommend IntelliJ IDEA](https://www.elegantobjects.org/intellij-idea.svg)](https://www.jetbrains.com/idea/)
 
-[![Build Status](https://travis-ci.org/teamed/requs.svg?branch=master)](https://travis-ci.org/teamed/requs)
+[![Build Status](https://travis-ci.org/yegor256/requs.svg?branch=master)](https://travis-ci.org/yegor256/requs)
 [![PDD status](http://www.0pdd.com/svg?name=yegor256/requs)](http://www.0pdd.com/p?name=yegor256/requs)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.requs/requs/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.requs/requs)
 
@@ -45,7 +45,7 @@ See [Requs syntax explained](http://www.requs.org/syntax.html).
 ## Questions?
 
 If you have any questions about the framework, or something doesn't work as expected,
-please [submit an issue here](https://github.com/teamed/requs/issues/new).
+please [submit an issue here](https://github.com/yegor256/requs/issues/new).
 
 ## How to contribute?
 

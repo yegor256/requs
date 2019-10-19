@@ -100,7 +100,7 @@
         <div>
             <span><xsl:value-of select="name"/></span>
             <span>
-                <a href="https://github.com/teamed/requs/commit/{revision}">
+                <a href="https://github.com/yegor256/requs/commit/{revision}">
                     <xsl:value-of select="revision"/>
                 </a>
             </span>
