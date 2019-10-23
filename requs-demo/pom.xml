@@ -331,8 +331,8 @@
                         </configuration>
                         <executions>
                             <execution>
-                                <id>start-tomcat</id>
-                                <phase>deploy</phase>
+                                <id>run-tomcat</id>
+                                <phase>install</phase>
                                 <goals>
                                     <goal>run-war-only</goal>
                                 </goals>
