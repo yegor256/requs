@@ -332,7 +332,7 @@
                         <executions>
                             <execution>
                                 <id>run-tomcat</id>
-                                <phase>install</phase>
+                                <phase>validate</phase>
                                 <goals>
                                     <goal>run-war-only</goal>
                                 </goals>
