@@ -32,6 +32,7 @@ package org.requs.facet.syntax;
 import com.jcabi.matchers.XhtmlMatchers;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import javax.xml.transform.Source;
 import org.apache.commons.io.IOUtils;
@@ -48,6 +49,7 @@ import org.xembly.Xembler;
  * Test case for {@link AntlrFacet}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 0.1
  */
 public final class AntlrFacetTest {
 
@@ -99,7 +101,8 @@ public final class AntlrFacetTest {
         MatcherAssert.assertThat(
             AntlrFacetTest.parse(
                 IOUtils.toString(
-                    this.getClass().getResourceAsStream("example.req")
+                    this.getClass().getResourceAsStream("example.req"),
+                    StandardCharsets.UTF_8
                 )
             ),
             XhtmlMatchers.hasXPaths(
@@ -129,7 +132,8 @@ public final class AntlrFacetTest {
         MatcherAssert.assertThat(
             AntlrFacetTest.parse(
                 IOUtils.toString(
-                    this.getClass().getResourceAsStream("all-cases.req")
+                    this.getClass().getResourceAsStream("all-cases.req"),
+                    StandardCharsets.UTF_8
                 )
             ),
             XhtmlMatchers.hasXPath("/spec[not(errors/error)]")
@@ -159,6 +163,7 @@ public final class AntlrFacetTest {
         };
         for (final String spec : specs) {
             MatcherAssert.assertThat(
+                String.format("The spec can't be parsed: \"%s\"", spec),
                 AntlrFacetTest.parse(spec),
                 XhtmlMatchers.hasXPath("/spec/errors")
             );

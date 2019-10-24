@@ -43,6 +43,7 @@ import org.requs.Facet;
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 0.1
  */
 @Immutable
 @ToString(includeFieldNames = false)

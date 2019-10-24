@@ -1,239 +1,237 @@
 <?xml version="1.0"?>
 <!--
- * Copyright (c) 2009-2017, requs.org
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met: 1) Redistributions of source code must retain the above
- * copyright notice, this list of conditions and the following
- * disclaimer. 2) Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following
- * disclaimer in the documentation and/or other materials provided
- * with the distribution. 3) Neither the name of the requs.org nor
- * the names of its contributors may be used to endorse or promote
- * products derived from this software without specific prior written
- * permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
- * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- -->
+Copyright (c) 2009-2017, requs.org
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met: 1) Redistributions of source code must retain the above
+copyright notice, this list of conditions and the following
+disclaimer. 2) Redistributions in binary form must reproduce the above
+copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided
+with the distribution. 3) Neither the name of the requs.org nor
+the names of its contributors may be used to endorse or promote
+products derived from this software without specific prior written
+permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.requs</groupId>
-        <artifactId>requs</artifactId>
-        <version>2.0-SNAPSHOT</version>
-    </parent>
-    <artifactId>requs-core</artifactId>
-    <packaging>jar</packaging>
-    <name>requs-core</name>
-    <dependencies>
-        <dependency>
-            <groupId>com.jcabi.incubator</groupId>
-            <artifactId>xembly</artifactId>
-            <version>0.17</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.jcabi</groupId>
-            <artifactId>jcabi-aspects</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.jcabi</groupId>
-            <artifactId>jcabi-immutable</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.jcabi</groupId>
-            <artifactId>jcabi-log</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.jcabi</groupId>
-            <artifactId>jcabi-manifests</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.pegdown</groupId>
-            <artifactId>pegdown</artifactId>
-            <version>1.4.2</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.plantuml</groupId>
-            <artifactId>plantuml</artifactId>
-            <version>7999</version>
-        </dependency>
-        <dependency>
-            <groupId>com.jcabi</groupId>
-            <artifactId>jcabi-xml</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.jcabi</groupId>
-            <artifactId>jcabi-matchers</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.jcabi.incubator</groupId>
-            <artifactId>phandom</artifactId>
-            <version>0.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.saxon</groupId>
-            <artifactId>saxon</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.saxon</groupId>
-            <artifactId>saxon</artifactId>
-            <classifier>dom</classifier>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>javax.el-api</artifactId>
-            <version>3.0.1-b04</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
-    <build>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.requs</groupId>
+    <artifactId>requs</artifactId>
+    <version>2.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>requs-core</artifactId>
+  <packaging>jar</packaging>
+  <name>requs-core</name>
+  <dependencies>
+    <dependency>
+      <groupId>com.jcabi.incubator</groupId>
+      <artifactId>xembly</artifactId>
+      <version>0.22.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.jcabi</groupId>
+      <artifactId>jcabi-aspects</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.jcabi</groupId>
+      <artifactId>jcabi-immutable</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.jcabi</groupId>
+      <artifactId>jcabi-log</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.jcabi</groupId>
+      <artifactId>jcabi-manifests</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjrt</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.pegdown</groupId>
+      <artifactId>pegdown</artifactId>
+      <version>1.4.2</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.sourceforge.plantuml</groupId>
+      <artifactId>plantuml</artifactId>
+      <version>7999</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jcabi</groupId>
+      <artifactId>jcabi-xml</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.jcabi</groupId>
+      <artifactId>jcabi-matchers</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.jcabi.incubator</groupId>
+      <artifactId>phandom</artifactId>
+      <version>0.3</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.sourceforge.saxon</groupId>
+      <artifactId>saxon</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.sourceforge.saxon</groupId>
+      <artifactId>saxon</artifactId>
+      <classifier>dom</classifier>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <!-- @see https://github.com/github/maven-plugins/issues/22 -->
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <configuration>
+          <path>${project.artifactId}</path>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>nl.geodienstencentrum.maven</groupId>
+        <artifactId>sass-maven-plugin</artifactId>
+        <version>2.25</version>
+        <executions>
+          <execution>
+            <id>generate-css</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>update-stylesheets</goal>
+            </goals>
+            <configuration>
+              <sassSourceDirectory>${basedir}/src/main/scss</sassSourceDirectory>
+              <destination>${project.build.directory}/css</destination>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.samaxes.maven</groupId>
+        <artifactId>minify-maven-plugin</artifactId>
+        <version>1.7.2</version>
+        <configuration>
+          <charset>UTF-8</charset>
+          <nosuffix>true</nosuffix>
+          <webappTargetDir>${project.build.outputDirectory}</webappTargetDir>
+        </configuration>
+        <executions>
+          <execution>
+            <id>minify-css</id>
+            <goals>
+              <goal>minify</goal>
+            </goals>
+            <configuration>
+              <webappSourceDir>${project.build.directory}</webappSourceDir>
+              <cssSourceDir>css</cssSourceDir>
+              <cssTargetDir>org/requs</cssTargetDir>
+              <cssSourceIncludes>
+                <include>*.css</include>
+              </cssSourceIncludes>
+              <skipMerge>true</skipMerge>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.tunyk.mvn.plugins.htmlcompressor</groupId>
+        <artifactId>htmlcompressor-maven-plugin</artifactId>
+        <version>1.3</version>
+        <executions>
+          <execution>
+            <id>compress-xsl</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>xml</goal>
+            </goals>
+            <configuration>
+              <srcFolder>${basedir}/src/main/xsl</srcFolder>
+              <targetFolder>${project.build.outputDirectory}/org/requs</targetFolder>
+              <fileExt>
+                <ext>xsl</ext>
+              </fileExt>
+              <removeIntertagSpaces>false</removeIntertagSpaces>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  <profiles>
+    <profile>
+      <id>qulice</id>
+      <build>
         <plugins>
-            <plugin>
-                <!-- @see https://github.com/github/maven-plugins/issues/22 -->
-                <groupId>com.github.github</groupId>
-                <artifactId>site-maven-plugin</artifactId>
-                <configuration>
-                    <path>${project.artifactId}</path>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>nl.geodienstencentrum.maven</groupId>
-                <artifactId>sass-maven-plugin</artifactId>
-                <version>2.25</version>
-                <executions>
-                    <execution>
-                        <id>generate-css</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>update-stylesheets</goal>
-                        </goals>
-                        <configuration>
-                            <sassSourceDirectory>${basedir}/src/main/scss</sassSourceDirectory>
-                            <destination>${project.build.directory}/css</destination>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.samaxes.maven</groupId>
-                <artifactId>minify-maven-plugin</artifactId>
-                <version>1.7.2</version>
-                <configuration>
-                    <charset>UTF-8</charset>
-                    <nosuffix>true</nosuffix>
-                    <webappTargetDir>${project.build.outputDirectory}</webappTargetDir>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>minify-css</id>
-                        <goals>
-                            <goal>minify</goal>
-                        </goals>
-                        <configuration>
-                            <webappSourceDir>${project.build.directory}</webappSourceDir>
-                            <cssSourceDir>css</cssSourceDir>
-                            <cssTargetDir>org/requs</cssTargetDir>
-                            <cssSourceIncludes>
-                                <include>*.css</include>
-                            </cssSourceIncludes>
-                            <skipMerge>true</skipMerge>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.tunyk.mvn.plugins.htmlcompressor</groupId>
-                <artifactId>htmlcompressor-maven-plugin</artifactId>
-                <version>1.3</version>
-                <executions>
-                    <execution>
-                        <id>compress-xsl</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>xml</goal>
-                        </goals>
-                        <configuration>
-                            <srcFolder>${basedir}/src/main/xsl</srcFolder>
-                            <targetFolder>${project.build.outputDirectory}/org/requs</targetFolder>
-                            <fileExt>
-                                <ext>xsl</ext>
-                            </fileExt>
-                            <removeIntertagSpaces>false</removeIntertagSpaces>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+          <plugin>
+            <groupId>com.qulice</groupId>
+            <artifactId>qulice-maven-plugin</artifactId>
+            <configuration>
+              <excludes combine.children="append">
+                <exclude>findbugs:.*</exclude>
+                <exclude>xml:/src/test/resources/org/requs/facet/syntax/samples/.*</exclude>
+                <exclude>xml:/src/test/resources/org/requs/facet/syntax/.*</exclude>
+                <exclude>xml:/src/test/resources/org/requs/samples/.*</exclude>
+                <exclude>duplicatefinder:.*</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
         </plugins>
-    </build>
-    <profiles>
-        <profile>
-            <id>qulice</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.qulice</groupId>
-                        <artifactId>qulice-maven-plugin</artifactId>
-                        <configuration>
-                            <excludes>
-                                <exclude>findbugs:.*</exclude>
-                                <exclude>xml:/src/test/resources/org/requs/facet/syntax/samples/.*</exclude>
-                                <exclude>xml:/src/test/resources/org/requs/facet/syntax/.*</exclude>
-                                <exclude>xml:/src/test/resources/org/requs/samples/.*</exclude>
-                                <exclude>duplicatefinder:.*</exclude>
-                            </excludes>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+      </build>
+    </profile>
+  </profiles>
 </project>

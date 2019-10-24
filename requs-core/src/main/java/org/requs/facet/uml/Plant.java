@@ -65,6 +65,7 @@ public final class Plant {
      * @return SVG as a text
      * @throws IOException If fails
      */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static String svg(final String src) throws IOException {
         final String svg;
         if (SystemUtils.IS_OS_WINDOWS) {

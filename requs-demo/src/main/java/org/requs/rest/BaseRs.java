@@ -46,6 +46,7 @@ import javax.ws.rs.core.Response;
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 0.1
  */
 @Resource.Forwarded
 public class BaseRs extends BaseResource {
@@ -53,6 +54,7 @@ public class BaseRs extends BaseResource {
     /**
      * Inset with a version of the product.
      * @return The inset
+     * @checkstyle NonStaticMethodCheck (5 lines)
      */
     @Inset.Runtime
     public final Inset insetVersion() {
@@ -66,6 +68,7 @@ public class BaseRs extends BaseResource {
     /**
      * Supplementary inset.
      * @return The inset
+     * @checkstyle NonStaticMethodCheck (5 lines)
      */
     @Inset.Runtime
     public final Inset insetSupplementary() {

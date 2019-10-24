@@ -57,7 +57,7 @@ public final class IndentationRule implements LineRule {
                 break;
             }
         }
-        final Collection<Violation> violations = new LinkedList<Violation>();
+        final Collection<Violation> violations = new LinkedList<>();
         if (indent % 2 != 0) {
             violations.add(
                 new Violation.Simple(

@@ -33,6 +33,7 @@ import com.jcabi.manifests.Manifests;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import org.apache.commons.io.IOUtils;
@@ -42,8 +43,8 @@ import org.apache.commons.io.IOUtils;
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @checkstyle MultipleStringLiteralsCheck (500 lines)
  * @since 1.1
+ * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
 public final class Main {
 
@@ -59,7 +60,8 @@ public final class Main {
      * @param args List of command-line arguments
      * @throws IOException If something goes wrong inside
      */
-    public static void main(final String[] args) throws IOException {
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
+    public static void main(final String... args) throws IOException {
         final OptionParser parser = new OptionParser("h*vi:o:");
         final PrintStream out = System.out;
         parser.posixlyCorrect(true);
@@ -71,7 +73,8 @@ public final class Main {
                     Manifests.read("Requs-Version"),
                     Manifests.read("Requs-Revision")
                 ),
-                out
+                out,
+                StandardCharsets.UTF_8
             );
         } else if (options.has("i") && options.has("o")) {
             new org.requs.Compiler(

@@ -36,10 +36,10 @@ import com.jcabi.xml.XMLDocument;
 import com.jcabi.xml.XSL;
 import com.jcabi.xml.XSLDocument;
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.CharEncoding;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Assume;
@@ -54,6 +54,7 @@ import org.junit.rules.TemporaryFolder;
  * @since 1.1
  * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public final class CompilerTest {
 
     /**
@@ -88,7 +89,7 @@ public final class CompilerTest {
                 file,
                 IOUtils.toString(
                     CompilerTest.class.getResourceAsStream(file),
-                    CharEncoding.UTF_8
+                    StandardCharsets.UTF_8
                 )
             );
         }
@@ -105,17 +106,17 @@ public final class CompilerTest {
         FileUtils.write(
             new File(input, "b.req"),
             "\n\nUser is a \"good human being\".",
-            CharEncoding.UTF_8
+            StandardCharsets.UTF_8
         );
         FileUtils.write(
             new File(input, "a.req"),
             "\n\nUser is a \"human being\".",
-            CharEncoding.UTF_8
+            StandardCharsets.UTF_8
         );
         FileUtils.write(
             new File(input, "c.req"),
             "\n\n\nUser is a \"very good human being\". bug",
-            CharEncoding.UTF_8
+            StandardCharsets.UTF_8
         );
         new Compiler(input, output).compile();
         MatcherAssert.assertThat(
@@ -145,7 +146,7 @@ public final class CompilerTest {
         FileUtils.write(
             new File(input, "input.req"),
             xml.xpath("/sample/spec/text()").get(0),
-            CharEncoding.UTF_8
+            StandardCharsets.UTF_8
         );
         new Compiler(input, output).compile();
         final XML srs = new XMLDocument(new File(output, "requs.xml"));
@@ -190,7 +191,10 @@ public final class CompilerTest {
             )
         );
         MatcherAssert.assertThat(
-            FileUtils.readFileToString(new File(output, "requs.html")),
+            FileUtils.readFileToString(
+                new File(output, "requs.html"),
+                StandardCharsets.UTF_8
+            ),
             XhtmlMatchers.hasXPath("//xhtml:body")
         );
     }

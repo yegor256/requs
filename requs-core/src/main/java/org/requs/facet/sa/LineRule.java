@@ -78,8 +78,7 @@ public interface LineRule {
         }
         @Override
         public Collection<Violation> enforce(final String spec) {
-            final Collection<Violation> violations =
-                new LinkedList<Violation>();
+            final Collection<Violation> violations = new LinkedList<>();
             final AtomicInteger number = new AtomicInteger(1);
             for (final String line
                 : StringUtils.splitPreserveAllTokens(spec, '\n')) {
@@ -87,15 +86,11 @@ public interface LineRule {
                 violations.addAll(
                     Collections2.transform(
                         this.origin.check(line),
-                        new Function<Violation, Violation>() {
-                            @Override
-                            public Violation apply(final Violation violation) {
-                                return new Violation.Simple(
-                                    violation.details(),
-                                    num, violation.position()
-                                );
-                            }
-                        }
+                        // @checkstyle LineLength (1 line)
+                        (Function<Violation, Violation>) vln -> new Violation.Simple(
+                            vln.details(),
+                            num, vln.position()
+                        )
                     )
                 );
             }

@@ -36,12 +36,12 @@ import com.jcabi.log.Logger;
 import com.jcabi.xml.XML;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.requs.XeFacet;
 import org.xembly.Directive;
@@ -84,10 +84,11 @@ public final class Aggregate implements XeFacet {
         int idx = 0;
         final Directives dirs = new Directives().xpath("/spec").addIf("files");
         for (final File file : files) {
-            final int pos = StringUtils.countMatches(text.toString(), "\n") + 1;
+            int pos = StringUtils.countMatches(text.toString(), "\n");
+            pos += 1;
             Logger.info(this, "source file: %s", file);
             text.append(
-                FileUtils.readFileToString(file, CharEncoding.UTF_8)
+                FileUtils.readFileToString(file, StandardCharsets.UTF_8)
             ).append('\n');
             dirs.add("file")
                 .attr("id", Integer.toString(idx))

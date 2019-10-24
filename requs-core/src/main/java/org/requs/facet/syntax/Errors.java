@@ -41,8 +41,10 @@ import org.xembly.Directives;
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 0.1
  * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 final class Errors extends BaseErrorListener implements Iterable<Directive> {
 
     /**

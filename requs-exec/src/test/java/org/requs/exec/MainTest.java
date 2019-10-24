@@ -33,6 +33,7 @@ import com.jcabi.matchers.XhtmlMatchers;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -46,6 +47,7 @@ import org.junit.rules.TemporaryFolder;
  * Test case for {@link Main}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.1
  */
 public final class MainTest {
 
@@ -129,7 +131,8 @@ public final class MainTest {
         final File output = this.temp.newFolder();
         FileUtils.write(
             new File(input, "employee.req"),
-            "Employee is a \"user of the system\"."
+            "Employee is a \"user of the system\".",
+            StandardCharsets.UTF_8
         );
         Main.main(
             new String[] {
@@ -143,7 +146,10 @@ public final class MainTest {
         );
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(
-                FileUtils.readFileToString(new File(output, "requs.xml"))
+                FileUtils.readFileToString(
+                    new File(output, "requs.xml"),
+                    StandardCharsets.UTF_8
+                )
             ),
             XhtmlMatchers.hasXPaths("/spec/types/type[name='Employee']")
         );

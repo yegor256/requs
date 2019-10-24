@@ -1,260 +1,289 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+Copyright (c) 2009-2017, requs.org
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met: 1) Redistributions of source code must retain the above
+copyright notice, this list of conditions and the following
+disclaimer. 2) Redistributions in binary form must reproduce the above
+copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided
+with the distribution. 3) Neither the name of the requs.org nor
+the names of its contributors may be used to endorse or promote
+products derived from this software without specific prior written
+permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
 <?xml-stylesheet href="../../../../../main/resources/org/requs/facet/syntax/srs.xsl" type="text/xsl"?>
 <spec>
-    <requs>
-        <version>2.0-SNAPSHOT</version>
-        <revision>26172a6</revision>
-        <date>2014-03-23 16:51</date>
-    </requs>
-    <types>
-        <type>
-            <name>SuD</name>
-            <mentioned>
-                <where>3</where>
-                <where>26</where>
-            </mentioned>
-            <info>
-                <informal>a simple calculator app</informal>
-            </info>
-        </type>
-        <type>
-            <name>Fraction</name>
-            <mentioned>
-                <where>5</where>
-                <where>7</where>
-                <where>23</where>
-            </mentioned>
-            <info>
-                <informal>a math calculator</informal>
-            </info>
-            <slots>
-                <slot>
-                    <name>numerator</name>
-                    <mentioned>
-                        <where>8</where>
-                    </mentioned>
-                    <type>Float</type>
-                </slot>
-                <slot>
-                    <name>denominator</name>
-                    <mentioned>
-                        <where>9</where>
-                    </mentioned>
-                    <type>Float</type>
-                </slot>
-            </slots>
-        </type>
-        <type>
-            <name>User</name>
-            <mentioned>
-                <where>11</where>
-                <where>19</where>
-                <where>21</where>
-                <where>31</where>
-            </mentioned>
-            <slots>
-                <slot>
-                    <name>name</name>
-                    <mentioned>
-                        <where>19</where>
-                    </mentioned>
-                </slot>
-                <slot>
-                    <name>address</name>
-                    <mentioned>
-                        <where>19</where>
-                    </mentioned>
-                    <arity>MANY</arity>
-                </slot>
-                <slot>
-                    <name>photo</name>
-                    <mentioned>
-                        <where>19</where>
-                    </mentioned>
-                    <arity>ANY</arity>
-                </slot>
-                <slot>
-                    <name>SSN</name>
-                    <mentioned>
-                        <where>19</where>
-                    </mentioned>
-                    <arity>OPT</arity>
-                </slot>
-            </slots>
-            <parents>
-                <parent>Visitor</parent>
-            </parents>
-        </type>
-    </types>
-    <methods>
-        <method seal="152a04">
-            <id>UC1</id>
-            <mentioned>
-                <where>11</where>
-                <where>17</where>
-            </mentioned>
-            <bindings>
-                <binding>
-                    <name>_self</name>
-                    <type>User</type>
-                </binding>
-                <binding>
-                    <name>user</name>
-                    <type>User</type>
-                </binding>
-                <binding>
-                    <name>fraction</name>
-                    <type>Fraction</type>
-                </binding>
-                <binding>
-                    <name>quotient</name>
-                    <type>Float</type>
-                </binding>
-            </bindings>
-            <object>user</object>
-            <signature>divides two numbers</signature>
-            <steps>
+  <requs>
+    <version>2.0-SNAPSHOT</version>
+    <revision>26172a6</revision>
+    <date>2014-03-23 16:51</date>
+  </requs>
+  <types>
+    <type>
+      <name>SuD</name>
+      <mentioned>
+        <where>3</where>
+        <where>26</where>
+      </mentioned>
+      <info>
+        <informal>a simple calculator app</informal>
+      </info>
+    </type>
+    <type>
+      <name>Fraction</name>
+      <mentioned>
+        <where>5</where>
+        <where>7</where>
+        <where>23</where>
+      </mentioned>
+      <info>
+        <informal>a math calculator</informal>
+      </info>
+      <slots>
+        <slot>
+          <name>numerator</name>
+          <mentioned>
+            <where>8</where>
+          </mentioned>
+          <type>Float</type>
+        </slot>
+        <slot>
+          <name>denominator</name>
+          <mentioned>
+            <where>9</where>
+          </mentioned>
+          <type>Float</type>
+        </slot>
+      </slots>
+    </type>
+    <type>
+      <name>User</name>
+      <mentioned>
+        <where>11</where>
+        <where>19</where>
+        <where>21</where>
+        <where>31</where>
+      </mentioned>
+      <slots>
+        <slot>
+          <name>name</name>
+          <mentioned>
+            <where>19</where>
+          </mentioned>
+        </slot>
+        <slot>
+          <name>address</name>
+          <mentioned>
+            <where>19</where>
+          </mentioned>
+          <arity>MANY</arity>
+        </slot>
+        <slot>
+          <name>photo</name>
+          <mentioned>
+            <where>19</where>
+          </mentioned>
+          <arity>ANY</arity>
+        </slot>
+        <slot>
+          <name>SSN</name>
+          <mentioned>
+            <where>19</where>
+          </mentioned>
+          <arity>OPT</arity>
+        </slot>
+      </slots>
+      <parents>
+        <parent>Visitor</parent>
+      </parents>
+    </type>
+  </types>
+  <methods>
+    <method seal="152a04">
+      <id>UC1</id>
+      <mentioned>
+        <where>11</where>
+        <where>17</where>
+      </mentioned>
+      <bindings>
+        <binding>
+          <name>_self</name>
+          <type>User</type>
+        </binding>
+        <binding>
+          <name>user</name>
+          <type>User</type>
+        </binding>
+        <binding>
+          <name>fraction</name>
+          <type>Fraction</type>
+        </binding>
+        <binding>
+          <name>quotient</name>
+          <type>Float</type>
+        </binding>
+      </bindings>
+      <object>user</object>
+      <signature>divides two numbers</signature>
+      <steps>
+        <step>
+          <number>1</number>
+          <mentioned>
+            <where>12</where>
+          </mentioned>
+          <object>user</object>
+          <signature>creates</signature>
+          <result>fraction</result>
+        </step>
+        <step>
+          <number>2</number>
+          <mentioned>
+            <where>13</where>
+          </mentioned>
+          <object>fraction</object>
+          <signature>calculates</signature>
+          <result>quotient</result>
+          <exceptions>
+            <exception>
+              <when>division by zero</when>
+              <steps>
                 <step>
-                    <number>1</number>
-                    <mentioned>
-                        <where>12</where>
-                    </mentioned>
-                    <object>user</object>
-                    <signature>creates</signature>
-                    <result>fraction</result>
+                  <number>1</number>
+                  <mentioned>
+                    <where>17</where>
+                  </mentioned>
+                  <object>_sud</object>
+                  <signature>"denominator can't be zero"</signature>
                 </step>
-                <step>
-                    <number>2</number>
-                    <mentioned>
-                        <where>13</where>
-                    </mentioned>
-                    <object>fraction</object>
-                    <signature>calculates</signature>
-                    <result>quotient</result>
-                    <exceptions>
-                        <exception>
-                            <when>division by zero</when>
-                            <steps>
-                                <step>
-                                    <number>1</number>
-                                    <mentioned>
-                                        <where>17</where>
-                                    </mentioned>
-                                    <object>_sud</object>
-                                    <signature>"denominator can't be zero"</signature>
-                                </step>
-                            </steps>
-                        </exception>
-                    </exceptions>
-                </step>
-                <step>
-                    <number>3</number>
-                    <mentioned>
-                        <where>14</where>
-                    </mentioned>
-                    <object>user</object>
-                    <signature>"receives results"</signature>
-                    <args>
-                        <arg>quotient</arg>
-                    </args>
-                </step>
-            </steps>
-        </method>
-        <method seal="4396b1">
-            <id>UC2</id>
-            <mentioned>
-                <where>23</where>
-            </mentioned>
-            <bindings>
-                <binding>
-                    <name>_self</name>
-                    <type>Fraction</type>
-                </binding>
-            </bindings>
-            <object>_self</object>
-            <signature>calculates</signature>
-            <info>
-                <informal>just divide numerator to denominator</informal>
-            </info>
-        </method>
-        <method seal="af291d">
-            <id>UC3</id>
-            <mentioned>
-                <where>26</where>
-            </mentioned>
-            <bindings>
-                <binding>
-                    <name>_self</name>
-                    <type>SuD</type>
-                </binding>
-            </bindings>
-            <object>_self</object>
-            <signature>archives data</signature>
-            <steps>
-                <step>
-                    <number>1</number>
-                    <mentioned>
-                        <where>27</where>
-                    </mentioned>
-                    <object>_sud</object>
-                    <signature>"archives all data"</signature>
-                </step>
-                <step>
-                    <number>2</number>
-                    <mentioned>
-                        <where>28</where>
-                    </mentioned>
-                    <object>user</object>
-                    <signature>"reads some data"</signature>
-                    <args>
-                        <arg>file</arg>
-                    </args>
-                </step>
-                <step>
-                    <number>3</number>
-                    <mentioned>
-                        <where>29</where>
-                    </mentioned>
-                    <object>file</object>
-                    <signature>saves itself in binary form</signature>
-                    <args>
-                        <arg>encoding</arg>
-                        <arg>system</arg>
-                    </args>
-                </step>
-            </steps>
-            <attributes>
-                <attribute seal="">delivered</attribute>
-            </attributes>
-        </method>
-        <method seal="599fa6">
-            <id>UC5</id>
-            <mentioned>
-                <where>31</where>
-            </mentioned>
-            <bindings>
-                <binding>
-                    <name>_self</name>
-                    <type>User</type>
-                </binding>
-                <binding>
-                    <name>_arg0</name>
-                    <type>SuD</type>
-                </binding>
-            </bindings>
-            <object>_self</object>
-            <signature>reads important information</signature>
-            <args>
-                <arg>_arg0</arg>
-            </args>
-            <info>
-                <informal>this is a multi-line
+              </steps>
+            </exception>
+          </exceptions>
+        </step>
+        <step>
+          <number>3</number>
+          <mentioned>
+            <where>14</where>
+          </mentioned>
+          <object>user</object>
+          <signature>"receives results"</signature>
+          <args>
+            <arg>quotient</arg>
+          </args>
+        </step>
+      </steps>
+    </method>
+    <method seal="4396b1">
+      <id>UC2</id>
+      <mentioned>
+        <where>23</where>
+      </mentioned>
+      <bindings>
+        <binding>
+          <name>_self</name>
+          <type>Fraction</type>
+        </binding>
+      </bindings>
+      <object>_self</object>
+      <signature>calculates</signature>
+      <info>
+        <informal>just divide numerator to denominator</informal>
+      </info>
+    </method>
+    <method seal="af291d">
+      <id>UC3</id>
+      <mentioned>
+        <where>26</where>
+      </mentioned>
+      <bindings>
+        <binding>
+          <name>_self</name>
+          <type>SuD</type>
+        </binding>
+      </bindings>
+      <object>_self</object>
+      <signature>archives data</signature>
+      <steps>
+        <step>
+          <number>1</number>
+          <mentioned>
+            <where>27</where>
+          </mentioned>
+          <object>_sud</object>
+          <signature>"archives all data"</signature>
+        </step>
+        <step>
+          <number>2</number>
+          <mentioned>
+            <where>28</where>
+          </mentioned>
+          <object>user</object>
+          <signature>"reads some data"</signature>
+          <args>
+            <arg>file</arg>
+          </args>
+        </step>
+        <step>
+          <number>3</number>
+          <mentioned>
+            <where>29</where>
+          </mentioned>
+          <object>file</object>
+          <signature>saves itself in binary form</signature>
+          <args>
+            <arg>encoding</arg>
+            <arg>system</arg>
+          </args>
+        </step>
+      </steps>
+      <attributes>
+        <attribute seal="">delivered</attribute>
+      </attributes>
+    </method>
+    <method seal="599fa6">
+      <id>UC5</id>
+      <mentioned>
+        <where>31</where>
+      </mentioned>
+      <bindings>
+        <binding>
+          <name>_self</name>
+          <type>User</type>
+        </binding>
+        <binding>
+          <name>_arg0</name>
+          <type>SuD</type>
+        </binding>
+      </bindings>
+      <object>_self</object>
+      <signature>reads important information</signature>
+      <args>
+        <arg>_arg0</arg>
+      </args>
+      <info>
+        <informal>this is a multi-line
                     informal use case</informal>
-            </info>
-            <attributes>
-                <attribute seal="">must</attribute>
-            </attributes>
-        </method>
-    </methods>
-    <errors/>
+      </info>
+      <attributes>
+        <attribute seal="">must</attribute>
+      </attributes>
+    </method>
+  </methods>
+  <errors/>
 </spec>

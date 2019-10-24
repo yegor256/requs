@@ -33,7 +33,7 @@ import com.jcabi.aspects.Immutable;
 import com.jcabi.xml.XML;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.TokenStream;
@@ -49,16 +49,17 @@ import org.xembly.Directives;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
+ * @since 0.1
  */
 @Immutable
-@ToString(of = { })
+@ToString
 @EqualsAndHashCode
 public final class AntlrFacet implements XeFacet {
 
     @Override
     public Iterable<Directive> touch(final XML spec) {
         final SpecLexer lexer = new SpecLexer(
-            new ANTLRInputStream(spec.xpath("/spec/input/text()").get(0))
+            CharStreams.fromString(spec.xpath("/spec/input/text()").get(0))
         );
         final TokenStream tokens = new CommonTokenStream(lexer);
         final SpecParser parser = new SpecParser(tokens);
@@ -71,9 +72,8 @@ public final class AntlrFacet implements XeFacet {
         parser.setOntology(onto);
         try {
             parser.clauses();
-        } catch (final RecognitionException ex) {
-            errors.add(ex);
-        } catch (final SyntaxException ex) {
+        } catch (final RecognitionException | SyntaxException
+            | StringIndexOutOfBoundsException ex) {
             errors.add(ex);
         }
         return new Directives().append(onto).append(errors);

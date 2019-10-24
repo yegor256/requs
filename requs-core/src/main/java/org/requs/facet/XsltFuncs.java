@@ -29,7 +29,6 @@
  */
 package org.requs.facet;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Tv;
@@ -40,8 +39,8 @@ import java.util.regex.Pattern;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.pegdown.PegDownProcessor;
 import org.w3c.dom.Node;
 
@@ -76,6 +75,7 @@ public final class XsltFuncs {
      * @param markdown Markdown
      * @return HTML
      */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static String html(final String markdown) {
         return new PegDownProcessor().markdownToHtml(markdown);
     }
@@ -85,17 +85,13 @@ public final class XsltFuncs {
      * @param xml Xml to seal
      * @return Seal as a string
      */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static String seal(final Node xml) {
         final Collection<String> parts = Collections2.transform(
             new XMLDocument(xml).xpath("//*/text()"),
-            new Function<String, String>() {
-                @Override
-                public String apply(final String input) {
-                    return StringEscapeUtils.escapeJava(
-                        input.replaceAll("\\s+", " ")
-                    );
-                }
-            }
+            input -> StringEscapeUtils.escapeJava(
+                input.replaceAll("\\s+", " ")
+            )
         );
         return DigestUtils.md5Hex(
             StringUtils.join(parts, "")
@@ -107,6 +103,7 @@ public final class XsltFuncs {
      * @param node Node
      * @return XML
      */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static String print(final Node node) {
         final String txt = new XMLDocument(node).nodes("/*").get(0).toString();
         final Matcher matcher = XsltFuncs.PTN.matcher(txt);

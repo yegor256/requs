@@ -76,7 +76,7 @@ public final class RegexRule implements LineRule {
     public Collection<Violation> check(final String line) {
         final Pattern ptn = Pattern.compile(this.regex);
         final Matcher matcher = ptn.matcher(line);
-        final Collection<Violation> violations = new LinkedList<Violation>();
+        final Collection<Violation> violations = new LinkedList<>();
         while (matcher.find()) {
             violations.add(
                 new Violation.Simple(

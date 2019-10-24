@@ -41,6 +41,7 @@ import com.jcabi.xml.XSD;
 import com.jcabi.xml.XSDDocument;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
@@ -48,7 +49,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.requs.facet.Aggregate;
 import org.requs.facet.Transform;
@@ -100,7 +100,7 @@ public final class Compiler {
      * @throws IOException If fails
      */
     public Compiler(final File src, final File dest) throws IOException {
-        this(src, dest, new ArrayMap<String, String>());
+        this(src, dest, new ArrayMap<>());
     }
 
     /**
@@ -111,11 +111,12 @@ public final class Compiler {
      * @throws IOException If fails
      * @since 1.14
      */
+    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
     public Compiler(@NotNull final File src, @NotNull final File dest,
         @NotNull final Map<String, String> props) throws IOException {
         this.input = src.getAbsolutePath();
         this.output = dest.getAbsolutePath();
-        this.properties = new ArrayMap<String, String>(props);
+        this.properties = new ArrayMap<>(props);
         if (!src.exists()) {
             throw new IOException(
                 String.format("directory \"%s\" is absent", this.input)
@@ -179,15 +180,10 @@ public final class Compiler {
             new XeFacet.Wrap(new XeFacet.Fixed(Compiler.decor())),
             new Transform("renumber.xsl"),
             new XeFacet.Wrap(
-                new XeFacet() {
-                    @Override
-                    public Iterable<Directive> touch(final XML spec) {
-                        return new Directives().xpath("/*").attr(
-                            "msec",
-                            Long.toString(System.currentTimeMillis() - start)
-                        );
-                    }
-                }
+                spec -> new Directives().xpath("/*").attr(
+                    "msec",
+                    Long.toString(System.currentTimeMillis() - start)
+                )
             ),
         };
         XML spec = new XMLDocument(
@@ -201,7 +197,7 @@ public final class Compiler {
         FileUtils.write(
             new File(this.output, "requs.xml"),
             new StrictXML(spec, Compiler.SCHEMA).toString(),
-            CharEncoding.UTF_8
+            StandardCharsets.UTF_8
         );
         Logger.info(this, "compiled and saved to %s", this.output);
     }
@@ -214,7 +210,7 @@ public final class Compiler {
         final String file = "requs.xsl";
         final String xsl = IOUtils.toString(
             this.getClass().getResourceAsStream(file),
-            CharEncoding.UTF_8
+            StandardCharsets.UTF_8
         );
         FileUtils.write(
             new File(this.output, file),
@@ -222,10 +218,10 @@ public final class Compiler {
                 "css-included-here",
                 IOUtils.toString(
                     this.getClass().getResourceAsStream("requs.css"),
-                    CharEncoding.UTF_8
+                    StandardCharsets.UTF_8
                 )
             ),
-            CharEncoding.UTF_8
+            StandardCharsets.UTF_8
         );
     }
 
@@ -238,7 +234,9 @@ public final class Compiler {
             .xpath("/spec")
             .attr(
                 "time",
-                DateFormatUtils.ISO_DATETIME_FORMAT.format(new Date())
+                DateFormatUtils.ISO_8601_EXTENDED_DATETIME_FORMAT.format(
+                    new Date()
+            )
             )
             .add("requs")
             .add("version").set(Manifests.read("Requs-Version")).up()

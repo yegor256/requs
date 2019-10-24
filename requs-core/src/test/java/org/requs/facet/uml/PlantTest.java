@@ -49,7 +49,7 @@ public final class PlantTest {
      * @throws IOException If fails
      */
     @Test
-    public void buildsSVG() throws IOException {
+    public void buildsSvg() throws IOException {
         Assume.assumeFalse(SystemUtils.IS_OS_WINDOWS);
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(

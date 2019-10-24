@@ -54,7 +54,7 @@ public final class CascadingRule implements Rule {
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public Collection<Violation> enforce(final String text) {
         final String[] lines = StringUtils.splitPreserveAllTokens(text, '\n');
-        final Collection<Violation> violations = new LinkedList<Violation>();
+        final Collection<Violation> violations = new LinkedList<>();
         int indent = 0;
         for (int idx = 0; idx < lines.length; ++idx) {
             final int next = CascadingRule.indent(lines[idx]);

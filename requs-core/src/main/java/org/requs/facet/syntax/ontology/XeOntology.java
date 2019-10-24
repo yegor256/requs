@@ -48,6 +48,7 @@ import org.xembly.Directives;
 @ToString
 @EqualsAndHashCode
 @Loggable(Loggable.DEBUG)
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public final class XeOntology implements Ontology {
 
     /**
@@ -143,6 +144,7 @@ public final class XeOntology implements Ontology {
      * @return Escaped
      * @link https://issues.apache.org/jira/browse/LANG-1019
      */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static String escapeXPath(final String text) {
         final String escaped;
         if (text.indexOf('\'') == -1) {
