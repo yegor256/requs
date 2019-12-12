@@ -13,3 +13,5 @@ env:
 install:
   - sudo apt-get install graphviz
 script: mvn clean install -Pqulice --quiet --batch-mode --errors
+jdk:
+  - openjdk8
