@@ -16,18 +16,16 @@ install: |-
   sudo easy_install src/requs_pygment
 merge:
   script: |-
+    pdd -f /dev/null
     mvn clean install -Pqulice --errors --settings ../settings.xml
     mvn clean site -Psite --settings ../settings.xml
-    mvn clean
-    pdd --source=$(pwd) --verbose --file=/dev/null
 deploy:
   script: |-
+    pdd -f /dev/null
     mvn clean deploy -Pqulice --errors --settings ../settings.xml
-    mvn clean
-    pdd --source=$(pwd) --verbose --file=requs.xml
-    s3cmd --no-progress put requs.xml --config=../s3cfg s3://pdd.teamed.io/requs.xml
 release:
   script: |-
+    pdd -f /dev/null
     mvn versions:set "-DnewVersion=${tag}"
     git commit -am "${tag}"
     mvn clean deploy -Pqulice -Psonatype -Prequs --errors --settings ../settings.xml

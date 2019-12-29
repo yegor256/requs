@@ -4,3 +4,5 @@ target/
 .sass-cache
 .DS_Store
 _site/
+.jekyll-cache
+Gemfile.lock

@@ -160,8 +160,10 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
               <goal>exec</goal>
             </goals>
             <configuration>
-              <executable>jekyll</executable>
+              <executable>bundle</executable>
               <arguments>
+                <argument>exec</argument>
+                <argument>jekyll</argument>
                 <argument>build</argument>
                 <argument>--source</argument>
                 <argument>${basedir}/src/jekyll</argument>

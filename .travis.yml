@@ -12,6 +12,8 @@ env:
     - MAVEN_OPTS="-XX:MaxPermSize=512m -Xmx2g"
 install:
   - sudo apt-get install graphviz
-script: mvn clean install -Pqulice --quiet --batch-mode --errors
+script:
+  - mvn clean install -Pqulice --quiet --batch-mode --errors
+  - mvn clean site -Psite
 jdk:
   - openjdk8
