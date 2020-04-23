@@ -24,6 +24,8 @@ deploy:
     pdd -f /dev/null
     mvn clean deploy -Pqulice --errors --settings ../settings.xml
 release:
+  sensitive:
+    - setting.xml
   script: |-
     pdd -f /dev/null
     mvn versions:set "-DnewVersion=${tag}"
