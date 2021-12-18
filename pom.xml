@@ -43,7 +43,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
   <modules>
     <module>requs-core</module>
     <module>requs-exec</module>
-    <module>requs-demo</module>
     <module>requs-maven-plugin</module>
   </modules>
   <description>Requirements Definition Language</description>
