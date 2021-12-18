@@ -30,6 +30,5 @@
 
 /**
  * The requs-maven-plugin, tests.
- *
  */
 package org.requs.maven;

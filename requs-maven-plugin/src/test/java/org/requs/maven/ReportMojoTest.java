@@ -29,10 +29,12 @@
  */
 package org.requs.maven;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link ReportMojo}.
+ *
+ * @since 1.0
  */
 public class ReportMojoTest {
 

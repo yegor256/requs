@@ -37,9 +37,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -54,8 +51,6 @@ import org.slf4j.impl.StaticLoggerBinder;
  * @since 1.1
  * @checkstyle VisibilityModifierCheck (500 lines)
  */
-@ToString
-@EqualsAndHashCode
 @Mojo(
     name = "compile", threadSafe = true,
     defaultPhase = LifecyclePhase.COMPILE
@@ -69,7 +64,7 @@ public final class CompileMojo extends AbstractMojo {
         required = true,
         defaultValue = "${basedir}/src/main/requs"
     )
-    public transient @NotNull File input;
+    public transient File input;
 
     /**
      * Output directory.
@@ -78,15 +73,15 @@ public final class CompileMojo extends AbstractMojo {
         required = true,
         defaultValue = "${project.build.directory}/requs"
     )
-    public transient @NotNull File output;
+    public transient File output;
 
     /**
      * Optional properties/options.
      * @since 1.14
      */
     @SuppressWarnings("PMD.UseConcurrentHashMap")
-    @Parameter()
-    public transient @NotNull Map<String, String> options =
+    @Parameter
+    public transient Map<String, String> options =
         new ConcurrentHashMap<>(0);
 
     @Override

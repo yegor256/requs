@@ -35,9 +35,6 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkFactory;
 import org.apache.maven.doxia.siterenderer.Renderer;
@@ -57,8 +54,6 @@ import org.slf4j.impl.StaticLoggerBinder;
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle VisibilityModifierCheck (500 lines)
  */
-@ToString
-@EqualsAndHashCode(callSuper = false)
 @Mojo(name = "default")
 @SuppressWarnings("PMD.ExcessiveImports")
 public final class ReportMojo extends AbstractMavenReport {
@@ -66,15 +61,13 @@ public final class ReportMojo extends AbstractMavenReport {
     /**
      * The Maven Project.
      */
-    @Component
-    @NotNull
+    @Parameter(defaultValue = "${project}", readonly = true)
     public transient MavenProject project;
 
     /**
      * Output directory.
      */
     @Parameter(property = "project.reporting.outputDirectory", required = true)
-    @NotNull
     public transient File output;
 
     /**
@@ -84,24 +77,21 @@ public final class ReportMojo extends AbstractMavenReport {
         required = true,
         defaultValue = "${basedir}/src/main/requs"
     )
-    @NotNull
     public transient File source;
 
     /**
      * Optional properties/options.
      * @since 1.14
      */
-    @Parameter(required = false)
-    @NotNull
+    @Parameter()
     @SuppressWarnings("PMD.UseConcurrentHashMap")
     public transient Map<String, String> options =
-        new ConcurrentHashMap<String, String>(0);
+        new ConcurrentHashMap<>(0);
 
     /**
      * Doxia Site Renderer component.
      */
     @Component
-    @NotNull
     public transient Renderer renderer;
 
     @Override
