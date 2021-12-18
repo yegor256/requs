@@ -1,4 +1,4 @@
-<img src="http://img.requs.org/logo.svg" width="192" />
+<img src="logo.svg" width="192" />
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
 [![Managed by Zerocracy](https://www.0crat.com/badge/CAZPZR9FS.svg)](https://www.0crat.com/p/CAZPZR9FS)
@@ -9,11 +9,11 @@
 [![PDD status](http://www.0pdd.com/svg?name=yegor256/requs)](http://www.0pdd.com/p?name=yegor256/requs)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.requs/requs/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.requs/requs)
 
-More details are here: [www.requs.org](http://www.requs.org/)
+Requs is a controlled natural language (CNL) for requirements specifications.
+It explained in details in [this paper](https://www.yegor256.com/pdf/2021/requs.pdf).
+More details about its syntax you can find at [www.requs.org](http://www.requs.org/).
 
-Check this online demo: [demo.requs.org](http://demo.requs.org/)
-
-You need to add this plugin to your `pom.xml`:
+In order to use it in a Java project, just add this plugin to your `pom.xml`:
 
 ```xml
 [...]
@@ -39,13 +39,6 @@ You need to add this plugin to your `pom.xml`:
 Then, add Requs files to `src/main/requs` and name them as `main.req`, etc.
 
 Then, run `mvn clean site` and you will see a report at `target/site/requs`.
-
-See [Requs syntax explained](http://www.requs.org/syntax.html).
-
-## Questions?
-
-If you have any questions about the framework, or something doesn't work as expected,
-please [submit an issue here](https://github.com/yegor256/requs/issues/new).
 
 ## How to contribute?
 
