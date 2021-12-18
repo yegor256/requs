@@ -37,7 +37,7 @@ import com.jcabi.matchers.XhtmlMatchers;
 import java.net.HttpURLConnection;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Integration case for {@link InstantRs}.
@@ -50,10 +50,6 @@ public final class InstantRsITCase {
      */
     private static final String HOME = System.getProperty("tomcat.home");
 
-    /**
-     * InstantRs can process a Requs spec.
-     * @throws Exception If some problem inside
-     */
     @Test
     public void processesRequsSpec() throws Exception {
         final String spec = StringUtils.join(

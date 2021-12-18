@@ -36,7 +36,7 @@ import java.io.StringReader;
 import javax.json.Json;
 import javax.ws.rs.core.SecurityContext;
 import org.hamcrest.MatcherAssert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 /**
@@ -45,10 +45,6 @@ import org.mockito.Mockito;
  */
 public final class InstantRsTest {
 
-    /**
-     * InstantRs can process a Requs spec.
-     * @throws Exception If some problem inside
-     */
     @Test
     public void processesRequsSpec() throws Exception {
         final InstantRs res = new InstantRs();

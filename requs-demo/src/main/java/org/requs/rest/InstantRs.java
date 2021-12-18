@@ -29,7 +29,6 @@
  */
 package org.requs.rest;
 
-import com.google.common.io.Files;
 import com.jcabi.aspects.Loggable;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
@@ -39,8 +38,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import javax.json.Json;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -73,15 +72,15 @@ public final class InstantRs extends BaseRs {
     @Produces(MediaType.APPLICATION_JSON)
     @Loggable
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    public String post(@NotNull @FormParam("text") final String text)
+    public String post(@FormParam("text") final String text)
         throws IOException {
-        final File input = Files.createTempDir();
+        final File input = Files.createTempDirectory("").toFile();
         FileUtils.write(
             new File(input, "in.req"),
             text,
             StandardCharsets.UTF_8
         );
-        final File output = Files.createTempDir();
+        final File output = Files.createTempDirectory("").toFile();
         try {
             new org.requs.Compiler(input, output).compile();
             final XML xml = new XMLDocument(

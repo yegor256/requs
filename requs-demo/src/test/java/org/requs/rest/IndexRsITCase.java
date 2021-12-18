@@ -37,8 +37,8 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * Integration case for {@link IndexRs}.
@@ -52,10 +52,6 @@ public final class IndexRsITCase {
      */
     private static final String HOME = System.getProperty("tomcat.home");
 
-    /**
-     * IndexRs can hit public pages.
-     * @throws Exception If some problem inside
-     */
     @Test
     public void hitsPublicPages() throws Exception {
         final String[] pages = {
@@ -75,12 +71,8 @@ public final class IndexRsITCase {
         }
     }
 
-    /**
-     * IndexRs can hit not-found pages.
-     * @throws Exception If some problem inside
-     */
     @Test
-    @Ignore
+    @Disabled
     public void hitsAbsentPages() throws Exception {
         final String[] pages = {
             "/page-doesnt-exist",
@@ -98,10 +90,6 @@ public final class IndexRsITCase {
         }
     }
 
-    /**
-     * IndexRs can render version.
-     * @throws Exception If some problem inside
-     */
     @Test
     public void rendersVersion() throws Exception {
         new JdkRequest(IndexRsITCase.HOME)
@@ -114,10 +102,6 @@ public final class IndexRsITCase {
             .assertXPath("/page/version");
     }
 
-    /**
-     * IndexRs can render exception.
-     * @throws Exception If some problem inside
-     */
     @Test
     public void rendersException() throws Exception {
         new JdkRequest(IndexRsITCase.HOME)

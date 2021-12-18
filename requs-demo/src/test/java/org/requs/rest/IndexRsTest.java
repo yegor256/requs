@@ -36,7 +36,7 @@ import com.rexsl.mock.UriInfoMocker;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import org.hamcrest.MatcherAssert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 /**
@@ -45,10 +45,6 @@ import org.mockito.Mockito;
  */
 public final class IndexRsTest {
 
-    /**
-     * IndexRs can render front page.
-     * @throws Exception If some problem inside
-     */
     @Test
     public void rendersFrontPage() throws Exception {
         final IndexRs res = new IndexRs();
