@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2017, requs.org
+ * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,7 @@ import org.xembly.Xembler;
 /**
  * Xembly producing facet.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 1.9
  */

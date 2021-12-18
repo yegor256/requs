@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2017, requs.org
+ * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,9 +37,7 @@ import java.util.Collection;
 import javax.xml.transform.Source;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
 import org.requs.XeFacet;
 import org.requs.facet.syntax.ontology.Flow;
 import org.xembly.Directives;
@@ -47,23 +45,12 @@ import org.xembly.Xembler;
 
 /**
  * Test case for {@link AntlrFacet}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 0.1
  */
 public final class AntlrFacetTest {
 
-    /**
-     * Temporary folder.
-     * @checkstyle VisibilityModifier (3 lines)
-     */
-    @Rule
-    public transient TemporaryFolder temp = new TemporaryFolder();
-
-    /**
-     * AntlrFacet can parse input text and produce clauses.
-     * @throws Exception When necessary
-     */
     @Test
     public void parsesInputAndProducesTypes() throws Exception {
         MatcherAssert.assertThat(
@@ -72,10 +59,6 @@ public final class AntlrFacetTest {
         );
     }
 
-    /**
-     * AntlrFacet can report syntax/grammar errors found.
-     * @throws Exception When necessary
-     */
     @Test
     public void reportsErrorsFound() throws Exception {
         MatcherAssert.assertThat(
@@ -83,7 +66,7 @@ public final class AntlrFacetTest {
                 "User is ?. Site is ?. Employee is a User."
             ),
             XhtmlMatchers.hasXPaths(
-                "/spec/types[count(type) = 3]",
+                "/spec/types[count(type) = 2]",
                 "//type[name='User']",
                 "//type[name='Employee' and parents/type='User']",
                 "/spec/errors[count(error)>2]",
@@ -92,10 +75,6 @@ public final class AntlrFacetTest {
         );
     }
 
-    /**
-     * AntlrFacet can compile a complex document.
-     * @throws Exception When necessary
-     */
     @Test
     public void compilesComplexSpec() throws Exception {
         MatcherAssert.assertThat(
@@ -123,10 +102,6 @@ public final class AntlrFacetTest {
         );
     }
 
-    /**
-     * AntlrFacet can parse all possible cases.
-     * @throws Exception When necessary
-     */
     @Test
     public void parsesAllPossibleCases() throws Exception {
         MatcherAssert.assertThat(
@@ -140,10 +115,6 @@ public final class AntlrFacetTest {
         );
     }
 
-    /**
-     * AntlrFacet can parse all possible errors.
-     * @throws Exception When necessary
-     */
     @Test
     public void parsesAllPossibleErrors() throws Exception {
         final String[] specs = {
@@ -170,10 +141,6 @@ public final class AntlrFacetTest {
         }
     }
 
-    /**
-     * AntlrFacet can parse all samples.
-     * @throws Exception When necessary
-     */
     @Test
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public void parsesAllSamples() throws Exception {

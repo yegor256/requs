@@ -9,9 +9,11 @@
 [![PDD status](http://www.0pdd.com/svg?name=yegor256/requs)](http://www.0pdd.com/p?name=yegor256/requs)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.requs/requs/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.requs/requs)
 
-Requs is a controlled natural language (CNL) for requirements specifications.
-It explained in details in [this paper](https://www.yegor256.com/pdf/2021/requs.pdf).
-More details about its syntax you can find at [www.requs.org](http://www.requs.org/).
+REQUS is a controlled natural language (CNL) for requirements specifications.
+It explained in details in [this paper](https://www.yegor256.com/pdf/2021/requs.pdf),
+which was published in the
+[Proceedings of the 1st ACM SIGPLAN International Workshop on Beyond Code: No Code (BCNC)](https://dl.acm.org/doi/abs/10.1145/3486949.3486963).
+More details about REQUS syntax you can find at [www.requs.org](http://www.requs.org/).
 
 In order to use it in a Java project, just add this plugin to your `pom.xml`:
 
@@ -36,7 +38,7 @@ In order to use it in a Java project, just add this plugin to your `pom.xml`:
 </build>
 ```
 
-Then, add Requs files to `src/main/requs` and name them as `main.req`, etc.
+Then, add REQUS files to `src/main/requs` and name them as `main.req`, etc.
 
 Then, run `mvn clean site` and you will see a report at `target/site/requs`.
 

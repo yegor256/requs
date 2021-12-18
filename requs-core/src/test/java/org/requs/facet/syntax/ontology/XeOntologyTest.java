@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2017, requs.org
+ * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,21 +31,17 @@ package org.requs.facet.syntax.ontology;
 
 import com.jcabi.matchers.XhtmlMatchers;
 import org.hamcrest.MatcherAssert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xembly.Xembler;
 
 /**
  * Test case for {@link XeOntology}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 1.1
  */
 public final class XeOntologyTest {
 
-    /**
-     * XeOntology can do manipulations.
-     * @throws Exception When necessary
-     */
     @Test
     public void manipulatesWithTypesAndUseCases() throws Exception {
         final XeOntology onto = new XeOntology();
@@ -64,10 +60,6 @@ public final class XeOntologyTest {
         );
     }
 
-    /**
-     * XeOntology can avoid duplication.
-     * @throws Exception When necessary
-     */
     @Test
     public void avoidsDuplication() throws Exception {
         final XeOntology onto = new XeOntology();
@@ -80,10 +72,6 @@ public final class XeOntologyTest {
         );
     }
 
-    /**
-     * XeType can avoid duplications.
-     * @throws Exception When necessary
-     */
     @Test
     public void avoidsDuplicationOfMethods() throws Exception {
         final XeOntology onto = new XeOntology();

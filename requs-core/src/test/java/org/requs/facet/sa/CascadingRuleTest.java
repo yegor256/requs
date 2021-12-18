@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2017, requs.org
+ * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,34 +32,26 @@ package org.requs.facet.sa;
 import com.jcabi.aspects.Tv;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link CascadingRule}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 1.14
  */
 public final class CascadingRuleTest {
 
-    /**
-     * CascadingRule can check input.
-     * @throws Exception If fails
-     */
     @Test
-    public void checksInput() throws Exception {
+    public void checksInput() {
         MatcherAssert.assertThat(
             new CascadingRule().enforce("hey\n  works\n    fine\nstart"),
             Matchers.empty()
         );
     }
 
-    /**
-     * CascadingRule can check invalid input.
-     * @throws Exception If fails
-     */
     @Test
-    public void checksInvalidInput() throws Exception {
+    public void checksInvalidInput() {
         MatcherAssert.assertThat(
             new CascadingRule().enforce(
                 "\n\n\n  hey\n   three!"

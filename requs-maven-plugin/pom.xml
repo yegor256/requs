@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-Copyright (c) 2009-2017, requs.org
+Copyright (c) 2009-2021, Yegor Bugayenko
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -130,17 +130,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-site-renderer</artifactId>
       <version>1.4</version>
-    </dependency>
-    <dependency>
-      <groupId>net.sourceforge.saxon</groupId>
-      <artifactId>saxon</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.sourceforge.saxon</groupId>
-      <artifactId>saxon</artifactId>
-      <classifier>dom</classifier>
-      <scope>runtime</scope>
     </dependency>
   </dependencies>
   <build>

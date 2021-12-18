@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2017, requs.org
+ * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,7 @@ import org.requs.Facet;
 /**
  * Transform.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 0.1
  */
@@ -68,7 +68,7 @@ public final class Transform implements Facet {
         final URL url = Transform.class.getResource(this.sheet);
         if (url == null) {
             throw new IllegalArgumentException(
-                String.format("stylesheet '%s' not found", this.sheet)
+                String.format("Stylesheet '%s' not found", this.sheet)
             );
         }
         return XSLDocument.make(url)

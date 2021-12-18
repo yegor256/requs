@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2017, requs.org
+ * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,22 +31,18 @@ package org.requs.facet.syntax.ontology;
 
 import com.jcabi.matchers.XhtmlMatchers;
 import org.hamcrest.MatcherAssert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xembly.Directives;
 import org.xembly.Xembler;
 
 /**
  * Test case for {@link XeMethod}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 1.1
  */
 public final class XeMethodTest {
 
-    /**
-     * XeMethod can do type manipulations.
-     * @throws Exception When necessary
-     */
     @Test
     public void manipulatesWithMethod() throws Exception {
         final Directives dirs = new Directives().add("m");
@@ -72,10 +68,6 @@ public final class XeMethodTest {
         );
     }
 
-    /**
-     * XeMethod can avoid creating duplicate steps.
-     * @throws Exception When necessary
-     */
     @Test
     public void avoidsDuplicateSteps() throws Exception {
         final Directives dirs = new Directives().add("mtd");
@@ -88,10 +80,6 @@ public final class XeMethodTest {
         );
     }
 
-    /**
-     * XeMethod can set attributes.
-     * @throws Exception When necessary
-     */
     @Test
     public void setsAttributes() throws Exception {
         final Directives dirs = new Directives().add("x");
@@ -110,10 +98,6 @@ public final class XeMethodTest {
         );
     }
 
-    /**
-     * XeMethod can create NFR.
-     * @throws Exception When necessary
-     */
     @Test
     public void createsNfr() throws Exception {
         final Directives dirs = new Directives().add("xx");

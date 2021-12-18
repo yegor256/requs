@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2017, requs.org
+ * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,6 +33,10 @@ import com.google.common.collect.Collections2;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Tv;
 import com.jcabi.xml.XMLDocument;
+import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.util.data.DataHolder;
+import com.vladsch.flexmark.util.data.MutableDataSet;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,13 +45,12 @@ import lombok.ToString;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
-import org.pegdown.PegDownProcessor;
 import org.w3c.dom.Node;
 
 /**
  * XSLT functions (utility class, but this is the only option with Saxon).
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 1.9
  */
@@ -77,7 +80,12 @@ public final class XsltFuncs {
      */
     @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static String html(final String markdown) {
-        return new PegDownProcessor().markdownToHtml(markdown);
+        final DataHolder options = new MutableDataSet();
+        final Parser parser = Parser.builder(options).build();
+        final HtmlRenderer renderer = HtmlRenderer.builder(options).build();
+        final com.vladsch.flexmark.util.ast.Node document =
+            parser.parse(markdown);
+        return renderer.render(document);
     }
 
     /**

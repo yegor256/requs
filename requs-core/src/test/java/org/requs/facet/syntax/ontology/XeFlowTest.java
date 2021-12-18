@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2017, requs.org
+ * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,22 +32,18 @@ package org.requs.facet.syntax.ontology;
 import com.jcabi.aspects.Tv;
 import com.jcabi.matchers.XhtmlMatchers;
 import org.hamcrest.MatcherAssert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xembly.Directives;
 import org.xembly.Xembler;
 
 /**
  * Test case for {@link XeFlow}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 1.8
  */
 public final class XeFlowTest {
 
-    /**
-     * XeFlow can do bindings.
-     * @throws Exception When necessary
-     */
     @Test
     public void manipulatesWithBindings() throws Exception {
         final Directives dirs = new Directives().add("f");
@@ -63,10 +59,6 @@ public final class XeFlowTest {
         );
     }
 
-    /**
-     * XeFlow can avoid duplicate bindings.
-     * @throws Exception When necessary
-     */
     @Test
     public void avoidsDuplicateBindings() throws Exception {
         final Directives dirs = new Directives().add("f1");

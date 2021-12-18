@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2017, requs.org
+ * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,19 +33,16 @@ import com.jcabi.matchers.XhtmlMatchers;
 import com.jcabi.xml.XMLDocument;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link Transform}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 0.1
  */
 public final class TransformTest {
 
-    /**
-     * Transform can check seals.
-     */
     @Test
     public void checksSeals() {
         MatcherAssert.assertThat(
@@ -69,9 +66,6 @@ public final class TransformTest {
         );
     }
 
-    /**
-     * Transform can check seals.
-     */
     @Test
     public void checksTypes() {
         MatcherAssert.assertThat(
@@ -95,9 +89,6 @@ public final class TransformTest {
         );
     }
 
-    /**
-     * Transform can check signatures.
-     */
     @Test
     public void checksSignatures() {
         MatcherAssert.assertThat(

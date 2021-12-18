@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-Copyright (c) 2009-2017, requs.org
+Copyright (c) 2009-2021, Yegor Bugayenko
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -74,9 +74,9 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.pegdown</groupId>
-      <artifactId>pegdown</artifactId>
-      <version>1.4.2</version>
+      <groupId>com.vladsch.flexmark</groupId>
+      <artifactId>flexmark-all</artifactId>
+      <version>0.62.2</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -106,6 +106,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-xml</artifactId>
+      <version>0.23.2</version>
     </dependency>
     <dependency>
       <groupId>com.jcabi</groupId>
@@ -121,10 +122,12 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>net.sourceforge.saxon</groupId>
       <artifactId>saxon</artifactId>
+      <version>9.1.0.8</version>
     </dependency>
     <dependency>
       <groupId>net.sourceforge.saxon</groupId>
       <artifactId>saxon</artifactId>
+      <version>9.1.0.8</version>
       <classifier>dom</classifier>
     </dependency>
     <dependency>

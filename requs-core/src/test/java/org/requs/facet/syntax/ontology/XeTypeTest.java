@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2017, requs.org
+ * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,22 +31,18 @@ package org.requs.facet.syntax.ontology;
 
 import com.jcabi.matchers.XhtmlMatchers;
 import org.hamcrest.MatcherAssert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xembly.Directives;
 import org.xembly.Xembler;
 
 /**
  * Test case for {@link XeType}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 1.1
  */
 public final class XeTypeTest {
 
-    /**
-     * XeType can do type manipulations.
-     * @throws Exception When necessary
-     */
     @Test
     public void manipulatesWithType() throws Exception {
         final Directives dirs = new Directives().add("t");

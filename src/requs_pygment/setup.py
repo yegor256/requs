@@ -7,7 +7,7 @@ setup(
     install_requires = ['pygments'],
     py_modules = ['requs_pygment'],
     author = 'Yegor Bugayenko',
-    author_email = 'yegor@tpc2.com',
+    author_email = 'yegor256@gmail.com',
     description = 'Requs Highlighting Pygment',
     license = 'BSD',
     keywords = 'requs',

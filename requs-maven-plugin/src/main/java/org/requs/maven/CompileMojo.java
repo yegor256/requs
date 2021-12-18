@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2017, requs.org
+ * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,13 +51,13 @@ import org.slf4j.impl.StaticLoggerBinder;
 /**
  * Compile requs sources into XML.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 1.1
  * @checkstyle VisibilityModifierCheck (500 lines)
  */
 @ToString
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @Mojo(
     name = "compile", threadSafe = true,
     defaultPhase = LifecyclePhase.COMPILE
@@ -71,8 +71,7 @@ public final class CompileMojo extends AbstractMojo {
         required = true,
         defaultValue = "${basedir}/src/main/requs"
     )
-    @NotNull
-    public transient File input;
+    public transient @NotNull File input;
 
     /**
      * Output directory.
@@ -81,18 +80,16 @@ public final class CompileMojo extends AbstractMojo {
         required = true,
         defaultValue = "${project.build.directory}/requs"
     )
-    @NotNull
-    public transient File output;
+    public transient @NotNull File output;
 
     /**
      * Optional properties/options.
      * @since 1.14
      */
-    @Parameter(required = false)
-    @NotNull
     @SuppressWarnings("PMD.UseConcurrentHashMap")
-    public transient Map<String, String> options =
-        new ConcurrentHashMap<String, String>(0);
+    @Parameter()
+    public transient @NotNull Map<String, String> options =
+        new ConcurrentHashMap<>(0);
 
     @Override
     public void execute() throws MojoFailureException {

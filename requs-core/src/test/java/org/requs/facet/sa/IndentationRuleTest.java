@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2017, requs.org
+ * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,20 +31,16 @@ package org.requs.facet.sa;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link IndentationRule}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 1.14
  */
 public final class IndentationRuleTest {
 
-    /**
-     * IndentationRule can check input.
-     * @throws Exception If fails
-     */
     @Test
     public void checksInput() throws Exception {
         MatcherAssert.assertThat(
@@ -53,10 +49,6 @@ public final class IndentationRuleTest {
         );
     }
 
-    /**
-     * IndentationRule can check invalid input.
-     * @throws Exception If fails
-     */
     @Test
     public void checksInvalidInput() throws Exception {
         MatcherAssert.assertThat(

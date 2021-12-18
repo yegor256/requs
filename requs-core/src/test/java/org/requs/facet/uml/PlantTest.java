@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2017, requs.org
+ * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,26 +31,22 @@ package org.requs.facet.uml;
 
 import com.jcabi.matchers.XhtmlMatchers;
 import java.io.IOException;
-import org.apache.commons.lang3.SystemUtils;
 import org.hamcrest.MatcherAssert;
-import org.junit.Assume;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 /**
  * Test case for {@link Plant}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 1.11
  */
 public final class PlantTest {
 
-    /**
-     * SequenceDiagrams can build SVG.
-     * @throws IOException If fails
-     */
     @Test
+    @DisabledOnOs(OS.WINDOWS)
     public void buildsSvg() throws IOException {
-        Assume.assumeFalse(SystemUtils.IS_OS_WINDOWS);
         MatcherAssert.assertThat(
             XhtmlMatchers.xhtml(
                 Plant.svg("@startuml\nBob -> Alice : hello\n@enduml\n")

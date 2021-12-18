@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009-2017, requs.org
+ * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,19 +37,19 @@ import com.jcabi.xml.XSL;
 import com.jcabi.xml.XSLDocument;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.Collection;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assume;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Test case for {@link org.requs.Compiler}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 1.1
  * @checkstyle MultipleStringLiteralsCheck (500 lines)
@@ -62,19 +62,8 @@ public final class CompilerTest {
      */
     private static final String BIN = "xsltproc";
 
-    /**
-     * Temporary folder.
-     * @checkstyle VisibilityModifier (3 lines)
-     */
-    @Rule
-    public transient TemporaryFolder temp = new TemporaryFolder();
-
-    /**
-     * Compiler can parse all samples.
-     * @throws Exception When necessary
-     */
     @Test
-    public void parsesAllSamples() throws Exception {
+    public void parsesAllSamples(@TempDir final Path temp) throws Exception {
         final String[] files = {
             "samples/empty-input.xml",
             "samples/all-possible-constructs.xml",
@@ -86,6 +75,7 @@ public final class CompilerTest {
         };
         for (final String file : files) {
             this.parses(
+                temp,
                 file,
                 IOUtils.toString(
                     CompilerTest.class.getResourceAsStream(file),
@@ -95,14 +85,10 @@ public final class CompilerTest {
         }
     }
 
-    /**
-     * Compiler can combine multiple files.
-     * @throws Exception When necessary
-     */
     @Test
-    public void combinesMultipleFiles() throws Exception {
-        final File input = this.temp.newFolder();
-        final File output = this.temp.newFolder();
+    public void combinesMultipleFiles(@TempDir final Path temp) throws Exception {
+        final File input = temp.resolve("input").toFile();
+        final File output = temp.resolve("output").toFile();
         FileUtils.write(
             new File(input, "b.req"),
             "\n\nUser is a \"good human being\".",
@@ -139,10 +125,11 @@ public final class CompilerTest {
      * @param text Text to parse
      * @throws Exception When necessary
      */
-    private void parses(final String file, final String text) throws Exception {
+    private void parses(final Path temp, final String file,
+        final String text) throws Exception {
         final XML xml = new XMLDocument(text);
-        final File input = this.temp.newFolder();
-        final File output = this.temp.newFolder();
+        final File input = temp.resolve("input").toFile();
+        final File output = temp.resolve("output").toFile();
         FileUtils.write(
             new File(input, "input.req"),
             xml.xpath("/sample/spec/text()").get(0),
@@ -187,7 +174,7 @@ public final class CompilerTest {
             ).stdout(),
             Matchers.describedAs(
                 file,
-                Matchers.isEmptyString()
+                Matchers.is(Matchers.emptyString())
             )
         );
         MatcherAssert.assertThat(
@@ -213,9 +200,8 @@ public final class CompilerTest {
         } catch (final IllegalStateException ex) {
             ver = "";
         }
-        Assume.assumeThat(
-            ver,
-            Matchers.containsString("libxml")
+        Assumptions.assumeTrue(
+            ver.contains("libxml")
         );
     }
 
