@@ -69,13 +69,18 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <artifactId>validation-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.aspectj</groupId>
-      <artifactId>aspectjrt</artifactId>
-      <scope>compile</scope>
+      <groupId>com.vladsch.flexmark</groupId>
+      <artifactId>flexmark</artifactId>
+      <version>0.62.2</version>
     </dependency>
     <dependency>
       <groupId>com.vladsch.flexmark</groupId>
-      <artifactId>flexmark-all</artifactId>
+      <artifactId>flexmark-util-data</artifactId>
+      <version>0.62.2</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vladsch.flexmark</groupId>
+      <artifactId>flexmark-util-ast</artifactId>
       <version>0.62.2</version>
     </dependency>
     <dependency>
@@ -123,12 +128,14 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <groupId>net.sourceforge.saxon</groupId>
       <artifactId>saxon</artifactId>
       <version>9.1.0.8</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>net.sourceforge.saxon</groupId>
       <artifactId>saxon</artifactId>
       <version>9.1.0.8</version>
       <classifier>dom</classifier>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>

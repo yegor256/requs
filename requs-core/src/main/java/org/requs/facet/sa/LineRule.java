@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -43,8 +43,6 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Rule of one line.
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.10
  */
 @Immutable
@@ -59,6 +57,8 @@ public interface LineRule {
 
     /**
      * Wrap.
+     *
+     * @since 1.10
      */
     @Immutable
     @ToString
@@ -69,6 +69,7 @@ public interface LineRule {
          * Original rule.
          */
         private final transient LineRule origin;
+
         /**
          * Ctor.
          * @param rule Original rule
@@ -76,6 +77,7 @@ public interface LineRule {
         public Wrap(final LineRule rule) {
             this.origin = rule;
         }
+
         @Override
         public Collection<Violation> enforce(final String spec) {
             final Collection<Violation> violations = new LinkedList<>();

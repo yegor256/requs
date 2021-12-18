@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -39,8 +39,6 @@ import org.xembly.Directives;
 /**
  * Syntax analysis.
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 0.1
  * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */

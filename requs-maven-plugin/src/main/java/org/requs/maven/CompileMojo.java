@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -51,8 +51,6 @@ import org.slf4j.impl.StaticLoggerBinder;
 /**
  * Compile requs sources into XML.
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.1
  * @checkstyle VisibilityModifierCheck (500 lines)
  */

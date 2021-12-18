@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -37,8 +37,6 @@ import lombok.ToString;
 /**
  * Violation.
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.10
  */
 @Immutable
@@ -64,6 +62,8 @@ public interface Violation {
 
     /**
      * Simple implementation.
+     *
+     * @since 1.0
      */
     @Immutable
     @ToString
@@ -74,14 +74,17 @@ public interface Violation {
          * Descr.
          */
         private final transient String txt;
+
         /**
          * Line number.
          */
         private final transient int num;
+
         /**
          * Position in line.
          */
         private final transient int pos;
+
         /**
          * Ctor.
          * @param text Description
@@ -93,14 +96,17 @@ public interface Violation {
             this.num = line;
             this.pos = position;
         }
+
         @Override
         public int line() {
             return this.num;
         }
+
         @Override
         public int position() {
             return this.pos;
         }
+
         @Override
         public String details() {
             return this.txt;

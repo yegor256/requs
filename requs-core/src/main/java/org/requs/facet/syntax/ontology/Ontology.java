@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -43,8 +43,6 @@ import org.xembly.Directive;
  * type.explain("a person working in a Company");
  * </pre>
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.1
  */
 public interface Ontology extends Iterable<Directive> {

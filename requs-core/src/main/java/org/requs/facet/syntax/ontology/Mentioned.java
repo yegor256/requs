@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -32,8 +32,6 @@ package org.requs.facet.syntax.ontology;
 /**
  * Something mentioned in source code.
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.1
  */
 public interface Mentioned {

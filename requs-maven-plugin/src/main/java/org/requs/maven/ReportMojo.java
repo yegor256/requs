@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -53,8 +53,6 @@ import org.slf4j.impl.StaticLoggerBinder;
 /**
  * Generate site reports.
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.1
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle VisibilityModifierCheck (500 lines)

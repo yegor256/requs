@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -49,8 +49,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Test case for {@link org.requs.Compiler}.
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.1
  * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
@@ -121,6 +119,7 @@ public final class CompilerTest {
 
     /**
      * Compiler can parse given text.
+     * @param temp Temp file
      * @param file File we're parsing
      * @param text Text to parse
      * @throws Exception When necessary
@@ -148,7 +147,7 @@ public final class CompilerTest {
             Matchers.describedAs(
                 file,
                 XhtmlMatchers.hasXPaths(
-                    xpaths.toArray(new String[xpaths.size()])
+                    xpaths.toArray(new String[0])
                 )
             )
         );

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -37,8 +37,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link Transform}.
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 0.1
  */
 public final class TransformTest {

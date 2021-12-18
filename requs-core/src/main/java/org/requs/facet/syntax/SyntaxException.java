@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -32,8 +32,6 @@ package org.requs.facet.syntax;
 /**
  * Syntax exception.
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.4
  */
 final class SyntaxException extends RuntimeException {

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -50,8 +50,6 @@ import org.w3c.dom.Node;
 /**
  * XSLT functions (utility class, but this is the only option with Saxon).
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.9
  */
 @Immutable

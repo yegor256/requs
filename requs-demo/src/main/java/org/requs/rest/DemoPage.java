@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -42,8 +42,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * <p>The class is mutable and NOT thread-safe.
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 0.1
  */
 @XmlRootElement(name = "page")

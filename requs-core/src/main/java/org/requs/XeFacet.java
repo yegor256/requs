@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -46,8 +46,6 @@ import org.xembly.Xembler;
 /**
  * Xembly producing facet.
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.9
  */
 @Immutable
@@ -64,6 +62,8 @@ public interface XeFacet {
 
     /**
      * Wrap into Facet.
+     *
+     * @since 1.9
      */
     @Immutable
     @ToString
@@ -74,6 +74,7 @@ public interface XeFacet {
          * Original facet.
          */
         private final transient XeFacet origin;
+
         /**
          * Ctor.
          * @param fct Original facet
@@ -81,6 +82,7 @@ public interface XeFacet {
         public Wrap(final XeFacet fct) {
             this.origin = fct;
         }
+
         @Override
         public XML touch(final XML spec) throws IOException {
             final Node node = spec.node();
@@ -98,6 +100,8 @@ public interface XeFacet {
 
     /**
      * Always returns the same.
+     *
+     * @since 1.9
      */
     @Immutable
     @ToString(of = { })
@@ -108,6 +112,7 @@ public interface XeFacet {
          * Dirs.
          */
         private final transient Array<Directive> dirs;
+
         /**
          * Ctor.
          * @param list List of directives
@@ -115,6 +120,7 @@ public interface XeFacet {
         public Fixed(final Iterable<Directive> list) {
             this.dirs = new Array<Directive>(list);
         }
+
         @Override
         public Iterable<Directive> touch(final XML spec) {
             return Collections.unmodifiableCollection(this.dirs);

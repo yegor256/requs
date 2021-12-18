@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -45,8 +45,6 @@ import org.xembly.Xembler;
 
 /**
  * Test case for {@link AntlrFacet}.
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 0.1
  */
 public final class AntlrFacetTest {
@@ -162,7 +160,7 @@ public final class AntlrFacetTest {
             MatcherAssert.assertThat(
                 AntlrFacetTest.parse(xml.xpath("/sample/spec/text()").get(0)),
                 XhtmlMatchers.hasXPaths(
-                    xpaths.toArray(new String[xpaths.size()])
+                    xpaths.toArray(new String[0])
                 )
             );
         }

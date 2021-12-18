@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -30,8 +30,5 @@
 
 /**
  * Requs, tests.
- *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  */
 package org.requs;

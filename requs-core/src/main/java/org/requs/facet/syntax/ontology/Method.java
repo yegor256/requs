@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -32,8 +32,6 @@ package org.requs.facet.syntax.ontology;
 /**
  * Use case.
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.1
  */
 public interface Method extends Flow, Mentioned, Signature {

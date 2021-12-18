@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -32,32 +32,36 @@ package org.requs.facet.syntax.ontology;
 /**
  * Slot of a type.
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.1
  */
 public interface Slot extends Mentioned, Informal {
 
     /**
      * Arity.
+     *
+     * @since 1.1
      */
     enum Arity {
         /**
          * One or many.
          */
         MANY("1..*"),
+
         /**
          * Zero or many: 0..*.
          */
         ANY("0..*"),
+
         /**
          * Strictly one.
          */
         ONE("1");
+
         /**
          * Mnemo.
          */
         private final transient String text;
+
         /**
          * Ctor.
          * @param mnemo Mnemo
@@ -65,6 +69,7 @@ public interface Slot extends Mentioned, Informal {
         Arity(final String mnemo) {
             this.text = mnemo;
         }
+
         /**
          * Mnemo.
          * @return Mnemo

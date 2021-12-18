@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -41,8 +41,6 @@ import org.apache.commons.io.IOUtils;
 /**
  * Entry point of the JAR.
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.1
  * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */

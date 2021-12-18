@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -50,8 +50,6 @@ import org.xembly.Directives;
 /**
  * Aggregate sources into one file.
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.2
  */
 @Immutable

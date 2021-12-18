@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -40,8 +40,6 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Cascading rule.
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.14
  */
 @Immutable

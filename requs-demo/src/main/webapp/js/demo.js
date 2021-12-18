@@ -21,9 +21,7 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  *
- * @author Yegor Bugayenko <egor@tpc2.com>
  * @copyright Copyright (c) requs.org, 2010-2017
- * @version $Id$
  */
 
 /*globals $: false, document: false */

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -33,8 +33,6 @@ import org.junit.Test;
 
 /**
  * Test case for {@link ReportMojo}.
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  */
 public class ReportMojoTest {
 

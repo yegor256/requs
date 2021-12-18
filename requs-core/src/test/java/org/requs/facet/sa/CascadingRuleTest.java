@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2021, Yegor Bugayenko
  * All rights reserved.
  *
@@ -36,8 +36,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link CascadingRule}.
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.14
  */
 public final class CascadingRuleTest {
