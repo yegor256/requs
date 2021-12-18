@@ -5,7 +5,8 @@
 [![DevOps By Rultor.com](http://www.rultor.com/b/yegor256/requs)](http://www.rultor.com/p/yegor256/requs)
 [![We recommend IntelliJ IDEA](https://www.elegantobjects.org/intellij-idea.svg)](https://www.jetbrains.com/idea/)
 
-[![Build Status](https://travis-ci.org/yegor256/requs.svg?branch=master)](https://travis-ci.org/yegor256/requs)
+[![mvn](https://github.com/yegor256/requs/actions/workflows/mvn.yml/badge.svg)](https://github.com/yegor256/requs/actions/workflows/mvn.yml)
+[![codecov](https://codecov.io/gh/yegor256/requs/branch/master/graph/badge.svg)](https://codecov.io/gh/yegor256/requs)
 [![PDD status](http://www.0pdd.com/svg?name=yegor256/requs)](http://www.0pdd.com/p?name=yegor256/requs)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.requs/requs/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.requs/requs)
 
