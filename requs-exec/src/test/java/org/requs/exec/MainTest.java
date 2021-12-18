@@ -34,14 +34,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Test case for {@link Main}.
@@ -50,53 +50,21 @@ import org.junit.rules.TemporaryFolder;
 public final class MainTest {
 
     /**
-     * Temporary folder.
-     * @checkstyle VisibilityModifier (3 lines)
-     */
-    @Rule
-    public transient TemporaryFolder temp = new TemporaryFolder();
-
-    /**
      * Output stream for tests.
      */
     private transient ByteArrayOutputStream out;
 
-    /**
-     * Change system output stream.
-     * @throws Exception When necessary
-     */
-    @Before
+    @BeforeEach
     public void changeSystemOutputSteam() throws Exception {
         this.out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(this.out, true));
     }
 
-    /**
-     * Change system output stream back.
-     * @throws Exception When necessary
-     */
-    @After
+    @AfterEach
     public void revertChangedSystemOutputStream() throws Exception {
         System.setOut(null);
     }
 
-    /**
-     * Main can work.
-     * @throws Exception When necessary
-     */
-    @Test(expected = IllegalAccessException.class)
-    public void testMakesAnIncorrectAttemptToInstantiateClass()
-        throws Exception {
-        final String name = "org.requs.exec.Main";
-        final Class<?> cls = Class.forName(name);
-        MatcherAssert.assertThat(cls, Matchers.notNullValue());
-        cls.newInstance();
-    }
-
-    /**
-     * Main can show the version of the application.
-     * @throws Exception When necessary
-     */
     @Test
     public void displaysVersionNumber() throws Exception {
         Main.main(new String[]{"-v"});
@@ -106,10 +74,6 @@ public final class MainTest {
         );
     }
 
-    /**
-     * Main can show a help message.
-     * @throws Exception When necessary
-     */
     @Test
     public void rendersHelpMessage() throws Exception {
         Main.main(new String[] {"-h"});
@@ -119,14 +83,10 @@ public final class MainTest {
         );
     }
 
-    /**
-     * Compiler can compile.
-     * @throws Exception When necessary
-     */
     @Test
-    public void compilesRequsSources() throws Exception {
-        final File input = this.temp.newFolder();
-        final File output = this.temp.newFolder();
+    public void compilesRequsSources(@TempDir final Path temp) throws Exception {
+        final File input = temp.resolve("input").toFile();
+        final File output = temp.resolve("output").toFile();
         FileUtils.write(
             new File(input, "employee.req"),
             "Employee is a \"user of the system\".",

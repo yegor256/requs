@@ -44,6 +44,12 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>com.jcabi</groupId>
+      <artifactId>jcabi-xml</artifactId>
+      <version>0.23.2</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
     </dependency>

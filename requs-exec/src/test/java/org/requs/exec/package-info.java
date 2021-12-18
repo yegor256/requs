@@ -30,6 +30,5 @@
 
 /**
  * Command Line Interface (CLI) classes, tests.
- *
  */
 package org.requs.exec;
