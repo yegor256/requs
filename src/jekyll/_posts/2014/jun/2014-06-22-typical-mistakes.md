@@ -51,7 +51,7 @@ The first slot in this example is correct, while the second one is wrong:
 {% highlight requs %}
 Employee contains:
   name "first and last name or a nick name or maybe an empty field",
-  email "an address (@todo check whether we should obey RFC 5322)".
+  email "an address (TODO check whether we should obey RFC 5322)".
 {% endhighlight %}
 
 It is totally correct to give unclear and ambiguous definitions
