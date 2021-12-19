@@ -28,6 +28,6 @@ Try online demo: [demo.requs.org](http://demo.requs.org/).
 ## Blog Posts
 
 Check also this blog post:
-[Incremental Requirements With Requs](http://www.yegor256.com/2014/04/26/incremental-requirements-with-requs.html).
-It explains how Requs is used in [XDSD](http://www.xdsd.org) projects by
-[Teamed.io](http://www.teamed.io).
+[Incremental Requirements With Requs](https://www.yegor256.com/2014/04/26/incremental-requirements-with-requs.html).
+It explains how Requs is used in [XDSD](https://www.xdsd.org) projects by
+[Zerocracy](https://www.zerocracy.co).

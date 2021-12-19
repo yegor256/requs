@@ -5,9 +5,9 @@
     <meta name="description" content="{{ page.description }}" />
     <meta name="keywords" content="{{ page.keywords | join:', ' | escape }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="icon" type="image/png" href="http://img.requs.org/ico-64x64.png">
-    <link rel="shortcut icon" href="//img.requs.org/ico-64x64.png" />
-    <link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.requs.org/rss.xml"/>
+    <link rel="icon" type="image/png" href="/images/ico-64x64.png">
+    <link rel="shortcut icon" href="/images/ico-64x64.png" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="https://www.requs.org/rss.xml"/>
     <link rel="author" href="//plus.google.com/u/0/114792568016408327418?rel=author" />
     <link rel="stylesheet" href="/css/layout.css?{{ site.data['hash'] }}"/>
     <link rel="canonical" href="//www.requs.org{{ page.url }}" />
@@ -33,18 +33,13 @@
   <body>
     <a href="https://github.com/yegor256/requs">
       <img style="position:absolute;top:0;right:0;border:0;width:100px;height:100px"
-        src="http://img.jcabi.com/fork-me.svg" alt="Fork me on GitHub">
+        src="/images/fork-me.svg" alt="Fork me on GitHub">
     </a>
     <div class="wrapper">
       <header class="header">
         <p>
           <a href="/">
-            <img src="//img.requs.org/logo.svg" class="logo" alt="logo"/>
-          </a>
-        </p>
-        <p>
-          <a href="http://www.teamed.io">
-            <img src="http://img.teamed.io/btn.svg" alt="made by teamed.io"/>
+            <img src="/images/logo.svg" class="logo" alt="logo"/>
           </a>
         </p>
       </header>
@@ -52,7 +47,7 @@
       {{ content }}
       <footer class="footer">
         <p>
-          &copy; <span itemprop="author">requs.org</span>, 2009-2017
+          &copy; <span itemprop="author">requs.org</span>, 2009-2021
         </p>
       </footer>
     </div>

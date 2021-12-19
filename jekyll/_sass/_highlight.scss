@@ -1,0 +1,22 @@
+@import "colors";
+
+.highlight {
+  .k,
+  .kn,
+  .kd,
+  .kt {
+    font-weight: bold;
+  }
+  .c1 {
+    color: #777;
+  }
+  .n {
+    color: $blue;
+  }
+  .s {
+    color: $red;
+  }
+  .o {
+    color: darken($green, 20);
+  }
+}
