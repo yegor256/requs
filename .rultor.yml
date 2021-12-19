@@ -5,9 +5,11 @@ assets:
   pubring.gpg: yegor256/home#assets/pubring.gpg
   secring.gpg: yegor256/home#assets/secring.gpg
 install: |-
+  export GEM_HOME=~/.ruby
+  export GEM_PATH=$GEM_HOME:$GEM_PATH
+  bundle install
   pdd -f /dev/null
-  sudo bundle install
-  sudo easy_install src/requs_pygment
+  easy_install src/requs_pygment
 merge:
   script: |-
     mvn clean install -Pqulice --errors --settings ../settings.xml
