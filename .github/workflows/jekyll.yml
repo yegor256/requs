@@ -1,4 +1,4 @@
-name: Build and Deploy to Github Pages
+name: jekyll
 on:
   push:
     branches:

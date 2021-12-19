@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - master
+    paths-ignore: ['jekyll/**', 'sdd/**']
   pull_request:
     branches:
       - master
+    paths-ignore: ['jekyll/**', 'sdd/**']
 jobs:
   test:
     name: Tests

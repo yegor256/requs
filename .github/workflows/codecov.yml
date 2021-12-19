@@ -4,6 +4,7 @@ name: codecov
   push:
     branches:
       - master
+    paths-ignore: ['jekyll/**', 'sdd/**']
 jobs:
   codecov:
     runs-on: ubuntu-latest
