@@ -10,6 +10,9 @@
 [![PDD status](http://www.0pdd.com/svg?name=yegor256/requs)](http://www.0pdd.com/p?name=yegor256/requs)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.requs/requs/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.requs/requs)
 
+[![Hits-of-Code](https://hitsofcode.com/github/yegor256/requs)](https://hitsofcode.com/view/github/yegor256/requs)
+![Lines of code](https://img.shields.io/tokei/lines/github/yegor256/requs)
+
 REQUS is a controlled natural language (CNL) for requirements specifications.
 It explained in details in [this paper](https://www.yegor256.com/pdf/2021/requs.pdf),
 which was published in the
