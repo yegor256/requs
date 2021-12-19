@@ -116,33 +116,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
           </archive>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.3</version>
-        <inherited>false</inherited>
-        <executions>
-          <execution>
-            <id>jekyll-build</id>
-            <phase>pre-site</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <executable>bundle</executable>
-              <arguments>
-                <argument>exec</argument>
-                <argument>jekyll</argument>
-                <argument>build</argument>
-                <argument>--source</argument>
-                <argument>${basedir}/src/jekyll</argument>
-                <argument>--destination</argument>
-                <argument>${project.build.directory}/site</argument>
-              </arguments>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
   <profiles>
