@@ -10,7 +10,7 @@ on:
       - master
     paths-ignore: ['jekyll/**', 'sdd/**']
 jobs:
-  test:
+  mvn:
     name: Tests
     strategy:
       matrix:
@@ -49,7 +49,7 @@ jobs:
           java-version: 11
       - name: Qulice
         run: mvn -P qulice clean install -DskipTests=true -DskipITs=true --errors --batch-mode
-  pdd-lint:
+  pdd:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

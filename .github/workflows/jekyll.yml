@@ -5,7 +5,7 @@ on:
       - master
     paths: 'jekyll/**'
 jobs:
-  build_and_deploy:
+  jekyll:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
