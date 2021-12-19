@@ -19,27 +19,19 @@ which was published in the
 [Proceedings of the 1st ACM SIGPLAN International Workshop on Beyond Code: No Code (BCNC)](https://dl.acm.org/doi/abs/10.1145/3486949.3486963).
 More details about REQUS syntax you can find at [www.requs.org](http://www.requs.org/).
 
-In order to use it in a Java project, just add this plugin to your `pom.xml`:
+In order to use it in a Java project, just add this plugin to your `pom.xml`
+(get the latest version [from here](https://github.com/yegor256/requs/releases)):
 
 ```xml
-[...]
-<build>
-  [...]
+<reporting>
   <plugins>
-    [...]
     <plugin>
-      <artifactId>maven-site-plugin</artifactId>
-      <configuration>
-        <reportPlugins combine.children="append">
-          <plugin>
-            <groupId>org.requs</groupId>
-            <artifactId>requs-maven-plugin</artifactId>
-          </plugin>
-        </reportPlugins>
-      </configuration>
+      <groupId>org.requs</groupId>
+      <artifactId>requs-maven-plugin</artifactId>
+      <version>...</version>
     </plugin>
   </plugins>
-</build>
+</reporting>
 ```
 
 Then, add REQUS files to `src/main/requs` and name them as `main.req`, etc.
