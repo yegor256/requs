@@ -1,0 +1,23 @@
+name: Build and Deploy to Github Pages
+on:
+  push:
+    branches:
+      - master
+    paths: 'jekyll/**'
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+      - uses: jeffreytse/jekyll-deploy-action@v0.3.1
+        with:
+          provider: 'github'
+          token: ${{ secrets.GITHUB_TOKEN }} # It's your Personal Access Token(PAT)
+          branch: 'gh-pages'         # Default is gh-pages for github provider
+          jekyll_src: './jekyll'           # Default is root directory
