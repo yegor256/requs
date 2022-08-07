@@ -1,3 +1,5 @@
+docker:
+  image: yegor256/rultor-image:1.9.1
 readers:
   - "urn:github:526301"
 assets:
@@ -10,10 +12,6 @@ merge:
   script: |-
     mvn clean install -Pqulice --errors --settings ../settings.xml
     mvn clean site -Psite --settings ../settings.xml
-deploy:
-  script: |-
-    echo 'nothing to deploy'
-    exit -1
 release:
   sensitive:
     - setting.xml

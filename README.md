@@ -9,7 +9,6 @@
 [![codecov](https://codecov.io/gh/yegor256/requs/branch/master/graph/badge.svg)](https://codecov.io/gh/yegor256/requs)
 [![PDD status](http://www.0pdd.com/svg?name=yegor256/requs)](http://www.0pdd.com/p?name=yegor256/requs)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.requs/requs/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.requs/requs)
-
 [![Hits-of-Code](https://hitsofcode.com/github/yegor256/requs)](https://hitsofcode.com/view/github/yegor256/requs)
 ![Lines of code](https://img.shields.io/tokei/lines/github/yegor256/requs)
 
