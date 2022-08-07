@@ -52,6 +52,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+      <!-- the version inherited from parent pom -->
     </dependency>
     <dependency>
       <groupId>org.antlr</groupId>
@@ -61,24 +62,29 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
+      <!-- the version inherited from parent pom -->
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
+      <!-- the version inherited from parent pom -->
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
+      <!-- the version inherited from parent pom -->
     </dependency>
     <dependency>
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-manifests</artifactId>
+      <!-- the version inherited from parent pom -->
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
+      <!-- the version inherited from parent pom -->
     </dependency>
     <dependency>
       <groupId>net.sf.jopt-simple</groupId>
@@ -88,6 +94,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-matchers</artifactId>
+      <!-- the version inherited from parent pom -->
       <scope>test</scope>
     </dependency>
   </dependencies>
