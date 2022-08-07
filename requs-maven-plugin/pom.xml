@@ -33,7 +33,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
   <parent>
     <groupId>org.requs</groupId>
     <artifactId>requs</artifactId>
-    <version>2.0-SNAPSHOT</version>
+    <version>1.16.0</version>
   </parent>
   <artifactId>requs-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
