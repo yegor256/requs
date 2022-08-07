@@ -52,7 +52,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-aspects</artifactId>
-      <version>0.23.2</version>
+      <version>0.24.1</version>
     </dependency>
     <dependency>
       <groupId>com.jcabi</groupId>
@@ -77,17 +77,17 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>com.vladsch.flexmark</groupId>
       <artifactId>flexmark</artifactId>
-      <version>0.62.2</version>
+      <version>0.64.0</version>
     </dependency>
     <dependency>
       <groupId>com.vladsch.flexmark</groupId>
       <artifactId>flexmark-util-data</artifactId>
-      <version>0.62.2</version>
+      <version>0.64.0</version>
     </dependency>
     <dependency>
       <groupId>com.vladsch.flexmark</groupId>
       <artifactId>flexmark-util-ast</artifactId>
-      <version>0.62.2</version>
+      <version>0.64.0</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -102,7 +102,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>30.1.1-jre</version>
+      <version>31.1-jre</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -117,7 +117,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>net.sourceforge.plantuml</groupId>
       <artifactId>plantuml</artifactId>
-      <version>7999</version>
+      <version>8059</version>
     </dependency>
     <dependency>
       <groupId>com.jcabi</groupId>
@@ -133,7 +133,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>com.jcabi.incubator</groupId>
       <artifactId>phandom</artifactId>
-      <version>0.3</version>
+      <version>0.4</version>
       <scope>test</scope>
     </dependency>
     <dependency>
