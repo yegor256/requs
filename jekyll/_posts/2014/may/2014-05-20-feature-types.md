@@ -42,5 +42,3 @@ in [BNF](http://en.wikipedia.org/wiki/Backus%E2%80%93Naur_Form):
 Very often we make mistakes when declaring a new type or
 modifying an existing one. Read them carefully and try to avoid
 in your SRS documents.
-
-

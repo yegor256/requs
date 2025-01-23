@@ -51,4 +51,3 @@ if (!dir.isDirectory()) {
         'Report is not a directory: ' + dir
     )
 }
-

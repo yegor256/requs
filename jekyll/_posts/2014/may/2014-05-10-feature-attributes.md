@@ -114,4 +114,3 @@ statuses or priorities of requirements.
 
 Usually it happens on project milestones, when priorities are set and
 requirements are baselined.
-
