@@ -1,7 +1,6 @@
 <img src="logo.svg" width="192" />
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
-[![Managed by Zerocracy](https://www.0crat.com/badge/CAZPZR9FS.svg)](https://www.0crat.com/p/CAZPZR9FS)
 [![DevOps By Rultor.com](http://www.rultor.com/b/yegor256/requs)](http://www.rultor.com/p/yegor256/requs)
 [![We recommend IntelliJ IDEA](https://www.elegantobjects.org/intellij-idea.svg)](https://www.jetbrains.com/idea/)
 
@@ -10,7 +9,6 @@
 [![PDD status](http://www.0pdd.com/svg?name=yegor256/requs)](http://www.0pdd.com/p?name=yegor256/requs)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.requs/requs/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.requs/requs)
 [![Hits-of-Code](https://hitsofcode.com/github/yegor256/requs)](https://hitsofcode.com/view/github/yegor256/requs)
-![Lines of code](https://img.shields.io/tokei/lines/github/yegor256/requs)
 
 REQUS is a controlled natural language (CNL) for requirements specifications.
 It is explained in details in [this paper](https://www.yegor256.com/pdf/2021/requs.pdf),
