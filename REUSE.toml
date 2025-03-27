@@ -25,6 +25,7 @@ path = [
     "**/.pdd",
     "**/CITATION.cff",
     "**/CNAME",
+    "**/MANIFEST.MF",
     ".DS_Store",
     ".gitattributes",
     ".gitignore",
@@ -32,6 +33,7 @@ path = [
     ".pdd",
     "CITATION.cff",
     "CNAME",
+    "MANIFEST.MF",
     "README.md",
     "renovate.json",
 ]
