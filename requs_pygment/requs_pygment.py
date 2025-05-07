@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# SPDX-FileCopyrightText: Copyright (c) 2009-2025, Yegor Bugayenko
+# SPDX-License-Identifier: MIT
+
 from pygments.lexer import RegexLexer
 from pygments.token import Punctuation, Text, Keyword, Name, String, Operator
 from pygments.util import shebang_matches

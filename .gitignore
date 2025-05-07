@@ -1,9 +1,9 @@
-*.iml
+_site/
 .DS_Store
 .idea/
 .jekyll-cache
 .sass-cache
+*.iml
 Gemfile.lock
-_site/
 node_modules/
 target/
