@@ -5,7 +5,6 @@ version = 1
 [[annotations]]
 path = [
     ".DS_Store",
-    "**.req",
     ".gitattributes",
     ".gitignore",
     ".latexmkrc",
@@ -14,6 +13,7 @@ path = [
     "**.md",
     "**.pdf",
     "**.png",
+    "**.req",
     "**.svg",
     "**.txt",
     "**/.DS_Store",
