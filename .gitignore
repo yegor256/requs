@@ -1,9 +1,10 @@
-_site/
+*.iml
+.claude/
 .DS_Store
 .idea/
 .jekyll-cache
 .sass-cache
-*.iml
+_site/
 Gemfile.lock
 node_modules/
 target/
