@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Test;
  *
  * @since 1.0
  */
-public class ReportMojoTest {
+final class ReportMojoTest {
 
     /**
      * ReportMojo can work.
      * @throws Exception If fails
      */
     @Test
-    public void testMojoReportGoal() throws Exception {
+    void testMojoReportGoal() throws Exception {
         // todo
     }
 

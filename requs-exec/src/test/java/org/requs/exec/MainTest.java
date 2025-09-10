@@ -22,7 +22,7 @@ import org.junit.jupiter.api.io.TempDir;
  * Test case for {@link Main}.
  * @since 1.1
  */
-public final class MainTest {
+final class MainTest {
 
     /**
      * Output stream for tests.
@@ -30,36 +30,38 @@ public final class MainTest {
     private transient ByteArrayOutputStream out;
 
     @BeforeEach
-    public void changeSystemOutputSteam() throws Exception {
+    void changeSystemOutputSteam() throws Exception {
         this.out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(this.out, true));
     }
 
     @AfterEach
-    public void revertChangedSystemOutputStream() throws Exception {
+    void revertChangedSystemOutputStream() throws Exception {
         System.setOut(null);
     }
 
     @Test
-    public void displaysVersionNumber() throws Exception {
+    void displaysVersionNumber() throws Exception {
         Main.main(new String[]{"-v"});
         MatcherAssert.assertThat(
+            "Output should contain version number",
             this.out.toString(),
             Matchers.containsString("-SNAPSHOT")
         );
     }
 
     @Test
-    public void rendersHelpMessage() throws Exception {
+    void rendersHelpMessage() throws Exception {
         Main.main(new String[] {"-h"});
         MatcherAssert.assertThat(
+            "Output should contain help message",
             this.out.toString(),
             Matchers.containsString("Usage:")
         );
     }
 
     @Test
-    public void compilesRequsSources(@TempDir final Path temp) throws Exception {
+    void compilesRequsSources(@TempDir final Path temp) throws Exception {
         final File input = temp.resolve("input").toFile();
         final File output = temp.resolve("output").toFile();
         FileUtils.write(
@@ -74,10 +76,12 @@ public final class MainTest {
             }
         );
         MatcherAssert.assertThat(
+            "Output should indicate successful compilation",
             this.out.toString(),
             Matchers.containsString("compiled and saved to")
         );
         MatcherAssert.assertThat(
+            "Generated XML should contain Employee type",
             XhtmlMatchers.xhtml(
                 FileUtils.readFileToString(
                     new File(output, "requs.xml"),

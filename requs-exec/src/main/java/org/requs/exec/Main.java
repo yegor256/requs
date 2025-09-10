@@ -33,7 +33,7 @@ public final class Main {
      * @param args List of command-line arguments
      * @throws IOException If something goes wrong inside
      */
-    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
+    @SuppressWarnings({"PMD.ProhibitPublicStaticMethods", "PMD.CloseResource"})
     public static void main(final String... args) throws IOException {
         final OptionParser parser = new OptionParser("h*vi:o:");
         final PrintStream out = System.out;

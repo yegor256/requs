@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Test;
 
  * @since 1.0
  */
-public final class CompileMojoTest {
+final class CompileMojoTest {
 
     /**
      * CompileMojo can work.
      * @throws Exception If fails
      */
     @Test
-    public void testMojoGoal() throws Exception {
+    void testMojoGoal() throws Exception {
         // todo
     }
 
