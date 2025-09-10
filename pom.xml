@@ -49,15 +49,6 @@
       <timezone>+1</timezone>
     </developer>
   </developers>
-  <mailingLists>
-    <mailingList>
-      <name>requs Discussions</name>
-      <subscribe>requs@googlegroups.com</subscribe>
-      <unsubscribe>requs@googlegroups.com</unsubscribe>
-      <post>requs@googlegroups.com</post>
-      <archive>http://groups.google.com/group/requs</archive>
-    </mailingList>
-  </mailingLists>
   <issueManagement>
     <system>github</system>
     <url>https://github.com/yegor256/requs/issues</url>
