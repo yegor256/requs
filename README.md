@@ -26,7 +26,7 @@ In order to use it in a Java project, just add this plugin to your `pom.xml`:
     <plugin>
       <groupId>org.requs</groupId>
       <artifactId>requs-maven-plugin</artifactId>
-      <version>0.0.0</version>
+      <version>1.16.0</version>
     </plugin>
   </plugins>
 </reporting>
