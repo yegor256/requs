@@ -112,16 +112,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>net.sourceforge.saxon</groupId>
-      <artifactId>saxon</artifactId>
+      <groupId>net.sf.saxon</groupId>
+      <artifactId>Saxon-HE</artifactId>
       <!-- the version inherited from parent pom -->
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.sourceforge.saxon</groupId>
-      <artifactId>saxon</artifactId>
-      <!-- the version inherited from parent pom -->
-      <classifier>dom</classifier>
       <scope>runtime</scope>
     </dependency>
     <dependency>
