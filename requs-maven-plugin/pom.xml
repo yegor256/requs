@@ -34,7 +34,6 @@
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-xml</artifactId>
       <!-- the version inherited from parent pom -->
-      <version>0.23.2</version>
     </dependency>
     <dependency>
       <groupId>org.antlr</groupId>

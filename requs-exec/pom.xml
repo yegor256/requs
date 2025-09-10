@@ -21,7 +21,7 @@
     <dependency>
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-xml</artifactId>
-      <version>0.23.2</version>
+      <!-- the version inherited from parent pom -->
       <scope>runtime</scope>
     </dependency>
     <dependency>

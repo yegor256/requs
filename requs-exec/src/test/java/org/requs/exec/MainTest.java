@@ -30,19 +30,19 @@ final class MainTest {
     private transient ByteArrayOutputStream out;
 
     @BeforeEach
-    void changeSystemOutputSteam() throws Exception {
+    void changeSystemOutputSteam() {
         this.out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(this.out, true));
     }
 
     @AfterEach
-    void revertChangedSystemOutputStream() throws Exception {
+    void revertChangedSystemOutputStream() {
         System.setOut(null);
     }
 
     @Test
     void displaysVersionNumber() throws Exception {
-        Main.main(new String[]{"-v"});
+        Main.main("-v");
         MatcherAssert.assertThat(
             "Output should contain version number",
             this.out.toString(),
@@ -52,7 +52,7 @@ final class MainTest {
 
     @Test
     void rendersHelpMessage() throws Exception {
-        Main.main(new String[] {"-h"});
+        Main.main("-h");
         MatcherAssert.assertThat(
             "Output should contain help message",
             this.out.toString(),
@@ -70,10 +70,8 @@ final class MainTest {
             StandardCharsets.UTF_8
         );
         Main.main(
-            new String[] {
-                "-i", input.getAbsolutePath(),
-                "-o", output.getAbsolutePath(),
-            }
+            "-i", input.getAbsolutePath(),
+            "-o", output.getAbsolutePath()
         );
         MatcherAssert.assertThat(
             "Output should indicate successful compilation",

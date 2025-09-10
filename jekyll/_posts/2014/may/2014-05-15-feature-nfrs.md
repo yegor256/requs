@@ -32,5 +32,5 @@ UC8/UI must "speak English and Spanish".
 UC9.5.5/PERF must be "less than 100 milliseconds per HTTP request".
 {% endhighlight %}
 
-In the future vesions of Requs we may have more formal
+In the future versions of Requs we may have more formal
 syntax for NFRs.

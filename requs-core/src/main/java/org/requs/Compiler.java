@@ -12,8 +12,6 @@ import com.jcabi.manifests.Manifests;
 import com.jcabi.xml.StrictXML;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
-import com.jcabi.xml.XSD;
-import com.jcabi.xml.XSDDocument;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -42,12 +40,13 @@ import org.xembly.Directives;
 @ToString
 @EqualsAndHashCode(of = { "input", "output" })
 @Loggable(Loggable.DEBUG)
+@SuppressWarnings("deprecation")
 public final class Compiler {
 
     /**
-     * XSD.
+     * XSD as XML.
      */
-    public static final XSD SCHEMA = XSDDocument.make(
+    public static final XML SCHEMA = XMLDocument.make(
         Compiler.class.getResource("requs.xsd")
     );
 

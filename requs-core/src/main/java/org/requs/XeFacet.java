@@ -60,7 +60,7 @@ public interface XeFacet {
 
         @Override
         public XML touch(final XML spec) throws IOException {
-            final Node node = spec.node();
+            final Node node = spec.inner();
             final Iterable<Directive> dirs = this.origin.touch(spec);
             try {
                 new Xembler(dirs).apply(node);
