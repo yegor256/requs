@@ -16,4 +16,4 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: g4s8/pdd-action@master
+      - uses: volodya-lombrozo/pdd-action@master
