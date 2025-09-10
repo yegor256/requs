@@ -35,8 +35,8 @@ import org.xembly.Directives;
 /**
  * Compiler.
  *
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @since 1.1
+ * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
 @Immutable
 @ToString

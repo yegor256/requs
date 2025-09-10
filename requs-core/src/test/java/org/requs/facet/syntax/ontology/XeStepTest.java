@@ -14,10 +14,10 @@ import org.xembly.Xembler;
  * Test case for {@link XeStep}.
  * @since 1.1
  */
-public final class XeStepTest {
+final class XeStepTest {
 
     @Test
-    public void manipulatesWithSteps() throws Exception {
+    void manipulatesWithSteps() throws Exception {
         final Directives dirs = new Directives().add("s");
         final Step step = new XeStep(dirs, "/s");
         step.result("data");
@@ -29,6 +29,7 @@ public final class XeStepTest {
         step.mention(2);
         step.mention(1);
         MatcherAssert.assertThat(
+            "Step manipulation should generate correct XML structure",
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
                 "/s[result='data']",

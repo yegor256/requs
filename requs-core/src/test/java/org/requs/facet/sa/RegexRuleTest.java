@@ -12,19 +12,21 @@ import org.junit.jupiter.api.Test;
  * Test case for {@link RegexRule}.
  * @since 1.14
  */
-public final class RegexRuleTest {
+final class RegexRuleTest {
 
     @Test
-    public void checksInput() throws Exception {
+    void checksInput() throws Exception {
         MatcherAssert.assertThat(
+            "RegexRule should detect violations when input matches pattern",
             new RegexRule("[a-z]+", "").check("abjkljeklsf"),
             Matchers.not(Matchers.empty())
         );
     }
 
     @Test
-    public void checksInvalidInput() throws Exception {
+    void checksInvalidInput() throws Exception {
         MatcherAssert.assertThat(
+            "RegexRule should return empty result when input does not match pattern",
             new RegexRule("[0-9]", "").check("broken input"),
             Matchers.empty()
         );

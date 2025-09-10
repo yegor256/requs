@@ -28,7 +28,7 @@ import org.junit.jupiter.api.io.TempDir;
  * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
-public final class CompilerTest {
+final class CompilerTest {
 
     /**
      * XSTLPROC binary.
@@ -36,7 +36,7 @@ public final class CompilerTest {
     private static final String BIN = "xsltproc";
 
     @Test
-    public void parsesAllSamples(@TempDir final Path temp) throws Exception {
+    void parsesAllSamples(@TempDir final Path temp) throws Exception {
         final String[] files = {
             "samples/empty-input.xml",
             "samples/all-possible-constructs.xml",
@@ -59,7 +59,7 @@ public final class CompilerTest {
     }
 
     @Test
-    public void combinesMultipleFiles(@TempDir final Path temp) throws Exception {
+    void combinesMultipleFiles(@TempDir final Path temp) throws Exception {
         final File input = temp.resolve("input").toFile();
         final File output = temp.resolve("output").toFile();
         FileUtils.write(
@@ -79,6 +79,7 @@ public final class CompilerTest {
         );
         new Compiler(input, output).compile();
         MatcherAssert.assertThat(
+            "Compiler should combine multiple files with correct file IDs, line numbers and error tracking",
             XhtmlMatchers.xhtml(new XMLDocument(new File(output, "requs.xml"))),
             XhtmlMatchers.hasXPaths(
                 "/spec/files/file[@id='0' and @line='1']",
@@ -118,6 +119,7 @@ public final class CompilerTest {
             "/sample/xpaths/xpath/text()"
         );
         MatcherAssert.assertThat(
+            "Compiled XML should match expected XPaths for sample",
             XhtmlMatchers.xhtml(srs.toString()),
             Matchers.describedAs(
                 file,
@@ -127,6 +129,7 @@ public final class CompilerTest {
             )
         );
         MatcherAssert.assertThat(
+            "XSL transformation should produce valid XHTML with body element",
             xsl.applyTo(srs),
             Matchers.describedAs(
                 file,
@@ -135,6 +138,7 @@ public final class CompilerTest {
         );
         CompilerTest.assumeXsltproc();
         MatcherAssert.assertThat(
+            "XSLTPROC should transform XML to HTML without errors",
             new VerboseProcess(
                 new ProcessBuilder()
                     .directory(output)
@@ -152,6 +156,7 @@ public final class CompilerTest {
             )
         );
         MatcherAssert.assertThat(
+            "Generated HTML should contain valid XHTML body element",
             FileUtils.readFileToString(
                 new File(output, "requs.html"),
                 StandardCharsets.UTF_8

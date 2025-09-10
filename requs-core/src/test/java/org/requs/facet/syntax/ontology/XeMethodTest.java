@@ -14,10 +14,10 @@ import org.xembly.Xembler;
  * Test case for {@link XeMethod}.
  * @since 1.1
  */
-public final class XeMethodTest {
+final class XeMethodTest {
 
     @Test
-    public void manipulatesWithMethod() throws Exception {
+    void manipulatesWithMethod() throws Exception {
         final Directives dirs = new Directives().add("m");
         final Method method = new XeMethod(dirs, "/m");
         method.sign("\"informal one\"");
@@ -28,6 +28,7 @@ public final class XeMethodTest {
         method.mention(2);
         method.mention(1);
         MatcherAssert.assertThat(
+            "Method should create correct XML with signature, result, object, bindings and mentions",
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
                 "/m[signature='\"informal one\"']",
@@ -42,19 +43,20 @@ public final class XeMethodTest {
     }
 
     @Test
-    public void avoidsDuplicateSteps() throws Exception {
+    void avoidsDuplicateSteps() throws Exception {
         final Directives dirs = new Directives().add("mtd");
         final Method method = new XeMethod(dirs, "/mtd");
         method.step(1);
         method.step(1);
         MatcherAssert.assertThat(
+            "Method should avoid creating duplicate steps with same number",
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPath("/mtd/steps[count(step)=1]")
         );
     }
 
     @Test
-    public void setsAttributes() throws Exception {
+    void setsAttributes() throws Exception {
         final Directives dirs = new Directives().add("x");
         final Method method = new XeMethod(dirs, "/x");
         final String name = "attr-1";
@@ -62,6 +64,7 @@ public final class XeMethodTest {
         method.attribute(name, "ffa7ed");
         method.attribute("another", "123456");
         MatcherAssert.assertThat(
+            "Method should correctly set attributes with seals",
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
                 "/x/attributes[count(attribute)=2]",
@@ -72,7 +75,7 @@ public final class XeMethodTest {
     }
 
     @Test
-    public void createsNfr() throws Exception {
+    void createsNfr() throws Exception {
         final Directives dirs = new Directives().add("xx");
         final Method method = new XeMethod(dirs, "/xx");
         final String name = "PERF";
@@ -80,6 +83,7 @@ public final class XeMethodTest {
         method.nfr(name).explain("very good");
         method.nfr("UX");
         MatcherAssert.assertThat(
+            "Method should create non-functional requirements with correct IDs",
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
                 "/xx/nfrs[count(nfr)=2]",

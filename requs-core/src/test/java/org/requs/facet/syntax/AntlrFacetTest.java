@@ -22,19 +22,21 @@ import org.xembly.Xembler;
  * Test case for {@link AntlrFacet}.
  * @since 0.1
  */
-public final class AntlrFacetTest {
+final class AntlrFacetTest {
 
     @Test
-    public void parsesInputAndProducesTypes() throws Exception {
+    void parsesInputAndProducesTypes() throws Exception {
         MatcherAssert.assertThat(
+            "Parsed spec should contain types",
             AntlrFacetTest.parse("Sud includes: test."),
             XhtmlMatchers.hasXPaths("/spec/types")
         );
     }
 
     @Test
-    public void reportsErrorsFound() throws Exception {
+    void reportsErrorsFound() throws Exception {
         MatcherAssert.assertThat(
+            "Spec with errors should contain error elements",
             AntlrFacetTest.parse(
                 "User is ?. Site is ?. Employee is a User."
             ),
@@ -49,8 +51,9 @@ public final class AntlrFacetTest {
     }
 
     @Test
-    public void compilesComplexSpec() throws Exception {
+    void compilesComplexSpec() throws Exception {
         MatcherAssert.assertThat(
+            "Complex spec should be parsed correctly",
             AntlrFacetTest.parse(
                 IOUtils.toString(
                     this.getClass().getResourceAsStream("example.req"),
@@ -76,8 +79,9 @@ public final class AntlrFacetTest {
     }
 
     @Test
-    public void parsesAllPossibleCases() throws Exception {
+    void parsesAllPossibleCases() throws Exception {
         MatcherAssert.assertThat(
+            "All possible cases should be parsed without errors",
             AntlrFacetTest.parse(
                 IOUtils.toString(
                     this.getClass().getResourceAsStream("all-cases.req"),
@@ -89,7 +93,7 @@ public final class AntlrFacetTest {
     }
 
     @Test
-    public void parsesAllPossibleErrors() throws Exception {
+    void parsesAllPossibleErrors() throws Exception {
         final String[] specs = {
             "\"alpha",
             "BrokenA is a 'file'.",
@@ -116,7 +120,7 @@ public final class AntlrFacetTest {
 
     @Test
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    public void parsesAllSamples() throws Exception {
+    void parsesAllSamples() throws Exception {
         final String[] files = {
             "samples/nfr.xml",
             "samples/method.xml",
@@ -133,6 +137,7 @@ public final class AntlrFacetTest {
                 "/sample/xpaths/xpath/text()"
             );
             MatcherAssert.assertThat(
+                "Sample should be parsed correctly",
                 AntlrFacetTest.parse(xml.xpath("/sample/spec/text()").get(0)),
                 XhtmlMatchers.hasXPaths(
                     xpaths.toArray(new String[0])

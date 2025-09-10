@@ -21,8 +21,8 @@ import org.xembly.Directives;
 /**
  * Syntax analysis.
  *
- * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  * @since 0.1
+ * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  */
 @Immutable
 @ToString

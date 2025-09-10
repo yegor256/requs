@@ -16,11 +16,12 @@ import org.requs.XeFacet;
  * Test case for {@link Rules}.
  * @since 1.10
  */
-public final class RulesTest {
+final class RulesTest {
 
     @Test
-    public void checksInput() throws IOException {
+    void checksInput() throws IOException {
         MatcherAssert.assertThat(
+            "Rules should detect multiple style violations in input text",
             new XeFacet.Wrap(new Rules()).touch(
                 new XMLDocument(
                     StringUtils.join(

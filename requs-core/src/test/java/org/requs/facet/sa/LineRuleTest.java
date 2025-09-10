@@ -13,11 +13,12 @@ import org.junit.jupiter.api.Test;
  * Test case for {@link LineRule}.
  * @since 1.14
  */
-public final class LineRuleTest {
+final class LineRuleTest {
 
     @Test
-    public void checksInvalidInput() throws Exception {
+    void checksInvalidInput() throws Exception {
         MatcherAssert.assertThat(
+            "LineRule should correctly identify line number of violation",
             new LineRule.Wrap(new RegexRule("[a-z]+", "")).enforce(
                 "\n\n\nhey"
             ).iterator().next().line(),

@@ -14,10 +14,10 @@ import org.xembly.Xembler;
  * Test case for {@link XeSlot}.
  * @since 1.1
  */
-public final class XeSlotTest {
+final class XeSlotTest {
 
     @Test
-    public void manipulatesWithProperty() throws Exception {
+    void manipulatesWithProperty() throws Exception {
         final Directives dirs = new Directives().add("p");
         final Slot slot = new XeSlot(dirs, "/p");
         slot.explain("first text");
@@ -26,6 +26,7 @@ public final class XeSlotTest {
         slot.mention(2);
         slot.mention(1);
         MatcherAssert.assertThat(
+            "Slot should contain proper info and mentions",
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
                 "/p/info",

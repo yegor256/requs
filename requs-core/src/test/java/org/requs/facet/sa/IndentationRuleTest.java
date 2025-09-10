@@ -12,19 +12,21 @@ import org.junit.jupiter.api.Test;
  * Test case for {@link IndentationRule}.
  * @since 1.14
  */
-public final class IndentationRuleTest {
+final class IndentationRuleTest {
 
     @Test
-    public void checksInput() throws Exception {
+    void checksInput() throws Exception {
         MatcherAssert.assertThat(
+            "IndentationRule should accept correct 4-space indentation",
             new IndentationRule().check("    works fine"),
             Matchers.empty()
         );
     }
 
     @Test
-    public void checksInvalidInput() throws Exception {
+    void checksInvalidInput() throws Exception {
         MatcherAssert.assertThat(
+            "IndentationRule should detect incorrect 3-space indentation",
             new IndentationRule().check("   works fine"),
             Matchers.not(Matchers.empty())
         );

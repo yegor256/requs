@@ -14,10 +14,10 @@ import org.xembly.Xembler;
  * Test case for {@link XeType}.
  * @since 1.1
  */
-public final class XeTypeTest {
+final class XeTypeTest {
 
     @Test
-    public void manipulatesWithType() throws Exception {
+    void manipulatesWithType() throws Exception {
         final Directives dirs = new Directives().add("t");
         final Type type = new XeType(dirs, "/t");
         type.explain("first text");
@@ -27,6 +27,7 @@ public final class XeTypeTest {
         type.mention(2);
         type.mention(1);
         MatcherAssert.assertThat(
+            "Type manipulation should generate correct XML structure with info, parents, mentions and slots",
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
                 "/t/info",

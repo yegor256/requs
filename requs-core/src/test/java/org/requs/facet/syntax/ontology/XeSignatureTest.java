@@ -14,14 +14,15 @@ import org.xembly.Xembler;
  * Test case for {@link XeSignature}.
  * @since 1.8
  */
-public final class XeSignatureTest {
+final class XeSignatureTest {
 
     @Test
-    public void signsMethod() throws Exception {
+    void signsMethod() throws Exception {
         final Directives dirs = new Directives().add("s");
         final Signature signature = new XeSignature(dirs, "/s");
         signature.sign("\"informal one\"");
         MatcherAssert.assertThat(
+            "Method signature should be correctly added to XML",
             XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
             XhtmlMatchers.hasXPaths(
                 "/s[signature='\"informal one\"']"

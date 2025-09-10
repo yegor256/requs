@@ -13,10 +13,10 @@ import org.xembly.Xembler;
  * Test case for {@link XeOntology}.
  * @since 1.1
  */
-public final class XeOntologyTest {
+final class XeOntologyTest {
 
     @Test
-    public void manipulatesWithTypesAndUseCases() throws Exception {
+    void manipulatesWithTypesAndUseCases() throws Exception {
         final XeOntology onto = new XeOntology();
         final Type type = onto.type("First");
         type.explain("first text");
@@ -24,6 +24,7 @@ public final class XeOntologyTest {
         type.slot("one").assign("Emp");
         onto.type("Second").explain("second text");
         MatcherAssert.assertThat(
+            "Ontology should contain two types with proper structure",
             XhtmlMatchers.xhtml(new Xembler(onto).xml()),
             XhtmlMatchers.hasXPaths(
                 "/spec",
@@ -34,24 +35,26 @@ public final class XeOntologyTest {
     }
 
     @Test
-    public void avoidsDuplication() throws Exception {
+    void avoidsDuplication() throws Exception {
         final XeOntology onto = new XeOntology();
         final String name = "Alpha";
         onto.type(name);
         onto.type(name);
         MatcherAssert.assertThat(
+            "Duplicate types should not be created",
             XhtmlMatchers.xhtml(new Xembler(onto).xml()),
             XhtmlMatchers.hasXPath("/spec/types[count(type)=1]")
         );
     }
 
     @Test
-    public void avoidsDuplicationOfMethods() throws Exception {
+    void avoidsDuplicationOfMethods() throws Exception {
         final XeOntology onto = new XeOntology();
         final String name = "UC3";
         onto.method(name);
         onto.method(name);
         MatcherAssert.assertThat(
+            "Duplicate methods should not be created",
             XhtmlMatchers.xhtml(new Xembler(onto).xml()),
             XhtmlMatchers.hasXPath("/spec/methods[count(method)=1]")
         );

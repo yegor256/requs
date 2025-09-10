@@ -14,11 +14,12 @@ import org.junit.jupiter.api.Test;
  * Test case for {@link Transform}.
  * @since 0.1
  */
-public final class TransformTest {
+final class TransformTest {
 
     @Test
-    public void checksSeals() {
+    void checksSeals() {
         MatcherAssert.assertThat(
+            "Transform should detect seal mismatches between methods and attributes",
             XhtmlMatchers.xhtml(
                 new Transform("sanity/seals-check.xsl").touch(
                     new XMLDocument(
@@ -40,8 +41,9 @@ public final class TransformTest {
     }
 
     @Test
-    public void checksTypes() {
+    void checksTypes() {
         MatcherAssert.assertThat(
+            "Transform should detect undefined types in slots and bindings",
             XhtmlMatchers.xhtml(
                 new Transform("sanity/types-check.xsl").touch(
                     new XMLDocument(
@@ -63,8 +65,9 @@ public final class TransformTest {
     }
 
     @Test
-    public void checksSignatures() {
+    void checksSignatures() {
         MatcherAssert.assertThat(
+            "Transform should detect invalid signatures in methods and steps",
             XhtmlMatchers.xhtml(
                 new Transform("sanity/signatures-check.xsl").touch(
                     new XMLDocument(
