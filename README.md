@@ -12,7 +12,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 REQUS is a controlled natural language (CNL) for requirements specifications.
-It is explained in details in [this paper][pdf],
+It is explained in detail in [this paper][pdf],
 which was published in the
 [ACM SIGPLAN International Workshop on Beyond Code: No Code (BCNC)][workshop].
 More details about REQUS syntax you can find at
