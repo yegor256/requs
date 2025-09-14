@@ -20,7 +20,7 @@ jobs:
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-gems-
-      - uses: jeffreytse/jekyll-deploy-action@v0.3.1
+      - uses: jeffreytse/jekyll-deploy-action@v0.6.0
         with:
           provider: 'github'
           token: ${{ secrets.GITHUB_TOKEN }} # It's your Personal Access Token(PAT)
