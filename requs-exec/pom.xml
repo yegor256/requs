@@ -150,7 +150,7 @@
           <plugin>
             <groupId>com.qulice</groupId>
             <artifactId>qulice-maven-plugin</artifactId>
-            <version>0.24.3</version>
+            <version>0.24.4</version>
             <configuration>
               <excludes combine.children="append">
                 <exclude>xml:/src/it/settings.xml</exclude>
