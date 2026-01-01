@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!--
+ * SPDX-FileCopyrightText: Copyright (c) 2009-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Requs is a controlled natural language (CNL) for software requirements specification" />
+    <meta name="keywords" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="image/png" href="/images/ico-64x64.png">
+    <link rel="shortcut icon" href="/images/ico-64x64.png" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="https://www.requs.org/rss.xml"/>
+    <link rel="author" href="//plus.google.com/u/0/114792568016408327418?rel=author" />
+    <link rel="stylesheet" href="/css/layout.css?"/>
+    <link rel="canonical" href="//www.requs.org/example-facebook.html" />
+    <title>Facebook SRS, Example</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.0.0.js"></script>
+    <script style="text/javascript">
+      $(
+        function() {
+          $('h2').each(
+            function (idx, element) {
+              var $element = $(element), id = $element.attr('id');
+              if (id) {
+                $element.append(
+                  $('<a/>').addClass('link').attr('href', '#' + id).html('&#182;')
+                );
+              }
+            }
+          );
+        }
+      );
+    </script>
+  </head>
+  <body>
+    <a href="https://github.com/yegor256/requs">
+      <img style="position:absolute;top:0;right:0;border:0;width:100px;height:100px"
+        src="/images/fork-me.svg" alt="Fork me on GitHub">
+    </a>
+    <div class="wrapper">
+      <header class="header">
+        <p>
+          <a href="/">
+            <img src="/images/logo.svg" class="logo" alt="logo"/>
+          </a>
+        </p>
+      </header>
+      <h1>Facebook SRS, Example</h1>
+      <p>This is an example SRS of Facebook, in
+<a href="./syntax.html">Requs syntax</a>:</p>
+
+<figure class="highlight"><pre><code class="language-requs" data-lang="requs">User is "a human being".
+User has: email, password, name.
+
+UC1 where User (a user) socializes:
+  1. The user identifies himself;
+  2. The user invites User (a user);
+  3. The user accepts Invitation (an invite);
+  4. The user publishes StatusUpdate (an update);
+  5. The user scrolls Timeline (a timeline).
+
+StatusUpdate is "a text/image/video information posted by a user".
+StatusUpdate contains: text, date, author as User.
+
+Timeline is a "list of status updates from user friends".
+Timeline contains: update-s as StatusUpdate.
+
+Invitation is a "request to become a friend sent from one user to another".
+Invitation has: author as User and friend as User.
+
+UC2 where User identifies himself:
+  "The user enters his email and password, if he has them. Otherwise,
+  he registers in the system first, providing his email, full
+  name, password, and phone number".
+
+UC3 where User (a user) invites User (a friend):
+  1. The user reads the friend
+    "finding him in a list of all registered users";
+  2. The user creates the invitation.
+UC3/2 when "the user is banned by the friend":
+  1. Fail as "the user is not allowed to invite this friend".
+
+UC4 where User (a user) accepts Invitation (an invitation):
+  1. The user reads the invitation;
+  2. "User bans a requester, making impossible any more invitations from him";
+  3. The user updates the invitation
+    "adding the friend to his list of friends".
+
+UC5 where User (a user) publishes StatusUpdate (an update):
+  1. The user creates the update
+    "and it automatically gets added to his Timeline".
+
+UC6 where User (a user) scrolls Timeline:
+  "The user lists all status updates created by his
+  friends in a reversive chronological order".
+
+UC1/UI must "be responsive, adapting itself to the width of device".
+
+UC1/PERF must "guarantee a delivery of any HTTP response
+  in less than 1 second, with standard equipment and normal
+  load of the system".
+
+UC1/SCALE must "handle any number (up to a billion) of users without
+  performance degrading".</code></pre></figure>
+
+
+      <footer class="footer">
+        <p>
+          &copy; <span itemprop="author">requs.org</span>, 2009-2025
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

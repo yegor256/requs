@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--
+ * SPDX-FileCopyrightText: Copyright (c) 2009-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Requs can be used in command line for automated requirements compilation" />
+    <meta name="keywords" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="image/png" href="/images/ico-64x64.png">
+    <link rel="shortcut icon" href="/images/ico-64x64.png" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="https://www.requs.org/rss.xml"/>
+    <link rel="author" href="//plus.google.com/u/0/114792568016408327418?rel=author" />
+    <link rel="stylesheet" href="/css/layout.css?"/>
+    <link rel="canonical" href="//www.requs.org/requs-in-command-line.html" />
+    <title>Requirements Compilation in Command Line</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.0.0.js"></script>
+    <script style="text/javascript">
+      $(
+        function() {
+          $('h2').each(
+            function (idx, element) {
+              var $element = $(element), id = $element.attr('id');
+              if (id) {
+                $element.append(
+                  $('<a/>').addClass('link').attr('href', '#' + id).html('&#182;')
+                );
+              }
+            }
+          );
+        }
+      );
+    </script>
+  </head>
+  <body>
+    <a href="https://github.com/yegor256/requs">
+      <img style="position:absolute;top:0;right:0;border:0;width:100px;height:100px"
+        src="/images/fork-me.svg" alt="Fork me on GitHub">
+    </a>
+    <div class="wrapper">
+      <header class="header">
+        <p>
+          <a href="/">
+            <img src="/images/logo.svg" class="logo" alt="logo"/>
+          </a>
+        </p>
+      </header>
+      <h1>Requirements Compilation in Command Line</h1>
+      <p>First, download the latest <code>requs-exec.jar</code> from
+<a href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22requs-exec%22">Maven Central</a>.</p>
+
+<p>Then, run it like this:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>java <span class="nt">-jar</span> requs-exec.jar <span class="nt">-i</span> &lt;input&gt; <span class="nt">-o</span> &lt;output&gt;</code></pre></figure>
+
+<p><code>input</code> is an absolute path of directory with <code>.req</code> files.</p>
+
+<p><code>output</code> is a directory path where result files will be stored.</p>
+
+<p>That’s it.</p>
+
+      <footer class="footer">
+        <p>
+          &copy; <span itemprop="author">requs.org</span>, 2009-2025
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!--
+ * SPDX-FileCopyrightText: Copyright (c) 2009-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Requs is a controlled natural language (CNL) for software requirements specification" />
+    <meta name="keywords" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="image/png" href="/images/ico-64x64.png">
+    <link rel="shortcut icon" href="/images/ico-64x64.png" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="https://www.requs.org/rss.xml"/>
+    <link rel="author" href="//plus.google.com/u/0/114792568016408327418?rel=author" />
+    <link rel="stylesheet" href="/css/layout.css?"/>
+    <link rel="canonical" href="//www.requs.org/feature-nfrs.html" />
+    <title>Non-Functional Requirements</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.0.0.js"></script>
+    <script style="text/javascript">
+      $(
+        function() {
+          $('h2').each(
+            function (idx, element) {
+              var $element = $(element), id = $element.attr('id');
+              if (id) {
+                $element.append(
+                  $('<a/>').addClass('link').attr('href', '#' + id).html('&#182;')
+                );
+              }
+            }
+          );
+        }
+      );
+    </script>
+  </head>
+  <body>
+    <a href="https://github.com/yegor256/requs">
+      <img style="position:absolute;top:0;right:0;border:0;width:100px;height:100px"
+        src="/images/fork-me.svg" alt="Fork me on GitHub">
+    </a>
+    <div class="wrapper">
+      <header class="header">
+        <p>
+          <a href="/">
+            <img src="/images/logo.svg" class="logo" alt="logo"/>
+          </a>
+        </p>
+      </header>
+      <h1>Non-Functional Requirements</h1>
+      <p>Any method (use case) may have an unlimited number of non-functional
+requirements (NFRs). They are sometimes called “qualities of service”. Wikipedia
+has <a href="http://en.wikipedia.org/wiki/Non-functional_requirement">a list of possible NFRs</a>.</p>
+
+<p>Requs allows NFRs be related only to methods (functional requirements).
+In other words, you can’t say that your entire product should be “scalable”.
+Or that it has to be multi-language. Or that its mean time between failure
+is more than 24 hours.</p>
+
+<p>You should always relate such non-functional attributes to specific
+functionalities. There is a reason behind this restriction - we want
+NFRs to be testable. If they are testable - there is a tester. If there
+is a tester - there is some functionality. If there is a functionality -
+it has to be documented as a method (use case).</p>
+
+<p>The syntax is simple:</p>
+
+<figure class="highlight"><pre><code class="language-requs" data-lang="requs">UC3.2/MTBF must "be 5 minutes on a standard equipment".
+UC7/PERF must "be less than 500 msec per request".
+UC8/UI must "speak English and Spanish".
+UC9.5.5/PERF must be "less than 100 milliseconds per HTTP request".</code></pre></figure>
+
+<p>In the future versions of Requs we may have more formal
+syntax for NFRs.</p>
+
+      <footer class="footer">
+        <p>
+          &copy; <span itemprop="author">requs.org</span>, 2009-2025
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

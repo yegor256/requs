@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<!--
+ * SPDX-FileCopyrightText: Copyright (c) 2009-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Requs can be used in Maven build for automated requirements compilation" />
+    <meta name="keywords" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="image/png" href="/images/ico-64x64.png">
+    <link rel="shortcut icon" href="/images/ico-64x64.png" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="https://www.requs.org/rss.xml"/>
+    <link rel="author" href="//plus.google.com/u/0/114792568016408327418?rel=author" />
+    <link rel="stylesheet" href="/css/layout.css?"/>
+    <link rel="canonical" href="//www.requs.org/requs-in-maven-build.html" />
+    <title>Requirements Compilation in Maven Build</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.0.0.js"></script>
+    <script style="text/javascript">
+      $(
+        function() {
+          $('h2').each(
+            function (idx, element) {
+              var $element = $(element), id = $element.attr('id');
+              if (id) {
+                $element.append(
+                  $('<a/>').addClass('link').attr('href', '#' + id).html('&#182;')
+                );
+              }
+            }
+          );
+        }
+      );
+    </script>
+  </head>
+  <body>
+    <a href="https://github.com/yegor256/requs">
+      <img style="position:absolute;top:0;right:0;border:0;width:100px;height:100px"
+        src="/images/fork-me.svg" alt="Fork me on GitHub">
+    </a>
+    <div class="wrapper">
+      <header class="header">
+        <p>
+          <a href="/">
+            <img src="/images/logo.svg" class="logo" alt="logo"/>
+          </a>
+        </p>
+      </header>
+      <h1>Requirements Compilation in Maven Build</h1>
+      <p>Add this plugin to your Maven build
+(get their versions from <a href="http://search.maven.org/">Maven Central</a>):</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;build&gt;</span>
+  <span class="nt">&lt;plugins&gt;</span>
+    <span class="nt">&lt;plugin&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>org.requs<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>requs-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;executions&gt;</span>
+        <span class="nt">&lt;execution&gt;</span>
+          <span class="nt">&lt;goals&gt;</span>
+            <span class="nt">&lt;goal&gt;</span>compile<span class="nt">&lt;/goal&gt;</span>
+          <span class="nt">&lt;/goals&gt;</span>
+        <span class="nt">&lt;/execution&gt;</span>
+      <span class="nt">&lt;/executions&gt;</span>
+    <span class="nt">&lt;/plugin&gt;</span>
+    <span class="nt">&lt;plugin&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>maven-site-plugin<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;configuration&gt;</span>
+        <span class="nt">&lt;reportPlugins</span> <span class="na">combine.self=</span><span class="s">"append"</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;plugin&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>org.requs<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>requs-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;reportSets&gt;</span>
+              <span class="nt">&lt;reportSet&gt;</span>
+                <span class="nt">&lt;reports&gt;</span>
+                  <span class="nt">&lt;report&gt;</span>default<span class="nt">&lt;/report&gt;</span>
+                <span class="nt">&lt;/reports&gt;</span>
+              <span class="nt">&lt;/reportSet&gt;</span>
+            <span class="nt">&lt;/reportSets&gt;</span>
+          <span class="nt">&lt;/plugin&gt;</span>
+        <span class="nt">&lt;/reportPlugins&gt;</span>
+      <span class="nt">&lt;/configuration&gt;</span>
+    <span class="nt">&lt;/plugin&gt;</span>
+  <span class="nt">&lt;/plugins&gt;</span>
+<span class="nt">&lt;/build&gt;</span></code></pre></figure>
+
+<p>On every run of <code>compile</code> phase Requs compiler will
+generate its output files in <code>target/requs</code>.</p>
+
+<p>On every run of <code>site</code> phase you will get the same files
+in <code>target/site/requs</code> directory.</p>
+
+<p>Keep your source files in <code>src/requs</code> with <code>.req</code> extension. All
+of them will be picked up by Requs compiler, recursively searching
+in all sub-directories.</p>
+
+<h2 id="extra-configuration">Extra Configuration</h2>
+
+<p>You can add extra configuration parameters to be passed
+into Requs compiler, using <code>options</code> element:</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;build&gt;</span>
+  <span class="nt">&lt;plugins&gt;</span>
+    <span class="nt">&lt;plugin&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>org.requs<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>requs-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;configuration&gt;</span>
+        <span class="nt">&lt;options&gt;</span>
+          <span class="nt">&lt;test.option&gt;</span>hello, world!<span class="nt">&lt;/test.option&gt;</span>
+        <span class="nt">&lt;/options&gt;</span>
+      <span class="nt">&lt;/configuration&gt;</span>
+    <span class="nt">&lt;/plugin&gt;</span>
+  <span class="nt">&lt;/plugins&gt;</span>
+<span class="nt">&lt;/build&gt;</span></code></pre></figure>
+
+<p>All options are passed to the
+<a href="/requs-core/apidoc-1.13/org/requs/Compiler.html"><code>Compiler</code></a>
+class as a map of strings.</p>
+
+      <footer class="footer">
+        <p>
+          &copy; <span itemprop="author">requs.org</span>, 2009-2025
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

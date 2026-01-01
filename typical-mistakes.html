@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!--
+ * SPDX-FileCopyrightText: Copyright (c) 2009-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="This article contains a list of most common mistakes made during SRS document development; try to avoid them" />
+    <meta name="keywords" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="image/png" href="/images/ico-64x64.png">
+    <link rel="shortcut icon" href="/images/ico-64x64.png" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="https://www.requs.org/rss.xml"/>
+    <link rel="author" href="//plus.google.com/u/0/114792568016408327418?rel=author" />
+    <link rel="stylesheet" href="/css/layout.css?"/>
+    <link rel="canonical" href="//www.requs.org/typical-mistakes.html" />
+    <title>Typical Mistakes to Avoid</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.0.0.js"></script>
+    <script style="text/javascript">
+      $(
+        function() {
+          $('h2').each(
+            function (idx, element) {
+              var $element = $(element), id = $element.attr('id');
+              if (id) {
+                $element.append(
+                  $('<a/>').addClass('link').attr('href', '#' + id).html('&#182;')
+                );
+              }
+            }
+          );
+        }
+      );
+    </script>
+  </head>
+  <body>
+    <a href="https://github.com/yegor256/requs">
+      <img style="position:absolute;top:0;right:0;border:0;width:100px;height:100px"
+        src="/images/fork-me.svg" alt="Fork me on GitHub">
+    </a>
+    <div class="wrapper">
+      <header class="header">
+        <p>
+          <a href="/">
+            <img src="/images/logo.svg" class="logo" alt="logo"/>
+          </a>
+        </p>
+      </header>
+      <h1>Typical Mistakes to Avoid</h1>
+      <p>Here is a list of most common mistakes made in SRS
+documents. Let’s try to avoid them.</p>
+
+<h2 id="interface-is-not-a-type">Interface is not a Type</h2>
+
+<p>This is <strong>not</strong> correct:</p>
+
+<figure class="highlight"><pre><code class="language-requs" data-lang="requs">System contains:
+  loginPage "where user can log in",
+  API "that allows users to retrieve data".</code></pre></figure>
+
+<p>Neither login page nor API are slots of the system. They are not slots
+at all. They are <strong>interfaces</strong>. Well, API is an interface and login page
+is a property of some interface (probably a web UI).</p>
+
+<p>In order to define interfaces you should use non-functional requirements:</p>
+
+<figure class="highlight"><pre><code class="language-requs" data-lang="requs">UC1/UI must "contain a login page, where use can log in".
+UC2/API must "be accessible through API that allows users to retrieve data".</code></pre></figure>
+
+<p>Then, you can explain interfaces even further, forwarding a reader
+to supplementary pages:</p>
+
+<figure class="highlight"><pre><code class="language-requs" data-lang="requs">UC1/UI must "comply to WebUI".
+WebUI: """
+Long description of the web UI, with images and mock screens...
+"""</code></pre></figure>
+
+<p>It is totally OK to have long informal descriptions of interfaces.</p>
+
+<h2 id="avoid-comments-and-to-do">Avoid Comments and TO-DO</h2>
+
+<p>The first slot in this example is correct, while the second one is wrong:</p>
+
+<figure class="highlight"><pre><code class="language-requs" data-lang="requs">Employee contains:
+  name "first and last name or a nick name or maybe an empty field",
+  email "an address (TO-DO check whether we should obey RFC 5322)".</code></pre></figure>
+
+<p>It is totally correct to give unclear and ambiguous definitions
+inside informal texts. That’s exactly what they are for! Using this
+specification a programmer will be able to implement the name of
+employee, because it has all the information he needs. If this information
+is not sufficient enough and he will need a more precise and correct
+definition, he will submit a bug.</p>
+
+<p>The second slot will make a programmer stuck — can I implement
+it already or I should wait for someone doing this checking? Should
+I submit a bug? Or it was already submitted?</p>
+
+<p>Again, informal texts <strong>are</strong> todo-s. No need to define todo-s inside
+todo-s.</p>
+
+<h2 id="avoid-over-specifying">Avoid Over-Specifying</h2>
+
+<p>SRS document is not intended to become a complete description of
+the system for programmers and architects. Instead, the SRS should
+describe <strong>as little as possible</strong>. This use case is definitely
+wrong:</p>
+
+<figure class="highlight"><pre><code class="language-requs" data-lang="requs">UC5 where User (a user) logs in:
+  1. The user "clicks LOGIN button";
+  2. The user "enters email and password";
+  3. The user "clicks SUBMIT button".</code></pre></figure>
+
+<p>This use case restricts system implementers. It gives too many
+details about the login flow, while none of these requirements were
+actually provided by the product owner. The product owner doesn’t
+care about this specific flow. All he wants is to have an ability
+for his users to log into the system. How exactly will it happen,
+he doesn’t really care.</p>
+
+<p>Providing so many extra details in the SRS makes the document
+less readable and much more vague.</p>
+
+      <footer class="footer">
+        <p>
+          &copy; <span itemprop="author">requs.org</span>, 2009-2025
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

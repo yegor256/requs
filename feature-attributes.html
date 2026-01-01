@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<!--
+ * SPDX-FileCopyrightText: Copyright (c) 2009-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Requs is a controlled natural language (CNL) for software requirements specification" />
+    <meta name="keywords" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="image/png" href="/images/ico-64x64.png">
+    <link rel="shortcut icon" href="/images/ico-64x64.png" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="https://www.requs.org/rss.xml"/>
+    <link rel="author" href="//plus.google.com/u/0/114792568016408327418?rel=author" />
+    <link rel="stylesheet" href="/css/layout.css?"/>
+    <link rel="canonical" href="//www.requs.org/feature-attributes.html" />
+    <title>Requirement Attributes and Seals</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.0.0.js"></script>
+    <script style="text/javascript">
+      $(
+        function() {
+          $('h2').each(
+            function (idx, element) {
+              var $element = $(element), id = $element.attr('id');
+              if (id) {
+                $element.append(
+                  $('<a/>').addClass('link').attr('href', '#' + id).html('&#182;')
+                );
+              }
+            }
+          );
+        }
+      );
+    </script>
+  </head>
+  <body>
+    <a href="https://github.com/yegor256/requs">
+      <img style="position:absolute;top:0;right:0;border:0;width:100px;height:100px"
+        src="/images/fork-me.svg" alt="Fork me on GitHub">
+    </a>
+    <div class="wrapper">
+      <header class="header">
+        <p>
+          <a href="/">
+            <img src="/images/logo.svg" class="logo" alt="logo"/>
+          </a>
+        </p>
+      </header>
+      <h1>Requirement Attributes and Seals</h1>
+      <p>Any use case may have attributes assigned to it. Attribute
+is a small-caps English word, without spaces or numbers inside.
+For example:</p>
+
+<figure class="highlight"><pre><code class="language-requs" data-lang="requs">:UC3.2 is a must.
+:UC8 is delivered.</code></pre></figure>
+
+<p>In this example, <code>must</code> is an attribute of <code>UC3.2</code> and
+<code>delivered</code> is an attribute of <code>UC8</code>.</p>
+
+<p>We recommend to use attributes for requirements prioritization,
+according to <a href="http://en.wikipedia.org/wiki/MoSCoW_method">MoSCoW method</a>:</p>
+
+<ul>
+  <li>
+    <p><code>must</code></p>
+  </li>
+  <li>
+    <p><code>should</code></p>
+  </li>
+  <li>
+    <p><code>could</code></p>
+  </li>
+  <li>
+    <p><code>would</code></p>
+  </li>
+</ul>
+
+<p>We also recommend to use attributes for
+<a href="http://en.wikipedia.org/wiki/Requirement_prioritization">requirements prioritization</a>:</p>
+
+<ul>
+  <li>
+    <p><code>specified</code></p>
+  </li>
+  <li>
+    <p><code>implemented</code></p>
+  </li>
+  <li>
+    <p><code>delivered</code></p>
+  </li>
+  <li>
+    <p><code>accepted</code></p>
+  </li>
+  <li>
+    <p>Seals</p>
+  </li>
+</ul>
+
+<p>When attribute is specified, it is possible to “seal” it. A seal is
+a 6-signs <a href="http://en.wikipedia.org/wiki/Hexadecimal">hexadecimal</a>
+number, calculated by Requs engine, as an
+<a href="http://en.wikipedia.org/wiki/MD5">MD5</a> hash function of the use
+case content.</p>
+
+<p>For example, these two use cases will have two different seals:</p>
+
+<figure class="highlight"><pre><code class="language-requs" data-lang="requs">UC3 where nothing happens: "tbd".
+UC3 where nothing really happens: "tbd".</code></pre></figure>
+
+<p>Their signatures are different, that’s why their seals are also different.</p>
+
+<p>In order to calculate a seal for your use case, just add
+a random seal (for example, <code>ffffff</code>)
+and run <code>mvn requs:compile</code>:</p>
+
+<figure class="highlight"><pre><code class="language-requs" data-lang="requs">ffffff:UC3 is a must.</code></pre></figure>
+
+<p>You will get an error message, similar to this:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">[ERROR] 17:0 Seal "2edb8f" at the method UC3 doesn't match "ffffff" at the attribute "must"</code></pre></figure>
+
+<p>The message means that Requs engine is expecting <code>2edb8f</code> as
+a seal for all <code>UC3</code> attributes. We set it to <code>ffffff</code> — this
+breaks the build and makes our Requs specification in-compilable.</p>
+
+<p>Now, we can change <code>ffffff</code> to <code>2edb8f</code> in the specification
+and Requs won’t complain any more.</p>
+
+<p>When, in the future, someone changes the content of <code>UC3</code>, they will
+break the build and will have to change the seal for all attributes.</p>
+
+<h2 id="baselined-attributes">Baselined Attributes</h2>
+
+<p>This mechanism exists in Requs in order to be able to
+<a href="http://en.wikipedia.org/wiki/Baseline_%28configuration_management%29">baseline</a>
+individual requirements in a continuously changing document.</p>
+
+<p>Say, use case <code>UC3</code> is already implemented and delivered to
+the product owner. It has an attribute <code>delivered</code> in the SRS,
+and this attribute is sealed.</p>
+
+<p>Then, someone is changing the description of <code>UC3</code>. The seal
+doesn’t work any more and Requs starts complaining. In order to
+make the build clean again, the author of these changes has to
+remove the seal from the document.</p>
+
+<p><code>UC3</code> doesn’t have a seal any more. It is clear for the project
+manager, that this use case needs to be implemented and delivered to the
+product owner again.</p>
+
+<p>Thus, being a system analyst working with the SRS, be aware that
+if any seal doesn’t match its expected value after your changes,
+you should just remove the seal.</p>
+
+<h2 id="who-seals-use-cases">Who Seals Use Cases?</h2>
+
+<p>Seals are supposed to be placed in the SRS by a project manager. Well,
+not necessarily a PM, but a person who is responsible for changing
+statuses or priorities of requirements.</p>
+
+<p>Usually it happens on project milestones, when priorities are set and
+requirements are baselined.</p>
+
+      <footer class="footer">
+        <p>
+          &copy; <span itemprop="author">requs.org</span>, 2009-2025
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<!--
+ * SPDX-FileCopyrightText: Copyright (c) 2009-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Requs is a controlled natural language (CNL) for software requirements specification" />
+    <meta name="keywords" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="image/png" href="/images/ico-64x64.png">
+    <link rel="shortcut icon" href="/images/ico-64x64.png" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="https://www.requs.org/rss.xml"/>
+    <link rel="author" href="//plus.google.com/u/0/114792568016408327418?rel=author" />
+    <link rel="stylesheet" href="/css/layout.css?"/>
+    <link rel="canonical" href="//www.requs.org/feature-types.html" />
+    <title>Types</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.0.0.js"></script>
+    <script style="text/javascript">
+      $(
+        function() {
+          $('h2').each(
+            function (idx, element) {
+              var $element = $(element), id = $element.attr('id');
+              if (id) {
+                $element.append(
+                  $('<a/>').addClass('link').attr('href', '#' + id).html('&#182;')
+                );
+              }
+            }
+          );
+        }
+      );
+    </script>
+  </head>
+  <body>
+    <a href="https://github.com/yegor256/requs">
+      <img style="position:absolute;top:0;right:0;border:0;width:100px;height:100px"
+        src="/images/fork-me.svg" alt="Fork me on GitHub">
+    </a>
+    <div class="wrapper">
+      <header class="header">
+        <p>
+          <a href="/">
+            <img src="/images/logo.svg" class="logo" alt="logo"/>
+          </a>
+        </p>
+      </header>
+      <h1>Types</h1>
+      <p>Type in Requs is a creature similar to a class in
+<a href="http://en.wikipedia.org/wiki/Object-oriented_programming">object-oriented programming</a>.
+Type has slots and parent types:</p>
+
+<figure class="highlight"><pre><code class="language-requs" data-lang="requs">Image is File.
+Image has:
+width as "pixels",
+height as "pixels", and
+format as "PNG, GIF, JPEG, etc".</code></pre></figure>
+
+<p>Type names are in <a href="http://en.wikipedia.org/wiki/CamelCase">CamelCase Notation</a>.
+For example, these words are valid type names:
+<code>Image</code>, <code>ImageFile</code>, <code>ImageInCustomFormat</code>,
+<code>GIFImage</code>, <code>PNG</code>.</p>
+
+<h2 id="slots">Slots</h2>
+
+<p>A type may have a number of slots. A slot is something similar
+to a private property of a Java class, for example. The syntax is simple,
+in <a href="http://en.wikipedia.org/wiki/Backus%E2%80%93Naur_Form">BNF</a>:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">&lt;type&gt; ::= &lt;camel&gt; ( "has" | "needs" | "requires" | "includes" ) ":" &lt;slots&gt; "."
+&lt;slots&gt; ::= &lt;slot&gt; (  ( "," | ";" | "and" ) &lt;slot&gt; )*
+&lt;slot&gt; ::= &lt;name&gt; ( "as" &lt;informal&gt; )?</code></pre></figure>
+
+<h2 id="good-and-bad-types">Good and Bad Types</h2>
+
+<p>Very often we make mistakes when declaring a new type or
+modifying an existing one. Read them carefully and try to avoid
+in your SRS documents.</p>
+
+      <footer class="footer">
+        <p>
+          &copy; <span itemprop="author">requs.org</span>, 2009-2025
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
