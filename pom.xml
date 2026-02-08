@@ -158,6 +158,40 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.15.1</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-java</artifactId>
+            <version>0.28.4</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <analysisConfiguration>
+            <revapi.filter>
+              <archives>
+                <exclude>
+                  <item>org\.antlr:.*</item>
+                  <item>org\.apache\.maven:.*</item>
+                  <item>org\.apache\.maven\.resolver:.*</item>
+                  <item>org\.apache\.maven\.doxia:.*</item>
+                  <item>org\.eclipse\.aether:.*</item>
+                </exclude>
+              </archives>
+            </revapi.filter>
+          </analysisConfiguration>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
           <archive>
