@@ -14,7 +14,7 @@ install: |-
   pdd -f /dev/null
 merge:
   script: |-
-    mvn clean install -Pqulice --errors --settings ../settings.xml
+    mvn clean install -ntp -Pqulice --errors --settings ../settings.xml
     mvn clean site -Psite --settings ../settings.xml
 release:
   sensitive:
@@ -23,4 +23,4 @@ release:
     mvn versions:set "-DnewVersion=${tag}"
     git commit -am "${tag}"
     export MAVEN_OPTS="--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED"
-    mvn clean deploy -Pqulice -Psonatype -Prequs --errors --settings ../settings.xml
+    mvn clean deploy -ntp -Pqulice -Psonatype -Prequs --errors --settings ../settings.xml
