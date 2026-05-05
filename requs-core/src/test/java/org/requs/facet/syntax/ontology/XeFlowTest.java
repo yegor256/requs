@@ -50,4 +50,17 @@ final class XeFlowTest {
         );
     }
 
+    @Test
+    void addsDuplicateStepsToReportRepeatedNumbers() throws Exception {
+        final Directives dirs = new Directives().add("f2");
+        final Flow flow = new XeFlow(dirs, "/f2");
+        flow.addStep(1);
+        flow.addStep(1);
+        MatcherAssert.assertThat(
+            "addStep should always add a new step, even with the same number, so duplicates can be reported",
+            XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
+            XhtmlMatchers.hasXPath("/f2/steps[count(step[number=1])=2]")
+        );
+    }
+
 }

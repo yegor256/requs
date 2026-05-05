@@ -290,7 +290,7 @@ step [Flow flow]
     :
     FLOW_ID
     DOT
-    { Step step = flow.step(Integer.parseInt($FLOW_ID.text)); }
+    { Step step = flow.addStep(Integer.parseInt($FLOW_ID.text)); }
     { step.mention(_input.LT(1).getLine()); }
     (
         object=subject[flow]

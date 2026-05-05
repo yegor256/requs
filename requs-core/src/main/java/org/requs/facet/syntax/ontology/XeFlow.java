@@ -58,6 +58,19 @@ final class XeFlow implements Flow {
     }
 
     @Override
+    public Step addStep(final int number) {
+        this.dirs.xpath(this.start).strict(1).addIf("steps")
+            .xpath(this.start).xpath("steps")
+            .add("step").add("number").set(Integer.toString(number));
+        return new XeStep(
+            this.dirs,
+            String.format(
+                "(%s/steps/step[number=%d])[last()]", this.start, number
+            )
+        );
+    }
+
+    @Override
     public void binding(final String name, final String type) {
         this.dirs.xpath(this.start).strict(1).addIf("bindings").up().xpath(
             String.format(
