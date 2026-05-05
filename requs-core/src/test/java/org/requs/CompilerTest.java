@@ -44,6 +44,7 @@ final class CompilerTest {
             "samples/clean-spec.xml",
             "samples/exceptions.xml",
             "samples/order-of-steps.xml",
+            "samples/repeated-step-numbers.xml",
             "samples/wrong-steps-numbering.xml",
         };
         for (final String file : files) {

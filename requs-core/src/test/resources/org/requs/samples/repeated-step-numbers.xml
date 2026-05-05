@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * SPDX-FileCopyrightText: Copyright (c) 2009-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
+-->
+<sample>
+  <spec>
+        UC2 where User (a user) registers repository:
+        1. The user creates;
+        1. The user updates.
+    </spec>
+  <xpaths>
+    <xpath>/spec/errors/error[contains(.,'duplication of numbers')]</xpath>
+  </xpaths>
+</sample>
