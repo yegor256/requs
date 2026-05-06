@@ -17,6 +17,7 @@ import org.xembly.Directives;
 @ToString
 @EqualsAndHashCode(of = { "mentioned", "flow", "signature" })
 @Loggable(Loggable.DEBUG)
+@SuppressWarnings("PMD.TooManyMethods")
 final class XeMethod implements Method {
 
     /**
@@ -117,6 +118,11 @@ final class XeMethod implements Method {
     @Override
     public Step step(final int number) {
         return this.flow.step(number);
+    }
+
+    @Override
+    public Step addStep(final int number) {
+        return this.flow.addStep(number);
     }
 
     @Override
