@@ -6,7 +6,6 @@ package org.requs.facet;
 
 import com.google.common.collect.Collections2;
 import com.jcabi.aspects.Immutable;
-import com.jcabi.aspects.Tv;
 import com.jcabi.xml.XMLDocument;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
@@ -24,7 +23,6 @@ import org.w3c.dom.Node;
 
 /**
  * XSLT functions (utility class, but this is the only option with Saxon).
- *
  * @since 1.9
  */
 @Immutable
@@ -76,7 +74,7 @@ public final class XsltFuncs {
         );
         return DigestUtils.md5Hex(
             StringUtils.join(parts, "")
-        ).substring(0, Tv.SIX);
+        ).substring(0, 6);
     }
 
     /**
@@ -95,5 +93,4 @@ public final class XsltFuncs {
         }
         return matcher.group(1);
     }
-
 }

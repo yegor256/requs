@@ -5,7 +5,6 @@
 package org.requs.facet.syntax.ontology;
 
 import com.jcabi.aspects.Loggable;
-import com.jcabi.aspects.Tv;
 import java.util.Iterator;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -14,7 +13,6 @@ import org.xembly.Directives;
 
 /**
  * Xembly Ontology.
- *
  * @since 1.1
  * @checkstyle MultipleStringLiterals (500 lines)
  */
@@ -124,7 +122,7 @@ public final class XeOntology implements Ontology {
             escaped = new StringBuilder(text.length() + 2)
                 .append('\'').append(text).append('\'').toString();
         } else {
-            final int len = text.length() + Tv.FIFTY;
+            final int len = text.length() + 50;
             escaped = new StringBuilder(len)
                 .append("concat('")
                 .append(text.replace("'", "', \"'\", '"))
@@ -142,5 +140,4 @@ public final class XeOntology implements Ontology {
     private Directives root(final String node) {
         return this.dirs.xpath("/spec").strict(1).addIf(node);
     }
-
 }

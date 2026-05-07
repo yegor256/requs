@@ -4,7 +4,6 @@
  */
 package org.requs.facet.sa;
 
-import com.jcabi.aspects.Tv;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -22,8 +21,7 @@ final class LineRuleTest {
             new LineRule.Wrap(new RegexRule("[a-z]+", "")).enforce(
                 "\n\n\nhey"
             ).iterator().next().line(),
-            Matchers.equalTo(Tv.FOUR)
+            Matchers.equalTo(4)
         );
     }
-
 }
