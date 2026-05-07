@@ -12,8 +12,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkFactory;
-import org.apache.maven.doxia.siterenderer.Renderer;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
@@ -63,13 +61,8 @@ public final class ReportMojo extends AbstractMavenReport {
     public transient Map<String, String> options =
         new ConcurrentHashMap<>(0);
 
-    /**
-     * Doxia Site Renderer component.
-     */
-    @Component
-    public transient Renderer renderer;
-
     @Override
+    @SuppressWarnings("deprecation")
     public String getOutputName() {
         return "requs";
     }
@@ -82,11 +75,6 @@ public final class ReportMojo extends AbstractMavenReport {
     @Override
     public String getDescription(final Locale locale) {
         return "Requs Specification";
-    }
-
-    @Override
-    public Renderer getSiteRenderer() {
-        return this.renderer;
     }
 
     @Override
