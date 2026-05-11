@@ -6,7 +6,6 @@ package org.requs.facet;
 
 import com.google.common.collect.Lists;
 import com.jcabi.aspects.Immutable;
-import com.jcabi.aspects.Tv;
 import com.jcabi.log.Logger;
 import com.jcabi.xml.XML;
 import java.io.File;
@@ -24,7 +23,6 @@ import org.xembly.Directives;
 
 /**
  * Aggregate sources into one file.
- *
  * @since 1.2
  */
 @Immutable
@@ -47,7 +45,7 @@ public final class Aggregate implements XeFacet {
 
     @Override
     public Iterable<Directive> touch(final XML spec) throws IOException {
-        final StringBuilder text = new StringBuilder(Tv.THOUSAND);
+        final StringBuilder text = new StringBuilder(1000);
         final List<File> files = Lists.newArrayList(
             FileUtils.listFiles(
                 new File(this.dir), new String[]{"req"}, true

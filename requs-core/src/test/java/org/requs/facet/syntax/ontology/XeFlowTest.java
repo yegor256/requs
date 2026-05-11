@@ -4,7 +4,6 @@
  */
 package org.requs.facet.syntax.ontology;
 
-import com.jcabi.aspects.Tv;
 import com.jcabi.matchers.XhtmlMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
@@ -37,7 +36,7 @@ final class XeFlowTest {
     void avoidsDuplicateBindings() throws Exception {
         final Directives dirs = new Directives().add("f1");
         final Flow flow = new XeFlow(dirs, "/f1");
-        for (int idx = 0; idx < Tv.FIVE; ++idx) {
+        for (int idx = 0; idx < 5; ++idx) {
             flow.binding("a", "alpha");
         }
         MatcherAssert.assertThat(
@@ -50,4 +49,16 @@ final class XeFlowTest {
         );
     }
 
+    @Test
+    void addsDuplicateStepsToReportRepeatedNumbers() throws Exception {
+        final Directives dirs = new Directives().add("f2");
+        final Flow flow = new XeFlow(dirs, "/f2");
+        flow.addStep(1);
+        flow.addStep(1);
+        MatcherAssert.assertThat(
+            "addStep should always add a new step, even with the same number, so duplicates can be reported",
+            XhtmlMatchers.xhtml(new Xembler(dirs).xml()),
+            XhtmlMatchers.hasXPath("/f2/steps[count(step[number=1])=2]")
+        );
+    }
 }

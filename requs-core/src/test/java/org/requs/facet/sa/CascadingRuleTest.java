@@ -4,7 +4,6 @@
  */
 package org.requs.facet.sa;
 
-import com.jcabi.aspects.Tv;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -31,8 +30,7 @@ final class CascadingRuleTest {
             new CascadingRule().enforce(
                 "\n\n\n  hey\n   three!"
             ).iterator().next().line(),
-            Matchers.equalTo(Tv.FIVE)
+            Matchers.equalTo(5)
         );
     }
-
 }

@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.jcabi</groupId>
     <artifactId>parent</artifactId>
-    <version>0.70.0</version>
+    <version>0.73.1</version>
   </parent>
   <groupId>org.requs</groupId>
   <artifactId>requs</artifactId>
@@ -87,6 +87,16 @@
         <version>2.22.0</version>
       </dependency>
       <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>1.22.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>33.6.0-jre</version>
+      </dependency>
+      <dependency>
         <groupId>com.jcabi</groupId>
         <artifactId>jcabi-log</artifactId>
         <version>0.24.3</version>
@@ -110,7 +120,7 @@
       <dependency>
         <groupId>com.jcabi</groupId>
         <artifactId>jcabi-matchers</artifactId>
-        <version>1.8.0</version>
+        <version>1.9.0</version>
       </dependency>
       <dependency>
         <groupId>net.sourceforge.saxon</groupId>
@@ -153,6 +163,31 @@
         <artifactId>mockito-core</artifactId>
         <version>5.23.0</version>
       </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-utils</artifactId>
+        <version>4.0.3</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.resolver</groupId>
+        <artifactId>maven-resolver-api</artifactId>
+        <version>2.0.17</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.doxia</groupId>
+        <artifactId>doxia-site-model</artifactId>
+        <version>2.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.doxia</groupId>
+        <artifactId>doxia-core</artifactId>
+        <version>2.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.sisu</groupId>
+        <artifactId>org.eclipse.sisu.plexus</artifactId>
+        <version>1.0.0</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <build>
@@ -177,10 +212,61 @@
                   <item>org\.apache\.maven:.*</item>
                   <item>org\.apache\.maven\.resolver:.*</item>
                   <item>org\.apache\.maven\.doxia:.*</item>
+                  <item>org\.apache\.maven\.reporting:.*</item>
                   <item>org\.eclipse\.aether:.*</item>
+                  <item>com\.jcabi\.incubator:xembly:.*</item>
                 </exclude>
               </archives>
             </revapi.filter>
+            <revapi.differences>
+              <ignore>true</ignore>
+              <differences combine.children="append">
+                <item>
+                  <regex>true</regex>
+                  <code>.*</code>
+                  <newArchive>org\.apache\.maven\.reporting:.*</newArchive>
+                </item>
+                <item>
+                  <regex>true</regex>
+                  <code>.*</code>
+                  <oldArchive>org\.apache\.maven\.reporting:.*</oldArchive>
+                </item>
+                <item>
+                  <regex>true</regex>
+                  <code>.*</code>
+                  <newArchive>org\.apache\.maven\.doxia:.*</newArchive>
+                </item>
+                <item>
+                  <regex>true</regex>
+                  <code>.*</code>
+                  <oldArchive>org\.apache\.maven\.doxia:.*</oldArchive>
+                </item>
+                <item>
+                  <code>java.field.removed</code>
+                  <fieldName>renderer</fieldName>
+                </item>
+                <item>
+                  <regex>true</regex>
+                  <code>java\.annotation\.attributeValueChanged</code>
+                  <new>field org\.apache\.maven\.reporting\.AbstractMavenReport.*</new>
+                </item>
+                <item>
+                  <regex>true</regex>
+                  <code>java\.annotation\.attributeRemoved</code>
+                  <new>field org\.apache\.maven\.reporting\.AbstractMavenReport.*</new>
+                </item>
+                <item>
+                  <regex>true</regex>
+                  <code>java\.method\.exception\.checkedAdded</code>
+                  <new>method .* org\.apache\.maven\.reporting\.AbstractMavenReport.*</new>
+                </item>
+                <item>
+                  <regex>true</regex>
+                  <code>java\.method\.visibilityReduced</code>
+                  <new>method .* org\.apache\.maven\.reporting\.AbstractMavenReport.*</new>
+                </item>
+              </differences>
+            </revapi.differences>
           </analysisConfiguration>
         </configuration>
         <executions>
