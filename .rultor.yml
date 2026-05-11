@@ -20,7 +20,7 @@ release:
   sensitive:
     - setting.xml
   script: |-
-    mvn versions:set "-DnewVersion=${tag}"
+    mvn -ntp versions:set "-DnewVersion=${tag}"
     git commit -am "${tag}"
     export MAVEN_OPTS="--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED"
     mvn clean deploy -ntp -Pqulice -Psonatype -Prequs --errors --settings ../settings.xml
