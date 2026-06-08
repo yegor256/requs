@@ -38,4 +38,24 @@ final class RulesTest {
         );
     }
 
+    @Test
+    void toleratesWindowsLineEndings() throws IOException {
+        MatcherAssert.assertThat(
+            "CRLF input should not produce any rule violations",
+            new XeFacet.Wrap(new Rules()).touch(
+                new XMLDocument(
+                    StringUtils.join(
+                        "<spec><input>",
+                        "User is a &quot;human being&quot;.&#13;\n",
+                        "Order is a &quot;customer request&quot;.&#13;\n",
+                        "</input></spec>"
+                    )
+                )
+            ),
+            XhtmlMatchers.hasXPaths(
+                "/spec/errors[count(error)=0]"
+            )
+        );
+    }
+
 }

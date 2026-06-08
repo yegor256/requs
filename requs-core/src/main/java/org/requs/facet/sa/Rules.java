@@ -53,13 +53,7 @@ public final class Rules implements XeFacet {
             ),
             new LineRule.Wrap(
                 new RegexRule(
-                    "\r",
-                    "don't use Windows line-endings"
-                )
-            ),
-            new LineRule.Wrap(
-                new RegexRule(
-                    ",[^$ \n\r]",
+                    ",[^$ \n]",
                     "always use space after comma"
                 )
             ),
@@ -76,7 +70,8 @@ public final class Rules implements XeFacet {
         if (spec.nodes("/spec/input[.!='']").isEmpty()) {
             input = "";
         } else {
-            input = spec.xpath("/spec/input/text()").get(0);
+            input = spec.xpath("/spec/input/text()").get(0)
+                .replace("\r\n", "\n").replace('\r', '\n');
         }
         final Directives dirs = new Directives().xpath("/spec").addIf("errors");
         for (final Rule rule : rules) {
