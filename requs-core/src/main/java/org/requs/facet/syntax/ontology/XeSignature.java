@@ -11,7 +11,6 @@ import org.xembly.Directives;
 
 /**
  * Xembly signature.
- *
  * @since 1.1
  */
 @ToString
@@ -73,5 +72,4 @@ final class XeSignature implements Signature {
     public void explain(final String info) {
         this.informal.explain(info);
     }
-
 }

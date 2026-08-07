@@ -246,6 +246,10 @@
                   <fieldName>renderer</fieldName>
                 </item>
                 <item>
+                  <code>java.annotation.removed</code>
+                  <annotationType>lombok.Generated</annotationType>
+                </item>
+                <item>
                   <regex>true</regex>
                   <code>java\.annotation\.attributeValueChanged</code>
                   <new>field org\.apache\.maven\.reporting\.AbstractMavenReport.*</new>

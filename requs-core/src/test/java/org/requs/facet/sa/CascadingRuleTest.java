@@ -18,7 +18,9 @@ final class CascadingRuleTest {
     void checksInput() {
         MatcherAssert.assertThat(
             "CascadingRule should accept valid cascading indentation",
-            new CascadingRule().enforce("hey\n  works\n    fine\nstart"),
+            new CascadingRule().enforce(
+                String.format("hey%n  works%n    fine%nstart")
+            ),
             Matchers.empty()
         );
     }
@@ -28,7 +30,7 @@ final class CascadingRuleTest {
         MatcherAssert.assertThat(
             "CascadingRule should detect invalid indentation on specific line",
             new CascadingRule().enforce(
-                "\n\n\n  hey\n   three!"
+                String.format("%n%n%n  hey%n   three!")
             ).iterator().next().line(),
             Matchers.equalTo(5)
         );

@@ -11,7 +11,6 @@ import lombok.ToString;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.TokenStream;
 import org.requs.XeFacet;
 import org.requs.facet.syntax.ontology.Ontology;
 import org.requs.facet.syntax.ontology.XeOntology;
@@ -20,9 +19,7 @@ import org.xembly.Directives;
 
 /**
  * Syntax analysis.
- *
  * @since 0.1
- * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  */
 @Immutable
 @ToString
@@ -34,8 +31,7 @@ public final class AntlrFacet implements XeFacet {
         final SpecLexer lexer = new SpecLexer(
             CharStreams.fromString(spec.xpath("/spec/input/text()").get(0))
         );
-        final TokenStream tokens = new CommonTokenStream(lexer);
-        final SpecParser parser = new SpecParser(tokens);
+        final SpecParser parser = new SpecParser(new CommonTokenStream(lexer));
         final Errors errors = new Errors();
         lexer.removeErrorListeners();
         lexer.addErrorListener(errors);
@@ -51,5 +47,4 @@ public final class AntlrFacet implements XeFacet {
         }
         return new Directives().append(onto).append(errors);
     }
-
 }

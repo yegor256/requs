@@ -15,9 +15,7 @@ import org.apache.commons.io.IOUtils;
 
 /**
  * Entry point of the JAR.
- *
  * @since 1.1
- * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
 public final class Main {
 
@@ -33,7 +31,7 @@ public final class Main {
      * @param args List of command-line arguments
      * @throws IOException If something goes wrong inside
      */
-    @SuppressWarnings({"PMD.ProhibitPublicStaticMethods", "PMD.CloseResource"})
+    @SuppressWarnings("PMD.CloseResource")
     public static void main(final String... args) throws IOException {
         final OptionParser parser = new OptionParser("h*vi:o:");
         final PrintStream out = System.out;
@@ -56,9 +54,9 @@ public final class Main {
             ).compile();
         } else {
             out.println("Usage: java -jar requs-exec.jar [options]");
-            out.println("where options include:\n");
+            out.println("where options include:");
+            out.println();
             parser.printHelpOn(out);
         }
     }
-
 }

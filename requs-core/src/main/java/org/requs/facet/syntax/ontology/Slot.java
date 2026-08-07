@@ -6,17 +6,16 @@ package org.requs.facet.syntax.ontology;
 
 /**
  * Slot of a type.
- *
  * @since 1.1
  */
 public interface Slot extends Mentioned, Informal {
 
     /**
      * Arity.
-     *
      * @since 1.1
      */
     enum Arity {
+
         /**
          * One or many.
          */
@@ -72,5 +71,4 @@ public interface Slot extends Mentioned, Informal {
      * @since 1.14
      */
     void composition(boolean cmp);
-
 }

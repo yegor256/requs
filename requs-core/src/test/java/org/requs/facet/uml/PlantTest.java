@@ -23,10 +23,11 @@ final class PlantTest {
         MatcherAssert.assertThat(
             "Plant should generate valid SVG diagram from PlantUML markup",
             XhtmlMatchers.xhtml(
-                Plant.svg("@startuml\nBob -> Alice : hello\n@enduml\n")
+                Plant.svg(
+                    String.format("@startuml%nBob -> Alice : hello%n@enduml%n")
+                )
             ),
             XhtmlMatchers.hasXPath("//svg:g")
         );
     }
-
 }

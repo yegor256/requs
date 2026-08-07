@@ -6,9 +6,7 @@ package org.requs.facet.syntax.ontology;
 
 /**
  * Non-functional requirement.
- *
  * @since 1.5
  */
 public interface Nfr extends Mentioned, Informal {
-
 }

@@ -14,12 +14,10 @@ import org.xembly.Directives;
 /**
  * Xembly Ontology.
  * @since 1.1
- * @checkstyle MultipleStringLiterals (500 lines)
  */
 @ToString
 @EqualsAndHashCode
 @Loggable(Loggable.DEBUG)
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public final class XeOntology implements Ontology {
 
     /**
@@ -30,14 +28,12 @@ public final class XeOntology implements Ontology {
 
     @Override
     public Type type(final String name) {
-        this.root("types")
-            .xpath(
-                String.format(
-                    "/spec/types[not(type/name=%s)]",
-                    XeOntology.escapeXPath(name)
-                )
+        this.root("types").xpath(
+            String.format(
+                "/spec/types[not(type/name=%s)]",
+                XeOntology.escapeXPath(name)
             )
-            .add("type").add("name").set(name);
+        ).add("type").add("name").set(name);
         return new XeType(
             this.dirs,
             String.format(
@@ -49,14 +45,12 @@ public final class XeOntology implements Ontology {
 
     @Override
     public Method method(final String name) {
-        this.root("methods")
-            .xpath(
-                String.format(
-                    "/spec/methods[not(method/id=%s)]",
-                    XeOntology.escapeXPath(name)
-                )
+        this.root("methods").xpath(
+            String.format(
+                "/spec/methods[not(method/id=%s)]",
+                XeOntology.escapeXPath(name)
             )
-            .add("method").add("id").set(name);
+        ).add("method").add("id").set(name);
         return new XeMethod(
             this.dirs,
             String.format(
@@ -68,14 +62,12 @@ public final class XeOntology implements Ontology {
 
     @Override
     public Page page(final String name) {
-        this.root("pages")
-            .xpath(
-                String.format(
-                    "/spec/pages[not(page/title=%s)]",
-                    XeOntology.escapeXPath(name)
-                )
+        this.root("pages").xpath(
+            String.format(
+                "/spec/pages[not(page/title=%s)]",
+                XeOntology.escapeXPath(name)
             )
-            .add("page").add("title").set(name);
+        ).add("page").add("title").set(name);
         return new XePage(
             this.dirs,
             String.format(
@@ -87,14 +79,12 @@ public final class XeOntology implements Ontology {
 
     @Override
     public Acronym acronym(final String name) {
-        this.root("acronyms")
-            .xpath(
-                String.format(
-                    "/spec/acronyms[not(acronym/name=%s)]",
-                    XeOntology.escapeXPath(name)
-                )
+        this.root("acronyms").xpath(
+            String.format(
+                "/spec/acronyms[not(acronym/name=%s)]",
+                XeOntology.escapeXPath(name)
             )
-            .add("acronym").add("name").set(name);
+        ).add("acronym").add("name").set(name);
         return new XeAcronym(
             this.dirs,
             String.format(
@@ -119,15 +109,12 @@ public final class XeOntology implements Ontology {
     public static String escapeXPath(final String text) {
         final String escaped;
         if (text.indexOf('\'') == -1) {
-            escaped = new StringBuilder(text.length() + 2)
-                .append('\'').append(text).append('\'').toString();
+            escaped = '\'' + text + '\'';
         } else {
-            final int len = text.length() + 50;
-            escaped = new StringBuilder(len)
-                .append("concat('")
-                .append(text.replace("'", "', \"'\", '"))
-                .append("')")
-                .toString();
+            escaped = String.format(
+                "concat('%s')",
+                text.replace("'", "', \"'\", '")
+            );
         }
         return escaped;
     }

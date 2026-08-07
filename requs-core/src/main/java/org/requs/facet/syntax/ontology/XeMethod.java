@@ -11,13 +11,11 @@ import org.xembly.Directives;
 
 /**
  * Xembly use case.
- *
  * @since 1.1
  */
 @ToString
 @EqualsAndHashCode(of = { "mentioned", "flow", "signature" })
 @Loggable(Loggable.DEBUG)
-@SuppressWarnings("PMD.TooManyMethods")
 final class XeMethod implements Method {
 
     /**
@@ -62,15 +60,13 @@ final class XeMethod implements Method {
     public void attribute(final String name, final String seal) {
         this.dirs.xpath(this.start)
             .strict(1)
-            .addIf("attributes")
-            .xpath(
+            .addIf("attributes").xpath(
                 String.format(
                     "%s/attributes[not(attribute=%s)]",
                     this.start, XeOntology.escapeXPath(name)
                 )
             )
-            .add("attribute").set(name)
-            .xpath(
+            .add("attribute").set(name).xpath(
                 String.format(
                     "%s/attributes/attribute[.=%s]",
                     this.start, XeOntology.escapeXPath(name)
@@ -83,8 +79,7 @@ final class XeMethod implements Method {
     @Override
     public Nfr nfr(final String name) {
         this.dirs.xpath(this.start)
-            .strict(1).addIf("nfrs").strict(1)
-            .xpath(
+            .strict(1).addIf("nfrs").strict(1).xpath(
                 String.format(
                     "%s/nfrs[not(nfr/id=%s)]",
                     this.start, XeOntology.escapeXPath(name)
@@ -144,5 +139,4 @@ final class XeMethod implements Method {
     public void mention(final int where) {
         this.mentioned.mention(where);
     }
-
 }

@@ -13,11 +13,8 @@ import org.xembly.Directives;
 
 /**
  * Syntax analysis.
- *
  * @since 0.1
- * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 final class Errors extends BaseErrorListener implements Iterable<Directive> {
 
     /**
@@ -26,7 +23,6 @@ final class Errors extends BaseErrorListener implements Iterable<Directive> {
     private final transient Directives dirs =
         new Directives().xpath("/spec").addIf("errors");
 
-    // @checkstyle ParameterNumberCheck (6 lines)
     @Override
     public void syntaxError(final Recognizer<?, ?> recognizer,
         final Object symbol, final int line, final int pos, final String msg,
@@ -48,12 +44,11 @@ final class Errors extends BaseErrorListener implements Iterable<Directive> {
      * @param error Exception to add
      * @since 1.4
      */
-    public void add(final Exception error) {
+    void add(final Exception error) {
         this.dirs.add("error")
             .attr("type", "exception")
             .attr("line", "1")
             .attr("pos", "0")
             .set(error.getLocalizedMessage()).up();
     }
-
 }

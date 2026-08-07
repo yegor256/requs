@@ -6,14 +6,13 @@ package org.requs.facet.sa;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
  * Indentation rule in a single line.
- *
  * @since 1.14
  */
 @Immutable
@@ -30,7 +29,7 @@ public final class IndentationRule implements LineRule {
                 break;
             }
         }
-        final Collection<Violation> violations = new LinkedList<>();
+        final Collection<Violation> violations = new ArrayList<>(1);
         if (indent % 2 != 0) {
             violations.add(
                 new Violation.Simple(
@@ -38,7 +37,7 @@ public final class IndentationRule implements LineRule {
                         "indented for %d spaces, must be either %d or %d: [%s]",
                         indent,
                         indent >> 1 << 1,
-                        indent + 1 >> 1 << 1, line
+                        (indent + 1) >> 1 << 1, line
                     ),
                     0, indent
                 )

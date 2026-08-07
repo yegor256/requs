@@ -11,7 +11,6 @@ import org.xembly.Directives;
 
 /**
  * Xembly type.
- *
  * @since 1.1
  */
 @ToString

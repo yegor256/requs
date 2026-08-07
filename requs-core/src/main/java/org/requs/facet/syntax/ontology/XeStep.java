@@ -11,7 +11,6 @@ import org.xembly.Directives;
 
 /**
  * Xembly step.
- *
  * @since 1.1
  */
 @ToString
@@ -55,8 +54,7 @@ final class XeStep implements Step {
     public Flow exception(final String text) {
         this.dirs.xpath(this.start)
             .strict(1).addIf("exceptions")
-            .xpath(this.start)
-            .xpath(
+            .xpath(this.start).xpath(
                 String.format(
                     "exceptions[not(exception/when=%s)]",
                     XeOntology.escapeXPath(text)

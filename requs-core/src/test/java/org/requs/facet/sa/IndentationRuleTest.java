@@ -31,5 +31,4 @@ final class IndentationRuleTest {
             Matchers.not(Matchers.empty())
         );
     }
-
 }

@@ -41,8 +41,8 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
+      <groupId>ch.qos.reload4j</groupId>
+      <artifactId>reload4j</artifactId>
       <!-- the version inherited from parent pom -->
       <scope>runtime</scope>
     </dependency>
@@ -150,10 +150,16 @@
           <plugin>
             <groupId>com.qulice</groupId>
             <artifactId>qulice-maven-plugin</artifactId>
-            <version>0.24.4</version>
+            <version>0.30.3</version>
             <configuration>
               <excludes combine.children="append">
                 <exclude>xml:/src/it/settings.xml</exclude>
+                <!-- UnnecessaryLocalRule's intervening-call guard only
+                     recognizes ASTMethodCall initializers, not a plain
+                     field access like `System.out`, so it misses that
+                     System.setOut(...) intervenes before the restore:
+                     https://github.com/yegor256/qulice/issues/1710 -->
+                <exclude>pmd:.*/src/test/java/org/requs/exec/MainTest\.java</exclude>
                 <exclude>duplicatefinder:.*</exclude>
               </excludes>
             </configuration>

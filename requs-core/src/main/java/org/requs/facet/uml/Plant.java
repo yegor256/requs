@@ -8,6 +8,7 @@ import com.jcabi.aspects.Immutable;
 import com.jcabi.xml.XMLDocument;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import net.sourceforge.plantuml.FileFormat;
@@ -17,7 +18,6 @@ import org.apache.commons.lang3.SystemUtils;
 
 /**
  * Plant UML compiler.
- *
  * @since 1.11
  */
 @Immutable
@@ -48,10 +48,9 @@ public final class Plant {
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             reader.generateImage(baos, new FileFormatOption(FileFormat.SVG));
             svg = new XMLDocument(
-                new String(baos.toByteArray())
+                new String(baos.toByteArray(), StandardCharsets.UTF_8)
             ).nodes("/*").get(0).toString().replace("xmlns=\"\"", "");
         }
         return svg;
     }
-
 }

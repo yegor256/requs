@@ -9,10 +9,10 @@ import java.util.Collection;
 
 /**
  * Rule.
- *
  * @since 1.10
  */
 @Immutable
+@FunctionalInterface
 public interface Rule {
 
     /**
@@ -21,5 +21,4 @@ public interface Rule {
      * @return Violations
      */
     Collection<Violation> enforce(String spec);
-
 }

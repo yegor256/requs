@@ -6,15 +6,14 @@ package org.requs.facet.sa;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * Cascading rule.
- *
  * @since 1.14
  */
 @Immutable
@@ -24,10 +23,9 @@ import org.apache.commons.lang3.StringUtils;
 public final class CascadingRule implements Rule {
 
     @Override
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public Collection<Violation> enforce(final String text) {
         final String[] lines = StringUtils.splitPreserveAllTokens(text, '\n');
-        final Collection<Violation> violations = new LinkedList<>();
+        final Collection<Violation> violations = new ArrayList<>(lines.length);
         int indent = 0;
         for (int idx = 0; idx < lines.length; ++idx) {
             final int next = CascadingRule.indent(lines[idx]);

@@ -11,7 +11,6 @@ import org.xembly.Directives;
 
 /**
  * Xembly informal.
- *
  * @since 1.1
  */
 @ToString
@@ -44,5 +43,4 @@ final class XeInformal implements Informal {
         this.dirs.xpath(this.start).strict(1)
             .addIf("info").add("informal").set(informal);
     }
-
 }

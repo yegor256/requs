@@ -6,9 +6,9 @@ package org.requs.facet.syntax.ontology;
 
 /**
  * Something mentioned in source code.
- *
  * @since 1.1
  */
+@FunctionalInterface
 public interface Mentioned {
 
     /**
@@ -16,5 +16,4 @@ public interface Mentioned {
      * @param where Where was it mentioned
      */
     void mention(int where);
-
 }

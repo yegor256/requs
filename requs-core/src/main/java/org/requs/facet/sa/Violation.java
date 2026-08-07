@@ -11,7 +11,6 @@ import lombok.ToString;
 
 /**
  * Violation.
- *
  * @since 1.10
  */
 @Immutable
@@ -37,7 +36,6 @@ public interface Violation {
 
     /**
      * Simple implementation.
-     *
      * @since 1.0
      */
     @Immutable
@@ -45,6 +43,7 @@ public interface Violation {
     @EqualsAndHashCode
     @Loggable(Loggable.DEBUG)
     final class Simple implements Violation {
+
         /**
          * Descr.
          */
@@ -87,5 +86,4 @@ public interface Violation {
             return this.txt;
         }
     }
-
 }

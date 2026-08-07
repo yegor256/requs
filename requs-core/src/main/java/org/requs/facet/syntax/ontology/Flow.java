@@ -6,7 +6,6 @@ package org.requs.facet.syntax.ontology;
 
 /**
  * Flow.
- *
  * @since 1.1
  */
 public interface Flow extends Informal {
@@ -40,5 +39,4 @@ public interface Flow extends Informal {
      * @param type Type of it
      */
     void binding(String name, String type);
-
 }

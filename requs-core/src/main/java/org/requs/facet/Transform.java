@@ -15,7 +15,6 @@ import org.requs.Facet;
 
 /**
  * Transform.
- *
  * @since 0.1
  */
 @Immutable
@@ -48,5 +47,4 @@ public final class Transform implements Facet {
             .with(new ClasspathSources(this.getClass()))
             .transform(spec);
     }
-
 }

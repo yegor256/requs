@@ -6,7 +6,6 @@ package org.requs.facet.syntax.ontology;
 
 /**
  * Signature of a function call or declaration.
- *
  * @since 1.1
  */
 public interface Signature extends Informal {
@@ -34,5 +33,4 @@ public interface Signature extends Informal {
      * @param name Name of the argument
      */
     void input(String name);
-
 }

@@ -20,10 +20,10 @@ import org.xembly.Xembler;
 
 /**
  * Xembly producing facet.
- *
  * @since 1.9
  */
 @Immutable
+@FunctionalInterface
 public interface XeFacet {
 
     /**
@@ -37,7 +37,6 @@ public interface XeFacet {
 
     /**
      * Wrap into Facet.
-     *
      * @since 1.9
      */
     @Immutable
@@ -45,6 +44,7 @@ public interface XeFacet {
     @EqualsAndHashCode(of = "origin")
     @Loggable(Loggable.DEBUG)
     final class Wrap implements Facet {
+
         /**
          * Original facet.
          */
@@ -75,7 +75,6 @@ public interface XeFacet {
 
     /**
      * Always returns the same.
-     *
      * @since 1.9
      */
     @Immutable
@@ -83,6 +82,7 @@ public interface XeFacet {
     @EqualsAndHashCode(of = "dirs")
     @Loggable(Loggable.DEBUG)
     final class Fixed implements XeFacet {
+
         /**
          * Dirs.
          */
@@ -101,5 +101,4 @@ public interface XeFacet {
             return Collections.unmodifiableCollection(this.dirs);
         }
     }
-
 }

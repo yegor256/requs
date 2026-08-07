@@ -19,7 +19,7 @@ final class LineRuleTest {
         MatcherAssert.assertThat(
             "LineRule should correctly identify line number of violation",
             new LineRule.Wrap(new RegexRule("[a-z]+", "")).enforce(
-                "\n\n\nhey"
+                String.format("%n%n%nhey")
             ).iterator().next().line(),
             Matchers.equalTo(4)
         );

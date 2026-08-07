@@ -15,7 +15,6 @@ import org.xembly.Directives;
 
 /**
  * Static analysis rules.
- *
  * @since 1.10
  */
 @Immutable
@@ -53,7 +52,7 @@ public final class Rules implements XeFacet {
             ),
             new LineRule.Wrap(
                 new RegexRule(
-                    ",[^$ \n]",
+                    String.format(",[^$ %c]", '\n'),
                     "always use space after comma"
                 )
             ),
@@ -70,8 +69,10 @@ public final class Rules implements XeFacet {
         if (spec.nodes("/spec/input[.!='']").isEmpty()) {
             input = "";
         } else {
-            input = spec.xpath("/spec/input/text()").get(0)
-                .replace("\r\n", "\n").replace('\r', '\n');
+            input = spec.xpath("/spec/input/text()").get(0).replace(
+                String.valueOf('\r') + '\n',
+                String.valueOf('\n')
+            ).replace('\r', '\n');
         }
         final Directives dirs = new Directives().xpath("/spec").addIf("errors");
         for (final Rule rule : rules) {

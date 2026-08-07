@@ -11,7 +11,6 @@ import org.xembly.Directives;
 
 /**
  * Xembly NFR.
- *
  * @since 1.5
  */
 @ToString
@@ -62,5 +61,4 @@ final class XeNfr implements Nfr {
         assert this.start != null;
         this.informal.explain(info);
     }
-
 }

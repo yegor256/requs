@@ -10,10 +10,10 @@ import java.io.IOException;
 
 /**
  * Facet.
- *
  * @since 0.1
  */
 @Immutable
+@FunctionalInterface
 public interface Facet {
 
     /**
@@ -24,5 +24,4 @@ public interface Facet {
      * @since 1.9
      */
     XML touch(XML spec) throws IOException;
-
 }

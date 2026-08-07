@@ -31,5 +31,4 @@ final class RegexRuleTest {
             Matchers.empty()
         );
     }
-
 }

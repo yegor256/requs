@@ -182,13 +182,23 @@
           <plugin>
             <groupId>com.qulice</groupId>
             <artifactId>qulice-maven-plugin</artifactId>
-            <version>0.24.4</version>
+            <version>0.30.3</version>
             <configuration>
               <excludes combine.children="append">
                 <exclude>findbugs:.*</exclude>
                 <exclude>xml:/src/test/resources/org/requs/facet/syntax/samples/.*</exclude>
                 <exclude>xml:/src/test/resources/org/requs/facet/syntax/.*</exclude>
                 <exclude>xml:/src/test/resources/org/requs/samples/.*</exclude>
+                <!-- ImplicitFunctionalInterface ignores abstract methods
+                     inherited from super-interfaces; Step extends Mentioned
+                     and Signature, so @FunctionalInterface would not compile:
+                     https://github.com/yegor256/qulice/issues/1704 -->
+                <exclude>pmd:.*/src/main/java/org/requs/facet/syntax/ontology/Step\.java</exclude>
+                <!-- UnitTestShouldIncludeAssert does not trace into the
+                     private `parses` helper that performs the actual
+                     MatcherAssert.assertThat calls for each sample:
+                     https://github.com/yegor256/qulice/issues/1706 -->
+                <exclude>pmd:.*/src/test/java/org/requs/CompilerTest\.java</exclude>
                 <exclude>duplicatefinder:.*</exclude>
               </excludes>
             </configuration>

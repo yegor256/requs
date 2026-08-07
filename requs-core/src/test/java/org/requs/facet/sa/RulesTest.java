@@ -46,8 +46,10 @@ final class RulesTest {
                 new XMLDocument(
                     StringUtils.join(
                         "<spec><input>",
-                        "User is a &quot;human being&quot;.&#13;\n",
-                        "Order is a &quot;customer request&quot;.&#13;\n",
+                        "User is a &quot;human being&quot;.&#13;",
+                        System.lineSeparator(),
+                        "Order is a &quot;customer request&quot;.&#13;",
+                        System.lineSeparator(),
                         "</input></spec>"
                     )
                 )
@@ -57,5 +59,4 @@ final class RulesTest {
             )
         );
     }
-
 }

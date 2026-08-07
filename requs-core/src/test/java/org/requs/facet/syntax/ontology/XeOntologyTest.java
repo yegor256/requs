@@ -59,5 +59,4 @@ final class XeOntologyTest {
             XhtmlMatchers.hasXPath("/spec/methods[count(method)=1]")
         );
     }
-
 }

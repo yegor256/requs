@@ -49,5 +49,4 @@ public interface Ontology extends Iterable<Directive> {
      * @return Acronym
      */
     Acronym acronym(String name);
-
 }

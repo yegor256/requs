@@ -6,7 +6,6 @@ package org.requs.facet.syntax.ontology;
 
 /**
  * Step.
- *
  * @since 1.1
  */
 public interface Step extends Mentioned, Signature {
@@ -17,5 +16,4 @@ public interface Step extends Mentioned, Signature {
      * @return Flow for this exception
      */
     Flow exception(String text);
-
 }

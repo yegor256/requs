@@ -5,7 +5,6 @@
 
 /**
  * Facets.
- *
  * @since 1.2
  */
 package org.requs.facet;

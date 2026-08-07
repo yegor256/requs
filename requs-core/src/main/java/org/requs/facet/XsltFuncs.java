@@ -11,7 +11,6 @@ import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.data.MutableDataSet;
-import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.EqualsAndHashCode;
@@ -52,11 +51,9 @@ public final class XsltFuncs {
     @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static String html(final String markdown) {
         final DataHolder options = new MutableDataSet();
-        final Parser parser = Parser.builder(options).build();
-        final HtmlRenderer renderer = HtmlRenderer.builder(options).build();
-        final com.vladsch.flexmark.util.ast.Node document =
-            parser.parse(markdown);
-        return renderer.render(document);
+        return HtmlRenderer.builder(options).build().render(
+            Parser.builder(options).build().parse(markdown)
+        );
     }
 
     /**
@@ -66,14 +63,16 @@ public final class XsltFuncs {
      */
     @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static String seal(final Node xml) {
-        final Collection<String> parts = Collections2.transform(
-            new XMLDocument(xml).xpath("//*/text()"),
-            input -> StringEscapeUtils.escapeJava(
-                input.replaceAll("\\s+", " ")
-            )
-        );
         return DigestUtils.md5Hex(
-            StringUtils.join(parts, "")
+            StringUtils.join(
+                Collections2.transform(
+                    new XMLDocument(xml).xpath("//*/text()"),
+                    input -> StringEscapeUtils.escapeJava(
+                        input.replaceAll("\\s+", " ")
+                    )
+                ),
+                ""
+            )
         ).substring(0, 6);
     }
 

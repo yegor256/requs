@@ -11,7 +11,6 @@ import org.xembly.Directives;
 
 /**
  * Xembly slot in a type.
- *
  * @since 1.1
  */
 @ToString
@@ -78,5 +77,4 @@ final class XeSlot implements Slot {
     public void explain(final String info) {
         this.informal.explain(info);
     }
-
 }

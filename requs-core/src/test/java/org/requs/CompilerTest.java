@@ -8,12 +8,10 @@ import com.jcabi.log.VerboseProcess;
 import com.jcabi.matchers.XhtmlMatchers;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
-import com.jcabi.xml.XSL;
 import com.jcabi.xml.XSLDocument;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.Collection;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
@@ -25,9 +23,7 @@ import org.junit.jupiter.api.io.TempDir;
 /**
  * Test case for {@link org.requs.Compiler}.
  * @since 1.1
- * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 final class CompilerTest {
 
     /**
@@ -65,17 +61,17 @@ final class CompilerTest {
         final File output = temp.resolve("output").toFile();
         FileUtils.write(
             new File(input, "b.req"),
-            "\n\nUser is a \"good human being\".",
+            String.format("%n%nUser is a \"good human being\"."),
             StandardCharsets.UTF_8
         );
         FileUtils.write(
             new File(input, "a.req"),
-            "\n\nUser is a \"human being\".",
+            String.format("%n%nUser is a \"human being\"."),
             StandardCharsets.UTF_8
         );
         FileUtils.write(
             new File(input, "c.req"),
-            "\n\n\nUser is a \"very good human being\". bug",
+            String.format("%n%n%nUser is a \"very good human being\". bug"),
             StandardCharsets.UTF_8
         );
         new Compiler(input, output).compile();
@@ -113,25 +109,21 @@ final class CompilerTest {
         );
         new Compiler(input, output).compile();
         final XML srs = new XMLDocument(new File(output, "requs.xml"));
-        final XSL xsl = new XSLDocument(
-            new XMLDocument(new File(output, "requs.xsl"))
-        );
-        final Collection<String> xpaths = xml.xpath(
-            "/sample/xpaths/xpath/text()"
-        );
         MatcherAssert.assertThat(
             "Compiled XML should match expected XPaths for sample",
             XhtmlMatchers.xhtml(srs.toString()),
             Matchers.describedAs(
                 file,
                 XhtmlMatchers.hasXPaths(
-                    xpaths.toArray(new String[0])
+                    xml.xpath("/sample/xpaths/xpath/text()").toArray(new String[0])
                 )
             )
         );
         MatcherAssert.assertThat(
             "XSL transformation should produce valid XHTML with body element",
-            xsl.applyTo(srs),
+            new XSLDocument(
+                new XMLDocument(new File(output, "requs.xsl"))
+            ).applyTo(srs),
             Matchers.describedAs(
                 file,
                 XhtmlMatchers.hasXPath("//xhtml:body")
@@ -142,8 +134,7 @@ final class CompilerTest {
             "XSLTPROC should transform XML to HTML without errors",
             new VerboseProcess(
                 new ProcessBuilder()
-                    .directory(output)
-                    .command(
+                    .directory(output).command(
                         CompilerTest.BIN,
                         "-o",
                         "requs.html",
@@ -184,5 +175,4 @@ final class CompilerTest {
             ver.contains("libxml")
         );
     }
-
 }

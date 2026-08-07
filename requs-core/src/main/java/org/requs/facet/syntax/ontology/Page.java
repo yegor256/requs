@@ -6,9 +6,7 @@ package org.requs.facet.syntax.ontology;
 
 /**
  * Page in Markdown.
- *
  * @since 1.7
  */
 public interface Page extends Mentioned, Informal {
-
 }

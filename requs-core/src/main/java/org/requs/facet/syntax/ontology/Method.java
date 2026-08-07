@@ -6,7 +6,6 @@ package org.requs.facet.syntax.ontology;
 
 /**
  * Use case.
- *
  * @since 1.1
  */
 public interface Method extends Flow, Mentioned, Signature {
@@ -24,5 +23,4 @@ public interface Method extends Flow, Mentioned, Signature {
      * @return NFR
      */
     Nfr nfr(String name);
-
 }

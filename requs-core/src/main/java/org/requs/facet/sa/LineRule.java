@@ -8,19 +8,18 @@ import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.concurrent.atomic.AtomicInteger;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * Rule of one line.
- *
  * @since 1.10
  */
 @Immutable
+@FunctionalInterface
 public interface LineRule {
 
     /**
@@ -32,7 +31,6 @@ public interface LineRule {
 
     /**
      * Wrap.
-     *
      * @since 1.10
      */
     @Immutable
@@ -40,6 +38,7 @@ public interface LineRule {
     @EqualsAndHashCode(of = "origin")
     @Loggable(Loggable.DEBUG)
     final class Wrap implements Rule {
+
         /**
          * Original rule.
          */
@@ -55,24 +54,27 @@ public interface LineRule {
 
         @Override
         public Collection<Violation> enforce(final String spec) {
-            final Collection<Violation> violations = new LinkedList<>();
-            final AtomicInteger number = new AtomicInteger(1);
-            for (final String line
-                : StringUtils.splitPreserveAllTokens(spec, '\n')) {
-                final int num = number.getAndIncrement();
+            final String[] lines = StringUtils.splitPreserveAllTokens(
+                spec, '\n'
+            );
+            final Collection<Violation> violations = new ArrayList<>(
+                lines.length
+            );
+            int number = 1;
+            for (final String line : lines) {
+                final int num = number;
+                number += 1;
                 violations.addAll(
                     Collections2.transform(
                         this.origin.check(line),
-                        // @checkstyle LineLength (1 line)
-                        (Function<Violation, Violation>) vln -> new Violation.Simple(
-                            vln.details(),
-                            num, vln.position()
-                        )
+                        (Function<Violation, Violation>) vln
+                            -> new Violation.Simple(
+                                vln.details(), num, vln.position()
+                            )
                     )
                 );
             }
             return violations;
         }
     }
-
 }

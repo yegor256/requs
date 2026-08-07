@@ -11,7 +11,6 @@ import org.xembly.Directives;
 
 /**
  * Xembly use case.
- *
  * @since 1.1
  */
 @ToString
@@ -84,5 +83,4 @@ final class XeFlow implements Flow {
     public void explain(final String info) {
         this.informal.explain(info);
     }
-
 }

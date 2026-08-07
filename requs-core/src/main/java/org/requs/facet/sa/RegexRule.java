@@ -6,8 +6,8 @@ package org.requs.facet.sa;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.EqualsAndHashCode;
@@ -15,7 +15,6 @@ import lombok.ToString;
 
 /**
  * Regular expression rule.
- *
  * @since 1.10
  */
 @Immutable
@@ -45,11 +44,10 @@ public final class RegexRule implements LineRule {
     }
 
     @Override
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public Collection<Violation> check(final String line) {
         final Pattern ptn = Pattern.compile(this.regex);
         final Matcher matcher = ptn.matcher(line);
-        final Collection<Violation> violations = new LinkedList<>();
+        final Collection<Violation> violations = new ArrayList<>(line.length());
         while (matcher.find()) {
             violations.add(
                 new Violation.Simple(

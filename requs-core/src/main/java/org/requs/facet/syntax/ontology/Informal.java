@@ -6,9 +6,9 @@ package org.requs.facet.syntax.ontology;
 
 /**
  * Can be informal.
- *
  * @since 1.1
  */
+@FunctionalInterface
 public interface Informal {
 
     /**
@@ -16,5 +16,4 @@ public interface Informal {
      * @param informal Informal explanation
      */
     void explain(String informal);
-
 }

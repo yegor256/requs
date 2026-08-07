@@ -6,7 +6,6 @@ package org.requs.facet.syntax.ontology;
 
 /**
  * Type.
- *
  * @since 1.1
  */
 public interface Type extends Mentioned, Informal {
@@ -30,5 +29,4 @@ public interface Type extends Mentioned, Informal {
      * @return Slot
      */
     Slot slot(String name);
-
 }
