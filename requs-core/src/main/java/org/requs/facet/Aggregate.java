@@ -33,14 +33,14 @@ public final class Aggregate implements XeFacet {
     /**
      * Directory with sources.
      */
-    private final transient String dir;
+    private final transient File dir;
 
     /**
      * Ctor.
      * @param path Path to the directory with sources
      */
     public Aggregate(final File path) {
-        this.dir = path.getAbsolutePath();
+        this.dir = path;
     }
 
     @Override
@@ -48,19 +48,21 @@ public final class Aggregate implements XeFacet {
         final StringBuilder text = new StringBuilder(1000);
         final List<File> files = Lists.newArrayList(
             FileUtils.listFiles(
-                new File(this.dir), new String[]{"req"}, true
+                this.dir, new String[]{"req"}, true
             )
         );
         Collections.sort(files);
         int idx = 0;
         final Directives dirs = new Directives().xpath("/spec").addIf("files");
         for (final File file : files) {
-            int pos = StringUtils.countMatches(text.toString(), "\n");
+            int pos = StringUtils.countMatches(
+                text.toString(), System.lineSeparator()
+            );
             pos += 1;
             Logger.info(this, "source file: %s", file);
             text.append(
                 FileUtils.readFileToString(file, StandardCharsets.UTF_8)
-            ).append('\n');
+            ).append(System.lineSeparator());
             dirs.add("file")
                 .attr("id", Integer.toString(idx))
                 .attr("line", Integer.toString(pos))

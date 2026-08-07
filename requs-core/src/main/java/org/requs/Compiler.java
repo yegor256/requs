@@ -15,7 +15,6 @@ import com.jcabi.xml.XMLDocument;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
@@ -32,9 +31,7 @@ import org.xembly.Directives;
 
 /**
  * Compiler.
- *
  * @since 1.1
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
 @Immutable
 @ToString
@@ -53,12 +50,12 @@ public final class Compiler {
     /**
      * Source folder.
      */
-    private final transient String input;
+    private final transient File input;
 
     /**
      * Output folder.
      */
-    private final transient String output;
+    private final transient File output;
 
     /**
      * Map of properties.
@@ -83,23 +80,11 @@ public final class Compiler {
      * @throws IOException If fails
      * @since 1.14
      */
-    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
     public Compiler(@NotNull final File src, @NotNull final File dest,
         @NotNull final Map<String, String> props) throws IOException {
-        this.input = src.getAbsolutePath();
-        this.output = dest.getAbsolutePath();
+        this.input = src;
+        this.output = dest;
         this.properties = new ArrayMap<>(props);
-        if (!src.exists()) {
-            throw new IOException(
-                String.format("directory \"%s\" is absent", this.input)
-            );
-        }
-        if (dest.mkdirs()) {
-            Logger.info(
-                Compiler.class, "output directory \"%s\" created",
-                this.output
-            );
-        }
     }
 
     /**
@@ -108,9 +93,23 @@ public final class Compiler {
      */
     public void compile() throws IOException {
         assert this.properties != null;
+        if (!this.input.exists()) {
+            throw new IOException(
+                String.format(
+                    "directory \"%s\" is absent",
+                    this.input.getAbsolutePath()
+                )
+            );
+        }
+        if (this.output.mkdirs()) {
+            Logger.info(
+                this, "output directory \"%s\" created",
+                this.output.getAbsolutePath()
+            );
+        }
         final long start = System.currentTimeMillis();
         final Facet[] facets = {
-            new XeFacet.Wrap(new Aggregate(new File(this.input))),
+            new XeFacet.Wrap(new Aggregate(this.input)),
             new XeFacet.Wrap(new AntlrFacet()),
             new Transform("cleanup/duplicate-step-numbers.xsl"),
             new Transform("cleanup/duplicate-step-signatures.xsl"),
@@ -171,7 +170,9 @@ public final class Compiler {
             new StrictXML(spec, Compiler.SCHEMA).toString(),
             StandardCharsets.UTF_8
         );
-        Logger.info(this, "compiled and saved to %s", this.output);
+        Logger.info(
+            this, "compiled and saved to %s", this.output.getAbsolutePath()
+        );
     }
 
     /**
@@ -180,13 +181,12 @@ public final class Compiler {
      */
     private void copy() throws IOException {
         final String file = "requs.xsl";
-        final String xsl = IOUtils.toString(
-            this.getClass().getResourceAsStream(file),
-            StandardCharsets.UTF_8
-        );
         FileUtils.write(
             new File(this.output, file),
-            xsl.replace(
+            IOUtils.toString(
+                this.getClass().getResourceAsStream(file),
+                StandardCharsets.UTF_8
+            ).replace(
                 "css-included-here",
                 IOUtils.toString(
                     this.getClass().getResourceAsStream("requs.css"),
@@ -203,17 +203,15 @@ public final class Compiler {
      */
     private static Iterable<Directive> decor() {
         return new Directives()
-            .xpath("/spec")
-            .attr(
+            .xpath("/spec").attr(
                 "time",
                 DateFormatUtils.ISO_8601_EXTENDED_DATETIME_FORMAT.format(
-                    new Date()
-            )
+                    System.currentTimeMillis()
+                )
             )
             .add("requs")
             .add("version").set(Manifests.read("Requs-Version")).up()
             .add("revision").set(Manifests.read("Requs-Revision")).up()
             .add("date").set(Manifests.read("Requs-Date")).up().up();
     }
-
 }

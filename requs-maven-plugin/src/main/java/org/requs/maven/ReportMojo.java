@@ -22,20 +22,11 @@ import org.slf4j.impl.StaticLoggerBinder;
 
 /**
  * Generate site reports.
- *
  * @since 1.1
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle VisibilityModifierCheck (500 lines)
  */
 @Mojo(name = "default")
-@SuppressWarnings("PMD.ExcessiveImports")
 public final class ReportMojo extends AbstractMavenReport {
-
-    /**
-     * The Maven Project.
-     */
-    @Parameter(defaultValue = "${project}", readonly = true)
-    public transient MavenProject project;
 
     /**
      * Output directory.
@@ -56,8 +47,7 @@ public final class ReportMojo extends AbstractMavenReport {
      * Optional properties/options.
      * @since 1.14
      */
-    @Parameter()
-    @SuppressWarnings("PMD.UseConcurrentHashMap")
+    @Parameter
     public transient Map<String, String> options =
         new ConcurrentHashMap<>(0);
 
@@ -139,5 +129,4 @@ public final class ReportMojo extends AbstractMavenReport {
         sink.paragraph_();
         sink.section1_();
     }
-
 }

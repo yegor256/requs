@@ -22,7 +22,6 @@ import org.slf4j.impl.StaticLoggerBinder;
 
 /**
  * Compile requs sources into XML.
- *
  * @since 1.1
  * @checkstyle VisibilityModifierCheck (500 lines)
  */
@@ -54,7 +53,6 @@ public final class CompileMojo extends AbstractMojo {
      * Optional properties/options.
      * @since 1.14
      */
-    @SuppressWarnings("PMD.UseConcurrentHashMap")
     @Parameter
     public transient Map<String, String> options =
         new ConcurrentHashMap<>(0);
@@ -97,5 +95,4 @@ public final class CompileMojo extends AbstractMojo {
             throw new IllegalArgumentException("IO failure", ex);
         }
     }
-
 }

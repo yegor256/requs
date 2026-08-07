@@ -98,6 +98,18 @@
       <version>2.1.0</version>
     </dependency>
     <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-core</artifactId>
+      <version>2.1.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <!-- the version inherited from parent pom -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>net.sourceforge.saxon</groupId>
       <artifactId>saxon</artifactId>
       <!-- the version inherited from parent pom -->
@@ -209,7 +221,7 @@
           <plugin>
             <groupId>com.qulice</groupId>
             <artifactId>qulice-maven-plugin</artifactId>
-            <version>0.30.3</version>
+            <version>0.30.5</version>
             <configuration>
               <excludes combine.children="append">
                 <exclude>xml:/src/it/settings.xml</exclude>

@@ -261,6 +261,16 @@
                 </item>
                 <item>
                   <regex>true</regex>
+                  <code>java\.annotation\.attributeAdded</code>
+                  <new>field org\.apache\.maven\.reporting\.AbstractMavenReport.*</new>
+                </item>
+                <item>
+                  <regex>true</regex>
+                  <code>java\.field\.visibilityReduced</code>
+                  <new>field org\.apache\.maven\.reporting\.AbstractMavenReport.*</new>
+                </item>
+                <item>
+                  <regex>true</regex>
                   <code>java\.method\.exception\.checkedAdded</code>
                   <new>method .* org\.apache\.maven\.reporting\.AbstractMavenReport.*</new>
                 </item>
