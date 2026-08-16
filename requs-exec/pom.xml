@@ -154,11 +154,13 @@
             <configuration>
               <excludes combine.children="append">
                 <exclude>xml:/src/it/settings.xml</exclude>
-                <!-- UnnecessaryLocalRule's intervening-call guard only
-                     recognizes ASTMethodCall initializers, not a plain
-                     field access like `System.out`, so it misses that
-                     System.setOut(...) intervenes before the restore:
-                     https://github.com/yegor256/qulice/issues/1710 -->
+                <!--
+                UnnecessaryLocalRule's intervening-call guard only
+                recognizes ASTMethodCall initializers, not a plain
+                field access like `System.out`, so it misses that
+                System.setOut(...) intervenes before the restore:
+                https://github.com/yegor256/qulice/issues/1710
+                -->
                 <exclude>pmd:.*/src/test/java/org/requs/exec/MainTest\.java</exclude>
                 <exclude>duplicatefinder:.*</exclude>
               </excludes>
