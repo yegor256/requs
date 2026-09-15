@@ -16,12 +16,14 @@ import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Test case for {@link ReportMojo}.
+ *
  * @since 1.0
  */
 final class ReportMojoTest {
 
     /**
      * ReportMojo can generate a site report.
+     *
      * @param temp Temp directory
      * @throws Exception If fails
      */

@@ -12,9 +12,11 @@ import java.nio.charset.StandardCharsets;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import org.apache.commons.io.IOUtils;
+import org.requs.Compiler;
 
 /**
  * Entry point of the JAR.
+ *
  * @since 1.1
  */
 public final class Main {
@@ -28,6 +30,7 @@ public final class Main {
 
     /**
      * Entry point of the entire JAR.
+     *
      * @param args List of command-line arguments
      * @throws IOException If something goes wrong inside
      */
@@ -48,7 +51,7 @@ public final class Main {
                 StandardCharsets.UTF_8
             );
         } else if (options.has("i") && options.has("o")) {
-            new org.requs.Compiler(
+            new Compiler(
                 new File(options.valueOf("i").toString()),
                 new File(options.valueOf("o").toString())
             ).compile();

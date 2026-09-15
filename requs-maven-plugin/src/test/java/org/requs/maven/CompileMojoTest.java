@@ -15,12 +15,14 @@ import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Test case for {@link CompileMojo}.
+ *
  * @since 1.0
  */
 final class CompileMojoTest {
 
     /**
      * CompileMojo can compile requs sources into XML.
+     *
      * @param temp Temp directory
      * @throws Exception If fails
      */

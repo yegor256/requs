@@ -9,6 +9,7 @@ import java.util.Collection;
 
 /**
  * Rule.
+ *
  * @since 1.10
  */
 @Immutable
@@ -17,6 +18,7 @@ public interface Rule {
 
     /**
      * Validate incoming text.
+     *
      * @param spec Spec in text format
      * @return Violations
      */

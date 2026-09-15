@@ -13,6 +13,7 @@ import org.xembly.Directives;
 
 /**
  * Syntax analysis.
+ *
  * @since 0.1
  */
 final class Errors extends BaseErrorListener implements Iterable<Directive> {
@@ -41,6 +42,7 @@ final class Errors extends BaseErrorListener implements Iterable<Directive> {
 
     /**
      * Add an exception.
+     *
      * @param error Exception to add
      * @since 1.4
      */

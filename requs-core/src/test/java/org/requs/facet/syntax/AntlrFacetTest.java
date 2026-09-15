@@ -20,6 +20,7 @@ import org.xembly.Xembler;
 
 /**
  * Test case for {@link AntlrFacet}.
+ *
  * @since 0.1
  */
 final class AntlrFacetTest {
@@ -145,12 +146,6 @@ final class AntlrFacetTest {
         }
     }
 
-    /**
-     * Parse input.
-     * @param input Input syntax
-     * @return XML output
-     * @throws Exception If fails
-     */
     private static Source parse(final String input) throws Exception {
         return XhtmlMatchers.xhtml(
             new XeFacet.Wrap(new AntlrFacet()).touch(

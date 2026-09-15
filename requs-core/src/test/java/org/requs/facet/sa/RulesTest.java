@@ -14,6 +14,7 @@ import org.requs.XeFacet;
 
 /**
  * Test case for {@link Rules}.
+ *
  * @since 1.10
  */
 final class RulesTest {

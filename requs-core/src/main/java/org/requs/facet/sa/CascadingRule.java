@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * Cascading rule.
+ *
  * @since 1.14
  */
 @Immutable
@@ -21,6 +22,13 @@ import org.apache.commons.lang3.StringUtils;
 @EqualsAndHashCode
 @Loggable(Loggable.DEBUG)
 public final class CascadingRule implements Rule {
+
+    /**
+     * Constructor.
+     */
+    public CascadingRule() {
+        // Nothing to initialize.
+    }
 
     @Override
     public Collection<Violation> enforce(final String text) {
@@ -45,11 +53,6 @@ public final class CascadingRule implements Rule {
         return violations;
     }
 
-    /**
-     * Calculate indentation of a line.
-     * @param line Line
-     * @return Indentation
-     */
     private static int indent(final String line) {
         int indent;
         for (indent = 0; indent < line.length(); ++indent) {

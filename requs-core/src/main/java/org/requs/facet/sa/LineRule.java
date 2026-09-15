@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * Rule of one line.
+ *
  * @since 1.10
  */
 @Immutable
@@ -24,6 +25,7 @@ public interface LineRule {
 
     /**
      * Validate incoming line.
+     *
      * @param line One line
      * @return Violations
      */
@@ -31,6 +33,7 @@ public interface LineRule {
 
     /**
      * Wrap.
+     *
      * @since 1.10
      */
     @Immutable
@@ -46,6 +49,7 @@ public interface LineRule {
 
         /**
          * Ctor.
+         *
          * @param rule Original rule
          */
         public Wrap(final LineRule rule) {

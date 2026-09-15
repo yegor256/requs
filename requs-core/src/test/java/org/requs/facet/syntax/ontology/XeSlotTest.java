@@ -12,6 +12,7 @@ import org.xembly.Xembler;
 
 /**
  * Test case for {@link XeSlot}.
+ *
  * @since 1.1
  */
 final class XeSlotTest {

@@ -20,6 +20,7 @@ import org.xembly.Xembler;
 
 /**
  * Xembly producing facet.
+ *
  * @since 1.9
  */
 @Immutable
@@ -28,6 +29,7 @@ public interface XeFacet {
 
     /**
      * Touch the spec from this facet.
+     *
      * @param spec Spec in XML
      * @return Directives
      * @throws IOException If fails on I/O operation
@@ -37,6 +39,7 @@ public interface XeFacet {
 
     /**
      * Wrap into Facet.
+     *
      * @since 1.9
      */
     @Immutable
@@ -52,6 +55,7 @@ public interface XeFacet {
 
         /**
          * Ctor.
+         *
          * @param fct Original facet
          */
         public Wrap(final XeFacet fct) {
@@ -75,6 +79,7 @@ public interface XeFacet {
 
     /**
      * Always returns the same.
+     *
      * @since 1.9
      */
     @Immutable
@@ -90,6 +95,7 @@ public interface XeFacet {
 
         /**
          * Ctor.
+         *
          * @param list List of directives
          */
         public Fixed(final Iterable<Directive> list) {

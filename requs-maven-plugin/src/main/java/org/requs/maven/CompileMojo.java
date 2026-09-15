@@ -22,8 +22,8 @@ import org.slf4j.impl.StaticLoggerBinder;
 
 /**
  * Compile requs sources into XML.
+ *
  * @since 1.1
- * @checkstyle VisibilityModifierCheck (500 lines)
  */
 @Mojo(
     name = "compile", threadSafe = true,
@@ -51,11 +51,18 @@ public final class CompileMojo extends AbstractMojo {
 
     /**
      * Optional properties/options.
+     *
      * @since 1.14
      */
     @Parameter
-    public transient Map<String, String> options =
-        new ConcurrentHashMap<>(0);
+    public transient Map<String, String> options;
+
+    /**
+     * Constructor.
+     */
+    public CompileMojo() {
+        this.options = new ConcurrentHashMap<>(0);
+    }
 
     @Override
     public void execute() throws MojoFailureException {

@@ -19,12 +19,20 @@ import org.xembly.Directives;
 
 /**
  * Syntax analysis.
+ *
  * @since 0.1
  */
 @Immutable
 @ToString
 @EqualsAndHashCode
 public final class AntlrFacet implements XeFacet {
+
+    /**
+     * Constructor.
+     */
+    public AntlrFacet() {
+        // Nothing to initialize.
+    }
 
     @Override
     public Iterable<Directive> touch(final XML spec) {

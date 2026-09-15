@@ -11,6 +11,7 @@ import org.xembly.Directives;
 
 /**
  * Xembly mentioned.
+ *
  * @since 1.1
  */
 @ToString
@@ -30,6 +31,7 @@ final class XeMentioned implements Mentioned {
 
     /**
      * Ctor.
+     *
      * @param directives Directives to extend
      * @param xpath XPath to start with
      */

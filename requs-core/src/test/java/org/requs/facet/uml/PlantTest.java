@@ -13,6 +13,7 @@ import org.junit.jupiter.api.condition.OS;
 
 /**
  * Test case for {@link Plant}.
+ *
  * @since 1.11
  */
 final class PlantTest {

@@ -11,6 +11,7 @@ import org.xembly.Directives;
 
 /**
  * Xembly acronym.
+ *
  * @since 1.14
  */
 @ToString
@@ -30,6 +31,7 @@ final class XeAcronym implements Acronym {
 
     /**
      * Ctor.
+     *
      * @param directives Directives to extend
      * @param xpath XPath to start with
      */

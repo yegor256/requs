@@ -12,6 +12,7 @@ import org.xembly.Xembler;
 
 /**
  * Test case for {@link XeFlow}.
+ *
  * @since 1.8
  */
 final class XeFlowTest {

@@ -15,6 +15,7 @@ import org.xembly.Directives;
 
 /**
  * Static analysis rules.
+ *
  * @since 1.10
  */
 @Immutable
@@ -22,6 +23,13 @@ import org.xembly.Directives;
 @EqualsAndHashCode
 @Loggable(Loggable.DEBUG)
 public final class Rules implements XeFacet {
+
+    /**
+     * Constructor.
+     */
+    public Rules() {
+        // Nothing to initialize.
+    }
 
     @Override
     public Iterable<Directive> touch(final XML spec) {

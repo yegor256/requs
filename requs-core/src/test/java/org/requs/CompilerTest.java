@@ -22,6 +22,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Test case for {@link org.requs.Compiler}.
+ *
  * @since 1.1
  */
 final class CompilerTest {
@@ -90,13 +91,6 @@ final class CompilerTest {
         );
     }
 
-    /**
-     * Compiler can parse given text.
-     * @param temp Temp file
-     * @param file File we're parsing
-     * @param text Text to parse
-     * @throws Exception When necessary
-     */
     private void parses(final Path temp, final String file,
         final String text) throws Exception {
         final XML xml = new XMLDocument(text);
@@ -157,9 +151,6 @@ final class CompilerTest {
         );
     }
 
-    /**
-     * Assume that it is installed.
-     */
     private static void assumeXsltproc() {
         String ver;
         try {

@@ -15,6 +15,7 @@ import org.requs.Facet;
 
 /**
  * Transform.
+ *
  * @since 0.1
  */
 @Immutable
@@ -29,6 +30,7 @@ public final class Transform implements Facet {
 
     /**
      * Public ctor.
+     *
      * @param xsl Name of XSL resource
      */
     public Transform(final String xsl) {

@@ -5,6 +5,7 @@
 
 /**
  * UML diagrams, tests.
+ *
  * @since 1.11
  */
 package org.requs.facet.uml;

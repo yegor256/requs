@@ -31,6 +31,7 @@ import org.xembly.Directives;
 
 /**
  * Compiler.
+ *
  * @since 1.1
  */
 @Immutable
@@ -64,6 +65,7 @@ public final class Compiler {
 
     /**
      * Ctor.
+     *
      * @param src Directory with sources
      * @param dest Directory to write output
      * @throws IOException If fails
@@ -74,6 +76,7 @@ public final class Compiler {
 
     /**
      * Ctor.
+     *
      * @param src Directory with sources
      * @param dest Directory to write output
      * @param props Properties
@@ -89,6 +92,7 @@ public final class Compiler {
 
     /**
      * Compile.
+     *
      * @throws IOException If fails
      */
     public void compile() throws IOException {
@@ -175,10 +179,6 @@ public final class Compiler {
         );
     }
 
-    /**
-     * Copy XSL.
-     * @throws IOException If fails
-     */
     private void copy() throws IOException {
         final String file = "requs.xsl";
         FileUtils.write(
@@ -197,10 +197,6 @@ public final class Compiler {
         );
     }
 
-    /**
-     * Decorating directives.
-     * @return Directives
-     */
     private static Iterable<Directive> decor() {
         return new Directives()
             .xpath("/spec").attr(

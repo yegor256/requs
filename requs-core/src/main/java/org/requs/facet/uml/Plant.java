@@ -18,6 +18,7 @@ import org.apache.commons.lang3.SystemUtils;
 
 /**
  * Plant UML compiler.
+ *
  * @since 1.11
  */
 @Immutable
@@ -34,6 +35,7 @@ public final class Plant {
 
     /**
      * Make a diagram, in SVG.
+     *
      * @param src PlantUML source
      * @return SVG as a text
      * @throws IOException If fails

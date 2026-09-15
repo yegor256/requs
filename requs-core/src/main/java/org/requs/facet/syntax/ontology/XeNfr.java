@@ -11,6 +11,7 @@ import org.xembly.Directives;
 
 /**
  * Xembly NFR.
+ *
  * @since 1.5
  */
 @ToString
@@ -40,6 +41,7 @@ final class XeNfr implements Nfr {
 
     /**
      * Ctor.
+     *
      * @param directives Directives to extend
      * @param xpath XPath to start with
      */

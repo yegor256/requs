@@ -13,6 +13,7 @@ import org.xembly.Directives;
 
 /**
  * Xembly Ontology.
+ *
  * @since 1.1
  */
 @ToString
@@ -23,8 +24,23 @@ public final class XeOntology implements Ontology {
     /**
      * All directives.
      */
-    private final transient Directives dirs = new Directives()
-        .xpath("/").addIf("spec");
+    private final transient Directives dirs;
+
+    /**
+     * Constructor.
+     */
+    public XeOntology() {
+        this(new Directives().xpath("/").addIf("spec"));
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param directives Directives
+     */
+    private XeOntology(final Directives directives) {
+        this.dirs = directives;
+    }
 
     @Override
     public Type type(final String name) {
@@ -101,6 +117,7 @@ public final class XeOntology implements Ontology {
 
     /**
      * Escape XPath string.
+     *
      * @param text Text to escape
      * @return Escaped
      * @link https://issues.apache.org/jira/browse/LANG-1019
@@ -119,11 +136,6 @@ public final class XeOntology implements Ontology {
         return escaped;
     }
 
-    /**
-     * Get root.
-     * @param node Node name
-     * @return Directives
-     */
     private Directives root(final String node) {
         return this.dirs.xpath("/spec").strict(1).addIf(node);
     }

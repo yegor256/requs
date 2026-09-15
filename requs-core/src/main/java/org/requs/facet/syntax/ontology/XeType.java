@@ -11,6 +11,7 @@ import org.xembly.Directives;
 
 /**
  * Xembly type.
+ *
  * @since 1.1
  */
 @ToString
@@ -40,6 +41,7 @@ final class XeType implements Type {
 
     /**
      * Ctor.
+     *
      * @param directives Directives to extend
      * @param xpath XPath to start with
      */

@@ -9,7 +9,7 @@ import org.xembly.Directive;
 /**
  * Ontology.
  *
- * <p>The ontology is write-only. This is how you're supposed to use it:
+ * <p>The ontology is write-only. This is how you're supposed to use it:</p>
  *
  * <pre>
  * Ontology onto = // make it
@@ -24,6 +24,7 @@ public interface Ontology extends Iterable<Directive> {
 
     /**
      * Found new type.
+     *
      * @param name Name of it
      * @return Type
      */
@@ -31,6 +32,7 @@ public interface Ontology extends Iterable<Directive> {
 
     /**
      * Find method.
+     *
      * @param name Name of it
      * @return Method
      */
@@ -38,6 +40,7 @@ public interface Ontology extends Iterable<Directive> {
 
     /**
      * Find page.
+     *
      * @param name Name of it
      * @return Page
      */
@@ -45,6 +48,7 @@ public interface Ontology extends Iterable<Directive> {
 
     /**
      * Get acronym.
+     *
      * @param name Name of it
      * @return Acronym
      */

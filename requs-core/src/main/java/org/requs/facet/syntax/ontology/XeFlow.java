@@ -11,6 +11,7 @@ import org.xembly.Directives;
 
 /**
  * Xembly use case.
+ *
  * @since 1.1
  */
 @ToString
@@ -35,6 +36,7 @@ final class XeFlow implements Flow {
 
     /**
      * Ctor.
+     *
      * @param directives Directives to extend
      * @param xpath XPath to start with
      */

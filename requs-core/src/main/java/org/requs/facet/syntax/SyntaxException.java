@@ -6,6 +6,7 @@ package org.requs.facet.syntax;
 
 /**
  * Syntax exception.
+ *
  * @since 1.4
  */
 final class SyntaxException extends RuntimeException {
@@ -17,6 +18,7 @@ final class SyntaxException extends RuntimeException {
 
     /**
      * Ctor.
+     *
      * @param cause Cause of it
      */
     SyntaxException(final String cause) {

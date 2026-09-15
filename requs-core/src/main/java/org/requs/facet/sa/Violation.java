@@ -11,6 +11,7 @@ import lombok.ToString;
 
 /**
  * Violation.
+ *
  * @since 1.10
  */
 @Immutable
@@ -18,24 +19,28 @@ public interface Violation {
 
     /**
      * Line number.
+     *
      * @return Line (starting with 1)
      */
     int line();
 
     /**
      * Position in line.
+     *
      * @return Position (start from 1)
      */
     int position();
 
     /**
      * Description of the violation.
+     *
      * @return Description
      */
     String details();
 
     /**
      * Simple implementation.
+     *
      * @since 1.0
      */
     @Immutable
@@ -61,6 +66,7 @@ public interface Violation {
 
         /**
          * Ctor.
+         *
          * @param text Description
          * @param line Line number
          * @param position Position in line

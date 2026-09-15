@@ -5,6 +5,7 @@
 
 /**
  * Static analysis, tests.
+ *
  * @since 1.10
  */
 package org.requs.facet.sa;

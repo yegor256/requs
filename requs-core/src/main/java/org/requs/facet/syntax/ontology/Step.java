@@ -6,12 +6,14 @@ package org.requs.facet.syntax.ontology;
 
 /**
  * Step.
+ *
  * @since 1.1
  */
 public interface Step extends Mentioned, Signature {
 
     /**
      * Exception at a step.
+     *
      * @param text Exception text
      * @return Flow for this exception
      */

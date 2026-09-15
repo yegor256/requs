@@ -20,6 +20,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Test case for {@link Main}.
+ *
  * @since 1.1
  */
 final class MainTest {
@@ -92,17 +93,9 @@ final class MainTest {
         );
     }
 
-    /**
-     * Run action while capturing standard output.
-     *
-     * <p>Log4j's ConsoleAppender binds to {@code System.out} once, on
-     * first use, and never re-reads it; log4j.properties is reloaded
-     * around the redirection so log messages land in the capture.</p>
-     *
-     * @param action Action to run
-     * @return Captured output
-     * @throws IOException If action fails
-     */
+    // Log4j's ConsoleAppender binds to System.out once, on first use,
+    // and never re-reads it; log4j.properties is reloaded around the
+    // redirection so log messages land in the capture.
     @SuppressWarnings("PMD.CloseResource")
     private static String captured(final Action action) throws IOException {
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -124,6 +117,7 @@ final class MainTest {
 
     /**
      * Action that may fail with an I/O error.
+     *
      * @since 1.1
      */
     @FunctionalInterface
@@ -131,6 +125,7 @@ final class MainTest {
 
         /**
          * Run it.
+         *
          * @throws IOException If fails
          */
         void run() throws IOException;

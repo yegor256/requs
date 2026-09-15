@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link RegexRule}.
+ *
  * @since 1.14
  */
 final class RegexRuleTest {

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link LineRule}.
+ *
  * @since 1.14
  */
 final class LineRuleTest {

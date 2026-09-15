@@ -12,6 +12,7 @@ import org.xembly.Xembler;
 
 /**
  * Test case for {@link XeType}.
+ *
  * @since 1.1
  */
 final class XeTypeTest {

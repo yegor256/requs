@@ -10,6 +10,7 @@ import java.io.IOException;
 
 /**
  * Facet.
+ *
  * @since 0.1
  */
 @Immutable
@@ -18,6 +19,7 @@ public interface Facet {
 
     /**
      * Touch the spec from this facet.
+     *
      * @param spec Spec in XML
      * @return New XML
      * @throws IOException If fails on I/O operation

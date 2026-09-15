@@ -11,6 +11,7 @@ import org.xembly.Directives;
 
 /**
  * Xembly step.
+ *
  * @since 1.1
  */
 @ToString
@@ -40,6 +41,7 @@ final class XeStep implements Step {
 
     /**
      * Ctor.
+     *
      * @param directives Directives to extend
      * @param xpath XPath to start with
      */

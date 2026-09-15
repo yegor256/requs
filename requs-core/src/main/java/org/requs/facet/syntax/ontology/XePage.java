@@ -11,6 +11,7 @@ import org.xembly.Directives;
 
 /**
  * Xembly page.
+ *
  * @since 1.7
  */
 @ToString
@@ -30,6 +31,7 @@ final class XePage implements Page {
 
     /**
      * Ctor.
+     *
      * @param directives Directives to extend
      * @param xpath XPath to start with
      */

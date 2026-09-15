@@ -11,6 +11,7 @@ import org.xembly.Directives;
 
 /**
  * Xembly signature.
+ *
  * @since 1.1
  */
 @ToString
@@ -35,6 +36,7 @@ final class XeSignature implements Signature {
 
     /**
      * Ctor.
+     *
      * @param directives Directives to extend
      * @param xpath XPath to start with
      */

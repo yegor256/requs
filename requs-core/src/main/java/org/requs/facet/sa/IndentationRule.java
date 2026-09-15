@@ -13,6 +13,7 @@ import lombok.ToString;
 
 /**
  * Indentation rule in a single line.
+ *
  * @since 1.14
  */
 @Immutable
@@ -20,6 +21,13 @@ import lombok.ToString;
 @EqualsAndHashCode
 @Loggable(Loggable.DEBUG)
 public final class IndentationRule implements LineRule {
+
+    /**
+     * Constructor.
+     */
+    public IndentationRule() {
+        // Nothing to initialize.
+    }
 
     @Override
     public Collection<Violation> check(final String line) {

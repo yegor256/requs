@@ -11,6 +11,7 @@ import org.xembly.Xembler;
 
 /**
  * Test case for {@link XeOntology}.
+ *
  * @since 1.1
  */
 final class XeOntologyTest {

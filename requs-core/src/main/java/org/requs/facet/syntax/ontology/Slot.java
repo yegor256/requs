@@ -6,12 +6,14 @@ package org.requs.facet.syntax.ontology;
 
 /**
  * Slot of a type.
+ *
  * @since 1.1
  */
 public interface Slot extends Mentioned, Informal {
 
     /**
      * Arity.
+     *
      * @since 1.1
      */
     enum Arity {
@@ -38,6 +40,7 @@ public interface Slot extends Mentioned, Informal {
 
         /**
          * Ctor.
+         *
          * @param mnemo Mnemo
          */
         Arity(final String mnemo) {
@@ -46,6 +49,7 @@ public interface Slot extends Mentioned, Informal {
 
         /**
          * Mnemo.
+         *
          * @return Mnemo
          */
         public String mnemo() {
@@ -55,18 +59,21 @@ public interface Slot extends Mentioned, Informal {
 
     /**
      * Assign a type to the slot.
+     *
      * @param type Type to assign
      */
     void assign(String type);
 
     /**
      * Set its arity.
+     *
      * @param arity Arity to set
      */
     void arity(Slot.Arity arity);
 
     /**
      * Is it a composition?
+     *
      * @param cmp TRUE if it's a composition
      * @since 1.14
      */

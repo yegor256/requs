@@ -6,12 +6,14 @@ package org.requs.facet.syntax.ontology;
 
 /**
  * Use case.
+ *
  * @since 1.1
  */
 public interface Method extends Flow, Mentioned, Signature {
 
     /**
      * Add an attributes.
+     *
      * @param name Attribute name
      * @param seal Seal to attach
      */
@@ -19,6 +21,7 @@ public interface Method extends Flow, Mentioned, Signature {
 
     /**
      * Get an NFR by name.
+     *
      * @param name NFR name
      * @return NFR
      */

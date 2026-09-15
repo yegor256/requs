@@ -22,6 +22,7 @@ import org.w3c.dom.Node;
 
 /**
  * XSLT functions (utility class, but this is the only option with Saxon).
+ *
  * @since 1.9
  */
 @Immutable
@@ -45,6 +46,7 @@ public final class XsltFuncs {
 
     /**
      * Convert markdown to HTML.
+     *
      * @param markdown Markdown
      * @return HTML
      */
@@ -58,6 +60,7 @@ public final class XsltFuncs {
 
     /**
      * Seal the method.
+     *
      * @param xml Xml to seal
      * @return Seal as a string
      */
@@ -78,6 +81,7 @@ public final class XsltFuncs {
 
     /**
      * Print node content into string.
+     *
      * @param node Node
      * @return XML
      */

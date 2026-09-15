@@ -15,6 +15,7 @@ import lombok.ToString;
 
 /**
  * Regular expression rule.
+ *
  * @since 1.10
  */
 @Immutable
@@ -35,6 +36,7 @@ public final class RegexRule implements LineRule {
 
     /**
      * Ctor.
+     *
      * @param rgx Regular expression
      * @param txt Description
      */

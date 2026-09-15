@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link IndentationRule}.
+ *
  * @since 1.14
  */
 final class IndentationRuleTest {

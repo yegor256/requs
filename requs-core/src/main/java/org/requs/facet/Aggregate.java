@@ -23,6 +23,7 @@ import org.xembly.Directives;
 
 /**
  * Aggregate sources into one file.
+ *
  * @since 1.2
  */
 @Immutable
@@ -37,6 +38,7 @@ public final class Aggregate implements XeFacet {
 
     /**
      * Ctor.
+     *
      * @param path Path to the directory with sources
      */
     public Aggregate(final File path) {

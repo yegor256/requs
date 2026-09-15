@@ -22,8 +22,8 @@ import org.slf4j.impl.StaticLoggerBinder;
 
 /**
  * Generate site reports.
+ *
  * @since 1.1
- * @checkstyle VisibilityModifierCheck (500 lines)
  */
 @Mojo(name = "default")
 public final class ReportMojo extends AbstractMavenReport {
@@ -45,11 +45,18 @@ public final class ReportMojo extends AbstractMavenReport {
 
     /**
      * Optional properties/options.
+     *
      * @since 1.14
      */
     @Parameter
-    public transient Map<String, String> options =
-        new ConcurrentHashMap<>(0);
+    public transient Map<String, String> options;
+
+    /**
+     * Constructor.
+     */
+    public ReportMojo() {
+        this.options = new ConcurrentHashMap<>(0);
+    }
 
     @Override
     @SuppressWarnings("deprecation")
@@ -105,10 +112,6 @@ public final class ReportMojo extends AbstractMavenReport {
         this.front(sink);
     }
 
-    /**
-     * Make a front page.
-     * @param sink Sink to use
-     */
     private void front(final Sink sink) {
         sink.section1();
         sink.sectionTitle1();
