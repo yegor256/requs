@@ -87,7 +87,19 @@ public final class XsltFuncs {
      */
     @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static String print(final Node node) {
-        final String txt = new XMLDocument(node).nodes("/*").get(0).toString();
+        return XsltFuncs.print(
+            new XMLDocument(node).nodes("/*").get(0).toString()
+        );
+    }
+
+    /**
+     * Print XML text into string.
+     *
+     * @param txt XML text
+     * @return XML
+     */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
+    public static String print(final String txt) {
         final Matcher matcher = XsltFuncs.PTN.matcher(txt);
         if (!matcher.matches()) {
             throw new IllegalStateException(
