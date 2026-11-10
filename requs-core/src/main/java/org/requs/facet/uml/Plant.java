@@ -48,7 +48,7 @@ public final class Plant {
         } else {
             final SourceStringReader reader = new SourceStringReader(src);
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            reader.generateImage(baos, new FileFormatOption(FileFormat.SVG));
+            reader.outputImage(baos, new FileFormatOption(FileFormat.SVG));
             svg = new XMLDocument(
                 new String(baos.toByteArray(), StandardCharsets.UTF_8)
             ).nodes("/*").get(0).toString().replace("xmlns=\"\"", "");
