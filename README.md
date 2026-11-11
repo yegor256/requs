@@ -34,6 +34,11 @@ In order to use it in a Java project, just add this plugin to your `pom.xml`:
 
 Then, add REQUS files to `src/main/requs` and name them as `main.req`, etc.
 
+Then, install [Graphviz](https://graphviz.org/download/)
+and make sure that the `dot` binary is on your `PATH`
+(it is `/usr/bin/dot` on Linux),
+because UML diagrams are rendered through PlantUML, which calls it.
+
 Then, run `mvn clean site` and you will see a report at `target/site/requs`.
 
 ## How to contribute?
